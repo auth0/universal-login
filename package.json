@@ -1,0 +1,30 @@
+{
+  "name": "universal-login",
+  "version": "1.0.0",
+  "description": "",
+  "workspaces": [
+    "packages/ul-javascript",
+    "packages/ul-react",
+    "packages/ul-react-components"
+  ],
+  "license": "ISC",
+  "scripts": {
+    "lint": "npm run lint --workspaces",
+    "test": "npm test --workspaces",
+    "build": "npm run build --workspaces",
+    "docs": "typedoc --options typedoc.js",
+    "format": "npm run format --workspaces"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@rollup/plugin-alias": "^5.1.0",
+    "@tsconfig/node18": "^18.2.4",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "prettier": "^3.3.3",
+    "typedoc": "^0.24.6",
+    "typescript": "^5.0.2"
+  }
+}
