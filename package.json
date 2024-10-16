@@ -12,7 +12,7 @@
     "lint": "npm run lint --workspaces",
     "test": "npm test --workspaces",
     "build": "npm run build --workspaces",
-    "docs": "typedoc --options typedoc.js",
+    "docs": "npm run docs --workspaces",
     "format": "npm run format --workspaces"
   },
   "engines": {
