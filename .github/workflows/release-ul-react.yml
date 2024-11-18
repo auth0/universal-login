@@ -5,6 +5,9 @@ on:
   push:
     branches:
       - 'release/ul-react/v*'
+  pull_request:
+    types:
+      - open
   workflow_dispatch:
 permissions:
   contents: write
