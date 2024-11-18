@@ -34,12 +34,15 @@ jobs:
       # Get the version from the branch name
       - id: get_version
         uses: ./get-version
+        with:
+          version-file-path: "packages/ul-javascript/version" # Path to version file
 
       # Get the prerelease flag from the branch name
       - id: get_prerelease
         uses: ./get-prerelease
         with:
-          version-file-path: "packages/ul-react/.version" # Path to version file
+          version: ${{ steps.get-version.outputs.version }}
+          
 
       # Get the release notes
       - id: get_release_notes
