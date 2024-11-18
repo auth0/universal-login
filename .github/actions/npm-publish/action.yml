@@ -9,6 +9,8 @@ inputs:
     required: true
   require-build:
     default: true
+  package:
+    default: true
   release-directory:
     default: './'
 
@@ -28,11 +30,13 @@ runs:
 
     - name: Install dependencies
       shell: bash
+      working-directory: packages/${{ inputs.package }}
       run: npm ci --include=dev
 
     - name: Build package
       if: inputs.require-build == 'true'
       shell: bash
+      working-directory: packages/${{ inputs.package }}
       run: npm run build
 
     # - name: Publish release to NPM

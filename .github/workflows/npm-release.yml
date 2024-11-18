@@ -9,6 +9,9 @@ on:
       require-build:
         default: true
         type: string
+      package-name:
+        required: true
+        type: string
       release-directory:
         default: './'
         type: string
@@ -63,6 +66,7 @@ jobs:
         with:
           tag: ${{ steps.get_version.outputs.version }}
           token: ${{ secrets.github-token }}
+          package: ${{ inputs.package-name }}
 
       # If the tag already exists, exit with an error
       - if: steps.tag_exists.outputs.exists == 'true'
@@ -75,6 +79,7 @@ jobs:
           require-build: ${{ inputs.require-build }}
           version: ${{ steps.get_version.outputs.version }}
           npm-token: ${{ secrets.npm-token }}
+          package: ${{ inputs.package-name }}
           release-directory: ${{ inputs.release-directory }}
 
       # Create a release for the tag
@@ -83,6 +88,6 @@ jobs:
           token: ${{ secrets.github-token }}
           name: ${{ steps.get_version.outputs.version }}
           body: ${{ github.event.pull_request.body }}
-          tag: ${{ steps.get_version.outputs.version }}
+          tag: ${{ inputs.package-name }} ${{ steps.get_version.outputs.version }}
           commit: ${{ github.sha }}
           prerelease: ${{ steps.get_prerelease.outputs.prerelease }}
