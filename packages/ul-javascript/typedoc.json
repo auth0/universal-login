@@ -1,0 +1,16 @@
+{
+  "out": "docs",
+  "entryPoints": [
+    "./src/exports/index.ts"
+  ],
+  "exclude": ["**/*.test.ts", "**/*.spec.ts"],
+  "tsconfig": "./tsconfig.json",
+  "hideGenerator": true,
+  "readme": "./README.md",
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "excludeExternals": true,
+  "includeVersion": true,
+  "categorizeByGroup": true, 
+  "categoryOrder": ["Classes", "Interfaces", "*"]
+}
