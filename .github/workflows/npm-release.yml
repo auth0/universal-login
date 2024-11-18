@@ -87,6 +87,6 @@ jobs:
           token: ${{ secrets.github-token }}
           name: ${{ steps.get_version.outputs.version }}
           body: ${{ github.event.pull_request.body }}
-          tag: ${{ inputs.package-name }} ${{ steps.get_version.outputs.version }}
+          tag: ${{ inputs.package-name }}-${{ steps.get_version.outputs.version }}
           commit: ${{ github.sha }}
           prerelease: ${{ steps.get_prerelease.outputs.prerelease }}
