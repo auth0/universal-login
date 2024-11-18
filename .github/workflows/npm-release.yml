@@ -49,13 +49,13 @@ jobs:
           https://api.github.com/repos/${{ github.repository }}  
 
       # Get the release notes
-      - id: get_release_notes
-        uses: ./.github/actions/get-release-notes
-        with:
-          token: ${{ secrets.github-token }}
-          version: ${{ steps.get_version.outputs.version }}
-          repo_owner: ${{ github.repository_owner }}
-          repo_name: ${{ github.event.repository.name }}
+      # - id: get_release_notes
+      #   uses: ./.github/actions/get-release-notes
+      #   with:
+      #     token: ${{ secrets.github-token }}
+      #     version: ${{ steps.get_version.outputs.version }}
+      #     repo_owner: ${{ github.repository_owner }}
+      #     repo_name: ${{ github.event.repository.name }}
 
       # Check if the tag already exists
       - id: tag_exists
@@ -82,7 +82,7 @@ jobs:
         with:
           token: ${{ secrets.github-token }}
           name: ${{ steps.get_version.outputs.version }}
-          body: ${{ steps.get_release_notes.outputs.release-notes }}
+          body: ${{ github.event.pull_request.body }}
           tag: ${{ steps.get_version.outputs.version }}
           commit: ${{ github.sha }}
           prerelease: ${{ steps.get_prerelease.outputs.prerelease }}
