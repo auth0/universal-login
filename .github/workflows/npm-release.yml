@@ -42,7 +42,11 @@ jobs:
         uses: ./.github/actions/get-prerelease
         with:
           version: ${{ steps.get-version.outputs.version }}
-          
+
+      - name: Test GITHUB_TOKEN Permissions
+        run: |
+          curl -H "Authorization: token ${{ secrets.github-token }}" \
+          https://api.github.com/repos/${{ github.repository }}  
 
       # Get the release notes
       - id: get_release_notes
