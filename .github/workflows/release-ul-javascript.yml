@@ -1,10 +1,10 @@
-name: Create npm and GitHub Release For ul-javscript
+name: Create npm and GitHub Release For ul-javascript
 
 on:
-  # Trigger this workflow when a branch like "release/ul-javscript/v*" is pushed
+  # Trigger this workflow when a branch like "release/ul-javascript/v*" is pushed
   push:
     branches:
-      - 'release/ul-javscript/v*'
+      - 'release/ul-javascript/v*'
   pull_request:
     types:
       - open
