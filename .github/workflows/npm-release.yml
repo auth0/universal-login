@@ -66,6 +66,7 @@ jobs:
         with:
           tag: ${{ steps.get_version.outputs.version }}
           token: ${{ secrets.github-token }}
+          package: ${{ inputs.package-name }}
 
       # If the tag already exists, exit with an error
       - if: steps.tag_exists.outputs.exists == 'true'

@@ -11,6 +11,8 @@ inputs:
     required: true
   tag:
     required: true
+  package:
+    required: true
 
 outputs:
   exists:
@@ -24,7 +26,7 @@ runs:
     - id: tag-exists
       shell: bash
       run: |
-        GET_API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/git/ref/tags/${TAG_NAME}"
+        GET_API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/git/ref/tags/${PACKAGE_NAME}-${TAG_NAME}"
         http_status_code=$(curl -LI $GET_API_URL -o /dev/null -w '%{http_code}\n' -s -H "Authorization: token ${GITHUB_TOKEN}")
         if [ "$http_status_code" -ne "404" ] ; then
           echo "EXISTS=true" >> $GITHUB_OUTPUT
@@ -33,4 +35,5 @@ runs:
         fi
       env:
         TAG_NAME: ${{ inputs.tag }}
+        PACKAGE_NAME: ${{ inputs.package }}
         GITHUB_TOKEN: ${{ inputs.token }}
