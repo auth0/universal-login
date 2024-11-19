@@ -23,7 +23,7 @@ jobs:
     with:
       node-version: 18
       require-build: true
-      package-name: ul-javscript
+      package-name: ul-javascript
     secrets:
       npm-token: ${{ secrets.NPM_TOKEN }}
       github-token: ${{ secrets.GITHUB_TOKEN }}
