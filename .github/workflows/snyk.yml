@@ -9,7 +9,7 @@ on:
       - synchronize
   push:
     branches:
-      - main
+      - master
       - beta
   schedule:
     - cron: '30 0 1,15 * *'

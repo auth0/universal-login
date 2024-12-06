@@ -8,7 +8,7 @@ on:
       - 'packages/ul-react/**'
   push:
     branches:
-      - main
+      - master
     paths:
       - 'packages/auth0-acul-js/**'
       - 'packages/ul-react-component/**'
