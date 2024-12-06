@@ -3,11 +3,12 @@ name: Create npm and GitHub Release For auth0-acul-js
 on:
   # Trigger this workflow when a branch like "release/auth0-acul-js/v*" is pushed
   push:
-    branches:
-      - 'release/auth0-acul-js/v*'
+
   pull_request:
+    branches:
+      - 'release/auth0-acul-js/v*' # Ensure the branch matches this pattern
     types:
-      - open
+      - closed # Trigger when a PR is closed (merged)
   workflow_dispatch:
 permissions:
   contents: write
@@ -19,6 +20,7 @@ permissions:
 
 jobs:
   release:
+    if: (github.event.pull_request.merged == true) && startsWith(github.event.pull_request.base.ref, 'release/auth0-acul-js/v')
     uses: ./.github/workflows/npm-release.yml
     with:
       node-version: 18
