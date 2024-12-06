@@ -26,7 +26,7 @@ jobs:
   check:
 
     name: Check for Vulnerabilities
-    runs-on: ubuntu-22.04-2cpu-8ram-75ssd
+    runs-on: ubuntu-latest
 
     steps:
       - if: github.actor == 'dependabot[bot]' || github.event_name == 'merge_group'
