@@ -1,6 +1,6 @@
 {
-  "name": "auth0-acul-js",
-  "version": "1.0.1",
+  "name": "@auth0/auth0-acul-js",
+  "version": "0.0.1-alpha.1",
   "type": "module",
   "module": "dist/index.js",
   "exports": {
@@ -69,10 +69,20 @@
     "lint:fix": "eslint 'src/**/*.{js,ts,tsx}' --fix",
     "format": "prettier --write 'src/**/*.{js,ts,tsx,json,css,md}'"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "author": "Auth0",
+  "license": "MIT",
+  "description": "The Auth0 ACUL JS SDK enables you to work with Advanced Customization for Universal Login.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/auth0/universal-login/tree/master/packages/auth0-acul-js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "auth0",
+    "ACUL"
+  ],
   "devDependencies": {
     "@rollup/plugin-alias": "^5.1.1",
     "@rollup/plugin-node-resolve": "^15.3.0",
