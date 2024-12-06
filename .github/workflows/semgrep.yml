@@ -12,7 +12,7 @@ on:
 jobs:
   semgrep:
     name: Scan
-    runs-on: ubuntu-22.04-2cpu-8ram-75ssd
+    runs-on: ubuntu-latest
     container:
       image: returntocorp/semgrep
     # Skip any PR created by dependabot to avoid permission issues

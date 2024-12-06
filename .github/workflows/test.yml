@@ -29,7 +29,7 @@ env:
 jobs:
   determine-package:
     name: Determine modified files
-    runs-on: ubuntu-22.04-2cpu-8ram-75ssd
+    runs-on: ubuntu-latest
     outputs:
       ul-javascript-changed: ${{ steps.determine_package.outputs.ul-javascript-changed }}
       ul-react-component-changed: ${{ steps.determine_package.outputs.ul-react-component-changed }}
