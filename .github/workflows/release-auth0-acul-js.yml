@@ -1,9 +1,6 @@
 name: Create npm and GitHub Release For auth0-acul-js
 
 on:
-  # Trigger this workflow when a branch like "release/auth0-acul-js/v*" is pushed
-  push:
-
   pull_request:
     branches:
       - 'release/auth0-acul-js/v*' # Ensure the branch matches this pattern
