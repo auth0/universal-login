@@ -1,0 +1,14 @@
+{
+    "name": "ul-react",
+    "version": "1.0.2",
+    "description": "A test package for ul-react workflow testing",
+    "main": "src/index.js",
+    "scripts": {
+      "build": "echo 'Building package...' && mkdir -p dist && cp -r src dist",
+      "test": "echo 'Running tests...' && exit 0",
+      "prepare": "npm run build"
+    },
+    "keywords": ["ul-react", "workflow"],
+    "author": "Your Name",
+    "license": "MIT"
+  }
