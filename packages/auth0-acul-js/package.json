@@ -83,6 +83,14 @@
     "auth0",
     "ACUL"
   ],
+  "files": [
+    "dist",
+    "src",
+    "package.json",
+    "README.md",
+    "LICENSE"
+  ],
+
   "devDependencies": {
     "@rollup/plugin-alias": "^5.1.1",
     "@rollup/plugin-node-resolve": "^15.3.0",
