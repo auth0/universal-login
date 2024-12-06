@@ -1,0 +1,116 @@
+{
+  "client": {
+    "id": "ix13oRPcQOQdAbTHVrr9KN5RsbMTpAbs",
+    "name": "spa-react"
+  },
+  "organization": {
+    "usage": "deny"
+  },
+  "prompt": {
+    "name": "login-id"
+  },
+  "screen": {
+    "links": {
+      "reset_password": "/u/login/password-reset-start/db-connection?state=hKFo2SBBSUtGajljVmVYT1ktYXpqNzk0Mm1GQ3pJZFdxSnlGTKFur3VuaXZlcnNhbC1sb2dpbqN0aWTZIHc0bTNTTXVWeWQ2S0NpSHhwMVo2UG1OWEc3b3ViRExfo2NpZNkgaXgxM29SUGNRT1FkQWJUSFZycjlLTjVSc2JNVHBBYnM",
+      "signup": "/u/signup/identifier?state=hKFo2SBBSUtGajljVmVYT1ktYXpqNzk0Mm1GQ3pJZFdxSnlGTKFur3VuaXZlcnNhbC1sb2dpbqN0aWTZIHc0bTNTTXVWeWQ2S0NpSHhwMVo2UG1OWEc3b3ViRExfo2NpZNkgaXgxM29SUGNRT1FkQWJUSFZycjlLTjVSc2JNVHBBYnM"
+    },
+    "name": "login-id",
+    "texts": {
+      "pageTitle": "Log in | spa-react",
+      "title": "Welcome",
+      "description": "Log in to tenant-nandan to continue to spa-react.",
+      "separatorText": "Or",
+      "buttonText": "Continue",
+      "footerLinkText": "Sign up",
+      "forgotPasswordText": "Can't log in to your account?",
+      "signupActionLinkText": "Sign up",
+      "footerText": "Don't have an account?",
+      "signupActionText": "Don't have an account?",
+      "passwordPlaceholder": "Password",
+      "usernamePlaceholder": "Username or email address",
+      "emailPlaceholder": "Email address",
+      "phonePlaceholder": "Phone number",
+      "usernameOnlyPlaceholder": "Username",
+      "phoneOrUsernameOrEmailPlaceholder": "Phone or Username or Email",
+      "phoneOrEmailPlaceholder": "Phone number or Email address",
+      "phoneOrUsernamePlaceholder": "Phone Number or Username",
+      "usernameOrEmailPlaceholder": "Username or Email address",
+      "editEmailText": "Edit",
+      "alertListTitle": "Alerts",
+      "devKeysAlertTitle": "Dev Keys",
+      "devKeysAlertMessage": "One or more of your connections are currently using Auth0 development keys and should not be used in production.",
+      "devKeysAlertUrl": "https://auth0.com/docs/connections/social/devkeys",
+      "devKeysAlertLinkText": "Learn More",
+      "logoAltText": "tenant-nandan",
+      "passkeyButtonText": "Continue with a passkey",
+      "badgeUrl": "https://auth0.com/?utm_source=lock&utm_campaign=badge&utm_medium=widget",
+      "badgeAltText": "Link to the Auth0 website",
+      "error": "Error",
+      "captchaCodePlaceholder": "Enter the code shown above",
+      "qrCode": "QR Code",
+      "spinner_push_notification_label": "Waiting for push notification to be accepted"
+    }
+  },
+  "transaction": {
+    "country_code": {
+      "code": "IN",
+      "prefix": "91"
+    },
+    "connections": [
+      {
+        "name": "db-connection",
+        "strategy": "auth0",
+        "options": {
+          "signup_enabled": true,
+          "username_required": false,
+          "forgot_password_enabled": true,
+          "password_config": {
+            "policy": "good",
+            "min_length": 8
+          },
+          "attributes": {
+            "email": {
+              "signup_status": "required"
+            }
+          }
+        }
+      },
+      {
+        "name": "google-oauth2",
+        "strategy": "google",
+        "options": {},
+        "display_name": "Google"
+      },
+      {
+        "name": "facebook",
+        "strategy": "facebook",
+        "options": {},
+        "display_name": "Facebook"
+      },
+      {
+        "name": "github",
+        "strategy": "github",
+        "options": {},
+        "display_name": "GitHub"
+      },
+      {
+        "name": "windowslive",
+        "strategy": "windowslive",
+        "options": {},
+        "display_name": "Microsoft Account"
+      },
+      {
+        "name": "linkedin",
+        "strategy": "linkedin",
+        "options": {},
+        "display_name": "LinkedIn"
+      }
+    ],
+    "locale": "en",
+    "state": "hKFo2SBBSUtGajljVmVYT1ktYXpqNzk0Mm1GQ3pJZFdxSnlGTKFur3VuaXZlcnNhbC1sb2dpbqN0aWTZIHc0bTNTTXVWeWQ2S0NpSHhwMVo2UG1OWEc3b3ViRExfo2NpZNkgaXgxM29SUGNRT1FkQWJUSFZycjlLTjVSc2JNVHBBYnM"
+  },
+  "tenant": {
+    "name": "tenant-nandan",
+    "enabled_locales": ["en"]
+  }
+}

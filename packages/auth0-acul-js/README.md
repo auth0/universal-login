@@ -18,11 +18,17 @@ This feature is still in **Limited EA**. Please contact your Account Manager to 
 
 - [Quickstart](https://auth0.com/docs/customize) - our guide for setting up the SDK on your app.
 - [Guides](https://auth0.com/docs/customize) - more guides for common use cases
-- [Examples](packages/auth0-acul-js/examples/) - code snippets for different customization use cases.
-- [FAQs](packages/auth0-acul-js/FAQ.md) - Find answers to frequently asked questions about the Auth0 ACUL JS SDK.
+- [Examples](examples/) - code snippets for different customization use cases.
+- [FAQs](FAQ.md) - Find answers to frequently asked questions about the Auth0 ACUL JS SDK.
 
-## ACUL Overview
-![ACUL Journey](https://d1ywy7uwj7mp98.cloudfront.net/assets/ACUL-Overview.png)
+### Architecture Overview
+
+- SDK features a modular architecture for integrating various authentication screens.
+- The **Login ID screen** is used as an example to explain the architecture.
+- This structure can be applied to other screens across the project, such as **signup**, **passwordless login**, and **passkey enrollment**.
+- Each screen can be treated as an independent module that can be **easily integrated** into the project.
+
+![ACUL SDK](https://d1ywy7uwj7mp98.cloudfront.net/assets/ACUL-SDK-Architecture.png)
 
 
 

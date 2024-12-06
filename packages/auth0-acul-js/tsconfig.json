@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "declaration": true,
+    "declarationMap": true,
+    "outDir": "./dist",
+    "declarationDir": "./dist/types",
+    "rootDir": "./",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": "./",
+    "moduleResolution": "node"
+  },
+  "include": ["src/**/*", "interfaces/**/*", "tests/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
