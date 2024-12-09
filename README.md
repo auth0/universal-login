@@ -12,7 +12,10 @@ The **Auth0 ACUL JS SDK** enables you to work with Advanced Customization for Un
 
 It simplifies integrating authentication screens (login, signup, passwordless, passkey enrollment, etc.) into your web applications, providing the necessary tools for seamless implementation.
 
-This feature is still in **Limited EA**. Please contact your Account Manager to get this feature enabled on your Auth0 tenant.
+⚠ This feature is still in **Limited EA**. Please contact your Account Manager to get this feature enabled on your Auth0 tenant. [read more...](#legal)
+
+### SDKs
+- [auth0-acul-js](packages/auth0-acul-js/)
 
 ## 📚 Documentation
 
@@ -116,21 +119,21 @@ For more examples, visit our [examples](https://github.com/atko-cic/universal-lo
 ## 💻 API reference
 ### Screens
 
-1. [login-id](https://d1ywy7uwj7mp98.cloudfront.net/docs/classes/Classes.LoginId.html)
-2. [login-Password](https://d1ywy7uwj7mp98.cloudfront.net/docs/classes/Classes.LoginPassword.html)
-3. [signup-id](https://d1ywy7uwj7mp98.cloudfront.net/docs/classes/Classes.SignupId.html)
-4. [signup-password](https://d1ywy7uwj7mp98.cloudfront.net/docs/classes/Classes.SignupPassword.html)
+1. [login-id](https://auth0.github.io/universal-login/classes/Classes.LoginId.html)
+2. [login-Password](https://auth0.github.io/universal-login/classes/Classes.LoginPassword.html)
+3. [signup-id](https://auth0.github.io/universal-login/classes/Classes.SignupId.html)
+4. [signup-password](https://auth0.github.io/universal-login/classes/Classes.SignupPassword.html)
 <details>
   <summary>See more</summary>
 
-  5. [login-passwordless-email-code](https://d1ywy7uwj7mp98.cloudfront.net/docs/classes/Classes.LoginPasswordlessEmailCode.html)
-  6. [login-passwordless-sms-otp](https://d1ywy7uwj7mp98.cloudfront.net/docs/classes/Classes.LoginPasswordlessSmsOtp.html)
-  7. [passkey-enrollment](https://d1ywy7uwj7mp98.cloudfront.net/docs/classes/Classes.PasskeyEnrollment.html)
-  8. [passkey-enrollment-local](https://d1ywy7uwj7mp98.cloudfront.net/docs/classes/Classes.PasskeyEnrollmentLocal.html)
-  9. [phone-identifier-enrollment](https://d1ywy7uwj7mp98.cloudfront.net/docs/classes/Classes.PhoneIdentifierEnrollment.html)
-  10. [phone-identifier-challenge](https://d1ywy7uwj7mp98.cloudfront.net/docs/classes/Classes.PhoneIdentifierChallenge.html)
-  11. [email-identifier-challenge](https://d1ywy7uwj7mp98.cloudfront.net/docs/classes/Classes.EmailIdentifierChallenge.html)
-  12. [interstitial-captcha](https://d1ywy7uwj7mp98.cloudfront.net/docs/classes/Classes.InterstitialCaptcha.html)
+  5. [login-passwordless-email-code](https://auth0.github.io/universal-login/classes/Classes.LoginPasswordlessEmailCode.html)
+  6. [login-passwordless-sms-otp](https://auth0.github.io/universal-login/classes/Classes.LoginPasswordlessSmsOtp.html)
+  7. [passkey-enrollment](https://auth0.github.io/universal-login/classes/Classes.PasskeyEnrollment.html)
+  8. [passkey-enrollment-local](https://auth0.github.io/universal-login/classes/Classes.PasskeyEnrollmentLocal.html)
+  9. [phone-identifier-enrollment](https://auth0.github.io/universal-login/classes/Classes.PhoneIdentifierEnrollment.html)
+  10. [phone-identifier-challenge](https://auth0.github.io/universal-login/classes/Classes.PhoneIdentifierChallenge.html)
+  11. [email-identifier-challenge](https://auth0.github.io/universal-login/classes/Classes.EmailIdentifierChallenge.html)
+  12. [interstitial-captcha](https://auth0.github.io/universal-login/classes/Classes.InterstitialCaptcha.html)
 </details>
 
 
@@ -154,6 +157,10 @@ To provide feedback or report a bug, please [raise an issue on our issue tracker
 ### Vulnerability Reporting
 
 Please do not report security vulnerabilities on the public GitHub issue tracker. The [Responsible Disclosure Program](https://auth0.com/responsible-disclosure-policy) details the procedure for disclosing security issues.
+
+### Legal
+
+**Early Access.** This SDK and its associated product are made available only in Early Access (“EA”) format and are governed by the Free Trial terms of the [Okta Master Subscription Agreement](https://www.okta.com/agreements/#mastersubscriptionagreement). If Okta elects to make a version of this SDK and its associated product Generally Available (“GA”), such GA version may have different pricing, product and feature configurations, and use of the GA product and SDK will be subject to the standard terms of the Agreement (or other such titled written or electronic agreement addressing the same subject matter) between Okta and Customer."
 
 ---
 
