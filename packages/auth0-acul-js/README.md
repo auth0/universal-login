@@ -14,12 +14,12 @@ It simplifies integrating authentication screens (login, signup, passwordless, p
 
 ⚠ This feature is still in **Limited EA**. Please contact your Account Manager to get this feature enabled on your Auth0 tenant. [read more...](#legal)
 
-## 📚 Documentation
+##  Documentation
 
 - [Quickstart](https://auth0.com/docs/customize) - our guide for setting up the SDK on your app.
 - [Guides](https://auth0.com/docs/customize) - more guides for common use cases
 - [Examples](https://github.com/auth0/universal-login/tree/master/packages/auth0-acul-js/examples) - code snippets for different customization use cases.
-- [FAQs](FAQ.md) - Find answers to frequently asked questions about the Auth0 ACUL JS SDK.
+- [FAQs](packages/auth0-acul-js/FAQ.md) - Find answers to frequently asked questions about the Auth0 ACUL JS SDK.
 
 ### Architecture Overview
 
@@ -33,14 +33,14 @@ It simplifies integrating authentication screens (login, signup, passwordless, p
 
 
 
-## 🚀 Getting started
+##  Getting started
 
 ### Prerequisites
 Before starting, ensure that you have the following setup:
 
 1. **Custom Domain**: Ensure that a custom domain is configured for your Auth0 tenant.
 2. **Screen Configuration**: Set up the required authentication screens within your Auth0 flow.  
-   For detailed steps, refer to the [Management API documentation](#) (TBD).
+   For detailed steps, refer to the [Management API documentation](https://auth0.com/docs/customize).
 
 ### Installation
 
@@ -63,7 +63,7 @@ import  LoginId  from '@auth0/auth0-acul-js/login-id';
 import  { LoginId }  from '@auth0/auth0-acul-js'; 
 
 // Default import of all screens
-import  Screens  from '@auth0/auth0-acul-js'; 
+import  * as Screens  from '@auth0/auth0-acul-js'; 
 
 ```
 Note: For more details on import paths for all screens, refer to the [FAQ's](FAQ.md).
@@ -115,11 +115,11 @@ loginIdManager.continueWithFederatedLogin({
   connection: selectedConnection.name,
 })
 ```
-For more examples, visit our [examples](https://github.com/atko-cic/universal-login/blob/development/packages/auth0-acul-js/examples/login-id.md).
+For more examples, visit our [examples](https://github.com/auth0/universal-login/blob/master/packages/auth0-acul-js/examples/login-id.md)
 
 
 
-## 💻 API reference
+##  API reference
 ### Screens
 
 1. [login-id](https://auth0.github.io/universal-login/classes/Classes.LoginId.html)
@@ -127,7 +127,7 @@ For more examples, visit our [examples](https://github.com/atko-cic/universal-lo
 3. [signup-id](https://auth0.github.io/universal-login/classes/Classes.SignupId.html)
 4. [signup-password](https://auth0.github.io/universal-login/classes/Classes.SignupPassword.html)
 <details>
-  <summary>See more</summary>
+  <summary>Explore more screens...</summary>
 
   5. [login-passwordless-email-code](https://auth0.github.io/universal-login/classes/Classes.LoginPasswordlessEmailCode.html)
   6. [login-passwordless-sms-otp](https://auth0.github.io/universal-login/classes/Classes.LoginPasswordlessSmsOtp.html)
@@ -144,7 +144,7 @@ For more examples, visit our [examples](https://github.com/atko-cic/universal-lo
 
 
 
-## 💬 Feedback
+##  Feedback
 
 ### Contributing
 
@@ -155,7 +155,7 @@ We appreciate feedback and contribution to this repo! Before you get started, pl
 
 ### Raise an issue
 
-To provide feedback or report a bug, please [raise an issue on our issue tracker](#TBD).
+To provide feedback or report a bug, please [raise an issue on our issue tracker](https://github.com/auth0/universal-login/issues).
 
 ### Vulnerability Reporting
 
