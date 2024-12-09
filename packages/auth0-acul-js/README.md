@@ -28,7 +28,7 @@ It simplifies integrating authentication screens (login, signup, passwordless, p
 - This structure can be applied to other screens across the project, such as **signup**, **passwordless login**, and **passkey enrollment**.
 - Each screen can be treated as an independent module that can be **easily integrated** into the project.
 
-![ACUL SDK](https://d1ywy7uwj7mp98.cloudfront.net/assets/ACUL-SDK-Architecture.png)
+![ACUL SDK](https://d1ywy7uwj7mp98.cloudfront.net/assets/ACUL-SDK-Architecture.png?name=v1)
 
 
 
