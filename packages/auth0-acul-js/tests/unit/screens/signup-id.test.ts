@@ -14,7 +14,7 @@ describe("SignupId", () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
-    window.universal_login_context = baseContextData;
+    window.universal_login_context = baseContextData; // transaction.getRequiredIdentifiers() => { email, phone, username } from baseContext.
 
     signupId = new SignupId();
 
@@ -28,52 +28,52 @@ describe("SignupId", () => {
   describe("Signup method", () => {
     it("should handle signup with valid credentials correctly", async () => {
       const payload: SignupOptions = {
-        username: "testUser",
+        email: "testEmail@email.com",
         password: "testPassword",
+        phone: "+1234567890",
+        username: "testUser",
       };
       await signupId.signup(payload);
 
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
-      expect(mockFormHandler.submitData).toHaveBeenCalledWith(
-        expect.objectContaining(payload)
-      );
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith({
+        email: "testEmail@email.com",
+        password: "testPassword",
+        phone_number: "+1234567890",
+        username: "testUser",
+      });
     });
 
     it("should throw error when promise is rejected", async () => {
-      mockFormHandler.submitData.mockRejectedValue(new Error("Mocked reject"));
       const payload: SignupOptions = {
         username: "testUser",
         password: "testPassword",
       };
-      await expect(signupId.signup(payload)).rejects.toThrow("Mocked reject");
+      await expect(signupId.signup(payload)).rejects.toThrow(
+        "Missing parameter(s): email, phone"
+      );
     });
+
     it.each([
       {
-        name: "missing username and phone",
+        name: "missing phone and username",
         payload: { email: "test@example.com" },
-        requiredIdentifiers: ["username", "phone", "email"],
-        expectedError: "Missing parameter(s): username, phone",
+        expectedError: "Missing parameter(s): phone, username",
       },
       {
         name: "missing only username",
         payload: { email: "test@example.com", phone: "+1234567890" },
-        requiredIdentifiers: ["username", "phone", "email"],
         expectedError: "Missing parameter(s): username",
       },
     ])(
       "should handle missing identifiers: $name",
-      async ({ payload, requiredIdentifiers, expectedError }) => {
-        jest
-          .spyOn(signupId.transaction, "getRequiredIdentifiers")
-          .mockReturnValue(
-            requiredIdentifiers as ("username" | "phone" | "email")[]
-          );
-
+      async ({ payload, expectedError }) => {
         await expect(signupId.signup(payload)).rejects.toThrow(expectedError);
       }
     );
     it("should transform phone to phone_number", async () => {
       const payload: SignupOptions = {
+        email: "testUser@testmail.com",
         username: "testUser",
         password: "testPassword",
         phone: "+1234567890",
@@ -109,7 +109,6 @@ describe("SignupId", () => {
 
     it("should throw error when promise is rejected", async () => {
       mockFormHandler.submitData.mockRejectedValue(new Error("Mocked reject"));
-
       const payload: SocialSignupOptions = {
         connection: "testConnection",
       };

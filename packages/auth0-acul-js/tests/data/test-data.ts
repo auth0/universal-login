@@ -23,41 +23,21 @@ export const baseContextData = {
   },
   transaction: {
     country_code: {
-      code: "US",
-      prefix: "1",
+      code: "IN",
+      prefix: "91",
     },
     alternate_connections: [
       {
-        name: "facebook",
-        strategy: "facebook",
-        metadata: {
-          client_id: "123456",
-          client_secret: "abcdef",
-        },
+        name: "google-oauth2",
+        strategy: "google",
       },
       {
-        name: "linkedin",
-        strategy: "linkedin",
-        metadata: {
-          client_id: "123456",
-          client_secret: "abcdef",
-        },
+        name: "github",
+        strategy: "github",
       },
       {
-        name: "microsoft",
-        strategy: "microsoft",
-        metadata: {
-          client_id: "123456",
-          client_secret: "abcdef",
-        },
-      },
-      {
-        name: "apple",
-        strategy: "apple",
-        metadata: {
-          client_id: "123456",
-          client_secret: "abcdef",
-        },
+        name: "twitter",
+        strategy: "twitter",
       },
     ],
     connection: {
@@ -65,8 +45,26 @@ export const baseContextData = {
       strategy: "auth0",
       options: {
         signup_enabled: true,
-        username_required: false,
         forgot_password_enabled: true,
+        attributes: {
+          email: {
+            signup_status: "required",
+          },
+          phone: {
+            signup_status: "required",
+          },
+          username: {
+            signup_status: "required",
+            validation: {
+              max_length: 15,
+              min_length: 1,
+              allowed_types: {
+                email: false,
+                phone_number: false,
+              },
+            },
+          },
+        },
         authentication_methods: {
           password: {
             enabled: true,
