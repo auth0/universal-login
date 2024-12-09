@@ -19,7 +19,7 @@ It simplifies integrating authentication screens (login, signup, passwordless, p
 - [Quickstart](https://auth0.com/docs/customize) - our guide for setting up the SDK on your app.
 - [Guides](https://auth0.com/docs/customize) - more guides for common use cases
 - [Examples](https://github.com/auth0/universal-login/tree/master/packages/auth0-acul-js/examples) - code snippets for different customization use cases.
-- [FAQs](packages/auth0-acul-js/FAQ.md) - Find answers to frequently asked questions about the Auth0 ACUL JS SDK.
+- [FAQs](FAQ.md) - Find answers to frequently asked questions about the Auth0 ACUL JS SDK.
 
 ### Architecture Overview
 
@@ -117,7 +117,8 @@ loginIdManager.continueWithFederatedLogin({
 ```
 For more examples, visit our [examples](https://github.com/auth0/universal-login/blob/master/packages/auth0-acul-js/examples/login-id.md)
 
-
+## Quick Start with Boilerplate App
+Get up and running quickly with our boilerplate starter template: [Link](https://github.com/auth0/auth0-acul-react-boilerplate)
 
 ##  API reference
 ### Screens
