@@ -41,7 +41,7 @@ jobs:
         id: determine_package
         shell: bash
         run: |
-          if [ ${{ github.event.pull_request.changed_files }} -ne 0]; then
+          if [ ${{ github.event.pull_request.changed_files }} -ne 0 ]; then
             echo "${{ github.event.pull_request.changed_files }}" > changed_files.txt
             curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
                 -H "Accept: application/vnd.github.v3+json" \
