@@ -1,6 +1,6 @@
 {
   "name": "@auth0/auth0-acul-js",
-  "version": "0.0.1-beta.1",
+  "version": "0.0.1-beta.0",
   "type": "module",
   "module": "dist/index.js",
   "exports": {
@@ -90,7 +90,6 @@
     "README.md",
     "LICENSE"
   ],
-
   "devDependencies": {
     "@rollup/plugin-alias": "^5.1.1",
     "@rollup/plugin-node-resolve": "^15.3.0",
