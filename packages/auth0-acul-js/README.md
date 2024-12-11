@@ -1,5 +1,5 @@
 
-![ACUL JS SDK](https://d1ywy7uwj7mp98.cloudfront.net/banner/auth0-acul-js%20banner.png)
+![ACUL JS SDK](https://cdn.auth0.com/website/sdks/banners/auth0-acul-js-banner.png)
 
 ![Release](https://img.shields.io/npm/v/auth0-acul-js)
 [![Codecov](https://img.shields.io/codecov/c/github/auth0/auth0-acul-js)](https://codecov.io/gh/auth0/auth0-acul-js)
@@ -28,7 +28,7 @@ It simplifies integrating authentication screens (login, signup, passwordless, p
 - This structure can be applied to other screens across the project, such as **signup**, **passwordless login**, and **passkey enrollment**.
 - Each screen can be treated as an independent module that can be **easily integrated** into the project.
 
-![ACUL SDK](https://d1ywy7uwj7mp98.cloudfront.net/assets/ACUL-SDK-Architecture.png?name=v1)
+![ACUL SDK](https://cdn.auth0.com/website/sdks/assets/auth0-acul-sdk-architecture.png)
 
 
 
