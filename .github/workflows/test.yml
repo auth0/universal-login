@@ -45,24 +45,26 @@ jobs:
         id: determine_package
         shell: bash
         run: |
-          curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-               -H "Accept: application/vnd.github.v3+json" \
-               "${{ github.event.pull_request.url }}/files" \
-               > files.json 
-          cat files.json
-          jq -r '.[].filename' files.json > changed_files.txt
-          cat changed_files.txt
           auth0_acul_js_changed=false
           ul_react_component_changed=false
           ul_react_changed=false
-          if grep -q "packages/auth0-acul-js/" changed_files.txt; then
-            auth0_acul_js_changed=true
-          fi
-          if grep -q "packages/ul-react-component/" changed_files.txt; then
-            ul_react_component_changed=true
-          fi
-          if grep -q "packages/ul-react/" changed_files.txt; then
-            ul_react_changed=true
+          if [ ${{ github.event.pull_request.changed_files }} -ne 0 ]; then
+            curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+                -H "Accept: application/vnd.github.v3+json" \
+                "${{ github.event.pull_request.url }}/files" \
+                > files.json 
+            cat files.json
+            jq -r '.[].filename' files.json > changed_files.txt
+            cat changed_files.txt
+            if grep -q "packages/auth0-acul-js/" changed_files.txt; then
+              auth0_acul_js_changed=true
+            fi
+            if grep -q "packages/ul-react-component/" changed_files.txt; then
+              ul_react_component_changed=true
+            fi
+            if grep -q "packages/ul-react/" changed_files.txt; then
+              ul_react_changed=true
+            fi
           fi
           echo "auth0-acul-js-changed=$auth0_acul_js_changed" >> $GITHUB_OUTPUT
           echo "ul-react-component-changed=$ul_react_component_changed" >> $GITHUB_OUTPUT
