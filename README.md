@@ -1,5 +1,5 @@
 
-![ACUL JS SDK](https://d1ywy7uwj7mp98.cloudfront.net/banner/auth0-acul-banner.png)
+![ACUL JS SDK](https://cdn.auth0.com/website/sdks/banners/auth0-acul-sdk-banner.png)
 
 ![Release](https://img.shields.io/npm/v/auth0-acul-js)
 [![Codecov](https://img.shields.io/codecov/c/github/auth0/auth0-acul-js)](https://codecov.io/gh/auth0/auth0-acul-js)
@@ -26,7 +26,7 @@ It simplifies integrating authentication screens (login, signup, passwordless, p
 - [Boilerplate app](https://github.com/auth0/auth0-acul-react-boilerplate) - Get up and running quickly with our boilerplate starter template
 
 ## ACUL Overview
-![ACUL Journey](https://d1ywy7uwj7mp98.cloudfront.net/assets/ACUL-Overview.png) 
+![ACUL Overview](https://cdn.auth0.com/website/sdks/assets/auth0-acul-overview.png) 
 
 
 
