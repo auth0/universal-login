@@ -1,6 +1,6 @@
 {
     "files": {
-        ".version": []
+        "packages/auth0-acul-js/.version": []
     },
     "prFilters": [{
         "type": "title",
