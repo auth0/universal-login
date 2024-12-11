@@ -9,75 +9,75 @@ The following 3rd-party dependencies may be used by or distributed with universa
 
 Date generated: 2024-12-11
 
-Revision ID: d8ead4eebd91d1df00d6f309b3ab7de1
+Revision ID: 516fbe5df433792c99a52bebe2b39fca
 
 ====================================
 
-1. @rollup/plugin-alias, @rollup/plugin-node-resolve, @rollup/plugin-typescript
+1. @rollup/plugin-alias (^5.1.1), @rollup/plugin-node-resolve (^15.3.0), @rollup/plugin-typescript (^12.1.0)
 https://www.npmjs.com/package/@rollup/plugin-alias
 https://www.npmjs.com/package/@rollup/plugin-node-resolve
 https://www.npmjs.com/package/@rollup/plugin-typescript
 
-2. @shikijs/core, @shikijs/engine-javascript, @shikijs/engine-oniguruma
+2. @shikijs/core (^1.24.0), @shikijs/engine-javascript (^1.24.0), @shikijs/engine-oniguruma (^1.24.0)
 https://www.npmjs.com/package/@shikijs/core
 https://www.npmjs.com/package/@shikijs/engine-javascript
 https://www.npmjs.com/package/@shikijs/engine-oniguruma
 
-3. @tsconfig/node18
+3. @tsconfig/node18 (^18.2.4)
 https://www.npmjs.com/package/@tsconfig/node18
 
-4. @types/jest
+4. @types/jest (^29.5.12)
 https://www.npmjs.com/package/@types/jest
 
-5. @typescript-eslint/eslint-plugin
+5. @typescript-eslint/eslint-plugin (^7.18.0)
 https://www.npmjs.com/package/@typescript-eslint/eslint-plugin
 
-6. @typescript-eslint/parser
+6. @typescript-eslint/parser (^7.18.0)
 https://www.npmjs.com/package/@typescript-eslint/parser
 
-7. eslint
+7. eslint (^8.57.0)
 https://www.npmjs.com/package/eslint
 
-8. eslint-config-prettier
+8. eslint-config-prettier (^9.1.0)
 https://www.npmjs.com/package/eslint-config-prettier
 
-9. eslint-import-resolver-typescript
+9. eslint-import-resolver-typescript (^3.6.3)
 https://www.npmjs.com/package/eslint-import-resolver-typescript
 
-10. eslint-plugin-import
+10. eslint-plugin-import (^2.29.1)
 https://www.npmjs.com/package/eslint-plugin-import
 
-11. eslint-plugin-prettier
+11. eslint-plugin-prettier (^5.2.1)
 https://www.npmjs.com/package/eslint-plugin-prettier
 
-12. jest, jest-environment-jsdom
+12. jest (^29.7.0), jest-environment-jsdom (^29.7.0)
 https://www.npmjs.com/package/jest
 https://www.npmjs.com/package/jest-environment-jsdom
 
-13. markdown-it
+13. markdown-it (^14.1.0)
 https://www.npmjs.com/package/markdown-it
 
-14. prettier
+14. prettier (^3.3.3)
 https://www.npmjs.com/package/prettier
 
-15. rollup
+15. rollup (^4.24.0)
 https://www.npmjs.com/package/rollup
 
-16. ts-jest
+16. ts-jest (^29.2.5)
 https://www.npmjs.com/package/ts-jest
 
-17. typedoc
+17. typedoc (^0.26.8)
 https://www.npmjs.com/package/typedoc
 
-18. typescript
+18. typescript (^5.5.4)
 https://www.npmjs.com/package/typescript
 
-19. yaml
+19. yaml (^2.6.1)
 https://www.npmjs.com/package/yaml
 
 --------------------------------------------------
 
-Licenses for: @rollup/plugin-alias, @rollup/plugin-node-resolve, @rollup/plugin-typescript
+Licenses for: @rollup/plugin-alias (^5.1.1), @rollup/plugin-node-resolve (^15.3.0), @rollup/plugin-typescript (^12.1.0)
 --------------------------------------------------
 The MIT License (MIT)
 
@@ -101,7 +101,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-Licenses for: @shikijs/core, @shikijs/engine-javascript, @shikijs/engine-oniguruma
+Licenses for: @shikijs/core (^1.24.0), @shikijs/engine-javascript (^1.24.0), @shikijs/engine-oniguruma (^1.24.0)
 --------------------------------------------------
 MIT License
 
@@ -126,7 +126,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-Licenses for: @tsconfig/node18
+Licenses for: @tsconfig/node18 (^18.2.4)
 --------------------------------------------------
 MIT License
 
@@ -150,7 +150,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE
 
-Licenses for: @types/jest
+Licenses for: @types/jest (^29.5.12)
 --------------------------------------------------
 MIT License
 
@@ -174,7 +174,7 @@ MIT License
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE
 
-Licenses for: @typescript-eslint/eslint-plugin
+Licenses for: @typescript-eslint/eslint-plugin (^7.18.0)
 --------------------------------------------------
 MIT License
 
@@ -198,7 +198,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-Licenses for: @typescript-eslint/parser
+Licenses for: @typescript-eslint/parser (^7.18.0)
 --------------------------------------------------
 TypeScript ESLint Parser
 Copyright JS Foundation and other contributors, https://js.foundation
@@ -223,7 +223,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-Licenses for: eslint
+Licenses for: eslint (^8.57.0)
 --------------------------------------------------
 Copyright OpenJS Foundation and other contributors, <www.openjsf.org>
 
@@ -245,7 +245,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-Licenses for: eslint-config-prettier
+Licenses for: eslint-config-prettier (^9.1.0)
 --------------------------------------------------
 The MIT License (MIT)
 
@@ -269,7 +269,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-Licenses for: eslint-import-resolver-typescript
+Licenses for: eslint-import-resolver-typescript (^3.6.3)
 --------------------------------------------------
 Copyright 2021 Alex Gorbatchev <alex.gorbatchev@gmail.com>
 
@@ -277,7 +277,7 @@ Permission to use, copy, modify, and/or distribute this software for any purpose
 
 THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-Licenses for: eslint-plugin-import
+Licenses for: eslint-plugin-import (^2.29.1)
 --------------------------------------------------
 The MIT License (MIT)
 
@@ -301,7 +301,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-Licenses for: eslint-plugin-prettier
+Licenses for: eslint-plugin-prettier (^5.2.1)
 --------------------------------------------------
 # The MIT License (MIT)
 
@@ -328,7 +328,7 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
-Licenses for: jest, jest-environment-jsdom
+Licenses for: jest (^29.7.0), jest-environment-jsdom (^29.7.0)
 --------------------------------------------------
 MIT License
 
@@ -352,7 +352,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-Licenses for: markdown-it
+Licenses for: markdown-it (^14.1.0)
 --------------------------------------------------
 Copyright (c) 2014 Vitaly Puzrin, Alex Kocharin.
 
@@ -377,7 +377,7 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
-Licenses for: prettier
+Licenses for: prettier (^3.3.3)
 --------------------------------------------------
 # Prettier license
 
@@ -4760,7 +4760,7 @@ Author: Sindre Sorhus <sindresorhus@gmail.com> (https://sindresorhus.com)
 >
 > THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-Licenses for: rollup
+Licenses for: rollup (^4.24.0)
 --------------------------------------------------
 # Rollup core license
 Rollup is released under the MIT license:
@@ -5436,7 +5436,7 @@ Repository: https://github.com/yargs/yargs-parser.git
 > WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,
 > ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-Licenses for: ts-jest
+Licenses for: ts-jest (^29.2.5)
 --------------------------------------------------
 MIT License
 
@@ -5460,7 +5460,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-Licenses for: typedoc
+Licenses for: typedoc (^0.26.8)
 --------------------------------------------------
 Apache License
                            Version 2.0, January 2004
@@ -5664,7 +5664,7 @@ Apache License
    See the License for the specific language governing permissions and
    limitations under the License.
 
-Licenses for: typescript
+Licenses for: typescript (^5.5.4)
 --------------------------------------------------
 Apache License
 
@@ -5722,7 +5722,7 @@ If the Work includes a "NOTICE" text file as part of its distribution, then any 
 
 END OF TERMS AND CONDITIONS
 
-Licenses for: yaml
+Licenses for: yaml (^2.6.1)
 --------------------------------------------------
 Copyright Eemeli Aro <eemeli@gmail.com>
 
