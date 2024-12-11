@@ -2,6 +2,8 @@
     "files": {
         "packages/auth0-acul-js/.version": []
     },
+    "prefixVersion": false,
+    "packageLabel": "auth0-acul-js",
     "prFilters": [{
         "type": "title",
         "args": ["^auth0_acul_js"]
