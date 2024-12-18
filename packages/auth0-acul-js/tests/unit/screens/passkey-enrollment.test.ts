@@ -27,9 +27,9 @@ describe("PasskeyEnrollment", () => {
     it("should handle continuePasskeyEnrollment with valid payload correctly", async () => {
       const mockPublicKey = { key: "publicKey" };
       const mockEncoded = { id: "encodedId" };
-      passkeyEnrollment.screen.getPublicKey = jest
-        .fn()
-        .mockReturnValue(mockPublicKey);
+      Object.defineProperty(passkeyEnrollment.screen, 'publicKey', {
+        value: mockPublicKey,
+      });      
       (createPasskeyCredentials as jest.Mock).mockReturnValue(mockEncoded);
 
       const payload: CustomOptions = {
@@ -49,9 +49,9 @@ describe("PasskeyEnrollment", () => {
     it("should handle continuePasskeyEnrollment without payload correctly", async () => {
       const mockPublicKey = { key: "publicKey" };
       const mockEncoded = { id: "encodedId" };
-      passkeyEnrollment.screen.getPublicKey = jest
-        .fn()
-        .mockReturnValue(mockPublicKey);
+      Object.defineProperty(passkeyEnrollment.screen, 'publicKey', {
+        value: mockPublicKey,
+      });      
       (createPasskeyCredentials as jest.Mock).mockReturnValue(mockEncoded);
 
       await passkeyEnrollment.continuePasskeyEnrollment();
@@ -75,7 +75,9 @@ describe("PasskeyEnrollment", () => {
     });
 
     it("should handle continuePasskeyEnrollment when publicKey is null", async () => {
-      passkeyEnrollment.screen.getPublicKey = jest.fn().mockReturnValue(null);
+      Object.defineProperty(passkeyEnrollment.screen, 'publicKey', {
+        value: null,
+      });
 
       const payload: CustomOptions = {
         email: "test@example.com",

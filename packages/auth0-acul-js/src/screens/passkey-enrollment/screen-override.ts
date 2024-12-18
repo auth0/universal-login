@@ -4,13 +4,19 @@ import { Screen } from '../../models/screen';
 import { getBackLink, getLoginLink, getPublicKey } from '../../shared/screen';
 
 export class ScreenOverride extends Screen implements OverrideOptions {
+  loginLink: OverrideOptions['loginLink'];
+  backLink: OverrideOptions['backLink'];
+  publicKey: OverrideOptions['publicKey'];
+
   constructor(screenContext: ScreenContext) {
     super(screenContext);
+
+    this.loginLink = getLoginLink(screenContext);
+    this.backLink = getBackLink(screenContext);
+    this.publicKey = ScreenOverride.getPublicKey(screenContext);
   }
 
-  loginLink = getLoginLink(this.screen);
-  backLink = getBackLink(this.screen);
-  getPublicKey = (): ReturnType<OverrideOptions['getPublicKey']> => {
-    return getPublicKey(this.screen) as ReturnType<OverrideOptions['getPublicKey']>;
+  static getPublicKey = (screenContext: ScreenContext): OverrideOptions['publicKey'] => {
+    return getPublicKey(screenContext) as OverrideOptions['publicKey'];
   };
 }

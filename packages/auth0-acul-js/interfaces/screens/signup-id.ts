@@ -24,9 +24,9 @@ export interface ScreenMembersOnSignupId extends ScreenMembers {
 
 export interface TransactionMembersOnSignupId extends TransactionMembers {
   isPasskeyEnabled: boolean;
-  getUsernamePolicy(): UsernamePolicy | null;
-  getRequiredIdentifiers(): ('email' | 'username' | 'phone')[] | null;
-  getOptionalIdentifiers(): ('email' | 'username' | 'phone')[] | null;
+  usernamePolicy: UsernamePolicy | null;
+  requiredIdentifiers: ('email' | 'username' | 'phone')[] | null;
+  optionalIdentifiers: ('email' | 'username' | 'phone')[] | null;
 }
 
 export interface SignupId extends BaseContext {

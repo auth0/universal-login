@@ -1,29 +1,21 @@
 import type { ClientContext, ClientMembers } from '../../interfaces/models/client';
 
 export class Client implements ClientMembers {
-  protected client: ClientContext;
+  id: ClientMembers['id'];
+  name: ClientMembers['name'];
+  logoUri: ClientMembers['logoUri'];
+  description: ClientMembers['description'];
+  metadata: ClientMembers['metadata'];
 
   constructor(client: ClientContext) {
-    this.client = client;
+    this.id = client.id;
+    this.name = client.name;
+    this.logoUri = client?.logo_uri ?? null;
+    this.description = client?.description ?? null;
+    this.metadata = Client.getMetadata(client);
   }
 
-  get id(): ClientMembers['id'] {
-    return this.client.id;
-  }
-
-  get name(): ClientMembers['name'] {
-    return this.client.name;
-  }
-
-  get logoUri(): ClientMembers['logoUri'] {
-    return this.client?.logo_uri ?? null;
-  }
-
-  get description(): ClientMembers['description'] {
-    return this.client?.description ?? null;
-  }
-
-  getMetadata(): ReturnType<ClientMembers['getMetadata']> {
-    return this.client?.metadata ?? null;
+  static getMetadata(client: ClientContext): ClientMembers['metadata'] {
+    return client?.metadata ?? null;
   }
 }

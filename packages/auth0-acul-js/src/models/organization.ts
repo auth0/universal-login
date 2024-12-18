@@ -4,33 +4,27 @@ import type { OrganizationContext, OrganizationMembers } from '../../interfaces/
  * Represents an organization.
  */
 export class Organization implements OrganizationMembers {
-  protected organization: OrganizationContext;
+  id: OrganizationMembers['id'];
+  name: OrganizationMembers['name'];
+  usage: OrganizationMembers['usage'];
+  displayName: OrganizationMembers['displayName'];
+  branding: OrganizationMembers['branding'];
+  metadata: OrganizationMembers['metadata'];
 
   constructor(context: OrganizationContext) {
-    this.organization = context;
+    this.id = context.id ?? null;
+    this.name = context.name ?? null;
+    this.usage = context.usage ?? null;
+    this.displayName = context?.display_name ?? null;
+    this.branding = Organization.getBranding(context);
+    this.metadata = Organization.getMetadata(context);
   }
 
-  get id(): OrganizationMembers['id'] {
-    return this.organization.id ?? null;
+  static getBranding(context: OrganizationContext): OrganizationMembers['branding'] {
+    return context?.branding ?? null;
   }
 
-  get name(): OrganizationMembers['name'] {
-    return this.organization.name ?? null;
-  }
-
-  get usage(): OrganizationMembers['usage'] {
-    return this.organization.usage ?? null;
-  }
-
-  get displayName(): OrganizationMembers['displayName'] {
-    return this.organization?.display_name ?? null;
-  }
-
-  getBranding(): ReturnType<OrganizationMembers['getBranding']> {
-    return this.organization?.branding ?? null;
-  }
-
-  getMetadata(): ReturnType<OrganizationMembers['getMetadata']> {
-    return this.organization?.metadata ?? null;
+  static getMetadata(context: OrganizationContext): OrganizationMembers['metadata'] {
+    return context?.metadata ?? null;
   }
 }

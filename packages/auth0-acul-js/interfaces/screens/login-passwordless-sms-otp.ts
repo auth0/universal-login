@@ -13,6 +13,9 @@ export interface ScreenMembersOnLoginPasswordlessSmsOtp extends ScreenMembers {
   signupLink: string | null;
   resetPasswordLink: string | null;
   backLink: string | null;
+  data: {
+    username: string;
+  }
 }
 
 export interface TransactionMembersOnLoginPasswordlessSmsOtp extends TransactionMembers {

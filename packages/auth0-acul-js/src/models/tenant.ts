@@ -1,25 +1,23 @@
 import type { TenantContext, TenantMembers } from '../../interfaces/models/tenant';
 
 export class Tenant implements TenantMembers {
-  protected tenant: TenantContext | undefined;
+  name: TenantMembers['name'];
+  friendlyName: TenantMembers['friendlyName'];
+  enabledLocales: TenantMembers['enabledLocales'];
+  enabledFactors: TenantMembers['enabledFactors'];
 
   constructor(tenant: TenantContext | undefined) {
-    this.tenant = tenant;
+    this.name = tenant?.name ?? null;
+    this.friendlyName = tenant?.friendly_name ?? null;
+    this.enabledLocales = Tenant.getEnabledLocales(tenant);
+    this.enabledFactors = Tenant.getEnabledFactors(tenant);
   }
 
-  get name(): TenantMembers['name'] {
-    return this.tenant?.name ?? null;
+  static getEnabledLocales(tenant: TenantContext | undefined): TenantMembers['enabledLocales'] {
+    return tenant?.enabled_locales ?? null;
   }
 
-  get friendlyName(): TenantMembers['friendlyName'] {
-    return this.tenant?.friendly_name ?? null;
-  }
-
-  getEnabledLocales(): ReturnType<TenantMembers['getEnabledLocales']> {
-    return this.tenant?.enabled_locales ?? null;
-  }
-
-  getEnabledFactors(): ReturnType<TenantMembers['getEnabledFactors']> {
-    return this.tenant?.enabled_factors ?? null;
+  static getEnabledFactors(tenant: TenantContext | undefined): TenantMembers['enabledFactors'] {
+    return tenant?.enabled_factors ?? null;
   }
 }

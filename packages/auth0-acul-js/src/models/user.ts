@@ -1,48 +1,44 @@
 import type { UserContext, UserMembers } from '../../interfaces/models/user';
 
 export class User implements UserMembers {
-  private user: UserContext;
+  id: UserMembers['id'];
+  username: UserMembers['username'];
+  email: UserMembers['email'];
+  picture: UserMembers['picture'];
+  phoneNumber: UserMembers['phoneNumber'];
+  userMetadata: UserMembers['userMetadata'];
+  appMetadata: UserMembers['appMetadata'];
+  enrolledFactors: UserMembers['enrolledFactors'];
+  organizations: UserMembers['organizations'];
 
   constructor(user: UserContext) {
-    this.user = user;
+    this.id = user?.id ?? null;
+    this.username = user?.username ?? null;
+    this.email = user?.email ?? null;
+    this.picture = user?.picture ?? null;
+    this.phoneNumber = user?.phone_number ?? null;
+    this.userMetadata = User.getUserMetadata(user);
+    this.appMetadata = User.getAppMetadata(user);
+    this.enrolledFactors = User.getEnrolledFactors(user);
+    this.organizations = User.getOrganizations(user);
   }
 
-  get id(): UserMembers['id'] {
-    return this.user?.id ?? null;
+  static getUserMetadata(user: UserContext): UserMembers['userMetadata'] {
+    return user?.user_metadata ?? null;
   }
 
-  get username(): UserMembers['username'] {
-    return this.user?.username ?? null;
+  static getAppMetadata(user: UserContext): UserMembers['appMetadata'] {
+    return user?.app_metadata ?? null;
   }
 
-  get email(): UserMembers['email'] {
-    return this.user?.email ?? null;
+  static getEnrolledFactors(user: UserContext): UserMembers['enrolledFactors'] {
+    return user?.enrolled_factors ?? null;
   }
 
-  get picture(): UserMembers['picture'] {
-    return this.user?.picture ?? null;
-  }
+  static getOrganizations(user: UserContext): UserMembers['organizations'] {
+    if (!user?.organizations || !Array.isArray(user?.organizations)) return null;
 
-  get phoneNumber(): UserMembers['phoneNumber'] {
-    return this.user?.phone_number ?? null;
-  }
-
-  getUserMetadata(): ReturnType<UserMembers['getUserMetadata']> {
-    return this.user?.user_metadata ?? null;
-  }
-
-  getAppMetadata(): ReturnType<UserMembers['getAppMetadata']> {
-    return this.user?.app_metadata ?? null;
-  }
-
-  getEnrolledFactors(): ReturnType<UserMembers['getEnrolledFactors']> {
-    return this.user?.enrolled_factors ?? null;
-  }
-
-  getOrganizations(): ReturnType<UserMembers['getOrganizations']> {
-    if (!this.user?.organizations || !Array.isArray(this.user?.organizations)) return null;
-
-    return this.user?.organizations.map((organization) => {
+    return user?.organizations.map((organization) => {
       return {
         organizationId: organization.id,
         organizationName: organization.name,

@@ -54,7 +54,7 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
       state: this.transaction.state,
     };
 
-    const activeIdentifiers = this.transaction.getRequiredIdentifiers() || [];
+    const activeIdentifiers = this.transaction.requiredIdentifiers || [];
     const missingParameters = activeIdentifiers.filter((param) => !Object.keys(payload).includes(param));
     if (missingParameters.length) {
       throw new Error(`Missing parameter(s): ${missingParameters.join(', ')}`);

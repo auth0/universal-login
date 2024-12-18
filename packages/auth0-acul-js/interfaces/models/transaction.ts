@@ -139,7 +139,7 @@ export interface TransactionMembers {
   countryPrefix: CountryCode['prefix'] | null;
   connectionStrategy: string | null;
   hasErrors: boolean;
-  getErrors(): Error[] | null;
-  getCurrentConnection(): Connection | null;
-  getAlternateConnections(): (Connection | EnterpriseConnection)[] | null;
+  errors: Error[] | null;
+  currentConnection: Connection | null;
+  alternateConnections: (Connection | EnterpriseConnection)[] | null;
 }

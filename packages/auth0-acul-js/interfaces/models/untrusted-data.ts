@@ -12,8 +12,8 @@ export interface UntrustedDataContext {
 }
 
 export interface UntrustedDataMembers {
-  getSubmittedFormData(): { [key: string]: any } | null;
-  getAuthParams(): {
+  submittedFormData: { [key: string]: any } | null;
+  authParams: {
     loginHint: string | undefined;
     screenHint: string | undefined;
     uiLocales: string | undefined;

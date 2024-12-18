@@ -21,7 +21,7 @@ export interface ExtendedScreenContext extends ScreenContext {
 }
 
 export interface ScreenMembersOnPhoneIdentifierChallenge extends ScreenMembers {
-  getScreenData(): {
+  data: {
     messageType?: 'text' | 'voice';
     phone?: string;
   } | null;

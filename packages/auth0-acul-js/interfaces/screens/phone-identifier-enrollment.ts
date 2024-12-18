@@ -8,9 +8,9 @@ export interface ScreenDataOptions extends ScreenData {
 }
 
 export interface ScreenMembersOnPhoneIdentifierEnrollment extends ScreenMembers {
-  getScreenData(): {
-    messageType?: 'text' | 'voice';
+  data: {
     phone?: 'string';
+    messageType?: 'text' | 'voice';
   } | null;
   editIdentifierLink: string | null;
 }

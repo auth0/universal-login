@@ -8,7 +8,7 @@ export interface ScreenMembersOnLoginPasswordlessEmailCode extends ScreenMembers
   editIdentifierLink: string | null;
   resetPasswordLink: string | null;
   signupLink: string | null;
-  getScreenData(): {
+  data: {
     email?: string;
     username?: string;
   } | null;
