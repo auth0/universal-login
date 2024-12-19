@@ -17,10 +17,10 @@ export class Screen implements ScreenMembers {
     this.captchaSiteKey = screen.captcha?.siteKey ?? null;
     this.captchaProvider = screen.captcha?.provider ?? null;
     this.isCaptchaAvailable = !!screen.captcha;
+    this.texts = screen.texts ?? null;
+    this.captcha = screen.captcha ?? null;
     this.data = Screen.getScreenData(screen);
     this.links = Screen.getScreenLinks(screen);
-    this.texts = Screen.getScreenTexts(screen);
-    this.captcha = Screen.getCaptchaConfig(screen);
   }
 
   static getScreenData(screen: ScreenContext): ScreenMembers['data'] {
@@ -29,13 +29,5 @@ export class Screen implements ScreenMembers {
 
   static getScreenLinks(screen: ScreenContext): ScreenMembers['links'] {
     return screen.links ?? null;
-  }
-
-  static getScreenTexts(screen: ScreenContext): ScreenMembers['texts'] {
-    return screen.texts ?? null;
-  }
-
-  static getCaptchaConfig(screen: ScreenContext): ScreenMembers['captcha'] {
-    return screen.captcha ?? null;
   }
 }

@@ -17,22 +17,10 @@ export class User implements UserMembers {
     this.email = user?.email ?? null;
     this.picture = user?.picture ?? null;
     this.phoneNumber = user?.phone_number ?? null;
-    this.userMetadata = User.getUserMetadata(user);
-    this.appMetadata = User.getAppMetadata(user);
-    this.enrolledFactors = User.getEnrolledFactors(user);
+    this.userMetadata = user?.user_metadata ?? null;
+    this.appMetadata = user?.app_metadata ?? null;
+    this.enrolledFactors = user?.enrolled_factors ?? null;
     this.organizations = User.getOrganizations(user);
-  }
-
-  static getUserMetadata(user: UserContext): UserMembers['userMetadata'] {
-    return user?.user_metadata ?? null;
-  }
-
-  static getAppMetadata(user: UserContext): UserMembers['appMetadata'] {
-    return user?.app_metadata ?? null;
-  }
-
-  static getEnrolledFactors(user: UserContext): UserMembers['enrolledFactors'] {
-    return user?.enrolled_factors ?? null;
   }
 
   static getOrganizations(user: UserContext): UserMembers['organizations'] {

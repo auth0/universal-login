@@ -11,20 +11,12 @@ export class Organization implements OrganizationMembers {
   branding: OrganizationMembers['branding'];
   metadata: OrganizationMembers['metadata'];
 
-  constructor(context: OrganizationContext) {
-    this.id = context.id ?? null;
-    this.name = context.name ?? null;
-    this.usage = context.usage ?? null;
-    this.displayName = context?.display_name ?? null;
-    this.branding = Organization.getBranding(context);
-    this.metadata = Organization.getMetadata(context);
-  }
-
-  static getBranding(context: OrganizationContext): OrganizationMembers['branding'] {
-    return context?.branding ?? null;
-  }
-
-  static getMetadata(context: OrganizationContext): OrganizationMembers['metadata'] {
-    return context?.metadata ?? null;
+  constructor(organization: OrganizationContext) {
+    this.id = organization.id ?? null;
+    this.name = organization.name ?? null;
+    this.usage = organization.usage ?? null;
+    this.displayName = organization?.display_name ?? null;
+    this.branding = organization?.branding ?? null;
+    this.metadata = organization?.metadata ?? null;
   }
 }

@@ -12,10 +12,6 @@ export class Client implements ClientMembers {
     this.name = client.name;
     this.logoUri = client?.logo_uri ?? null;
     this.description = client?.description ?? null;
-    this.metadata = Client.getMetadata(client);
-  }
-
-  static getMetadata(client: ClientContext): ClientMembers['metadata'] {
-    return client?.metadata ?? null;
+    this.metadata = client?.metadata ?? null;
   }
 }

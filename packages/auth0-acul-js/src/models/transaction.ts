@@ -11,22 +11,22 @@ export class Transaction implements TransactionMembers {
   currentConnection: TransactionMembers['currentConnection'];
   alternateConnections: TransactionMembers['alternateConnections'];
 
-  constructor(context: TransactionContext) {
-    this.state = context.state;
-    this.hasErrors = !!context.errors?.length;
-    this.locale = context.locale;
-    this.countryCode = context.country_code?.code ?? null;
-    this.countryPrefix = context.country_code?.prefix ?? null;
-    this.connectionStrategy = context?.connection?.strategy?.toLowerCase() ?? null;
-    this.errors = Transaction.getErrors(context);
-    this.currentConnection = Transaction.getCurrentConnection(context);
-    this.alternateConnections = Transaction.getAlternateConnections(context);
+  constructor(transaction: TransactionContext) {
+    this.state = transaction.state;
+    this.hasErrors = !!transaction.errors?.length;
+    this.locale = transaction.locale;
+    this.countryCode = transaction.country_code?.code ?? null;
+    this.countryPrefix = transaction.country_code?.prefix ?? null;
+    this.connectionStrategy = transaction?.connection?.strategy?.toLowerCase() ?? null;
+    this.errors = Transaction.getErrors(transaction);
+    this.currentConnection = Transaction.getCurrentConnection(transaction);
+    this.alternateConnections = Transaction.getAlternateConnections(transaction);
   }
 
-  static getErrors(context: TransactionContext): TransactionMembers['errors'] {
-    if (!context.errors?.length) return null;
+  static getErrors(transaction: TransactionContext): TransactionMembers['errors'] {
+    if (!transaction.errors?.length) return null;
 
-    return context.errors.map((error) => {
+    return transaction.errors.map((error) => {
       return {
         code: error.code,
         field: error.field,
@@ -35,10 +35,10 @@ export class Transaction implements TransactionMembers {
     });
   }
 
-  static getCurrentConnection(context: TransactionContext): TransactionMembers['currentConnection'] {
-    if (!context?.connection) return null;
+  static getCurrentConnection(transaction: TransactionContext): TransactionMembers['currentConnection'] {
+    if (!transaction?.connection) return null;
 
-    const { name, strategy, metadata } = context.connection;
+    const { name, strategy, metadata } = transaction.connection;
     return {
       name,
       strategy,
@@ -46,8 +46,8 @@ export class Transaction implements TransactionMembers {
     };
   }
 
-  static getAlternateConnections(context: TransactionContext): TransactionMembers['alternateConnections'] {
-    const alternateConnections = context.alternate_connections;
+  static getAlternateConnections(transaction: TransactionContext): TransactionMembers['alternateConnections'] {
+    const alternateConnections = transaction.alternate_connections;
     if (!alternateConnections || !Array.isArray(alternateConnections)) return null;
 
     return alternateConnections.map((connection) => {

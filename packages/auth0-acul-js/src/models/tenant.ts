@@ -9,15 +9,7 @@ export class Tenant implements TenantMembers {
   constructor(tenant: TenantContext | undefined) {
     this.name = tenant?.name ?? null;
     this.friendlyName = tenant?.friendly_name ?? null;
-    this.enabledLocales = Tenant.getEnabledLocales(tenant);
-    this.enabledFactors = Tenant.getEnabledFactors(tenant);
-  }
-
-  static getEnabledLocales(tenant: TenantContext | undefined): TenantMembers['enabledLocales'] {
-    return tenant?.enabled_locales ?? null;
-  }
-
-  static getEnabledFactors(tenant: TenantContext | undefined): TenantMembers['enabledFactors'] {
-    return tenant?.enabled_factors ?? null;
+    this.enabledLocales = tenant?.enabled_locales ?? null;
+    this.enabledFactors = tenant?.enabled_factors ?? null;
   }
 }
