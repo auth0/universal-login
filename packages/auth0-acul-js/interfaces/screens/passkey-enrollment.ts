@@ -19,7 +19,7 @@ export interface PasskeyEnrollment extends BaseContext {
 export interface ScreenMembersOnPasskeyEnrollment extends ScreenMembers {
   backLink: string | null;
   loginLink: string | null;
-  getPublicKey: () => PasskeyCreate['public_key'] | null;
+  publicKey: PasskeyCreate['public_key'] | null;
 }
 
 export interface PasskeyEnrollmentMembers extends BaseMembers {

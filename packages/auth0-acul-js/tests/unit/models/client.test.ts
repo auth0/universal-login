@@ -38,7 +38,7 @@ describe(':: models/client | when all fields are available', () => {
   });
 
   it('should return the correct clientMetadata', () => {
-    expect(client.getMetadata()).toEqual(clientContext.metadata);
+    expect(client.metadata).toEqual(clientContext.metadata);
   });
 });
 
@@ -63,6 +63,6 @@ describe(':: models/client | when optional fields are not available', () => {
   });
 
   it('should return undefined for clientMetadata if not available', () => {
-    expect(client.getMetadata()).toBeNull();
+    expect(client.metadata).toBeNull();
   });
 });

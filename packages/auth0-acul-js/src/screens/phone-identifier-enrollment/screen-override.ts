@@ -4,19 +4,23 @@ import { getEditIdentifierLink } from '../../../src/shared/screen';
 import { Screen } from '../../models/screen';
 
 export class ScreenOverride extends Screen implements OverrideOptions {
+  editIdentifierLink: OverrideOptions['editIdentifierLink'];
+  data: OverrideOptions['data'];
+
   constructor(screenContext: ScreenContext) {
     super(screenContext);
+    this.editIdentifierLink = getEditIdentifierLink(screenContext);
+    this.data = ScreenOverride.getScreenData(screenContext);
   }
 
-  editIdentifierLink = getEditIdentifierLink(this.screen);
-
-  getScreenData = (): ReturnType<OverrideOptions['getScreenData']> => {
-    const data = super.getScreenData();
-
+  static getScreenData(screenContext: ScreenContext): OverrideOptions['data'] {
+    const data = screenContext.data;
+    if (!data) return null;
+    
     return {
       ...data,
       phone: data?.phone_number,
       messageType: data?.message_type,
-    } as ReturnType<OverrideOptions['getScreenData']>;
-  };
+    } as OverrideOptions['data'];
+  }
 }

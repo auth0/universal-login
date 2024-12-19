@@ -14,7 +14,7 @@ export interface ScreenMembersOnLoginPassword extends ScreenMembers {
   signupLink: string | null;
   resetPasswordLink: string | null;
   editIdentifierLink: string | null;
-  getScreenData(): {
+  data: {
     username: string;
   } | null;
 }

@@ -14,5 +14,5 @@ export interface ClientMembers {
   name: string;
   logoUri: string | null;
   description: string | null;
-  getMetadata(): { [key: string]: string } | null;
+  metadata: { [key: string]: string } | null;
 }

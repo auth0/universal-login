@@ -1,45 +1,33 @@
 import type { ScreenContext, ScreenMembers } from '../../interfaces/models/screen';
 
 export class Screen implements ScreenMembers {
-  protected screen: ScreenContext;
+  name: ScreenMembers['name'];
+  captchaImage: ScreenMembers['captchaImage'];
+  captchaSiteKey: ScreenMembers['captchaSiteKey'];
+  captchaProvider: ScreenMembers['captchaProvider'];
+  isCaptchaAvailable: ScreenMembers['isCaptchaAvailable'];
+  data: ScreenMembers['data'];
+  links: ScreenMembers['links'];
+  texts: ScreenMembers['texts'];
+  captcha: ScreenMembers['captcha'];
 
   constructor(screen: ScreenContext) {
-    this.screen = screen;
+    this.name = screen.name;
+    this.captchaImage = screen.captcha?.image ?? null;
+    this.captchaSiteKey = screen.captcha?.siteKey ?? null;
+    this.captchaProvider = screen.captcha?.provider ?? null;
+    this.isCaptchaAvailable = !!screen.captcha;
+    this.texts = screen.texts ?? null;
+    this.captcha = screen.captcha ?? null;
+    this.data = Screen.getScreenData(screen);
+    this.links = Screen.getScreenLinks(screen);
   }
 
-  get name(): ScreenMembers['name'] {
-    return this.screen.name;
+  static getScreenData(screen: ScreenContext): ScreenMembers['data'] {
+    return (screen.data ?? null) as ScreenMembers['data'];
   }
 
-  get captchaImage(): ScreenMembers['captchaImage'] {
-    return this.screen.captcha?.image ?? null;
-  }
-
-  get captchaSiteKey(): ScreenMembers['captchaSiteKey'] {
-    return this.screen.captcha?.siteKey ?? null;
-  }
-
-  get captchaProvider(): ScreenMembers['captchaProvider'] {
-    return this.screen.captcha?.provider ?? null;
-  }
-
-  get isCaptchaAvailable(): ScreenMembers['isCaptchaAvailable'] {
-    return !!this.screen.captcha;
-  }
-
-  getScreenData(): ReturnType<ScreenMembers['getScreenData']> {
-    return (this.screen.data ?? null) as ReturnType<ScreenMembers['getScreenData']>;
-  }
-
-  getScreenLinks(): ReturnType<ScreenMembers['getScreenLinks']> {
-    return this.screen.links ?? null;
-  }
-
-  getScreenTexts(): ReturnType<ScreenMembers['getScreenTexts']> {
-    return this.screen.texts ?? null;
-  }
-
-  getCaptchaConfig(): ReturnType<ScreenMembers['getCaptchaConfig']> {
-    return this.screen.captcha ?? null;
+  static getScreenLinks(screen: ScreenContext): ScreenMembers['links'] {
+    return screen.links ?? null;
   }
 }

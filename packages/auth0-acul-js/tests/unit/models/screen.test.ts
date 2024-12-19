@@ -48,19 +48,19 @@ describe(':: models/screen | when all fields are available', () => {
   });
 
   it('should return the correct screen data', () => {
-    expect(screen.getScreenData()).toEqual(screenContext.data);
+    expect(screen.data).toEqual(screenContext.data);
   });
 
   it('should return the correct screen links', () => {
-    expect(screen.getScreenLinks()).toEqual(screenContext.links);
+    expect(screen.links).toEqual(screenContext.links);
   });
 
   it('should return the correct screen texts', () => {
-    expect(screen.getScreenTexts()).toEqual(screenContext.texts);
+    expect(screen.texts).toEqual(screenContext.texts);
   });
 
   it('should return the correct captcha configuration', () => {
-    expect(screen.getCaptchaConfig()).toEqual(screenContext.captcha);
+    expect(screen.captcha).toEqual(screenContext.captcha);
   });
 });
 
@@ -92,18 +92,18 @@ describe(':: models/screen | when optional fields are not available', () => {
   });
 
   it('should return null for screenData if not available', () => {
-    expect(screen.getScreenData()).toBeNull();
+    expect(screen.data).toBeNull();
   });
 
   it('should return null for screenLinks if not available', () => {
-    expect(screen.getScreenLinks()).toBeNull();
+    expect(screen.links).toBeNull();
   });
 
   it('should return null for screenTexts if not available', () => {
-    expect(screen.getScreenTexts()).toBeNull();
+    expect(screen.texts).toBeNull();
   });
 
   it('should return null for captchaConfig if not available', () => {
-    expect(screen.getCaptchaConfig()).toBeNull();
+    expect(screen.captcha).toBeNull();
   });
 });

@@ -1,13 +1,9 @@
 import type { PromptContext, PromptMembers } from '../../interfaces/models/prompt';
 
 export class Prompt implements PromptMembers {
-  protected prompt: PromptContext;
+  name: PromptMembers['name'];
 
   constructor(prompt: PromptContext) {
-    this.prompt = prompt;
-  }
-
-  get name(): PromptMembers['name'] {
-    return this.prompt.name;
+    this.name = prompt.name;
   }
 }

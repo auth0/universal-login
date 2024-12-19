@@ -25,11 +25,11 @@ describe(':: models/tenant | when all fields are available', () => {
   });
 
   it('should return the correct enabled locales', () => {
-    expect(tenant.getEnabledLocales()).toEqual(tenantContext.enabled_locales);
+    expect(tenant.enabledLocales).toEqual(tenantContext.enabled_locales);
   });
 
   it('should return the correct enabled factors', () => {
-    expect(tenant.getEnabledFactors()).toEqual(tenantContext.enabled_factors);
+    expect(tenant.enabledFactors).toEqual(tenantContext.enabled_factors);
   });
 });
 
@@ -51,10 +51,10 @@ describe(':: models/tenant | when optional fields are not available', () => {
   });
 
   it('should return null for enabled locales if not available', () => {
-    expect(tenant.getEnabledLocales()).toBeNull();
+    expect(tenant.enabledLocales).toBeNull();
   });
 
   it('should return null for enabled factors if not available', () => {
-    expect(tenant.getEnabledFactors()).toBeNull();
+    expect(tenant.enabledFactors).toBeNull();
   });
 });

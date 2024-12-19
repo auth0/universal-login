@@ -5,15 +5,18 @@ import { Screen } from '../../models/screen';
 export class ScreenOverride extends Screen implements OverrideOptions {
   constructor(screenContext: ScreenContext) {
     super(screenContext);
+    this.data = ScreenOverride.getScreenData(screenContext);
   }
 
-  getScreenData = (): ReturnType<OverrideOptions['getScreenData']> => {
-    const data = super.getScreenData();
-
+  static getScreenData = (screenContext: ScreenContext): OverrideOptions['data'] => {
+    const data = screenContext.data;
+    if (!data) return null;
+  
     return {
       ...data,
-      email: data?.email,
-      messageType: data?.message_type,
-    };
+      email: data.email,
+      messageType: data.message_type,
+    } as OverrideOptions['data'];
   };
+  
 }

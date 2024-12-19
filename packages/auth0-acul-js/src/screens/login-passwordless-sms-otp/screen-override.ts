@@ -4,12 +4,16 @@ import { Screen } from '../../models/screen';
 import { getSignupLink, getResetPasswordLink, getBackLink } from '../../shared/screen';
 
 export class ScreenOverride extends Screen implements OverrideOptions {
+  signupLink: OverrideOptions['signupLink'];
+  resetPasswordLink: OverrideOptions['resetPasswordLink'];
+  backLink: OverrideOptions['backLink'];
+  data: OverrideOptions['data'];
+
   constructor(screenContext: ScreenContext) {
     super(screenContext);
-  }
-
-  signupLink = getSignupLink(this.screen);
-  resetPasswordLink = getResetPasswordLink(this.screen);
-  backLink = getBackLink(this.screen);
-  getScreenData = super.getScreenData.bind(this) as OverrideOptions['getScreenData'];
+    this.signupLink = getSignupLink(screenContext);
+    this.resetPasswordLink = getResetPasswordLink(screenContext);
+    this.backLink = getBackLink(screenContext);
+    this.data = Screen.getScreenData(screenContext) as OverrideOptions['data'];
+  }  
 }

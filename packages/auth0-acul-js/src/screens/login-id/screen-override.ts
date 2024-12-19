@@ -4,11 +4,14 @@ import { Screen } from '../../../src/models/screen';
 import { getSignupLink, getResetPasswordLink, getPublicKey } from '../../shared/screen';
 
 export class ScreenOverride extends Screen implements OverrideOptions {
+  signupLink: OverrideOptions['signupLink'];
+  resetPasswordLink: OverrideOptions['resetPasswordLink'];
+  publicKey: OverrideOptions['publicKey'];
+
   constructor(screenContext: ScreenContext) {
     super(screenContext);
+    this.signupLink = getSignupLink(screenContext);
+    this.resetPasswordLink = getResetPasswordLink(screenContext);
+    this.publicKey = getPublicKey(screenContext) as OverrideOptions['publicKey'];
   }
-
-  signupLink = getSignupLink(this.screen);
-  resetPasswordLink = getResetPasswordLink(this.screen);
-  getPublicKey = (): ReturnType<OverrideOptions['getPublicKey']> => getPublicKey(this.screen);
 }

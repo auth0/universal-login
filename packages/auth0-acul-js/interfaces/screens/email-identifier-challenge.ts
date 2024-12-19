@@ -9,7 +9,7 @@ export interface EmailChallengeOptions {
 }
 
 export interface ScreenMembersOnEmailIdentifierChallenge extends ScreenMembers {
-  getScreenData(): {
+  data: {
     messageType?: string;
     email?: string;
   } | null;

@@ -1,15 +1,15 @@
 import type { BrandingContext, BrandingMembers } from '../../interfaces/models/branding';
 
 export class Branding implements BrandingMembers {
-  private branding: BrandingContext | undefined;
+  settings:  BrandingMembers['settings'];
+  themes: BrandingMembers['themes'];
 
-  constructor(client: BrandingContext | undefined) {
-    this.branding = client;
+  constructor(branding: BrandingContext | undefined) {
+    this.settings = Branding.getSettings(branding);
+    this.themes = Branding.getThemes(branding);
   }
 
-  getSettings(): ReturnType<BrandingMembers['getSettings']> {
-    const { branding } = this;
-
+  static getSettings(branding: BrandingContext | undefined): BrandingMembers['settings'] {
     if (!branding?.settings) return null;
 
     const { colors, favicon_url, logo_url, font } = branding.settings;
@@ -35,11 +35,11 @@ export class Branding implements BrandingMembers {
     };
   }
 
-  getThemes(): ReturnType<BrandingMembers['getThemes']> {
-    if (!this.branding || !this.branding?.themes) return null;
+  static getThemes(branding: BrandingContext | undefined): BrandingMembers['themes'] {
+    if (!branding || !branding?.themes) return null;
 
     const { default: { borders = {}, colors = {}, displayName = '', fonts = {}, page_background: pageBackground = {}, widget = {} } = {} } =
-      this.branding.themes;
+      branding.themes;
 
     return {
       default: {

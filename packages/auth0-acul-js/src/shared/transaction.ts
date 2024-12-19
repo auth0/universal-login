@@ -55,8 +55,8 @@ export function getPasswordPolicy(transaction: TransactionContext) {
   };
 }
 
-export function getAllowedIdentifiers(transaction: TransactionContext): ReturnType<TransactionMembersOnLoginId['getAllowedIdentifiers']> {
-  const identifiers: ReturnType<TransactionMembersOnLoginId['getAllowedIdentifiers']> = [];
+export function getAllowedIdentifiers(transaction: TransactionContext): TransactionMembersOnLoginId['allowedIdentifiers'] {
+  const identifiers: TransactionMembersOnLoginId['allowedIdentifiers'] = [];
 
   const connection = transaction?.connection as DBConnection;
 
@@ -79,7 +79,7 @@ export function getRequiredIdentifiers(transaction: TransactionContext) {
   return getIdentifiersByStatus(transaction, 'required');
 }
 
-export function getOptionalIdentifiers(transaction: TransactionContext): ReturnType<TransactionMembersOnSignupId['getOptionalIdentifiers']> {
+export function getOptionalIdentifiers(transaction: TransactionContext): TransactionMembersOnSignupId['optionalIdentifiers'] {
   return getIdentifiersByStatus(transaction, 'optional');
 }
 

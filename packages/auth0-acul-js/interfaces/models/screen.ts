@@ -51,8 +51,8 @@ export interface ScreenMembers {
   captchaSiteKey: string | null;
   captchaProvider: string | null;
   isCaptchaAvailable: boolean;
-  getScreenData(): Record<string, string> | null;
-  getScreenLinks(): Record<string, string> | null;
-  getScreenTexts(): Record<string, string> | null;
-  getCaptchaConfig(): CaptchaContext | null;
+  data: Record<string, string> | null;
+  links: Record<string, string> | null;
+  texts: Record<string, string> | null;
+  captcha: CaptchaContext | null;
 }

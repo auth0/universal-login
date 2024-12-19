@@ -8,6 +8,6 @@ export interface TenantContext {
 export interface TenantMembers {
   name: string | null;
   friendlyName: string | null;
-  getEnabledLocales(): string[] | null;
-  getEnabledFactors(): string[] | null;
+  enabledLocales: string[] | null;
+  enabledFactors: string[] | null;
 }

@@ -30,7 +30,7 @@ export interface LoginId extends BaseContext {
 export interface ScreenMembersOnLoginId extends ScreenMembers {
   signupLink: string | null;
   resetPasswordLink: string | null;
-  getPublicKey(): PasskeyRead['public_key'] | null;
+  publicKey: PasskeyRead['public_key'] | null;
 }
 
 export interface TransactionMembersOnLoginId extends TransactionMembers {
@@ -38,8 +38,8 @@ export interface TransactionMembersOnLoginId extends TransactionMembers {
   isPasskeyEnabled: boolean;
   isForgotPasswordEnabled: boolean;
   isUsernameRequired: boolean;
-  getUsernamePolicy(): UsernamePolicy | null;
-  getAllowedIdentifiers(): ('email' | 'username' | 'phone')[] | null;
+  usernamePolicy: UsernamePolicy | null;
+  allowedIdentifiers: ('email' | 'username' | 'phone')[] | null;
 }
 
 export interface LoginOptions {

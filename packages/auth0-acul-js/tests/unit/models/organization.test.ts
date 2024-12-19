@@ -44,11 +44,11 @@ describe(':: models/organization | when all fields are available', () => {
   });
 
   it('should return the correct branding', () => {
-    expect(organization.getBranding()).toEqual(organizationContext.branding);
+    expect(organization.branding).toEqual(organizationContext.branding);
   });
 
   it('should return the correct metadata', () => {
-    expect(organization.getMetadata()).toEqual(organizationContext.metadata);
+    expect(organization.metadata).toEqual(organizationContext.metadata);
   });
 });
 
@@ -66,11 +66,11 @@ describe(':: models/organization | when optional fields are not available', () =
   });
 
   it('should return null for branding if not available', () => {
-    expect(organization.getBranding()).toBeNull();
+    expect(organization.branding).toBeNull();
   });
 
   it('should return null for metadata if not available', () => {
-    expect(organization.getMetadata()).toBeNull();
+    expect(organization.metadata).toBeNull();
   });
 
   it('should return null for display name if not available', () => {

@@ -1,40 +1,32 @@
 import type { TransactionContext, TransactionMembers } from '../../interfaces/models/transaction';
 
 export class Transaction implements TransactionMembers {
-  protected transaction: TransactionContext;
+  state: TransactionMembers['state'];
+  hasErrors: TransactionMembers['hasErrors'];
+  locale: TransactionMembers['locale'];
+  countryCode: TransactionMembers['countryCode'];
+  countryPrefix: TransactionMembers['countryCode'];
+  connectionStrategy: TransactionMembers['connectionStrategy'];
+  errors: TransactionMembers['errors'];
+  currentConnection: TransactionMembers['currentConnection'];
+  alternateConnections: TransactionMembers['alternateConnections'];
 
-  constructor(context: TransactionContext) {
-    this.transaction = context;
+  constructor(transaction: TransactionContext) {
+    this.state = transaction.state;
+    this.hasErrors = !!transaction.errors?.length;
+    this.locale = transaction.locale;
+    this.countryCode = transaction.country_code?.code ?? null;
+    this.countryPrefix = transaction.country_code?.prefix ?? null;
+    this.connectionStrategy = transaction?.connection?.strategy?.toLowerCase() ?? null;
+    this.errors = Transaction.getErrors(transaction);
+    this.currentConnection = Transaction.getCurrentConnection(transaction);
+    this.alternateConnections = Transaction.getAlternateConnections(transaction);
   }
 
-  get state(): TransactionMembers['state'] {
-    return this.transaction.state;
-  }
+  static getErrors(transaction: TransactionContext): TransactionMembers['errors'] {
+    if (!transaction.errors?.length) return null;
 
-  get hasErrors(): TransactionMembers['hasErrors'] {
-    return !!this.transaction.errors?.length;
-  }
-
-  get locale(): TransactionMembers['locale'] {
-    return this.transaction.locale;
-  }
-
-  get countryCode(): TransactionMembers['countryCode'] {
-    return this.transaction.country_code?.code ?? null;
-  }
-
-  get countryPrefix(): TransactionMembers['countryCode'] {
-    return this.transaction.country_code?.prefix ?? null;
-  }
-
-  get connectionStrategy(): TransactionMembers['connectionStrategy'] {
-    return this.transaction?.connection?.strategy?.toLowerCase() ?? null;
-  }
-
-  getErrors(): ReturnType<TransactionMembers['getErrors']> {
-    if (!this.transaction.errors?.length) return null;
-
-    return this.transaction.errors.map((error) => {
+    return transaction.errors.map((error) => {
       return {
         code: error.code,
         field: error.field,
@@ -43,10 +35,10 @@ export class Transaction implements TransactionMembers {
     });
   }
 
-  getCurrentConnection(): ReturnType<TransactionMembers['getCurrentConnection']> {
-    if (!this.transaction?.connection) return null;
+  static getCurrentConnection(transaction: TransactionContext): TransactionMembers['currentConnection'] {
+    if (!transaction?.connection) return null;
 
-    const { name, strategy, metadata } = this.transaction.connection;
+    const { name, strategy, metadata } = transaction.connection;
     return {
       name,
       strategy,
@@ -54,8 +46,8 @@ export class Transaction implements TransactionMembers {
     };
   }
 
-  getAlternateConnections(): ReturnType<TransactionMembers['getAlternateConnections']> {
-    const alternateConnections = this.transaction.alternate_connections;
+  static getAlternateConnections(transaction: TransactionContext): TransactionMembers['alternateConnections'] {
+    const alternateConnections = transaction.alternate_connections;
     if (!alternateConnections || !Array.isArray(alternateConnections)) return null;
 
     return alternateConnections.map((connection) => {

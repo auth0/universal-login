@@ -28,9 +28,10 @@ describe("PasskeyEnrollmentLocal", () => {
     it("should handle continuePasskeyEnrollment with valid payload correctly", async () => {
       const mockPublicKey = { key: "publicKey" };
       const mockEncoded = { id: "encodedId" };
-      passkeyEnrollmentLocal.screen.getPublicKey = jest
-        .fn()
-        .mockReturnValue(mockPublicKey);
+      Object.defineProperty(passkeyEnrollmentLocal.screen, 'publicKey', {
+        value: mockPublicKey,
+      });
+        
       (createPasskeyCredentials as jest.Mock).mockReturnValue(mockEncoded);
 
       const payload: CustomOptions = {
@@ -50,9 +51,10 @@ describe("PasskeyEnrollmentLocal", () => {
     it("should handle continuePasskeyEnrollment without payload correctly", async () => {
       const mockPublicKey = { key: "publicKey" };
       const mockEncoded = { id: "encodedId" };
-      passkeyEnrollmentLocal.screen.getPublicKey = jest
-        .fn()
-        .mockReturnValue(mockPublicKey);
+      Object.defineProperty(passkeyEnrollmentLocal.screen, 'publicKey', {
+        value: mockPublicKey,
+      });
+        
       (createPasskeyCredentials as jest.Mock).mockReturnValue(mockEncoded);
 
       await passkeyEnrollmentLocal.continuePasskeyEnrollment();
@@ -76,9 +78,9 @@ describe("PasskeyEnrollmentLocal", () => {
     });
 
     it("should handle continuePasskeyEnrollment when publicKey is null", async () => {
-      passkeyEnrollmentLocal.screen.getPublicKey = jest
-        .fn()
-        .mockReturnValue(null);
+      Object.defineProperty(passkeyEnrollmentLocal.screen, 'publicKey', {
+        value: null,
+      });
 
       const payload: CustomOptions = {
         email: "test@example.com",

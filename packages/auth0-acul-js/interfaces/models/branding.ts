@@ -58,6 +58,6 @@ export interface BrandingThemes{
 
 /* @namespace Client */
 export interface BrandingMembers {
-  getSettings(): BrandingSettings | null;
-  getThemes(): BrandingThemes | null;
+  settings: BrandingSettings | null;
+  themes: BrandingThemes | null;
 }

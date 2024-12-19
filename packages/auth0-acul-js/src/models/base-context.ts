@@ -14,7 +14,6 @@ import type { BaseContext as UniversalLoginContext, BaseMembers } from '../../in
 import { Branding, Client, Prompt, Screen, Organization, User, Transaction, Tenant, UntrustedData } from '../models';
 
 export class BaseContext implements BaseMembers {
-  private context: UniversalLoginContext;
   branding: BrandingMembers;
   screen: ScreenMembers;
   tenant: TenantMembers;
@@ -25,21 +24,32 @@ export class BaseContext implements BaseMembers {
   user: UserMembers;
   untrustedData: UntrustedDataMembers;
 
+  private static context: UniversalLoginContext | null = null;
+
   constructor() {
-    this.context = (window as any).universal_login_context as UniversalLoginContext;
-    this.branding = new Branding(this.context.branding);
-    this.screen = new Screen(this.context.screen);
-    this.tenant = new Tenant(this.context.tenant);
-    this.prompt = new Prompt(this.context.prompt);
-    this.organization = new Organization(this.context.organization);
-    this.client = new Client(this.context.client);
-    this.transaction = new Transaction(this.context.transaction);
-    this.user = new User(this.context.user);
-    this.untrustedData = new UntrustedData(this.context.untrusted_data);
+    if (!BaseContext.context) {
+      BaseContext.context = (window as any).universal_login_context as UniversalLoginContext;
+    }
+
+    const context = BaseContext.context;
+
+    this.branding = new Branding(context.branding);
+    this.screen = new Screen(context.screen);
+    this.tenant = new Tenant(context.tenant);
+    this.prompt = new Prompt(context.prompt);
+    this.organization = new Organization(context.organization);
+    this.client = new Client(context.client);
+    this.transaction = new Transaction(context.transaction);
+    this.user = new User(context.user);
+    this.untrustedData = new UntrustedData(context.untrusted_data);
   }
 
   /** @ignore */
   getContext<K extends keyof UniversalLoginContext>(model: K): UniversalLoginContext[K] | undefined {
-    return this.context[model];
+    if (!BaseContext.context) {
+      BaseContext.context = (window as any).universal_login_context as UniversalLoginContext;
+    }
+
+    return BaseContext.context[model];
   }
 }

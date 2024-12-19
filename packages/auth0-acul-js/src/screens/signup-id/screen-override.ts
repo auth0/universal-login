@@ -4,9 +4,10 @@ import { getLoginLink } from '../../../src/shared/screen';
 import { Screen } from '../../models/screen';
 
 export class ScreenOverride extends Screen implements OverrideOptions {
+  loginLink: OverrideOptions['loginLink'];
+
   constructor(screenContext: ScreenContext) {
     super(screenContext);
+    this.loginLink = getLoginLink(screenContext);
   }
-
-  loginLink = getLoginLink(this.screen);
 }

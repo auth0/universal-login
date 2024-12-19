@@ -14,4 +14,12 @@ export default {
     ],
   },
   roots: ['<rootDir>/tests/unit'],
+  collectCoverage: true,
+  coverageDirectory: '<rootDir>/coverage',
+  coverageReporters: ['text', 'lcov'],
+  collectCoverageFrom: [
+    '**/*.{ts,tsx}',
+    '!**/node_modules/**',
+    '!**/tests/**',
+  ],
 };

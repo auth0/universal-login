@@ -20,7 +20,7 @@ export interface OrganizationMembers {
   name: string | null;
   usage: string | null;
   displayName: string | null;
-  getBranding():
+  branding:
     | {
         logoUrl?: string | undefined;
         colors?: {
@@ -29,5 +29,5 @@ export interface OrganizationMembers {
         };
       }
     | null;
-  getMetadata(): { [key: string]: string } | null;
+  metadata: { [key: string]: string } | null;
 }

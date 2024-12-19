@@ -22,7 +22,7 @@ export interface AbortEnrollmentOptions {
 }
 
 export interface ScreenMembersOnPasskeyEnrollmentLocal extends ScreenMembers {
-  getPublicKey: () => PasskeyCreate['public_key'] | null;
+  publicKey: PasskeyCreate['public_key'] | null;
 }
 
 export interface PasskeyEnrollmentLocalMembers extends BaseMembers {

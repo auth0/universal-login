@@ -22,8 +22,8 @@ export interface UserMembers {
   email: string | null;
   picture: string | null;
   phoneNumber: string | null;
-  getEnrolledFactors(): Array<string> | null;
-  getOrganizations():
+  enrolledFactors: Array<string> | null;
+  organizations:
     | {
         organizationId: string | undefined;
         organizationName: string | undefined;
@@ -35,6 +35,6 @@ export interface UserMembers {
           | undefined;
       }[]
     | null;
-  getUserMetadata(): { [key: string]: string } | null;
-  getAppMetadata(): { [key: string]: string } | null;
+  userMetadata: { [key: string]: string } | null;
+  appMetadata: { [key: string]: string } | null;
 }

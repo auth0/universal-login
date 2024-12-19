@@ -1,14 +1,16 @@
-import type { ScreenContextOnSignupPassword } from '../../../interfaces/screens/signup-password';
+import type { ScreenContextOnSignupPassword, ScreenMembersOnSignupPassword as OverrideOptions } from '../../../interfaces/screens/signup-password';
 import { Screen } from '../../models/screen';
 import { getLoginLink, getEditIdentifierLink } from '../../shared/screen';
 
-export class ScreenOverride extends Screen {
-  loginLink = getLoginLink(this.screen);
-  editLink = getEditIdentifierLink(this.screen);
+export class ScreenOverride extends Screen implements OverrideOptions {
+  loginLink: OverrideOptions['loginLink'];
+  editLink: OverrideOptions['editLink'];
+  data: OverrideOptions['data'];
 
   constructor(screenContext: ScreenContextOnSignupPassword) {
     super(screenContext);
+    this.loginLink = getLoginLink(screenContext);
+    this.editLink = getEditIdentifierLink(screenContext);
+    this.data = Screen.getScreenData(screenContext);
   }
-
-  getScreenData = super.getScreenData.bind(this);
 }
