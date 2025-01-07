@@ -51,3 +51,7 @@ export default class PasskeyEnrollment extends BaseContext implements PasskeyEnr
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'abort-passkey-enrollment' });
   }
 }
+
+export {
+  PasskeyEnrollmentMembers
+}

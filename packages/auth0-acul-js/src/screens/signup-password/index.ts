@@ -65,3 +65,8 @@ export default class SignupPassword extends BaseContext implements SignupPasswor
     await new FormHandler(options).submitData<SignupPasswordOptions>(payload);
   }
 }
+
+export {
+  SignupPasswordMembers,
+  SignupPasswordOptions
+}

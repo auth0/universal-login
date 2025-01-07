@@ -59,3 +59,8 @@ export default class LoginPasswordlessSmsOtp extends BaseContext implements Logi
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'resend' });
   }
 }
+
+export {
+  LoginPasswordlessSmsOtpMembers,
+  SubmitOTPOptions,
+}

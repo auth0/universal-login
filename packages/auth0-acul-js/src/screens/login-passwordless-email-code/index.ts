@@ -62,3 +62,8 @@ export default class LoginPasswordlessEmailCode extends BaseContext implements L
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'resend' });
   }
 }
+
+export {
+  LoginPasswordlessEmailCodeMembers,
+  SubmitCodeOptions
+}

@@ -63,3 +63,9 @@ export default class EmailIdentifierChallenge extends BaseContext implements Ema
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'back-action' });
   }
 }
+
+export {
+  EmailIdentifierChallengeMembers,
+  EmailChallengeOptions,
+  ScreenOptions,
+}

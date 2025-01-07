@@ -18,5 +18,4 @@ export class ScreenOverride extends Screen implements OverrideOptions {
       messageType: data.message_type,
     } as OverrideOptions['data'];
   };
-  
 }

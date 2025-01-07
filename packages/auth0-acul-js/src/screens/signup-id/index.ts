@@ -95,3 +95,9 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
     await new FormHandler(options).submitData<SocialSignupOptions>(payload);
   }
 }
+
+export {
+  SignupIdMembers,
+  SignupOptions,
+  SocialSignupOptions
+}

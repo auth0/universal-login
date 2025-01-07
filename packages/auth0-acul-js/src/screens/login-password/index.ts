@@ -42,3 +42,8 @@ export default class LoginPassword extends BaseContext implements LoginPasswordM
     await new FormHandler(options).submitData<LoginPasswordOptions>(payload);
   }
 }
+
+export {
+  LoginPasswordMembers,
+  LoginPasswordOptions
+}

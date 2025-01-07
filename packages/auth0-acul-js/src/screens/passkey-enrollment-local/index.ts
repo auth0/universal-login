@@ -61,3 +61,8 @@ export default class PasskeyEnrollmentLocal extends BaseContext implements Passk
     await new FormHandler(options).submitData<AbortEnrollmentOptions>({ ...payload, action: 'abort-passkey-enrollment', ...userActions });
   }
 }
+
+export {
+  PasskeyEnrollmentLocalMembers,
+  AbortEnrollmentOptions
+}

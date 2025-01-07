@@ -123,3 +123,9 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
     });
   }
 }
+
+export {
+  LoginIdMembers,
+  LoginOptions,
+  SocialLoginOptions,
+}
