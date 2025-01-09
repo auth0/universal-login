@@ -30,7 +30,7 @@ export default class PasskeyEnrollment extends BaseContext implements PasskeyEnr
       state: this.transaction.state,
     };
 
-    const publicKey = this.screen.getPublicKey();
+    const publicKey = this.screen.publicKey;
     const encoded = publicKey && createPasskeyCredentials(publicKey);
 
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, passkey: JSON.stringify(encoded) });
@@ -50,4 +50,8 @@ export default class PasskeyEnrollment extends BaseContext implements PasskeyEnr
 
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'abort-passkey-enrollment' });
   }
+}
+
+export {
+  PasskeyEnrollmentMembers
 }

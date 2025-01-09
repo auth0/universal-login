@@ -1,25 +1,27 @@
 import type { UntrustedDataContext, UntrustedDataMembers } from '../../interfaces/models/untrusted-data';
 
 export class UntrustedData implements UntrustedDataMembers {
-  private untrustedData: UntrustedDataContext | undefined;
+  submittedFormData: UntrustedDataMembers['submittedFormData'];
+  authParams: UntrustedDataMembers['authParams'];
 
   constructor(untrustedData: UntrustedDataContext | undefined) {
-    this.untrustedData = untrustedData;
+    this.submittedFormData = UntrustedData.getSubmittedFormData(untrustedData);
+    this.authParams = UntrustedData.getAuthParams(untrustedData);
   }
 
-  getSubmittedFormData(): ReturnType<UntrustedDataMembers['getSubmittedFormData']> {
-    if (!this.untrustedData?.submitted_form_data) return null;
-    return this.untrustedData?.submitted_form_data ?? null;
+  static getSubmittedFormData(untrustedData: UntrustedDataContext | undefined): UntrustedDataMembers['submittedFormData'] {
+    if (!untrustedData?.submitted_form_data) return null;
+    return untrustedData?.submitted_form_data ?? null;
   }
 
-  getAuthParams(): ReturnType<UntrustedDataMembers['getAuthParams']> {
-    if (!this.untrustedData?.authorization_params) return null;
+  static getAuthParams(untrustedData: UntrustedDataContext | undefined): UntrustedDataMembers['authParams'] {
+    if (!untrustedData?.authorization_params) return null;
 
     return {
-      loginHint: this.untrustedData?.authorization_params?.login_hint,
-      screenHint: this.untrustedData?.authorization_params?.screen_hint,
-      uiLocales: this.untrustedData?.authorization_params?.ui_locales,
-      ext: this.untrustedData?.authorization_params,
+      loginHint: untrustedData?.authorization_params?.login_hint,
+      screenHint: untrustedData?.authorization_params?.screen_hint,
+      uiLocales: untrustedData?.authorization_params?.ui_locales,
+      ext: untrustedData?.authorization_params,
     };
   }
 }

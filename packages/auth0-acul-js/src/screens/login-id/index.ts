@@ -91,7 +91,7 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
    * loginIdManager.passkeyLogin();
    */
   async passkeyLogin(payload?: CustomOptions): Promise<void> {
-    const publicKey = this.screen.getPublicKey();
+    const publicKey = this.screen.publicKey;
     if (!publicKey) throw new Error(Errors.PASSKEY_DATA_UNAVAILABLE);
 
     const passkey = await getPasskeyCredentials(publicKey);
@@ -122,4 +122,10 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
       action: 'pick-country-code',
     });
   }
+}
+
+export {
+  LoginIdMembers,
+  LoginOptions,
+  SocialLoginOptions,
 }

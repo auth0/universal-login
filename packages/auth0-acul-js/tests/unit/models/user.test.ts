@@ -61,19 +61,19 @@ describe(':: models/user | when all fields are available', () => {
   });
 
   it('should return the correct enrolled factors', () => {
-    expect(user.getEnrolledFactors()).toEqual(userContext.enrolled_factors);
+    expect(user.enrolledFactors).toEqual(userContext.enrolled_factors);
   });
 
   it('should return the correct user metadata', () => {
-    expect(user.getUserMetadata()).toEqual(userContext.user_metadata);
+    expect(user.userMetadata).toEqual(userContext.user_metadata);
   });
 
   it('should return the correct app metadata', () => {
-    expect(user.getAppMetadata()).toEqual(userContext.app_metadata);
+    expect(user.appMetadata).toEqual(userContext.app_metadata);
   });
 
   it('should return correct organization details', () => {
-    const organizations = user.getOrganizations();
+    const organizations = user.organizations;
     expect(organizations).toHaveLength(1);
     expect(organizations?.[0].organizationId).toBe('org123');
     expect(organizations?.[0].organizationName).toBe('Auth0');
@@ -100,16 +100,16 @@ describe(':: models/user | when optional fields are not available', () => {
   });
 
   it('should return null for user metadata if not available', () => {
-    expect(user.getUserMetadata()).toBeNull();
+    expect(user.userMetadata).toBeNull();
   });
 
   it('should return null for app metadata if not available', () => {
-    expect(user.getAppMetadata()).toBeNull();
+    expect(user.appMetadata).toBeNull();
   });
 
   it('should return null for organizations if not available', () => {
     userContext.organizations = undefined;
     user = new User(userContext);
-    expect(user.getOrganizations()).toBeNull();
+    expect(user.organizations).toBeNull();
   });
 });

@@ -26,3 +26,8 @@ export default class InterstitialCaptcha extends BaseContext implements Intersti
     await new FormHandler(options).submitData<SubmitCaptchaOptions>(payload);
   }
 }
+
+export {
+  InterstitialCaptchaMembers,
+  SubmitCaptchaOptions
+}

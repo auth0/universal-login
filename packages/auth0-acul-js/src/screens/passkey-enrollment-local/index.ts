@@ -34,7 +34,7 @@ export default class PasskeyEnrollmentLocal extends BaseContext implements Passk
       state: this.transaction.state,
     };
 
-    const publicKey = this.screen.getPublicKey();
+    const publicKey = this.screen.publicKey;
     const encoded = publicKey && createPasskeyCredentials(publicKey);
 
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, passkey: JSON.stringify(encoded) });
@@ -60,4 +60,9 @@ export default class PasskeyEnrollmentLocal extends BaseContext implements Passk
     }
     await new FormHandler(options).submitData<AbortEnrollmentOptions>({ ...payload, action: 'abort-passkey-enrollment', ...userActions });
   }
+}
+
+export {
+  PasskeyEnrollmentLocalMembers,
+  AbortEnrollmentOptions
 }

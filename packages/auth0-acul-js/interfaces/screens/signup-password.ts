@@ -22,7 +22,7 @@ export interface SignupPassword extends BaseContext {
 export interface ScreenMembersOnSignupPassword extends ScreenMembers {
   loginLink: string | null;
   editLink: string | null;
-  getScreenData(): {
+  data: {
     email?: string;
     phone?: string;
     username?: string;
@@ -31,9 +31,9 @@ export interface ScreenMembersOnSignupPassword extends ScreenMembers {
 
 export interface TransactionMembersOnSignupPassword extends TransactionMembers {
   isPasskeyEnabled: boolean;
-  getPasswordPolicy(): PasswordPolicy | null;
-  getRequiredIdentifiers(): ('email' | 'username' | 'phone')[] | null;
-  getOptionalIdentifiers(): ('email' | 'username' | 'phone')[] | null;
+  passwordPolicy: PasswordPolicy | null;
+  requiredIdentifiers: ('email' | 'username' | 'phone')[] | null;
+  optionalIdentifiers: ('email' | 'username' | 'phone')[] | null;
 }
 
 export interface SignupPasswordOptions {

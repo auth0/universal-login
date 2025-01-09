@@ -11,18 +11,29 @@ import {
 } from '../../shared/transaction';
 
 export class TransactionOverride extends Transaction implements OverrideMembers {
+  isSignupEnabled: OverrideMembers['isSignupEnabled'];
+  isForgotPasswordEnabled: OverrideMembers['isForgotPasswordEnabled'];
+  isPasskeyEnabled: OverrideMembers['isPasskeyEnabled'];
+  isUsernameRequired: OverrideMembers['isUsernameRequired'];
+  usernamePolicy: OverrideMembers['usernamePolicy'];
+  allowedIdentifiers: OverrideMembers['allowedIdentifiers'];
+
   constructor(transactionContext: TransactionContext) {
     super(transactionContext);
+    this.isSignupEnabled = isSignupEnabled(transactionContext);
+    this.isForgotPasswordEnabled = isForgotPasswordEnabled(transactionContext);
+    this.isPasskeyEnabled = isPasskeyEnabled(transactionContext);
+    this.isUsernameRequired = isUsernameRequired(transactionContext);
+    this.usernamePolicy = getUsernamePolicy(transactionContext);
+    this.allowedIdentifiers = TransactionOverride.getAllowedIdentifiers(transactionContext, this.connectionStrategy);
   }
 
-  isSignupEnabled = isSignupEnabled(this.transaction);
-  isForgotPasswordEnabled = isForgotPasswordEnabled(this.transaction);
-  isPasskeyEnabled = isPasskeyEnabled(this.transaction);
-  isUsernameRequired = isUsernameRequired(this.transaction);
-  getUsernamePolicy = (): ReturnType<OverrideMembers['getUsernamePolicy']> => getUsernamePolicy(this.transaction);
-  getAllowedIdentifiers = (): ReturnType<OverrideMembers['getAllowedIdentifiers']> => {
-    if (this.connectionStrategy === 'sms') return ['phone'];
-    if (this.connectionStrategy === 'email') return ['email'];
-    return getAllowedIdentifiers(this.transaction);
-  };
+  static getAllowedIdentifiers(
+    transactionContext: TransactionContext,
+    connectionStrategy: string | null
+  ): OverrideMembers['allowedIdentifiers'] {
+    if (connectionStrategy === 'sms') return ['phone'];
+    if (connectionStrategy === 'email') return ['email'];
+    return getAllowedIdentifiers(transactionContext);
+  }
 }

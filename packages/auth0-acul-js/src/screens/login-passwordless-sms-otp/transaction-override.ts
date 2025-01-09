@@ -4,9 +4,10 @@ import { Transaction } from '../../models/transaction';
 import { isSignupEnabled } from '../../shared/transaction';
 
 export class TransactionOverride extends Transaction implements OverrideOptions {
+  isSignupEnabled: OverrideOptions['isSignupEnabled'];
+
   constructor(transactionContext: TransactionContext) {
     super(transactionContext);
+    this.isSignupEnabled = isSignupEnabled(transactionContext);
   }
-
-  isSignupEnabled = isSignupEnabled(this.transaction);
 }

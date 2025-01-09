@@ -51,3 +51,8 @@ export default class PhoneIdentifierEnrollment extends BaseContext implements Ph
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'back-action' });
   }
 }
+
+export {
+  PhoneIdentifierEnrollmentMembers,
+  PhoneEnrollmentOptions
+}

@@ -64,3 +64,8 @@ export default class PhoneIdentifierChallenge extends BaseContext implements Pho
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'back-action' });
   }
 }
+
+export {
+  PhoneIdentifierChallengeMembers,
+  PhoneChallengeOptions,
+}
