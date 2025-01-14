@@ -39,9 +39,7 @@ export interface BrandingSettings {
   };
   faviconUrl?: string;
   logoUrl?: string;
-  font?: {
-    url: string;
-  };
+  fontUrl?: string;
 };
 
 export interface BrandingThemes{

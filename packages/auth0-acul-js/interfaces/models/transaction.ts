@@ -109,7 +109,7 @@ export interface EnterpriseConnectionContext extends Connection {
 
 export interface EnterpriseConnection extends Connection {
   options: {
-    iconURL?: string;
+    iconUrl?: string;
     displayName?: string;
     showAsButton: boolean;
   };

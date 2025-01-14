@@ -12,7 +12,7 @@ export interface ClientContext {
 export interface ClientMembers {
   id: string;
   name: string;
-  logoUri: string | null;
+  logoUrl: string | null;
   description: string | null;
   metadata: { [key: string]: string } | null;
 }
