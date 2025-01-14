@@ -59,10 +59,10 @@ export class Transaction implements TransactionMembers {
       };
 
       if ('options' in connection) {
-        const { icon_url: iconURL, display_name: displayName, show_as_button: showAsButton } = connection.options;
+        const { icon_url: iconUrl, display_name: displayName, show_as_button: showAsButton } = connection.options;
         return {
           ...connectionProperties,
-          options: { iconURL, displayName, showAsButton },
+          options: { iconUrl, displayName, showAsButton },
         };
       }
 

@@ -31,7 +31,7 @@ export class Branding implements BrandingMembers {
       }),
       ...(favicon_url ? { faviconUrl: favicon_url } : {}),
       ...(logo_url ? { logoUrl: logo_url } : {}),
-      ...(font ? { font: { url: font.url } } : {}),
+      ...(font ? { fontUrl: font.url } : {}),
     };
   }
 

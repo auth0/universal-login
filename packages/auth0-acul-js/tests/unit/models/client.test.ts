@@ -30,7 +30,7 @@ describe(':: models/client | when all fields are available', () => {
   });
 
   it('should return the correct logoUrl', () => {
-    expect(client.logoUri).toBe(clientContext.logo_uri);
+    expect(client.logoUrl).toBe(clientContext.logo_uri);
   });
 
   it('should return the correct clientDescription', () => {
@@ -55,7 +55,7 @@ describe(':: models/client | when optional fields are not available', () => {
   });
 
   it('should return undefined for logoUrl if not available', () => {
-    expect(client.logoUri).toBeNull();
+    expect(client.logoUrl).toBeNull();
   });
 
   it('should return undefined for clientDescription if not available', () => {
