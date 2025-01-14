@@ -13,10 +13,10 @@ export interface UntrustedDataContext {
 
 export interface UntrustedDataMembers {
   submittedFormData: { [key: string]: any } | null;
-  authParams: {
-    loginHint: string | undefined;
-    screenHint: string | undefined;
-    uiLocales: string | undefined;
-    ext: { [key: string]: string } | undefined;
+  authorizationParams: {
+    login_hint?: string;
+    screen_hint?: string;
+    ui_locales?: string;
+    [key: `ext-${string}`]: string;
   } | null;
 }
