@@ -12,7 +12,7 @@ export interface UntrustedDataContext {
 }
 
 export interface UntrustedDataMembers {
-  submittedFormData: { [key: string]: any } | null;
+  submittedFormData: { [key: string]: string | number | boolean | undefined } | null;
   authorizationParams: {
     login_hint?: string;
     screen_hint?: string;

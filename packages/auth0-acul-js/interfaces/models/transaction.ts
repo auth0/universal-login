@@ -8,11 +8,11 @@ export interface Passkey {
   enabled: boolean;
 }
 
-export interface PasskeyLogin extends Passkey{
+export interface PasskeyLogin extends Passkey {
   public_key: {
     challenge: ArrayBuffer;
   };
-};
+}
 
 export interface PasskeyEnroll extends Passkey {
   public_key: {
@@ -26,21 +26,23 @@ export interface PasskeyEnroll extends Passkey {
       name: string;
     };
     challenge: ArrayBuffer;
-    pubKeyCredParams: [{
-      type: string,
-      alg: Number
-    }];
+    pubKeyCredParams: [
+      {
+        type: string;
+        alg: number;
+      },
+    ];
     authenticatorSelection: {
       residentKey: string;
       userVerification: string;
     };
   };
-};
+}
 
 interface CountryCode {
   code: string;
   prefix: string;
-};
+}
 
 export interface UsernamePolicy {
   maxLength: number;
@@ -48,7 +50,7 @@ export interface UsernamePolicy {
   allowedFormats: {
     usernameInEmailFormat: boolean;
     usernameInPhoneFormat: boolean;
-  }
+  };
 }
 
 export interface PasswordPolicy {
@@ -91,7 +93,7 @@ export interface DBConnection extends Connection {
       };
     };
   };
-};
+}
 
 export interface PasswordlessConnection extends Connection {
   options: {
@@ -105,7 +107,7 @@ export interface EnterpriseConnectionContext extends Connection {
     display_name?: string;
     show_as_button: boolean;
   };
-};
+}
 
 export interface EnterpriseConnection extends Connection {
   options: {
@@ -113,7 +115,7 @@ export interface EnterpriseConnection extends Connection {
     displayName?: string;
     showAsButton: boolean;
   };
-};
+}
 
 export interface SocialConnection extends Connection {}
 
@@ -128,7 +130,7 @@ export interface TransactionContext {
   locale: string;
   errors?: Error[];
   country_code?: CountryCode;
-  connection: DBConnection | PasswordlessConnection;
+  connection?: DBConnection | PasswordlessConnection;
   alternate_connections?: (Connection | EnterpriseConnectionContext)[];
 }
 

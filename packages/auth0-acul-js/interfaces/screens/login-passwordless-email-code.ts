@@ -1,8 +1,7 @@
-import { CustomOptions } from '../common';
+import type { TransactionMembers } from '../../interfaces/models';
+import type { BaseMembers } from '../../interfaces/models/base-context';
 import type { ScreenMembers } from '../../interfaces/models/screen';
-import { BaseMembers } from '../../interfaces/models/base-context';
-import { TransactionMembers } from '../../interfaces/models';
-
+import type { CustomOptions } from '../common';
 
 export interface ScreenMembersOnLoginPasswordlessEmailCode extends ScreenMembers {
   editIdentifierLink: string | null;

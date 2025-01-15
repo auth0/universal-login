@@ -15,7 +15,7 @@ export function base64UrlToUint8Array(base64Url: string): ArrayBuffer {
 }
 
 export function uint8ArrayToBase64Url(arraybuffer: ArrayBufferLike): string | null {
-  if (!arraybuffer) return null;
+  if (!(arraybuffer instanceof ArrayBuffer)) return null;
 
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
   const bytes = new Uint8Array(arraybuffer);

@@ -1,4 +1,4 @@
-import { CustomOptions } from '../common';
+import type { CustomOptions } from '../common';
 import type { BaseContext, BaseMembers } from '../models/base-context';
 import type { ScreenContext, ScreenMembers, PasskeyRead } from '../models/screen';
 import type { TransactionMembers, UsernamePolicy } from '../models/transaction';
@@ -12,7 +12,7 @@ export interface ExtendedScreenContext extends ScreenContext {
 
   data?: {
     passkey?: PasskeyRead;
-  }
+  };
 }
 
 export interface ExtendedUntrustedDataContext extends UntrustedDataContext {

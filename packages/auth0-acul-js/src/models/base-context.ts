@@ -1,3 +1,5 @@
+import { Branding, Client, Prompt, Screen, Organization, User, Transaction, Tenant, UntrustedData } from '../models';
+
 import type {
   ClientMembers,
   PromptMembers,
@@ -10,8 +12,6 @@ import type {
   BrandingMembers,
 } from '../../interfaces/models';
 import type { BaseContext as UniversalLoginContext, BaseMembers } from '../../interfaces/models/base-context';
-
-import { Branding, Client, Prompt, Screen, Organization, User, Transaction, Tenant, UntrustedData } from '../models';
 
 export class BaseContext implements BaseMembers {
   branding: BrandingMembers;
@@ -28,10 +28,15 @@ export class BaseContext implements BaseMembers {
 
   constructor() {
     if (!BaseContext.context) {
-      BaseContext.context = (window as any).universal_login_context as UniversalLoginContext;
+      const globalWindow = window as unknown as { universal_login_context?: UniversalLoginContext };
+      BaseContext.context = globalWindow.universal_login_context ?? null;
     }
 
     const context = BaseContext.context;
+
+    if (!context) {
+      throw new Error('Universal Login Context is not available on the global window object.');
+    }
 
     this.branding = new Branding(context.branding);
     this.screen = new Screen(context.screen);
@@ -47,7 +52,12 @@ export class BaseContext implements BaseMembers {
   /** @ignore */
   getContext<K extends keyof UniversalLoginContext>(model: K): UniversalLoginContext[K] | undefined {
     if (!BaseContext.context) {
-      BaseContext.context = (window as any).universal_login_context as UniversalLoginContext;
+      const globalWindow = window as unknown as { universal_login_context?: UniversalLoginContext };
+      BaseContext.context = globalWindow.universal_login_context ?? null;
+    }
+
+    if (!BaseContext.context) {
+      return undefined;
     }
 
     return BaseContext.context[model];

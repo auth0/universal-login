@@ -1,4 +1,4 @@
-import { CustomOptions } from '../common';
+import type { CustomOptions } from '../common';
 import type { BaseMembers } from '../models/base-context';
 import type { ScreenContext, ScreenMembers, ScreenData } from '../models/screen';
 
@@ -28,7 +28,7 @@ export interface ScreenMembersOnPhoneIdentifierChallenge extends ScreenMembers {
 }
 
 export interface PhoneIdentifierChallengeMembers extends BaseMembers {
-  screen: ScreenMembersOnPhoneIdentifierChallenge
+  screen: ScreenMembersOnPhoneIdentifierChallenge;
   submitPhoneChallenge(payload: PhoneChallengeOptions): Promise<void>;
   resendCode(payload?: CustomOptions): Promise<void>;
   returnToPrevious(payload?: CustomOptions): Promise<void>;

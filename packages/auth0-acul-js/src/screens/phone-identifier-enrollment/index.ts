@@ -1,4 +1,8 @@
+import { BaseContext } from '../../models/base-context';
+import { FormHandler } from '../../utils/form-handler';
+
 import { ScreenOverride } from './screen-override';
+
 import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type {
@@ -7,8 +11,6 @@ import type {
   PhoneEnrollmentOptions,
 } from '../../../interfaces/screens/phone-identifier-enrollment';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import { BaseContext } from '../../models/base-context';
-import { FormHandler } from '../../utils/form-handler';
 
 export default class PhoneIdentifierEnrollment extends BaseContext implements PhoneIdentifierEnrollmentMembers {
   screen: ScreenOptions;
@@ -52,7 +54,4 @@ export default class PhoneIdentifierEnrollment extends BaseContext implements Ph
   }
 }
 
-export {
-  PhoneIdentifierEnrollmentMembers,
-  PhoneEnrollmentOptions
-}
+export { PhoneIdentifierEnrollmentMembers, PhoneEnrollmentOptions };

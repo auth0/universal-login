@@ -1,5 +1,11 @@
+import { BaseContext } from '../../models/base-context';
+import { Errors } from '../../utils/errors';
+import { FormHandler } from '../../utils/form-handler';
+import { getPasskeyCredentials } from '../../utils/passkeys';
+
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
+
 import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../interfaces/models/transaction';
@@ -11,10 +17,6 @@ import type {
   SocialLoginOptions,
 } from '../../../interfaces/screens/login-id';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import { BaseContext } from '../../models/base-context';
-import { Errors } from '../../utils/errors';
-import { FormHandler } from '../../utils/form-handler';
-import { getPasskeyCredentials } from '../../utils/passkeys';
 
 export default class LoginId extends BaseContext implements LoginIdMembers {
   screen: ScreenOptions;
@@ -124,8 +126,4 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
   }
 }
 
-export {
-  LoginIdMembers,
-  LoginOptions,
-  SocialLoginOptions,
-}
+export { LoginIdMembers, LoginOptions, SocialLoginOptions };

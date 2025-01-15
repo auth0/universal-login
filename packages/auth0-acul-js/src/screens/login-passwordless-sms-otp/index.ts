@@ -1,5 +1,9 @@
+import { BaseContext } from '../../models/base-context';
+import { FormHandler } from '../../utils/form-handler';
+
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
+
 import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../interfaces/models/transaction';
@@ -10,8 +14,6 @@ import type {
   SubmitOTPOptions,
 } from '../../../interfaces/screens/login-passwordless-sms-otp';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import { BaseContext } from '../../models/base-context';
-import { FormHandler } from '../../utils/form-handler';
 
 export default class LoginPasswordlessSmsOtp extends BaseContext implements LoginPasswordlessSmsOtpMembers {
   screen: ScreenOptions;
@@ -60,7 +62,4 @@ export default class LoginPasswordlessSmsOtp extends BaseContext implements Logi
   }
 }
 
-export {
-  LoginPasswordlessSmsOtpMembers,
-  SubmitOTPOptions,
-}
+export { LoginPasswordlessSmsOtpMembers, SubmitOTPOptions };

@@ -1,7 +1,8 @@
-import type { ScreenContext } from '../../../interfaces/models/screen';
-import type { ScreenMembersOnPhoneIdentifierEnrollment as OverrideOptions } from '../../../interfaces/screens/phone-identifier-enrollment';
 import { getEditIdentifierLink } from '../../../src/shared/screen';
 import { Screen } from '../../models/screen';
+
+import type { ScreenContext } from '../../../interfaces/models/screen';
+import type { ScreenMembersOnPhoneIdentifierEnrollment as OverrideOptions } from '../../../interfaces/screens/phone-identifier-enrollment';
 
 export class ScreenOverride extends Screen implements OverrideOptions {
   editIdentifierLink: OverrideOptions['editIdentifierLink'];
@@ -16,7 +17,7 @@ export class ScreenOverride extends Screen implements OverrideOptions {
   static getScreenData(screenContext: ScreenContext): OverrideOptions['data'] {
     const data = screenContext.data;
     if (!data) return null;
-    
+
     return {
       ...data,
       phone: data?.phone_number,

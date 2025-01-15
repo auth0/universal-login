@@ -1,6 +1,6 @@
-import { CustomOptions } from '../common';
+import type { TransactionMembers } from '../../interfaces/models/transaction';
+import type { CustomOptions } from '../common';
 import type { ScreenMembers, ScreenContext } from '../models/screen';
-import { TransactionMembers } from '../../interfaces/models/transaction';
 
 export interface ScreenContextOnLoginPasswordlessSmsOtp extends ScreenContext {
   links: {
@@ -15,7 +15,7 @@ export interface ScreenMembersOnLoginPasswordlessSmsOtp extends ScreenMembers {
   backLink: string | null;
   data: {
     username: string;
-  }
+  };
 }
 
 export interface TransactionMembersOnLoginPasswordlessSmsOtp extends TransactionMembers {

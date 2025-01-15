@@ -6,6 +6,7 @@ export class FormHandler {
     this.options = options;
   }
 
+  // eslint-disable-next-line @typescript-eslint/require-await
   async submitData<T>(payload: T): Promise<void> {
     const extendedPayload: PostPayloadOptions = {
       ...payload,
@@ -21,7 +22,7 @@ export class FormHandler {
   private buildForm(payload: PostPayloadOptions): HTMLFormElement {
     const $form = document.createElement('form');
     $form.method = 'POST';
-    $form.action = this.options.route || '';
+    $form.action = this.options.route ?? '';
 
     Object.entries(payload).forEach(([key, value]) => {
       const input = document.createElement('input');

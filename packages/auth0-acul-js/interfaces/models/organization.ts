@@ -20,14 +20,12 @@ export interface OrganizationMembers {
   name: string | null;
   usage: string | null;
   displayName: string | null;
-  branding:
-    | {
-        logoUrl?: string | undefined;
-        colors?: {
-          primary?: string | undefined;
-          pageBackground?: string;
-        };
-      }
-    | null;
+  branding: {
+    logoUrl?: string | undefined;
+    colors?: {
+      primary?: string | undefined;
+      pageBackground?: string;
+    };
+  } | null;
   metadata: { [key: string]: string } | null;
 }

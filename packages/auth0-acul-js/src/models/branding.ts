@@ -1,7 +1,7 @@
 import type { BrandingContext, BrandingMembers } from '../../interfaces/models/branding';
 
 export class Branding implements BrandingMembers {
-  settings:  BrandingMembers['settings'];
+  settings: BrandingMembers['settings'];
   themes: BrandingMembers['themes'];
 
   constructor(branding: BrandingContext | undefined) {
@@ -29,14 +29,14 @@ export class Branding implements BrandingMembers {
                 },
         },
       }),
-      ...(favicon_url ? { faviconUrl: favicon_url } : {}),
-      ...(logo_url ? { logoUrl: logo_url } : {}),
-      ...(font ? { fontUrl: font.url } : {}),
+      ...(typeof favicon_url === 'string' && favicon_url.length > 0 ? { faviconUrl: favicon_url } : {}),
+      ...(typeof logo_url === 'string' && logo_url.length > 0 ? { logoUrl: logo_url } : {}),
+      ...(typeof font?.url === 'string' && font.url.length > 0 ? { fontUrl: font.url } : {}),
     };
   }
 
   static getThemes(branding: BrandingContext | undefined): BrandingMembers['themes'] {
-    if (!branding || !branding?.themes) return null;
+    if (!branding?.themes) return null;
 
     const { default: { borders = {}, colors = {}, displayName = '', fonts = {}, page_background: pageBackground = {}, widget = {} } = {} } =
       branding.themes;

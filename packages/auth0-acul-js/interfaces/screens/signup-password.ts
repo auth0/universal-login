@@ -1,6 +1,6 @@
 import type { BaseContext, BaseMembers } from '../models/base-context';
 import type { ScreenContext, ScreenMembers } from '../models/screen';
-import type { TransactionContext, PasswordPolicy, TransactionMembers } from '../models/transaction';
+import type { PasswordPolicy, TransactionMembers } from '../models/transaction';
 
 export interface ScreenContextOnSignupPassword extends ScreenContext {
   links: {
@@ -45,7 +45,7 @@ export interface SignupPasswordOptions {
   [key: string]: string | number | boolean | undefined;
 }
 
-export interface SignupPasswordMembers extends BaseMembers{
+export interface SignupPasswordMembers extends BaseMembers {
   screen: ScreenMembersOnSignupPassword;
   transaction: TransactionMembersOnSignupPassword;
   signup(payload: SignupPasswordOptions): Promise<void>;

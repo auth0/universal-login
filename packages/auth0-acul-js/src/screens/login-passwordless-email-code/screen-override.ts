@@ -1,7 +1,8 @@
-import type { ScreenContext } from '../../../interfaces/models/screen';
-import type { ScreenMembersOnLoginPasswordlessEmailCode as OverrideOptions } from '../../../interfaces/screens/login-passwordless-email-code';
 import { Screen } from '../../models/screen';
 import { getSignupLink, getResetPasswordLink, getEditIdentifierLink } from '../../shared/screen';
+
+import type { ScreenContext } from '../../../interfaces/models/screen';
+import type { ScreenMembersOnLoginPasswordlessEmailCode as OverrideOptions } from '../../../interfaces/screens/login-passwordless-email-code';
 
 export class ScreenOverride extends Screen implements OverrideOptions {
   signupLink: OverrideOptions['signupLink'];

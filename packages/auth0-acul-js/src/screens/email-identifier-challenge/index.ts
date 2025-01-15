@@ -1,4 +1,8 @@
+import { BaseContext } from '../../models/base-context';
+import { FormHandler } from '../../utils/form-handler';
+
 import { ScreenOverride } from './screen-override';
+
 import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type {
@@ -7,8 +11,6 @@ import type {
   ScreenMembersOnEmailIdentifierChallenge as ScreenOptions,
 } from '../../../interfaces/screens/email-identifier-challenge';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import { BaseContext } from '../../models/base-context';
-import { FormHandler } from '../../utils/form-handler';
 
 export default class EmailIdentifierChallenge extends BaseContext implements EmailIdentifierChallengeMembers {
   screen: ScreenOptions;
@@ -64,8 +66,4 @@ export default class EmailIdentifierChallenge extends BaseContext implements Ema
   }
 }
 
-export {
-  EmailIdentifierChallengeMembers,
-  EmailChallengeOptions,
-  ScreenOptions,
-}
+export { EmailIdentifierChallengeMembers, EmailChallengeOptions, ScreenOptions };

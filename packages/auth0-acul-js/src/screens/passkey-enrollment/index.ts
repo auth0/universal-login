@@ -1,11 +1,13 @@
+import { BaseContext } from '../../models/base-context';
+import { FormHandler } from '../../utils/form-handler';
+import { createPasskeyCredentials } from '../../utils/passkeys';
+
 import { ScreenOverride } from './screen-override';
+
 import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { PasskeyEnrollmentMembers, ScreenMembersOnPasskeyEnrollment as ScreenOptions } from '../../../interfaces/screens/passkey-enrollment';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import { BaseContext } from '../../models/base-context';
-import { FormHandler } from '../../utils/form-handler';
-import { createPasskeyCredentials } from '../../utils/passkeys';
 
 export default class PasskeyEnrollment extends BaseContext implements PasskeyEnrollmentMembers {
   screen: ScreenOptions;
@@ -52,6 +54,4 @@ export default class PasskeyEnrollment extends BaseContext implements PasskeyEnr
   }
 }
 
-export {
-  PasskeyEnrollmentMembers
-}
+export { PasskeyEnrollmentMembers };

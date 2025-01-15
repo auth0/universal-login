@@ -1,6 +1,6 @@
-import { CustomOptions } from '../common';
+import type { CustomOptions } from '../common';
 import type { BaseMembers } from '../models/base-context';
-import { ScreenMembers } from '../models/screen';
+import type { ScreenMembers } from '../models/screen';
 
 export interface EmailChallengeOptions {
   code: string;

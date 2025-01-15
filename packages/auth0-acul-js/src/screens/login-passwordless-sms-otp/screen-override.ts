@@ -1,7 +1,8 @@
-import type { ScreenContext } from '../../../interfaces/models/screen';
-import type { ScreenMembersOnLoginPasswordlessSmsOtp as OverrideOptions } from '../../../interfaces/screens/login-passwordless-sms-otp';
 import { Screen } from '../../models/screen';
 import { getSignupLink, getResetPasswordLink, getBackLink } from '../../shared/screen';
+
+import type { ScreenContext } from '../../../interfaces/models/screen';
+import type { ScreenMembersOnLoginPasswordlessSmsOtp as OverrideOptions } from '../../../interfaces/screens/login-passwordless-sms-otp';
 
 export class ScreenOverride extends Screen implements OverrideOptions {
   signupLink: OverrideOptions['signupLink'];
@@ -15,5 +16,5 @@ export class ScreenOverride extends Screen implements OverrideOptions {
     this.resetPasswordLink = getResetPasswordLink(screenContext);
     this.backLink = getBackLink(screenContext);
     this.data = Screen.getScreenData(screenContext) as OverrideOptions['data'];
-  }  
+  }
 }
