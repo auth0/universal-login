@@ -65,10 +65,13 @@
     "docs": "typedoc --options typedoc.json",
     "lint": "npm run lint:interfaces && npm run lint:src",
     "lint:src": "eslint 'src/**/*.{js,ts}' --config .eslintrc.json",
-    "lint:interfaces": "eslint 'interfaces/**/*.{js,ts}' --config .eslintrc.json",
+    "lint:interfaces": "eslint 'interfaces/**/*.ts' --config .eslintrc.json",
     "lint:src:fix": "eslint 'src/**/*.{js,ts}' --config .eslintrc.json --fix",
-    "lint:interfaces:fix": "eslint 'interfaces/**/*.{js,ts}' --config .eslintrc.json --fix",
-    "format": "prettier --write 'src/**/*.{js,ts,tsx,json,css,md}'"
+    "lint:interfaces:fix": "eslint 'interfaces/**/*.ts' --config .eslintrc.json --fix",
+    "lint:watch": "chokidar 'src/**/*.{js,ts}' 'interfaces/**/*.ts' -c 'npm run lint'",
+    "format:src": "prettier --write 'src/**/*.{js,ts,tsx,json,css,md}'",
+    "format:interfaces": "prettier --write 'src/**/*.{js,ts,tsx,json,css,md}'",
+    "format": "npm run format:src && npm run format:interfaces"
   },
   "author": "Auth0",
   "license": "MIT",
@@ -91,7 +94,6 @@
     "README.md",
     "LICENSE"
   ],
-
   "devDependencies": {
     "@rollup/plugin-alias": "^5.1.1",
     "@rollup/plugin-node-resolve": "^15.3.0",
@@ -104,6 +106,7 @@
     "@types/jest": "^29.5.12",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
+    "chokidar-cli": "^3.0.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.3",
