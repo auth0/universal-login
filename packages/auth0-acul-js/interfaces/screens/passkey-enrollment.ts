@@ -1,6 +1,6 @@
-import { CustomOptions } from '../common';
+import type { CustomOptions } from '../common';
 import type { BaseContext, BaseMembers } from '../models/base-context';
-import type { ScreenContext, PasskeyCreate, ScreenMembers, PasskeyRead } from '../models/screen';
+import type { ScreenContext, PasskeyCreate, ScreenMembers } from '../models/screen';
 
 export interface ExtendedScreenContext extends ScreenContext {
   links: {
@@ -9,7 +9,7 @@ export interface ExtendedScreenContext extends ScreenContext {
 
   data: {
     passkeys: PasskeyCreate;
-  }
+  };
 }
 
 export interface PasskeyEnrollment extends BaseContext {

@@ -1,5 +1,9 @@
+import { BaseContext } from '../../models/base-context';
+import { FormHandler } from '../../utils/form-handler';
+
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
+
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type {
@@ -9,8 +13,6 @@ import type {
   TransactionMembersOnLoginPassword as TransactionOptions,
 } from '../../../interfaces/screens/login-password';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import { BaseContext } from '../../models/base-context';
-import { FormHandler } from '../../utils/form-handler';
 
 export default class LoginPassword extends BaseContext implements LoginPasswordMembers {
   screen: ScreenOptions;
@@ -43,7 +45,4 @@ export default class LoginPassword extends BaseContext implements LoginPasswordM
   }
 }
 
-export {
-  LoginPasswordMembers,
-  LoginPasswordOptions
-}
+export { LoginPasswordMembers, LoginPasswordOptions };

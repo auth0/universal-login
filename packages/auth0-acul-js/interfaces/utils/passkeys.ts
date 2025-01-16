@@ -25,4 +25,3 @@ export interface PasskeyCreateResponse {
   authenticatorAttachment: string | null;
   response: CredentialResponse;
 }
-

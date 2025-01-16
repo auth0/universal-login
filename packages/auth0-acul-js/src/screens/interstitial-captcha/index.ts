@@ -1,7 +1,8 @@
-import type { InterstitialCaptchaMembers, SubmitCaptchaOptions } from '../../../interfaces/screens/interstitial-captcha';
-import type { FormOptions } from '../../../interfaces/utils/form-handler';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
+
+import type { InterstitialCaptchaMembers, SubmitCaptchaOptions } from '../../../interfaces/screens/interstitial-captcha';
+import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 export default class InterstitialCaptcha extends BaseContext implements InterstitialCaptchaMembers {
   constructor() {
@@ -13,7 +14,7 @@ export default class InterstitialCaptcha extends BaseContext implements Intersti
    *
    * @example
    * import InterstitialCaptcha from "@auth0/auth0-acul-js/interstitial-captcha";
-   * 
+   *
    * const interstitialCaptcha = new InterstitialCaptcha();
    * interstitialCaptcha.submitCaptcha({
    *  captcha: "captchaValue",
@@ -27,7 +28,4 @@ export default class InterstitialCaptcha extends BaseContext implements Intersti
   }
 }
 
-export {
-  InterstitialCaptchaMembers,
-  SubmitCaptchaOptions
-}
+export { InterstitialCaptchaMembers, SubmitCaptchaOptions };

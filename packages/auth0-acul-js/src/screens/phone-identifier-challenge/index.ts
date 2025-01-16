@@ -1,4 +1,8 @@
+import { BaseContext } from '../../models/base-context';
+import { FormHandler } from '../../utils/form-handler';
+
 import { ScreenOverride } from './screen-override';
+
 import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type {
@@ -7,8 +11,6 @@ import type {
   PhoneIdentifierChallengeMembers,
 } from '../../../interfaces/screens/phone-identifier-challenge';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import { BaseContext } from '../../models/base-context';
-import { FormHandler } from '../../utils/form-handler';
 
 export default class PhoneIdentifierChallenge extends BaseContext implements PhoneIdentifierChallengeMembers {
   screen: ScreenOptions;
@@ -65,7 +67,4 @@ export default class PhoneIdentifierChallenge extends BaseContext implements Pho
   }
 }
 
-export {
-  PhoneIdentifierChallengeMembers,
-  PhoneChallengeOptions,
-}
+export { PhoneIdentifierChallengeMembers, PhoneChallengeOptions };

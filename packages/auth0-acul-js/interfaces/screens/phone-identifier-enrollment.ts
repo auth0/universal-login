@@ -1,4 +1,4 @@
-import { CustomOptions } from '../common';
+import type { CustomOptions } from '../common';
 import type { BaseMembers } from '../models/base-context';
 import type { ScreenData, ScreenMembers } from '../models/screen';
 
@@ -21,7 +21,7 @@ export interface PhoneEnrollmentOptions {
 }
 
 export interface PhoneIdentifierEnrollmentMembers extends BaseMembers {
-  screen: ScreenMembersOnPhoneIdentifierEnrollment,
+  screen: ScreenMembersOnPhoneIdentifierEnrollment;
   continuePhoneEnrollment(payload: PhoneEnrollmentOptions): Promise<void>;
   returnToPrevious(payload?: CustomOptions): Promise<void>;
 }

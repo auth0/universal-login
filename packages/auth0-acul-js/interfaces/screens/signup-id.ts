@@ -1,7 +1,7 @@
 import type { BaseContext } from '../models/base-context';
 import type { ScreenContext, ScreenMembers } from '../models/screen';
-import type { UntrustedDataContext } from '../models/untrusted-data';
 import type { TransactionMembers, UsernamePolicy } from '../models/transaction';
+import type { UntrustedDataContext } from '../models/untrusted-data';
 
 interface ExtendedScreenContext extends ScreenContext {
   links: {
@@ -51,5 +51,5 @@ export interface SignupIdMembers {
   screen: ScreenMembersOnSignupId;
   transaction: TransactionMembersOnSignupId;
   signup(payload: SignupOptions): Promise<void>;
-  socialSignup(payload: SocialSignupOptions):  Promise<void>;
+  socialSignup(payload: SocialSignupOptions): Promise<void>;
 }

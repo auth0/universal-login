@@ -2,13 +2,13 @@ export interface CaptchaContext {
   provider: string;
   image?: string;
   siteKey?: string;
-};
+}
 
 export interface PasskeyRead {
   public_key: {
     challenge: string;
   };
-};
+}
 
 export interface PasskeyCreate {
   public_key: {
@@ -22,16 +22,18 @@ export interface PasskeyCreate {
       name: string;
     };
     challenge: string;
-    pubKeyCredParams: [{
-      type: string,
-      alg: number
-    }];
+    pubKeyCredParams: [
+      {
+        type: string;
+        alg: number;
+      },
+    ];
     authenticatorSelection: {
       residentKey: string;
       userVerification: string;
     };
   };
-};
+}
 
 export interface ScreenData {
   [key: string]: string | PasskeyRead | PasskeyCreate | undefined;
@@ -41,9 +43,9 @@ export interface ScreenContext {
   name: string;
   links?: Record<string, string>;
   captcha?: CaptchaContext;
-  data?: ScreenData
+  data?: ScreenData;
   texts?: Record<string, string>;
-};
+}
 
 export interface ScreenMembers {
   name: string;

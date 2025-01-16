@@ -2,12 +2,14 @@ export interface BrandingContext {
   settings?: {
     colors?: {
       primary?: string;
-      page_background?: string | {
-        type: string;
-        start: string;
-        end: string;
-        angle_deg: number;
-      };
+      page_background?:
+        | string
+        | {
+            type: string;
+            start: string;
+            end: string;
+            angle_deg: number;
+          };
     };
     favicon_url?: string;
     logo_url?: string;
@@ -25,24 +27,26 @@ export interface BrandingContext {
       widget: Record<string, string | number>;
     };
   };
-};
+}
 
 export interface BrandingSettings {
   colors?: {
     primary?: string;
-    pageBackground?: string | {
-      type: string;
-      start: string;
-      end: string;
-      angleDeg: number;
-    };
+    pageBackground?:
+      | string
+      | {
+          type: string;
+          start: string;
+          end: string;
+          angleDeg: number;
+        };
   };
   faviconUrl?: string;
   logoUrl?: string;
   fontUrl?: string;
-};
+}
 
-export interface BrandingThemes{
+export interface BrandingThemes {
   default: {
     borders: Record<string, string | boolean | number>;
     colors: Record<string, string>;
@@ -51,8 +55,7 @@ export interface BrandingThemes{
     pageBackground: Record<string, string>;
     widget: Record<string, string | number>;
   };
-};
-
+}
 
 /* @namespace Client */
 export interface BrandingMembers {

@@ -1,12 +1,8 @@
+import { Transaction } from '../../models/transaction';
+import { isPasskeyEnabled, getUsernamePolicy, getRequiredIdentifiers, getOptionalIdentifiers } from '../../shared/transaction';
+
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type { TransactionMembersOnSignupId as OverrideOptions } from '../../../interfaces/screens/signup-id';
-import { Transaction } from '../../models/transaction';
-import {
-  isPasskeyEnabled,
-  getUsernamePolicy,
-  getRequiredIdentifiers,
-  getOptionalIdentifiers,
-} from '../../shared/transaction';
 
 export class TransactionOverride extends Transaction implements OverrideOptions {
   isPasskeyEnabled: OverrideOptions['isPasskeyEnabled'];
@@ -22,10 +18,7 @@ export class TransactionOverride extends Transaction implements OverrideOptions 
     this.requiredIdentifiers = TransactionOverride.getRequiredIdentifiers(transactionContext, this.connectionStrategy);
   }
 
-  static getRequiredIdentifiers(
-    transactionContext: TransactionContext,
-    connectionStrategy: string | null
-  ): OverrideOptions['requiredIdentifiers'] {
+  static getRequiredIdentifiers(transactionContext: TransactionContext, connectionStrategy: string | null): OverrideOptions['requiredIdentifiers'] {
     if (connectionStrategy === 'sms') return ['phone'];
     if (connectionStrategy === 'email') return ['email'];
     return getRequiredIdentifiers(transactionContext);

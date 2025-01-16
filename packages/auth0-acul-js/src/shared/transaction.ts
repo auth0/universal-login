@@ -1,4 +1,4 @@
-import type { DBConnection, PasswordPolicy, TransactionContext } from '../../interfaces/models/transaction';
+import type { DBConnection, UsernamePolicy, PasswordPolicy, TransactionContext } from '../../interfaces/models/transaction';
 import type { TransactionMembersOnLoginId } from '../../interfaces/screens/login-id';
 import type { TransactionMembersOnSignupId } from '../../interfaces/screens/signup-id';
 
@@ -20,11 +20,10 @@ export function isPasskeyEnabled(transaction: TransactionContext): boolean {
 export function isUsernameRequired(transaction: TransactionContext): boolean {
   const connection = transaction?.connection as DBConnection;
 
-  if (!connection?.options?.hasOwnProperty('username_required')) return false;
   return connection?.options?.username_required ?? false;
 }
 
-export function getUsernamePolicy(transaction: TransactionContext) {
+export function getUsernamePolicy(transaction: TransactionContext): UsernamePolicy | null {
   const connection = transaction?.connection as DBConnection;
 
   if (!connection?.options?.attributes?.username?.validation) return null;
@@ -40,12 +39,14 @@ export function getUsernamePolicy(transaction: TransactionContext) {
   };
 }
 
-export function getPasswordPolicy(transaction: TransactionContext) {
+export function getPasswordPolicy(transaction: TransactionContext): PasswordPolicy | null {
   const connection = transaction?.connection as DBConnection;
 
+  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
   if (!connection?.options?.authentication_methods?.password) return null;
   const { password } = connection.options.authentication_methods;
 
+  // eslint-disable-next-line  @typescript-eslint/strict-boolean-expressions
   if (!password?.policy && !password?.min_length) return null;
 
   return {
@@ -57,9 +58,9 @@ export function getPasswordPolicy(transaction: TransactionContext) {
 
 export function getAllowedIdentifiers(transaction: TransactionContext): TransactionMembersOnLoginId['allowedIdentifiers'] {
   const identifiers: TransactionMembersOnLoginId['allowedIdentifiers'] = [];
-
   const connection = transaction?.connection as DBConnection;
 
+  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
   if (!connection?.options?.attributes) return null;
 
   const { email, username, phone } = connection.options.attributes;
@@ -67,6 +68,7 @@ export function getAllowedIdentifiers(transaction: TransactionContext): Transact
   const identifiersList = ['email', 'username', 'phone'];
 
   [email, username, phone].forEach((attribute, index) => {
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (attribute?.signup_status && requiredStatusList.includes(attribute.signup_status)) {
       identifiers.push(identifiersList[index] as 'email' | 'username' | 'phone');
     }
@@ -75,7 +77,7 @@ export function getAllowedIdentifiers(transaction: TransactionContext): Transact
   return identifiers.length > 0 ? identifiers : null;
 }
 
-export function getRequiredIdentifiers(transaction: TransactionContext) {
+export function getRequiredIdentifiers(transaction: TransactionContext): TransactionMembersOnSignupId['requiredIdentifiers'] {
   return getIdentifiersByStatus(transaction, 'required');
 }
 
@@ -85,10 +87,11 @@ export function getOptionalIdentifiers(transaction: TransactionContext): Transac
 
 function getIdentifiersByStatus(transaction: TransactionContext, status: 'required' | 'optional'): ('email' | 'username' | 'phone')[] | null {
   const connection = transaction?.connection as DBConnection;
+  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
   if (!connection?.options?.attributes) return null;
 
   const identifiers = Object.entries(connection.options.attributes)
-    .filter(([_, value]) => value.signup_status === status)
+    .filter(([, value]) => value.signup_status === status)
     .map(([key]) => key as 'email' | 'username' | 'phone');
 
   return identifiers.length > 0 ? identifiers : null;

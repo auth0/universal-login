@@ -1,5 +1,3 @@
-import type { TransactionContext } from '../../../interfaces/models/transaction';
-import type { TransactionMembersOnLoginId as OverrideMembers } from '../../../interfaces/screens/login-id';
 import { Transaction } from '../../../src/models/transaction';
 import {
   isUsernameRequired,
@@ -9,6 +7,9 @@ import {
   isForgotPasswordEnabled,
   isPasskeyEnabled,
 } from '../../shared/transaction';
+
+import type { TransactionContext } from '../../../interfaces/models/transaction';
+import type { TransactionMembersOnLoginId as OverrideMembers } from '../../../interfaces/screens/login-id';
 
 export class TransactionOverride extends Transaction implements OverrideMembers {
   isSignupEnabled: OverrideMembers['isSignupEnabled'];
@@ -28,10 +29,7 @@ export class TransactionOverride extends Transaction implements OverrideMembers 
     this.allowedIdentifiers = TransactionOverride.getAllowedIdentifiers(transactionContext, this.connectionStrategy);
   }
 
-  static getAllowedIdentifiers(
-    transactionContext: TransactionContext,
-    connectionStrategy: string | null
-  ): OverrideMembers['allowedIdentifiers'] {
+  static getAllowedIdentifiers(transactionContext: TransactionContext, connectionStrategy: string | null): OverrideMembers['allowedIdentifiers'] {
     if (connectionStrategy === 'sms') return ['phone'];
     if (connectionStrategy === 'email') return ['email'];
     return getAllowedIdentifiers(transactionContext);

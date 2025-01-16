@@ -1,6 +1,7 @@
 import { isWebAuthPlatformAvailable } from './browser-capabilities';
 import { base64UrlToUint8Array, uint8ArrayToBase64Url } from './codec';
 import { Errors } from './errors';
+
 import type { PasskeyRead, PasskeyCreate } from '../../interfaces/models/screen';
 import type { PasskeyCreateResponse, PasskeyCredentialResponse } from '../../interfaces/utils/passkeys';
 
@@ -38,7 +39,7 @@ function isAuthenticatorAssertionResponse(response: AuthenticatorResponse): resp
 }
 
 export async function getPasskeyCredentials(publicKey: PasskeyRead['public_key']): Promise<PasskeyCredentialResponse> {
-  if (!publicKey) throw new Error(Errors.PASSKEY_PUBLIC_KEY_UNAVAILABLE);
+  if (!publicKey?.challenge) throw new Error(Errors.PASSKEY_PUBLIC_KEY_UNAVAILABLE);
 
   const hasWebAuthPlatform = await isWebAuthPlatformAvailable();
   const challenge = base64UrlToUint8Array(publicKey.challenge);
@@ -68,7 +69,7 @@ export async function getPasskeyCredentials(publicKey: PasskeyRead['public_key']
 }
 
 export async function createPasskeyCredentials(publicKey: PasskeyCreate['public_key']): Promise<PasskeyCreateResponse> {
-  if (!publicKey) throw new Error(Errors.PASSKEY_PUBLIC_KEY_UNAVAILABLE);
+  if (!publicKey?.challenge) throw new Error(Errors.PASSKEY_PUBLIC_KEY_UNAVAILABLE);
 
   const publicKeyDecoded = decodePublicKey(publicKey);
   const credential = (await navigator.credentials.create({ publicKey: publicKeyDecoded })) as PublicKeyCredential | null;
@@ -83,7 +84,7 @@ export async function createPasskeyCredentials(publicKey: PasskeyCreate['public_
     response: {
       clientDataJSON: uint8ArrayToBase64Url(credentialResponse.clientDataJSON),
       attestationObject: uint8ArrayToBase64Url(credentialResponse.attestationObject),
-      transports: credentialResponse.getTransports ? credentialResponse.getTransports() : undefined,
+      transports: typeof credentialResponse?.getTransports === 'function' ? credentialResponse.getTransports() : undefined,
     },
   };
 }

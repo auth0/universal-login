@@ -1,5 +1,3 @@
-import type { TransactionContext } from '../../../interfaces/models/transaction';
-import type { TransactionMembersOnLoginPassword as OverrideMembers } from '../../../interfaces/screens/login-password';
 import { Transaction } from '../../models/transaction';
 import {
   isSignupEnabled,
@@ -9,6 +7,9 @@ import {
   getUsernamePolicy,
   getAllowedIdentifiers,
 } from '../../shared/transaction';
+
+import type { TransactionContext } from '../../../interfaces/models/transaction';
+import type { TransactionMembersOnLoginPassword as OverrideMembers } from '../../../interfaces/screens/login-password';
 
 export class TransactionOverride extends Transaction implements OverrideMembers {
   constructor(transactionContext: TransactionContext) {

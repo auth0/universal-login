@@ -1,5 +1,9 @@
+import { BaseContext } from '../../models/base-context';
+import { FormHandler } from '../../utils/form-handler';
+
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
+
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type {
   SignupPasswordMembers,
@@ -9,8 +13,6 @@ import type {
   SignupPasswordOptions,
 } from '../../../interfaces/screens/signup-password';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import { BaseContext } from '../../models/base-context';
-import { FormHandler } from '../../utils/form-handler';
 
 export default class SignupPassword extends BaseContext implements SignupPasswordMembers {
   screen: ScreenOptions;
@@ -30,13 +32,13 @@ export default class SignupPassword extends BaseContext implements SignupPasswor
    * @remarks
    * This methods handles signup-password related screen configuration.
    * It allows to proceed with registering signup password along with signup identifiers passed in previous screen
-   * 
+   *
    * @example
    * import SignupPassword from "@auth0/auth0-acul-js/signup-password";
    *
    * const signupPasswordManager = new SignupPassword();
    * const { transaction, screen } = signupPasswordManager;
-   * 
+   *
    * //get mandatory & optional identifiers required for signup-password screen to proceed
    * const mandatoryIdentifier = transaction.getRequiredIdentifiers(); //eg: email
    * const optionalIdentifiers = transaction.getOptionalIdentifiers() //eg: phone
@@ -66,7 +68,4 @@ export default class SignupPassword extends BaseContext implements SignupPasswor
   }
 }
 
-export {
-  SignupPasswordMembers,
-  SignupPasswordOptions
-}
+export { SignupPasswordMembers, SignupPasswordOptions };

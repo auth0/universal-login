@@ -1,7 +1,8 @@
-import type { ScreenContext } from '../../../interfaces/models/screen';
-import type { ScreenMembersOnPasskeyEnrollment as OverrideOptions } from '../../../interfaces/screens/passkey-enrollment';
 import { Screen } from '../../models/screen';
 import { getBackLink, getLoginLink, getPublicKey } from '../../shared/screen';
+
+import type { ScreenContext } from '../../../interfaces/models/screen';
+import type { ScreenMembersOnPasskeyEnrollment as OverrideOptions } from '../../../interfaces/screens/passkey-enrollment';
 
 export class ScreenOverride extends Screen implements OverrideOptions {
   loginLink: OverrideOptions['loginLink'];

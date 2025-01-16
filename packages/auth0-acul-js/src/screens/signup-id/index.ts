@@ -1,5 +1,9 @@
+import { BaseContext } from '../../models/base-context';
+import { FormHandler } from '../../utils/form-handler';
+
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
+
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type {
@@ -10,8 +14,6 @@ import type {
   SocialSignupOptions,
 } from '../../../interfaces/screens/signup-id';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import { BaseContext } from '../../models/base-context';
-import { FormHandler } from '../../utils/form-handler';
 
 export default class SignupId extends BaseContext implements SignupIdMembers {
   screen: ScreenOptions;
@@ -37,11 +39,11 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
    *
    * const signupIdManager = new SignupId();
    * const { transaction } = signupIdManager;
-   * 
+   *
    * //get mandatory & optional identifiers required for signup
    * const mandatoryIdentifier = transaction.getRequiredIdentifiers(); // eg: email
    * const optionalIdentifiers = transaction.getOptionalIdentifiers() // eg: phone
-   * 
+   *
    * const signupParams = {
    *  email : "testEmail",
    *  phone : "+91923456789"
@@ -96,8 +98,4 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
   }
 }
 
-export {
-  SignupIdMembers,
-  SignupOptions,
-  SocialSignupOptions
-}
+export { SignupIdMembers, SignupOptions, SocialSignupOptions };

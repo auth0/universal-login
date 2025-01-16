@@ -1,4 +1,9 @@
+import { BaseContext } from '../../models/base-context';
+import { FormHandler } from '../../utils/form-handler';
+import { createPasskeyCredentials } from '../../utils/passkeys';
+
 import { ScreenOverride } from './screen-override';
+
 import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type {
@@ -7,9 +12,6 @@ import type {
   AbortEnrollmentOptions,
 } from '../../../interfaces/screens/passkey-enrollment-local';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import { BaseContext } from '../../models/base-context';
-import { FormHandler } from '../../utils/form-handler';
-import { createPasskeyCredentials } from '../../utils/passkeys';
 
 export default class PasskeyEnrollmentLocal extends BaseContext implements PasskeyEnrollmentLocalMembers {
   screen: ScreenOptions;
@@ -62,7 +64,4 @@ export default class PasskeyEnrollmentLocal extends BaseContext implements Passk
   }
 }
 
-export {
-  PasskeyEnrollmentLocalMembers,
-  AbortEnrollmentOptions
-}
+export { PasskeyEnrollmentLocalMembers, AbortEnrollmentOptions };
