@@ -11,3 +11,4 @@ export type { PhoneIdentifierEnrollmentMembers } from '../screens/phone-identifi
 export type { EmailIdentifierChallengeMembers } from '../screens/email-identifier-challenge';
 export type { InterstitialCaptchaMembers } from '../screens/interstitial-captcha';
 export type { LoginMembers } from '../screens/login';
+export type { ResetPasswordEmailMembers } from '../screens/reset-password-email';

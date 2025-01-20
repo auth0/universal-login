@@ -11,6 +11,7 @@ export { default as PhoneIdentifierEnrollment } from './phone-identifier-enrollm
 export { default as EmailIdentifierChallenge } from './email-identifier-challenge';
 export { default as InterstitialCaptcha } from './interstitial-captcha';
 export { default as SignupNew } from './signup';
+export { default as ResetPasswordEmail } from './reset-password-email';
 // export function currentScreen(): ScreenContext['name'] {
 //   const currentContext = new BaseContext();
 //   const currentScreen = currentContext.getContext('screen') as ScreenContext;

@@ -13,3 +13,4 @@ export type { ScreenMembersOnPhoneIdentifierEnrollment } from '../screens/phone-
 export type { ScreenMembersOnSignupId, TransactionMembersOnSignupId } from '../screens/signup-id';
 export type { ScreenMembersOnSignupPassword, TransactionMembersOnSignupPassword } from '../screens/signup-password';
 export type { ScreenMembersOnSignupNew } from '../screens/signup';
+export type { ScreenMembersOnResetPasswordEmail } from '../screens/reset-password-email';
