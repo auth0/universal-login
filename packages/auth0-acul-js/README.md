@@ -1,12 +1,3 @@
-![ACUL JS SDK](https://cdn.auth0.com/website/sdks/banners/auth0-acul-js-banner.png)
-
-![Release](https://img.shields.io/npm/v/auth0-acul-js)
-[![Codecov](https://img.shields.io/codecov/c/github/auth0/auth0-acul-js)](https://codecov.io/gh/auth0/auth0-acul-js)
-![Downloads](https://img.shields.io/npm/dw/auth0-acul-js)
-[![License](https://img.shields.io/:license-mit-blue.svg?style=flat)](https://opensource.org/licenses/MIT)
-
- 📚 [Documentation](#documentation) - 🚀 [Getting Started](#getting-started) - 💻 [API Reference](#api-reference) - 💬 [Feedback](#feedback)
-
 The **Auth0 ACUL JS SDK** enables you to work with Advanced Customization for Universal Login.
 
 It simplifies integrating authentication screens (login, signup, passwordless, passkey enrollment, etc.) into your web applications, providing the necessary tools for seamless implementation.
@@ -143,6 +134,7 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
   15. [reset-password-request](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordRequest.html)
   16. [reset-password](https://auth0.github.io/universal-login/classes/Classes.ResetPassword.html)
   17. [reset-password-error](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordError.html)
+  18. [reset-password-success](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordSuccess.html)
 </details>
 
 
