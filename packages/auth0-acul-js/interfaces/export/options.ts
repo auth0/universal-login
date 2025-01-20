@@ -12,3 +12,4 @@ export type { SignupPasswordOptions } from '../screens/signup-password';
 export type { CustomOptions } from '../common';
 export type { SignupNewOptions } from '../screens/signup';
 export type { ResetPasswordEmailOptions } from '../screens/reset-password-email';
+export type { ResetPasswordRequestOptions } from '../screens/reset-password-request';

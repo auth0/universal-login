@@ -1,0 +1,124 @@
+import ResetPasswordRequest from '../../../src/screens/reset-password-request';
+import { baseContextData } from '../../data/test-data';
+import { FormHandler } from '../../../src/utils/form-handler';
+import { ResetPasswordRequestOptions } from '../../../interfaces/screens/reset-password-request';
+import { CustomOptions } from '../../../interfaces/common';
+
+jest.mock('../../../src/utils/form-handler');
+
+describe('ResetPasswordRequest', () => {
+  let resetPasswordRequest: ResetPasswordRequest;
+  let mockFormHandler: { submitData: jest.Mock };
+
+  beforeEach(() => {
+    global.window = Object.create(window);
+    window.universal_login_context = baseContextData;
+    resetPasswordRequest = new ResetPasswordRequest();
+    mockFormHandler = {
+      submitData: jest.fn(),
+    };
+    (FormHandler as jest.Mock).mockImplementation(() => mockFormHandler);
+  });
+
+  describe('continueWithEmail method', () => {
+    it('should handle continueWithEmail with valid payload correctly', async () => {
+      const payload: ResetPasswordRequestOptions = {
+        email: 'test@example.com',
+      };
+      await resetPasswordRequest.continueWithEmail(payload);
+      expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith(
+        expect.objectContaining(payload)
+      );
+    });
+
+    it('should throw error when promise is rejected', async () => {
+      mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
+      const payload: ResetPasswordRequestOptions = {
+        email: 'test@example.com',
+      };
+      await expect(resetPasswordRequest.continueWithEmail(payload)).rejects.toThrow(
+        'Mocked reject'
+      );
+    });
+
+    it('should throw error when email is empty', async () => {
+      mockFormHandler.submitData.mockRejectedValueOnce(
+        new Error('Invalid email')
+      );
+      const payload = { email: '' };
+      await expect(resetPasswordRequest.continueWithEmail(payload)).rejects.toThrow(
+        'Invalid email'
+      );
+    });
+  });
+
+  describe('continueWithUsername method', () => {
+    it('should handle continueWithUsername with valid payload correctly', async () => {
+      const payload: ResetPasswordRequestOptions = {
+        username: 'testuser',
+      };
+      await resetPasswordRequest.continueWithUsername(payload);
+      expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith(
+        expect.objectContaining(payload)
+      );
+    });
+
+    it('should throw error when promise is rejected', async () => {
+      mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
+      const payload: ResetPasswordRequestOptions = {
+        username: 'testuser',
+      };
+      await expect(resetPasswordRequest.continueWithUsername(payload)).rejects.toThrow(
+        'Mocked reject'
+      );
+    });
+
+    it('should throw error when username is empty', async () => {
+      mockFormHandler.submitData.mockRejectedValueOnce(
+        new Error('Invalid username')
+      );
+      const payload = { username: '' };
+      await expect(resetPasswordRequest.continueWithUsername(payload)).rejects.toThrow(
+        'Invalid username'
+      );
+    });
+  });
+
+  describe('backToLogin method', () => {
+    it('should handle backToLogin with valid payload correctly', async () => {
+      const payload: CustomOptions = {
+        email: 'test@example.com',
+      };
+      await resetPasswordRequest.backToLogin(payload);
+      expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith(
+        expect.objectContaining({
+          ...payload,
+          action: 'back-to-login',
+        })
+      );
+    });
+
+    it('should handle backToLogin without payload correctly', async () => {
+      await resetPasswordRequest.backToLogin();
+      expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith(
+        expect.objectContaining({
+          action: 'back-to-login',
+        })
+      );
+    });
+
+    it('should throw error when promise is rejected', async () => {
+      mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
+      const payload: CustomOptions = {
+        email: 'test@example.com',
+      };
+      await expect(resetPasswordRequest.backToLogin(payload)).rejects.toThrow(
+        'Mocked reject'
+      );
+    });
+  });
+});
