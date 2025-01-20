@@ -13,3 +13,4 @@ export * as SignupNew from './signup';
 export * as ResetPasswordEmail from './reset-password-email';
 export * as ResetPasswordRequest from './reset-password-request';
 export * as ResetPassword from './reset-password';
+export * as ResetPasswordError from './reset-password-error';

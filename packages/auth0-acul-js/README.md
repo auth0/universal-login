@@ -142,6 +142,7 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
   14. [reset-password-email](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordEmail.html)
   15. [reset-password-request](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordRequest.html)
   16. [reset-password](https://auth0.github.io/universal-login/classes/Classes.ResetPassword.html)
+  17. [reset-password-error](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordError.html)
 </details>
 
 

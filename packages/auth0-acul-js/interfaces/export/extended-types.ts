@@ -16,3 +16,4 @@ export type { ScreenMembersOnSignupNew } from '../screens/signup';
 export type { ScreenMembersOnResetPasswordEmail } from '../screens/reset-password-email';
 export type { ScreenMembersOnResetPasswordRequest } from '../screens/reset-password-request';
 export type { ScreenMembersOnResetPassword } from '../screens/reset-password';
+export type { ScreenMembersOnResetPasswordError } from '../screens/reset-password-error';

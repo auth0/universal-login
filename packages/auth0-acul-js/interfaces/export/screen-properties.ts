@@ -14,3 +14,4 @@ export type { LoginMembers } from '../screens/login';
 export type { ResetPasswordEmailMembers } from '../screens/reset-password-email';
 export type { ResetPasswordRequestMembers } from '../screens/reset-password-request';
 export type { ResetPasswordMembers } from '../screens/reset-password';
+export type { ResetPasswordErrorMembers } from '../screens/reset-password-error';

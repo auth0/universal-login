@@ -13,6 +13,7 @@ export { default as InterstitialCaptcha } from './interstitial-captcha';
 export { default as SignupNew } from './signup';
 export { default as ResetPasswordEmail } from './reset-password-email';
 export { default as ResetPassword } from './reset-password';
+export { default as ResetPasswordError } from './reset-password-error';
 // export function currentScreen(): ScreenContext['name'] {
 //   const currentContext = new BaseContext();
 //   const currentScreen = currentContext.getContext('screen') as ScreenContext;
