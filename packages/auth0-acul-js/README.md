@@ -1,3 +1,12 @@
+![ACUL JS SDK](https://cdn.auth0.com/website/sdks/banners/auth0-acul-js-banner.png)
+
+![Release](https://img.shields.io/npm/v/auth0-acul-js)
+[![Codecov](https://img.shields.io/codecov/c/github/auth0/auth0-acul-js)](https://codecov.io/gh/auth0/auth0-acul-js)
+![Downloads](https://img.shields.io/npm/dw/auth0-acul-js)
+[![License](https://img.shields.io/:license-mit-blue.svg?style=flat)](https://opensource.org/licenses/MIT)
+
+📚 [Documentation](#documentation) - 🚀 [Getting Started](#getting-started) - 💻 [API Reference](#api-reference) - 💬 [Feedback](#feedback)
+
 The **Auth0 ACUL JS SDK** enables you to work with Advanced Customization for Universal Login.
 
 It simplifies integrating authentication screens (login, signup, passwordless, passkey enrollment, etc.) into your web applications, providing the necessary tools for seamless implementation.
@@ -46,14 +55,14 @@ After installing the SDK, you can import the relevant screen module, which you w
 ### Importing Screens
 
 ```js
-// Default import of any particular screen, eg: login-id screen
-import  LoginId  from '@auth0/auth0-acul-js/login-id'; 
+// Default import of any particular screen, eg: login screen
+import Login from '@auth0/auth0-acul-js/login'; 
 
 // Named import of any screen
-import  { LoginId }  from '@auth0/auth0-acul-js'; 
+import { Login } from '@auth0/auth0-acul-js'; 
 
 // Default import of all screens
-import  * as Screens  from '@auth0/auth0-acul-js'; 
+import * as Screens from '@auth0/auth0-acul-js'; 
 
 ```
 Note: For more details on import paths for all screens, refer to the [FAQ's](FAQ.md).
@@ -62,35 +71,36 @@ Note: For more details on import paths for all screens, refer to the [FAQ's](FAQ
 
 ### Adding Functionality to Your Screens
 
-Let’s look at an example for adding logic to the `login-id` screen.
+Let's look at an example for adding logic to the `login` screen.
 
 #### Example: Add Logic to Login Button
 ```typescript
-  import  LoginId  from '@auth0/auth0-acul-js/login-id';
+  import Login from '@auth0/auth0-acul-js/login';
 
-  const loginIdManager = new LoginId();
+  const loginManager = new Login();
 
   // Trigger the login method on button click
-  loginIdManager.login({
-    username: <USERNAME_FIELD_VALUE>
+  loginManager.login({
+    username: "testUser",
+    password: "testPassword"
   });
 ``` 
 
-#### Get List of Mandatory Fields for Login
+#### Get Password Policy
  ```typescript
- const { transaction } = loginIdManager
- const requiredFields = transaction.getActiveIdentifiers();
+ const { transaction } = loginManager;
+ const passwordPolicy = transaction.getPasswordPolicy();
  ```
 
  #### Integrating Social Connections for Login
 To allow users to login via social connections (e.g., Google, Facebook), use the following snippet
 
 ```typescript
-import  LoginId  from "@auth0/auth0-acul-js/login-id";
-const loginIdManager = new LoginId();
+import Login from "@auth0/auth0-acul-js/login";
+const loginManager = new Login();
 
 // Check if alternateConnections is available and has at least one item
-if (!loginIdManager.transaction.getAlternateConnections()) {
+if (!loginManager.transaction.alternateConnections) {
   console.error('No alternate connections available.');
 }
 
@@ -101,11 +111,11 @@ const selectedConnection = alternateConnections[0];
 console.log(`Selected connection: ${selectedConnection.name}`);
 
 // Proceed with social login using the selected connection
-loginIdManager.continueWithFederatedLogin({
+loginManager.socialLogin({
   connection: selectedConnection.name,
 })
 ```
-For more examples, visit our [examples](https://github.com/auth0/universal-login/blob/master/packages/auth0-acul-js/examples/login-id.md)
+For more examples, visit our [examples](https://github.com/auth0/universal-login/blob/master/packages/auth0-acul-js/examples/login.md)
 
 ## Quick Start with Boilerplate App
 Get up and running quickly with our boilerplate starter template: [Link](https://github.com/auth0/auth0-acul-react-boilerplate)
@@ -113,23 +123,24 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 ##  API reference
 ### Screens
 
-1. [login-id](https://auth0.github.io/universal-login/classes/Classes.LoginId.html)
-2. [login-Password](https://auth0.github.io/universal-login/classes/Classes.LoginPassword.html)
-3. [signup-id](https://auth0.github.io/universal-login/classes/Classes.SignupId.html)
-4. [signup-password](https://auth0.github.io/universal-login/classes/Classes.SignupPassword.html)
+1. [login](https://auth0.github.io/universal-login/classes/Classes.Login.html)
+2. [login-id](https://auth0.github.io/universal-login/classes/Classes.LoginId.html)
+3. [login-Password](https://auth0.github.io/universal-login/classes/Classes.LoginPassword.html)
+4. [signup-id](https://auth0.github.io/universal-login/classes/Classes.SignupId.html)
+5. [signup-password](https://auth0.github.io/universal-login/classes/Classes.SignupPassword.html)
 <details>
   <summary>Explore more screens...</summary>
 
-  5. [login-passwordless-email-code](https://auth0.github.io/universal-login/classes/Classes.LoginPasswordlessEmailCode.html)
-  6. [login-passwordless-sms-otp](https://auth0.github.io/universal-login/classes/Classes.LoginPasswordlessSmsOtp.html)
-  7. [passkey-enrollment](https://auth0.github.io/universal-login/classes/Classes.PasskeyEnrollment.html)
-  8. [passkey-enrollment-local](https://auth0.github.io/universal-login/classes/Classes.PasskeyEnrollmentLocal.html)
-  9. [phone-identifier-enrollment](https://auth0.github.io/universal-login/classes/Classes.PhoneIdentifierEnrollment.html)
-  10. [phone-identifier-challenge](https://auth0.github.io/universal-login/classes/Classes.PhoneIdentifierChallenge.html)
-  11. [email-identifier-challenge](https://auth0.github.io/universal-login/classes/Classes.EmailIdentifierChallenge.html)
-  12. [interstitial-captcha](https://auth0.github.io/universal-login/classes/Classes.InterstitialCaptcha.html)
-  13. [signup-new](https://auth0.github.io/universal-login/classes/Classes.SignupNew.html)
+  6. [login-passwordless-email-code](https://auth0.github.io/universal-login/classes/Classes.LoginPasswordlessEmailCode.html)
+  7. [login-passwordless-sms-otp](https://auth0.github.io/universal-login/classes/Classes.LoginPasswordlessSmsOtp.html)
+  8. [passkey-enrollment](https://auth0.github.io/universal-login/classes/Classes.PasskeyEnrollment.html)
+  9. [passkey-enrollment-local](https://auth0.github.io/universal-login/classes/Classes.PasskeyEnrollmentLocal.html)
+  10. [phone-identifier-enrollment](https://auth0.github.io/universal-login/classes/Classes.PhoneIdentifierEnrollment.html)
+  11. [phone-identifier-challenge](https://auth0.github.io/universal-login/classes/Classes.PhoneIdentifierChallenge.html)
+  12. [email-identifier-challenge](https://auth0.github.io/universal-login/classes/Classes.EmailIdentifierChallenge.html)
+  13. [interstitial-captcha](https://auth0.github.io/universal-login/classes/Classes.InterstitialCaptcha.html)
 </details>
+
 
 
 
@@ -154,7 +165,7 @@ Please do not report security vulnerabilities on the public GitHub issue tracker
 
 ### Legal
 
-**Early Access.** This SDK and its associated product are made available only in Early Access (“EA”) format and are governed by the Free Trial terms of the [Okta Master Subscription Agreement](https://www.okta.com/agreements/#mastersubscriptionagreement). If Okta elects to make a version of this SDK and its associated product Generally Available (“GA”), such GA version may have different pricing, product and feature configurations, and use of the GA product and SDK will be subject to the standard terms of the Agreement (or other such titled written or electronic agreement addressing the same subject matter) between Okta and Customer."
+**Early Access.** This SDK and its associated product are made available only in Early Access ("EA") format and are governed by the Free Trial terms of the [Okta Master Subscription Agreement](https://www.okta.com/agreements/#mastersubscriptionagreement). If Okta elects to make a version of this SDK and its associated product Generally Available ("GA"), such GA version may have different pricing, product and feature configurations, and use of the GA product and SDK will be subject to the standard terms of the Agreement (or other such titled written or electronic agreement addressing the same subject matter) between Okta and Customer."
 
 ---
 
