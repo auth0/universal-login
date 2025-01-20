@@ -12,3 +12,4 @@ export * as InterstitialCaptcha from './interstitial-captcha';
 export * as SignupNew from './signup';
 export * as ResetPasswordEmail from './reset-password-email';
 export * as ResetPasswordRequest from './reset-password-request';
+export * as ResetPassword from './reset-password';
