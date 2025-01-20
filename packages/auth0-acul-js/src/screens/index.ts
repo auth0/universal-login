@@ -1,6 +1,3 @@
-// import { ScreenContext } from '../../interfaces';
-// import { BaseContext } from '../models/base-context';
-
 export { default as LoginId } from './login-id';
 export { default as LoginPassword } from './login-password';
 export { default as SignupId } from './signup-id';
@@ -13,7 +10,7 @@ export { default as PhoneIdentifierChallenge } from './phone-identifier-challeng
 export { default as PhoneIdentifierEnrollment } from './phone-identifier-enrollment';
 export { default as EmailIdentifierChallenge } from './email-identifier-challenge';
 export { default as InterstitialCaptcha } from './interstitial-captcha';
-
+export { default as SignupNew } from './signup';
 // export function currentScreen(): ScreenContext['name'] {
 //   const currentContext = new BaseContext();
 //   const currentScreen = currentContext.getContext('screen') as ScreenContext;

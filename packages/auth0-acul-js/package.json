@@ -64,6 +64,7 @@
     "test:e2e": "cypress open",
     "docs": "typedoc --options typedoc.json",
     "lint": "npm run lint:interfaces && npm run lint:src",
+    "lint:fix": "npm run lint:src:fix && npm run lint:interfaces:fix",
     "lint:src": "eslint 'src/**/*.{js,ts}' --config .eslintrc.json",
     "lint:interfaces": "eslint 'interfaces/**/*.ts' --config .eslintrc.json",
     "lint:src:fix": "eslint 'src/**/*.{js,ts}' --config .eslintrc.json --fix",

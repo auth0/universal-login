@@ -10,3 +10,4 @@ export type { PhoneEnrollmentOptions } from '../screens/phone-identifier-enrollm
 export type { SignupOptions, SocialSignupOptions } from '../screens/signup-id';
 export type { SignupPasswordOptions } from '../screens/signup-password';
 export type { CustomOptions } from '../common';
+export type { SignupNewOptions } from '../screens/signup';

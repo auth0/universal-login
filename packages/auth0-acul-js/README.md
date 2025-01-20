@@ -1,13 +1,3 @@
-
-![ACUL JS SDK](https://cdn.auth0.com/website/sdks/banners/auth0-acul-js-banner.png)
-
-![Release](https://img.shields.io/npm/v/auth0-acul-js)
-[![Codecov](https://img.shields.io/codecov/c/github/auth0/auth0-acul-js)](https://codecov.io/gh/auth0/auth0-acul-js)
-![Downloads](https://img.shields.io/npm/dw/auth0-acul-js)
-[![License](https://img.shields.io/:license-mit-blue.svg?style=flat)](https://opensource.org/licenses/MIT)
-
-📚 [Documentation](#documentation) - 🚀 [Getting Started](#getting-started) - 💻 [API Reference](#api-reference) - 💬 [Feedback](#feedback)
-
 The **Auth0 ACUL JS SDK** enables you to work with Advanced Customization for Universal Login.
 
 It simplifies integrating authentication screens (login, signup, passwordless, passkey enrollment, etc.) into your web applications, providing the necessary tools for seamless implementation.
@@ -138,8 +128,8 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
   10. [phone-identifier-challenge](https://auth0.github.io/universal-login/classes/Classes.PhoneIdentifierChallenge.html)
   11. [email-identifier-challenge](https://auth0.github.io/universal-login/classes/Classes.EmailIdentifierChallenge.html)
   12. [interstitial-captcha](https://auth0.github.io/universal-login/classes/Classes.InterstitialCaptcha.html)
+  13. [signup-new](https://auth0.github.io/universal-login/classes/Classes.SignupNew.html)
 </details>
-
 
 
 

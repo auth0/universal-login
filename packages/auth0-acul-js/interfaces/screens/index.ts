@@ -9,3 +9,4 @@ export * as PasskeyEnrollmentLocal from './passkey-enrollment-local';
 export * as PhoneIdentifierChallenge from './phone-identifier-challenge';
 export * as EmailIdentifierChallenge from './email-identifier-challenge';
 export * as InterstitialCaptcha from './interstitial-captcha';
+export * as SignupNew from './signup';

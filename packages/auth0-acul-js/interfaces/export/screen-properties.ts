@@ -10,3 +10,4 @@ export type { PhoneIdentifierChallengeMembers } from '../screens/phone-identifie
 export type { PhoneIdentifierEnrollmentMembers } from '../screens/phone-identifier-enrollment';
 export type { EmailIdentifierChallengeMembers } from '../screens/email-identifier-challenge';
 export type { InterstitialCaptchaMembers } from '../screens/interstitial-captcha';
+export type { SignupNewMembers } from '../screens/signup';

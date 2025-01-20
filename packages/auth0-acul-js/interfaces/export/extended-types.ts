@@ -12,3 +12,4 @@ export type { ScreenMembersOnPhoneIdentifierChallenge } from '../screens/phone-i
 export type { ScreenMembersOnPhoneIdentifierEnrollment } from '../screens/phone-identifier-enrollment';
 export type { ScreenMembersOnSignupId, TransactionMembersOnSignupId } from '../screens/signup-id';
 export type { ScreenMembersOnSignupPassword, TransactionMembersOnSignupPassword } from '../screens/signup-password';
+export type { ScreenMembersOnSignupNew } from '../screens/signup';
