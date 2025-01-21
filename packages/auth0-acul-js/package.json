@@ -55,6 +55,34 @@
     "./interstitial-captcha": {
       "import": "./dist/screens/interstitial-captcha/index.js",
       "types": "./dist/types/src/screens/interstitial-captcha/index.d.ts"
+    },
+    "./login": {
+      "import": "./dist/screens/login/index.js",
+      "types": "./dist/types/src/screens/login/index.d.ts"
+    },
+    "./signup": {
+      "import": "./dist/screens/signup/index.js",
+      "types": "./dist/types/src/screens/signup/index.d.ts"
+    },
+    "./password-reset": {
+      "import": "./dist/screens/password-reset/index.js",
+      "types": "./dist/types/src/screens/password-reset/index.d.ts"
+    },
+    "./password-reset-email": {
+      "import": "./dist/screens/password-reset-email/index.js",
+      "types": "./dist/types/src/screens/password-reset-email/index.d.ts"
+    },
+    "./password-reset-request": {
+      "import": "./dist/screens/password-reset-request/index.js",
+      "types": "./dist/types/src/screens/password-reset-request/index.d.ts"
+    },
+    "./password-reset-success": {
+      "import": "./dist/screens/password-reset-success/index.js",
+      "types": "./dist/types/src/screens/password-reset-success/index.d.ts"
+    },
+    "./error": {
+      "import": "./dist/screens/error/index.js",
+      "types": "./dist/types/src/screens/error/index.d.ts"
     }
   },
   "scripts": {
