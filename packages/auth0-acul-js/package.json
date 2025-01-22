@@ -80,9 +80,9 @@
       "import": "./dist/screens/password-reset-success/index.js",
       "types": "./dist/types/src/screens/password-reset-success/index.d.ts"
     },
-    "./error": {
-      "import": "./dist/screens/error/index.js",
-      "types": "./dist/types/src/screens/error/index.d.ts"
+    "./password-reset-error": {
+      "import": "./dist/screens/password-reset-error/index.js",
+      "types": "./dist/types/src/screens/password-reset-error/index.d.ts"
     }
   },
   "scripts": {
