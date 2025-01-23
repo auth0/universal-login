@@ -10,6 +10,11 @@ export interface SignupNewOptions {
   [key: string]: string | number | boolean | undefined;
 }
 
+export interface SocialSignupOptions {
+  connection: string;
+  [key: string]: string | number | boolean;
+}
+
 export interface ScreenMembersOnSignupNew extends ScreenMembers {
   data: {
     name?: string;
