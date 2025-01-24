@@ -12,7 +12,8 @@ export { default as EmailIdentifierChallenge } from './email-identifier-challeng
 export { default as InterstitialCaptcha } from './interstitial-captcha';
 export { default as SignupNew } from './signup';
 export { default as Login } from './login';
-export { default as ResetPasswordEmail } from './reset-password-email';
 export { default as ResetPassword } from './reset-password';
+export { default as ResetPasswordRequest } from './reset-password-request';
+export { default as ResetPasswordEmail } from './reset-password-email';
 export { default as ResetPasswordError } from './reset-password-error';
 export { default as ResetPasswordSuccess } from './reset-password-success';

@@ -22,7 +22,6 @@ export interface ScreenMembersOnResetPasswordRequest extends ScreenMembers {
 
 export interface ResetPasswordRequestMembers extends BaseMembers {
   screen: ScreenMembersOnResetPasswordRequest;
-  continueWithEmail(payload: ResetPasswordRequestOptions): Promise<void>;
-  continueWithUsername(payload: ResetPasswordRequestOptions): Promise<void>;
+  continueWithIdentifier(payload: ResetPasswordRequestOptions): Promise<void>;
   backToLogin(payload?: CustomOptions): Promise<void>;
 }

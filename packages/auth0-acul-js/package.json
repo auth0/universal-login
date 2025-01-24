@@ -64,25 +64,25 @@
       "import": "./dist/screens/signup/index.js",
       "types": "./dist/types/src/screens/signup/index.d.ts"
     },
-    "./password-reset": {
-      "import": "./dist/screens/password-reset/index.js",
-      "types": "./dist/types/src/screens/password-reset/index.d.ts"
+    "./reset-password": {
+      "import": "./dist/screens/reset-password/index.js",
+      "types": "./dist/types/src/screens/reset-password/index.d.ts"
     },
-    "./password-reset-email": {
-      "import": "./dist/screens/password-reset-email/index.js",
-      "types": "./dist/types/src/screens/password-reset-email/index.d.ts"
+    "./reset-password-email": {
+      "import": "./dist/screens/reset-password-email/index.js",
+      "types": "./dist/types/src/screens/reset-password-email/index.d.ts"
     },
-    "./password-reset-request": {
-      "import": "./dist/screens/password-reset-request/index.js",
-      "types": "./dist/types/src/screens/password-reset-request/index.d.ts"
+    "./reset-password-request": {
+      "import": "./dist/screens/reset-password-request/index.js",
+      "types": "./dist/types/src/screens/reset-password-request/index.d.ts"
     },
-    "./password-reset-success": {
-      "import": "./dist/screens/password-reset-success/index.js",
-      "types": "./dist/types/src/screens/password-reset-success/index.d.ts"
+    "./reset-password-success": {
+      "import": "./dist/screens/reset-password-success/index.js",
+      "types": "./dist/types/src/screens/reset-password-success/index.d.ts"
     },
-    "./password-reset-error": {
-      "import": "./dist/screens/password-reset-error/index.js",
-      "types": "./dist/types/src/screens/password-reset-error/index.d.ts"
+    "./reset-password-error": {
+      "import": "./dist/screens/reset-password-error/index.js",
+      "types": "./dist/types/src/screens/reset-password-error/index.d.ts"
     }
   },
   "scripts": {

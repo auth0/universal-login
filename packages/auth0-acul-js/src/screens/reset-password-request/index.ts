@@ -25,23 +25,9 @@ export default class ResetPasswordRequest extends BaseContext implements ResetPa
    * import ResetPasswordRequest from '@auth0/auth0-acul-js/reset-password-request';
    *
    * const resetPasswordRequest = new ResetPasswordRequest();
-   * resetPasswordRequest.continueWithEmail({ email: 'test@example.com' });
+   * resetPasswordRequest.continueWithIdentifier({ username: 'testuser' });
    */
-  async continueWithEmail(payload: ResetPasswordRequestOptions): Promise<void> {
-    const options: FormOptions = {
-      state: this.transaction.state,
-    };
-    await new FormHandler(options).submitData(payload);
-  }
-
-  /**
-   * @example
-   * import ResetPasswordRequest from '@auth0/auth0-acul-js/reset-password-request';
-   *
-   * const resetPasswordRequest = new ResetPasswordRequest();
-   * resetPasswordRequest.continueWithUsername({ username: 'testuser' });
-   */
-  async continueWithUsername(payload: ResetPasswordRequestOptions): Promise<void> {
+  async continueWithIdentifier(payload: ResetPasswordRequestOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
     };

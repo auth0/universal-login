@@ -20,12 +20,12 @@ describe('ResetPasswordRequest', () => {
     (FormHandler as jest.Mock).mockImplementation(() => mockFormHandler);
   });
 
-  describe('continueWithEmail method', () => {
-    it('should handle continueWithEmail with valid payload correctly', async () => {
+  describe('continueWithIdentifier method', () => {
+    it('should handle continueWithIdentifier with valid payload correctly', async () => {
       const payload: ResetPasswordRequestOptions = {
         email: 'test@example.com',
       };
-      await resetPasswordRequest.continueWithEmail(payload);
+      await resetPasswordRequest.continueWithIdentifier(payload);
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining(payload)
@@ -37,7 +37,7 @@ describe('ResetPasswordRequest', () => {
       const payload: ResetPasswordRequestOptions = {
         email: 'test@example.com',
       };
-      await expect(resetPasswordRequest.continueWithEmail(payload)).rejects.toThrow(
+      await expect(resetPasswordRequest.continueWithIdentifier(payload)).rejects.toThrow(
         'Mocked reject'
       );
     });
@@ -47,41 +47,8 @@ describe('ResetPasswordRequest', () => {
         new Error('Invalid email')
       );
       const payload = { email: '' };
-      await expect(resetPasswordRequest.continueWithEmail(payload)).rejects.toThrow(
+      await expect(resetPasswordRequest.continueWithIdentifier(payload)).rejects.toThrow(
         'Invalid email'
-      );
-    });
-  });
-
-  describe('continueWithUsername method', () => {
-    it('should handle continueWithUsername with valid payload correctly', async () => {
-      const payload: ResetPasswordRequestOptions = {
-        username: 'testuser',
-      };
-      await resetPasswordRequest.continueWithUsername(payload);
-      expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
-      expect(mockFormHandler.submitData).toHaveBeenCalledWith(
-        expect.objectContaining(payload)
-      );
-    });
-
-    it('should throw error when promise is rejected', async () => {
-      mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
-      const payload: ResetPasswordRequestOptions = {
-        username: 'testuser',
-      };
-      await expect(resetPasswordRequest.continueWithUsername(payload)).rejects.toThrow(
-        'Mocked reject'
-      );
-    });
-
-    it('should throw error when username is empty', async () => {
-      mockFormHandler.submitData.mockRejectedValueOnce(
-        new Error('Invalid username')
-      );
-      const payload = { username: '' };
-      await expect(resetPasswordRequest.continueWithUsername(payload)).rejects.toThrow(
-        'Invalid username'
       );
     });
   });
