@@ -22,6 +22,7 @@ import  EmailIdentifierChallengeScreen  from '@auth0/auth0-acul-js/email-identif
 import  InterstitialCaptchaScreen  from '@auth0/auth0-acul-js/interstitial-captcha';
 import  ResetPassword from '@auth0/auth0-acul-js/reset-password';
 import  ResetPasswordRequest from '@auth0/auth0-acul-js/reset-password-request';
+import  ResetPasswordEmail from '@auth0/auth0-acul-js/reset-password-email';
 
 ```
 
