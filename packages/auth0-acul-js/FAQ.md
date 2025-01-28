@@ -20,9 +20,13 @@ import  PhoneIdentifierChallengeScreen  from '@auth0/auth0-acul-js/phone-identif
 import  PhoneIdentifierEnrolmentScreen  from '@auth0/auth0-acul-js/phone-identifier-enrollment';
 import  EmailIdentifierChallengeScreen  from '@auth0/auth0-acul-js/email-identifier-challenge';
 import  InterstitialCaptchaScreen  from '@auth0/auth0-acul-js/interstitial-captcha';
+import  Login  from '@auth0/auth0-acul-js/login';
+import  Signup  from '@auth0/auth0-acul-js/signup';
 import  ResetPassword from '@auth0/auth0-acul-js/reset-password';
 import  ResetPasswordRequest from '@auth0/auth0-acul-js/reset-password-request';
 import  ResetPasswordEmail from '@auth0/auth0-acul-js/reset-password-email';
+import  ResetPasswordSuccess from '@auth0/auth0-acul-js/reset-password-success';
+import  ResetPasswordError from '@auth0/auth0-acul-js/reset-password-error';
 
 ```
 

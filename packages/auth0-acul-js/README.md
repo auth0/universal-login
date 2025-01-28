@@ -1,3 +1,13 @@
+
+![ACUL JS SDK](https://cdn.auth0.com/website/sdks/banners/auth0-acul-js-banner.png)
+
+![Release](https://img.shields.io/npm/v/auth0-acul-js)
+[![Codecov](https://img.shields.io/codecov/c/github/auth0/auth0-acul-js)](https://codecov.io/gh/auth0/auth0-acul-js)
+![Downloads](https://img.shields.io/npm/dw/auth0-acul-js)
+[![License](https://img.shields.io/:license-mit-blue.svg?style=flat)](https://opensource.org/licenses/MIT)
+
+📚 [Documentation](#documentation) - 🚀 [Getting Started](#getting-started) - 💻 [API Reference](#api-reference) - 💬 [Feedback](#feedback)
+
 The **Auth0 ACUL JS SDK** enables you to work with Advanced Customization for Universal Login.
 
 It simplifies integrating authentication screens (login, signup, passwordless, passkey enrollment, etc.) into your web applications, providing the necessary tools for seamless implementation.
@@ -106,7 +116,7 @@ loginManager.socialLogin({
   connection: selectedConnection.name,
 })
 ```
-For more examples, visit our [examples](https://github.com/auth0/universal-login/blob/master/packages/auth0-acul-js/examples/login.md)
+For more examples, visit our [examples](https://github.com/auth0/universal-login/blob/master/packages/auth0-acul-js/examples/login-id.md)
 
 ## Quick Start with Boilerplate App
 Get up and running quickly with our boilerplate starter template: [Link](https://github.com/auth0/auth0-acul-react-boilerplate)
