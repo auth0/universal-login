@@ -12,9 +12,9 @@ export class Organization implements OrganizationMembers {
   metadata: OrganizationMembers['metadata'];
 
   constructor(organization: OrganizationContext) {
-    this.id = organization.id ?? null;
-    this.name = organization.name ?? null;
-    this.usage = organization.usage ?? null;
+    this.id = organization?.id ?? null;
+    this.name = organization?.name ?? null;
+    this.usage = organization?.usage ?? null;
     this.displayName = organization?.display_name ?? null;
     this.branding = organization?.branding ?? null;
     this.metadata = organization?.metadata ?? null;
