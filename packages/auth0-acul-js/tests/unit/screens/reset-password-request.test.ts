@@ -20,12 +20,12 @@ describe('ResetPasswordRequest', () => {
     (FormHandler as jest.Mock).mockImplementation(() => mockFormHandler);
   });
 
-  describe('continueWithIdentifier method', () => {
-    it('should handle continueWithIdentifier with valid payload correctly', async () => {
+  describe('resetPassword method', () => {
+    it('should handle resetPassword with valid payload correctly', async () => {
       const payload: ResetPasswordRequestOptions = {
         email: 'test@example.com',
       };
-      await resetPasswordRequest.continueWithIdentifier(payload);
+      await resetPasswordRequest.resetPassword(payload);
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining(payload)
@@ -37,7 +37,7 @@ describe('ResetPasswordRequest', () => {
       const payload: ResetPasswordRequestOptions = {
         email: 'test@example.com',
       };
-      await expect(resetPasswordRequest.continueWithIdentifier(payload)).rejects.toThrow(
+      await expect(resetPasswordRequest.resetPassword(payload)).rejects.toThrow(
         'Mocked reject'
       );
     });
@@ -47,7 +47,7 @@ describe('ResetPasswordRequest', () => {
         new Error('Invalid email')
       );
       const payload = { email: '' };
-      await expect(resetPasswordRequest.continueWithIdentifier(payload)).rejects.toThrow(
+      await expect(resetPasswordRequest.resetPassword(payload)).rejects.toThrow(
         'Invalid email'
       );
     });
