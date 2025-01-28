@@ -37,7 +37,8 @@ export interface TransactionMembersOnLogin extends TransactionMembers {
   isSignupEnabled: boolean;
   isForgotPasswordEnabled: boolean;
   isPasskeyEnabled: boolean;
-  getPasswordPolicy(): PasswordPolicy | null;
+  passwordPolicy: PasswordPolicy | null;
+  allowedIdentifiers: ('email' | 'username' | 'phone')[] | null;
 }
 
 /**

@@ -1,7 +1,7 @@
 import { Screen } from '../../models/screen';
 
 import type { ScreenContext } from '../../../interfaces/models/screen';
-import type { ScreenMembersOnSignupNew as OverrideOptions } from '../../../interfaces/screens/signup';
+import type { ScreenMembersOnSignup as OverrideOptions } from '../../../interfaces/screens/signup';
 
 export class ScreenOverride extends Screen implements OverrideOptions {
   constructor(screenContext: ScreenContext) {

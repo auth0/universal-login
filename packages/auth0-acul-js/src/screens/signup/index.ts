@@ -2,21 +2,21 @@ import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
+import { TransactionOverride } from './transaction-override';
 
 import type { ScreenContext } from '../../../interfaces/models/screen';
-import type {
-  SignupNewMembers,
-  ScreenMembersOnSignupNew as ScreenOptions,
-  SignupNewOptions,
-  SocialSignupOptions,
-} from '../../../interfaces/screens/signup';
+import type { TransactionContext } from '../../../interfaces/models/transaction';
+import type { SignupMembers, ScreenMembersOnSignup as ScreenOptions, SignupOptions, SocialSignupOptions } from '../../../interfaces/screens/signup';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-export default class SignupNew extends BaseContext implements SignupNewMembers {
+export default class Signup extends BaseContext implements SignupMembers {
   screen: ScreenOptions;
   constructor() {
     super();
     const screenContext = this.getContext('screen') as ScreenContext;
+    const transactionContext = this.getContext('transaction') as TransactionContext;
+
     this.screen = new ScreenOverride(screenContext);
+    this.transaction = new TransactionOverride(transactionContext);
   }
   /**
    * @remarks
@@ -24,21 +24,21 @@ export default class SignupNew extends BaseContext implements SignupNewMembers {
    *
    * @example
    * ```typescript
-   * import SignupNew from '@auth0/auth0-acul-js/signup-new';
+   * import Signup from '@auth0/auth0-acul-js/signup-new';
    *
-   * const signupNewManager = new SignupNew();
+   * const signupManager = new Signup();
    *
-   * signupNewManager.signup({
+   * signupManager.signup({
    *  email: 'test@example.com',
    *  password: 'P@$$wOrd123!',
    * });
    * ```
    */
-  async signup(payload: SignupNewOptions): Promise<void> {
+  async signup(payload: SignupOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
     };
-    await new FormHandler(options).submitData<SignupNewOptions>(payload);
+    await new FormHandler(options).submitData<SignupOptions>(payload);
   }
 
   /**
@@ -51,11 +51,11 @@ export default class SignupNew extends BaseContext implements SignupNewMembers {
    *
    * @example
    * ```typescript
-   * import SignupNew from '@auth0/auth0-acul-js/signup-new';
+   * import Signup from '@auth0/auth0-acul-js/signup-new';
    *
-   * const signupNewManager = new SignupNew();
+   * const signupManager = new Signup();
    *
-   * signupNewManager.socialSignup({
+   * signupManager.socialSignup({
    *  connection: 'google-oauth2'
    * });
    * ```
@@ -68,4 +68,4 @@ export default class SignupNew extends BaseContext implements SignupNewMembers {
   }
 }
 
-export { SignupNewMembers, SignupNewOptions, ScreenOptions };
+export { SignupMembers, SignupOptions, ScreenOptions };

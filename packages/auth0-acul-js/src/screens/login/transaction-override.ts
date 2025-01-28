@@ -1,5 +1,5 @@
 import { Transaction } from '../../models/transaction';
-import { isSignupEnabled, isForgotPasswordEnabled, isPasskeyEnabled, getPasswordPolicy } from '../../shared/transaction';
+import { isSignupEnabled, isForgotPasswordEnabled, isPasskeyEnabled, getPasswordPolicy, getAllowedIdentifiers } from '../../shared/transaction';
 
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type { TransactionMembersOnLogin as OverrideOptions } from '../../../interfaces/screens/login';
@@ -11,13 +11,21 @@ export class TransactionOverride extends Transaction implements OverrideOptions 
   isSignupEnabled: OverrideOptions['isSignupEnabled'];
   isForgotPasswordEnabled: OverrideOptions['isForgotPasswordEnabled'];
   isPasskeyEnabled: OverrideOptions['isPasskeyEnabled'];
-  getPasswordPolicy: OverrideOptions['getPasswordPolicy'];
+  passwordPolicy: OverrideOptions['passwordPolicy'];
+  allowedIdentifiers: OverrideOptions['allowedIdentifiers'];
 
   constructor(transactionContext: TransactionContext) {
     super(transactionContext);
     this.isSignupEnabled = isSignupEnabled(transactionContext);
     this.isForgotPasswordEnabled = isForgotPasswordEnabled(transactionContext);
     this.isPasskeyEnabled = isPasskeyEnabled(transactionContext);
-    this.getPasswordPolicy = (): ReturnType<OverrideOptions['getPasswordPolicy']> => getPasswordPolicy(transactionContext);
+    this.passwordPolicy = getPasswordPolicy(transactionContext);
+    this.allowedIdentifiers = TransactionOverride.getAllowedIdentifiers(transactionContext, this.connectionStrategy);
+  }
+
+  static getAllowedIdentifiers(transactionContext: TransactionContext, connectionStrategy: string | null): OverrideOptions['allowedIdentifiers'] {
+    if (connectionStrategy === 'sms') return ['phone'];
+    if (connectionStrategy === 'email') return ['email'];
+    return getAllowedIdentifiers(transactionContext);
   }
 }

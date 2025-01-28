@@ -1,15 +1,15 @@
 ```typescript
 import React from 'react';
-import SignupNew from '@auth0/auth0-acul-js/signup-new';
+import Signup from '@auth0/auth0-acul-js/signup';
 
-const SignupNewComponent: React.FC = () => {
-  const signupNewManager = new SignupNew();
-  const { screen } = signupNewManager;
+const SignupComponent: React.FC = () => {
+  const signupManager = new Signup();
+  const { screen } = signupManager;
   const data = screen.data;
 
   const handleSignup = async () => {
     try {
-      await signupNewManager.signup({
+      await signupManager.signup({
         email: 'test@example.com',
         password: 'P@$$wOrd123!',
       });
@@ -39,5 +39,5 @@ const SignupNewComponent: React.FC = () => {
   );
 };
 
-export default SignupNewComponent;
+export default SignupComponent;
 ```

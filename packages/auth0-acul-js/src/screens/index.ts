@@ -10,7 +10,7 @@ export { default as PhoneIdentifierChallenge } from './phone-identifier-challeng
 export { default as PhoneIdentifierEnrollment } from './phone-identifier-enrollment';
 export { default as EmailIdentifierChallenge } from './email-identifier-challenge';
 export { default as InterstitialCaptcha } from './interstitial-captcha';
-export { default as SignupNew } from './signup';
+export { default as Signup } from './signup';
 export { default as Login } from './login';
 export { default as ResetPassword } from './reset-password';
 export { default as ResetPasswordRequest } from './reset-password-request';
