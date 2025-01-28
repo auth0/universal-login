@@ -1,3 +1,6 @@
+## resetPassword
+
+```typescript
 import React, { useState } from 'react';
 import ResetPassword from '@auth0/auth0-acul-js/reset-password';
 
@@ -102,3 +105,4 @@ const ResetPasswordScreen = () => {
 };
 
 export default ResetPasswordScreen;
+```
