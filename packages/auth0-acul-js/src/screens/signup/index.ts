@@ -6,10 +6,12 @@ import { TransactionOverride } from './transaction-override';
 
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../interfaces/models/transaction';
-import type { SignupMembers, ScreenMembersOnSignup as ScreenOptions, SignupOptions, SocialSignupOptions } from '../../../interfaces/screens/signup';
+import type { SignupMembers, ScreenMembersOnSignup as ScreenOptions, SignupOptions, SocialSignupOptions, TransactionMembersOnSignup } from '../../../interfaces/screens/signup';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 export default class Signup extends BaseContext implements SignupMembers {
   screen: ScreenOptions;
+  transaction: TransactionMembersOnSignup;
+  
   constructor() {
     super();
     const screenContext = this.getContext('screen') as ScreenContext;
