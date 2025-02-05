@@ -1,14 +1,14 @@
-import PasskeyEnrollmentLocal from "../../../src/screens/passkey-enrollment-local";
-import { baseContextData } from "../../data/test-data";
-import { FormHandler } from "../../../src/utils/form-handler";
-import { createPasskeyCredentials } from "../../../src/utils/passkeys";
-import { CustomOptions } from "interfaces/common";
-import { AbortEnrollmentOptions } from "interfaces/screens/passkey-enrollment-local";
+import PasskeyEnrollmentLocal from '../../../../src/screens/passkey-enrollment-local';
+import { baseContextData } from '../../../data/test-data';
+import { FormHandler } from '../../../../src/utils/form-handler';
+import { createPasskeyCredentials } from '../../../../src/utils/passkeys';
+import { CustomOptions } from 'interfaces/common';
+import { AbortEnrollmentOptions } from 'interfaces/screens/passkey-enrollment-local';
 
-jest.mock("../../../src/utils/form-handler");
-jest.mock("../../../src/utils/passkeys");
+jest.mock('../../../../src/utils/form-handler');
+jest.mock('../../../../src/utils/passkeys');
 
-describe("PasskeyEnrollmentLocal", () => {
+describe('PasskeyEnrollmentLocal', () => {
   let passkeyEnrollmentLocal: PasskeyEnrollmentLocal;
   let mockFormHandler: { submitData: jest.Mock };
 
@@ -24,10 +24,10 @@ describe("PasskeyEnrollmentLocal", () => {
     (FormHandler as jest.Mock).mockImplementation(() => mockFormHandler);
   });
 
-  describe("continuePasskeyEnrollment method", () => {
-    it("should handle continuePasskeyEnrollment with valid payload correctly", async () => {
-      const mockPublicKey = { key: "publicKey" };
-      const mockEncoded = { id: "encodedId" };
+  describe('continuePasskeyEnrollment method', () => {
+    it('should handle continuePasskeyEnrollment with valid payload correctly', async () => {
+      const mockPublicKey = { key: 'publicKey' };
+      const mockEncoded = { id: 'encodedId' };
       Object.defineProperty(passkeyEnrollmentLocal.screen, 'publicKey', {
         value: mockPublicKey,
       });
@@ -35,7 +35,7 @@ describe("PasskeyEnrollmentLocal", () => {
       (createPasskeyCredentials as jest.Mock).mockReturnValue(mockEncoded);
 
       const payload: CustomOptions = {
-        email: "test@example.com",
+        email: 'test@example.com',
       };
       await passkeyEnrollmentLocal.continuePasskeyEnrollment(payload);
 
@@ -48,9 +48,9 @@ describe("PasskeyEnrollmentLocal", () => {
       );
     });
 
-    it("should handle continuePasskeyEnrollment without payload correctly", async () => {
-      const mockPublicKey = { key: "publicKey" };
-      const mockEncoded = { id: "encodedId" };
+    it('should handle continuePasskeyEnrollment without payload correctly', async () => {
+      const mockPublicKey = { key: 'publicKey' };
+      const mockEncoded = { id: 'encodedId' };
       Object.defineProperty(passkeyEnrollmentLocal.screen, 'publicKey', {
         value: mockPublicKey,
       });
@@ -67,23 +67,23 @@ describe("PasskeyEnrollmentLocal", () => {
       );
     });
 
-    it("should throw error when promise is rejected", async () => {
-      mockFormHandler.submitData.mockRejectedValue(new Error("Mocked reject"));
+    it('should throw error when promise is rejected', async () => {
+      mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
       const payload: CustomOptions = {
-        email: "test@example.com",
+        email: 'test@example.com',
       };
       await expect(
         passkeyEnrollmentLocal.continuePasskeyEnrollment(payload)
-      ).rejects.toThrow("Mocked reject");
+      ).rejects.toThrow('Mocked reject');
     });
 
-    it("should handle continuePasskeyEnrollment when publicKey is null", async () => {
+    it('should handle continuePasskeyEnrollment when publicKey is null', async () => {
       Object.defineProperty(passkeyEnrollmentLocal.screen, 'publicKey', {
         value: null,
       });
 
       const payload: CustomOptions = {
-        email: "test@example.com",
+        email: 'test@example.com',
       };
       await passkeyEnrollmentLocal.continuePasskeyEnrollment(payload);
 
@@ -97,10 +97,10 @@ describe("PasskeyEnrollmentLocal", () => {
     });
   });
 
-  describe("abortPasskeyEnrollment method", () => {
-    it("should handle abortPasskeyEnrollment with valid payload correctly", async () => {
+  describe('abortPasskeyEnrollment method', () => {
+    it('should handle abortPasskeyEnrollment with valid payload correctly', async () => {
       const payload: AbortEnrollmentOptions = {
-        reason: "User cancelled",
+        reason: 'User cancelled',
       };
       await passkeyEnrollmentLocal.abortPasskeyEnrollment(payload);
 
@@ -108,14 +108,14 @@ describe("PasskeyEnrollmentLocal", () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: "abort-passkey-enrollment",
+          action: 'abort-passkey-enrollment',
         })
       );
     });
 
-    it("should handle abortPasskeyEnrollment with doNotShowAgain set to true", async () => {
+    it('should handle abortPasskeyEnrollment with doNotShowAgain set to true', async () => {
       const payload: AbortEnrollmentOptions = {
-        reason: "User cancelled",
+        reason: 'User cancelled',
         doNotShowAgain: true,
       };
       await passkeyEnrollmentLocal.abortPasskeyEnrollment(payload);
@@ -124,31 +124,31 @@ describe("PasskeyEnrollmentLocal", () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: "abort-passkey-enrollment",
-          dontShowAgain: "on",
+          action: 'abort-passkey-enrollment',
+          dontShowAgain: 'on',
         })
       );
     });
 
-    it("should handle abortPasskeyEnrollment without payload correctly", async () => {
+    it('should handle abortPasskeyEnrollment without payload correctly', async () => {
       await passkeyEnrollmentLocal.abortPasskeyEnrollment({});
 
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: "abort-passkey-enrollment",
+          action: 'abort-passkey-enrollment',
         })
       );
     });
 
-    it("should throw error when promise is rejected", async () => {
-      mockFormHandler.submitData.mockRejectedValue(new Error("Mocked reject"));
+    it('should throw error when promise is rejected', async () => {
+      mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
       const payload: AbortEnrollmentOptions = {
-        reason: "User cancelled",
+        reason: 'User cancelled',
       };
       await expect(
         passkeyEnrollmentLocal.abortPasskeyEnrollment(payload)
-      ).rejects.toThrow("Mocked reject");
+      ).rejects.toThrow('Mocked reject');
     });
   });
 });

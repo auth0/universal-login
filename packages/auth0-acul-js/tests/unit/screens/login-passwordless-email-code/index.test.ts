@@ -1,12 +1,12 @@
-import LoginPasswordlessEmailCode from "../../../src/screens/login-passwordless-email-code";
-import { baseContextData } from "../../data/test-data";
-import { FormHandler } from "../../../src/utils/form-handler";
-import { SubmitCodeOptions } from "interfaces/screens/login-passwordless-email-code";
-import { CustomOptions } from "interfaces/common";
+import LoginPasswordlessEmailCode from '../../../../src/screens/login-passwordless-email-code';
+import { baseContextData } from '../../../data/test-data';
+import { FormHandler } from '../../../../src/utils/form-handler';
+import { SubmitCodeOptions } from 'interfaces/screens/login-passwordless-email-code';
+import { CustomOptions } from 'interfaces/common';
 
-jest.mock("../../../src/utils/form-handler");
+jest.mock('../../../../src/utils/form-handler');
 
-describe("LoginPasswordlessEmailCode", () => {
+describe('LoginPasswordlessEmailCode', () => {
   let loginPasswordlessEmailCode: LoginPasswordlessEmailCode;
   let mockFormHandler: { submitData: jest.Mock };
 
@@ -22,11 +22,11 @@ describe("LoginPasswordlessEmailCode", () => {
     (FormHandler as jest.Mock).mockImplementation(() => mockFormHandler);
   });
 
-  describe("submitCode method", () => {
-    it("should handle submitCode with valid payload correctly", async () => {
+  describe('submitCode method', () => {
+    it('should handle submitCode with valid payload correctly', async () => {
       const payload: SubmitCodeOptions = {
-        email: "test@domain.com",
-        code: "123456",
+        email: 'test@domain.com',
+        code: '123456',
       };
       await loginPasswordlessEmailCode.submitCode(payload);
 
@@ -36,44 +36,44 @@ describe("LoginPasswordlessEmailCode", () => {
       );
     });
 
-    it("should throw error when promise is rejected", async () => {
-      mockFormHandler.submitData.mockRejectedValue(new Error("Mocked reject"));
+    it('should throw error when promise is rejected', async () => {
+      mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
       const payload: SubmitCodeOptions = {
-        email: "test@domain.com",
-        code: "123456",
+        email: 'test@domain.com',
+        code: '123456',
       };
       await expect(
         loginPasswordlessEmailCode.submitCode(payload)
-      ).rejects.toThrow("Mocked reject");
+      ).rejects.toThrow('Mocked reject');
     });
 
-    it("should throw error when email is empty", async () => {
+    it('should throw error when email is empty', async () => {
       mockFormHandler.submitData.mockRejectedValueOnce(
-        new Error("Invalid email")
+        new Error('Invalid email')
       );
-      const payload = { email: "", code: "123456" };
+      const payload = { email: '', code: '123456' };
 
       await expect(
         loginPasswordlessEmailCode.submitCode(payload)
-      ).rejects.toThrow("Invalid email");
+      ).rejects.toThrow('Invalid email');
     });
 
-    it("should throw error when code is empty", async () => {
+    it('should throw error when code is empty', async () => {
       mockFormHandler.submitData.mockRejectedValueOnce(
-        new Error("Invalid code")
+        new Error('Invalid code')
       );
-      const payload = { email: "test@domain.com", code: "" };
+      const payload = { email: 'test@domain.com', code: '' };
 
       await expect(
         loginPasswordlessEmailCode.submitCode(payload)
-      ).rejects.toThrow("Invalid code");
+      ).rejects.toThrow('Invalid code');
     });
   });
 
-  describe("resendCode method", () => {
-    it("should handle resendCode with valid payload correctly", async () => {
+  describe('resendCode method', () => {
+    it('should handle resendCode with valid payload correctly', async () => {
       const payload: CustomOptions = {
-        email: "test@domain.com",
+        email: 'test@domain.com',
       };
       await loginPasswordlessEmailCode.resendCode(payload);
 
@@ -81,30 +81,30 @@ describe("LoginPasswordlessEmailCode", () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: "resend",
+          action: 'resend',
         })
       );
     });
 
-    it("should handle resendCode without payload correctly", async () => {
+    it('should handle resendCode without payload correctly', async () => {
       await loginPasswordlessEmailCode.resendCode();
 
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: "resend",
+          action: 'resend',
         })
       );
     });
 
-    it("should throw error when promise is rejected", async () => {
-      mockFormHandler.submitData.mockRejectedValue(new Error("Mocked reject"));
+    it('should throw error when promise is rejected', async () => {
+      mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
       const payload: CustomOptions = {
-        email: "test@domain.com",
+        email: 'test@domain.com',
       };
       await expect(
         loginPasswordlessEmailCode.resendCode(payload)
-      ).rejects.toThrow("Mocked reject");
+      ).rejects.toThrow('Mocked reject');
     });
   });
 });

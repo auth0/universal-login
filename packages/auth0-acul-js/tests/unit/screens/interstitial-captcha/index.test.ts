@@ -1,11 +1,11 @@
-import InterstitialCaptcha from "../../../src/screens/interstitial-captcha";
-import { baseContextData } from "../../data/test-data";
-import { FormHandler } from "../../../src/utils/form-handler";
-import { SubmitCaptchaOptions } from "interfaces/screens/interstitial-captcha";
+import InterstitialCaptcha from '../../../../src/screens/interstitial-captcha';
+import { baseContextData } from '../../../data/test-data';
+import { FormHandler } from '../../../../src/utils/form-handler';
+import { SubmitCaptchaOptions } from 'interfaces/screens/interstitial-captcha';
 
-jest.mock("../../../src/utils/form-handler");
+jest.mock('../../../../src/utils/form-handler');
 
-describe("InterstitialCaptcha", () => {
+describe('InterstitialCaptcha', () => {
   let interstitialCaptcha: InterstitialCaptcha;
   let mockFormHandler: { submitData: jest.Mock };
 
@@ -21,10 +21,10 @@ describe("InterstitialCaptcha", () => {
     (FormHandler as jest.Mock).mockImplementation(() => mockFormHandler);
   });
 
-  describe("submitCaptcha method", () => {
-    it("should handle submitCaptcha with valid payload correctly", async () => {
+  describe('submitCaptcha method', () => {
+    it('should handle submitCaptcha with valid payload correctly', async () => {
       const payload: SubmitCaptchaOptions = {
-        captcha: "testCaptcha",
+        captcha: 'testCaptcha',
       };
       await interstitialCaptcha.submitCaptcha(payload);
 
@@ -34,24 +34,24 @@ describe("InterstitialCaptcha", () => {
       );
     });
 
-    it("should throw error when promise is rejected", async () => {
-      mockFormHandler.submitData.mockRejectedValue(new Error("Mocked reject"));
+    it('should throw error when promise is rejected', async () => {
+      mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
       const payload: SubmitCaptchaOptions = {
-        captcha: "testCaptcha",
+        captcha: 'testCaptcha',
       };
       await expect(interstitialCaptcha.submitCaptcha(payload)).rejects.toThrow(
-        "Mocked reject"
+        'Mocked reject'
       );
     });
 
-    it("should throw error when captcha is empty", async () => {
+    it('should throw error when captcha is empty', async () => {
       mockFormHandler.submitData.mockRejectedValueOnce(
-        new Error("Invalid captcha")
+        new Error('Invalid captcha')
       );
-      const payload = { captcha: "" };
+      const payload = { captcha: '' };
 
       await expect(interstitialCaptcha.submitCaptcha(payload)).rejects.toThrow(
-        "Invalid captcha"
+        'Invalid captcha'
       );
     });
   });

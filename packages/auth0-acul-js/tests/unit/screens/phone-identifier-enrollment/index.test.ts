@@ -1,12 +1,12 @@
-import PhoneIdentifierEnrollment from "../../../src/screens/phone-identifier-enrollment";
-import { baseContextData } from "../../data/test-data";
-import { FormHandler } from "../../../src/utils/form-handler";
-import { PhoneEnrollmentOptions } from "interfaces/screens/phone-identifier-enrollment";
-import { CustomOptions } from "interfaces/common";
+import PhoneIdentifierEnrollment from '../../../../src/screens/phone-identifier-enrollment';
+import { baseContextData } from '../../../data/test-data';
+import { FormHandler } from '../../../../src/utils/form-handler';
+import { PhoneEnrollmentOptions } from 'interfaces/screens/phone-identifier-enrollment';
+import { CustomOptions } from 'interfaces/common';
 
-jest.mock("../../../src/utils/form-handler");
+jest.mock('../../../../src/utils/form-handler');
 
-describe("PhoneIdentifierEnrollment", () => {
+describe('PhoneIdentifierEnrollment', () => {
   let phoneIdentifierEnrollment: PhoneIdentifierEnrollment;
   let mockFormHandler: { submitData: jest.Mock };
 
@@ -22,10 +22,10 @@ describe("PhoneIdentifierEnrollment", () => {
     (FormHandler as jest.Mock).mockImplementation(() => mockFormHandler);
   });
 
-  describe("continuePhoneEnrollment method", () => {
-    it("should handle continuePhoneEnrollment with valid payload correctly", async () => {
+  describe('continuePhoneEnrollment method', () => {
+    it('should handle continuePhoneEnrollment with valid payload correctly', async () => {
       const payload: PhoneEnrollmentOptions = {
-        type: "text",
+        type: 'text',
       };
       await phoneIdentifierEnrollment.continuePhoneEnrollment(payload);
 
@@ -35,21 +35,21 @@ describe("PhoneIdentifierEnrollment", () => {
       );
     });
 
-    it("should throw error when promise is rejected", async () => {
-      mockFormHandler.submitData.mockRejectedValue(new Error("Mocked reject"));
+    it('should throw error when promise is rejected', async () => {
+      mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
       const payload: PhoneEnrollmentOptions = {
-        type: "text",
+        type: 'text',
       };
       await expect(
         phoneIdentifierEnrollment.continuePhoneEnrollment(payload)
-      ).rejects.toThrow("Mocked reject");
+      ).rejects.toThrow('Mocked reject');
     });
   });
 
-  describe("returnToPrevious method", () => {
-    it("should handle returnToPrevious with valid payload correctly", async () => {
+  describe('returnToPrevious method', () => {
+    it('should handle returnToPrevious with valid payload correctly', async () => {
       const payload: CustomOptions = {
-        phone: "+1234567890",
+        phone: '+1234567890',
       };
       await phoneIdentifierEnrollment.returnToPrevious(payload);
 
@@ -57,30 +57,30 @@ describe("PhoneIdentifierEnrollment", () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: "back-action",
+          action: 'back-action',
         })
       );
     });
 
-    it("should handle returnToPrevious without payload correctly", async () => {
+    it('should handle returnToPrevious without payload correctly', async () => {
       await phoneIdentifierEnrollment.returnToPrevious();
 
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: "back-action",
+          action: 'back-action',
         })
       );
     });
 
-    it("should throw error when promise is rejected", async () => {
-      mockFormHandler.submitData.mockRejectedValue(new Error("Mocked reject"));
+    it('should throw error when promise is rejected', async () => {
+      mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
       const payload: CustomOptions = {
-        phone: "+1234567890",
+        phone: '+1234567890',
       };
       await expect(
         phoneIdentifierEnrollment.returnToPrevious(payload)
-      ).rejects.toThrow("Mocked reject");
+      ).rejects.toThrow('Mocked reject');
     });
   });
 });

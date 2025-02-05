@@ -1,5 +1,5 @@
-import { baseContextData } from '../../data/test-data';
-import ResetPasswordSuccess from '../../../src/screens/reset-password-success';
+import { baseContextData } from '../../../data/test-data';
+import ResetPasswordSuccess from '../../../../src/screens/reset-password-success';
 describe('ResetPasswordSuccess', () => {
   let resetPasswordSuccess: ResetPasswordSuccess;
   beforeEach(() => {

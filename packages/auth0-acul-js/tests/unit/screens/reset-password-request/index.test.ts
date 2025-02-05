@@ -1,10 +1,10 @@
-import ResetPasswordRequest from '../../../src/screens/reset-password-request';
-import { baseContextData } from '../../data/test-data';
-import { FormHandler } from '../../../src/utils/form-handler';
-import { ResetPasswordRequestOptions } from '../../../interfaces/screens/reset-password-request';
-import { CustomOptions } from '../../../interfaces/common';
+import ResetPasswordRequest from '../../../../src/screens/reset-password-request';
+import { baseContextData } from '../../../data/test-data';
+import { FormHandler } from '../../../../src/utils/form-handler';
+import { ResetPasswordRequestOptions } from '../../../../interfaces/screens/reset-password-request';
+import { CustomOptions } from '../../../../interfaces/common';
 
-jest.mock('../../../src/utils/form-handler');
+jest.mock('../../../../src/utils/form-handler');
 
 describe('ResetPasswordRequest', () => {
   let resetPasswordRequest: ResetPasswordRequest;

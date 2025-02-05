@@ -1,9 +1,9 @@
-import ResetPasswordEmail from '../../../src/screens/reset-password-email';
-import { baseContextData } from '../../data/test-data';
-import { FormHandler } from '../../../src/utils/form-handler';
-import { CustomOptions } from '../../../interfaces/common';
+import ResetPasswordEmail from '../../../../src/screens/reset-password-email';
+import { baseContextData } from '../../../data/test-data';
+import { FormHandler } from '../../../../src/utils/form-handler';
+import { CustomOptions } from '../../../../interfaces/common';
 
-jest.mock('../../../src/utils/form-handler');
+jest.mock('../../../../src/utils/form-handler');
 
 describe('ResetPasswordEmail', () => {
   let resetPasswordEmail: ResetPasswordEmail;

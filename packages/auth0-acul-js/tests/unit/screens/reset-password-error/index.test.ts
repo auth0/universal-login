@@ -1,5 +1,5 @@
-import { baseContextData } from '../../data/test-data';
-import ResetPasswordError from '../../../src/screens/reset-password-error';
+import { baseContextData } from '../../../data/test-data';
+import ResetPasswordError from '../../../../src/screens/reset-password-error';
 
 describe('ResetPasswordError', () => {
   let resetPasswordError: ResetPasswordError;

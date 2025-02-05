@@ -1,13 +1,13 @@
-import PasskeyEnrollment from "../../../src/screens/passkey-enrollment";
-import { baseContextData } from "../../data/test-data";
-import { FormHandler } from "../../../src/utils/form-handler";
-import { createPasskeyCredentials } from "../../../src/utils/passkeys";
-import { CustomOptions } from "interfaces/common";
+import PasskeyEnrollment from '../../../../src/screens/passkey-enrollment';
+import { baseContextData } from '../../../data/test-data';
+import { FormHandler } from '../../../../src/utils/form-handler';
+import { createPasskeyCredentials } from '../../../../src/utils/passkeys';
+import { CustomOptions } from 'interfaces/common';
 
-jest.mock("../../../src/utils/form-handler");
-jest.mock("../../../src/utils/passkeys");
+jest.mock('../../../../src/utils/form-handler');
+jest.mock('../../../../src/utils/passkeys');
 
-describe("PasskeyEnrollment", () => {
+describe('PasskeyEnrollment', () => {
   let passkeyEnrollment: PasskeyEnrollment;
   let mockFormHandler: { submitData: jest.Mock };
 
@@ -23,17 +23,17 @@ describe("PasskeyEnrollment", () => {
     (FormHandler as jest.Mock).mockImplementation(() => mockFormHandler);
   });
 
-  describe("continuePasskeyEnrollment method", () => {
-    it("should handle continuePasskeyEnrollment with valid payload correctly", async () => {
-      const mockPublicKey = { key: "publicKey" };
-      const mockEncoded = { id: "encodedId" };
+  describe('continuePasskeyEnrollment method', () => {
+    it('should handle continuePasskeyEnrollment with valid payload correctly', async () => {
+      const mockPublicKey = { key: 'publicKey' };
+      const mockEncoded = { id: 'encodedId' };
       Object.defineProperty(passkeyEnrollment.screen, 'publicKey', {
         value: mockPublicKey,
       });      
       (createPasskeyCredentials as jest.Mock).mockReturnValue(mockEncoded);
 
       const payload: CustomOptions = {
-        email: "test@example.com",
+        email: 'test@example.com',
       };
       await passkeyEnrollment.continuePasskeyEnrollment(payload);
 
@@ -46,9 +46,9 @@ describe("PasskeyEnrollment", () => {
       );
     });
 
-    it("should handle continuePasskeyEnrollment without payload correctly", async () => {
-      const mockPublicKey = { key: "publicKey" };
-      const mockEncoded = { id: "encodedId" };
+    it('should handle continuePasskeyEnrollment without payload correctly', async () => {
+      const mockPublicKey = { key: 'publicKey' };
+      const mockEncoded = { id: 'encodedId' };
       Object.defineProperty(passkeyEnrollment.screen, 'publicKey', {
         value: mockPublicKey,
       });      
@@ -64,23 +64,23 @@ describe("PasskeyEnrollment", () => {
       );
     });
 
-    it("should throw error when promise is rejected", async () => {
-      mockFormHandler.submitData.mockRejectedValue(new Error("Mocked reject"));
+    it('should throw error when promise is rejected', async () => {
+      mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
       const payload: CustomOptions = {
-        email: "test@example.com",
+        email: 'test@example.com',
       };
       await expect(
         passkeyEnrollment.continuePasskeyEnrollment(payload)
-      ).rejects.toThrow("Mocked reject");
+      ).rejects.toThrow('Mocked reject');
     });
 
-    it("should handle continuePasskeyEnrollment when publicKey is null", async () => {
+    it('should handle continuePasskeyEnrollment when publicKey is null', async () => {
       Object.defineProperty(passkeyEnrollment.screen, 'publicKey', {
         value: null,
       });
 
       const payload: CustomOptions = {
-        email: "test@example.com",
+        email: 'test@example.com',
       };
       await passkeyEnrollment.continuePasskeyEnrollment(payload);
 
@@ -94,10 +94,10 @@ describe("PasskeyEnrollment", () => {
     });
   });
 
-  describe("abortPasskeyEnrollment method", () => {
-    it("should handle abortPasskeyEnrollment with valid payload correctly", async () => {
+  describe('abortPasskeyEnrollment method', () => {
+    it('should handle abortPasskeyEnrollment with valid payload correctly', async () => {
       const payload: CustomOptions = {
-        email: "test@example.com",
+        email: 'test@example.com',
       };
       await passkeyEnrollment.abortPasskeyEnrollment(payload);
 
@@ -105,30 +105,30 @@ describe("PasskeyEnrollment", () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: "abort-passkey-enrollment",
+          action: 'abort-passkey-enrollment',
         })
       );
     });
 
-    it("should handle abortPasskeyEnrollment without payload correctly", async () => {
+    it('should handle abortPasskeyEnrollment without payload correctly', async () => {
       await passkeyEnrollment.abortPasskeyEnrollment();
 
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: "abort-passkey-enrollment",
+          action: 'abort-passkey-enrollment',
         })
       );
     });
 
-    it("should throw error when promise is rejected", async () => {
-      mockFormHandler.submitData.mockRejectedValue(new Error("Mocked reject"));
+    it('should throw error when promise is rejected', async () => {
+      mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
       const payload: CustomOptions = {
-        email: "test@example.com",
+        email: 'test@example.com',
       };
       await expect(
         passkeyEnrollment.abortPasskeyEnrollment(payload)
-      ).rejects.toThrow("Mocked reject");
+      ).rejects.toThrow('Mocked reject');
     });
   });
 });

@@ -1,9 +1,9 @@
-import Signup from "../../../src/screens/signup";
-import { baseContextData } from '../../data/test-data';
-import { FormHandler } from '../../../src/utils/form-handler';
-import type { SignupOptions } from '../../../interfaces/screens/signup';
+import Signup from '../../../../src/screens/signup';
+import { baseContextData } from '../../../data/test-data';
+import { FormHandler } from '../../../../src/utils/form-handler';
+import type { SignupOptions } from '../../../../interfaces/screens/signup';
 
-jest.mock('../../../src/utils/form-handler');
+jest.mock('../../../../src/utils/form-handler');
 
 describe('Signup', () => {
   let signup: Signup;
