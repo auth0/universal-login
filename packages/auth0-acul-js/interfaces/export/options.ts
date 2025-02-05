@@ -11,7 +11,7 @@ export type { SignupOptions, SocialSignupOptions } from '../screens/signup-id';
 export type { SignupPasswordOptions } from '../screens/signup-password';
 export type { CustomOptions } from '../common';
 export type { LoginOptions as LoginPayloadOptions, SocialLoginOptions as SocialLoginPayloadOptions } from '../screens/login';
-export type { SignupOptions as SignupPayloadOptions, SocialSignupOptions as SocialSignupPayloadOptions  } from '../screens/signup';
+export type { SignupOptions as SignupPayloadOptions, SocialSignupOptions as SocialSignupPayloadOptions } from '../screens/signup';
 export type { ResetPasswordEmailOptions } from '../screens/reset-password-email';
 export type { ResetPasswordRequestOptions } from '../screens/reset-password-request';
 export type { ResetPasswordOptions } from '../screens/reset-password';
