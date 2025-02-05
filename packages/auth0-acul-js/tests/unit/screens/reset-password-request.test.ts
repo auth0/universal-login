@@ -23,7 +23,7 @@ describe('ResetPasswordRequest', () => {
   describe('resetPassword method', () => {
     it('should handle resetPassword with valid payload correctly', async () => {
       const payload: ResetPasswordRequestOptions = {
-        email: 'test@example.com',
+        username: 'test@example.com',
       };
       await resetPasswordRequest.resetPassword(payload);
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
@@ -35,7 +35,7 @@ describe('ResetPasswordRequest', () => {
     it('should throw error when promise is rejected', async () => {
       mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
       const payload: ResetPasswordRequestOptions = {
-        email: 'test@example.com',
+        username: 'test@example.com',
       };
       await expect(resetPasswordRequest.resetPassword(payload)).rejects.toThrow(
         'Mocked reject'
@@ -46,7 +46,7 @@ describe('ResetPasswordRequest', () => {
       mockFormHandler.submitData.mockRejectedValueOnce(
         new Error('Invalid email')
       );
-      const payload = { email: '' };
+      const payload = { username: '' };
       await expect(resetPasswordRequest.resetPassword(payload)).rejects.toThrow(
         'Invalid email'
       );
@@ -56,7 +56,7 @@ describe('ResetPasswordRequest', () => {
   describe('backToLogin method', () => {
     it('should handle backToLogin with valid payload correctly', async () => {
       const payload: CustomOptions = {
-        email: 'test@example.com',
+        username: 'test@example.com',
       };
       await resetPasswordRequest.backToLogin(payload);
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
@@ -81,7 +81,7 @@ describe('ResetPasswordRequest', () => {
     it('should throw error when promise is rejected', async () => {
       mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
       const payload: CustomOptions = {
-        email: 'test@example.com',
+        username: 'test@example.com',
       };
       await expect(resetPasswordRequest.backToLogin(payload)).rejects.toThrow(
         'Mocked reject'

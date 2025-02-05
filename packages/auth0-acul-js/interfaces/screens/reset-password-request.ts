@@ -4,7 +4,7 @@ import type { ScreenMembers } from '../models/screen';
 import type { TransactionMembers } from '../models/transaction';
 
 export interface ResetPasswordRequestOptions {
-  username?: string;
+  username: string;
   captcha?: string;
   [key: string]: string | number | boolean | undefined;
 }
