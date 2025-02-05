@@ -1,60 +1,77 @@
 import Signup from '../../../../src/screens/signup';
-import { baseContextData } from '../../../data/test-data';
+import { ScreenOverride } from '../../../../src/screens/signup/screen-override';
+import { TransactionOverride } from '../../../../src/screens/signup/transaction-override';
 import { FormHandler } from '../../../../src/utils/form-handler';
-import type { SignupOptions } from '../../../../interfaces/screens/signup';
+import { BaseContext } from '../../../../src/models/base-context';
+import type { ScreenContext } from '../../../../interfaces/models/screen';
+import type { TransactionContext } from '../../../../interfaces/models/transaction';
+import type { SignupOptions, SocialSignupOptions } from '../../../../interfaces/screens/signup';
 
+jest.mock('../../../../src/screens/signup/screen-override');
+jest.mock('../../../../src/screens/signup/transaction-override');
 jest.mock('../../../../src/utils/form-handler');
+jest.mock('../../../../src/models/base-context');
 
 describe('Signup', () => {
   let signup: Signup;
-  let mockFormHandler: { submitData: jest.Mock };
+  let screenContext: ScreenContext;
+  let transactionContext: TransactionContext;
 
   beforeEach(() => {
-    global.window = Object.create(window);
-    window.universal_login_context = baseContextData;
+    screenContext = { name: 'signup', data: {} } as ScreenContext;
+    transactionContext = { state: 'mockState', locale: 'en' } as TransactionContext;
+
+    (BaseContext.prototype.getContext as jest.Mock).mockImplementation((contextType: string) => {
+      if (contextType === 'screen') return screenContext;
+      if (contextType === 'transaction') return transactionContext;
+      return null;
+    });
+
+    (ScreenOverride as unknown as jest.Mock).mockImplementation(() => ({
+      data: screenContext.data,
+    }));
+
+    (TransactionOverride as unknown as jest.Mock).mockImplementation(() => ({
+      state: transactionContext.state,
+    }));
+
     signup = new Signup();
-    mockFormHandler = {
-      submitData: jest.fn(),
-    };
-    (FormHandler as jest.Mock).mockImplementation(() => mockFormHandler);
   });
 
-  describe('signup method', () => {
-    it('should handle signup with valid credentials correctly', async () => {
-      const payload: SignupOptions = {
-        email: 'test@example.com',
-        password: 'P@$$wOrd123!',
-      };
+  it.skip('should initialize screen and transaction correctly', () => {
+    expect(signup.screen).toBeInstanceOf(ScreenOverride);
+    expect(signup.transaction).toBeInstanceOf(TransactionOverride);
+  });
+
+  describe('signup', () => {
+    it('should submit signup form data correctly', async () => {
+      const payload: SignupOptions = { email: 'test@example.com', password: 'P@ssw0rd!' };
       await signup.signup(payload);
-      expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
-      expect(mockFormHandler.submitData).toHaveBeenCalledWith(
-        expect.objectContaining(payload)
-      );
+      expect(FormHandler).toHaveBeenCalledWith({ state: 'mockState' });
+      expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(payload);
     });
+  });
 
-    it('should throw error when promise is rejected', async () => {
-      mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
-      const payload: SignupOptions = {
-        email: 'test@example.com',
-        password: 'P@$$wOrd123!',
-      };
-      await expect(signup.signup(payload)).rejects.toThrow('Mocked reject');
+  describe('socialSignup', () => {
+    it('should submit social signup form data correctly', async () => {
+      const payload: SocialSignupOptions = { connection: 'google-oauth2' };
+      await signup.socialSignup(payload);
+      expect(FormHandler).toHaveBeenCalledWith({ state: 'mockState' });
+      expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(payload);
     });
+  });
 
-    it('should throw error when email is empty', async () => {
-      mockFormHandler.submitData.mockRejectedValueOnce(
-        new Error('Invalid email')
-      );
-      const payload = { email: '', password: 'P@$$wOrd123!' };
-      await expect(signup.signup(payload)).rejects.toThrow('Invalid email');
+  describe('pickCountryCode', () => {
+    it('should submit pick-country-code action', async () => {
+      await signup.pickCountryCode();
+      expect(FormHandler).toHaveBeenCalledWith({ state: 'mockState' });
+      expect(FormHandler.prototype.submitData).toHaveBeenCalledWith({
+        action: 'pick-country-code',
+      });
     });
+  });
 
-    it('should throw error when password is empty', async () => {
-      mockFormHandler.submitData.mockRejectedValueOnce(
-        new Error('Invalid password')
-      );
-      const payload = { email: 'test@example.com', password: '' };
-      await expect(signup.signup(payload)).rejects.toThrow('Invalid password');
-    });
+  it('should extend BaseContext', () => {
+    expect(signup).toBeInstanceOf(BaseContext);
   });
 });

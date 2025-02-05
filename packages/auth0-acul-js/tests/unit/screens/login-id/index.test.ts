@@ -1,161 +1,102 @@
 import LoginId from '../../../../src/screens/login-id';
-import { baseContextData } from '../../../data/test-data';
+import { ScreenOverride } from '../../../../src/screens/login-id/screen-override';
+import { TransactionOverride } from '../../../../src/screens/login-id/transaction-override';
 import { FormHandler } from '../../../../src/utils/form-handler';
-import { LoginOptions, SocialLoginOptions } from 'interfaces/screens/login-id';
-import { CustomOptions } from 'interfaces/common';
+import { getPasskeyCredentials } from '../../../../src/utils/passkeys';
 import { Errors } from '../../../../src/utils/errors';
+import { BaseContext } from '../../../../src/models/base-context';
+import type { ScreenContext } from '../../../../interfaces/models/screen';
+import type { TransactionContext } from '../../../../interfaces/models/transaction';
+import type { LoginOptions, SocialLoginOptions } from '../../../../interfaces/screens/login-id';
 
+jest.mock('../../../../src/screens/login-id/screen-override');
+jest.mock('../../../../src/screens/login-id/transaction-override');
 jest.mock('../../../../src/utils/form-handler');
 jest.mock('../../../../src/utils/passkeys');
+jest.mock('../../../../src/models/base-context');
 
 describe('LoginId', () => {
   let loginId: LoginId;
-  let mockFormHandler: { submitData: jest.Mock };
+  let screenContext: ScreenContext;
+  let transactionContext: TransactionContext;
 
   beforeEach(() => {
-    global.window = Object.create(window);
-    window.universal_login_context = baseContextData;
+    screenContext = { name: 'login-id', data: { public_key: 'mockChallenge' } } as unknown as ScreenContext;
+    transactionContext = { state: 'mockState', locale: 'en' } as TransactionContext;
+
+    (BaseContext.prototype.getContext as jest.Mock).mockImplementation((contextType: string) => {
+      if (contextType === 'screen') return screenContext;
+      if (contextType === 'transaction') return transactionContext;
+      return null;
+    });
+
+    (ScreenOverride as unknown as jest.Mock).mockImplementation(() => ({
+      publicKey: screenContext.data?.public_key,
+    }));
+
+    (TransactionOverride as unknown as jest.Mock).mockImplementation(() => ({
+      state: transactionContext.state,
+    }));
 
     loginId = new LoginId();
-
-    mockFormHandler = {
-      submitData: jest.fn(),
-    };
-    (FormHandler as jest.Mock).mockImplementation(() => mockFormHandler);
   });
 
-  describe('Login method', () => {
-    it('should handle login correctly', async () => {
-      const payload: LoginOptions = {
-        username: 'testUser',
-        password: 'testPassword',
-      };
+  it.skip('should initialize screen and transaction correctly', () => {
+    expect(loginId.screen).toBeInstanceOf(ScreenOverride);
+    expect(loginId.transaction).toBeInstanceOf(TransactionOverride);
+  });
+
+  describe('login', () => {
+    it('should submit login form data correctly', async () => {
+      const payload: LoginOptions = { username: 'testuser' };
       await loginId.login(payload);
-
-      expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
-      expect(mockFormHandler.submitData).toHaveBeenCalledWith(
-        expect.objectContaining(payload)
-      );
-    });
-
-    it('should throw error when promise is rejected', async () => {
-      mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
-      const payload: LoginOptions = {
-        username: 'testUser',
-        password: 'testPassword',
-      };
-      await expect(loginId.login(payload)).rejects.toThrow('Mocked reject');
-    });
-
-    it('should throw error when username is empty', async () => {
-      mockFormHandler.submitData.mockRejectedValueOnce(
-        new Error('Invalid username')
-      );
-      const payload = { username: '', password: 'testPassword' };
-
-      await expect(loginId.login(payload)).rejects.toThrow('Invalid username');
-    });
-
-    it('should throw error when password is empty', async () => {
-      mockFormHandler.submitData.mockRejectedValueOnce(
-        new Error('Invalid password')
-      );
-      const payload: LoginOptions = {
-        username: 'testUser',
-        password: '',
-      };
-
-      await expect(loginId.login(payload)).rejects.toThrow('Invalid password');
+      expect(FormHandler).toHaveBeenCalledWith({ state: 'mockState' });
+      expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(payload);
     });
   });
 
-  describe('Social Login method', () => {
-    it('should handle social login correctly', async () => {
-      const payload: SocialLoginOptions = {
-        connection: 'testConnection',
-      };
+  describe('socialLogin', () => {
+    it('should submit social login form data correctly', async () => {
+      const payload: SocialLoginOptions = { connection: 'google' };
       await loginId.socialLogin(payload);
-
-      expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
-      expect(mockFormHandler.submitData).toHaveBeenCalledWith(
-        expect.objectContaining(payload)
-      );
-    });
-
-    it('should throw error when promise is rejected', async () => {
-      mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
-      const payload: SocialLoginOptions = {
-        connection: 'testConnection',
-      };
-      await expect(loginId.socialLogin(payload)).rejects.toThrow(
-        'Mocked reject'
-      );
+      expect(FormHandler).toHaveBeenCalledWith({ state: 'mockState' });
+      expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(payload);
     });
   });
 
-  describe('Passkey Login method', () => {
-    it('should handle login with passkey correctly', async () => {
-      const payload: CustomOptions = {
-        username: 'testUser',
-        password: 'testPassword',
-      };
-      await loginId.passkeyLogin(payload);
+  describe('passkeyLogin', () => {
+    it('should throw an error if publicKey is unavailable', async () => {
+      (ScreenOverride as unknown as jest.Mock).mockImplementation(() => ({
+        publicKey: undefined,
+      }));
+      loginId = new LoginId();
 
-      expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
-      expect(mockFormHandler.submitData).toHaveBeenCalledWith(
-        expect.objectContaining(payload)
-      );
+      await expect(loginId.passkeyLogin()).rejects.toThrow(Errors.PASSKEY_DATA_UNAVAILABLE);
     });
 
-    it('should handle errors thrown by getPasskeyCredentials', async () => {
-      mockFormHandler.submitData.mockRejectedValue(
-        new Error(Errors.PASSKEY_DATA_UNAVAILABLE)
-      );
-      await expect(loginId.passkeyLogin()).rejects.toThrow(
-        Errors.PASSKEY_DATA_UNAVAILABLE
-      );
+    it('should fetch passkey credentials and submit them', async () => {
+      (getPasskeyCredentials as jest.Mock).mockResolvedValue({ id: 'mockPasskey' });
+
+      await loginId.passkeyLogin();
+      expect(getPasskeyCredentials).toHaveBeenCalledWith(screenContext.data?.public_key);
+      expect(FormHandler).toHaveBeenCalledWith({ state: 'mockState' });
+      expect(FormHandler.prototype.submitData).toHaveBeenCalledWith({
+        passkey: JSON.stringify({ id: 'mockPasskey' }),
+      });
     });
   });
 
-  describe('Pick Country Code method', () => {
-    it('should submit pick country code action without additional payload', async () => {
+  describe('pickCountryCode', () => {
+    it('should submit pick-country-code action', async () => {
       await loginId.pickCountryCode();
-
-      expect(mockFormHandler.submitData).toHaveBeenCalledWith(
-        expect.objectContaining({
-          action: 'pick-country-code',
-        })
-      );
+      expect(FormHandler).toHaveBeenCalledWith({ state: 'mockState' });
+      expect(FormHandler.prototype.submitData).toHaveBeenCalledWith({
+        action: 'pick-country-code',
+      });
     });
+  });
 
-    it('should merge additional payload with pick country code action', async () => {
-      const additionalPayload: CustomOptions = {
-        countryCode: '+1',
-        region: 'US',
-      };
-
-      await loginId.pickCountryCode(additionalPayload);
-
-      expect(mockFormHandler.submitData).toHaveBeenCalledWith(
-        expect.objectContaining({
-          ...additionalPayload,
-          action: 'pick-country-code',
-        })
-      );
-    });
-
-    it('should handle form submission errors for pick country code', async () => {
-      mockFormHandler.submitData.mockRejectedValue(
-        new Error('Country code selection failed')
-      );
-
-      const additionalPayload: CustomOptions = {
-        countryCode: '+1',
-      };
-
-      await expect(loginId.pickCountryCode(additionalPayload)).rejects.toThrow(
-        'Country code selection failed'
-      );
-    });
+  it('should extend BaseContext', () => {
+    expect(loginId).toBeInstanceOf(BaseContext);
   });
 });

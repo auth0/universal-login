@@ -1,17 +1,41 @@
-import { baseContextData } from '../../../data/test-data';
 import ResetPasswordError from '../../../../src/screens/reset-password-error';
+import { ScreenOverride } from '../../../../src/screens/reset-password-error/screen-override';
+import { BaseContext } from '../../../../src/models/base-context';
+import type { ScreenContext } from '../../../../interfaces/models/screen';
+
+jest.mock('../../../../src/screens/reset-password-error/screen-override');
+jest.mock('../../../../src/models/base-context');
 
 describe('ResetPasswordError', () => {
   let resetPasswordError: ResetPasswordError;
+  let screenContext: ScreenContext;
+
   beforeEach(() => {
-    global.window = Object.create(window);
-    window.universal_login_context = baseContextData;
+    screenContext = {
+      name: 'reset-password-error',
+      data: { username: 'testuser' },
+    } as ScreenContext;
+
+    (BaseContext.prototype.getContext as jest.Mock).mockReturnValue(screenContext);
+    (ScreenOverride as unknown as jest.Mock).mockImplementation((context) => ({
+      data: context.data,
+    }));
+
     resetPasswordError = new ResetPasswordError();
   });
-  it.skip('should parse the data correctly', () => {
-    const { screen } = resetPasswordError;
-    expect(screen.data).toEqual({
-      username: 'randomUsername',
+
+  it('should instantiate ScreenOverride with the correct screenContext', () => {
+    expect(ScreenOverride).toHaveBeenCalledTimes(1);
+    expect(ScreenOverride).toHaveBeenCalledWith(screenContext);
+  });
+
+  it('should correctly initialize screen data', () => {
+    expect(resetPasswordError.screen.data).toEqual({
+      username: 'testuser',
     });
+  });
+
+  it('should extend BaseContext', () => {
+    expect(resetPasswordError).toBeInstanceOf(BaseContext);
   });
 });
