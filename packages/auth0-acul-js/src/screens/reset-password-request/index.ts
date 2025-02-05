@@ -35,7 +35,8 @@ export default class ResetPasswordRequest extends BaseContext implements ResetPa
     const options: FormOptions = {
       state: this.transaction.state,
     };
-    await new FormHandler(options).submitData(payload);
+    const updatedPayload = this.updatePayloadByIdentifier(payload);
+    await new FormHandler(options).submitData(updatedPayload);
   }
 
   /**
@@ -50,6 +51,18 @@ export default class ResetPasswordRequest extends BaseContext implements ResetPa
       state: this.transaction.state,
     };
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'back-to-login' });
+  }
+
+  updatePayloadByIdentifier(payload: ResetPasswordRequestOptions): ResetPasswordRequestOptions {
+    if (!this.transaction.hasFlexibleIdentifier) {
+      console.log('Identified nonFlexibleIdentifier flow');
+      return {
+        ...payload,
+        email: payload.username,
+      };
+    } else {
+      return payload;
+    }
   }
 }
 

@@ -24,7 +24,7 @@ export default class Signup extends BaseContext implements SignupMembers {
    *
    * @example
    * ```typescript
-   * import Signup from '@auth0/auth0-acul-js/signup-new';
+   * import Signup from '@auth0/auth0-acul-js/signup';
    *
    * const signupManager = new Signup();
    *
@@ -51,7 +51,7 @@ export default class Signup extends BaseContext implements SignupMembers {
    *
    * @example
    * ```typescript
-   * import Signup from '@auth0/auth0-acul-js/signup-new';
+   * import Signup from '@auth0/auth0-acul-js/signup';
    *
    * const signupManager = new Signup();
    *
@@ -65,6 +65,23 @@ export default class Signup extends BaseContext implements SignupMembers {
       state: this.transaction.state,
     };
     await new FormHandler(options).submitData<SocialSignupOptions>(payload);
+  }
+
+  /**
+   * @example
+   * import Signup from "@auth0/auth0-acul-js/signup";
+   * const signupManager = new Signup();
+   *
+   * signupManager.pickCountryCode();
+   */
+  async pickCountryCode(): Promise<void> {
+    const options: FormOptions = {
+      state: this.transaction.state,
+    };
+
+    await new FormHandler(options).submitData({
+      action: 'pick-country-code',
+    });
   }
 }
 
