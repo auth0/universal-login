@@ -88,7 +88,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "build": "npm run clean && npm run lint && npm run test && npm run docs && rollup -c rollup.config.js --bundleConfigAsCjs",
-    "test": "jest --verbose tests/unit/**/*",
+    "test": "jest --verbose tests/unit/**/* --coverage",
     "test:e2e": "cypress open",
     "docs": "typedoc --options typedoc.json",
     "lint": "npm run lint:interfaces && npm run lint:src",
