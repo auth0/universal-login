@@ -32,5 +32,6 @@ export interface TransactionMembersOnSignup extends TransactionMembers {
 
 export interface SignupMembers extends BaseMembers {
   screen: ScreenMembersOnSignup;
+  transaction: TransactionMembersOnSignup;
   signup(payload: SignupOptions): Promise<void>;
 }

@@ -1,17 +1,12 @@
 import type { CustomOptions } from '../common';
 import type { BaseMembers } from '../models/base-context';
-import type { ScreenMembers, ScreenData } from '../models/screen';
+import type { ScreenMembers } from '../models/screen';
 import type { TransactionMembers } from '../models/transaction';
 
 export interface ResetPasswordRequestOptions {
-  username?: string;
-  [key: string]: string | number | boolean | undefined;
-}
-
-export interface ScreenDataOptions extends ScreenData {
-  email?: string;
-  username?: string;
+  username: string;
   captcha?: string;
+  [key: string]: string | number | boolean | undefined;
 }
 
 export interface TransactionMembersOnResetPasswordRequest extends TransactionMembers {
@@ -29,6 +24,7 @@ export interface ScreenMembersOnResetPasswordRequest extends ScreenMembers {
 
 export interface ResetPasswordRequestMembers extends BaseMembers {
   screen: ScreenMembersOnResetPasswordRequest;
+  transaction: TransactionMembersOnResetPasswordRequest;
   resetPassword(payload: ResetPasswordRequestOptions): Promise<void>;
   backToLogin(payload?: CustomOptions): Promise<void>;
 }

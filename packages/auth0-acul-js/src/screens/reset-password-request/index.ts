@@ -59,7 +59,10 @@ export default class ResetPasswordRequest extends BaseContext implements ResetPa
 /**
  * @private
  */
-function updatePayloadByIdentifier(payload: ResetPasswordRequestOptions, isFlexibleIdentifier: boolean): ResetPasswordRequestOptions {
+function updatePayloadByIdentifier(
+  payload: ResetPasswordRequestOptions,
+  isFlexibleIdentifier: boolean,
+): ResetPasswordRequestOptions | { email: string } {
   if (!isFlexibleIdentifier) {
     // eslint-disable-next-line
     const { username, ...rest } = payload;
