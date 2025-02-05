@@ -91,6 +91,11 @@ export function getOptionalIdentifiers(transaction: TransactionContext): Transac
   return extractIdentifiersByStatus(transaction?.connection as DBConnection, ['optional']);
 }
 
+export function hasFlexibleIdentifier(transaction: TransactionContext): boolean {
+  const connection = transaction.connection as DBConnection;
+  return connection?.options?.attributes ? true : false;
+}
+
 /**
  * Extracts identifiers based on their signup status.
  */

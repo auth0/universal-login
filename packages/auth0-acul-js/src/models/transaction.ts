@@ -10,7 +10,6 @@ export class Transaction implements TransactionMembers {
   errors: TransactionMembers['errors'];
   currentConnection: TransactionMembers['currentConnection'];
   alternateConnections: TransactionMembers['alternateConnections'];
-  hasFlexibleIdentifier: boolean;
 
   constructor(transaction: TransactionContext) {
     this.state = transaction.state;
@@ -22,7 +21,6 @@ export class Transaction implements TransactionMembers {
     this.errors = Transaction.getErrors(transaction);
     this.currentConnection = Transaction.getCurrentConnection(transaction);
     this.alternateConnections = Transaction.getAlternateConnections(transaction);
-    this.hasFlexibleIdentifier = this.isFlexibleIdentifier(transaction.connection?.options);
   }
 
   static getErrors(transaction: TransactionContext): TransactionMembers['errors'] {
@@ -75,8 +73,5 @@ export class Transaction implements TransactionMembers {
 
       return connectionProperties;
     });
-  }
-  isFlexibleIdentifier(options: Record<string, unknown> | null | undefined): boolean {
-    return options !== null && options !== undefined && typeof options === 'object' && 'attributes' in options;
   }
 }

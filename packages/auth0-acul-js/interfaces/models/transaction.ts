@@ -167,5 +167,4 @@ export interface TransactionMembers {
   errors: Error[] | null;
   currentConnection: Connection | null;
   alternateConnections: (Connection | EnterpriseConnection)[] | null;
-  hasFlexibleIdentifier: boolean;
 }

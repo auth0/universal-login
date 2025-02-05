@@ -11,11 +11,13 @@ import type {
   ResetPasswordRequestOptions,
   ResetPasswordRequestMembers,
   ScreenMembersOnResetPasswordRequest as ScreenOptions,
+  TransactionMembersOnResetPasswordRequest as TransactionOptions,
 } from '../../../interfaces/screens/reset-password-request';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 export default class ResetPasswordRequest extends BaseContext implements ResetPasswordRequestMembers {
   screen: ScreenOptions;
+  transaction: TransactionOptions;
   constructor() {
     super();
     const screenContext = this.getContext('screen') as ScreenContext;
@@ -35,7 +37,7 @@ export default class ResetPasswordRequest extends BaseContext implements ResetPa
     const options: FormOptions = {
       state: this.transaction.state,
     };
-    const updatedPayload = this.updatePayloadByIdentifier(payload);
+    const updatedPayload = updatePayloadByIdentifier(payload, this.transaction.hasFlexibleIdentifier);
     await new FormHandler(options).submitData(updatedPayload);
   }
 
@@ -52,17 +54,22 @@ export default class ResetPasswordRequest extends BaseContext implements ResetPa
     };
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'back-to-login' });
   }
+}
 
-  updatePayloadByIdentifier(payload: ResetPasswordRequestOptions): ResetPasswordRequestOptions {
-    if (!this.transaction.hasFlexibleIdentifier) {
-      console.log('Identified nonFlexibleIdentifier flow');
-      return {
-        ...payload,
-        email: payload.username,
-      };
-    } else {
-      return payload;
-    }
+/**
+ * @private
+ */
+function updatePayloadByIdentifier(payload: ResetPasswordRequestOptions, isFlexibleIdentifier: boolean): ResetPasswordRequestOptions {
+  if (!isFlexibleIdentifier) {
+    console.log('Identified nonFlexibleIdentifier flow');
+    // eslint-disable-next-line
+    const { username, ...rest } = payload;
+    return {
+      ...rest,
+      email: payload.username,
+    };
+  } else {
+    return payload;
   }
 }
 

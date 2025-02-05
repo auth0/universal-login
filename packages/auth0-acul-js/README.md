@@ -56,14 +56,14 @@ After installing the SDK, you can import the relevant screen module, which you w
 ### Importing Screens
 
 ```js
-// Default import of any particular screen, eg: login screen
-import Login from '@auth0/auth0-acul-js/login'; 
+// Default import of any particular screen, eg: login-id screen
+import  LoginId  from '@auth0/auth0-acul-js/login-id'; 
 
 // Named import of any screen
-import { Login } from '@auth0/auth0-acul-js'; 
+import  { LoginId }  from '@auth0/auth0-acul-js'; 
 
 // Default import of all screens
-import * as Screens from '@auth0/auth0-acul-js'; 
+import  * as Screens  from '@auth0/auth0-acul-js'; 
 
 ```
 Note: For more details on import paths for all screens, refer to the [FAQ's](FAQ.md).
@@ -72,36 +72,35 @@ Note: For more details on import paths for all screens, refer to the [FAQ's](FAQ
 
 ### Adding Functionality to Your Screens
 
-Let's look at an example for adding logic to the `login` screen.
+Let’s look at an example for adding logic to the `login-id` screen.
 
 #### Example: Add Logic to Login Button
 ```typescript
-  import Login from '@auth0/auth0-acul-js/login';
+  import  LoginId  from '@auth0/auth0-acul-js/login-id';
 
-  const loginManager = new Login();
+  const loginIdManager = new LoginId();
 
   // Trigger the login method on button click
-  loginManager.login({
-    username: "testUser",
-    password: "testPassword"
+  loginIdManager.login({
+    username: "testUser"
   });
 ``` 
 
-#### Get Password Policy
+#### Get List of Mandatory Fields for Login
  ```typescript
- const { transaction } = loginManager;
- const passwordPolicy = transaction.getPasswordPolicy();
+ const { transaction } = loginIdManager
+ const requiredFields = transaction.getActiveIdentifiers();
  ```
 
  #### Integrating Social Connections for Login
 To allow users to login via social connections (e.g., Google, Facebook), use the following snippet
 
 ```typescript
-import Login from "@auth0/auth0-acul-js/login";
-const loginManager = new Login();
+import  LoginId  from "@auth0/auth0-acul-js/login-id";
+const loginIdManager = new LoginId();
 
 // Check if alternateConnections is available and has at least one item
-if (!loginManager.transaction.alternateConnections) {
+if (!loginIdManager.transaction.getAlternateConnections()) {
   console.error('No alternate connections available.');
 }
 
@@ -112,7 +111,7 @@ const selectedConnection = alternateConnections[0];
 console.log(`Selected connection: ${selectedConnection.name}`);
 
 // Proceed with social login using the selected connection
-loginManager.socialLogin({
+loginIdManager.socialLogin({
   connection: selectedConnection.name,
 })
 ```
@@ -145,6 +144,7 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
   16. [reset-password](https://auth0.github.io/universal-login/classes/Classes.ResetPassword.html)
   17. [reset-password-error](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordError.html)
   18. [reset-password-success](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordSuccess.html)
+  19. [signup](https://auth0.github.io/universal-login/classes/Classes.Signup.html)
 </details>
 
 

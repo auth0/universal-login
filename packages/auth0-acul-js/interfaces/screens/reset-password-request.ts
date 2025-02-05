@@ -4,7 +4,6 @@ import type { ScreenMembers, ScreenData } from '../models/screen';
 import type { TransactionMembers } from '../models/transaction';
 
 export interface ResetPasswordRequestOptions {
-  email?: string;
   username?: string;
   [key: string]: string | number | boolean | undefined;
 }
@@ -18,6 +17,7 @@ export interface ScreenDataOptions extends ScreenData {
 export interface TransactionMembersOnResetPasswordRequest extends TransactionMembers {
   allowedIdentifiers: ('email' | 'username' | 'phone')[] | null;
   requiredIdentifiers: ('email' | 'username' | 'phone')[] | null;
+  hasFlexibleIdentifier: boolean;
 }
 
 export interface ScreenMembersOnResetPasswordRequest extends ScreenMembers {
