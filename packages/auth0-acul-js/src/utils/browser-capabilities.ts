@@ -35,13 +35,11 @@ export async function isWebAuthPlatformAvailable(): Promise<boolean> {
     return false;
   }
 
-  console.log('xxxx2', window.PublicKeyCredential);
-
   try {
     return Boolean(await window.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable());
   } catch (err) {
     // eslint-disable-next-line no-console
-    console.error('isUserVerifyingPlatformAuthenticatorAvailable failed', err);
+    console.warn('isUserVerifyingPlatformAuthenticatorAvailable failed', err);
     return false;
   }
 }
