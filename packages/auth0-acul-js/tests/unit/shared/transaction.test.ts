@@ -28,7 +28,7 @@ describe('Transaction Context Functions', () => {
           username_required: false,
           authentication_methods: {
             password: { enabled: true, policy: 'good', min_length: 8 },
-            passkeys: { enabled: true }
+            passkey: { enabled: true }
           },
           attributes: {
             email: { signup_status: 'required', identifier_active: true },
@@ -112,7 +112,7 @@ describe('Transaction Context Functions - Edge Cases', () => {
           username_required: undefined,
           authentication_methods: {
             password: undefined,
-            passkeys: { enabled: false }
+            passkey: { enabled: false }
           },
           attributes: {}
         }

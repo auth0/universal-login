@@ -98,7 +98,7 @@ export interface DBConnection extends Connection {
         policy: string;
         min_length: number;
       };
-      passkeys: {
+      passkey: {
         enabled: boolean;
       };
     };

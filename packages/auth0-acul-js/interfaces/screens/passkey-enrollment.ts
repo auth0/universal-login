@@ -8,7 +8,7 @@ export interface ExtendedScreenContext extends ScreenContext {
   };
 
   data: {
-    passkeys: PasskeyCreate;
+    passkey: PasskeyCreate;
   };
 }
 

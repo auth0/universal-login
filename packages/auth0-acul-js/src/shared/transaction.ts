@@ -22,7 +22,7 @@ export function isForgotPasswordEnabled(transaction: TransactionContext): boolea
  */
 export function isPasskeyEnabled(transaction: TransactionContext): boolean {
   const connection = transaction?.connection as DBConnection;
-  return connection?.options?.authentication_methods?.passkeys?.enabled ?? false;
+  return connection?.options?.authentication_methods?.passkey?.enabled ?? false;
 }
 
 /**
