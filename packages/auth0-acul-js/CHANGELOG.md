@@ -1,5 +1,5 @@
 
-## [auth0-acul-js@0.1.0-beta.1](https://github.com/auth0/auth0-react/tree/v0.1.0) (2024-02-05)
+## [auth0-acul-js@0.1.0-beta.1](https://github.com/auth0/auth0-react/tree/v0.1.0) (2024-02-06)
 
 **Added**
 
@@ -13,6 +13,21 @@ Support for the following screens:
 6. [reset-password-error](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordError.html)
 7. [reset-password-success](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordSuccess.html)
 
+**Breaking Changes**
+
+- **Flattened Screen-Related Properties**: We have simplified the structure of screen-related properties by removing the methods and replacing them with direct properties.
+
+  Example:
+  - The previous `loginIdInstance.transaction.geErrors` method has been replaced with the new `loginIdInstance.transaction.errors` property.
+
+  **Code Example:**
+  ```javascript
+  import LoginId from "@auth0/auth0-acul-js/login-id";
+  const loginIdManager = new LoginId();
+  // Old method
+  loginIdInstance.transaction.geErrors(); 
+  // New property
+  loginIdInstance.transaction.errors;
 
 ## [auth0-acul-js@0.0.1-beta.1](https://github.com/auth0/auth0-react/tree/v0.1.0) (2024-12-09)
 
