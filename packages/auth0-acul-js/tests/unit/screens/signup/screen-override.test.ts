@@ -1,72 +1,31 @@
 import { ScreenOverride } from '../../../../src/screens/signup/screen-override';
+import { getLoginLink } from '../../../../src/shared/screen';
 import { Screen } from '../../../../src/models/screen';
 import type { ScreenContext } from '../../../../interfaces/models/screen';
 
-jest.mock('../../../../src/models/screen');
+jest.mock('../../../../src/shared/screen');
 
 describe('ScreenOverride', () => {
   let screenContext: ScreenContext;
   let screenOverride: ScreenOverride;
 
   beforeEach(() => {
-    screenContext = {
-      name: 'signup',
-      data: {
-        name: 'Test User',
-        email: 'test@example.com',
-      },
-      links: {
-        login: '/login',
-      },
-    } as ScreenContext;
+    screenContext = { name: 'signup' } as ScreenContext;
+
+    (getLoginLink as jest.Mock).mockReturnValue('mockLoginLink');
 
     screenOverride = new ScreenOverride(screenContext);
   });
 
-  it('should initialize data correctly', () => {
-    expect(screenOverride.data).toEqual({
-      name: 'Test User',
-      email: 'test@example.com',
-      loginLink: '/login',
-    });
+  it('should initialize loginLink correctly', () => {
+    expect(screenOverride.loginLink).toBe('mockLoginLink');
   });
 
-  describe('getScreenData', () => {
-    it('should return modified data including name and loginLink', () => {
-      const result = ScreenOverride.getScreenData(screenContext);
-      expect(result).toEqual({
-        name: 'Test User',
-        email: 'test@example.com',
-        loginLink: '/login',
-      });
-    });
-
-    it('should return null if screenContext.data is undefined', () => {
-      expect(ScreenOverride.getScreenData({} as ScreenContext)).toBeNull();
-    });
-
-    it('should return an object without loginLink if links are undefined', () => {
-      const modifiedScreenContext = {
-        name: 'signup',
-        data: { name: 'Test User', email: 'test@example.com' },
-      } as ScreenContext;
-      expect(ScreenOverride.getScreenData(modifiedScreenContext)).toEqual({
-        name: 'Test User',
-        email: 'test@example.com',
-        loginLink: undefined,
-      });
-    });
-
-    it('should return an object without modifications if name is not present', () => {
-      const modifiedScreenContext = { name: 'signup', data: {} } as ScreenContext;
-      expect(ScreenOverride.getScreenData(modifiedScreenContext)).toEqual({
-        email: undefined,
-        loginLink: undefined,
-      });
-    });
+  it('should call getLoginLink with screenContext', () => {
+    expect(getLoginLink).toHaveBeenCalledWith(screenContext);
   });
 
-  it('should create an instance of Screen', () => {
+  it('should extend Screen class', () => {
     expect(screenOverride).toBeInstanceOf(Screen);
   });
 });

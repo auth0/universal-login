@@ -17,10 +17,7 @@ export interface SocialSignupOptions {
 }
 
 export interface ScreenMembersOnSignup extends ScreenMembers {
-  data: {
-    name?: string;
-    loginLink?: string;
-  } | null;
+  loginLink: string | null;
 }
 
 export interface TransactionMembersOnSignup extends TransactionMembers {
