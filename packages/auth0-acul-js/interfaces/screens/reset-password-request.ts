@@ -17,6 +17,7 @@ export interface TransactionMembersOnResetPasswordRequest extends TransactionMem
 
 export interface ScreenMembersOnResetPasswordRequest extends ScreenMembers {
   data: {
+    phone?: string;
     email?: string;
     username?: string;
   } | null;

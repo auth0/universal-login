@@ -9,11 +9,7 @@ export interface ScreenDataOptions extends ScreenData {
   username?: string;
 }
 
-export interface ScreenMembersOnResetPasswordSuccess extends ScreenMembers {
-  data: {
-    username?: string;
-  } | null;
-}
+export interface ScreenMembersOnResetPasswordSuccess extends ScreenMembers {}
 
 export interface ResetPasswordSuccessMembers extends BaseMembers {
   screen: ScreenMembersOnResetPasswordSuccess;
