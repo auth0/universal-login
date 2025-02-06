@@ -62,4 +62,11 @@ export default class LoginPasswordlessSmsOtp extends BaseContext implements Logi
   }
 }
 
-export { LoginPasswordlessSmsOtpMembers, SubmitOTPOptions };
+export {
+  LoginPasswordlessSmsOtpMembers,
+  SubmitOTPOptions,
+  ScreenOptions as ScreenMembersOnLoginPasswordlessSmsOtp,
+  TransactionOptions as TransactionMembersOnLoginPasswordlessSmsOtp,
+};
+export * from '../../../interfaces/export/common';
+export * from '../../../interfaces/export/base-properties';

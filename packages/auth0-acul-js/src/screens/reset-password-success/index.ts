@@ -16,4 +16,6 @@ export default class ResetPasswordSuccess extends BaseContext implements ResetPa
     this.screen = new ScreenOverride(screenContext);
   }
 }
-export { ResetPasswordSuccessMembers, ScreenOptions };
+export { ResetPasswordSuccessMembers, ScreenOptions as ScreenMembersOnResetPasswordSuccess };
+export * from '../../../interfaces/export/common';
+export * from '../../../interfaces/export/base-properties';

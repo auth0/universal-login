@@ -12,4 +12,6 @@ export default class ResetPasswordError extends BaseContext implements ResetPass
     this.screen = new ScreenOverride(screenContext);
   }
 }
-export { ResetPasswordErrorMembers, ScreenOptions };
+export { ResetPasswordErrorMembers, ScreenOptions as ScreenMembersOnResetPasswordError };
+export * from '../../../interfaces/export/common';
+export * from '../../../interfaces/export/base-properties';

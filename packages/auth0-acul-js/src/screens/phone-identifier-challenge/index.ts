@@ -67,4 +67,6 @@ export default class PhoneIdentifierChallenge extends BaseContext implements Pho
   }
 }
 
-export { PhoneIdentifierChallengeMembers, PhoneChallengeOptions };
+export { PhoneIdentifierChallengeMembers, PhoneChallengeOptions, ScreenOptions as ScreenMembersOnPhoneIdentifierChallenge };
+export * from '../../../interfaces/export/common';
+export * from '../../../interfaces/export/base-properties';

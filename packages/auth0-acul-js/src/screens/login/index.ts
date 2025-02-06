@@ -71,4 +71,6 @@ export default class Login extends BaseContext implements LoginMembers {
   }
 }
 
-export { LoginMembers, LoginOptions, SocialLoginOptions };
+export { LoginMembers, LoginOptions, SocialLoginOptions, ScreenOptions as ScreenMembersOnLogin, TransactionOptions as TransactionMembersOnLogin };
+export * from '../../../interfaces/export/common';
+export * from '../../../interfaces/export/base-properties';

@@ -45,4 +45,11 @@ export default class LoginPassword extends BaseContext implements LoginPasswordM
   }
 }
 
-export { LoginPasswordMembers, LoginPasswordOptions };
+export {
+  LoginPasswordMembers,
+  LoginPasswordOptions,
+  ScreenOptions as ScreenMembersOnLoginPassword,
+  TransactionOptions as TransactionMembersOnLoginPassword,
+};
+export * from '../../../interfaces/export/common';
+export * from '../../../interfaces/export/base-properties';

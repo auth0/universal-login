@@ -66,4 +66,6 @@ export default class EmailIdentifierChallenge extends BaseContext implements Ema
   }
 }
 
-export { EmailIdentifierChallengeMembers, EmailChallengeOptions, ScreenOptions };
+export { EmailIdentifierChallengeMembers, ScreenOptions as ScreenMembersOnEmailIdentifierChallenge, EmailChallengeOptions };
+export * from '../../../interfaces/export/common';
+export * from '../../../interfaces/export/base-properties';

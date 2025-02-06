@@ -54,4 +54,6 @@ export default class PhoneIdentifierEnrollment extends BaseContext implements Ph
   }
 }
 
-export { PhoneIdentifierEnrollmentMembers, PhoneEnrollmentOptions };
+export { PhoneIdentifierEnrollmentMembers, PhoneEnrollmentOptions, ScreenOptions as ScreenMembersOnPhoneIdentifierEnrollment };
+export * from '../../../interfaces/export/common';
+export * from '../../../interfaces/export/base-properties';

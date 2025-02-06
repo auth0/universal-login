@@ -29,3 +29,5 @@ export default class InterstitialCaptcha extends BaseContext implements Intersti
 }
 
 export { InterstitialCaptchaMembers, SubmitCaptchaOptions };
+export * from '../../../interfaces/export/common';
+export * from '../../../interfaces/export/base-properties';

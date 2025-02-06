@@ -11,12 +11,12 @@ import type {
   ScreenMembersOnSignup as ScreenOptions,
   SignupOptions,
   SocialSignupOptions,
-  TransactionMembersOnSignup,
+  TransactionMembersOnSignup as TransactionOptions,
 } from '../../../interfaces/screens/signup';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 export default class Signup extends BaseContext implements SignupMembers {
   screen: ScreenOptions;
-  transaction: TransactionMembersOnSignup;
+  transaction: TransactionOptions;
 
   constructor() {
     super();
@@ -93,4 +93,6 @@ export default class Signup extends BaseContext implements SignupMembers {
   }
 }
 
-export { SignupMembers, SignupOptions, ScreenOptions };
+export { SignupMembers, SignupOptions, ScreenOptions as ScreenMembersOnSignup, TransactionOptions as TransactionMembersOnSignup };
+export * from '../../../interfaces/export/common';
+export * from '../../../interfaces/export/base-properties';

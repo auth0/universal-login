@@ -75,4 +75,11 @@ function updatePayloadByIdentifier(
   }
 }
 
-export { ResetPasswordRequestMembers, ResetPasswordRequestOptions, ScreenOptions };
+export {
+  ResetPasswordRequestMembers,
+  ResetPasswordRequestOptions,
+  ScreenOptions as ScreenMembersOnResetPasswordRequest,
+  TransactionOptions as TransactionMembersOnResetPasswordRequest,
+};
+export * from '../../../interfaces/export/common';
+export * from '../../../interfaces/export/base-properties';

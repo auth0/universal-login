@@ -33,4 +33,6 @@ export default class ResetPasswordEmail extends BaseContext implements ResetPass
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'resend-email-action' });
   }
 }
-export { ResetPasswordEmailMembers, ResetPasswordEmailOptions, ScreenOptions };
+export { ResetPasswordEmailMembers, ResetPasswordEmailOptions, ScreenOptions as ScreenMembersOnResetPasswordEmail };
+export * from '../../../interfaces/export/common';
+export * from '../../../interfaces/export/base-properties';

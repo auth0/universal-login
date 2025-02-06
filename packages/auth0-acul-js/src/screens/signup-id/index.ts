@@ -98,4 +98,12 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
   }
 }
 
-export { SignupIdMembers, SignupOptions, SocialSignupOptions };
+export {
+  SignupIdMembers,
+  SignupOptions,
+  SocialSignupOptions,
+  ScreenOptions as ScreenMembersOnSignupId,
+  TransactionOptions as TransactionMembersOnSignupId,
+};
+export * from '../../../interfaces/export/common';
+export * from '../../../interfaces/export/base-properties';

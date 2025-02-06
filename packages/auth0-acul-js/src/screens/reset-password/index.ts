@@ -34,4 +34,6 @@ export default class ResetPassword extends BaseContext implements ResetPasswordM
     await new FormHandler(options).submitData(payload);
   }
 }
-export { ResetPasswordMembers, ResetPasswordOptions, ScreenOptions };
+export { ResetPasswordMembers, ResetPasswordOptions, ScreenOptions as ScreenMembersOnResetPassword };
+export * from '../../../interfaces/export/common';
+export * from '../../../interfaces/export/base-properties';

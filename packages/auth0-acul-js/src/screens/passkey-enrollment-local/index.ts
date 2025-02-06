@@ -64,4 +64,6 @@ export default class PasskeyEnrollmentLocal extends BaseContext implements Passk
   }
 }
 
-export { PasskeyEnrollmentLocalMembers, AbortEnrollmentOptions };
+export { PasskeyEnrollmentLocalMembers, AbortEnrollmentOptions, ScreenOptions as ScreenMembersOnPasskeyEnrollmentLocal };
+export * from '../../../interfaces/export/common';
+export * from '../../../interfaces/export/base-properties';
