@@ -21,5 +21,5 @@ export default {
     '**/*.{ts,tsx}',
     '!**/node_modules/**',
     '!**/tests/**',
-  ],
+  ]
 };

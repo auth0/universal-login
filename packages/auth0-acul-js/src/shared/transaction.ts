@@ -2,97 +2,114 @@ import type { DBConnection, UsernamePolicy, PasswordPolicy, TransactionContext }
 import type { TransactionMembersOnLoginId } from '../../interfaces/screens/login-id';
 import type { TransactionMembersOnSignupId } from '../../interfaces/screens/signup-id';
 
+/**
+ * Checks if signup is enabled for the current connection.
+ */
 export function isSignupEnabled(transaction: TransactionContext): boolean {
-  const connection = transaction?.connection;
-  return connection?.options?.signup_enabled === true;
+  return transaction?.connection?.options?.signup_enabled === true;
 }
 
+/**
+ * Checks if forgot password is enabled.
+ */
 export function isForgotPasswordEnabled(transaction: TransactionContext): boolean {
   const connection = transaction?.connection as DBConnection;
   return connection?.options?.forgot_password_enabled === true;
 }
 
+/**
+ * Checks if passkeys are enabled in the current connection.
+ */
 export function isPasskeyEnabled(transaction: TransactionContext): boolean {
   const connection = transaction?.connection as DBConnection;
   return connection?.options?.authentication_methods?.passkey?.enabled ?? false;
 }
 
+/**
+ * Determines if a username is required for authentication.
+ */
 export function isUsernameRequired(transaction: TransactionContext): boolean {
   const connection = transaction?.connection as DBConnection;
-
   return connection?.options?.username_required ?? false;
 }
 
+/**
+ * Retrieves the username policy from the transaction context.
+ */
 export function getUsernamePolicy(transaction: TransactionContext): UsernamePolicy | null {
   const connection = transaction?.connection as DBConnection;
+  const validation = connection?.options?.attributes?.username?.validation;
 
-  if (!connection?.options?.attributes?.username?.validation) return null;
-  const { validation } = connection.options.attributes.username;
+  if (!validation) return null;
 
   return {
     maxLength: validation.max_length,
     minLength: validation.min_length,
     allowedFormats: {
-      usernameInEmailFormat: validation.allowed_types.email,
-      usernameInPhoneFormat: validation.allowed_types.phone_number,
+      usernameInEmailFormat: validation.allowed_types?.email ?? false,
+      usernameInPhoneFormat: validation.allowed_types?.phone_number ?? false,
     },
   };
 }
 
+/**
+ * Retrieves the password policy from the transaction context.
+ */
 export function getPasswordPolicy(transaction: TransactionContext): PasswordPolicy | null {
   const connection = transaction?.connection as DBConnection;
+  const passwordPolicy = connection?.options?.authentication_methods?.password;
 
-  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-  if (!connection?.options?.authentication_methods?.password) return null;
-  const { password } = connection.options.authentication_methods;
-
-  // eslint-disable-next-line  @typescript-eslint/strict-boolean-expressions
-  if (!password?.policy && !password?.min_length) return null;
+  if (!passwordPolicy) return null;
 
   return {
-    ...password,
-    minLength: password.min_length,
-    policy: password.policy as PasswordPolicy['policy'],
+    minLength: passwordPolicy.min_length,
+    policy: passwordPolicy.policy as PasswordPolicy['policy'],
   };
 }
 
+/**
+ * Returns the allowed identifiers (email, username, phone) based on the connection settings.
+ */
 export function getAllowedIdentifiers(transaction: TransactionContext): TransactionMembersOnLoginId['allowedIdentifiers'] {
-  const identifiers: TransactionMembersOnLoginId['allowedIdentifiers'] = [];
   const connection = transaction?.connection as DBConnection;
-
-  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
   if (!connection?.options?.attributes) return null;
 
-  const { email, username, phone } = connection.options.attributes;
-  const requiredStatusList = ['required', 'optional'];
-  const identifiersList = ['email', 'username', 'phone'];
-
-  [email, username, phone].forEach((attribute, index) => {
-    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-    if (attribute?.signup_status && requiredStatusList.includes(attribute.signup_status)) {
-      identifiers.push(identifiersList[index] as 'email' | 'username' | 'phone');
-    }
-  });
-
-  return identifiers.length > 0 ? identifiers : null;
+  return extractIdentifiersByStatus(connection, ['required', 'optional']);
 }
 
+/**
+ * Returns the required identifiers for signup (email, username, phone).
+ */
 export function getRequiredIdentifiers(transaction: TransactionContext): TransactionMembersOnSignupId['requiredIdentifiers'] {
-  return getIdentifiersByStatus(transaction, 'required');
+  return extractIdentifiersByStatus(transaction?.connection as DBConnection, ['required']);
 }
 
+/**
+ * Returns the optional identifiers for signup (email, username, phone).
+ */
 export function getOptionalIdentifiers(transaction: TransactionContext): TransactionMembersOnSignupId['optionalIdentifiers'] {
-  return getIdentifiersByStatus(transaction, 'optional');
+  return extractIdentifiersByStatus(transaction?.connection as DBConnection, ['optional']);
 }
 
-function getIdentifiersByStatus(transaction: TransactionContext, status: 'required' | 'optional'): ('email' | 'username' | 'phone')[] | null {
-  const connection = transaction?.connection as DBConnection;
-  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+export function hasFlexibleIdentifier(transaction: TransactionContext): boolean {
+  const connection = transaction.connection as DBConnection;
+  return connection?.options?.attributes ? true : false;
+}
+
+/**
+ * Extracts identifiers based on their signup status.
+ */
+function extractIdentifiersByStatus(
+  connection: DBConnection | undefined,
+  statuses: ('required' | 'optional')[],
+): ('email' | 'username' | 'phone')[] | null {
   if (!connection?.options?.attributes) return null;
 
-  const identifiers = Object.entries(connection.options.attributes)
-    .filter(([, value]) => value.signup_status === status)
-    .map(([key]) => key as 'email' | 'username' | 'phone');
-
-  return identifiers.length > 0 ? identifiers : null;
+  return Object.entries(connection.options.attributes)
+    .filter(([, value]) => value.signup_status && statuses.includes(value.signup_status as 'required' | 'optional'))
+    .map(([key]) => key as 'email' | 'username' | 'phone').length > 0
+    ? Object.entries(connection.options.attributes)
+        .filter(([, value]) => value.signup_status && statuses.includes(value.signup_status as 'required' | 'optional'))
+        .map(([key]) => key as 'email' | 'username' | 'phone')
+    : null;
 }

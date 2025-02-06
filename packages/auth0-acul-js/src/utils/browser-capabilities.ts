@@ -1,10 +1,22 @@
-export async function isBrave(): Promise<boolean> {
-  // @ts-expect-error: navigator.brave may not exist on all browsers
-  const navigatorBrave = navigator?.brave as { isBrave?: () => Promise<boolean> } | undefined;
+interface BraveNavigator extends Navigator {
+  brave?: {
+    isBrave?: () => Promise<boolean>;
+  };
+}
 
-  if (navigatorBrave && typeof navigatorBrave.isBrave === 'function') {
-    const isBraveBrowser = await navigatorBrave.isBrave();
-    return Boolean(isBraveBrowser);
+export async function isBrave(): Promise<boolean> {
+  if (typeof navigator === 'undefined') {
+    return false;
+  }
+
+  const navigatorBrave = navigator as BraveNavigator;
+
+  if (navigatorBrave.brave?.isBrave && typeof navigatorBrave.brave.isBrave === 'function') {
+    try {
+      return Boolean(await navigatorBrave.brave.isBrave());
+    } catch {
+      return false; // Gracefully handle any errors
+    }
   }
 
   return false;
@@ -19,10 +31,15 @@ export function isJsAvailable(): boolean {
 }
 
 export async function isWebAuthPlatformAvailable(): Promise<boolean> {
-  if (typeof window.PublicKeyCredential === 'undefined') {
+  if (!window || !window.PublicKeyCredential) {
     return false;
   }
 
-  const isAvailable = await window.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
-  return Boolean(isAvailable);
+  try {
+    return Boolean(await window.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable());
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.warn('isUserVerifyingPlatformAuthenticatorAvailable failed', err);
+    return false;
+  }
 }

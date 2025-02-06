@@ -38,7 +38,7 @@ export interface BrandingSettings {
           type: string;
           start: string;
           end: string;
-          angleDeg: number;
+          angleDegree: number;
         };
   };
   faviconUrl?: string;

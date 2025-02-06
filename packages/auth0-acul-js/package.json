@@ -55,15 +55,44 @@
     "./interstitial-captcha": {
       "import": "./dist/screens/interstitial-captcha/index.js",
       "types": "./dist/types/src/screens/interstitial-captcha/index.d.ts"
+    },
+    "./login": {
+      "import": "./dist/screens/login/index.js",
+      "types": "./dist/types/src/screens/login/index.d.ts"
+    },
+    "./signup": {
+      "import": "./dist/screens/signup/index.js",
+      "types": "./dist/types/src/screens/signup/index.d.ts"
+    },
+    "./reset-password": {
+      "import": "./dist/screens/reset-password/index.js",
+      "types": "./dist/types/src/screens/reset-password/index.d.ts"
+    },
+    "./reset-password-email": {
+      "import": "./dist/screens/reset-password-email/index.js",
+      "types": "./dist/types/src/screens/reset-password-email/index.d.ts"
+    },
+    "./reset-password-request": {
+      "import": "./dist/screens/reset-password-request/index.js",
+      "types": "./dist/types/src/screens/reset-password-request/index.d.ts"
+    },
+    "./reset-password-success": {
+      "import": "./dist/screens/reset-password-success/index.js",
+      "types": "./dist/types/src/screens/reset-password-success/index.d.ts"
+    },
+    "./reset-password-error": {
+      "import": "./dist/screens/reset-password-error/index.js",
+      "types": "./dist/types/src/screens/reset-password-error/index.d.ts"
     }
   },
   "scripts": {
     "clean": "rimraf dist",
     "build": "npm run clean && npm run lint && npm run test && npm run docs && rollup -c rollup.config.js --bundleConfigAsCjs",
-    "test": "jest --verbose tests/unit/**/*",
+    "test": "jest --verbose tests/unit/**/* --coverage",
     "test:e2e": "cypress open",
     "docs": "typedoc --options typedoc.json",
     "lint": "npm run lint:interfaces && npm run lint:src",
+    "lint:fix": "npm run lint:src:fix && npm run lint:interfaces:fix",
     "lint:src": "eslint 'src/**/*.{js,ts}' --config .eslintrc.json",
     "lint:interfaces": "eslint 'interfaces/**/*.ts' --config .eslintrc.json",
     "lint:src:fix": "eslint 'src/**/*.{js,ts}' --config .eslintrc.json --fix",

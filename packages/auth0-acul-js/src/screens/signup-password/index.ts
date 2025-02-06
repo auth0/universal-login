@@ -68,4 +68,11 @@ export default class SignupPassword extends BaseContext implements SignupPasswor
   }
 }
 
-export { SignupPasswordMembers, SignupPasswordOptions };
+export {
+  SignupPasswordMembers,
+  SignupPasswordOptions,
+  ScreenOptions as ScreenMembersOnSignupPassword,
+  TransactionOptions as TransactionMembersOnSignupPassword,
+};
+export * from '../../../interfaces/export/common';
+export * from '../../../interfaces/export/base-properties';

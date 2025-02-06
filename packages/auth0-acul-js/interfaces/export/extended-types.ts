@@ -12,3 +12,10 @@ export type { ScreenMembersOnPhoneIdentifierChallenge } from '../screens/phone-i
 export type { ScreenMembersOnPhoneIdentifierEnrollment } from '../screens/phone-identifier-enrollment';
 export type { ScreenMembersOnSignupId, TransactionMembersOnSignupId } from '../screens/signup-id';
 export type { ScreenMembersOnSignupPassword, TransactionMembersOnSignupPassword } from '../screens/signup-password';
+export type { ScreenMembersOnSignup, TransactionMembersOnSignup } from '../screens/signup';
+export type { ScreenMembersOnResetPasswordEmail } from '../screens/reset-password-email';
+export type { ScreenMembersOnResetPasswordRequest, TransactionMembersOnResetPasswordRequest } from '../screens/reset-password-request';
+export type { ScreenMembersOnResetPassword } from '../screens/reset-password';
+export type { ScreenMembersOnResetPasswordError } from '../screens/reset-password-error';
+export type { ScreenMembersOnResetPasswordSuccess } from '../screens/reset-password-success';
+export type { ScreenMembersOnLogin, TransactionMembersOnLogin } from '../screens/login';

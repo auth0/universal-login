@@ -54,4 +54,6 @@ export default class PasskeyEnrollment extends BaseContext implements PasskeyEnr
   }
 }
 
-export { PasskeyEnrollmentMembers };
+export { PasskeyEnrollmentMembers, ScreenOptions as ScreenMembersOnPasskeyEnrollment };
+export * from '../../../interfaces/export/common';
+export * from '../../../interfaces/export/base-properties';

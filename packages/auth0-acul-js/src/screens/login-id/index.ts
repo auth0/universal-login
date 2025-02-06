@@ -126,4 +126,12 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
   }
 }
 
-export { LoginIdMembers, LoginOptions, SocialLoginOptions };
+export {
+  LoginIdMembers,
+  LoginOptions,
+  SocialLoginOptions,
+  ScreenOptions as ScreenMembersOnLoginId,
+  TransactionOptions as TransactionMembersOnLoginId,
+};
+export * from '../../../interfaces/export/common';
+export * from '../../../interfaces/export/base-properties';

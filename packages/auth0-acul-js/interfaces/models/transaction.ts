@@ -61,14 +61,23 @@ export interface PasswordPolicy {
 export interface DBConnection extends Connection {
   options: {
     signup_enabled: boolean;
-    username_required?: boolean;
+    flexible_identifiers_active?: boolean;
     forgot_password_enabled: boolean;
-    attributes: {
+    username_required?: boolean;
+    validation?: {
+      username: {
+        max_length: number;
+        min_length: number;
+      };
+    };
+    attributes?: {
       email?: {
         signup_status: string;
+        identifier_active: boolean;
       };
       username?: {
         signup_status: string;
+        identifier_active: boolean;
         validation?: {
           max_length: number;
           min_length: number;
@@ -80,13 +89,14 @@ export interface DBConnection extends Connection {
       };
       phone?: {
         signup_status: string;
+        identifier_active: boolean;
       };
     };
     authentication_methods: {
       password: {
         enabled: boolean;
-        policy?: string;
-        min_length?: number;
+        policy: string;
+        min_length: number;
       };
       passkey: {
         enabled: boolean;
@@ -119,10 +129,23 @@ export interface EnterpriseConnection extends Connection {
 
 export interface SocialConnection extends Connection {}
 
+export interface PasswordComplexityRule {
+  code: string;
+  label: string;
+  status: 'valid' | 'error';
+  args?: {
+    count: number;
+    total?: number;
+    example?: string;
+  };
+  items?: PasswordComplexityRule[];
+}
+
 export interface Error {
   code: string;
   field?: string;
   message: string;
+  rules?: PasswordComplexityRule[];
 }
 
 export interface TransactionContext {

@@ -25,7 +25,7 @@ export class Branding implements BrandingMembers {
                   type: colors.page_background.type,
                   start: colors.page_background.start,
                   end: colors.page_background.end,
-                  angleDeg: colors.page_background.angle_deg,
+                  angleDegree: colors.page_background.angle_deg,
                 },
         },
       }),

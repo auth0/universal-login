@@ -8,6 +8,9 @@ export class User implements UserMembers {
   phoneNumber: UserMembers['phoneNumber'];
   userMetadata: UserMembers['userMetadata'];
   appMetadata: UserMembers['appMetadata'];
+  enrolledDevices: UserMembers['enrolledDevices'];
+  enrolledEmails: UserMembers['enrolledEmails'];
+  enrolledPhoneNumbers: UserMembers['enrolledPhoneNumbers'];
   enrolledFactors: UserMembers['enrolledFactors'];
   organizations: UserMembers['organizations'];
 
@@ -20,6 +23,9 @@ export class User implements UserMembers {
     this.userMetadata = user?.user_metadata ?? null;
     this.appMetadata = user?.app_metadata ?? null;
     this.enrolledFactors = user?.enrolled_factors ?? null;
+    this.enrolledEmails = user?.enrolled_emails ?? null;
+    this.enrolledPhoneNumbers = user?.enrolled_phone_numbers ?? null;
+    this.enrolledDevices = user?.enrolled_devices ?? null;
     this.organizations = User.getOrganizations(user);
   }
 

@@ -13,10 +13,12 @@ export class ScreenOverride extends Screen implements OverrideOptions {
     const data = screenContext.data;
     if (!data) return null;
 
+    const { message_type, email, ...rest } = data;
+
     return {
-      ...data,
-      email: data.email,
-      messageType: data.message_type,
+      ...rest,
+      email: email,
+      messageType: message_type,
     } as OverrideOptions['data'];
   };
 }

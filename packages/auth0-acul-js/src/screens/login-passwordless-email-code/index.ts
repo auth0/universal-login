@@ -65,4 +65,11 @@ export default class LoginPasswordlessEmailCode extends BaseContext implements L
   }
 }
 
-export { LoginPasswordlessEmailCodeMembers, SubmitCodeOptions };
+export {
+  LoginPasswordlessEmailCodeMembers,
+  SubmitCodeOptions,
+  ScreenOptions as ScreenMembersOnLoginPasswordlessEmailCode,
+  TransactionOptions as TransactionMembersOnLoginPasswordlessEmailCode,
+};
+export * from '../../../interfaces/export/common';
+export * from '../../../interfaces/export/base-properties';
