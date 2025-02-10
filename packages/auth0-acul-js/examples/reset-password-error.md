@@ -25,7 +25,7 @@ const ResetPasswordErrorComponent: React.FC = () => {
         <h2 className="text-2xl font-bold mb-6">Reset Password Error Screen</h2>
         {data && (
           <div className="mb-4">
-            <p>Screen Name: {data.name}</p>
+            <p>Message: {data}</p>
           </div>
         )}
       </div>
