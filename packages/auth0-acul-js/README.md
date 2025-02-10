@@ -16,8 +16,8 @@ It simplifies integrating authentication screens (login, signup, passwordless, p
 
 ##  Documentation
 
-- [Quickstart](https://auth0.com/docs/customize) - our guide for setting up the SDK on your app.
-- [Guides](https://auth0.com/docs/customize) - more guides for common use cases
+- [Quickstart](https://auth0.com/docs/customize/login-pages/advanced-customizations/getting-started/sdk-quickstart) - our guide for setting up the SDK on your app.
+- [Guides](https://auth0.com/docs/customize/login-pages/advanced-customizations/screens) - more guides for common use cases
 - [Examples](https://github.com/auth0/universal-login/tree/master/packages/auth0-acul-js/examples) - code snippets for different customization use cases.
 - [FAQs](FAQ.md) - Find answers to frequently asked questions about the Auth0 ACUL JS SDK.
 
@@ -40,7 +40,7 @@ Before starting, ensure that you have the following setup:
 
 1. **Custom Domain**: Ensure that a custom domain is configured for your Auth0 tenant.
 2. **Screen Configuration**: Set up the required authentication screens within your Auth0 flow.  
-   For detailed steps, refer to the [Management API documentation](https://auth0.com/docs/customize).
+   For detailed steps, refer to the [Configure ACUL Screens](https://auth0.com/docs/customize/login-pages/advanced-customizations/getting-started/configure-acul-screens).
 
 ### Installation
 

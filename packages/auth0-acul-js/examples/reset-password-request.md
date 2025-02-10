@@ -1,24 +1,20 @@
 
-## reset-password-request screen
+##  React Component Example with TailwindCSS
 ```jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import ResetPasswordRequest from '@auth0/auth0-acul-js/reset-password-request';
 
 const ResetPasswordRequestScreen = () => {
   const [username, setUsername] = useState('');
-  const [resetPasswordRequest, setResetPasswordRequest] = useState(null);
+  const resetPasswordRequest = new ResetPasswordRequest();
 
-  useEffect(() => {
-    setResetPasswordRequest(new ResetPasswordRequest());
-  }, []);
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await resetPasswordRequest.resetPassword({ username });
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+    <div className="w-[100vw] min-h-screen bg-gray-100 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <h2 className="text-3xl font-bold text-center mb-8">
           Reset your password
@@ -43,7 +39,7 @@ const ResetPasswordRequestScreen = () => {
             <div className="space-y-3">
               <button
                 type="submit"
-                className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                className="w-full py-2 px-4 bg-blue-600 text-gray-700 rounded-md hover:bg-blue-700"
               >
                 Continue
               </button>
