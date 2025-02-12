@@ -95,6 +95,10 @@
     "./mfa-push-list": {
       "import": "./dist/screens/mfa-push-list/index.js",
       "types": "./dist/types/src/screens/mfa-push-list/index.d.ts"
+    },
+    "./mfa-push-welcome": {
+      "import": "./dist/screens/mfa-push-welcome/index.js",
+      "types": "./dist/types/src/screens/mfa-push-welcome/index.d.ts"
     }
   },
   "scripts": {

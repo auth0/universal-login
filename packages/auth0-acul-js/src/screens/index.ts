@@ -20,3 +20,4 @@ export { default as ResetPasswordSuccess } from './reset-password-success';
 export { default as ResetPasswordMfaPushChallengePush } from './reset-password-mfa-push-challenge-push';
 export { default as MfaPushEnrollmentQr } from './mfa-push-enrollment-qr';
 export { default as MfaPushList } from './mfa-push-list';
+export { default as MfaPushWelcome } from './mfa-push-welcome';

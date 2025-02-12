@@ -154,6 +154,7 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 | 20     | reset-password-mfa-push-challenge-push    | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaPushChallengePush.html)                     |
 | 21     | mfa-push-enrollment-qr                    | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaPushEnrollmentQr.html)                                  |
 | 22     | mfa-push-list                             | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaPushList.html)                                           |
+| 23     | mfa-push-welcome                          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaPushWelcome.html)                                        |
 
 
 </details>
