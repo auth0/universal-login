@@ -91,6 +91,10 @@
     "./mfa-push-enrollment-qr": {
       "import": "./dist/screens/mfa-push-enrollment-qr/index.js",
       "types": "./dist/types/src/screens/mfa-push-enrollment-qr/index.d.ts"
+    },
+    "./mfa-push-list": {
+      "import": "./dist/screens/mfa-push-list/index.js",
+      "types": "./dist/types/src/screens/mfa-push-list/index.d.ts"
     }
   },
   "scripts": {

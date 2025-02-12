@@ -36,7 +36,7 @@ export interface PasskeyCreate {
 }
 
 export interface ScreenData {
-  [key: string]: string | boolean | PasskeyRead | PasskeyCreate | undefined;
+  [key: string]: string | boolean | PasskeyRead | PasskeyCreate | string[] | undefined;
 }
 
 export interface ScreenContext {
@@ -53,7 +53,7 @@ export interface ScreenMembers {
   captchaSiteKey: string | null;
   captchaProvider: string | null;
   isCaptchaAvailable: boolean;
-  data: Record<string, string | boolean> | null;
+  data: Record<string, string | boolean | string[]> | null;
   links: Record<string, string> | null;
   texts: Record<string, string> | null;
   captcha: CaptchaContext | null;

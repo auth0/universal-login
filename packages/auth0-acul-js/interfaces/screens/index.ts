@@ -16,3 +16,4 @@ export * as ResetPasswordRequest from './reset-password-request';
 export * as ResetPassword from './reset-password';
 export * as ResetPasswordError from './reset-password-error';
 export * as MfaPushEnrollmentQr from './mfa-push-enrollment-qr';
+export * as MfaPushList from './mfa-push-list';

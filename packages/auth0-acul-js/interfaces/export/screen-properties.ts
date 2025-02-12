@@ -19,3 +19,4 @@ export type { ResetPasswordErrorMembers } from '../screens/reset-password-error'
 export type { ResetPasswordSuccessMembers } from '../screens/reset-password-success';
 export type { ResetPasswordMfaPushChallengePushMembers } from '../screens/reset-password-mfa-push-challenge-push';
 export type { MfaPushEnrollmentQrMembers } from '../screens/mfa-push-enrollment-qr';
+export type { MfaPushListMembers } from '../screens/mfa-push-list';
