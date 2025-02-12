@@ -18,3 +18,4 @@ export { default as ResetPasswordEmail } from './reset-password-email';
 export { default as ResetPasswordError } from './reset-password-error';
 export { default as ResetPasswordSuccess } from './reset-password-success';
 export { default as ResetPasswordMfaPushChallengePush } from './reset-password-mfa-push-challenge-push';
+export { default as MfaPushEnrollmentQr } from './mfa-push-enrollment-qr';

@@ -20,3 +20,4 @@ export type { ScreenMembersOnResetPasswordError } from '../screens/reset-passwor
 export type { ScreenMembersOnResetPasswordSuccess } from '../screens/reset-password-success';
 export type { ScreenMembersOnLogin, TransactionMembersOnLogin } from '../screens/login';
 export type { ScreenMembersOnResetPasswordMfaPushChallengePush } from '../screens/reset-password-mfa-push-challenge-push';
+export type { ScreenMembersOnMfaPushEnrollmentQr } from '../screens/mfa-push-enrollment-qr';
