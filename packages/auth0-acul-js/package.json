@@ -83,6 +83,10 @@
     "./reset-password-error": {
       "import": "./dist/screens/reset-password-error/index.js",
       "types": "./dist/types/src/screens/reset-password-error/index.d.ts"
+    },
+    "./reset-password-mfa-push-challenge-push": {
+      "import": "./dist/screens/reset-password-mfa-push-challenge-push/index.js",
+      "types": "./dist/types/src/screens/reset-password-mfa-push-challenge-push/index.d.ts"
     }
   },
   "scripts": {

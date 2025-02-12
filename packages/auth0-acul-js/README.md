@@ -1,3 +1,4 @@
+# Auth0 ACUL JS SDK
 
 ![ACUL JS SDK](https://cdn.auth0.com/website/sdks/banners/auth0-acul-js-banner.png)
 
@@ -123,28 +124,36 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 ##  API reference
 ### Screens
 
-1. [login](https://auth0.github.io/universal-login/classes/Classes.Login.html)
-2. [login-id](https://auth0.github.io/universal-login/classes/Classes.LoginId.html)
-3. [login-Password](https://auth0.github.io/universal-login/classes/Classes.LoginPassword.html)
-4. [signup-id](https://auth0.github.io/universal-login/classes/Classes.SignupId.html)
-5. [signup-password](https://auth0.github.io/universal-login/classes/Classes.SignupPassword.html)
+| No. | Screen Name       | Documentation Link                                                                                      |
+|--------|-------------------|-------------------------------------------------------------------------------------------|
+| 1      | login             | [Link](https://auth0.github.io/universal-login/classes/Classes.Login.html)                 |
+| 2      | login-id          | [Link](https://auth0.github.io/universal-login/classes/Classes.LoginId.html)              |
+| 3      | login-Password    | [Link](https://auth0.github.io/universal-login/classes/Classes.LoginPassword.html)         |
+| 4      | signup-id         | [Link](https://auth0.github.io/universal-login/classes/Classes.SignupId.html)              |
+| 5      | signup-password   | [Link](https://auth0.github.io/universal-login/classes/Classes.SignupPassword.html)        |
+
 <details>
   <summary>Explore more screens...</summary>
 
-  6. [login-passwordless-email-code](https://auth0.github.io/universal-login/classes/Classes.LoginPasswordlessEmailCode.html)
-  7. [login-passwordless-sms-otp](https://auth0.github.io/universal-login/classes/Classes.LoginPasswordlessSmsOtp.html)
-  8. [passkey-enrollment](https://auth0.github.io/universal-login/classes/Classes.PasskeyEnrollment.html)
-  9. [passkey-enrollment-local](https://auth0.github.io/universal-login/classes/Classes.PasskeyEnrollmentLocal.html)
-  10. [phone-identifier-enrollment](https://auth0.github.io/universal-login/classes/Classes.PhoneIdentifierEnrollment.html)
-  11. [phone-identifier-challenge](https://auth0.github.io/universal-login/classes/Classes.PhoneIdentifierChallenge.html)
-  12. [email-identifier-challenge](https://auth0.github.io/universal-login/classes/Classes.EmailIdentifierChallenge.html)
-  13. [interstitial-captcha](https://auth0.github.io/universal-login/classes/Classes.InterstitialCaptcha.html)
-  14. [reset-password-email](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordEmail.html)
-  15. [reset-password-request](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordRequest.html)
-  16. [reset-password](https://auth0.github.io/universal-login/classes/Classes.ResetPassword.html)
-  17. [reset-password-error](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordError.html)
-  18. [reset-password-success](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordSuccess.html)
-  19. [signup](https://auth0.github.io/universal-login/classes/Classes.Signup.html)
+| No. | Screen Name                                      | Documentation Link                                                                                                                        |
+|--------|-------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| 6      | login-passwordless-email-code            | [Link](https://auth0.github.io/universal-login/classes/Classes.LoginPasswordlessEmailCode.html)                             |
+| 7      | login-passwordless-sms-otp                | [Link](https://auth0.github.io/universal-login/classes/Classes.LoginPasswordlessSmsOtp.html)                                 |
+| 8      | passkey-enrollment                        | [Link](https://auth0.github.io/universal-login/classes/Classes.PasskeyEnrollment.html)                                       |
+| 9      | passkey-enrollment-local                  | [Link](https://auth0.github.io/universal-login/classes/Classes.PasskeyEnrollmentLocal.html)                                 |
+| 10     | phone-identifier-enrollment               | [Link](https://auth0.github.io/universal-login/classes/Classes.PhoneIdentifierEnrollment.html)                               |
+| 11     | phone-identifier-challenge                | [Link](https://auth0.github.io/universal-login/classes/Classes.PhoneIdentifierChallenge.html)                               |
+| 12     | email-identifier-challenge                | [Link](https://auth0.github.io/universal-login/classes/Classes.EmailIdentifierChallenge.html)                               |
+| 13     | interstitial-captcha                      | [Link](https://auth0.github.io/universal-login/classes/Classes.InterstitialCaptcha.html)                                     |
+| 14     | reset-password-email                      | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordEmail.html)                                     |
+| 15     | reset-password-request                    | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordRequest.html)                                   |
+| 16     | reset-password                            | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPassword.html)                                         |
+| 17     | reset-password-error                      | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordError.html)                                     |
+| 18     | reset-password-success                    | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordSuccess.html)                                   |
+| 19     | signup                                    | [Link](https://auth0.github.io/universal-login/classes/Classes.Signup.html)                                               |
+| 20     | reset-password-mfa-push-challenge-push    | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaPushChallengePush.html)                     |
+
+
 </details>
 
 
