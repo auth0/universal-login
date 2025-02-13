@@ -25,3 +25,4 @@ export type { MfaSmsEnrollmentMembers } from '../screens/mfa-sms-enrollment';
 export type { MfaBeginEnrollOptionsMembers } from '../screens/mfa-begin-enroll-options';
 export type { MfaSmsChallengeMembers } from '../screens/mfa-sms-challenge';
 export type { MfaSmsListMembers } from '../screens/mfa-sms-list';
+export type { MfaCountryCodesMembers } from '../screens/mfa-country-codes';

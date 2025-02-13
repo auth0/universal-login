@@ -35,8 +35,17 @@ export interface PasskeyCreate {
   };
 }
 
+export interface PhonePrefix {
+  /** The country name */
+  country: string;
+  /** The country code (e.g. 'US', 'GB') */
+  country_code: string;
+  /** The phone prefix (e.g. '+1', '+44') */
+  phone_prefix: string;
+}
+
 export interface ScreenData {
-  [key: string]: string | boolean | PasskeyRead | PasskeyCreate | string[] | undefined;
+  [key: string]: string | boolean | PasskeyRead | PasskeyCreate | string[] | Array<PhonePrefix> | undefined;
 }
 
 export interface ScreenContext {
@@ -53,7 +62,7 @@ export interface ScreenMembers {
   captchaSiteKey: string | null;
   captchaProvider: string | null;
   isCaptchaAvailable: boolean;
-  data: Record<string, string | boolean | string[]> | null;
+  data: Record<string, string | boolean | string[] | Array<PhonePrefix>> | null;
   links: Record<string, string> | null;
   texts: Record<string, string> | null;
   captcha: CaptchaContext | null;
