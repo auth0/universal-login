@@ -1,18 +1,6 @@
 import type { CustomOptions } from '../common';
 import type { BaseMembers } from '../models/base-context';
-import type { ScreenMembers } from '../models/screen';
-
-/**
- * Interface for phone prefix data
- */
-export interface PhonePrefix {
-  /** The country name */
-  country: string;
-  /** The country code (e.g. 'US', 'GB') */
-  country_code: string;
-  /** The phone prefix (e.g. '+1', '+44') */
-  phone_prefix: string;
-}
+import type { ScreenMembers, PhonePrefix } from '../models/screen';
 
 /**
  * Interface for screen data specific to mfa-country-codes screen

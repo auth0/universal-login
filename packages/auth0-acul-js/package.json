@@ -119,6 +119,10 @@
     "./mfa-country-codes": {
       "import": "./dist/screens/mfa-country-codes/index.js",
       "types": "./dist/types/src/screens/mfa-country-codes/index.d.ts"
+    },
+    "./reset-password-mfa-email-challenge": {
+      "import": "./dist/screens/reset-password-mfa-email-challenge/index.js",
+      "types": "./dist/types/src/screens/reset-password-mfa-email-challenge/index.d.ts"
     }
   },
   "scripts": {
