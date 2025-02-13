@@ -111,6 +111,10 @@
     "./mfa-sms-challenge": {
       "import": "./dist/screens/mfa-sms-challenge/index.js",
       "types": "./dist/types/src/screens/mfa-sms-challenge/index.d.ts"
+    },
+    "./mfa-sms-list": {
+      "import": "./dist/screens/mfa-sms-list/index.js",
+      "types": "./dist/types/src/screens/mfa-sms-list/index.d.ts"
     }
   },
   "scripts": {

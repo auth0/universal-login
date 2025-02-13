@@ -21,3 +21,4 @@ export * as MfaPushWelcome from './mfa-push-welcome';
 export * as MfaSmsEnrollment from './mfa-sms-enrollment';
 export * as MfaBeginEnrollOptions from './mfa-begin-enroll-options';
 export * as MfaSmsChallenge from './mfa-sms-challenge';
+export * as MfaSmsList from './mfa-sms-list';
