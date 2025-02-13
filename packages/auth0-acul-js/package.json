@@ -111,6 +111,10 @@
     "./mfa-sms-challenge": {
       "import": "./dist/screens/mfa-sms-challenge/index.js",
       "types": "./dist/types/src/screens/mfa-sms-challenge/index.d.ts"
+    },
+    "./mfa-country-codes": {
+      "import": "./dist/screens/mfa-country-codes/index.js",
+      "types": "./dist/types/src/screens/mfa-country-codes/index.d.ts"
     }
   },
   "scripts": {

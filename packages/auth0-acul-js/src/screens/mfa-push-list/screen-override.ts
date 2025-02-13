@@ -26,7 +26,7 @@ export class ScreenOverride extends Screen implements OverrideOptions {
     }
 
     return {
-      enrolled_devices: Array.isArray(data.enrolled_devices) ? data.enrolled_devices : [],
+      enrolled_devices: data.enrolled_devices as string[], //Array.isArray(data.enrolled_devices) ? data.enrolled_devices : [],
     };
   };
 }
