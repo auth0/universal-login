@@ -22,3 +22,4 @@ export type { MfaPushEnrollmentQrMembers } from '../screens/mfa-push-enrollment-
 export type { MfaPushListMembers } from '../screens/mfa-push-list';
 export type { MfaPushWelcomeMembers } from '../screens/mfa-push-welcome';
 export type { MfaSmsEnrollmentMembers } from '../screens/mfa-sms-enrollment';
+export type { MfaBeginEnrollOptionsMembers } from '../screens/mfa-begin-enroll-options';

@@ -103,6 +103,10 @@
     "./mfa-sms-enrollment": {
       "import": "./dist/screens/mfa-sms-enrollment/index.js",
       "types": "./dist/types/src/screens/mfa-sms-enrollment/index.d.ts"
+    },
+    "./mfa-begin-enroll-options": {
+      "import": "./dist/screens/mfa-begin-enroll-options/index.js",
+      "types": "./dist/types/src/screens/mfa-begin-enroll-options/index.d.ts"
     }
   },
   "scripts": {

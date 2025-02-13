@@ -24,3 +24,4 @@ export type { ScreenMembersOnMfaPushEnrollmentQr } from '../screens/mfa-push-enr
 export type { ScreenMembersOnMfaPushList, SelectMfaPushDeviceOptions } from '../screens/mfa-push-list';
 export type { ScreenMembersOnMfaPushWelcome } from '../screens/mfa-push-welcome';
 export type { ScreenMembersOnMfaSmsEnrollment } from '../screens/mfa-sms-enrollment';
+export type { ScreenMembersOnMfaBeginEnrollOptions, TransactionMembersOnMfaBeginEnrollOptions } from '../screens/mfa-begin-enroll-options';
