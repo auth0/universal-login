@@ -20,3 +20,4 @@ export type { MfaSmsChallengeOptions } from '../screens/mfa-sms-challenge';
 export type { MfaSmsListOptions } from '../screens/mfa-sms-list';
 export type { SelectCountryCodeOptions } from '../screens/mfa-country-codes';
 export type { ContinueOptions, ResendCodeOptions, TryAnotherMethodOptions } from '../screens/reset-password-mfa-email-challenge';
+export type { MfaSmsChallengeOptions as ResetPasswordMfaSmsChallengeOptions } from '../screens/reset-password-mfa-sms-challenge';

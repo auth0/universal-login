@@ -160,6 +160,7 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 | 26     | mfa-sms-list                  |   [Link](https://auth0.github.io/universal-login/classes/Classes.MfaSmsList.html)                                 |
 | 27     | mfa-country-codes                         | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaCountryCodes.html)                                       |
 | 28     | reset-password-mfa-email-challenge                         | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaEmailChallenge.html)                                       |
+29     | reset-password-mfa-sms-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaSmsChallenge.html)   
 
 </details>
 

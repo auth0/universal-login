@@ -27,3 +27,4 @@ export { default as MfaSmsChallenge } from './mfa-sms-challenge';
 export { default as MfaSmsList } from './mfa-sms-list';
 export { default as MfaCountryCodes } from './mfa-country-codes';
 export { default as ResetPasswordMfaEmailChallenge } from './reset-password-mfa-email-challenge';
+export { default as ResetPasswordMfaSmsChallenge } from './reset-password-mfa-sms-challenge';
