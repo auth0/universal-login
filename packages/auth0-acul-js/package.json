@@ -99,6 +99,10 @@
     "./mfa-push-welcome": {
       "import": "./dist/screens/mfa-push-welcome/index.js",
       "types": "./dist/types/src/screens/mfa-push-welcome/index.d.ts"
+    },
+    "./mfa-begin-enroll-options": {
+      "import": "./dist/screens/mfa-begin-enroll-options/index.js",
+      "types": "./dist/types/src/screens/mfa-begin-enroll-options/index.d.ts"
     }
   },
   "scripts": {

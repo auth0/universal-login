@@ -21,3 +21,4 @@ export { default as ResetPasswordMfaPushChallengePush } from './reset-password-m
 export { default as MfaPushEnrollmentQr } from './mfa-push-enrollment-qr';
 export { default as MfaPushList } from './mfa-push-list';
 export { default as MfaPushWelcome } from './mfa-push-welcome';
+export { default as MfaBeginEnrollOptions } from './mfa-begin-enroll-options';
