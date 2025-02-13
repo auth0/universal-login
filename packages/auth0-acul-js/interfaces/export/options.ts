@@ -16,3 +16,4 @@ export type { ResetPasswordRequestOptions } from '../screens/reset-password-requ
 export type { ResetPasswordOptions } from '../screens/reset-password';
 export type { MfaSmsEnrollmentOptions } from '../screens/mfa-sms-enrollment';
 export type { ContinueWithFactorEnrollmentOptions } from '../screens/mfa-begin-enroll-options';
+export type { MfaSmsChallengeOptions } from '../screens/mfa-sms-challenge';

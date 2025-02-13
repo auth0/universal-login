@@ -23,3 +23,4 @@ export { default as MfaPushList } from './mfa-push-list';
 export { default as MfaPushWelcome } from './mfa-push-welcome';
 export { default as MfaSmsEnrollment } from './mfa-sms-enrollment';
 export { default as MfaBeginEnrollOptions } from './mfa-begin-enroll-options';
+export { default as MfaSmsChallenge } from './mfa-sms-challenge';

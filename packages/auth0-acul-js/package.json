@@ -107,6 +107,10 @@
     "./mfa-begin-enroll-options": {
       "import": "./dist/screens/mfa-begin-enroll-options/index.js",
       "types": "./dist/types/src/screens/mfa-begin-enroll-options/index.d.ts"
+    },
+    "./mfa-sms-challenge": {
+      "import": "./dist/screens/mfa-sms-challenge/index.js",
+      "types": "./dist/types/src/screens/mfa-sms-challenge/index.d.ts"
     }
   },
   "scripts": {

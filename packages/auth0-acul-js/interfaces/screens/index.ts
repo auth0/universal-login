@@ -19,3 +19,5 @@ export * as MfaPushEnrollmentQr from './mfa-push-enrollment-qr';
 export * as MfaPushList from './mfa-push-list';
 export * as MfaPushWelcome from './mfa-push-welcome';
 export * as MfaSmsEnrollment from './mfa-sms-enrollment';
+export * as MfaBeginEnrollOptions from './mfa-begin-enroll-options';
+export * as MfaSmsChallenge from './mfa-sms-challenge';
