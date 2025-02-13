@@ -23,3 +23,4 @@ export type { ScreenMembersOnResetPasswordMfaPushChallengePush } from '../screen
 export type { ScreenMembersOnMfaPushEnrollmentQr } from '../screens/mfa-push-enrollment-qr';
 export type { ScreenMembersOnMfaPushList, SelectMfaPushDeviceOptions } from '../screens/mfa-push-list';
 export type { ScreenMembersOnMfaPushWelcome } from '../screens/mfa-push-welcome';
+export type { ScreenMembersOnMfaSmsEnrollment } from '../screens/mfa-sms-enrollment';

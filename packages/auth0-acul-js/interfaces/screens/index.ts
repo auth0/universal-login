@@ -18,3 +18,4 @@ export * as ResetPasswordError from './reset-password-error';
 export * as MfaPushEnrollmentQr from './mfa-push-enrollment-qr';
 export * as MfaPushList from './mfa-push-list';
 export * as MfaPushWelcome from './mfa-push-welcome';
+export * as MfaSmsEnrollment from './mfa-sms-enrollment';
