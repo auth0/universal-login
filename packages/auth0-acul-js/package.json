@@ -139,6 +139,10 @@
     "./mfa-email-list": {
       "import": "./dist/screens/mfa-email-list/index.js",
       "types": "./dist/types/src/screens/mfa-email-list/index.d.ts"
+    },
+    "./mfa-enroll-result": {
+      "import": "./dist/screens/mfa-enroll-result/index.js",
+      "types": "./dist/types/src/screens/mfa-enroll-result/index.d.ts"
     }
   },
   "scripts": {

@@ -31,3 +31,4 @@ export { default as ResetPasswordMfaSmsChallenge } from './reset-password-mfa-sm
 export { default as MfaDetectBrowserCapabilities } from './mfa-detect-browser-capabilities';
 export { default as MfaEmailChallenge } from './mfa-email-challenge';
 export { default as MfaEmailList } from './mfa-email-list';
+export { default as MfaEnrollResult } from './mfa-enroll-result';

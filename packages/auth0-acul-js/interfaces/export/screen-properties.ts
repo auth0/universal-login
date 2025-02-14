@@ -31,3 +31,4 @@ export type { MfaDetectBrowserCapabilitiesMembers } from '../screens/mfa-detect-
 export type { MfaEmailChallengeMembers } from '../screens/mfa-email-challenge';
 export type { MfaEmailListMembers } from '../screens/mfa-email-list';
 export type { MfaSmsListMembers } from '../screens/mfa-sms-list';
+export type { MfaEnrollResultMembers } from '../screens/mfa-enroll-result';
