@@ -32,3 +32,4 @@ export { default as MfaDetectBrowserCapabilities } from './mfa-detect-browser-ca
 export { default as MfaEmailChallenge } from './mfa-email-challenge';
 export { default as MfaEmailList } from './mfa-email-list';
 export { default as MfaEnrollResult } from './mfa-enroll-result';
+export { default as MfaLoginOptions } from './mfa-login-options';

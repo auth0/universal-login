@@ -143,6 +143,10 @@
     "./mfa-enroll-result": {
       "import": "./dist/screens/mfa-enroll-result/index.js",
       "types": "./dist/types/src/screens/mfa-enroll-result/index.d.ts"
+    },
+    "./mfa-login-options": {
+      "import": "./dist/screens/mfa-login-options/index.js",
+      "types": "./dist/types/src/screens/mfa-login-options/index.d.ts"
     }
   },
   "scripts": {

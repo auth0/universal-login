@@ -28,3 +28,4 @@ export type {
 } from '../screens/mfa-email-challenge';
 export type { SelectMfaEmailOptions } from '../screens/mfa-email-list';
 export type { MfaSmsListOptions } from '../screens/mfa-sms-list';
+export type { ContinueWithFactorOptions } from '../screens/mfa-login-options';

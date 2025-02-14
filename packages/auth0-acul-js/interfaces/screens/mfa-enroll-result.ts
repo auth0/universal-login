@@ -1,5 +1,4 @@
-import type { BaseContext } from '../models/base-context';
-import type { BaseMembers } from '../models/base-context';
+import type { BaseContext, BaseMembers } from '../models/base-context';
 
 /**
  * Interface representing the MFA enrollment result screen.

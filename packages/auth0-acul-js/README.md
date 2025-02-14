@@ -164,6 +164,8 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 | 30     | mfa-detect-browser-capabilities          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaDetectBrowserCapabilities.html)   |
 | 31     | mfa-email-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaEmailChallenge.html)   |
 | 32     | mfa-email-list          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaEmailList.html)   |
+| 33     | mfa-enroll-result          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaEnrollResult.html)   |
+| 33     | mfa-login-options          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaLoginOptions.html)   |
 
 </details>
 

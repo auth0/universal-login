@@ -32,3 +32,4 @@ export type { ScreenMembersOnResetPasswordMfaSmsChallenge } from '../screens/res
 export type { ScreenMembersOnMfaDetectBrowserCapabilities } from '../screens/mfa-detect-browser-capabilities';
 export type { ScreenMembersOnMfaEmailChallenge } from '../screens/mfa-email-challenge';
 export type { ScreenMembersOnMfaEmailList } from '../screens/mfa-email-list';
+export type { ScreenMembersOnMfaLoginOptions } from '../screens/mfa-login-options';
