@@ -29,3 +29,5 @@ export type { ResetPasswordMfaEmailChallengeMembers } from '../screens/reset-pas
 export type { ResetPasswordMfaSmsChallengeMembers } from '../screens/reset-password-mfa-sms-challenge';
 export type { MfaDetectBrowserCapabilitiesMembers } from '../screens/mfa-detect-browser-capabilities';
 export type { MfaEmailChallengeMembers } from '../screens/mfa-email-challenge';
+export type { MfaEmailListMembers } from '../screens/mfa-email-list';
+export type { MfaSmsListMembers } from '../screens/mfa-sms-list';

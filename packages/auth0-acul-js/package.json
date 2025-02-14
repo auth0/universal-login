@@ -135,6 +135,10 @@
     "./mfa-email-challenge": {
       "import": "./dist/screens/mfa-email-challenge/index.js",
       "types": "./dist/types/src/screens/mfa-email-challenge/index.d.ts"
+    },
+    "./mfa-email-list": {
+      "import": "./dist/screens/mfa-email-list/index.js",
+      "types": "./dist/types/src/screens/mfa-email-list/index.d.ts"
     }
   },
   "scripts": {
