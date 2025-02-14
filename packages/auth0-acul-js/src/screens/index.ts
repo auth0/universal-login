@@ -33,3 +33,4 @@ export { default as MfaEmailChallenge } from './mfa-email-challenge';
 export { default as MfaEmailList } from './mfa-email-list';
 export { default as MfaEnrollResult } from './mfa-enroll-result';
 export { default as MfaLoginOptions } from './mfa-login-options';
+export { default as MfaPushChallengePush } from './mfa-push-challenge-push';

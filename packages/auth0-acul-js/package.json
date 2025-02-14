@@ -147,6 +147,10 @@
     "./mfa-login-options": {
       "import": "./dist/screens/mfa-login-options/index.js",
       "types": "./dist/types/src/screens/mfa-login-options/index.d.ts"
+    },
+    "./mfa-push-challenge-push": {
+      "import": "./dist/screens/mfa-push-challenge-push/index.js",
+      "types": "./dist/types/src/screens/mfa-push-challenge-push/index.d.ts"
     }
   },
   "scripts": {

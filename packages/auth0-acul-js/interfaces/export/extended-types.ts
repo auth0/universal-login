@@ -33,3 +33,4 @@ export type { ScreenMembersOnMfaDetectBrowserCapabilities } from '../screens/mfa
 export type { ScreenMembersOnMfaEmailChallenge } from '../screens/mfa-email-challenge';
 export type { ScreenMembersOnMfaEmailList } from '../screens/mfa-email-list';
 export type { ScreenMembersOnMfaLoginOptions } from '../screens/mfa-login-options';
+export type { ScreenMembersOnMfaPushChallengePush } from '../screens/mfa-push-challenge-push';
