@@ -30,3 +30,4 @@ export type { ScreenMembersOnMfaCountryCodes } from '../screens/mfa-country-code
 export type { ScreenMembersOnResetPasswordMfaEmailChallenge } from '../screens/reset-password-mfa-email-challenge';
 export type { ScreenMembersOnResetPasswordMfaSmsChallenge } from '../screens/reset-password-mfa-sms-challenge';
 export type { ScreenMembersOnMfaDetectBrowserCapabilities } from '../screens/mfa-detect-browser-capabilities';
+export type { ScreenMembersOnMfaEmailChallenge } from '../screens/mfa-email-challenge';

@@ -131,6 +131,10 @@
     "./mfa-detect-browser-capabilities": {
       "import": "./dist/screens/mfa-detect-browser-capabilities/index.js",
       "types": "./dist/types/src/screens/mfa-detect-browser-capabilities/index.d.ts"
+    },
+    "./mfa-email-challenge": {
+      "import": "./dist/screens/mfa-email-challenge/index.js",
+      "types": "./dist/types/src/screens/mfa-email-challenge/index.d.ts"
     }
   },
   "scripts": {

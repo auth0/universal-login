@@ -29,3 +29,4 @@ export { default as MfaCountryCodes } from './mfa-country-codes';
 export { default as ResetPasswordMfaEmailChallenge } from './reset-password-mfa-email-challenge';
 export { default as ResetPasswordMfaSmsChallenge } from './reset-password-mfa-sms-challenge';
 export { default as MfaDetectBrowserCapabilities } from './mfa-detect-browser-capabilities';
+export { default as MfaEmailChallenge } from './mfa-email-challenge';

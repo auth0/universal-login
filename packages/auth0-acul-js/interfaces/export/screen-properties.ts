@@ -28,3 +28,4 @@ export type { MfaCountryCodesMembers } from '../screens/mfa-country-codes';
 export type { ResetPasswordMfaEmailChallengeMembers } from '../screens/reset-password-mfa-email-challenge';
 export type { ResetPasswordMfaSmsChallengeMembers } from '../screens/reset-password-mfa-sms-challenge';
 export type { MfaDetectBrowserCapabilitiesMembers } from '../screens/mfa-detect-browser-capabilities';
+export type { MfaEmailChallengeMembers } from '../screens/mfa-email-challenge';
