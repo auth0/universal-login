@@ -127,6 +127,10 @@
     "./reset-password-mfa-sms-challenge": {
       "import": "./dist/screens/reset-password-mfa-sms-challenge/index.js",
       "types": "./dist/types/src/screens/reset-password-mfa-sms-challenge/index.d.ts"
+    },
+    "./mfa-detect-browser-capabilities": {
+      "import": "./dist/screens/mfa-detect-browser-capabilities/index.js",
+      "types": "./dist/types/src/screens/mfa-detect-browser-capabilities/index.d.ts"
     }
   },
   "scripts": {

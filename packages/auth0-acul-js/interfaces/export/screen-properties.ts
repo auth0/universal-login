@@ -24,7 +24,7 @@ export type { MfaPushWelcomeMembers } from '../screens/mfa-push-welcome';
 export type { MfaSmsEnrollmentMembers } from '../screens/mfa-sms-enrollment';
 export type { MfaBeginEnrollOptionsMembers } from '../screens/mfa-begin-enroll-options';
 export type { MfaSmsChallengeMembers } from '../screens/mfa-sms-challenge';
-export type { MfaSmsListMembers } from '../screens/mfa-sms-list';
 export type { MfaCountryCodesMembers } from '../screens/mfa-country-codes';
 export type { ResetPasswordMfaEmailChallengeMembers } from '../screens/reset-password-mfa-email-challenge';
 export type { ResetPasswordMfaSmsChallengeMembers } from '../screens/reset-password-mfa-sms-challenge';
+export type { MfaDetectBrowserCapabilitiesMembers } from '../screens/mfa-detect-browser-capabilities';
