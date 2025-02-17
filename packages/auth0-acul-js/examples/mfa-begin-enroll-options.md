@@ -5,6 +5,29 @@ This screen allows users to select which MFA factor they want to enroll in. The 
 ### Basic Usage
 
 ```typescript
+import MfaBeginEnrollOptions from '@auth0/auth0-acul-js/mfa-begin-enroll-options';
+
+const mfaBeginEnrollOptions = new MfaBeginEnrollOptions();
+
+// Get available factors from tenant configuration
+const { tenant } = mfaBeginEnrollOptions;
+const availableFactors = tenant.enabledFactors;
+
+// Continue with selected factor enrollment
+const handleFactorSelection = async (factor: string) => {
+  try {
+    await mfaBeginEnrollOptions.enroll({
+      action: factor // e.g. 'push-notification', 'otp', 'sms', etc.
+    });
+  } catch (error) {
+    console.error('Error enrolling factor:', error);
+  }
+};
+```
+
+### React Component Example with TailwindCSS
+
+```tsx
 import React, { useCallback } from 'react';
 import MfaBeginEnrollOptions, { type FactorType } from '@auth0/auth0-acul-js/mfa-begin-enroll-options';
 
