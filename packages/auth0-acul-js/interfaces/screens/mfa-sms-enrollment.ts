@@ -3,7 +3,6 @@ import type { BaseMembers } from '../models/base-context';
 import type { ScreenMembers } from '../models/screen';
 
 export interface MfaSmsEnrollmentOptions {
-  action?: 'pick-country-code' | 'default' | 'pick-authenticator';
   phone?: string;
   captcha?: string;
   [key: string]: string | number | boolean | undefined;
