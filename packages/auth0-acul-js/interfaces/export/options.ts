@@ -15,7 +15,7 @@ export type { ResetPasswordEmailOptions } from '../screens/reset-password-email'
 export type { ResetPasswordRequestOptions } from '../screens/reset-password-request';
 export type { ResetPasswordOptions } from '../screens/reset-password';
 export type { MfaSmsEnrollmentOptions } from '../screens/mfa-sms-enrollment';
-export type { ContinueWithFactorEnrollmentOptions } from '../screens/mfa-begin-enroll-options';
+export type { MfaEnrollOptions, FactorType } from '../screens/mfa-begin-enroll-options';
 export type { MfaSmsChallengeOptions } from '../screens/mfa-sms-challenge';
 export type { SelectCountryCodeOptions } from '../screens/mfa-country-codes';
 export type { ContinueOptions, ResendCodeOptions, TryAnotherMethodOptions } from '../screens/reset-password-mfa-email-challenge';

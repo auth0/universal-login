@@ -1,7 +1,7 @@
 import MfaBeginEnrollOptions from '../../../../src/screens/mfa-begin-enroll-options';
 import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
-import type { ContinueWithFactorEnrollmentOptions } from '../../../../interfaces/screens/mfa-begin-enroll-options';
+import type { MfaEnrollOptions } from '../../../../interfaces/screens/mfa-begin-enroll-options';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -19,13 +19,13 @@ describe('MfaBeginEnrollOptions', () => {
     (FormHandler as jest.Mock).mockImplementation(() => mockFormHandler);
   });
 
-  describe('continueWithFactorEnrollment method', () => {
+  describe('enroll method', () => {
     it('should handle factor enrollment with valid payload correctly', async () => {
-      const payload: ContinueWithFactorEnrollmentOptions = {
+      const payload: MfaEnrollOptions = {
         action: 'push-notification',
       };
 
-      await mfaBeginEnrollOptions.continueWithFactorEnrollment(payload);
+      await mfaBeginEnrollOptions.enroll(payload);
 
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
@@ -36,22 +36,22 @@ describe('MfaBeginEnrollOptions', () => {
     it('should throw error when promise is rejected', async () => {
       mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
 
-      const payload: ContinueWithFactorEnrollmentOptions = {
+      const payload: MfaEnrollOptions = {
         action: 'push-notification',
       };
 
       await expect(
-        mfaBeginEnrollOptions.continueWithFactorEnrollment(payload)
+        mfaBeginEnrollOptions.enroll(payload)
       ).rejects.toThrow('Mocked reject');
     });
 
     it('should handle additional custom options correctly', async () => {
-      const payload: ContinueWithFactorEnrollmentOptions = {
+      const payload: MfaEnrollOptions = {
         action: 'push-notification',
         customOption: 'test',
       };
 
-      await mfaBeginEnrollOptions.continueWithFactorEnrollment(payload);
+      await mfaBeginEnrollOptions.enroll(payload);
 
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining(payload)
