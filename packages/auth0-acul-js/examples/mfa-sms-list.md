@@ -9,30 +9,23 @@ import MfaSmsList from '@auth0/auth0-acul-js/mfa-sms-list';
 
 const mfaSmsList = new MfaSmsList();
 
+const getEnrolledPhoneNumbers = mfaSmsList.user.enrolledPhoneNumbers;
+// select any phone number from list, for demonstration we will pick up first number
+const selectedNumber = getEnrolledPhoneNumbers[0]
+
 // Select the first phone number in the list
-mfaSmsList.selectPhoneNumber(0);
+mfaSmsList.selectPhoneNumber(selectedNumber);
 ```
 
 ## Back Action
 
 ```typescript
-import MfaSmsList from '@auth0/auth0-acul-js/mfa-sms-list';
-
-const mfaSmsList = new MfaSmsList();
-
-// Navigate back to the previous screen
-mfaSmsList.backAction();
-```
-
-## React Component Example with TailwindCSS
-
-```tsx
 import React from 'react';
 import MfaSmsList from '@auth0/auth0-acul-js/mfa-sms-list';
 
 const MFASmsListScreen: React.FC = () => {
   const mfaSmsList = new MfaSmsList();
-  const { screen } = mfaSmsList;
+  const { user } = mfaSmsList;
 
   const handleSelectPhoneNumber = async (index: number) => {
     try {
@@ -55,9 +48,9 @@ const MFASmsListScreen: React.FC = () => {
       <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <h2 className="text-2xl font-bold mb-4">Select a Phone Number</h2>
         {
-          screen.data?.enrolledPhoneNumbers ? (
+          user.enrolledPhoneNumbers ? (
             <ul className="mb-4">
-              {screen.data.enrolledPhoneNumbers.map((phoneNumber, index) => (
+              {user.enrolledPhoneNumbers?.map((phoneNumber, index) => (
                 <li key={index} className="py-2">
                   <button
                     onClick={() => handleSelectPhoneNumber(index)}
