@@ -25,7 +25,7 @@ const MfaDetectBrowserCapabilitiesScreen: React.FC = () => {
         const jsEnabled = isJsAvailable();
         const webAuthPlatformSupported = await isWebAuthPlatformAvailable();
 
-        await mfaDetectBrowserCapabilities.pickAuthenticator({
+        await mfaDetectBrowserCapabilities.detectCapabilities({
           'js-available': jsEnabled,
           'is-brave': braveDetected,
           'webauthn-available': webAuthSupported,
@@ -115,7 +115,7 @@ const detectBrowserCapabilities = async () => {
   const webAuthPlatformSupported = await isWebAuthPlatformAvailable();
 
   // Submit capabilities
-  await mfaDetectBrowserCapabilities.pickAuthenticator({
+  await mfaDetectBrowserCapabilities.detectCapabilities({
     'js-available': jsEnabled,
     'is-brave': braveDetected,
     'webauthn-available': webAuthSupported,
