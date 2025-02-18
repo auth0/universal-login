@@ -23,7 +23,8 @@ describe('MfaCountryCodes', () => {
   describe('selectCountryCode method', () => {
     it('should handle selectCountryCode with valid payload correctly', async () => {
       const payload: SelectCountryCodeOptions = {
-        action: 'selection-action::US1',
+        country_code: 'US',
+        phone_prefix: '+1',
       };
       await mfaCountryCodes.selectCountryCode(payload);
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
@@ -35,7 +36,8 @@ describe('MfaCountryCodes', () => {
     it('should throw error when promise is rejected', async () => {
       mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
       const payload: SelectCountryCodeOptions = {
-        action: 'selection-action::US1',
+        country_code: 'US',
+        phone_prefix: '+1',
       };
       await expect(mfaCountryCodes.selectCountryCode(payload)).rejects.toThrow(
         'Mocked reject'

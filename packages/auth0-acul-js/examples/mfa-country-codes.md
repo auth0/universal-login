@@ -12,11 +12,11 @@ const MfaCountryCodesScreen: React.FC = () => {
   const mfaCountryCodes = new MfaCountryCodes();
   const { screen } = mfaCountryCodes;
   const { phone_prefixes } = screen.data || {};
-
-  const handleCountrySelect = async (countryCode: string, index: number) => {
+  const handleCountrySelect = async (countryCode: string, phonePrefix: string) => {
     try {
       await mfaCountryCodes.selectCountryCode({
-        action: `selection-action::${countryCode}${index}`
+       country_code: countryCode,
+       phone_prefix: phonePrefix
       });
     } catch (error) {
       console.error('Failed to select country code:', error);
@@ -45,7 +45,7 @@ const MfaCountryCodesScreen: React.FC = () => {
             {phone_prefixes?.map((prefix, index) => (
               <button
                 key={`${prefix.country_code}${index}`}
-                onClick={() => handleCountrySelect(prefix.country_code, index)}
+                onClick={() => handleCountrySelect(prefix.country_code, prefix.phone_prefix)}
                 className="w-full flex justify-between items-center py-3 px-4 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-50 text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
                 <span>{prefix.country}</span>
@@ -76,14 +76,19 @@ export default MfaCountryCodesScreen;
 ### Select Country Code
 
 ```typescript
-import MfaCountryCodes from '@auth0/auth0-acul-js/mfa-country-codes';
-
-const mfaCountryCodes = new MfaCountryCodes();
-
-// Select a country code (e.g., US)
-await mfaCountryCodes.selectCountryCode({
-  action: 'selection-action::US1'
-});
+ import MfaCountryCodes from '@auth0/auth0-acul-js/mfa-country-codes';
+   
+  const mfaCountryCodes = new MfaCountryCodes();
+  
+  // Get the available country codes and phone prefixes
+  const { screen } = mfaCountryCodes;
+  const { phone_prefixes } = screen.data
+  const {country_code, phone_prefix} = phone_prefixes[0]
+  
+  await mfaCountryCodes.selectCountryCode({
+    country_code: 'US',
+    phone_prefix: '+1',
+  });
 ```
 
 ### Go Back

@@ -16,8 +16,10 @@ export interface ScreenMembersOnMfaCountryCodes extends ScreenMembers {
  * Options for selecting a country code
  */
 export interface SelectCountryCodeOptions {
-  /** The action to perform, must match pattern ^selection-action::[A-Z]{2}[0-9]{1,4}$ */
-  action: string;
+  /** The country code (e.g. 'US', 'GB') */
+  country_code: string;
+  /** The phone prefix (e.g. '+1', '+44') */
+  phone_prefix: string;
   /** Any additional custom options */
   [key: string]: string | number | boolean | undefined;
 }

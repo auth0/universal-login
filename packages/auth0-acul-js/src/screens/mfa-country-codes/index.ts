@@ -36,8 +36,15 @@ export default class MfaCountryCodes extends BaseContext implements MfaCountryCo
    * import MfaCountryCodes from '@auth0/auth0-acul-js/mfa-country-codes';
    *
    * const mfaCountryCodes = new MfaCountryCodes();
+   *
+   * // Get the available country codes and phone prefixes
+   * const { screen } = mfaCountryCodes;
+   * const { phone_prefixes } = screen.data
+   * const {country_code, phone_prefix} = phone_prefixes[0]
+   *
    * await mfaCountryCodes.selectCountryCode({
-   *   action: 'selection-action::US1'
+   *   country_code: 'US',
+   *   phone_prefix: '+1',
    * });
    * ```
    */
@@ -45,7 +52,12 @@ export default class MfaCountryCodes extends BaseContext implements MfaCountryCo
     const options: FormOptions = {
       state: this.transaction.state,
     };
-    await new FormHandler(options).submitData<SelectCountryCodeOptions>(payload);
+    const { country_code, phone_prefix } = payload;
+    const action = `selection-action::${country_code}${phone_prefix}`;
+    await new FormHandler(options).submitData<SelectCountryCodeOptions>({
+      ...payload,
+      action,
+    });
   }
 
   /**
