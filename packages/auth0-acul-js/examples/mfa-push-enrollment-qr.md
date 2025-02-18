@@ -24,18 +24,21 @@ const MfaPushEnrollmentQrScreen: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex flex-col items-center flex-start min-h-screen bg-gray-100">
       <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <h2 className="text-2xl font-bold mb-4">Enroll with Push Notification</h2>
+        <h2 className="text-2xl font-bold">{ screen.texts?.title ?? 'Enroll with Push Notification' }</h2>
+        <p className="mb-4">{ screen.texts?.description ?? '' }</p>
         {
           qr_code ? (
-            <img src={qr_code} alt="QR Code" className="mb-4" />
+            <div className="mb-4">
+              <img src={qr_code} alt="QR Code" className="mb-4 mx-auto" />
+            </div>
           ) : (
             <p>Loading QR Code...</p>
           )
         }
         <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          className="mx-auto block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           type="button"
           onClick={handlePickAuthenticator}
         >
