@@ -7,7 +7,6 @@ This screen is used to detect browser capabilities for MFA authentication method
 ```tsx
 import React, { useEffect, useState } from 'react';
 import MfaDetectBrowserCapabilities from '@auth0/auth0-acul-js/mfa-detect-browser-capabilities';
-import { isBrave, isWebAuthAvailable, isJsAvailable, isWebAuthPlatformAvailable } from '@auth0/auth0-acul-js/utils/browser-capabilities';
 
 const MfaDetectBrowserCapabilitiesScreen: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -20,17 +19,7 @@ const MfaDetectBrowserCapabilitiesScreen: React.FC = () => {
         setIsLoading(true);
         setError(null);
 
-        const braveDetected = await isBrave();
-        const webAuthSupported = isWebAuthAvailable();
-        const jsEnabled = isJsAvailable();
-        const webAuthPlatformSupported = await isWebAuthPlatformAvailable();
-
-        await mfaDetectBrowserCapabilities.pickAuthenticator({
-          'js-available': jsEnabled,
-          'is-brave': braveDetected,
-          'webauthn-available': webAuthSupported,
-          'webauthn-platform-available': webAuthPlatformSupported
-        });
+        await mfaDetectBrowserCapabilities.detectCapabilities();
       } catch (err) {
         setError('Failed to detect browser capabilities. Please try again.');
         console.error('Error:', err);
@@ -99,27 +88,15 @@ export default MfaDetectBrowserCapabilitiesScreen;
 
 ## Individual Method Examples
 
-### Pick Authenticator
+### Detect Browser Capabilities
 
 ```typescript
 import MfaDetectBrowserCapabilities from '@auth0/auth0-acul-js/mfa-detect-browser-capabilities';
-import { isBrave, isWebAuthAvailable, isJsAvailable, isWebAuthPlatformAvailable } from '@auth0/auth0-acul-js/utils/browser-capabilities';
 
 const detectBrowserCapabilities = async () => {
   const mfaDetectBrowserCapabilities = new MfaDetectBrowserCapabilities();
-  
-  // Detect browser capabilities
-  const braveDetected = await isBrave();
-  const webAuthSupported = isWebAuthAvailable();
-  const jsEnabled = isJsAvailable();
-  const webAuthPlatformSupported = await isWebAuthPlatformAvailable();
 
   // Submit capabilities
-  await mfaDetectBrowserCapabilities.pickAuthenticator({
-    'js-available': jsEnabled,
-    'is-brave': braveDetected,
-    'webauthn-available': webAuthSupported,
-    'webauthn-platform-available': webAuthPlatformSupported
-  });
+  await mfaDetectBrowserCapabilities.detectCapabilities();
 };
 ```

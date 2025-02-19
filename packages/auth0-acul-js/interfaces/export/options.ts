@@ -20,7 +20,6 @@ export type { MfaSmsChallengeOptions } from '../screens/mfa-sms-challenge';
 export type { SelectCountryCodeOptions } from '../screens/mfa-country-codes';
 export type { ContinueOptions, ResendCodeOptions, TryAnotherMethodOptions } from '../screens/reset-password-mfa-email-challenge';
 export type { MfaSmsChallengeOptions as ResetPasswordMfaSmsChallengeOptions } from '../screens/reset-password-mfa-sms-challenge';
-export type { PickAuthenticatorOptions } from '../screens/mfa-detect-browser-capabilities';
 export type {
   ContinueOptions as ContinuePayloadOptions,
   ResendCodeOptions as ResendCodePayloadOptions,
