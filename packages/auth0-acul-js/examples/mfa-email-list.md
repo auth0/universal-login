@@ -10,12 +10,12 @@ import MfaEmailList from '@auth0/auth0-acul-js/mfa-email-list';
 
 const MfaEmailListScreen: React.FC = () => {
   const mfaEmailList = new MfaEmailList();
-  const { screen } = mfaEmailList;
+  const { user } = mfaEmailList;
 
   const handleSelectEmail = async (index: number) => {
     try {
       await mfaEmailList.selectMfaEmail({
-        action: `selection-action::${index}`,
+        index: index,
       });
     } catch (error) {
       console.error('Failed to select email:', error);
@@ -35,9 +35,9 @@ const MfaEmailListScreen: React.FC = () => {
       <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <h2 className="text-2xl font-bold mb-4">Select an Email Address</h2>
         {
-          screen.data?.enrolled_emails ? (
+          user.enrolledEmails ? (
             <ul className="mb-4">
-              {screen.data.enrolled_emails.map((email, index) => (
+              {user.enrolledEmails.map((email, index) => (
                 <li key={index} className="py-2">
                   <button
                     onClick={() => handleSelectEmail(index)}
@@ -74,10 +74,13 @@ export default MfaEmailListScreen;
 import MfaEmailList from '@auth0/auth0-acul-js/mfa-email-list';
 
 const mfaEmailList = new MfaEmailList();
+const getEnrolledEmails = mfaSmsList.user.enrolledEmails;
+// select any phone number from list, for demonstration we will pick up first number
+const selectedEmail = getEnrolledEmails[0]
 
 // Select the first email address (index 0)
 await mfaEmailList.selectMfaEmail({
-  action: 'selection-action::0'
+  index: selectedEmail
 });
 ```
 

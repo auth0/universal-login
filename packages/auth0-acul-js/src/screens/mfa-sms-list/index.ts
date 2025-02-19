@@ -17,13 +17,13 @@ export default class MfaSmsList extends BaseContext implements MfaSmsListMembers
 
   /**
    * Selects a phone number from the list of enrolled phone numbers.
-   * @param {number} index - The index of the phone number to select.
    * @param {MfaSmsListOptions} [payload] - Optional payload for the action.
    * @returns {Promise<void>}
    * @throws {Error} If the index is out of bounds.
    */
-  public async selectPhoneNumber(index: number, payload?: MfaSmsListOptions): Promise<void> {
-    if (index < 0 || index >= (this.user?.enrolledPhoneNumbers?.length ?? 0)) {
+  public async selectPhoneNumber(payload?: MfaSmsListOptions): Promise<void> {
+    const index = payload?.index;
+    if (index === undefined || index < 0 || index >= (this.user?.enrolledPhoneNumbers?.length ?? 0)) {
       throw new Error('Index out of bounds.');
     }
 

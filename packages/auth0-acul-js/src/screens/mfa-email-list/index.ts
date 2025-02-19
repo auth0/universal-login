@@ -1,10 +1,7 @@
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
-import { ScreenOverride } from './screen-override';
-
 import type { CustomOptions } from '../../../interfaces/common';
-import type { ScreenContext } from '../../../interfaces/models/screen';
 import type {
   MfaEmailListMembers,
   ScreenMembersOnMfaEmailList as ScreenOptions,
@@ -17,15 +14,11 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * This screen allows users to select an enrolled email address for MFA
  */
 export default class MfaEmailList extends BaseContext implements MfaEmailListMembers {
-  screen: ScreenOptions;
-
   /**
    * Creates an instance of MfaEmailList screen manager
    */
   constructor() {
     super();
-    const screenContext = this.getContext('screen') as ScreenContext;
-    this.screen = new ScreenOverride(screenContext);
   }
 
   /**
@@ -37,15 +30,23 @@ export default class MfaEmailList extends BaseContext implements MfaEmailListMem
    *
    * const mfaEmailList = new MfaEmailList();
    * await mfaEmailList.selectMfaEmail({
-   *   action: 'selection-action::0'
+   *   index: 0 // for demonstration we are selecting the first index
    * });
    * ```
    */
   async selectMfaEmail(payload: SelectMfaEmailOptions): Promise<void> {
+    const index = payload?.index;
+    if (index === undefined || index < 0 || index >= (this.user?.enrolledEmails?.length ?? 0)) {
+      throw new Error('Index out of bounds.');
+    }
+
     const options: FormOptions = {
       state: this.transaction.state,
     };
-    await new FormHandler(options).submitData<SelectMfaEmailOptions>(payload);
+    await new FormHandler(options).submitData<CustomOptions>({
+      ...payload,
+      action: `selection-action::${index}`,
+    });
   }
 
   /**

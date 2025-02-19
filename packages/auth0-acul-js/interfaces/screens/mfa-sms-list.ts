@@ -6,6 +6,11 @@ import type { BaseMembers } from '../../interfaces/models/base-context';
  * Options for performing actions on the mfa-sms-list screen.
  */
 export interface MfaSmsListOptions {
+  /**
+   * @param {number} index - The index of the phone number to select.
+   */
+  index: number;
+  /** Any additional custom options */
   [key: string]: string | number | boolean | undefined;
 }
 
@@ -17,12 +22,11 @@ export interface MfaSmsListOptions {
 export interface MfaSmsListMembers extends BaseMembers {
   /**
    * Selects a phone number from the list of enrolled phone numbers.
-   * @param {number} index - The index of the phone number to select.
    * @param {MfaSmsListOptions} [payload] - Optional payload for the action.
    * @returns {Promise<void>}
    * @throws {Error} If the index is out of bounds.
    */
-  selectPhoneNumber(index: number, payload?: MfaSmsListOptions): Promise<void>;
+  selectPhoneNumber(payload?: MfaSmsListOptions): Promise<void>;
   /**
    * Navigates back to the previous screen.
    * @param {MfaSmsListOptions} [payload] - Optional payload for the action.

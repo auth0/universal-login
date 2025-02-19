@@ -14,7 +14,7 @@ const getEnrolledPhoneNumbers = mfaSmsList.user.enrolledPhoneNumbers;
 const selectedNumber = getEnrolledPhoneNumbers[0]
 
 // Select the first phone number in the list
-mfaSmsList.selectPhoneNumber(selectedNumber);
+mfaSmsList.selectPhoneNumber({index: selectedNumber});
 ```
 
 ## Back Action
@@ -29,7 +29,7 @@ const MFASmsListScreen: React.FC = () => {
 
   const handleSelectPhoneNumber = async (index: number) => {
     try {
-      await mfaSmsList.selectPhoneNumber(index);
+      await mfaSmsList.selectPhoneNumber({index});
     } catch (error) {
       console.error('Failed to select phone number:', error);
     }
