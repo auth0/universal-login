@@ -16,8 +16,11 @@ export interface ScreenMembersOnMfaEmailList extends ScreenMembers {
  * Options for selecting an email address
  */
 export interface SelectMfaEmailOptions {
-  /** The action to perform, must match pattern ^selection-action::\d{1,}$ */
-  action: string;
+  /**
+   * @param {number} index - The index of the phone number to select.
+   *
+   */
+  index: number;
   /** Any additional custom options */
   [key: string]: string | number | boolean | undefined;
 }
@@ -26,7 +29,6 @@ export interface SelectMfaEmailOptions {
  * Interface defining the available methods and properties for the mfa-email-list screen
  */
 export interface MfaEmailListMembers extends BaseMembers {
-  screen: ScreenMembersOnMfaEmailList;
   /**
    * Selects an enrolled email address from the list
    * @param payload The options containing the selection action

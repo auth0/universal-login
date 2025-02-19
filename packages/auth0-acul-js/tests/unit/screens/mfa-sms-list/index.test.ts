@@ -32,7 +32,7 @@ describe('MfaSmsList', () => {
 
   describe('selectPhoneNumber method', () => {
     it('should submit the selected phone number index', async () => {
-      await mfaSmsList.selectPhoneNumber(0);
+      await mfaSmsList.selectPhoneNumber({index:0});
 
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -42,7 +42,7 @@ describe('MfaSmsList', () => {
     });
 
     it('should throw an error if the index is out of bounds', async () => {
-      await expect(mfaSmsList.selectPhoneNumber(2)).rejects.toThrow('Index out of bounds.');
+      await expect(mfaSmsList.selectPhoneNumber({index:2})).rejects.toThrow('Index out of bounds.');
     });
   });
 

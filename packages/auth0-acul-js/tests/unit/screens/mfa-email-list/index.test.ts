@@ -12,7 +12,13 @@ describe('MfaEmailList', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
-    window.universal_login_context = baseContextData;
+    window.universal_login_context = {
+      ...baseContextData,
+      user: {
+        ...baseContextData.user,
+        enrolled_emails:  ['gyan*********@gmai*****', 'gyan**********@okta****']
+      }
+    };
     mfaEmailList = new MfaEmailList();
     mockFormHandler = {
       submitData: jest.fn(),
@@ -23,7 +29,7 @@ describe('MfaEmailList', () => {
   describe('selectMfaEmail method', () => {
     it('should handle selectMfaEmail with valid payload correctly', async () => {
       const payload: SelectMfaEmailOptions = {
-        action: 'selection-action::0',
+        index: 0,
       };
       await mfaEmailList.selectMfaEmail(payload);
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
@@ -35,7 +41,7 @@ describe('MfaEmailList', () => {
     it('should throw error when promise is rejected', async () => {
       mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
       const payload: SelectMfaEmailOptions = {
-        action: 'selection-action::0',
+        index: 0,
       };
       await expect(mfaEmailList.selectMfaEmail(payload)).rejects.toThrow(
         'Mocked reject'
