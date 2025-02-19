@@ -32,7 +32,7 @@ describe('FormHandler', () => {
   
     // Check that all inputs are correctly created
     const inputs = form.querySelectorAll('input');
-    expect(inputs.length).toBe(3);
+    expect(inputs.length).toBe(4);
     expect(inputs[0].name).toBe('key1');
     expect(inputs[0].value).toBe('value1');
     expect(inputs[1].name).toBe('key2');
@@ -49,7 +49,7 @@ describe('FormHandler', () => {
     expect(form.action).toBe(`${ currentLocation }submit`);
 
     const inputs = form.querySelectorAll('input');
-    expect(inputs.length).toBe(1);
+    expect(inputs.length).toBe(2);
     expect(inputs[0].name).toBe('state');
     expect(inputs[0].value).toBe('testState');
   });
@@ -73,7 +73,7 @@ describe('FormHandler', () => {
     const form = formHandler['buildForm'](payload);
 
     const inputs = form.querySelectorAll('input');
-    expect(inputs.length).toBe(3);
+    expect(inputs.length).toBe(4);
     expect(inputs[0].name).toBe('key1');
     expect(inputs[0].value).toBe(''); // null should be converted to an empty string
     expect(inputs[1].name).toBe('key2');

@@ -1,6 +1,6 @@
 import { BaseContext } from '../../models/base-context';
 import { Errors } from '../../utils/errors';
-import { FormHandler } from '../../utils/form-handler';
+import { FormHandler, getAnalyticsData } from '../../utils/form-handler';
 import { getPasskeyCredentials } from '../../utils/passkeys';
 
 import { ScreenOverride } from './screen-override';
@@ -50,6 +50,7 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
   async login(payload: LoginOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      analytics: getAnalyticsData(this.screen.name, 'login'),
     };
 
     await new FormHandler(options).submitData<LoginOptions>(payload);
