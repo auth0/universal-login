@@ -1,7 +1,7 @@
 import MfaLoginOptions from '../../../../src/screens/mfa-login-options';
 import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
-import type { ContinueWithFactorOptions } from '../../../../interfaces/screens/mfa-login-options';
+import type { LoginEnrollOptions } from '../../../../interfaces/screens/mfa-login-options';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -19,12 +19,12 @@ describe('MfaLoginOptions', () => {
     (FormHandler as jest.Mock).mockImplementation(() => mockFormHandler);
   });
 
-  describe('continueWithFactor method', () => {
-    it('should handle continueWithFactor with valid payload correctly', async () => {
-      const payload: ContinueWithFactorOptions = {
+  describe('enroll method', () => {
+    it('should handle enroll with valid payload correctly', async () => {
+      const payload: LoginEnrollOptions = {
         action: 'push-notification',
       };
-      await mfaLoginOptions.continueWithFactor(payload);
+      await mfaLoginOptions.enroll(payload);
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining(payload)
@@ -33,20 +33,20 @@ describe('MfaLoginOptions', () => {
 
     it('should throw error when promise is rejected', async () => {
       mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
-      const payload: ContinueWithFactorOptions = {
+      const payload: LoginEnrollOptions = {
         action: 'push-notification',
       };
-      await expect(mfaLoginOptions.continueWithFactor(payload)).rejects.toThrow(
+      await expect(mfaLoginOptions.enroll(payload)).rejects.toThrow(
         'Mocked reject'
       );
     });
 
     it('should handle additional custom options correctly', async () => {
-      const payload: ContinueWithFactorOptions = {
+      const payload: LoginEnrollOptions = {
         action: 'push-notification',
         customOption: 'test',
       };
-      await mfaLoginOptions.continueWithFactor(payload);
+      await mfaLoginOptions.enroll(payload);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining(payload)
       );
