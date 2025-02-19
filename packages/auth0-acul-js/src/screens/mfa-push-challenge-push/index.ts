@@ -8,6 +8,7 @@ import type { ScreenContext } from '../../../interfaces/models/screen';
 import type {
   MfaPushChallengePushMembers,
   ScreenMembersOnMfaPushChallengePush as ScreenOptions,
+  WithRememberOptions,
 } from '../../../interfaces/screens/mfa-push-challenge-push';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
@@ -36,11 +37,16 @@ export default class MfaPushChallengePush extends BaseContext implements MfaPush
    * await mfaPushChallengePush.continue();
    * ```
    */
-  async continue(payload?: CustomOptions): Promise<void> {
+  async continue(payload?: WithRememberOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
     };
-    await new FormHandler(options).submitData<CustomOptions>(payload || {});
+
+    await new FormHandler(options).submitData<WithRememberOptions>({
+      rememberDevice: payload?.rememberDevice ?? false,
+      ...payload,
+      action: 'continue',
+    });
   }
 
   /**
@@ -52,11 +58,12 @@ export default class MfaPushChallengePush extends BaseContext implements MfaPush
    * await mfaPushChallengePush.resendPushNotification();
    * ```
    */
-  async resendPushNotification(payload?: CustomOptions): Promise<void> {
+  async resendPushNotification(payload?: WithRememberOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
     };
-    await new FormHandler(options).submitData<CustomOptions>({
+    await new FormHandler(options).submitData<WithRememberOptions>({
+      rememberDevice: payload?.rememberDevice ?? false,
       ...payload,
       action: 'resend',
     });
@@ -101,6 +108,6 @@ export default class MfaPushChallengePush extends BaseContext implements MfaPush
   }
 }
 
-export { MfaPushChallengePushMembers, ScreenOptions as ScreenMembersOnMfaPushChallengePush };
+export { MfaPushChallengePushMembers, WithRememberOptions, ScreenOptions as ScreenMembersOnMfaPushChallengePush };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';
