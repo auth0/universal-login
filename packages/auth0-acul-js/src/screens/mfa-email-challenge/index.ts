@@ -96,6 +96,25 @@ export default class MfaEmailChallenge extends BaseContext implements MfaEmailCh
       action: 'pick-authenticator',
     });
   }
+
+  /**
+   * Submits the action to pick a different Email configuration, if available.
+   * @param {CustomOptions} [payload] - Optional payload.
+   * @returns {Promise<void>}
+   * @example
+   * ```typescript
+   * import MfaEmailChallenge from '@auth0/auth0-acul-js/mfa-email-challenge';
+   *
+   * const mfaEmailChallenge = new MfaEmailChallenge();
+   * await mfaEmailChallenge.pickEmail();
+   * ```
+   */
+  async pickEmail(payload?: CustomOptions): Promise<void> {
+    const options: FormOptions = {
+      state: this.transaction.state,
+    };
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'pick-email' });
+  }
 }
 
 export { MfaEmailChallengeMembers, ContinueOptions, ResendCodeOptions, TryAnotherMethodOptions, ScreenOptions as ScreenMembersOnMfaEmailChallenge };
