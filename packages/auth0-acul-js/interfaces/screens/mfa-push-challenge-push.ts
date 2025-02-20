@@ -14,6 +14,10 @@ export interface ScreenMembersOnMfaPushChallengePush extends ScreenMembers {
   } | null;
 }
 
+export interface WithRememberOptions extends CustomOptions {
+  rememberDevice?: boolean;
+}
+
 /**
  * Interface defining the available methods and properties for the mfa-push-challenge-push screen
  */
@@ -24,13 +28,13 @@ export interface MfaPushChallengePushMembers extends BaseMembers {
    * Continues with the push notification challenge
    * @param payload Optional custom options to include with the request
    */
-  continue(payload?: CustomOptions): Promise<void>;
+  continue(payload?: WithRememberOptions): Promise<void>;
 
   /**
    * Resends the push notification
    * @param payload Optional custom options to include with the request
    */
-  resendPushNotification(payload?: CustomOptions): Promise<void>;
+  resendPushNotification(payload?: WithRememberOptions): Promise<void>;
 
   /**
    * Switches to entering the verification code manually
