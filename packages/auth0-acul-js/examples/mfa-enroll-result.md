@@ -16,10 +16,10 @@ const MfaEnrollResultScreen: React.FC = () => {
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          MFA Enrollment Complete
+          { screen.texts?.title ?? 'MFA Enrollment Complete' }
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
-          Your multi-factor authentication has been successfully set up.
+          { screen.texts?.description ?? 'Your multi-factor authentication has been successfully set up.' }
         </p>
       </div>
 
@@ -44,7 +44,7 @@ const MfaEnrollResultScreen: React.FC = () => {
           
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-500">
-              You can now use this additional security method to protect your account.
+              { screen.texts?.enrolledDescription ?? 'You have successfully enrolled in multi-factor authentication.' }
             </p>
           </div>
         </div>
