@@ -1,3 +1,4 @@
+# Auth0 ACUL JS SDK
 
 ![ACUL JS SDK](https://cdn.auth0.com/website/sdks/banners/auth0-acul-js-banner.png)
 
@@ -20,18 +21,6 @@ It simplifies integrating authentication screens (login, signup, passwordless, p
 - [Guides](https://auth0.com/docs/customize/login-pages/advanced-customizations/screens) - more guides for common use cases
 - [Examples](https://github.com/auth0/universal-login/tree/master/packages/auth0-acul-js/examples) - code snippets for different customization use cases.
 - [FAQs](FAQ.md) - Find answers to frequently asked questions about the Auth0 ACUL JS SDK.
-
-### Architecture Overview
-
-- SDK features a modular architecture for integrating various authentication screens.
-- The **Login ID screen** is used as an example to explain the architecture.
-- This structure can be applied to other screens across the project, such as **signup**, **passwordless login**, and **passkey enrollment**.
-- Each screen can be treated as an independent module that can be **easily integrated** into the project.
-
-![ACUL SDK](https://cdn.auth0.com/website/sdks/assets/auth0-acul-sdk-architecture.png)
-
-
-
 
 ##  Getting started
 
@@ -123,28 +112,48 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 ##  API reference
 ### Screens
 
-1. [login](https://auth0.github.io/universal-login/classes/Classes.Login.html)
-2. [login-id](https://auth0.github.io/universal-login/classes/Classes.LoginId.html)
-3. [login-Password](https://auth0.github.io/universal-login/classes/Classes.LoginPassword.html)
-4. [signup-id](https://auth0.github.io/universal-login/classes/Classes.SignupId.html)
-5. [signup-password](https://auth0.github.io/universal-login/classes/Classes.SignupPassword.html)
+| No. | Screen Name       | Documentation Link                                                                                      |
+|--------|-------------------|-------------------------------------------------------------------------------------------|
+| 1      | login             | [Link](https://auth0.github.io/universal-login/classes/Classes.Login.html)                 |
+| 2      | login-id          | [Link](https://auth0.github.io/universal-login/classes/Classes.LoginId.html)              |
+| 3      | login-Password    | [Link](https://auth0.github.io/universal-login/classes/Classes.LoginPassword.html)         |
+| 4      | signup-id         | [Link](https://auth0.github.io/universal-login/classes/Classes.SignupId.html)              |
+| 5      | signup-password   | [Link](https://auth0.github.io/universal-login/classes/Classes.SignupPassword.html)        |
+
 <details>
   <summary>Explore more screens...</summary>
 
-  6. [login-passwordless-email-code](https://auth0.github.io/universal-login/classes/Classes.LoginPasswordlessEmailCode.html)
-  7. [login-passwordless-sms-otp](https://auth0.github.io/universal-login/classes/Classes.LoginPasswordlessSmsOtp.html)
-  8. [passkey-enrollment](https://auth0.github.io/universal-login/classes/Classes.PasskeyEnrollment.html)
-  9. [passkey-enrollment-local](https://auth0.github.io/universal-login/classes/Classes.PasskeyEnrollmentLocal.html)
-  10. [phone-identifier-enrollment](https://auth0.github.io/universal-login/classes/Classes.PhoneIdentifierEnrollment.html)
-  11. [phone-identifier-challenge](https://auth0.github.io/universal-login/classes/Classes.PhoneIdentifierChallenge.html)
-  12. [email-identifier-challenge](https://auth0.github.io/universal-login/classes/Classes.EmailIdentifierChallenge.html)
-  13. [interstitial-captcha](https://auth0.github.io/universal-login/classes/Classes.InterstitialCaptcha.html)
-  14. [reset-password-email](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordEmail.html)
-  15. [reset-password-request](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordRequest.html)
-  16. [reset-password](https://auth0.github.io/universal-login/classes/Classes.ResetPassword.html)
-  17. [reset-password-error](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordError.html)
-  18. [reset-password-success](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordSuccess.html)
-  19. [signup](https://auth0.github.io/universal-login/classes/Classes.Signup.html)
+| No. | Screen Name                                      | Documentation Link                                                                                                                        |
+|--------|-------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| 6      | login-passwordless-email-code            | [Link](https://auth0.github.io/universal-login/classes/Classes.LoginPasswordlessEmailCode.html)                             |
+| 7      | login-passwordless-sms-otp                | [Link](https://auth0.github.io/universal-login/classes/Classes.LoginPasswordlessSmsOtp.html)                                 |
+| 8      | passkey-enrollment                        | [Link](https://auth0.github.io/universal-login/classes/Classes.PasskeyEnrollment.html)                                       |
+| 9      | passkey-enrollment-local                  | [Link](https://auth0.github.io/universal-login/classes/Classes.PasskeyEnrollmentLocal.html)                                 |
+| 10     | phone-identifier-enrollment               | [Link](https://auth0.github.io/universal-login/classes/Classes.PhoneIdentifierEnrollment.html)                               |
+| 11     | phone-identifier-challenge                | [Link](https://auth0.github.io/universal-login/classes/Classes.PhoneIdentifierChallenge.html)                               |
+| 12     | email-identifier-challenge                | [Link](https://auth0.github.io/universal-login/classes/Classes.EmailIdentifierChallenge.html)                               |
+| 13     | interstitial-captcha                      | [Link](https://auth0.github.io/universal-login/classes/Classes.InterstitialCaptcha.html)                                     |
+| 14     | reset-password-email                      | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordEmail.html)                                     |
+| 15     | reset-password-request                    | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordRequest.html)                                   |
+| 16     | reset-password                            | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPassword.html)                                         |
+| 17     | reset-password-error                      | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordError.html)                                     |
+| 18     | reset-password-success                    | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordSuccess.html)                                   |
+| 19     | signup                                    | [Link](https://auth0.github.io/universal-login/classes/Classes.Signup.html)                                               |
+| 30     | mfa-detect-browser-capabilities          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaDetectBrowserCapabilities.html)   |
+| 33     | mfa-enroll-result          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaEnrollResult.html)   |
+| 25     | mfa-begin-enroll-options                  | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaBeginEnrollOptions.html)                                 |
+| 33     | mfa-login-options          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaLoginOptions.html)   |
+| 21     | mfa-push-enrollment-qr                    | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaPushEnrollmentQr.html)                                  |
+| 23     | mfa-push-welcome                          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaPushWelcome.html)                                        |
+| 33     | mfa-push-challenge-push          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaPushChallengePush.html)   |
+| 22     | mfa-push-list                             | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaPushList.html)                                           |
+| 27     | mfa-country-codes                         | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaCountryCodes.html)                                       |
+| 26     | mfa-sms-challenge                  |   [Link](https://auth0.github.io/universal-login/classes/Classes.MfaSmsChallenge.html)                                 |
+| 24     | mfa-sms-enrollment                        | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaSmsEnrollment.html)                                        |
+| 26     | mfa-sms-list                  |   [Link](https://auth0.github.io/universal-login/classes/Classes.MfaSmsList.html)                                 |
+| 31     | mfa-email-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaEmailChallenge.html)   |
+| 32     | mfa-email-list          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaEmailList.html)   |
+
 </details>
 
 
@@ -170,7 +179,7 @@ Please do not report security vulnerabilities on the public GitHub issue tracker
 
 ### Legal
 
-**Early Access.** This SDK and its associated product are made available only in Early Access (“EA”) format and are governed by the Free Trial terms of the [Okta Master Subscription Agreement](https://www.okta.com/agreements/#mastersubscriptionagreement). If Okta elects to make a version of this SDK and its associated product Generally Available (“GA”), such GA version may have different pricing, product and feature configurations, and use of the GA product and SDK will be subject to the standard terms of the Agreement (or other such titled written or electronic agreement addressing the same subject matter) between Okta and Customer."
+**Early Access.** This SDK and its associated product are made available only in Early Access ("EA") format and are governed by the Free Trial terms of the [Okta Master Subscription Agreement](https://www.okta.com/agreements/#mastersubscriptionagreement). If Okta elects to make a version of this SDK and its associated product Generally Available ("GA"), such GA version may have different pricing, product and feature configurations, and use of the GA product and SDK will be subject to the standard terms of the Agreement (or other such titled written or electronic agreement addressing the same subject matter) between Okta and Customer."
 
 ---
 

@@ -1,4 +1,4 @@
-import type { FormOptions, PostPayloadOptions } from '../../interfaces/utils/form-handler';
+import type { FormOptions, PostPayloadOptions, AnalyticsOptions } from '../../interfaces/utils/form-handler';
 
 export class FormHandler {
   options: FormOptions;
@@ -32,6 +32,30 @@ export class FormHandler {
       $form.appendChild(input);
     });
 
+    this.addAnalyticsField($form);
+
     return $form;
   }
+
+  private addAnalyticsField(form: HTMLFormElement): HTMLFormElement {
+    const input = document.createElement('input');
+    const analyticsPayload: AnalyticsOptions = {
+      screenName: this.options?.analytics?.screenName,
+      methodName: this.options?.analytics?.methodName,
+    };
+    input.type = 'hidden';
+    input.name = 'x-acul-js-sdk-analytics';
+    input.value = JSON.stringify(analyticsPayload);
+    form.appendChild(input);
+
+    return form;
+  }
+}
+
+export function getAnalyticsData(screenName?: string, methodName?: string): AnalyticsOptions {
+  const options: AnalyticsOptions = {
+    screenName,
+    methodName,
+  };
+  return options;
 }

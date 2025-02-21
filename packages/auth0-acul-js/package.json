@@ -1,6 +1,6 @@
 {
   "name": "@auth0/auth0-acul-js",
-  "version": "0.1.0-beta.1",
+  "version": "0.1.0-beta.2",
   "type": "module",
   "module": "dist/index.js",
   "exports": {
@@ -83,11 +83,79 @@
     "./reset-password-error": {
       "import": "./dist/screens/reset-password-error/index.js",
       "types": "./dist/types/src/screens/reset-password-error/index.d.ts"
+    },
+    "./reset-password-mfa-push-challenge-push": {
+      "import": "./dist/screens/reset-password-mfa-push-challenge-push/index.js",
+      "types": "./dist/types/src/screens/reset-password-mfa-push-challenge-push/index.d.ts"
+    },
+    "./mfa-push-enrollment-qr": {
+      "import": "./dist/screens/mfa-push-enrollment-qr/index.js",
+      "types": "./dist/types/src/screens/mfa-push-enrollment-qr/index.d.ts"
+    },
+    "./mfa-push-list": {
+      "import": "./dist/screens/mfa-push-list/index.js",
+      "types": "./dist/types/src/screens/mfa-push-list/index.d.ts"
+    },
+    "./mfa-push-welcome": {
+      "import": "./dist/screens/mfa-push-welcome/index.js",
+      "types": "./dist/types/src/screens/mfa-push-welcome/index.d.ts"
+    },
+    "./mfa-sms-enrollment": {
+      "import": "./dist/screens/mfa-sms-enrollment/index.js",
+      "types": "./dist/types/src/screens/mfa-sms-enrollment/index.d.ts"
+    },
+    "./mfa-begin-enroll-options": {
+      "import": "./dist/screens/mfa-begin-enroll-options/index.js",
+      "types": "./dist/types/src/screens/mfa-begin-enroll-options/index.d.ts"
+    },
+    "./mfa-sms-challenge": {
+      "import": "./dist/screens/mfa-sms-challenge/index.js",
+      "types": "./dist/types/src/screens/mfa-sms-challenge/index.d.ts"
+    },
+    "./mfa-sms-list": {
+      "import": "./dist/screens/mfa-sms-list/index.js",
+      "types": "./dist/types/src/screens/mfa-sms-list/index.d.ts"
+    },
+    "./mfa-country-codes": {
+      "import": "./dist/screens/mfa-country-codes/index.js",
+      "types": "./dist/types/src/screens/mfa-country-codes/index.d.ts"
+    },
+    "./reset-password-mfa-email-challenge": {
+      "import": "./dist/screens/reset-password-mfa-email-challenge/index.js",
+      "types": "./dist/types/src/screens/reset-password-mfa-email-challenge/index.d.ts"
+    },
+    "./reset-password-mfa-sms-challenge": {
+      "import": "./dist/screens/reset-password-mfa-sms-challenge/index.js",
+      "types": "./dist/types/src/screens/reset-password-mfa-sms-challenge/index.d.ts"
+    },
+    "./mfa-detect-browser-capabilities": {
+      "import": "./dist/screens/mfa-detect-browser-capabilities/index.js",
+      "types": "./dist/types/src/screens/mfa-detect-browser-capabilities/index.d.ts"
+    },
+    "./mfa-email-challenge": {
+      "import": "./dist/screens/mfa-email-challenge/index.js",
+      "types": "./dist/types/src/screens/mfa-email-challenge/index.d.ts"
+    },
+    "./mfa-email-list": {
+      "import": "./dist/screens/mfa-email-list/index.js",
+      "types": "./dist/types/src/screens/mfa-email-list/index.d.ts"
+    },
+    "./mfa-enroll-result": {
+      "import": "./dist/screens/mfa-enroll-result/index.js",
+      "types": "./dist/types/src/screens/mfa-enroll-result/index.d.ts"
+    },
+    "./mfa-login-options": {
+      "import": "./dist/screens/mfa-login-options/index.js",
+      "types": "./dist/types/src/screens/mfa-login-options/index.d.ts"
+    },
+    "./mfa-push-challenge-push": {
+      "import": "./dist/screens/mfa-push-challenge-push/index.js",
+      "types": "./dist/types/src/screens/mfa-push-challenge-push/index.d.ts"
     }
   },
   "scripts": {
     "clean": "rimraf dist",
-    "build": "npm run clean && npm run lint && npm run test && npm run docs && rollup -c rollup.config.js --bundleConfigAsCjs",
+    "build": "npm run clean && npm run lint:fix && npm run test && npm run docs && rollup -c rollup.config.js --bundleConfigAsCjs",
     "test": "jest --verbose tests/unit/**/* --coverage",
     "test:e2e": "cypress open",
     "docs": "typedoc --options typedoc.json",
