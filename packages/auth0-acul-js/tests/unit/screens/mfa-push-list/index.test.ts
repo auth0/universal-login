@@ -25,12 +25,13 @@ describe('MfaPushList', () => {
       const payload: SelectMfaPushDeviceOptions = {
         deviceIndex: 0,
       };
+      const { deviceIndex, ...restPayload} = payload;
       await mfaPushList.selectMfaPushDevice(payload);
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          ...payload,
-          action: 'selection-action::0',
+          ...restPayload,
+          action: `selection-action::${ deviceIndex }`,
         })
       );
     });

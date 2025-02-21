@@ -75,7 +75,7 @@ import MfaEmailList from '@auth0/auth0-acul-js/mfa-email-list';
 
 const mfaEmailList = new MfaEmailList();
 const getEnrolledEmails = mfaSmsList.user.enrolledEmails;
-// select any phone number from list, for demonstration we will pick up first number
+// select any email from list, for demonstration we will pick up first email
 const selectedEmail = getEnrolledEmails[0]
 
 // Select the first email address (index 0)

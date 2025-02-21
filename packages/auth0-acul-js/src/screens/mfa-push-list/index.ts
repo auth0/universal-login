@@ -1,27 +1,16 @@
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
-import { ScreenOverride } from './screen-override';
-
 import type { CustomOptions } from '../../../interfaces/common';
-import type { ScreenContext } from '../../../interfaces/models/screen';
-import type {
-  MfaPushListMembers,
-  ScreenMembersOnMfaPushList as ScreenOptions,
-  SelectMfaPushDeviceOptions,
-} from '../../../interfaces/screens/mfa-push-list';
+import type { MfaPushListMembers, SelectMfaPushDeviceOptions } from '../../../interfaces/screens/mfa-push-list';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 /**
  * Class implementing the mfa-push-list screen functionality
  */
 export default class MfaPushList extends BaseContext implements MfaPushListMembers {
-  screen: ScreenOptions;
-
   constructor() {
     super();
-    const screenContext = this.getContext('screen') as ScreenContext;
-    this.screen = new ScreenOverride(screenContext);
   }
 
   /**
@@ -41,9 +30,11 @@ export default class MfaPushList extends BaseContext implements MfaPushListMembe
       state: this.transaction.state,
     };
 
-    await new FormHandler(options).submitData<SelectMfaPushDeviceOptions>({
-      ...payload,
-      action: `selection-action::${payload.deviceIndex}`,
+    const { deviceIndex, ...restPayload } = payload;
+
+    await new FormHandler(options).submitData<Omit<SelectMfaPushDeviceOptions, 'deviceIndex'>>({
+      ...restPayload,
+      action: `selection-action::${deviceIndex}`,
     });
   }
 
@@ -70,7 +61,7 @@ export default class MfaPushList extends BaseContext implements MfaPushListMembe
   }
 }
 
-export { MfaPushListMembers, ScreenOptions as ScreenMembersOnMfaPushList };
+export { MfaPushListMembers };
 
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';
