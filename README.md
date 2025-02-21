@@ -122,21 +122,48 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 ##  API reference
 ### Screens
 
-1. [login-id](https://auth0.github.io/universal-login/classes/Classes.LoginId.html)
-2. [login-Password](https://auth0.github.io/universal-login/classes/Classes.LoginPassword.html)
-3. [signup-id](https://auth0.github.io/universal-login/classes/Classes.SignupId.html)
-4. [signup-password](https://auth0.github.io/universal-login/classes/Classes.SignupPassword.html)
+| No. | Screen Name       | Documentation Link                                                                                      |
+|--------|-------------------|-------------------------------------------------------------------------------------------|
+| 1      | login             | [Link](https://auth0.github.io/universal-login/classes/Classes.Login.html)                 |
+| 2      | login-id          | [Link](https://auth0.github.io/universal-login/classes/Classes.LoginId.html)              |
+| 3      | login-Password    | [Link](https://auth0.github.io/universal-login/classes/Classes.LoginPassword.html)         |
+| 4      | signup-id         | [Link](https://auth0.github.io/universal-login/classes/Classes.SignupId.html)              |
+| 5      | signup-password   | [Link](https://auth0.github.io/universal-login/classes/Classes.SignupPassword.html)        |
+
 <details>
   <summary>Explore more screens...</summary>
 
-  5. [login-passwordless-email-code](https://auth0.github.io/universal-login/classes/Classes.LoginPasswordlessEmailCode.html)
-  6. [login-passwordless-sms-otp](https://auth0.github.io/universal-login/classes/Classes.LoginPasswordlessSmsOtp.html)
-  7. [passkey-enrollment](https://auth0.github.io/universal-login/classes/Classes.PasskeyEnrollment.html)
-  8. [passkey-enrollment-local](https://auth0.github.io/universal-login/classes/Classes.PasskeyEnrollmentLocal.html)
-  9. [phone-identifier-enrollment](https://auth0.github.io/universal-login/classes/Classes.PhoneIdentifierEnrollment.html)
-  10. [phone-identifier-challenge](https://auth0.github.io/universal-login/classes/Classes.PhoneIdentifierChallenge.html)
-  11. [email-identifier-challenge](https://auth0.github.io/universal-login/classes/Classes.EmailIdentifierChallenge.html)
-  12. [interstitial-captcha](https://auth0.github.io/universal-login/classes/Classes.InterstitialCaptcha.html)
+| No. | Screen Name                                      | Documentation Link                                                                                                                        |
+|--------|-------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| 6      | login-passwordless-email-code            | [Link](https://auth0.github.io/universal-login/classes/Classes.LoginPasswordlessEmailCode.html)                             |
+| 7      | login-passwordless-sms-otp                | [Link](https://auth0.github.io/universal-login/classes/Classes.LoginPasswordlessSmsOtp.html)                                 |
+| 8      | passkey-enrollment                        | [Link](https://auth0.github.io/universal-login/classes/Classes.PasskeyEnrollment.html)                                       |
+| 9      | passkey-enrollment-local                  | [Link](https://auth0.github.io/universal-login/classes/Classes.PasskeyEnrollmentLocal.html)                                 |
+| 10     | phone-identifier-enrollment               | [Link](https://auth0.github.io/universal-login/classes/Classes.PhoneIdentifierEnrollment.html)                               |
+| 11     | phone-identifier-challenge                | [Link](https://auth0.github.io/universal-login/classes/Classes.PhoneIdentifierChallenge.html)                               |
+| 12     | email-identifier-challenge                | [Link](https://auth0.github.io/universal-login/classes/Classes.EmailIdentifierChallenge.html)                               |
+| 13     | interstitial-captcha                      | [Link](https://auth0.github.io/universal-login/classes/Classes.InterstitialCaptcha.html)                                     |
+| 14     | reset-password-email                      | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordEmail.html)                                     |
+| 15     | reset-password-request                    | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordRequest.html)                                   |
+| 16     | reset-password                            | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPassword.html)                                         |
+| 17     | reset-password-error                      | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordError.html)                                     |
+| 18     | reset-password-success                    | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordSuccess.html)                                   |
+| 19     | signup                                    | [Link](https://auth0.github.io/universal-login/classes/Classes.Signup.html)                                               |
+| 30     | mfa-detect-browser-capabilities          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaDetectBrowserCapabilities.html)   |
+| 33     | mfa-enroll-result          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaEnrollResult.html)   |
+| 25     | mfa-begin-enroll-options                  | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaBeginEnrollOptions.html)                                 |
+| 33     | mfa-login-options          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaLoginOptions.html)   |
+| 21     | mfa-push-enrollment-qr                    | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaPushEnrollmentQr.html)                                  |
+| 23     | mfa-push-welcome                          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaPushWelcome.html)                                        |
+| 33     | mfa-push-challenge-push          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaPushChallengePush.html)   |
+| 22     | mfa-push-list                             | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaPushList.html)                                           |
+| 27     | mfa-country-codes                         | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaCountryCodes.html)                                       |
+| 26     | mfa-sms-challenge                  |   [Link](https://auth0.github.io/universal-login/classes/Classes.MfaSmsChallenge.html)                                 |
+| 24     | mfa-sms-enrollment                        | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaSmsEnrollment.html)                                        |
+| 26     | mfa-sms-list                  |   [Link](https://auth0.github.io/universal-login/classes/Classes.MfaSmsList.html)                                 |
+| 31     | mfa-email-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaEmailChallenge.html)   |
+| 32     | mfa-email-list          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaEmailList.html)   |
+
 </details>
 
 

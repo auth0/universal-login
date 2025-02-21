@@ -12,6 +12,11 @@ import  LoginIdScreen  from '@auth0/auth0-acul-js/login-id';
 import  LoginPasswordScreen  from '@auth0/auth0-acul-js/login-password';
 import  SignupScreen  from '@auth0/auth0-acul-js/signup-id';
 import  SignupPasswordScreen  from '@auth0/auth0-acul-js/signup-password';
+```
+<details>
+  <summary>Import of all other screens</summary>
+
+```javascript
 import  LoginPasswordlessEmailCodeScreen  from '@auth0/auth0-acul-js/login-passwordless-email-code';
 import  LoginPasswordlessEmailSMSOTP  from '@auth0/auth0-acul-js/login-passwordless-sms-otp';
 import  PasskeyEnrolmentScreen  from '@auth0/auth0-acul-js/passkey-enrollment';
@@ -28,7 +33,23 @@ import  ResetPasswordEmail from '@auth0/auth0-acul-js/reset-password-email';
 import  ResetPasswordSuccess from '@auth0/auth0-acul-js/reset-password-success';
 import  ResetPasswordError from '@auth0/auth0-acul-js/reset-password-error';
 
+// MFA related screens
+import  MfaDetectBrowserCapabilities from '@auth0/auth0-acul-js/mfa-detect-browser-capabilities';
+import  MfaEnrollResult from '@auth0/auth0-acul-js/mfa-enroll-result';
+import  MfaBeginEnrollOptions from '@auth0/auth0-acul-js/mfa-begin-enroll-options';
+import  MfaLoginOptions from '@auth0/auth0-acul-js/mfa-login-options';
+import  MfaPushEnrollmentQr from '@auth0/auth0-acul-js/mfa-push-enrollment-qr';
+import  MfaPushWelcome from '@auth0/auth0-acul-js/mfa-push-welcome';
+import  MfaPushChallengePush from '@auth0/auth0-acul-js/mfa-push-challenge-push';
+import  MfaPushList from '@auth0/auth0-acul-js/mfa-push-list';
+import  MfaCountryCodes from '@auth0/auth0-acul-js/mfa-country-codes';
+import  MfaSmsChallenge from '@auth0/auth0-acul-js/mfa-sms-challenge';
+import  MfaSmsEnrollment from '@auth0/auth0-acul-js/mfa-sms-enrollment';
+import  MfaSmsList from '@auth0/auth0-acul-js/mfa-sms-list';
+import  MfaEmailChallenge from '@auth0/auth0-acul-js/mfa-email-challenge';
+import  MfaEmailList from '@auth0/auth0-acul-js/mfa-email-list';
 ```
+</details> 
 
 ## Where can i see errors related to my screen
 
@@ -60,3 +81,6 @@ Once installed, you can import and use it in your JavaScript or TypeScript or Re
 Yes, this SDK can be easily integrated into a ReactJS application.
 
 Although the SDK is written in Vanilla JavaScript, it is fully compatible with all JavaScript-based frameworks, including React, Angular, Vue, and others. You can seamlessly use the SDK within your React components or hooks.
+
+
+# feedback
