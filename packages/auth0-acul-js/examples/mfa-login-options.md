@@ -15,7 +15,11 @@ enum FactorTypeEnum {
   SMS = 'sms',
   PHONE = 'phone',
   VOICE = 'voice',
-  WEBAUTHN_ROAMING = 'webauthn-roaming'
+  EMAIL = 'email',
+  RECOVERY_CODE = 'recovery-code',
+  WEBAUTHN_ROAMING = 'webauthn-roaming',
+  WEBAUTHN_PLATFORM = 'webauthn-platform',
+  DUO = 'duo'
 }
 
 const MfaLoginOptionsScreen: React.FC = () => {
@@ -29,7 +33,11 @@ const MfaLoginOptionsScreen: React.FC = () => {
     [FactorTypeEnum.SMS]: texts?.authenticatorNamesSMS ?? 'SMS',
     [FactorTypeEnum.PHONE]: texts?.authenticatorNamesPhone ?? 'Phone Call',
     [FactorTypeEnum.VOICE]: texts?.authenticatorNamesVoice ?? 'Voice Call',
-    [FactorTypeEnum.WEBAUTHN_ROAMING]: texts?.authenticatorNamesWebauthnRoaming ?? 'Security Key'
+    [FactorTypeEnum.EMAIL]: texts?.authenticatorNamesEmail ?? 'Email',
+    [FactorTypeEnum.RECOVERY_CODE]: texts?.authenticatorNamesRecoveryCode ?? 'Recovery Code',
+    [FactorTypeEnum.WEBAUTHN_PLATFORM]: texts?.authenticatorNamesWebauthnPlatform ?? 'Platform Authenticator',
+    [FactorTypeEnum.WEBAUTHN_ROAMING]: texts?.authenticatorNamesWebauthnRoaming ?? 'Security Key',
+    [FactorTypeEnum.DUO]: texts?.authenticatorNamesDuo ?? 'Notification via DUO app'
   };
 
   /** Handles user selection of an MFA factor */
