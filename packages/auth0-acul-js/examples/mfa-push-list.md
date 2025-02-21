@@ -10,8 +10,8 @@ import MfaPushList from '@auth0/auth0-acul-js/mfa-push-list';
 
 const MfaPushListScreen: React.FC = () => {
   const mfaPushList = new MfaPushList();
-  const { screen } = mfaPushList;
-  const { enrolled_devices } = screen.data || {};
+  const { screen, user } = mfaPushList;
+  const { enrolledDevices } = user || {};
 
   const handleSelectDevice = async (deviceIndex: number) => {
     try {
@@ -32,11 +32,12 @@ const MfaPushListScreen: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <h2 className="text-2xl font-bold mb-4">Select a Device for MFA Push</h2>
+        <h2 className="text-2xl font-bold mb-4">{ screen.texts?.title ?? 'Select a Device for MFA Push' } </h2>
+        <p className="mb-4"> { screen.texts?.description } </p>
         {
-          enrolled_devices && enrolled_devices.length > 0 ? (
+          enrolledDevices && enrolledDevices.length > 0 ? (
             <ul className="mb-4">
-              {enrolled_devices.map((device, index) => (
+              {enrolledDevices.map((device, index) => (
                 <li key={index} className="mb-2">
                   <button
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -75,6 +76,10 @@ export default MfaPushListScreen;
 import MfaPushList from '@auth0/auth0-acul-js/mfa-push-list';
 
 const mfaPushList = new MfaPushList();
+
+const enrolledDevices = mfaSmsList.user.enrolledDevices;
+// select any device from list, for demonstration we will pick up first device
+const selectedEmail = enrolledDevices[0]
 
 // Select the first device (index 0)
 await mfaPushList.selectMfaPushDevice({ deviceIndex: 0 });
