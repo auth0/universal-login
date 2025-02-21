@@ -1,11 +1,33 @@
 
-## [auth0-acul-js@0.1.0-beta.1](https://github.com/auth0/auth0-react/tree/v0.1.0) (2024-02-06)
+## [auth0-acul-js@0.1.0-beta.2](https://github.com/auth0/universal-login/tree/auth0-acul-js%400.1.0-beta.2) (2024-12-09)
 
 **Added**
 
 Support for the following screens:
 
-1. [login](https://auth0.github.io/universal-login/classes/Classes.Login.html)
+1. [mfa-detect-browser-capabilities](https://auth0.github.io/universal-login/classes/Classes.MfaDetectBrowserCapabilities.html)
+2. [mfa-enroll-result](https://auth0.github.io/universal-login/classes/Classes.MfaEnrollResult.html)
+3. [mfa-begin-enroll-options](https://auth0.github.io/universal-login/classes/Classes.MfaBeginEnrollOptions.html)
+4. [mfa-login-options](https://auth0.github.io/universal-login/classes/Classes.MfaLoginOptions.html)
+5. [mfa-push-enrollment-qr](https://auth0.github.io/universal-login/classes/Classes.MfaPushEnrollmentQr.html)
+6. [mfa-push-welcome](https://auth0.github.io/universal-login/classes/Classes.MfaPushWelcome.html)
+7. [mfa-push-challenge-push](https://auth0.github.io/universal-login/classes/Classes.MfaPushChallengePush.html)
+8. [mfa-push-list](https://auth0.github.io/universal-login/classes/Classes.MfaPushList.html)
+9. [mfa-country-codes](https://auth0.github.io/universal-login/classes/Classes.MfaCountryCodes.html)
+10. [mfa-sms-challenge](https://auth0.github.io/universal-login/classes/Classes.MfaSmsChallenge.html)
+11. [mfa-sms-enrollment](https://auth0.github.io/universal-login/classes/Classes.MfaSmsEnrollment.html)
+12. [mfa-sms-list](https://auth0.github.io/universal-login/classes/Classes.MfaSmsList.html)
+13. [mfa-email-challenge](https://auth0.github.io/universal-login/classes/Classes.MfaEmailChallenge.html)
+14. [mfa-email-list](https://auth0.github.io/universal-login/classes/Classes.MfaEmailList.html)
+
+
+## [auth0-acul-js@0.1.0-beta.1](https://github.com/auth0/universal-login/tree/auth0-acul-js%400.1.0-beta.1) (2024-02-06)
+
+**Added**
+
+Support for the following screens:
+
+1. [login](https://auth0.github.io/universal-login/classes/Classes.Login.html
 2. [signup](https://auth0.github.io/universal-login/classes/Classes.Signup.html)
 3. [reset-password-email](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordEmail.html)
 4. [reset-password-request](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordRequest.html)
@@ -29,7 +51,7 @@ Support for the following screens:
   // New property
   loginIdInstance.transaction.errors;
 
-## [auth0-acul-js@0.0.1-beta.1](https://github.com/auth0/auth0-react/tree/v0.1.0) (2024-12-09)
+## [auth0-acul-js@0.0.1-beta.1](https://github.com/auth0/universal-login/tree/auth0-acul-js%400.0.1-beta.1) (2024-12-09)
 
 **Added**
 
