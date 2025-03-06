@@ -13,6 +13,7 @@ describe('PasskeyEnrollment', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
+    baseContextData.screen.name = 'passkey-enrollment';
     window.universal_login_context = baseContextData;
 
     passkeyEnrollment = new PasskeyEnrollment();

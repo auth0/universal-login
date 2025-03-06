@@ -17,6 +17,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * @extends BaseContext
  */
 export default class MfaSmsChallenge extends BaseContext implements MfaSmsChallengeMembers {
+  static screenIdentifier: string = 'mfa-sms-challenge';
   screen: ScreenOptions;
 
   constructor() {

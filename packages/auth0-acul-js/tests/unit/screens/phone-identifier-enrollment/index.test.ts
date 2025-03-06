@@ -12,6 +12,7 @@ describe('PhoneIdentifierEnrollment', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
+    baseContextData.screen.name = 'phone-identifier-enrollment';
     window.universal_login_context = baseContextData;
 
     phoneIdentifierEnrollment = new PhoneIdentifierEnrollment();

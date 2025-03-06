@@ -7,6 +7,8 @@ import type { MfaEnrollResultMembers } from '../../../interfaces/screens/mfa-enr
  * This screen is displayed after successful MFA enrollment to show the result.
  */
 export default class MfaEnrollResult extends BaseContext implements MfaEnrollResultMembers {
+  static screenIdentifier: string = 'mfa-enroll-result';
+
   /**
    * Creates an instance of MfaEnrollResult screen manager.
    */

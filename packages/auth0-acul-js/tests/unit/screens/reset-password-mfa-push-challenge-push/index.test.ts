@@ -11,6 +11,7 @@ describe('ResetPasswordMfaPushChallengePush', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
+    baseContextData.screen.name = 'reset-password-mfa-push-challenge-push';
     window.universal_login_context = baseContextData;
     resetPasswordMfaPushChallengePush = new ResetPasswordMfaPushChallengePush();
     mockFormHandler = {

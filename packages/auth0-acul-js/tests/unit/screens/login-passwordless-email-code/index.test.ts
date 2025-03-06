@@ -12,6 +12,7 @@ describe('LoginPasswordlessEmailCode', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
+    baseContextData.screen.name = 'login-passwordless-email-code';
     window.universal_login_context = baseContextData;
 
     loginPasswordlessEmailCode = new LoginPasswordlessEmailCode();

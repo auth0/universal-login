@@ -15,6 +15,7 @@ import type {
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 export default class SignupPassword extends BaseContext implements SignupPasswordMembers {
+  static screenIdentifier: string = 'signup-password';
   screen: ScreenOptions;
   transaction: TransactionOptions;
 

@@ -11,6 +11,7 @@ describe('MfaLoginOptions', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
+    baseContextData.screen.name = 'mfa-login-options';
     window.universal_login_context = baseContextData;
     mfaLoginOptions = new MfaLoginOptions();
     mockFormHandler = {

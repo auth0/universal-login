@@ -5,6 +5,8 @@ import type { InterstitialCaptchaMembers, SubmitCaptchaOptions } from '../../../
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 export default class InterstitialCaptcha extends BaseContext implements InterstitialCaptchaMembers {
+  static screenIdentifier: string = 'interstitial-captcha';
+
   constructor() {
     super();
   }

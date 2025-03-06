@@ -10,6 +10,7 @@ import type { PasskeyEnrollmentMembers, ScreenMembersOnPasskeyEnrollment as Scre
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 export default class PasskeyEnrollment extends BaseContext implements PasskeyEnrollmentMembers {
+  static screenIdentifier: string = 'passkey-enrollment';
   screen: ScreenOptions;
 
   constructor() {

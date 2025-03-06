@@ -16,6 +16,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * This screen is shown when a push notification has been sent to the user's device during password reset
  */
 export default class ResetPasswordMfaPushChallengePush extends BaseContext implements ResetPasswordMfaPushChallengePushMembers {
+  static screenIdentifier: string = 'reset-password-mfa-push-challenge-push';
   screen: ScreenOptions;
 
   constructor() {

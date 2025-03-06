@@ -18,6 +18,7 @@ describe('MfaDetectBrowserCapabilities', () => {
   beforeEach(() => {
     // Mock global context
     global.window = Object.create(window);
+    baseContextData.screen.name = 'mfa-detect-browser-capabilities';
     window.universal_login_context = baseContextData;
 
     // Initialize the class

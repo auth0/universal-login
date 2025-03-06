@@ -8,6 +8,7 @@ describe('ResetPassword', () => {
   let mockFormHandler: { submitData: jest.Mock };
   beforeEach(() => {
     global.window = Object.create(window);
+    baseContextData.screen.name = 'reset-password';
     window.universal_login_context = baseContextData;
     resetPassword = new ResetPassword();
     mockFormHandler = {

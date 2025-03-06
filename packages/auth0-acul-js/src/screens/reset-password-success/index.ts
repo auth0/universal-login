@@ -6,6 +6,8 @@ import type {
 } from '../../../interfaces/screens/reset-password-success';
 
 export default class ResetPasswordSuccess extends BaseContext implements ResetPasswordSuccessMembers {
+  static screenIdentifier: string = 'reset-password-success';
+
   constructor() {
     super();
   }

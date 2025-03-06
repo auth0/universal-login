@@ -12,6 +12,7 @@ describe('MfaCountryCodes', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
+    baseContextData.screen.name = 'mfa-country-codes';
     window.universal_login_context = baseContextData;
     mfaCountryCodes = new MfaCountryCodes();
     mockFormHandler = {

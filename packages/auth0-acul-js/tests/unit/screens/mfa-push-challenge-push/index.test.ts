@@ -11,6 +11,7 @@ describe('MfaPushChallengePush', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
+    baseContextData.screen.name = 'mfa-push-challenge-push';
     window.universal_login_context = baseContextData;
     mfaPushChallengePush = new MfaPushChallengePush();
     mockFormHandler = {

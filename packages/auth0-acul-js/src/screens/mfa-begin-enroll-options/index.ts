@@ -9,6 +9,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * Handles the selection and enrollment of MFA factors
  */
 export default class MfaBeginEnrollOptions extends BaseContext implements MfaBeginEnrollOptionsMembers {
+  static screenIdentifier: string = 'mfa-begin-enroll-options';
   /**
    * Creates an instance of MFA Begin Enroll Options screen manager
    */

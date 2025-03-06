@@ -12,6 +12,7 @@ describe('ResetPasswordRequest', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
+    baseContextData.screen.name = 'reset-password-request';
     window.universal_login_context = baseContextData;
     resetPasswordRequest = new ResetPasswordRequest();
     mockFormHandler = {

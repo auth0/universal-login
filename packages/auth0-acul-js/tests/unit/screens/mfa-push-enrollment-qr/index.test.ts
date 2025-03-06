@@ -11,6 +11,7 @@ describe('MfaPushEnrollmentQr', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
+    baseContextData.screen.name = 'mfa-push-enrollment-qr';
     window.universal_login_context = baseContextData;
     mfaPushEnrollmentQr = new MfaPushEnrollmentQr();
     mockFormHandler = {

@@ -19,6 +19,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * Login screen implementation class
  */
 export default class Login extends BaseContext implements LoginMembers {
+  static screenIdentifier: string = 'login';
   screen: ScreenOptions;
   transaction: TransactionOptions;
 

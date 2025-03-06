@@ -12,6 +12,7 @@ describe('MfaEmailChallenge', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
+    baseContextData.screen.name = 'mfa-email-challenge';
     window.universal_login_context = baseContextData;
     mfaEmailChallenge = new MfaEmailChallenge();
     mockFormHandler = {

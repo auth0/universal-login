@@ -15,6 +15,7 @@ import type {
 } from '../../../interfaces/screens/signup';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 export default class Signup extends BaseContext implements SignupMembers {
+  static screenIdentifier: string = 'signup';
   screen: ScreenOptions;
   transaction: TransactionOptions;
 

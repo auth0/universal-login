@@ -13,6 +13,7 @@ import type {
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 export default class PhoneIdentifierEnrollment extends BaseContext implements PhoneIdentifierEnrollmentMembers {
+  static screenIdentifier: string = 'phone-identifier-enrollment';
   screen: ScreenOptions;
 
   constructor() {

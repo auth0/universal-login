@@ -17,6 +17,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * This screen allows users to select a country code for MFA phone number verification
  */
 export default class MfaCountryCodes extends BaseContext implements MfaCountryCodesMembers {
+  static screenIdentifier: string = 'mfa-country-codes';
   screen: ScreenOptions;
 
   /**

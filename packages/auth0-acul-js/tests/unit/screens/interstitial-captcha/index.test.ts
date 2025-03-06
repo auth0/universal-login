@@ -11,6 +11,7 @@ describe('InterstitialCaptcha', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
+    baseContextData.screen.name = 'interstitial-captcha';
     window.universal_login_context = baseContextData;
 
     interstitialCaptcha = new InterstitialCaptcha();

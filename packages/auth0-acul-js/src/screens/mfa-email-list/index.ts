@@ -14,6 +14,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * This screen allows users to select an enrolled email address for MFA
  */
 export default class MfaEmailList extends BaseContext implements MfaEmailListMembers {
+  static screenIdentifier: string = 'mfa-email-list';
   /**
    * Creates an instance of MfaEmailList screen manager
    */

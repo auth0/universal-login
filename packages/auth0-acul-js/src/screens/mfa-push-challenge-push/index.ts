@@ -17,6 +17,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * This screen is shown when a push notification has been sent to the user's device
  */
 export default class MfaPushChallengePush extends BaseContext implements MfaPushChallengePushMembers {
+  static screenIdentifier: string = 'mfa-push-challenge-push';
   screen: ScreenOptions;
 
   /**

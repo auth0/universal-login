@@ -12,6 +12,7 @@ describe('MfaPushList', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
+    baseContextData.screen.name = 'mfa-push-list';
     window.universal_login_context = baseContextData;
     mfaPushList = new MfaPushList();
     mockFormHandler = {

@@ -11,6 +11,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * @extends {BaseContext}
  */
 export default class MfaSmsList extends BaseContext implements MfaSmsListMembers {
+  static screenIdentifier: string = 'mfa-sms-list';
   constructor() {
     super();
   }

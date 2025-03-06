@@ -11,6 +11,7 @@ describe('LoginPassword', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
+    baseContextData.screen.name = 'login-password';
     window.universal_login_context = baseContextData;
     loginPassword = new LoginPassword();
 

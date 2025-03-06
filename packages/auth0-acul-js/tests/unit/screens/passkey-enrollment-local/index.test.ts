@@ -14,6 +14,7 @@ describe('PasskeyEnrollmentLocal', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
+    baseContextData.screen.name = 'passkey-enrollment-local';
     window.universal_login_context = baseContextData;
 
     passkeyEnrollmentLocal = new PasskeyEnrollmentLocal();

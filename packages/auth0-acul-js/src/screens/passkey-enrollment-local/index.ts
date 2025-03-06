@@ -14,6 +14,7 @@ import type {
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 export default class PasskeyEnrollmentLocal extends BaseContext implements PasskeyEnrollmentLocalMembers {
+  static screenIdentifier: string = 'passkey-enrollment-local';
   screen: ScreenOptions;
 
   constructor() {

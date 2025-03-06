@@ -11,7 +11,9 @@ import type {
 } from '../../../interfaces/screens/reset-password';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 export default class ResetPassword extends BaseContext implements ResetPasswordMembers {
+  static screenIdentifier: string = 'reset-password';
   screen: ScreenOptions;
+
   constructor() {
     super();
     const screenContext = this.getContext('screen') as ScreenContext;

@@ -9,6 +9,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * This screen allows users to select which MFA factor they want to use for login
  */
 export default class MfaLoginOptions extends BaseContext implements MfaLoginOptionsMembers {
+  static screenIdentifier: string = 'mfa-login-options';
   /**
    * Creates an instance of MfaLoginOptions screen manager
    */

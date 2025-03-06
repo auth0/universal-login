@@ -11,6 +11,8 @@ import type { CustomOptions } from 'interfaces/common';
  * This screen detects browser capabilities for MFA authentication methods
  */
 export default class MfaDetectBrowserCapabilities extends BaseContext implements MfaDetectBrowserCapabilitiesMembers {
+  static screenIdentifier: string = 'mfa-detect-browser-capabilities';
+
   /**
    * Creates an instance of MfaDetectBrowserCapabilities screen manager
    */

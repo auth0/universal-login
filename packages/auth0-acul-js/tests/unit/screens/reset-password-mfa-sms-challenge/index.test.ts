@@ -12,6 +12,7 @@ describe('ResetPasswordMfaSmsChallenge', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
+    baseContextData.screen.name = 'reset-password-mfa-sms-challenge';
     window.universal_login_context = baseContextData;
     resetPasswordMfaSmsChallenge = new ResetPasswordMfaSmsChallenge();
     mockFormHandler = {

@@ -14,6 +14,7 @@ describe('SignupId', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
+    baseContextData.screen.name = 'signup-id';
     window.universal_login_context = baseContextData; // transaction.getRequiredIdentifiers() => { email, phone, username } from baseContext.
 
     signupId = new SignupId();

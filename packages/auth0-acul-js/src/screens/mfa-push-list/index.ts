@@ -9,6 +9,8 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * Class implementing the mfa-push-list screen functionality
  */
 export default class MfaPushList extends BaseContext implements MfaPushListMembers {
+  static screenIdentifier: string = 'mfa-push-list';
+
   constructor() {
     super();
   }

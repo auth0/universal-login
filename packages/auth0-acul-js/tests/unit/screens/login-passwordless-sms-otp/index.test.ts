@@ -12,6 +12,7 @@ describe('LoginPasswordlessSmsOtp', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
+    baseContextData.screen.name = 'login-passwordless-sms-otp';
     window.universal_login_context = baseContextData;
 
     loginPasswordlessSmsOtp = new LoginPasswordlessSmsOtp();

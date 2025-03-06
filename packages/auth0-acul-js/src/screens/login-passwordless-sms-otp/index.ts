@@ -16,6 +16,7 @@ import type {
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 export default class LoginPasswordlessSmsOtp extends BaseContext implements LoginPasswordlessSmsOtpMembers {
+  static screenIdentifier: string = 'login-passwordless-sms-otp';
   screen: ScreenOptions;
   transaction: TransactionOptions;
 

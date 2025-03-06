@@ -17,6 +17,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * @extends BaseContext
  */
 export default class ResetPasswordMfaSmsChallenge extends BaseContext implements ResetPasswordMfaSmsChallengeMembers {
+  static screenIdentifier: string = 'reset-password-mfa-sms-challenge';
   screen: ScreenOptions;
 
   constructor() {

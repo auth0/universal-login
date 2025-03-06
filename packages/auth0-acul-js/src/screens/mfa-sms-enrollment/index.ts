@@ -13,6 +13,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * Represents the MFA SMS Enrollment screen.
  */
 export default class MfaSmsEnrollment extends BaseContext implements MfaSmsEnrollmentMembers {
+  static screenIdentifier: string = 'mfa-sms-enrollment';
   screen: ScreenMembersOnMfaSmsEnrollment;
 
   /**

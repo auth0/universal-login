@@ -15,6 +15,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * Class implementing the mfa-push-enrollment-qr screen functionality
  */
 export default class MfaPushEnrollmentQr extends BaseContext implements MfaPushEnrollmentQrMembers {
+  static screenIdentifier: string = 'mfa-push-enrollment-qr';
   screen: ScreenOptions;
 
   constructor() {

@@ -19,6 +19,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * This screen is shown when a user needs to verify their email during MFA
  */
 export default class MfaEmailChallenge extends BaseContext implements MfaEmailChallengeMembers {
+  static screenIdentifier: string = 'mfa-email-challenge';
   screen: ScreenOptions;
 
   /**

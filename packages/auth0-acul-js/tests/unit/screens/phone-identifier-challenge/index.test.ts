@@ -12,6 +12,7 @@ describe('PhoneIdentifierChallenge', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
+    baseContextData.screen.name = 'phone-identifier-challenge';
     window.universal_login_context = baseContextData;
 
     phoneIdentifierChallenge = new PhoneIdentifierChallenge();

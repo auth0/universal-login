@@ -13,6 +13,7 @@ import type {
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 export default class PhoneIdentifierChallenge extends BaseContext implements PhoneIdentifierChallengeMembers {
+  static screenIdentifier: string = 'phone-identifier-challenge';
   screen: ScreenOptions;
 
   constructor() {

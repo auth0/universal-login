@@ -11,6 +11,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * Implements the mfa-push-welcome screen functionality.
  */
 export default class MfaPushWelcome extends BaseContext implements MfaPushWelcomeMembers {
+  static screenIdentifier: string = 'mfa-push-welcome';
   screen: ScreenOptions;
 
   /**

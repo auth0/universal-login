@@ -12,6 +12,7 @@ describe('MfaSmsChallenge', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
+    baseContextData.screen.name = 'mfa-sms-challenge';
     window.universal_login_context = baseContextData;
     mfaSmsChallenge = new MfaSmsChallenge();
     mockFormHandler = {

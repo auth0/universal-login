@@ -18,6 +18,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * Class implementing the reset-password-mfa-email-challenge screen functionality
  */
 export default class ResetPasswordMfaEmailChallenge extends BaseContext implements ResetPasswordMfaEmailChallengeMembers {
+  static screenIdentifier: string = 'reset-password-mfa-email-challenge';
   screen: ScreenOptions;
 
   /**

@@ -14,6 +14,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 export default class EmailIdentifierChallenge extends BaseContext implements EmailIdentifierChallengeMembers {
   screen: ScreenOptions;
+  static screenIdentifier: string = 'email-identifier-challenge';
 
   constructor() {
     super();

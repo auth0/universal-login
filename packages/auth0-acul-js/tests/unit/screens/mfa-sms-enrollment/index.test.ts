@@ -12,6 +12,7 @@ describe('MfaSmsEnrollment', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
+    baseContextData.screen.name = 'mfa-sms-enrollment';
     window.universal_login_context = baseContextData;
     mfaSmsEnrollment = new MfaSmsEnrollment();
     mockFormHandler = {

@@ -16,6 +16,7 @@ import type {
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 export default class LoginPasswordlessEmailCode extends BaseContext implements LoginPasswordlessEmailCodeMembers {
+  static screenIdentifier: string = 'login-passwordless-email-code';
   screen: ScreenOptions;
   transaction: TransactionOptions;
 
