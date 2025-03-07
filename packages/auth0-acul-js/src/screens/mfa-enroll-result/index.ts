@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 
 import type { MfaEnrollResultMembers } from '../../../interfaces/screens/mfa-enroll-result';
 
@@ -7,7 +8,7 @@ import type { MfaEnrollResultMembers } from '../../../interfaces/screens/mfa-enr
  * This screen is displayed after successful MFA enrollment to show the result.
  */
 export default class MfaEnrollResult extends BaseContext implements MfaEnrollResultMembers {
-  static screenIdentifier: string = 'mfa-enroll-result';
+  static screenIdentifier: string = ScreenIds.MFA_ENROLL_RESULT;
 
   /**
    * Creates an instance of MfaEnrollResult screen manager.

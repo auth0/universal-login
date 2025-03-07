@@ -3,6 +3,7 @@ import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { createPasskeyCredentials } from '../../../../src/utils/passkeys';
 import { CustomOptions } from 'interfaces/common';
+import { ScreenIds } from '../../../../src/utils/enums';
 
 jest.mock('../../../../src/utils/form-handler');
 jest.mock('../../../../src/utils/passkeys');
@@ -13,7 +14,7 @@ describe('PasskeyEnrollment', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
-    baseContextData.screen.name = 'passkey-enrollment';
+    baseContextData.screen.name = ScreenIds.PASSKEY_ENROLLMENT;
     window.universal_login_context = baseContextData;
 
     passkeyEnrollment = new PasskeyEnrollment();

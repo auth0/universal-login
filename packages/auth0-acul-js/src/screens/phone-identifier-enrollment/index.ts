@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -13,7 +14,7 @@ import type {
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 export default class PhoneIdentifierEnrollment extends BaseContext implements PhoneIdentifierEnrollmentMembers {
-  static screenIdentifier: string = 'phone-identifier-enrollment';
+  static screenIdentifier: string = ScreenIds.PHONE_IDENTIFIER_ENROLLMENT;
   screen: ScreenOptions;
 
   constructor() {

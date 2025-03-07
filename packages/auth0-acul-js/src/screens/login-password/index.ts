@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -15,7 +16,7 @@ import type {
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 export default class LoginPassword extends BaseContext implements LoginPasswordMembers {
-  static screenIdentifier: string = 'login-password';
+  static screenIdentifier: string = ScreenIds.LOGIN_PASSWORD;
   screen: ScreenOptions;
   transaction: TransactionOptions;
 

@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import type { MfaBeginEnrollOptionsMembers, MfaEnrollOptions, FactorType } from '../../../interfaces/screens/mfa-begin-enroll-options';
@@ -9,7 +10,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * Handles the selection and enrollment of MFA factors
  */
 export default class MfaBeginEnrollOptions extends BaseContext implements MfaBeginEnrollOptionsMembers {
-  static screenIdentifier: string = 'mfa-begin-enroll-options';
+  static screenIdentifier: string = ScreenIds.MFA_BEGIN_ENROLL_OPTIONS;
   /**
    * Creates an instance of MFA Begin Enroll Options screen manager
    */

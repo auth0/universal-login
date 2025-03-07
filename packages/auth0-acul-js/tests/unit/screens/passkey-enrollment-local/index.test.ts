@@ -4,6 +4,7 @@ import { FormHandler } from '../../../../src/utils/form-handler';
 import { createPasskeyCredentials } from '../../../../src/utils/passkeys';
 import { CustomOptions } from 'interfaces/common';
 import { AbortEnrollmentOptions } from 'interfaces/screens/passkey-enrollment-local';
+import { ScreenIds } from '../../../../src/utils/enums';
 
 jest.mock('../../../../src/utils/form-handler');
 jest.mock('../../../../src/utils/passkeys');
@@ -14,7 +15,7 @@ describe('PasskeyEnrollmentLocal', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
-    baseContextData.screen.name = 'passkey-enrollment-local';
+    baseContextData.screen.name = ScreenIds.PASSKEY_ENROLLMENT_LOCAL;
     window.universal_login_context = baseContextData;
 
     passkeyEnrollmentLocal = new PasskeyEnrollmentLocal();

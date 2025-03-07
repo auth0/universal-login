@@ -2,6 +2,7 @@ import Login from '../../../../src/screens/login';
 import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { LoginOptions, SocialLoginOptions } from '../../../../interfaces/screens/login';
+import { ScreenIds } from '../../../../src/utils/enums';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -11,7 +12,7 @@ describe('Login', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
-    baseContextData.screen.name = 'login';
+    baseContextData.screen.name = ScreenIds.LOGIN;
     window.universal_login_context = baseContextData;
     login = new Login();
     mockFormHandler = {

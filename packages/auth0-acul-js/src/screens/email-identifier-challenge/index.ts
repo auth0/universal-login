@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -14,7 +15,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 export default class EmailIdentifierChallenge extends BaseContext implements EmailIdentifierChallengeMembers {
   screen: ScreenOptions;
-  static screenIdentifier: string = 'email-identifier-challenge';
+  static screenIdentifier: string = ScreenIds.EMAIL_IDENTIFIER_CHALLENGE;
 
   constructor() {
     super();

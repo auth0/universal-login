@@ -2,6 +2,7 @@ import InterstitialCaptcha from '../../../../src/screens/interstitial-captcha';
 import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { SubmitCaptchaOptions } from 'interfaces/screens/interstitial-captcha';
+import { ScreenIds } from '../../../../src/utils/enums';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -11,7 +12,7 @@ describe('InterstitialCaptcha', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
-    baseContextData.screen.name = 'interstitial-captcha';
+    baseContextData.screen.name = ScreenIds.INTERSTITIAL_CAPTCHA;
     window.universal_login_context = baseContextData;
 
     interstitialCaptcha = new InterstitialCaptcha();

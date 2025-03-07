@@ -1,6 +1,7 @@
 import ResetPasswordRequest from '../../../../src/screens/reset-password-request';
 import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
+import { ScreenIds } from '../../../../src/utils/enums';
 import { ResetPasswordRequestOptions } from '../../../../interfaces/screens/reset-password-request';
 import { CustomOptions } from '../../../../interfaces/common';
 
@@ -12,7 +13,7 @@ describe('ResetPasswordRequest', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
-    baseContextData.screen.name = 'reset-password-request';
+    baseContextData.screen.name = ScreenIds.RESET_PASSWORD_REQUEST;
     window.universal_login_context = baseContextData;
     resetPasswordRequest = new ResetPasswordRequest();
     mockFormHandler = {

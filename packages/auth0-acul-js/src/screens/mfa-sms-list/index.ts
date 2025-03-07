@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import type { CustomOptions } from '../../../interfaces/common';
@@ -11,7 +12,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * @extends {BaseContext}
  */
 export default class MfaSmsList extends BaseContext implements MfaSmsListMembers {
-  static screenIdentifier: string = 'mfa-sms-list';
+  static screenIdentifier: string = ScreenIds.MFA_SMS_LIST;
   constructor() {
     super();
   }

@@ -2,6 +2,7 @@ import ResetPasswordEmail from '../../../../src/screens/reset-password-email';
 import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { CustomOptions } from '../../../../interfaces/common';
+import { ScreenIds } from '../../../../src/utils/enums';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -11,7 +12,7 @@ describe('ResetPasswordEmail', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
-    baseContextData.screen.name = 'reset-password-email';
+    baseContextData.screen.name = ScreenIds.RESET_PASSWORD_EMAIL;
     window.universal_login_context = baseContextData;
     resetPasswordEmail = new ResetPasswordEmail();
     mockFormHandler = {

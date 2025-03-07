@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 import { createPasskeyCredentials } from '../../utils/passkeys';
 
@@ -10,7 +11,7 @@ import type { PasskeyEnrollmentMembers, ScreenMembersOnPasskeyEnrollment as Scre
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 export default class PasskeyEnrollment extends BaseContext implements PasskeyEnrollmentMembers {
-  static screenIdentifier: string = 'passkey-enrollment';
+  static screenIdentifier: string = ScreenIds.PASSKEY_ENROLLMENT;
   screen: ScreenOptions;
 
   constructor() {

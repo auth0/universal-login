@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -15,7 +16,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * Class implementing the mfa-push-enrollment-qr screen functionality
  */
 export default class MfaPushEnrollmentQr extends BaseContext implements MfaPushEnrollmentQrMembers {
-  static screenIdentifier: string = 'mfa-push-enrollment-qr';
+  static screenIdentifier: string = ScreenIds.MFA_PUSH_ENROLLMENT_QR;
   screen: ScreenOptions;
 
   constructor() {

@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -16,7 +17,7 @@ import type {
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 export default class LoginPasswordlessSmsOtp extends BaseContext implements LoginPasswordlessSmsOtpMembers {
-  static screenIdentifier: string = 'login-passwordless-sms-otp';
+  static screenIdentifier: string = ScreenIds.LOGIN_PASSWORDLESS_SMS_OTP;
   screen: ScreenOptions;
   transaction: TransactionOptions;
 

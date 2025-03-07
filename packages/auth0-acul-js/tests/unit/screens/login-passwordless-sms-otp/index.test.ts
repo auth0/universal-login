@@ -3,6 +3,7 @@ import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { SubmitOTPOptions } from 'interfaces/screens/login-passwordless-sms-otp';
 import { CustomOptions } from 'interfaces/common';
+import { ScreenIds } from '../../../../src/utils/enums';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -12,7 +13,7 @@ describe('LoginPasswordlessSmsOtp', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
-    baseContextData.screen.name = 'login-passwordless-sms-otp';
+    baseContextData.screen.name = ScreenIds.LOGIN_PASSWORDLESS_SMS_OTP;
     window.universal_login_context = baseContextData;
 
     loginPasswordlessSmsOtp = new LoginPasswordlessSmsOtp();

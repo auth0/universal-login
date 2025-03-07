@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -16,7 +17,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * This screen is shown when a push notification has been sent to the user's device during password reset
  */
 export default class ResetPasswordMfaPushChallengePush extends BaseContext implements ResetPasswordMfaPushChallengePushMembers {
-  static screenIdentifier: string = 'reset-password-mfa-push-challenge-push';
+  static screenIdentifier: string = ScreenIds.RESET_PASSWORD_MFA_PUSH_CHALLENGE_PUSH;
   screen: ScreenOptions;
 
   constructor() {

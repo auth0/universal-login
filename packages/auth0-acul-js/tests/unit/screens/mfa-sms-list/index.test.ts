@@ -1,6 +1,7 @@
 import MfaSmsList from '../../../../src/screens/mfa-sms-list';
 import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
+import { ScreenIds } from '../../../../src/utils/enums';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -10,7 +11,7 @@ describe('MfaSmsList', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
-    baseContextData.screen.name = 'mfa-sms-list';
+    baseContextData.screen.name = ScreenIds.MFA_SMS_LIST;
     window.universal_login_context = {
       ...baseContextData,
       user: {

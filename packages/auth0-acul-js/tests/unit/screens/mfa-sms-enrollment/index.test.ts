@@ -3,6 +3,7 @@ import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { CustomOptions } from 'interfaces/common';
 import { MfaSmsEnrollmentOptions } from 'interfaces/screens/mfa-sms-enrollment';
+import { ScreenIds } from '../../../../src/utils/enums';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -12,7 +13,7 @@ describe('MfaSmsEnrollment', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
-    baseContextData.screen.name = 'mfa-sms-enrollment';
+    baseContextData.screen.name = ScreenIds.MFA_SMS_ENROLLMENT;
     window.universal_login_context = baseContextData;
     mfaSmsEnrollment = new MfaSmsEnrollment();
     mockFormHandler = {

@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import type { CustomOptions } from '../../../interfaces/common';
@@ -11,7 +12,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * Implements the mfa-push-welcome screen functionality.
  */
 export default class MfaPushWelcome extends BaseContext implements MfaPushWelcomeMembers {
-  static screenIdentifier: string = 'mfa-push-welcome';
+  static screenIdentifier: string = ScreenIds.MFA_PUSH_WELCOME;
   screen: ScreenOptions;
 
   /**

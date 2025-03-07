@@ -2,6 +2,7 @@ import LoginPassword from '../../../../src/screens/login-password';
 import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import type { LoginPasswordOptions } from '../../../../interfaces/screens/login-password';
+import { ScreenIds } from '../../../../src/utils/enums';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -11,7 +12,7 @@ describe('LoginPassword', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
-    baseContextData.screen.name = 'login-password';
+    baseContextData.screen.name = ScreenIds.LOGIN_PASSWORD;
     window.universal_login_context = baseContextData;
     loginPassword = new LoginPassword();
 

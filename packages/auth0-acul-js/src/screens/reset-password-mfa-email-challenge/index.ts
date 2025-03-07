@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -18,7 +19,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * Class implementing the reset-password-mfa-email-challenge screen functionality
  */
 export default class ResetPasswordMfaEmailChallenge extends BaseContext implements ResetPasswordMfaEmailChallengeMembers {
-  static screenIdentifier: string = 'reset-password-mfa-email-challenge';
+  static screenIdentifier: string = ScreenIds.RESET_PASSWORD_MFA_EMAIL_CHALLENGE;
   screen: ScreenOptions;
 
   /**

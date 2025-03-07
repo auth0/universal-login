@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -17,7 +18,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * This screen allows users to select a country code for MFA phone number verification
  */
 export default class MfaCountryCodes extends BaseContext implements MfaCountryCodesMembers {
-  static screenIdentifier: string = 'mfa-country-codes';
+  static screenIdentifier: string = ScreenIds.MFA_COUNTRY_CODES;
   screen: ScreenOptions;
 
   /**

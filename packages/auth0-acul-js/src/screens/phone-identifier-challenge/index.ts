@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -13,7 +14,7 @@ import type {
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 export default class PhoneIdentifierChallenge extends BaseContext implements PhoneIdentifierChallengeMembers {
-  static screenIdentifier: string = 'phone-identifier-challenge';
+  static screenIdentifier: string = ScreenIds.PHONE_IDENTIFIER_CHALLENGE;
   screen: ScreenOptions;
 
   constructor() {

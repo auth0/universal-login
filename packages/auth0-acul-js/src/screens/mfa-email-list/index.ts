@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import type { CustomOptions } from '../../../interfaces/common';
@@ -14,7 +15,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * This screen allows users to select an enrolled email address for MFA
  */
 export default class MfaEmailList extends BaseContext implements MfaEmailListMembers {
-  static screenIdentifier: string = 'mfa-email-list';
+  static screenIdentifier: string = ScreenIds.MFA_EMAIL_LIST;
   /**
    * Creates an instance of MfaEmailList screen manager
    */

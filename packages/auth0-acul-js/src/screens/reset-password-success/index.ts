@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 
 import type {
   ResetPasswordSuccessMembers,
@@ -6,7 +7,7 @@ import type {
 } from '../../../interfaces/screens/reset-password-success';
 
 export default class ResetPasswordSuccess extends BaseContext implements ResetPasswordSuccessMembers {
-  static screenIdentifier: string = 'reset-password-success';
+  static screenIdentifier: string = ScreenIds.RESET_PASSWORD_SUCCESS;
 
   constructor() {
     super();

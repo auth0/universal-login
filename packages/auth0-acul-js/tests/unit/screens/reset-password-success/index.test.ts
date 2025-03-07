@@ -1,6 +1,7 @@
 import ResetPasswordSuccess from '../../../../src/screens/reset-password-success';
 import { BaseContext } from '../../../../src/models/base-context';
 import type { ScreenContext } from '../../../../interfaces/models/screen';
+import { ScreenIds } from '../../../../src/utils/enums';
 
 jest.mock('../../../../src/models/base-context');
 
@@ -10,7 +11,7 @@ describe('ResetPasswordSuccess', () => {
 
   beforeEach(() => {
     screenContext = {
-      name: 'reset-password-success',
+      name: ScreenIds.RESET_PASSWORD_SUCCESS,
       data: { username: 'testuser' },
     } as ScreenContext;
 

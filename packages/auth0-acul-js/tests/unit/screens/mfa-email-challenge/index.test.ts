@@ -3,6 +3,7 @@ import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import type { ContinueOptions } from '../../../../interfaces/screens/mfa-email-challenge';
 import type { CustomOptions } from '../../../../interfaces/common';
+import { ScreenIds } from '../../../../src/utils/enums';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -12,7 +13,7 @@ describe('MfaEmailChallenge', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
-    baseContextData.screen.name = 'mfa-email-challenge';
+    baseContextData.screen.name = ScreenIds.MFA_EMAIL_CHALLENGE;
     window.universal_login_context = baseContextData;
     mfaEmailChallenge = new MfaEmailChallenge();
     mockFormHandler = {

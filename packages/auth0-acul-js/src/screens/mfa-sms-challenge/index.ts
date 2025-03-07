@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -17,7 +18,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * @extends BaseContext
  */
 export default class MfaSmsChallenge extends BaseContext implements MfaSmsChallengeMembers {
-  static screenIdentifier: string = 'mfa-sms-challenge';
+  static screenIdentifier: string = ScreenIds.MFA_SMS_CHALLENGE;
   screen: ScreenOptions;
 
   constructor() {

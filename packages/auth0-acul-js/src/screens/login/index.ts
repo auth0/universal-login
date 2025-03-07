@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -19,7 +20,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * Login screen implementation class
  */
 export default class Login extends BaseContext implements LoginMembers {
-  static screenIdentifier: string = 'login';
+  static screenIdentifier: string = ScreenIds.LOGIN;
   screen: ScreenOptions;
   transaction: TransactionOptions;
 
