@@ -25,6 +25,7 @@ export class BaseContext implements BaseMembers {
   untrustedData: UntrustedDataMembers;
 
   private static context: UniversalLoginContext | null = null;
+  static screenIdentifier: string = '';
 
   constructor() {
     if (!BaseContext.context) {
@@ -33,9 +34,16 @@ export class BaseContext implements BaseMembers {
     }
 
     const context = BaseContext.context;
+    const screenIdentifier: string = new.target?.screenIdentifier;
 
     if (!context) {
       throw new Error('Universal Login Context is not available on the global window object.');
+    }
+
+    if (screenIdentifier !== context?.screen?.name && screenIdentifier !== '') {
+      throw new Error(
+        `Incorrect import: The current screen name does not match the imported screen class. Imported Screen: ${screenIdentifier}, Current Screen: ${context?.screen?.name}`,
+      );
     }
 
     this.branding = new Branding(context.branding);

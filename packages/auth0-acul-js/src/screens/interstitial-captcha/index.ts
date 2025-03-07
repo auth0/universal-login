@@ -1,10 +1,13 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import type { InterstitialCaptchaMembers, SubmitCaptchaOptions } from '../../../interfaces/screens/interstitial-captcha';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 export default class InterstitialCaptcha extends BaseContext implements InterstitialCaptchaMembers {
+  static screenIdentifier: string = ScreenIds.INTERSTITIAL_CAPTCHA;
+
   constructor() {
     super();
   }

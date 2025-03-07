@@ -2,6 +2,7 @@ import MfaLoginOptions from '../../../../src/screens/mfa-login-options';
 import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import type { LoginEnrollOptions } from '../../../../interfaces/screens/mfa-login-options';
+import { ScreenIds } from '../../../../src/utils/enums';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -11,6 +12,7 @@ describe('MfaLoginOptions', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
+    baseContextData.screen.name = ScreenIds.MFA_LOGIN_OPTIONS;
     window.universal_login_context = baseContextData;
     mfaLoginOptions = new MfaLoginOptions();
     mockFormHandler = {

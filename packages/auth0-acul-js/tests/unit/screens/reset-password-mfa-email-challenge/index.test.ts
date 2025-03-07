@@ -1,5 +1,7 @@
 import ResetPasswordMfaEmailChallenge from '../../../../src/screens/reset-password-mfa-email-challenge';
 import type { ScreenMembersOnResetPasswordMfaEmailChallenge } from '../../../../interfaces/screens/reset-password-mfa-email-challenge';
+import { ScreenIds } from '../../../../src/utils/enums';
+
 describe('ResetPasswordMfaEmailChallenge', () => {
   let resetPasswordMfaEmailChallenge: ResetPasswordMfaEmailChallenge;
   beforeEach(() => {
@@ -7,7 +9,7 @@ describe('ResetPasswordMfaEmailChallenge', () => {
     window.universal_login_context = {
       client: {},
       screen: {
-        name: 'reset-password-mfa-email-challenge',
+        name: ScreenIds.RESET_PASSWORD_MFA_EMAIL_CHALLENGE,
         data: {
           email: 'test@example.com',
           remember_device: true,

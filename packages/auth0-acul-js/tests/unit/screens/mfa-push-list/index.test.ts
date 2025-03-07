@@ -3,6 +3,7 @@ import { FormHandler } from '../../../../src/utils/form-handler';
 import MfaPushList from '../../../../src/screens/mfa-push-list';
 import { CustomOptions } from 'interfaces/common';
 import { SelectMfaPushDeviceOptions } from 'interfaces/screens/mfa-push-list';
+import { ScreenIds } from '../../../../src/utils/enums';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -12,6 +13,7 @@ describe('MfaPushList', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
+    baseContextData.screen.name = ScreenIds.MFA_PUSH_LIST;
     window.universal_login_context = baseContextData;
     mfaPushList = new MfaPushList();
     mockFormHandler = {

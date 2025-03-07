@@ -1,6 +1,7 @@
 import SignupId from '../../../../src/screens/signup-id';
 import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
+import { ScreenIds } from '../../../../src/utils/enums';
 import {
   SignupOptions,
   SocialSignupOptions,
@@ -14,6 +15,7 @@ describe('SignupId', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
+    baseContextData.screen.name = ScreenIds.SIGNUP_ID;
     window.universal_login_context = baseContextData; // transaction.getRequiredIdentifiers() => { email, phone, username } from baseContext.
 
     signupId = new SignupId();

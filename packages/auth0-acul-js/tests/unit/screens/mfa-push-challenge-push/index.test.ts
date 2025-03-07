@@ -1,8 +1,8 @@
-import MfaPushChallengePush from '../../../../src/screens/mfa-push-challenge-push';
 import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { CustomOptions } from '../../../../interfaces/common';
-import { WithRememberOptions } from '../../../../src/screens/mfa-push-challenge-push';
+import MfaPushChallengePush, { WithRememberOptions } from '../../../../src/screens/mfa-push-challenge-push';
+import { ScreenIds } from '../../../../src/utils/enums';
 jest.mock('../../../../src/utils/form-handler');
 
 describe('MfaPushChallengePush', () => {
@@ -11,6 +11,7 @@ describe('MfaPushChallengePush', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
+    baseContextData.screen.name = ScreenIds.MFA_PUSH_CHALLENGE_PUSH;
     window.universal_login_context = baseContextData;
     mfaPushChallengePush = new MfaPushChallengePush();
     mockFormHandler = {

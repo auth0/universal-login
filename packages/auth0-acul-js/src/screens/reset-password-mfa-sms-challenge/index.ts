@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -17,6 +18,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * @extends BaseContext
  */
 export default class ResetPasswordMfaSmsChallenge extends BaseContext implements ResetPasswordMfaSmsChallengeMembers {
+  static screenIdentifier: string = ScreenIds.RESET_PASSWORD_MFA_SMS_CHALLENGE;
   screen: ScreenOptions;
 
   constructor() {

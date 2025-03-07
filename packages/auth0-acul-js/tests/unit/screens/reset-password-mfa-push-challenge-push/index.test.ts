@@ -2,6 +2,7 @@ import ResetPasswordMfaPushChallengePush from '../../../../src/screens/reset-pas
 import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { CustomOptions } from '../../../../interfaces/common';
+import { ScreenIds } from '../../../../src/utils/enums';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -11,6 +12,7 @@ describe('ResetPasswordMfaPushChallengePush', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
+    baseContextData.screen.name = ScreenIds.RESET_PASSWORD_MFA_PUSH_CHALLENGE_PUSH;
     window.universal_login_context = baseContextData;
     resetPasswordMfaPushChallengePush = new ResetPasswordMfaPushChallengePush();
     mockFormHandler = {
