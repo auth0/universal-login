@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { Errors } from '../../utils/errors';
 import { FormHandler } from '../../utils/form-handler';
 import { getPasskeyCredentials } from '../../utils/passkeys';
@@ -19,6 +20,7 @@ import type {
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 export default class LoginId extends BaseContext implements LoginIdMembers {
+  static screenIdentifier: string = ScreenIds.LOGIN_ID;
   screen: ScreenOptions;
   transaction: TransactionOptions;
 

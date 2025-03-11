@@ -6,6 +6,7 @@ import { BaseContext } from '../../../../src/models/base-context';
 import type { ScreenContext } from '../../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../../interfaces/models/transaction';
 import type { SignupOptions, SocialSignupOptions } from '../../../../interfaces/screens/signup';
+import { ScreenIds } from '../../../../src/utils/enums';
 
 jest.mock('../../../../src/screens/signup/screen-override');
 jest.mock('../../../../src/screens/signup/transaction-override');
@@ -18,7 +19,7 @@ describe('Signup', () => {
   let transactionContext: TransactionContext;
 
   beforeEach(() => {
-    screenContext = { name: 'signup', data: {} } as ScreenContext;
+    screenContext = { name: ScreenIds.SIGNUP, data: {} } as ScreenContext;
     transactionContext = { state: 'mockState', locale: 'en' } as TransactionContext;
 
     (BaseContext.prototype.getContext as jest.Mock).mockImplementation((contextType: string) => {

@@ -3,6 +3,7 @@ import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { CustomOptions } from '../../../../interfaces/common';
 import { SelectMfaEmailOptions } from '../../../../interfaces/screens/mfa-email-list';
+import { ScreenIds } from '../../../../src/utils/enums';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -12,6 +13,7 @@ describe('MfaEmailList', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
+    baseContextData.screen.name = ScreenIds.MFA_EMAIL_LIST;
     window.universal_login_context = {
       ...baseContextData,
       user: {

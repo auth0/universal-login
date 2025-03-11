@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import type { CustomOptions } from '../../../interfaces/common';
@@ -13,6 +14,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * Represents the MFA SMS Enrollment screen.
  */
 export default class MfaSmsEnrollment extends BaseContext implements MfaSmsEnrollmentMembers {
+  static screenIdentifier: string = ScreenIds.MFA_SMS_ENROLLMENT;
   screen: ScreenMembersOnMfaSmsEnrollment;
 
   /**

@@ -8,6 +8,7 @@ import { BaseContext } from '../../../../src/models/base-context';
 import type { ScreenContext } from '../../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../../interfaces/models/transaction';
 import type { LoginOptions, SocialLoginOptions } from '../../../../interfaces/screens/login-id';
+import { ScreenIds } from '../../../../src/utils/enums';
 
 jest.mock('../../../../src/screens/login-id/screen-override');
 jest.mock('../../../../src/screens/login-id/transaction-override');
@@ -21,7 +22,7 @@ describe('LoginId', () => {
   let transactionContext: TransactionContext;
 
   beforeEach(() => {
-    screenContext = { name: 'login-id', data: { public_key: 'mockChallenge' } } as unknown as ScreenContext;
+    screenContext = { name: ScreenIds.LOGIN_ID, data: { public_key: 'mockChallenge' } } as unknown as ScreenContext;
     transactionContext = { state: 'mockState', locale: 'en' } as TransactionContext;
 
     (BaseContext.prototype.getContext as jest.Mock).mockImplementation((contextType: string) => {

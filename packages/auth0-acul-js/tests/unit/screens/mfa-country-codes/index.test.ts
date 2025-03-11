@@ -3,6 +3,7 @@ import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { CustomOptions } from '../../../../interfaces/common';
 import { SelectCountryCodeOptions } from '../../../../interfaces/screens/mfa-country-codes';
+import { ScreenIds } from '../../../../src/utils/enums';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -12,6 +13,7 @@ describe('MfaCountryCodes', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
+    baseContextData.screen.name = ScreenIds.MFA_COUNTRY_CODES;
     window.universal_login_context = baseContextData;
     mfaCountryCodes = new MfaCountryCodes();
     mockFormHandler = {

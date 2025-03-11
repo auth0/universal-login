@@ -1,5 +1,6 @@
 import MfaEnrollResult from '../../../../src/screens/mfa-enroll-result';
 import { BaseContext } from '../../../../src/models/base-context';
+import { ScreenIds } from '../../../../src/utils/enums';
 
 describe('MfaEnrollResult', () => {
   let mfaEnrollResult: MfaEnrollResult;
@@ -9,7 +10,7 @@ describe('MfaEnrollResult', () => {
     window.universal_login_context = {
       client: {},
       screen: {
-        name: 'mfa-enroll-result'
+        name: ScreenIds.MFA_ENROLL_RESULT
       },
       transaction: { state: 'testState' },
       prompt: {},

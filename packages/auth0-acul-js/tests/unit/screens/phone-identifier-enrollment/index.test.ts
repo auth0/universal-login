@@ -3,6 +3,7 @@ import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { PhoneEnrollmentOptions } from 'interfaces/screens/phone-identifier-enrollment';
 import { CustomOptions } from 'interfaces/common';
+import { ScreenIds } from '../../../../src/utils/enums';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -12,6 +13,7 @@ describe('PhoneIdentifierEnrollment', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
+    baseContextData.screen.name = ScreenIds.PHONE_IDENTIFIER_ENROLLMENT;
     window.universal_login_context = baseContextData;
 
     phoneIdentifierEnrollment = new PhoneIdentifierEnrollment();

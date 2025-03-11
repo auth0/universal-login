@@ -3,6 +3,7 @@ import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { SubmitCodeOptions } from 'interfaces/screens/login-passwordless-email-code';
 import { CustomOptions } from 'interfaces/common';
+import { ScreenIds } from '../../../../src/utils/enums';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -12,6 +13,7 @@ describe('LoginPasswordlessEmailCode', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
+    baseContextData.screen.name = ScreenIds.LOGIN_PASSWORDLESS_EMAIL_CODE;
     window.universal_login_context = baseContextData;
 
     loginPasswordlessEmailCode = new LoginPasswordlessEmailCode();

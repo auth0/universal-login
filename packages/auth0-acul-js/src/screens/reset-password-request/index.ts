@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -16,8 +17,10 @@ import type {
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 export default class ResetPasswordRequest extends BaseContext implements ResetPasswordRequestMembers {
+  static screenIdentifier: string = ScreenIds.RESET_PASSWORD_REQUEST;
   screen: ScreenOptions;
   transaction: TransactionOptions;
+
   constructor() {
     super();
     const screenContext = this.getContext('screen') as ScreenContext;

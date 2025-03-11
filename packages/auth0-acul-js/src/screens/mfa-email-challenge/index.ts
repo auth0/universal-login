@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -19,6 +20,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * This screen is shown when a user needs to verify their email during MFA
  */
 export default class MfaEmailChallenge extends BaseContext implements MfaEmailChallengeMembers {
+  static screenIdentifier: string = ScreenIds.MFA_EMAIL_CHALLENGE;
   screen: ScreenOptions;
 
   /**
