@@ -31,6 +31,7 @@ export default class MfaPushList extends BaseContext implements MfaPushListMembe
   async selectMfaPushDevice(payload: SelectMfaPushDeviceOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaPushList.screenIdentifier, 'selectMfaPushDevice'],
     };
 
     const { deviceIndex, ...restPayload } = payload;
@@ -55,6 +56,7 @@ export default class MfaPushList extends BaseContext implements MfaPushListMembe
   async goBack(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaPushList.screenIdentifier, 'goBack'],
     };
 
     await new FormHandler(options).submitData<CustomOptions>({

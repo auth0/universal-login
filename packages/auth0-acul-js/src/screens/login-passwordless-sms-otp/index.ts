@@ -44,6 +44,7 @@ export default class LoginPasswordlessSmsOtp extends BaseContext implements Logi
   async submitOTP(payload: SubmitOTPOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [LoginPasswordlessSmsOtp.screenIdentifier, 'submitOTP'],
     };
     await new FormHandler(options).submitData<SubmitOTPOptions>(payload);
   }
@@ -58,6 +59,7 @@ export default class LoginPasswordlessSmsOtp extends BaseContext implements Logi
   async resendOTP(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [LoginPasswordlessSmsOtp.screenIdentifier, 'resendOTP'],
     };
 
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'resend' });

@@ -32,6 +32,7 @@ export default class ResetPasswordEmail extends BaseContext implements ResetPass
   async resendEmail(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [ResetPasswordEmail.screenIdentifier, 'resendEmail'],
     };
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'resend-email-action' });
   }

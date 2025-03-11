@@ -40,6 +40,7 @@ export default class MfaSmsEnrollment extends BaseContext implements MfaSmsEnrol
   async pickCountryCode(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaSmsEnrollment.screenIdentifier, 'pickCountryCode'],
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
@@ -67,6 +68,7 @@ export default class MfaSmsEnrollment extends BaseContext implements MfaSmsEnrol
 
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaSmsEnrollment.screenIdentifier, 'continueEnrollment'],
     };
     await new FormHandler(options).submitData<MfaSmsEnrollmentOptions>({
       ...payload,
@@ -89,6 +91,7 @@ export default class MfaSmsEnrollment extends BaseContext implements MfaSmsEnrol
   async tryAnotherMethod(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaSmsEnrollment.screenIdentifier, 'tryAnotherMethod'],
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,

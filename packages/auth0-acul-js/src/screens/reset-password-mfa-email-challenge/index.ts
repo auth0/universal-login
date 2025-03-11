@@ -48,6 +48,7 @@ export default class ResetPasswordMfaEmailChallenge extends BaseContext implemen
   async continue(payload: ContinueOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [ResetPasswordMfaEmailChallenge.screenIdentifier, 'continue'],
     };
     const submitPayload: Record<string, string | number | boolean> = { ...payload, action: 'default' };
 
@@ -72,6 +73,7 @@ export default class ResetPasswordMfaEmailChallenge extends BaseContext implemen
   async resendCode(payload?: ResendCodeOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [ResetPasswordMfaEmailChallenge.screenIdentifier, 'resendCode'],
     };
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'resend-code' });
   }
@@ -90,6 +92,7 @@ export default class ResetPasswordMfaEmailChallenge extends BaseContext implemen
   async tryAnotherMethod(payload?: TryAnotherMethodOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [ResetPasswordMfaEmailChallenge.screenIdentifier, 'tryAnotherMethod'],
     };
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'pick-authenticator' });
   }

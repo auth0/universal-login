@@ -53,6 +53,7 @@ export default class MfaCountryCodes extends BaseContext implements MfaCountryCo
   async selectCountryCode(payload: SelectCountryCodeOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaCountryCodes.screenIdentifier, 'selectCountryCode'],
     };
     const { country_code, phone_prefix } = payload;
     const action = `selection-action::${country_code}${phone_prefix}`;
@@ -76,6 +77,7 @@ export default class MfaCountryCodes extends BaseContext implements MfaCountryCo
   async goBack(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaCountryCodes.screenIdentifier, 'goBack'],
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,

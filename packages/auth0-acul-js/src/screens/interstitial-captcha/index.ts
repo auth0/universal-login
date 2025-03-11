@@ -26,6 +26,7 @@ export default class InterstitialCaptcha extends BaseContext implements Intersti
   async submitCaptcha(payload: SubmitCaptchaOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [InterstitialCaptcha.screenIdentifier, 'submitCaptcha'],
     };
     await new FormHandler(options).submitData<SubmitCaptchaOptions>(payload);
   }

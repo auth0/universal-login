@@ -21,5 +21,12 @@ export default {
     '**/*.{ts,tsx}',
     '!**/node_modules/**',
     '!**/tests/**',
+  ],
+  globals: {
+    __SDK_NAME__: '',
+    __SDK_VERSION__: '',
+  },
+  setupFilesAfterEnv: [
+    '<rootDir>/jest.setup.js'
   ]
 };

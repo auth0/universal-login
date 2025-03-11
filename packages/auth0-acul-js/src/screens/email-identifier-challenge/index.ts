@@ -35,6 +35,7 @@ export default class EmailIdentifierChallenge extends BaseContext implements Ema
   async submitEmailChallenge(payload: EmailChallengeOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [EmailIdentifierChallenge.screenIdentifier, 'submitEmailChallenge'],
     };
     await new FormHandler(options).submitData(payload);
   }
@@ -49,6 +50,7 @@ export default class EmailIdentifierChallenge extends BaseContext implements Ema
   async resendCode(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [EmailIdentifierChallenge.screenIdentifier, 'resendCode'],
     };
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'resend-code' });
   }
@@ -63,6 +65,7 @@ export default class EmailIdentifierChallenge extends BaseContext implements Ema
   async returnToPrevious(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [EmailIdentifierChallenge.screenIdentifier, 'returnToPrevious'],
     };
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'back-action' });
   }
