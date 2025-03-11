@@ -1,9 +1,9 @@
 export interface FormOptions {
   state: string;
+  telemetry: Array<string>;
   useBrowserCapabilities?: boolean;
   route?: string;
-  analytics?: AnalyticsOptions;
-  [key: string]: string | number | boolean | null | undefined | AnalyticsOptions;
+  [key: string]: string | number | boolean | null | undefined | Array<string>;
 }
 
 export interface PostPayloadOptions {
@@ -11,7 +11,9 @@ export interface PostPayloadOptions {
   [key: string]: string | number | boolean | null | undefined;
 }
 
-export interface AnalyticsOptions {
-  screenName?: string;
-  methodName?: string;
+export interface TelemetryOptions {
+  screenName: string;
+  methodName: string;
+  sdkName: string;
+  sdkVersion: string;
 }

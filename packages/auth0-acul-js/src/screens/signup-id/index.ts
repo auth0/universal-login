@@ -54,6 +54,7 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
   async signup(payload: SignupOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [SignupId.screenIdentifier, 'signup'],
     };
 
     const activeIdentifiers = this.transaction.requiredIdentifiers || [];
@@ -93,6 +94,7 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
   async socialSignup(payload: SocialSignupOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [SignupId.screenIdentifier, 'socialSignup'],
     };
     await new FormHandler(options).submitData<SocialSignupOptions>(payload);
   }

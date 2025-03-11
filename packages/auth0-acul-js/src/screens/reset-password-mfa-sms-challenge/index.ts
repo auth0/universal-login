@@ -42,6 +42,7 @@ export default class ResetPasswordMfaSmsChallenge extends BaseContext implements
   async continueMfaSmsChallenge(payload: MfaSmsChallengeOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [ResetPasswordMfaSmsChallenge.screenIdentifier, 'continueMfaSmsChallenge'],
     };
     const submitPayload: Record<string, string | number | boolean> = { ...payload, action: 'default' };
     await new FormHandler(options).submitData(submitPayload);
@@ -62,6 +63,7 @@ export default class ResetPasswordMfaSmsChallenge extends BaseContext implements
   async resendCode(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [ResetPasswordMfaSmsChallenge.screenIdentifier, 'resendCode'],
     };
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'resend-code' });
   }
@@ -81,6 +83,7 @@ export default class ResetPasswordMfaSmsChallenge extends BaseContext implements
   async tryAnotherMethod(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [ResetPasswordMfaSmsChallenge.screenIdentifier, 'tryAnotherMethod'],
     };
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'pick-authenticator' });
   }
@@ -100,6 +103,7 @@ export default class ResetPasswordMfaSmsChallenge extends BaseContext implements
   async getACall(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [ResetPasswordMfaSmsChallenge.screenIdentifier, 'getACall'],
     };
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'switch-to-voice' });
   }

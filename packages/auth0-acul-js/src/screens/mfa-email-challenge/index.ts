@@ -47,6 +47,7 @@ export default class MfaEmailChallenge extends BaseContext implements MfaEmailCh
   async continue(payload: ContinueOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaEmailChallenge.screenIdentifier, 'continue'],
     };
     const submitPayload: Record<string, string | number | boolean> = { ...payload, action: 'default' };
     if (payload.rememberDevice) {
@@ -69,6 +70,7 @@ export default class MfaEmailChallenge extends BaseContext implements MfaEmailCh
   async resendCode(payload?: ResendCodeOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaEmailChallenge.screenIdentifier, 'resendCode'],
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
@@ -90,6 +92,7 @@ export default class MfaEmailChallenge extends BaseContext implements MfaEmailCh
   async tryAnotherMethod(payload?: TryAnotherMethodOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaEmailChallenge.screenIdentifier, 'tryAnotherMethod'],
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
@@ -112,6 +115,7 @@ export default class MfaEmailChallenge extends BaseContext implements MfaEmailCh
   async pickEmail(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaEmailChallenge.screenIdentifier, 'pickEmail'],
     };
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'pick-email' });
   }

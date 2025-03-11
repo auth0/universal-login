@@ -40,7 +40,7 @@ export default class LoginPassword extends BaseContext implements LoginPasswordM
    * });
    */
   async login(payload: LoginPasswordOptions): Promise<void> {
-    const options: FormOptions = { state: this.transaction.state };
+    const options: FormOptions = { state: this.transaction.state, telemetry: [LoginPassword.screenIdentifier, 'login'] };
     await new FormHandler(options).submitData<LoginPasswordOptions>(payload);
   }
 }

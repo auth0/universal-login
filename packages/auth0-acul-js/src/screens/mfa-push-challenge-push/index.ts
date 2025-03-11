@@ -40,6 +40,7 @@ export default class MfaPushChallengePush extends BaseContext implements MfaPush
   async continue(payload?: WithRememberOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaPushChallengePush.screenIdentifier, 'continue'],
     };
 
     await new FormHandler(options).submitData<WithRememberOptions>({
@@ -61,6 +62,7 @@ export default class MfaPushChallengePush extends BaseContext implements MfaPush
   async resendPushNotification(payload?: WithRememberOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaPushChallengePush.screenIdentifier, 'resendPushNotification'],
     };
     await new FormHandler(options).submitData<WithRememberOptions>({
       rememberDevice: payload?.rememberDevice ?? false,
@@ -81,6 +83,7 @@ export default class MfaPushChallengePush extends BaseContext implements MfaPush
   async enterCodeManually(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaPushChallengePush.screenIdentifier, 'enterCodeManually'],
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
@@ -100,6 +103,7 @@ export default class MfaPushChallengePush extends BaseContext implements MfaPush
   async tryAnotherMethod(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaPushChallengePush.screenIdentifier, 'tryAnotherMethod'],
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,

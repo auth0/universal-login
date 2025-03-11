@@ -30,6 +30,7 @@ export default class PasskeyEnrollment extends BaseContext implements PasskeyEnr
   async continuePasskeyEnrollment(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [PasskeyEnrollment.screenIdentifier, 'continuePasskeyEnrollment'],
     };
 
     const publicKey = this.screen.publicKey;
@@ -48,6 +49,7 @@ export default class PasskeyEnrollment extends BaseContext implements PasskeyEnr
   async abortPasskeyEnrollment(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [PasskeyEnrollment.screenIdentifier, 'abortPasskeyEnrollment'],
     };
 
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'abort-passkey-enrollment' });

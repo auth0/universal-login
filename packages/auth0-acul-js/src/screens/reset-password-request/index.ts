@@ -36,6 +36,7 @@ export default class ResetPasswordRequest extends BaseContext implements ResetPa
   async resetPassword(payload: ResetPasswordRequestOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [ResetPasswordRequest.screenIdentifier, 'resetPassword'],
     };
     const updatedPayload = updatePayloadByIdentifier(payload, this.transaction.hasFlexibleIdentifier);
     await new FormHandler(options).submitData(updatedPayload);
@@ -51,6 +52,7 @@ export default class ResetPasswordRequest extends BaseContext implements ResetPa
   async backToLogin(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [ResetPasswordRequest.screenIdentifier, 'backToLogin'],
     };
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'back-to-login' });
   }

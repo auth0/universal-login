@@ -29,6 +29,7 @@ export default class MfaSmsList extends BaseContext implements MfaSmsListMembers
 
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaSmsList.screenIdentifier, 'selectPhoneNumber'],
     };
 
     await new FormHandler(options).submitData<CustomOptions>({
@@ -45,6 +46,7 @@ export default class MfaSmsList extends BaseContext implements MfaSmsListMembers
   public async backAction(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaSmsList.screenIdentifier, 'backAction'],
     };
 
     await new FormHandler(options).submitData<CustomOptions>({

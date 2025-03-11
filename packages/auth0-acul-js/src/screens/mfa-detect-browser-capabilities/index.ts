@@ -30,6 +30,7 @@ export default class MfaDetectBrowserCapabilities extends BaseContext implements
   async detectCapabilities(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaDetectBrowserCapabilities.screenIdentifier, 'detectCapabilities'],
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,

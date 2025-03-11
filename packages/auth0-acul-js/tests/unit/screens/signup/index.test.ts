@@ -47,7 +47,7 @@ describe('Signup', () => {
     it('should submit signup form data correctly', async () => {
       const payload: SignupOptions = { email: 'test@example.com', password: 'P@ssw0rd!' };
       await signup.signup(payload);
-      expect(FormHandler).toHaveBeenCalledWith({ state: 'mockState' });
+      expect(FormHandler).toHaveBeenCalledWith(expect.objectContaining({ state: 'mockState' }));
       expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(payload);
     });
   });
@@ -56,7 +56,7 @@ describe('Signup', () => {
     it('should submit social signup form data correctly', async () => {
       const payload: SocialSignupOptions = { connection: 'google-oauth2' };
       await signup.socialSignup(payload);
-      expect(FormHandler).toHaveBeenCalledWith({ state: 'mockState' });
+      expect(FormHandler).toHaveBeenCalledWith(expect.objectContaining({ state: 'mockState' }));
       expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(payload);
     });
   });
@@ -64,7 +64,7 @@ describe('Signup', () => {
   describe('pickCountryCode', () => {
     it('should submit pick-country-code action', async () => {
       await signup.pickCountryCode();
-      expect(FormHandler).toHaveBeenCalledWith({ state: 'mockState' });
+      expect(FormHandler).toHaveBeenCalledWith(expect.objectContaining({ state: 'mockState' }));
       expect(FormHandler.prototype.submitData).toHaveBeenCalledWith({
         action: 'pick-country-code',
       });

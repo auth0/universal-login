@@ -35,6 +35,7 @@ export default class PhoneIdentifierEnrollment extends BaseContext implements Ph
   async continuePhoneEnrollment(payload: PhoneEnrollmentOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [PhoneIdentifierEnrollment.screenIdentifier, 'continuePhoneEnrollment'],
     };
     await new FormHandler(options).submitData<PhoneEnrollmentOptions>(payload);
   }
@@ -49,6 +50,7 @@ export default class PhoneIdentifierEnrollment extends BaseContext implements Ph
   async returnToPrevious(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [PhoneIdentifierEnrollment.screenIdentifier, 'returnToPrevious'],
     };
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'back-action' });
   }

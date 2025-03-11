@@ -50,7 +50,7 @@ describe('LoginId', () => {
     it('should submit login form data correctly', async () => {
       const payload: LoginOptions = { username: 'testuser' };
       await loginId.login(payload);
-      expect(FormHandler).toHaveBeenCalledWith({ state: 'mockState' });
+      expect(FormHandler).toHaveBeenCalledWith(expect.objectContaining({ state: 'mockState' }));
       expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(payload);
     });
   });
@@ -59,7 +59,7 @@ describe('LoginId', () => {
     it('should submit social login form data correctly', async () => {
       const payload: SocialLoginOptions = { connection: 'google' };
       await loginId.socialLogin(payload);
-      expect(FormHandler).toHaveBeenCalledWith({ state: 'mockState' });
+      expect(FormHandler).toHaveBeenCalledWith(expect.objectContaining({ state: 'mockState' }));
       expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(payload);
     });
   });
@@ -79,7 +79,7 @@ describe('LoginId', () => {
 
       await loginId.passkeyLogin();
       expect(getPasskeyCredentials).toHaveBeenCalledWith(screenContext.data?.public_key);
-      expect(FormHandler).toHaveBeenCalledWith({ state: 'mockState' });
+      expect(FormHandler).toHaveBeenCalledWith(expect.objectContaining({ state: 'mockState' }));
       expect(FormHandler.prototype.submitData).toHaveBeenCalledWith({
         passkey: JSON.stringify({ id: 'mockPasskey' }),
       });
@@ -89,7 +89,7 @@ describe('LoginId', () => {
   describe('pickCountryCode', () => {
     it('should submit pick-country-code action', async () => {
       await loginId.pickCountryCode();
-      expect(FormHandler).toHaveBeenCalledWith({ state: 'mockState' });
+      expect(FormHandler).toHaveBeenCalledWith(expect.objectContaining({ state: 'mockState' }));
       expect(FormHandler.prototype.submitData).toHaveBeenCalledWith({
         action: 'pick-country-code',
       });

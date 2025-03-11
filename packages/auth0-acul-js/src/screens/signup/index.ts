@@ -45,6 +45,7 @@ export default class Signup extends BaseContext implements SignupMembers {
   async signup(payload: SignupOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [Signup.screenIdentifier, 'signup'],
     };
     await new FormHandler(options).submitData<SignupOptions>(payload);
   }
@@ -71,6 +72,7 @@ export default class Signup extends BaseContext implements SignupMembers {
   async socialSignup(payload: SocialSignupOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [Signup.screenIdentifier, 'socialSignup'],
     };
     await new FormHandler(options).submitData<SocialSignupOptions>(payload);
   }
@@ -85,6 +87,7 @@ export default class Signup extends BaseContext implements SignupMembers {
   async pickCountryCode(): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [Signup.screenIdentifier, 'pickCountryCode'],
     };
 
     await new FormHandler(options).submitData({

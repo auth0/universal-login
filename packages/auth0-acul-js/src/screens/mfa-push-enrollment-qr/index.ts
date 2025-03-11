@@ -37,6 +37,7 @@ export default class MfaPushEnrollmentQr extends BaseContext implements MfaPushE
   async pickAuthenticator(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaPushEnrollmentQr.screenIdentifier, 'pickAuthenticator'],
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,

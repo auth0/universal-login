@@ -57,6 +57,7 @@ export default class SignupPassword extends BaseContext implements SignupPasswor
   async signup(payload: SignupPasswordOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [this.constructor.name, 'signup'],
     };
 
     if (payload.phone?.trim() ?? '') {
