@@ -33,6 +33,7 @@ export default class ResetPassword extends BaseContext implements ResetPasswordM
   async resetPassword(payload: ResetPasswordOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [ResetPassword.screenIdentifier, 'resetPassword'],
     };
     await new FormHandler(options).submitData(payload);
   }

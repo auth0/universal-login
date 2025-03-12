@@ -32,6 +32,7 @@ export default class MfaBeginEnrollOptions extends BaseContext implements MfaBeg
   async enroll(payload: MfaEnrollOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaBeginEnrollOptions.screenIdentifier, 'enroll'],
     };
     await new FormHandler(options).submitData<MfaEnrollOptions>(payload);
   }

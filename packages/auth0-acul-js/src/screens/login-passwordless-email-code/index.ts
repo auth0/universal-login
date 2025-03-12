@@ -46,6 +46,7 @@ export default class LoginPasswordlessEmailCode extends BaseContext implements L
   async submitCode(payload: SubmitCodeOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [LoginPasswordlessEmailCode.screenIdentifier, 'submitCode'],
     };
 
     await new FormHandler(options).submitData<SubmitCodeOptions>(payload);
@@ -61,6 +62,7 @@ export default class LoginPasswordlessEmailCode extends BaseContext implements L
   async resendCode(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [LoginPasswordlessEmailCode.screenIdentifier, 'resendCode'],
     };
 
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'resend' });

@@ -36,6 +36,7 @@ export default class PhoneIdentifierChallenge extends BaseContext implements Pho
   async submitPhoneChallenge(payload: PhoneChallengeOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [PhoneIdentifierChallenge.screenIdentifier, 'submitPhoneChallenge'],
     };
     await new FormHandler(options).submitData<PhoneChallengeOptions>(payload);
   }
@@ -50,6 +51,7 @@ export default class PhoneIdentifierChallenge extends BaseContext implements Pho
   async resendCode(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [PhoneIdentifierChallenge.screenIdentifier, 'resendCode'],
     };
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'resend-code' });
   }
@@ -64,6 +66,7 @@ export default class PhoneIdentifierChallenge extends BaseContext implements Pho
   async returnToPrevious(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [PhoneIdentifierChallenge.screenIdentifier, 'returnToPrevious'],
     };
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'back-action' });
   }

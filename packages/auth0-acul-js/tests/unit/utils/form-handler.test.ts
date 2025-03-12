@@ -7,7 +7,7 @@ describe('FormHandler', () => {
   const currentLocation = window.location.href;
 
   beforeEach(() => {
-    options = { route: '/submit', state: 'testState' };
+    options = { route: '/submit', state: 'testState', telemetry: ['testScreen', 'testMethod'] };
     formHandler = new FormHandler(options);
     jest.spyOn(document.body, 'appendChild').mockImplementation((node: Node) => node);
   });
@@ -55,7 +55,7 @@ describe('FormHandler', () => {
   });
 
   it('should set form action correctly when route is undefined', () => {
-    const noRouteOptions: FormOptions = { route: undefined, state: 'testState' };
+    const noRouteOptions: FormOptions = { route: undefined, state: 'testState', telemetry: ['testScreen', 'testMethod'] };
     console.log('noRouteOptions');
     const noRouteHandler = new FormHandler(noRouteOptions);
     const form = noRouteHandler['buildForm']({ state: noRouteOptions.state });

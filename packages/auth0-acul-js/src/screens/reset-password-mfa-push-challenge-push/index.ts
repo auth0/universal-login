@@ -40,6 +40,7 @@ export default class ResetPasswordMfaPushChallengePush extends BaseContext imple
   async continue(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [ResetPasswordMfaPushChallengePush.screenIdentifier, 'continue'],
     };
     await new FormHandler(options).submitData<CustomOptions>(payload || {});
   }
@@ -58,6 +59,7 @@ export default class ResetPasswordMfaPushChallengePush extends BaseContext imple
   async resendPushNotification(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [ResetPasswordMfaPushChallengePush.screenIdentifier, 'resendPushNotification'],
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
@@ -79,6 +81,7 @@ export default class ResetPasswordMfaPushChallengePush extends BaseContext imple
   async enterCodeManually(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [ResetPasswordMfaPushChallengePush.screenIdentifier, 'enterCodeManually'],
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
@@ -100,6 +103,7 @@ export default class ResetPasswordMfaPushChallengePush extends BaseContext imple
   async tryAnotherMethod(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [ResetPasswordMfaPushChallengePush.screenIdentifier, 'tryAnotherMethod'],
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,

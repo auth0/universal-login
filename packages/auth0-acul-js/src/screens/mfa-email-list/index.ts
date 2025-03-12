@@ -44,6 +44,7 @@ export default class MfaEmailList extends BaseContext implements MfaEmailListMem
 
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaEmailList.screenIdentifier, 'selectMfaEmail'],
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
@@ -65,6 +66,7 @@ export default class MfaEmailList extends BaseContext implements MfaEmailListMem
   async goBack(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaEmailList.screenIdentifier, 'goBack'],
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,

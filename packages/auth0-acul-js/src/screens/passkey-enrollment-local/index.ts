@@ -36,6 +36,7 @@ export default class PasskeyEnrollmentLocal extends BaseContext implements Passk
   async continuePasskeyEnrollment(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [PasskeyEnrollmentLocal.screenIdentifier, 'continuePasskeyEnrollment'],
     };
 
     const publicKey = this.screen.publicKey;
@@ -56,6 +57,7 @@ export default class PasskeyEnrollmentLocal extends BaseContext implements Passk
   async abortPasskeyEnrollment(payload: AbortEnrollmentOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [PasskeyEnrollmentLocal.screenIdentifier, 'abortPasskeyEnrollment'],
     };
 
     const userActions: { [key: string]: string } = {};

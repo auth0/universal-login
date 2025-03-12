@@ -38,6 +38,7 @@ export default class MfaPushWelcome extends BaseContext implements MfaPushWelcom
   async enroll(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaPushWelcome.screenIdentifier, 'enroll'],
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
@@ -59,6 +60,7 @@ export default class MfaPushWelcome extends BaseContext implements MfaPushWelcom
   async pickAuthenticator(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaPushWelcome.screenIdentifier, 'pickAuthenticator'],
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,

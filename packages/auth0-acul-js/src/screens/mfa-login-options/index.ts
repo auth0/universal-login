@@ -32,6 +32,7 @@ export default class MfaLoginOptions extends BaseContext implements MfaLoginOpti
   async enroll(payload: LoginEnrollOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaLoginOptions.screenIdentifier, 'enroll'],
     };
     await new FormHandler(options).submitData<LoginEnrollOptions>(payload);
   }

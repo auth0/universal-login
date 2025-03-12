@@ -155,7 +155,7 @@
   },
   "scripts": {
     "clean": "rimraf dist",
-    "build": "npm run clean && npm run lint && npm run test && npm run docs && rollup -c rollup.config.js --bundleConfigAsCjs",
+    "build": "npm run clean && npm run lint && npm run test && npm run docs && rollup -c rollup.config.mjs",
     "test": "jest --verbose tests/unit/**/* --coverage",
     "test:e2e": "cypress open",
     "docs": "typedoc --options typedoc.json",
@@ -193,7 +193,9 @@
   ],
   "devDependencies": {
     "@rollup/plugin-alias": "^5.1.1",
+    "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.3.0",
+    "@rollup/plugin-replace": "^6.0.2",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^12.1.0",
     "@shikijs/core": "^1.24.0",
