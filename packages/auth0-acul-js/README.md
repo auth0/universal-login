@@ -153,6 +153,7 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 | 26     | mfa-sms-list                  |   [Link](https://auth0.github.io/universal-login/classes/Classes.MfaSmsList.html)                                 |
 | 31     | mfa-email-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaEmailChallenge.html)   |
 | 32     | mfa-email-list          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaEmailList.html)   |
+| 33     | mfa-otp-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaOtpChallenge.html)   |
 
 </details>
 
