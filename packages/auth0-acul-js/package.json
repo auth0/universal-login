@@ -151,10 +151,6 @@
     "./mfa-push-challenge-push": {
       "import": "./dist/screens/mfa-push-challenge-push/index.js",
       "types": "./dist/types/src/screens/mfa-push-challenge-push/index.d.ts"
-    },
-    "./mfa-otp-challenge": {
-      "import": "./dist/screens/mfa-otp-challenge/index.js",
-      "types": "./dist/types/src/screens/mfa-otp-challenge/index.d.ts"
     }
   },
   "scripts": {

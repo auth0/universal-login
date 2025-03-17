@@ -35,5 +35,4 @@ export const ScreenIds = {
   SIGNUP: 'signup',
   SIGNUP_ID: 'signup-id',
   SIGNUP_PASSWORD: 'signup-password',
-  MFA_OTP_CHALLENGE: 'mfa-otp-challenge',
 };

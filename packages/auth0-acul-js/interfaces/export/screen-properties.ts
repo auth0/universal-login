@@ -34,4 +34,3 @@ export type { MfaSmsListMembers } from '../screens/mfa-sms-list';
 export type { MfaEnrollResultMembers } from '../screens/mfa-enroll-result';
 export type { MfaLoginOptionsMembers } from '../screens/mfa-login-options';
 export type { MfaPushChallengePushMembers } from '../screens/mfa-push-challenge-push';
-export type { MfaOtpChallengeMembers } from '../screens/mfa-otp-challenge';

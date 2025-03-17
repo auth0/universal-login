@@ -29,7 +29,3 @@ export type { SelectMfaEmailOptions } from '../screens/mfa-email-list';
 export type { MfaSmsListOptions } from '../screens/mfa-sms-list';
 export type { LoginEnrollOptions, LoginFactorType } from '../screens/mfa-login-options';
 export type { WithRememberOptions } from '../screens/mfa-push-challenge-push';
-export type {
-  ContinueOptions as ContinueOTPOptions,
-  TryAnotherMethodOptions as TryAnotherMethodMfaOtpChallengeOptions,
-} from '../screens/mfa-otp-challenge';
