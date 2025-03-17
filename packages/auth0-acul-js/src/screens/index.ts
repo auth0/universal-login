@@ -32,7 +32,7 @@ export { default as MfaEnrollResult } from './mfa-enroll-result';
 export { default as MfaLoginOptions } from './mfa-login-options';
 export { default as MfaPushChallengePush } from './mfa-push-challenge-push';
 export { default as MfaOtpChallenge } from './mfa-otp-challenge';
-
-// export { default as ResetPasswordMfaPushChallengePush } from './reset-password-mfa-push-challenge-push';
-// export { default as ResetPasswordMfaEmailChallenge } from './reset-password-mfa-email-challenge';
-// export { default as ResetPasswordMfaSmsChallenge } from './reset-password-mfa-sms-challenge';
+export { default as MfaOtpEnrollmentQr } from './mfa-otp-enrollment-qr';
+export { default as ResetPasswordMfaPushChallengePush } from './reset-password-mfa-push-challenge-push';
+export { default as ResetPasswordMfaEmailChallenge } from './reset-password-mfa-email-challenge';
+export { default as ResetPasswordMfaSmsChallenge } from './reset-password-mfa-sms-challenge';

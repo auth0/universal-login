@@ -84,10 +84,6 @@
       "import": "./dist/screens/reset-password-error/index.js",
       "types": "./dist/types/src/screens/reset-password-error/index.d.ts"
     },
-    "./reset-password-mfa-push-challenge-push": {
-      "import": "./dist/screens/reset-password-mfa-push-challenge-push/index.js",
-      "types": "./dist/types/src/screens/reset-password-mfa-push-challenge-push/index.d.ts"
-    },
     "./mfa-push-enrollment-qr": {
       "import": "./dist/screens/mfa-push-enrollment-qr/index.js",
       "types": "./dist/types/src/screens/mfa-push-enrollment-qr/index.d.ts"
@@ -119,6 +115,10 @@
     "./mfa-country-codes": {
       "import": "./dist/screens/mfa-country-codes/index.js",
       "types": "./dist/types/src/screens/mfa-country-codes/index.d.ts"
+    },
+    "./reset-password-mfa-push-challenge-push": {
+      "import": "./dist/screens/reset-password-mfa-push-challenge-push/index.js",
+      "types": "./dist/types/src/screens/reset-password-mfa-push-challenge-push/index.d.ts"
     },
     "./reset-password-mfa-email-challenge": {
       "import": "./dist/screens/reset-password-mfa-email-challenge/index.js",
@@ -155,6 +155,10 @@
     "./mfa-otp-challenge": {
       "import": "./dist/screens/mfa-otp-challenge/index.js",
       "types": "./dist/types/src/screens/mfa-otp-challenge/index.d.ts"
+    },
+    "./mfa-otp-enrollment-qr": {
+      "import": "./dist/screens/mfa-otp-enrollment-qr/index.js",
+      "types": "./dist/types/src/screens/mfa-otp-enrollment-qr/index.d.ts"
     }
   },
   "scripts": {
