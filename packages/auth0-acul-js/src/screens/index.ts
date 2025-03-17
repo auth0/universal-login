@@ -31,6 +31,7 @@ export { default as MfaEmailList } from './mfa-email-list';
 export { default as MfaEnrollResult } from './mfa-enroll-result';
 export { default as MfaLoginOptions } from './mfa-login-options';
 export { default as MfaPushChallengePush } from './mfa-push-challenge-push';
+export { default as MfaOtpChallenge } from './mfa-otp-challenge';
 
 // export { default as ResetPasswordMfaPushChallengePush } from './reset-password-mfa-push-challenge-push';
 // export { default as ResetPasswordMfaEmailChallenge } from './reset-password-mfa-email-challenge';

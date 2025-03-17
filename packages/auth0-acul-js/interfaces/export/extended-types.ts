@@ -32,3 +32,4 @@ export type { ScreenMembersOnMfaEmailChallenge } from '../screens/mfa-email-chal
 export type { ScreenMembersOnMfaEmailList } from '../screens/mfa-email-list';
 export type { ScreenMembersOnMfaLoginOptions } from '../screens/mfa-login-options';
 export type { ScreenMembersOnMfaPushChallengePush } from '../screens/mfa-push-challenge-push';
+export type { ScreenMembersOnMfaOtpChallenge } from '../screens/mfa-otp-challenge';
