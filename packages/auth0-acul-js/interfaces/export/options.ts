@@ -33,3 +33,7 @@ export type {
   ContinueOptions as ContinueOTPOptions,
   TryAnotherMethodOptions as TryAnotherMethodMfaOtpChallengeOptions,
 } from '../screens/mfa-otp-challenge';
+export type {
+  ContinueOptions as MfaOtpContinueOptions,
+  TryAnotherMethodOptions as MfaOtpTryAnotherMethodOptions,
+} from '../screens/mfa-otp-enrollment-code';
