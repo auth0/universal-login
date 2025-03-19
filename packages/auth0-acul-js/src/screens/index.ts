@@ -37,3 +37,4 @@ export { default as MfaOtpEnrollmentCode } from './mfa-otp-enrollment-code';
 export { default as ResetPasswordMfaPushChallengePush } from './reset-password-mfa-push-challenge-push';
 export { default as ResetPasswordMfaEmailChallenge } from './reset-password-mfa-email-challenge';
 export { default as ResetPasswordMfaSmsChallenge } from './reset-password-mfa-sms-challenge';
+export { default as ResetPasswordMfaOtpChallenge } from './reset-password-mfa-otp-challenge';

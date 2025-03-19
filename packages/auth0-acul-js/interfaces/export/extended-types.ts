@@ -35,3 +35,4 @@ export type { ScreenMembersOnMfaPushChallengePush } from '../screens/mfa-push-ch
 export type { ScreenMembersOnMfaOtpChallenge } from '../screens/mfa-otp-challenge';
 export type { ScreenMembersOnMfaOtpEnrollmentQr } from '../screens/mfa-otp-enrollment-qr';
 export type { ScreenMembersOnMfaOtpEnrollmentCode } from '../screens/mfa-otp-enrollment-code';
+export type { ScreenMembersOnResetPasswordMfaOtpChallenge } from '../screens/reset-password-mfa-otp-challenge';
