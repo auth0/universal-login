@@ -124,6 +124,10 @@
       "import": "./dist/screens/reset-password-mfa-email-challenge/index.js",
       "types": "./dist/types/src/screens/reset-password-mfa-email-challenge/index.d.ts"
     },
+    "./reset-password-mfa-otp-challenge": {
+      "import": "./dist/screens/reset-password-mfa-otp-challenge/index.js",
+      "types": "./dist/types/src/screens/reset-password-mfa-otp-challenge/index.d.ts"
+    },
     "./reset-password-mfa-sms-challenge": {
       "import": "./dist/screens/reset-password-mfa-sms-challenge/index.js",
       "types": "./dist/types/src/screens/reset-password-mfa-sms-challenge/index.d.ts"
