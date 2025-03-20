@@ -40,3 +40,4 @@ export type { MfaOtpEnrollmentCodeMembers } from '../screens/mfa-otp-enrollment-
 export type { ResetPasswordMfaOtpChallengeMembers } from '../screens/reset-password-mfa-otp-challenge';
 export type { OrganizationSelectionMembers } from '../screens/organization-selection';
 export type { OrganizationPickerMembers } from '../screens/organization-picker';
+export type { AcceptInvitationMembers } from '../screens/accept-invitation';
