@@ -42,4 +42,5 @@ export const ScreenIds = {
   ORGANIZATION_SELECTION: 'organization-selection',
   ORGANIZATION_PICKER: 'organization-picker',
   ACCEPT_INVITATION: 'accept-invitation',
+  CUSTOMIZED_CONSENT: 'customized-consent',
 };

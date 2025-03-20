@@ -2,6 +2,8 @@ import { BaseContext } from '../../models/base-context';
 import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
+import { ScreenOverride } from './screen-override';
+
 import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { AcceptInvitationMembers, ScreenMembersOnAcceptInvitation as ScreenOptions } from '../../../interfaces/screens/accept-invitation';
@@ -21,7 +23,7 @@ export default class AcceptInvitation extends BaseContext implements AcceptInvit
   constructor() {
     super();
     const screenContext = this.getContext('screen') as ScreenContext;
-    this.screen = screenContext as ScreenOptions;
+    this.screen = new ScreenOverride(screenContext);
   }
 
   /**

@@ -62,7 +62,7 @@ export interface ScreenMembers {
   captchaSiteKey: string | null;
   captchaProvider: string | null;
   isCaptchaAvailable: boolean;
-  data: Record<string, string | boolean | string[] | Array<PhonePrefix>> | null;
+  data: Record<string, string | boolean | string[] | Record<string, string[]> | Array<PhonePrefix>> | null;
   links: Record<string, string> | null;
   texts: Record<string, string> | null;
   captcha: CaptchaContext | null;

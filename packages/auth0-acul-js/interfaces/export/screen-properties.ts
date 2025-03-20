@@ -41,3 +41,4 @@ export type { ResetPasswordMfaOtpChallengeMembers } from '../screens/reset-passw
 export type { OrganizationSelectionMembers } from '../screens/organization-selection';
 export type { OrganizationPickerMembers } from '../screens/organization-picker';
 export type { AcceptInvitationMembers } from '../screens/accept-invitation';
+export type { CustomizedConsentMembers } from '../screens/customized-consent';
