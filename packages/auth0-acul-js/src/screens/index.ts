@@ -38,3 +38,4 @@ export { default as ResetPasswordMfaPushChallengePush } from './reset-password-m
 export { default as ResetPasswordMfaEmailChallenge } from './reset-password-mfa-email-challenge';
 export { default as ResetPasswordMfaSmsChallenge } from './reset-password-mfa-sms-challenge';
 export { default as ResetPasswordMfaOtpChallenge } from './reset-password-mfa-otp-challenge';
+export { default as OrganizationSelection } from './organization-selection';

@@ -167,6 +167,10 @@
     "./mfa-otp-enrollment-code": {
       "import": "./dist/screens/mfa-otp-enrollment-code/index.js",
       "types": "./dist/types/src/screens/mfa-otp-enrollment-code/index.d.ts"
+    },
+    "./organization-selection": {
+      "import": "./dist/screens/organization-selection/index.js",
+      "types": "./dist/types/src/screens/organization-selection/index.d.ts"
     }
   },
   "scripts": {
