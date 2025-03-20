@@ -38,3 +38,4 @@ export type { ScreenMembersOnMfaOtpEnrollmentCode } from '../screens/mfa-otp-enr
 export type { ScreenMembersOnResetPasswordMfaOtpChallenge } from '../screens/reset-password-mfa-otp-challenge';
 export type { ScreenMembersOnOrganizationSelection } from '../screens/organization-selection';
 export type { ScreenMembersOnAcceptInvitation } from '../screens/accept-invitation';
+export type { ScreenMembersOnCustomizedConsent } from '../screens/customized-consent';

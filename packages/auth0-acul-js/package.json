@@ -179,6 +179,10 @@
     "./accept-invitation": {
       "import": "./dist/screens/accept-invitation/index.js",
       "types": "./dist/types/src/screens/accept-invitation/index.d.ts"
+    },
+    "./customized-consent": {
+      "import": "./dist/screens/customized-consent/index.js",
+      "types": "./dist/types/src/screens/customized-consent/index.d.ts"
     }
   },
   "scripts": {

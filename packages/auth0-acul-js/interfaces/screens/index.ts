@@ -39,3 +39,5 @@ export * as ResetPasswordMfaSmsChallenge from './reset-password-mfa-sms-challeng
 export * as ResetPasswordMfaOtpChallenge from './reset-password-mfa-otp-challenge';
 export * as OrganizationSelection from './organization-selection';
 export * as OrganizationPicker from './organization-picker';
+export * as AcceptInvitation from './accept-invitation';
+export * as CustomizedConsent from './customized-consent';
