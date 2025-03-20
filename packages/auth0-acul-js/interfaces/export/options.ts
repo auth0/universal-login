@@ -42,3 +42,4 @@ export type {
   TryAnotherMethodOptions as MfaOtpTryAnotherMethodOptions,
 } from '../screens/mfa-otp-enrollment-code';
 export type { ContinueWithOrganizationNameOptions } from '../screens/organization-selection';
+export type { SelectOrganizationOptions } from '../screens/organization-picker';

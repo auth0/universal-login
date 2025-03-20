@@ -38,3 +38,4 @@ export * as ResetPasswordMfaEmailChallenge from './reset-password-mfa-email-chal
 export * as ResetPasswordMfaSmsChallenge from './reset-password-mfa-sms-challenge';
 export * as ResetPasswordMfaOtpChallenge from './reset-password-mfa-otp-challenge';
 export * as OrganizationSelection from './organization-selection';
+export * as OrganizationPicker from './organization-picker';

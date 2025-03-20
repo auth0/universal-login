@@ -39,3 +39,4 @@ export { default as ResetPasswordMfaEmailChallenge } from './reset-password-mfa-
 export { default as ResetPasswordMfaSmsChallenge } from './reset-password-mfa-sms-challenge';
 export { default as ResetPasswordMfaOtpChallenge } from './reset-password-mfa-otp-challenge';
 export { default as OrganizationSelection } from './organization-selection';
+export { default as OrganizationPicker } from './organization-picker';

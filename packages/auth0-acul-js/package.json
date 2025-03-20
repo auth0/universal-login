@@ -171,6 +171,10 @@
     "./organization-selection": {
       "import": "./dist/screens/organization-selection/index.js",
       "types": "./dist/types/src/screens/organization-selection/index.d.ts"
+    },
+    "./organization-picker": {
+      "import": "./dist/screens/organization-picker/index.js",
+      "types": "./dist/types/src/screens/organization-picker/index.d.ts"
     }
   },
   "scripts": {
