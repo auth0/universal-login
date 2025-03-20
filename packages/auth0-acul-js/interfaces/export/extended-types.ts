@@ -37,3 +37,4 @@ export type { ScreenMembersOnMfaOtpEnrollmentQr } from '../screens/mfa-otp-enrol
 export type { ScreenMembersOnMfaOtpEnrollmentCode } from '../screens/mfa-otp-enrollment-code';
 export type { ScreenMembersOnResetPasswordMfaOtpChallenge } from '../screens/reset-password-mfa-otp-challenge';
 export type { ScreenMembersOnOrganizationSelection } from '../screens/organization-selection';
+export type { ScreenMembersOnAcceptInvitation } from '../screens/accept-invitation';

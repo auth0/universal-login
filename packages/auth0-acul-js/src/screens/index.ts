@@ -40,3 +40,4 @@ export { default as ResetPasswordMfaSmsChallenge } from './reset-password-mfa-sm
 export { default as ResetPasswordMfaOtpChallenge } from './reset-password-mfa-otp-challenge';
 export { default as OrganizationSelection } from './organization-selection';
 export { default as OrganizationPicker } from './organization-picker';
+export { default as AcceptInvitation } from './accept-invitation';

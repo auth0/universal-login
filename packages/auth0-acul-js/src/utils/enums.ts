@@ -36,4 +36,10 @@ export const ScreenIds = {
   SIGNUP_ID: 'signup-id',
   SIGNUP_PASSWORD: 'signup-password',
   MFA_OTP_CHALLENGE: 'mfa-otp-challenge',
+  MFA_OTP_ENROLLMENT_QR: 'mfa-otp-enrollment-qr',
+  MFA_OTP_ENROLLMENT_CODE: 'mfa-otp-enrollment-code',
+  RESET_PASSWORD_MFA_OTP_CHALLENGE: 'reset-password-mfa-otp-challenge',
+  ORGANIZATION_SELECTION: 'organization-selection',
+  ORGANIZATION_PICKER: 'organization-picker',
+  ACCEPT_INVITATION: 'accept-invitation',
 };
