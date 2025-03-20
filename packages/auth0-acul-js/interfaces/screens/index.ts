@@ -36,3 +36,5 @@ export * as MfaOtpEnrollmentQr from './mfa-otp-enrollment-qr';
 export * as ResetPasswordMfaPushChallengePush from './reset-password-mfa-push-challenge-push';
 export * as ResetPasswordMfaEmailChallenge from './reset-password-mfa-email-challenge';
 export * as ResetPasswordMfaSmsChallenge from './reset-password-mfa-sms-challenge';
+export * as ResetPasswordMfaOtpChallenge from './reset-password-mfa-otp-challenge';
+export * as OrganizationSelection from './organization-selection';
