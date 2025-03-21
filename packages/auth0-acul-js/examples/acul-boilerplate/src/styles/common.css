@@ -1,0 +1,147 @@
+/* Custom variables */
+:root {
+  --outer-padding: 80px;
+  --inner-padding: 32px 40px;
+  
+  /* Spacing variables */
+  --spacing-xs: 0.25rem;   /* 4px */
+  --spacing-sm: 0.5rem;    /* 8px */
+  --spacing-md: 0.75rem;   /* 12px */
+  --spacing-lg: 1rem;      /* 16px */
+  --spacing-xl: 1.25rem;   /* 20px */
+  --spacing-2xl: 1.5rem;   /* 24px */
+  
+  /* Tooltip variables */
+  --tooltip-bg: #1e212a;
+  --tooltip-text: #ffffff;
+  --tooltip-border-radius: 4px;
+  
+  /* Colors from login instance */
+  --color-primary: #635dff;
+  --color-page-background: #f2f2f2;
+  --color-primary-button: #ffffff;
+  --color-primary-button-label: #ffffff;
+  --color-secondary-button-border: #c9cace;
+  --color-secondary-button-label: #1e212a;
+  --color-base-focus: #635dff;
+  --color-base-hover: #000000; 
+  --color-links: #635dff;
+  --color-header: #1e212a;
+  --color-body-text: #1e212a;
+  --color-widget-background: #ffffff;
+  --color-widget-border: #c9cace;
+  --color-input-labels: #65676e;
+  --color-input-text: #000000;
+  --color-input-border: #c9cace;
+  --color-input-background: #ffffff;
+  --color-icons: #65676e;
+  --color-error: #d03c38;
+  --color-success: #13a688;
+  
+  /* Borders from login instance */
+  --border-button-style: rounded;
+  --border-inputs-style: rounded;
+  --border-button-weight: 1px;
+  --border-button-radius: 3px;
+  --border-input-weight: 1px;
+  --border-input-radius: 3px;
+  --border-widget-radius: 5px;
+  --border-widget-weight: 0px;
+}
+
+/* Base styles */
+html, body {
+  background-color: var(--color-page-background, #f2f2f2);
+  font-family: var(--font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif);
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#root {
+  min-height: 100vh;
+  width: 100%;
+  background-color: var(--color-page-background, #f2f2f2);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* Common Button Styles */
+.auth0-button-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.25rem;
+  font-size: var(--font-buttons-text-size, 1rem);
+  font-weight: var(--font-buttons-text-weight, 700);
+  transition-property: background-color, border-color, color, box-shadow;
+  transition-duration: 200ms;
+  background-color: var(--color-primary-button, #ffffff);
+  color: var(--color-primary-button-label, #ffffff);
+  border: var(--border-button-weight, 1px) solid var(--color-primary-button-border, #c9cace);
+  border-radius: var(--border-button-radius, 3px);
+  cursor: pointer;
+  width: 100%;
+  height: 48px; /* Fixed height for consistent button sizing */
+}
+
+.auth0-button-primary:hover {
+  background-color: var(--color-base-hover, #000000);
+  color: #f2f2f2;
+}
+
+.auth0-button-primary:focus {
+  outline: none;
+  box-shadow: 0 0 0 var(--border-button-weight, 1px) var(--color-base-focus, #635dff);
+}
+
+/* Common Link Styles */
+.auth0-link {
+  font-size: var(--font-links-size, 0.875rem);
+  font-weight: var(--font-links-weight, 700);
+  color: var(--color-links, #635dff);
+  text-decoration: none;
+}
+
+.auth0-link:hover {
+  color: var(--color-base-hover, rgba(99, 93, 255, 0.8));
+  text-decoration: underline;
+}
+
+/* Common Error Message */
+.auth0-error-message {
+  margin-top: 0.375rem;
+  font-size: 0.875rem;
+  color: var(--color-error, #d03c38);
+}
+
+/* Links Container */
+.auth0-links {
+  margin-top: var(--spacing-md);
+  width: 100%;
+}
+
+.auth0-links-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  width: 100%;
+}
+
+.auth0-footer-text {
+  font-size: var(--font-body-text-size, 0.875rem);
+  font-weight: var(--font-body-text-weight, 400);
+  color: var(--color-body-text, #1e212a);
+  margin-right: var(--spacing-xs);
+} 

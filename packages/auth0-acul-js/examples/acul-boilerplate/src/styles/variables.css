@@ -1,0 +1,40 @@
+:root {
+  /* Colors */
+  --auth0-primary-color: #635dff;
+  --auth0-primary-hover: #4f49cc;
+  --auth0-error-color: #d03c38;
+  --auth0-text-color: #1e212a;
+  --auth0-secondary-text: #65676e;
+  --auth0-border-color: #d9dbe0;
+  --auth0-background: #f5f7f9;
+  --auth0-widget-background: #ffffff;
+  --auth0-separator-color: #e6e8eb;
+  --auth0-focus-color: rgba(99, 93, 255, 0.2);
+
+  /* Spacing */
+  --spacing-xs: 0.25rem; /* 4px */
+  --spacing-sm: 0.5rem;  /* 8px */
+  --spacing-md: 0.75rem; /* 12px */
+  --spacing-lg: 1rem;    /* 16px */
+  --spacing-xl: 1.5rem;  /* 24px */
+  --spacing-2xl: 2rem;   /* 32px */
+
+  /* Typography */
+  --font-size-xs: 0.75rem;   /* 12px */
+  --font-size-sm: 0.875rem;  /* 14px */
+  --font-size-base: 1rem;    /* 16px */
+  --font-size-lg: 1.125rem;  /* 18px */
+  --font-size-xl: 1.25rem;   /* 20px */
+  --font-size-2xl: 1.5rem;   /* 24px */
+
+  /* Input specific */
+  --auth0-input-height: 48px;
+  --auth0-border-radius: 4px;
+  --input-padding-x: 1rem;
+  --input-padding-y: 0.875rem;
+  --input-with-icon-padding: 2.5rem;
+  --input-with-toggle-padding: 3rem;
+  --icon-size: 1.25rem;
+  --toggle-button-width: 48px;
+  --icon-padding-left: 0.75rem;
+} 

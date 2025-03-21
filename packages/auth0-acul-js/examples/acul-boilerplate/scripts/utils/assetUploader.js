@@ -41,7 +41,22 @@ export const uploadAdvancedConfig = async (screenName) => {
   // Upload configuration to Auth0
   await uploadScreenConfig(screenName, {
     rendering_mode: "advanced",
-    context_configuration: [],
+    context_configuration: [
+      "branding.settings",
+      "branding.themes.default",
+      "client.logo_uri",
+      "client.description",
+      "organization.display_name",
+      "organization.branding",
+      "screen.texts",
+      "tenant.name",
+      "tenant.friendly_name",
+      "tenant.enabled_locales",
+      "untrusted_data.submitted_form_data",
+      "untrusted_data.authorization_params.ui_locales",
+      "untrusted_data.authorization_params.login_hint",
+      "untrusted_data.authorization_params.screen_hint"
+    ],
     default_head_tags_disabled: false,
     head_tags: headTags
   });
@@ -154,6 +169,14 @@ function logFoundAssets(mainJsFile, screenJsFile, screenName, vendorJsFile, jsxR
  */
 function createHeadTags(port, mainJsFile, screenJsFile, screenName, vendorJsFile, jsxRuntimeFile, cssFiles) {
   const headTags = [];
+  
+  // Add base tag to ensure all relative URLs resolve correctly
+  headTags.push({
+    tag: "base",
+    attributes: {
+      href: `http://127.0.0.1:${port}/`
+    }
+  });
   
   // Add viewport meta tag
   headTags.push({

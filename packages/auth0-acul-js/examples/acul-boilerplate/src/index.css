@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import variables first */
+@import './styles/variables.css';
+
+/* Import common styles */
+@import './styles/common.css';
+@import './styles/custom.css';
+
+/* Import component-specific styles */
+@import './components/templates/LoginTemplate/LoginTemplate.css';
+@import './components/organisms/LoginForm/LoginForm.css';
+@import './components/molecules/FormField/FormField.css';
