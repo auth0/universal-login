@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "screen:standard": "node scripts/server-manager.js standard",
-    "screen:advanced": "node scripts/server-manager.js advanced",
+    "screen:standard": "node scripts/standard-mode.js",
+    "screen:advanced": "node scripts/advanced-mode.js",
     "build": "tsc -b && vite build",
     "serve": "http-server dist -p 3032 --cors --silent",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
