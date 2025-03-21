@@ -4,14 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "screen:standard": "node scripts/server-manager.js standard",
+    "screen:advanced": "node scripts/server-manager.js advanced",
     "build": "tsc -b && vite build",
-    "watch": "nodemon --watch src --ext ts,tsx,css --exec 'npm run deploy'",
-    "serve": "http-server dist -p 3032 --cors",
-    "deploy": "npm run build",
-    "dev:watch": "concurrently \"npm run watch\" \"npm run serve\"",
-    "start": "node scripts/server-manager.js",
-    "lint": "eslint .",
+    "serve": "http-server dist -p 3032 --cors --silent",
+    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "engines": {
@@ -20,6 +17,9 @@
   "dependencies": {
     "@auth0/auth0-acul-js": "^0.1.0-beta.2",
     "@tailwindcss/vite": "^4.0.11",
+    "axios": "^1.8.2",
+    "dotenv": "^16.4.7",
+    "http-server": "^14.1.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-error-boundary": "^5.0.0",

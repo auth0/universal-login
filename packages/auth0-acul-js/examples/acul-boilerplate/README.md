@@ -1,118 +1,204 @@
-# Advanced Customization Universal Login (ACUL)
+# Auth0 ACUL Boilerplate
 
-This project provides a boilerplate for building customizable login flows using Vite, React, TypeScript, and TailwindCSS. It demonstrates the implementation of Auth0's Universal Login with advanced customization options.
+This project provides a boilerplate setup for Auth0's Advanced Custom Universal Login (ACUL). It includes a Next.js quickstart application for testing authentication flows in real-time using React, TypeScript, and TailwindCSS.
 
-## 🚀 Features
+## Development Features
 
-- Multiple Login Flows (Username + Password, Email Only, Password Only)
-- Fully customizable UI with TailwindCSS
-- Hot Module Replacement (HMR) for rapid development
-- Uses `@auth0/auth0-acul-js` for authentication
-- TypeScript support with strict type checking
-- React 19 with Suspense for code-splitting
-- Integrated Next.js application for testing
+- **Hot Module Replacement (HMR)**: In advanced mode, the development server supports HMR for a seamless development experience:
+  - Auto-rebuilds when source files change
+  - Automatically uploads new assets to Auth0
+  - Real-time preview of changes
+  - Supports `.ts`, `.tsx`, and `.css` files
 
-## 📂 Project Structure
+## Quick Start
 
+1. Set up your environment variables in `.env.local`:
+   ```env
+   # For Nextjs quickstart
+   AUTH0_SECRET='LONG_RANDOM_VALUE'
+   AUTH0_BASE_URL='http://localhost:3000'
+   AUTH0_ISSUER_BASE_URL='https://YOUR_AUTH0_CUSTOM_DOMAIN.com'
+   AUTH0_CLIENT_ID='YOUR_AUTH0_CLIENT_ID'
+   AUTH0_CLIENT_SECRET='YOUR_AUTH0_CLIENT_SECRET'
+   AUTH0_AUDIENCE='YOUR_AUTH0_API_IDENTIFIER'
+   AUTH0_SCOPE='openid profile'
+
+   # For ACUL authentication and configuration
+   AUTH0_M2M_DOMAIN='https://M2M_APP_DOMAIN.com'
+   AUTH0_M2M_CLIENT_ID='YOUR_M2M_CLIENT_ID'
+   AUTH0_M2M_CLIENT_SECRET='YOUR_M2M_CLIENT_SECRET'
+   AUTH0_M2M_AUDIENCE='YOUR_M2M_API_IDENTIFIER'
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   cd nextjs-quickstart && npm install
+   ```
+
+3. Start development:
+   ```bash
+   # Standard mode (single screen)
+   npm run screen:standard login     # For login screen
+   npm run screen:standard login-id  # For login-id screen
+
+   # Advanced mode with HMR (single screen)
+   npm run screen:advanced login     # For login screen with hot reload
+   npm run screen:advanced login-id  # For login-id screen with hot reload
+   ```
+
+## Project Structure
 ```
 acul-boilerplate/
 ├── dist/                # Production build output
 ├── nextjs-quickstart/   # Next.js test application
-├── src/                 # Source files for ACUL
+├── src/                 # Source files
 │   ├── components/      # Reusable UI components
 │   ├── screens/        # Login flow screens
 │   └── styles/         # Global styles
-├── scripts/            # Build and deployment scripts
-└── [Configuration files]
+└── scripts/            # Build and deployment scripts
 ```
 
-## 📦 Prerequisites
+## Development Workflow
 
-- Node.js >= 20.0.0 (enforced via `.nvmrc`)
-- npm or yarn package manager
-- http-server (installed globally via npm)
+### Standard Mode
+- Uses Auth0's standard rendering mode
+- Runs for a specific screen (e.g., login, login-id)
+- No asset management required
+- Suitable for simple development needs
 
-## 🛠️ Installation & Setup
+### Advanced Mode (with HMR)
+1. Start the development server with `npm run screen:advanced <screen-name>`
+2. Make changes to your screen's source files in `src/screens/<screen-name>`
+3. Changes are automatically:
+   - Detected by the file watcher
+   - Rebuilt using Vite
+   - Uploaded to Auth0
+   - Reflected in your browser
 
-1. Install dependencies:
-```bash
-# Install ACUL dependencies
-npm install
+The development server handles all the complexity of:
+- Building TypeScript and CSS
+- Managing asset versions
+- Uploading configurations to Auth0
+- Serving assets locally
 
-# Install http-server globally
-npm install -g http-server
+## Features
 
-# Install Next.js dependencies
-cd nextjs-quickstart && npm install
-```
+- Multiple authentication flows (Username/Password, Passwordless, Social)
+- Modern development stack (React 19, TypeScript, TailwindCSS)
+- Integrated Next.js testing environment
 
-2. Configure environment:
-Update `.env.local` in the parent directory:
-```bash
-AUTH0_SECRET='LONG_RANDOM_VALUE'
-AUTH0_BASE_URL='http://localhost:3000'
-AUTH0_ISSUER_BASE_URL='https://YOUR_AUTH0_DOMAIN.auth0.com'
-AUTH0_CLIENT_ID='YOUR_AUTH0_CLIENT_ID'
-AUTH0_CLIENT_SECRET='YOUR_AUTH0_CLIENT_SECRET'
-AUTH0_AUDIENCE='YOUR_AUTH0_API_IDENTIFIER'
-AUTH0_SCOPE='openid profile'
-```
+## Troubleshooting
 
-## 🚀 Development Workflow
+- **Port already in use**: Stop any existing processes using ports 3032 or 3001
+- **Authentication errors**: Verify your Auth0 credentials in `.env.local`
+- **Screen not found**: Ensure your screen directory exists in `src/screens`
+- **Invalid screen name**: Use only screen names that match your directory names in `src/screens`
 
-1. Start both applications:
+## Technical Details
 
-```bash
-# Terminal 1: Start ACUL (Port 3032) and Start Next.js (Port 3000)
-npm run start
-```
+<details>
+<summary>🔍 What happens when you run npm run screen:standard login</summary>
 
-2. Development features:
-- Hot Module Replacement (HMR) enabled
-- Automatic rebuilds on changes
-- CORS enabled for API integration
-- Source maps for debugging
+1. **Environment Check**
+   - Validates all required environment variables
+   - Ensures Auth0 M2M credentials are properly configured
 
-## ⚙️ Production Build
+2. **Port Availability Check**
+   - Checks if ports 3032 (ACUL server) and 3001 (API server) are available
+   - Fails if any port is in use
 
-Build both applications:
-```bash
-# Build ACUL
-npm run build
+3. **Screen Validation**
+   - Checks if the specified screen exists in `src/screens` directory
+   - Fails if screen directory is not found
 
-# Build Next.js app
-cd nextjs-quickstart && npm run build
-```
+4. **Auth Token Generation**
+   ```http
+   POST ${AUTH0_M2M_DOMAIN}/oauth/token
+   Content-Type: application/json
 
-### Build Output Structure
+   {
+     "client_id": "your-m2m-client-id",
+     "client_secret": "your-m2m-client-secret",
+     "audience": "your-audience",
+     "grant_type": "client_credentials"
+   }
+   ```
 
-```
-dist/
-├── assets/
-│   ├── login/login-[hash].js    # Login screen code
-│   ├── common/common-[hash].js  # Shared dependencies
-│   ├── vendor/vendor-[hash].js  # Third-party libraries
-│   └── main-[hash].css         # Styles
-└── index.html                  # Entry point
-```
+5. **Screen Configuration Upload**
+   ```http
+   PATCH ${AUTH0_ISSUER_BASE_URL}/api/v2/prompts/${screenName}/screen/${screenName}/rendering
+   Authorization: Bearer ${access_token}
+   Content-Type: application/json
 
-## 🔍 Development Notes
+   {
+     "rendering_mode": "standard"
+   }
+   ```
 
-- ACUL serves on port 3032, Next.js on port 3000
-- Changes to ACUL code trigger automatic rebuilds
-- Components are organized in separate chunks
-- Error boundaries for graceful error handling
-- Tailwind utility classes for styling
+6. **Server Start**
+   - Starts ACUL development server
+   - Starts Next.js development server
+</details>
 
-## 💻 Available Scripts
+<details>
+<summary>🔍 What happens when you run npm run screen:advanced login</summary>
 
-```bash
-npm run dev:watch    # Start ACUL development server with HMR
-npm run build       # Create production build
-npm run serve       # Serve production build
-npm run deploy      # Build and deploy assets
-```
+1. **Environment & Port Checks**
+   - Same as standard mode
 
-## 📄 License
+2. **Build Process**
+   - Compiles assets to `dist/` directory
+   - Generates JavaScript bundles and CSS files
+
+3. **Asset Discovery**
+   - Scans `dist/` directory for JS and CSS files
+   - Prepares asset URLs for configuration
+
+4. **Advanced Configuration Upload**
+   ```http
+   PATCH ${AUTH0_ISSUER_BASE_URL}/api/v2/prompts/login/screen/login/rendering
+   Authorization: Bearer ${access_token}
+   Content-Type: application/json
+
+   {
+     "rendering_mode": "advanced",
+     "context_configuration": [],
+     "default_head_tags_disabled": false,
+     "head_tags": [
+       {
+         "tag": "script",
+         "attributes": {
+           "src": "http://127.0.0.1:3032/main.js",
+           "defer": true
+         }
+       },
+       {
+         "tag": "link",
+         "attributes": {
+           "rel": "stylesheet",
+           "href": "http://127.0.0.1:3032/main.css"
+         }
+       }
+     ]
+   }
+   ```
+
+5. **Server Start**
+   - Starts ACUL development server
+   - Starts Next.js development server
+   - Starts file watcher for automatic rebuilds
+</details>
+
+## Development Notes
+
+- The server automatically handles Ctrl+C (SIGINT) for graceful shutdown
+- Each server restart will:
+  - Get a fresh auth token
+  - Upload screen configurations
+  - Start development servers
+- To apply changes to your screens, stop (Ctrl+C) and restart the server
+
+## License
 
 MIT

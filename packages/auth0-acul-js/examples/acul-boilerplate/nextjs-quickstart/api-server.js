@@ -2,7 +2,6 @@ require('dotenv').config({ path: '../.env.local' });
 
 const express = require('express');
 const cors = require('cors');
-const morgan = require('morgan');
 const helmet = require('helmet');
 const { expressjwt: jwt } = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
@@ -22,7 +21,7 @@ if (!audience) {
   process.exit(1);
 }
 
-app.use(morgan('dev'));
+// Minimal middleware setup
 app.use(helmet());
 app.use(cors({ origin: baseUrl }));
 
@@ -44,5 +43,6 @@ app.get('/api/shows', checkJwt, (req, res) => {
   });
 });
 
-const server = app.listen(port, () => console.log(`API Server listening on port ${port}`));
+// Start server
+const server = app.listen(port, () => console.log(`API Server ready on port ${port}`));
 process.on('SIGINT', () => server.close());

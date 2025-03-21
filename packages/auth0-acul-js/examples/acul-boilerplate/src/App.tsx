@@ -1,10 +1,12 @@
 import React, { useEffect, Suspense } from "react";
 import { getCurrentScreen } from "@auth0/auth0-acul-js";
 
-const Login = React.lazy(() => import("./screens/Login"));
+const Login = React.lazy(() => import("./screens/login"));
+const LoginId = React.lazy(() => import("./screens/login-id"));
+const LoginPassword = React.lazy(() => import("./screens/login-password"));
 
 const App: React.FC = () => {
-  const [screen, setScreen] = React.useState("login-id");
+  const [screen, setScreen] = React.useState("login");
   useEffect(() => {
     const current = getCurrentScreen();
     setScreen(current!);
@@ -12,8 +14,12 @@ const App: React.FC = () => {
 
   const renderScreen = () => {
     switch (screen) {
+      case "login":
+        return <Login />;
       case "login-id":
-        return <Login />; 
+        return <LoginId />;
+      case "login-password":
+        return <LoginPassword />;
       default:
         return <>No screen rendered</>;
     }

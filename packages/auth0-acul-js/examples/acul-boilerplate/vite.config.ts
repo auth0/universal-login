@@ -99,7 +99,10 @@ export default defineConfig({
         manualChunks: () => "index.js", // Force single chunk
       },
     },
+    minify: true,
+    emptyOutDir: true,
     cssCodeSplit: false, // Disable CSS code-splitting to bundle CSS in one file
     sourcemap: true,
   },
+  logLevel: 'error' // Only show errors
 });
