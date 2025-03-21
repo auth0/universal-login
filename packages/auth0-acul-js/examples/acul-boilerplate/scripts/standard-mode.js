@@ -1,49 +1,8 @@
 import { validateScreenName } from './utils/screen-validator.js';
 import { startServers } from './server.js';
-import { uploadScreenConfig } from './utils/auth0TokenFetch.js';
 import { logger } from './utils/logger.js';
 import { handleFatalError } from './utils/error-handler.js';
-import ora from 'ora';
-import fs from 'fs';
-import path from 'path';
-
-/**
- * Create settings file for standard mode
- * @param {string} screenName - Name of the screen to configure
- * @returns {Object} - Settings object and path
- */
-async function createStandardSettings(screenName) {
-  logger.section('Creating Standard Mode Payload');
-  
-  const spinner = ora({
-    text: '📝 Creating payload file...',
-    color: 'cyan'
-  }).start();
-
-  try {
-    // Create payload directory if it doesn't exist
-    const payloadDir = path.join(process.cwd(), 'payload');
-    if (!fs.existsSync(payloadDir)) {
-      fs.mkdirSync(payloadDir);
-    }
-
-    // Standard mode is simple - just set rendering_mode to standard
-    const settings = {
-      rendering_mode: "standard"
-    };
-    
-    // Write settings to file with format screenName.json
-    const payloadPath = path.join(payloadDir, `${screenName}.json`);
-    fs.writeFileSync(payloadPath, JSON.stringify(settings, null, 2));
-    
-    spinner.succeed('Standard mode payload created');
-    
-    return { screenName, settingsPath: payloadPath, settings };
-  } catch (error) {
-    spinner.fail(`Failed to create payload: ${error.message}`);
-    throw new Error(`Failed to create payload: ${error.message}`);
-  }
-}
+import { checkAuth0CliInstalled, checkAuth0CliLoggedIn, configureStandardMode } from './utils/auth0-cli.js';
 
 /**
  * Main function for standard mode
@@ -56,13 +15,27 @@ const runStandardMode = async (screenName) => {
     // Validate screen name
     validateScreenName(screenName, 'standard');
     
-    // Create settings file for standard mode
-    const { settings } = await createStandardSettings(screenName);
+    // Check if Auth0 CLI is installed
+    const isCliInstalled = await checkAuth0CliInstalled();
+    if (!isCliInstalled) {
+      throw new Error('Auth0 CLI is required but not installed');
+    }
     
-    // Upload configuration using token uploader
-    await uploadScreenConfig(screenName, settings);
+    // Check if user is logged in to Auth0 CLI
+    const isLoggedIn = await checkAuth0CliLoggedIn();
+    if (!isLoggedIn) {
+      throw new Error('Please login to Auth0 CLI using: auth0 login');
+    }
     
-    // Start servers
+    // Configure the screen in standard mode using Auth0 CLI
+    const configSuccess = await configureStandardMode(screenName);
+    if (!configSuccess) {
+      throw new Error(`Failed to configure screen '${screenName}' with Auth0 CLI`);
+    }
+    
+    logger.success(`Screen '${screenName}' configured in standard mode`);
+    
+    // Start development servers
     await startServers('standard', screenName);
   } catch (error) {
     // Use our specialized error handler to provide helpful instructions

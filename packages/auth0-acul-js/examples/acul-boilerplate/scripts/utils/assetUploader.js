@@ -68,9 +68,10 @@ export const uploadAdvancedConfig = async (screenName) => {
     // Validate and locate all required assets
     const { 
       mainJsFile, 
-      screenJsFile, 
-      vendorJsFile, 
-      jsxRuntimeFile, 
+      screenJsFile,
+      vendorJsFile,
+      auth0AculJsFile,
+      dependenciesJsFile,
       cssFiles 
     } = findAssets(screenName);
     
@@ -82,7 +83,8 @@ export const uploadAdvancedConfig = async (screenName) => {
       { type: 'Main JS', path: mainJsFile || 'None' },
       { type: 'Screen JS', path: `${screenName}/${screenJsFile}` },
       { type: 'Vendor JS', path: vendorJsFile ? `shared/${vendorJsFile}` : 'None' },
-      { type: 'JSX Runtime', path: jsxRuntimeFile ? `shared/${jsxRuntimeFile}` : 'None' },
+      { type: 'Auth0 ACUL JS', path: auth0AculJsFile ? `shared/${auth0AculJsFile}` : 'None' },
+      { type: 'Dependencies JS', path: dependenciesJsFile ? `shared/${dependenciesJsFile}` : 'None' },
       { type: 'CSS Files', path: `${cssFiles.length} file(s)` }
     ];
     
@@ -102,8 +104,9 @@ export const uploadAdvancedConfig = async (screenName) => {
       mainJsFile, 
       screenJsFile, 
       screenName, 
-      vendorJsFile, 
-      jsxRuntimeFile, 
+      vendorJsFile,
+      auth0AculJsFile,
+      dependenciesJsFile,
       cssFiles
     );
     
@@ -172,8 +175,9 @@ export function findAssets(screenName) {
   // Get all files in the assets directory
   const assetFiles = fs.readdirSync(assetsPath);
   
-  // Find main JS file in the assets root - look for any JS file in the root that's not a map file
+  // Find main JS file in the assets root - look for main.*.js
   const mainJsFile = assetFiles.find(f => 
+    f.startsWith('main.') && 
     f.endsWith('.js') && 
     !f.endsWith('.map') && 
     !fs.statSync(path.join(assetsPath, f)).isDirectory()
@@ -182,8 +186,9 @@ export function findAssets(screenName) {
   // Find screen-specific JS file in the screen directory
   const screenFiles = fs.readdirSync(screenDirPath);
   
-  // Try to find any JS file that's not a map file
+  // Try to find index.*.js file
   const screenJsFile = screenFiles.find(f => 
+    f.startsWith('index.') && 
     f.endsWith('.js') && 
     !f.endsWith('.map')
   );
@@ -194,21 +199,27 @@ export function findAssets(screenName) {
   
   // Look for shared directory for vendor bundles
   let vendorJsFile = null;
-  let jsxRuntimeFile = null;
+  let auth0AculJsFile = null;
+  let dependenciesJsFile = null;
   const sharedDirPath = path.join(assetsPath, 'shared');
   
   if (fs.existsSync(sharedDirPath)) {
     const sharedFiles = fs.readdirSync(sharedDirPath);
     
-    // Look for vendor file and jsx-runtime file
-    vendorJsFile = sharedFiles.find(f => 
-      f.includes('vendor') && 
+    // Look for specific files with our bundling strategy
+    // 1. Fixed vendor file (no hash)
+    vendorJsFile = sharedFiles.find(f => f === 'vendor.js');
+    
+    // 2. Auth0 ACUL file (with hash)
+    auth0AculJsFile = sharedFiles.find(f => 
+      f.startsWith('auth0-acul.') && 
       f.endsWith('.js') && 
       !f.endsWith('.map')
     );
     
-    jsxRuntimeFile = sharedFiles.find(f => 
-      f.includes('jsx-runtime') && 
+    // 3. Dependencies file (with hash)
+    dependenciesJsFile = sharedFiles.find(f => 
+      f.startsWith('dependencies.') && 
       f.endsWith('.js') && 
       !f.endsWith('.map')
     );
@@ -245,7 +256,8 @@ export function findAssets(screenName) {
     mainJsFile,
     screenJsFile,
     vendorJsFile,
-    jsxRuntimeFile,
+    auth0AculJsFile,
+    dependenciesJsFile,
     cssFiles
   };
 }
@@ -257,11 +269,21 @@ export function findAssets(screenName) {
  * @param {string} screenJsFile - Screen-specific JS file
  * @param {string} screenName - Screen name
  * @param {string} vendorJsFile - Vendor JS file
- * @param {string} jsxRuntimeFile - JSX Runtime file
+ * @param {string} auth0AculJsFile - Auth0 ACUL JS file
+ * @param {string} dependenciesJsFile - Dependencies JS file
  * @param {Array} cssFiles - CSS files with location info
  * @returns {Array} - Array of head tag objects
  */
-export function createHeadTags(port, mainJsFile, screenJsFile, screenName, vendorJsFile, jsxRuntimeFile, cssFiles) {
+export function createHeadTags(
+  port, 
+  mainJsFile, 
+  screenJsFile, 
+  screenName, 
+  vendorJsFile, 
+  auth0AculJsFile,
+  dependenciesJsFile,
+  cssFiles
+) {
   const headTags = [];
   
   // Add base tag to ensure all relative URLs resolve correctly
@@ -303,6 +325,13 @@ export function createHeadTags(port, mainJsFile, screenJsFile, screenName, vendo
     });
   });
   
+  // Loading order for JS files:
+  // 1. Vendor (React, etc.) - no hash
+  // 2. Dependencies with hash
+  // 3. Auth0 ACUL with hash
+  // 4. Main entry point
+  // 5. Screen-specific bundle
+  
   // Add vendor JS file first (if found)
   if (vendorJsFile) {
     headTags.push({
@@ -314,12 +343,23 @@ export function createHeadTags(port, mainJsFile, screenJsFile, screenName, vendo
     });
   }
   
-  // Add jsx-runtime file if found
-  if (jsxRuntimeFile) {
+  // Add dependencies JS file if found
+  if (dependenciesJsFile) {
     headTags.push({
       tag: "script",
       attributes: {
-        src: `http://127.0.0.1:${port}/assets/shared/${jsxRuntimeFile}`,
+        src: `http://127.0.0.1:${port}/assets/shared/${dependenciesJsFile}`,
+        type: "module"
+      }
+    });
+  }
+  
+  // Add Auth0 ACUL JS file if found
+  if (auth0AculJsFile) {
+    headTags.push({
+      tag: "script",
+      attributes: {
+        src: `http://127.0.0.1:${port}/assets/shared/${auth0AculJsFile}`,
         type: "module"
       }
     });

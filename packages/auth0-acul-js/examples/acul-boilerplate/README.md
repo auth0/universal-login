@@ -34,6 +34,27 @@ This project provides a boilerplate setup for Auth0's Advanced Custom Universal 
      cd ..
      ```
 
+4. **Auth0 CLI Installation**
+   - This project uses the Auth0 CLI to configure your tenant:
+     - For macOS/Linux using Homebrew:
+       ```bash
+       brew tap auth0/auth0-cli && brew install auth0
+       ```
+     - For Windows using Scoop:
+       ```bash
+       scoop bucket add auth0 https://github.com/auth0/scoop-auth0-cli.git
+       scoop install auth0
+       ```
+     - Or download from [Auth0 CLI GitHub repository](https://github.com/auth0/auth0-cli)
+   - Verify installation with:
+     ```bash
+     auth0 --version
+     ```
+   - Log in to your Auth0 account:
+     ```bash
+     auth0 login
+     ```
+
 ### Auth0 Prerequisites
 
 1. **Auth0 Tenant**
@@ -55,16 +76,6 @@ This project provides a boilerplate setup for Auth0's Advanced Custom Universal 
    - This application will be used by the Next.js quickstart for authentication testing
    - Follow the [Next.js Quickstart guide](https://auth0.com/docs/quickstart/webapp/nextjs/01-login) for additional configuration help
 
-4. **Machine-to-Machine (M2M) Application**
-   - Create a new M2M application in Auth0
-   - Grant the following permissions:
-     - `read:prompts`
-     - `update:prompts`
-   - This application will be used to:
-     - Generate authentication tokens
-     - Upload screen configurations
-     - Configure ACUL settings
-
 ## Quick Start
 
 1. Set up your environment variables in `.env.local`:
@@ -77,12 +88,6 @@ This project provides a boilerplate setup for Auth0's Advanced Custom Universal 
    AUTH0_CLIENT_SECRET='YOUR_AUTH0_CLIENT_SECRET'
    AUTH0_AUDIENCE='YOUR_AUTH0_API_IDENTIFIER'
    AUTH0_SCOPE='openid profile'
-
-   # For ACUL authentication and configuration
-   AUTH0_M2M_DOMAIN='https://M2M_APP_DOMAIN.com'
-   AUTH0_M2M_CLIENT_ID='YOUR_M2M_CLIENT_ID'
-   AUTH0_M2M_CLIENT_SECRET='YOUR_M2M_CLIENT_SECRET'
-   AUTH0_M2M_AUDIENCE='YOUR_M2M_API_IDENTIFIER'
    ```
 
 2. Start development:
@@ -123,7 +128,7 @@ acul-boilerplate/
 
 1. **Environment Check**
    - Validates all required environment variables
-   - Ensures Auth0 M2M credentials are properly configured
+   - Checks for Auth0 CLI installation and login status
 
 2. **Port Availability Check**
    - Checks if ports 3032 (ACUL server) and 3001 (API server) are available
@@ -133,99 +138,62 @@ acul-boilerplate/
    - Checks if the specified screen exists in `src/screens` directory
    - Fails if screen directory is not found
 
-4. **Auth Token Generation**
-   ```http
-   POST ${AUTH0_M2M_DOMAIN}/oauth/token
-   Content-Type: application/json
-
-   {
-     "client_id": "your-m2m-client-id",
-     "client_secret": "your-m2m-client-secret",
-     "audience": "your-audience",
-     "grant_type": "client_credentials"
-   }
+4. **Auth0 CLI Configuration**
+   - Uses Auth0 CLI to configure the screen in standard mode:
+   ```bash
+   auth0 universal-login switch --prompt login --screen login --rendering-mode standard
    ```
 
-5. **Screen Configuration Upload**
-   ```http
-   PATCH ${AUTH0_ISSUER_BASE_URL}/api/v2/prompts/${screenName}/screen/${screenName}/rendering
-   Authorization: Bearer ${access_token}
-   Content-Type: application/json
+5. **Development Server**
+   - Starts a local development server on port 3032
+   - Serves the screen for testing
 
-   {
-     "rendering_mode": "standard"
-   }
-   ```
+6. **Next.js Application**
+   - A Next.js application is available for testing real authentication flows
+   - Access it at http://localhost:3000
 
-6. **Server Start**
-   - Starts ACUL development server
-   - Starts Next.js development server
 </details>
 
 <details>
 <summary>🔍 What happens when you run npm run screen:advanced login</summary>
 
-1. **Environment & Port Checks**
+1. **Same Environment and Validation Checks**
    - Same as standard mode
 
 2. **Build Process**
-   - Compiles assets to `dist/assets/` directory
-   - Generates JavaScript bundles (main and vendor) and CSS files
-   - Applies code splitting for better performance
+   - Runs a production build of your screen
+   - Outputs to the `dist` directory
 
 3. **Asset Discovery**
-   - Scans `dist/assets/` directory for JS and CSS files
-   - Identifies main bundle, vendor bundle, and CSS files
-   - Prepares asset URLs for configuration
+   - Finds all compiled assets for the login screen
+   - Includes JavaScript bundles and CSS files
 
-4. **Advanced Configuration Upload**
-   ```http
-   PATCH ${AUTH0_ISSUER_BASE_URL}/api/v2/prompts/login/screen/login/rendering
-   Authorization: Bearer ${access_token}
-   Content-Type: application/json
+4. **Advanced Configuration**
+   - Uses Auth0 CLI to configure the screen in advanced mode
+   - Uploads all the built assets as head tags
+   - Sets up context configuration
 
-   {
-     "rendering_mode": "advanced",
-     "context_configuration": [],
-     "default_head_tags_disabled": false,
-     "head_tags": [
-       {
-         "tag": "link",
-         "attributes": {
-           "rel": "stylesheet",
-           "href": "http://127.0.0.1:3032/assets/style.[hash].css"
-         }
-       },
-       {
-         "tag": "meta",
-         "attributes": {
-           "name": "viewport",
-           "content": "width=device-width, initial-scale=1"
-         }
-       },
-       {
-         "tag": "script",
-         "attributes": {
-           "src": "http://127.0.0.1:3032/assets/vendor.[hash].js",
-           "type": "module"
-         }
-       },
-       {
-         "tag": "script",
-         "attributes": {
-           "src": "http://127.0.0.1:3032/assets/index.[hash].js",
-           "type": "module"
-         }
-       }
-     ]
-   }
-   ```
+5. **Hot Module Replacement (HMR)**
+   - Starts a development server with HMR support
+   - Any changes to source code automatically rebuild and update
+   - No need to restart the server or refresh the browser
 
-5. **Server Start**
-   - Starts ACUL development server
-   - Starts Next.js development server
-   - Starts file watcher for automatic rebuilds
+6. **Next.js Testing**
+   - Same as standard mode
+   
 </details>
+
+## Development Workflow
+
+1. Choose a screen to work on
+2. Run the development script for that screen
+3. Make changes to components and styles
+4. Test your changes in real-time
+5. Switch to another screen if needed
+
+## Documentation
+
+For more details about ACUL, refer to the [Auth0 Documentation](https://auth0.com/docs/customize/universal-login-pages/universal-login-page-templates).
 
 ## License
 

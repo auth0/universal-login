@@ -23,6 +23,45 @@ if (fs.existsSync(screensDir)) {
   });
 }
 
+/**
+ * Bundling Strategy Configuration
+ * -------------------------------
+ * 
+ * This defines how our application code is split into different bundles:
+ * 
+ * 1. Fixed chunks (no hash):
+ *    - vendor.js: Core libraries that rarely change (React, React DOM)
+ *    - These use fixed filenames without hashes for better caching across builds
+ * 
+ * 2. Hashed bundles (with hash for proper cache invalidation):
+ *    - auth0-acul.[hash].js: Auth0 ACUL library that might change independently
+ *    - dependencies.[hash].js: Other third-party dependencies
+ *    - main.[hash].js: Entry point bootstrapping code
+ *    - [screen]/index.[hash].js: Screen-specific code for each screen
+ *    - styles.[hash].css: All application styles
+ * 
+ * 3. Each screen gets its own directory with isolated bundles:
+ *    - assets/login/index.[hash].js
+ *    - assets/login-id/index.[hash].js
+ *    - etc.
+ */
+const CHUNK_CONFIG = {
+  // Fixed chunks won't have hash in filename for more stable references
+  FIXED_CHUNKS: ['vendor'],
+  
+  // Dependencies to include in vendor chunk (core libraries that rarely change)
+  VENDOR_DEPS: [
+    'react', 
+    'react-dom',
+    'react-error-boundary'
+  ],
+  
+  // Dependencies to bundle separately (more likely to change)
+  SEPARATE_DEPS: {
+    'auth0-acul': ['@auth0/auth0-acul-js']
+  }
+};
+
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
@@ -58,36 +97,74 @@ export default defineConfig({
           if (screenEntries[chunkInfo.name]) {
             return `assets/${chunkInfo.name}/index.[hash].js`;
           }
-          // For main entry
+          // For main entry (bootstrapping code)
           return 'assets/main.[hash].js';
         },
         chunkFileNames: (chunkInfo) => {
-          // For chunks that belong to screens
-          if (chunkInfo.name && screenEntries[chunkInfo.name.split('-')[0]]) {
-            const screenName = chunkInfo.name.split('-')[0];
-            return `assets/${screenName}/[name].[hash].js`;
+          // Apply different naming strategies based on chunk type
+          const chunkName = chunkInfo.name || '';
+          
+          // For fixed chunks (like vendor), use stable names without hash
+          // This improves caching as these core libraries rarely change
+          if (CHUNK_CONFIG.FIXED_CHUNKS.includes(chunkName)) {
+            return `assets/shared/${chunkName}.js`;
           }
-          // For vendor and other shared chunks
+          
+          // For screen-specific chunks
+          const screenMatch = Object.keys(screenEntries).find(
+            screen => chunkName.startsWith(`${screen}-`)
+          );
+          
+          if (screenMatch) {
+            return `assets/${screenMatch}/[name].[hash].js`;
+          }
+          
+          // For all other shared chunks (needs hash for proper versioning)
           return 'assets/shared/[name].[hash].js';
         },
         assetFileNames: (assetInfo) => {
-          // For CSS files
-          if (assetInfo.name && assetInfo.name.endsWith('.css')) {
-            return 'assets/shared/style.[hash][extname]';
+          const info = assetInfo.name || '';
+          
+          // CSS files should have hashes for proper cache invalidation
+          // since styles are likely to change between deployments
+          if (info.endsWith('.css')) {
+            return 'assets/shared/styles.[hash][extname]';
           }
-          // For other assets
+          
+          // For other assets (images, fonts, etc.)
           return 'assets/shared/[name].[hash][extname]';
         },
-        // Improved vendor chunk configuration with more dependencies
-        manualChunks: {
-          vendor: [
-            'react', 
-            'react-dom', 
-            'react/jsx-runtime',
-            'react-error-boundary',
-            '@auth0/auth0-acul-js'
-          ],
-          // Common components will be automatically extracted as shared chunks
+        // Bundle splitting strategy
+        manualChunks: (id) => {
+          // Skip if not from node_modules
+          if (!id.includes('node_modules')) {
+            return;
+          }
+          
+          // Bundle #1: vendor.js (no hash)
+          // Core libraries that rarely change (React, React DOM)
+          // Using fixed name for better caching across deployments
+          const isVendor = CHUNK_CONFIG.VENDOR_DEPS.some(dep => 
+            id.includes(`/node_modules/${dep}/`) || id.includes(`/node_modules/${dep.replace('/', '@')}`)
+          );
+          
+          if (isVendor) {
+            return 'vendor';
+          }
+          
+          // Bundle #2: auth0-acul.[hash].js
+          // Auth0 ACUL library that might change more frequently
+          // Using hash for proper cache invalidation
+          for (const [chunkName, deps] of Object.entries(CHUNK_CONFIG.SEPARATE_DEPS)) {
+            if (deps.some(dep => id.includes(`/node_modules/${dep}/`))) {
+              return chunkName;
+            }
+          }
+          
+          // Bundle #3: dependencies.[hash].js
+          // Other third-party npm modules
+          // Using hash for proper versioning
+          return 'dependencies';
         }
       },
     },
