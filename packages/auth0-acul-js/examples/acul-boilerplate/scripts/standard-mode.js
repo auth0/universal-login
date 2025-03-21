@@ -1,20 +1,11 @@
-import { getScreenFolders, uploadScreenConfig } from './utils.js';
+import { validateScreenName } from './utils/screenManager.js';
+import { uploadScreenConfig } from './utils/auth0Api.js';
 import { startServers } from './server.js';
 
 // Main function for standard mode
 const runStandardMode = async (screenName) => {
   try {
-    if (!screenName) {
-      throw new Error('Screen name required. Usage: npm run screen:standard <screen-name>');
-    }
-
-    console.log(`🚀 Starting in standard mode for ${screenName}`);
-    const screens = getScreenFolders();
-    
-    if (!screens.includes(screenName)) {
-      throw new Error(`Screen "${screenName}" not found in src/screens directory`);
-    }
-
+    validateScreenName(screenName, 'standard');
     await uploadScreenConfig(screenName, { rendering_mode: "standard" });
     await startServers('standard', screenName);
   } catch (error) {
@@ -25,7 +16,4 @@ const runStandardMode = async (screenName) => {
 
 // Start standard mode
 const screenName = process.argv[2]?.toLowerCase();
-runStandardMode(screenName).catch(error => {
-  console.error('❌ Fatal error:', error.message);
-  process.exit(1);
-}); 
+runStandardMode(screenName); 

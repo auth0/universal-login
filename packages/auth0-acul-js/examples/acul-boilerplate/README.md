@@ -106,6 +106,7 @@ The development server handles all the complexity of:
 - Multiple authentication flows (Username/Password, Passwordless, Social)
 - Modern development stack (React 19, TypeScript, TailwindCSS)
 - Integrated Next.js testing environment
+- Optimized development workflow with smart HMR
 
 ## Troubleshooting
 
@@ -113,6 +114,7 @@ The development server handles all the complexity of:
 - **Authentication errors**: Verify your Auth0 credentials in `.env.local`
 - **Screen not found**: Ensure your screen directory exists in `src/screens`
 - **Invalid screen name**: Use only screen names that match your directory names in `src/screens`
+- **Token expired errors**: The system will automatically refresh expired tokens
 
 ## Technical Details
 
@@ -216,7 +218,8 @@ The development server handles all the complexity of:
   - Get a fresh auth token
   - Upload screen configurations
   - Start development servers
-- To apply changes to your screens, stop (Ctrl+C) and restart the server
+- In advanced mode, file changes are automatically detected and deployed
+- Auth tokens are intelligently managed to minimize API calls
 
 ## License
 

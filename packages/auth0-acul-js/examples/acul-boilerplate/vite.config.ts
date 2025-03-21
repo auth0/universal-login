@@ -94,9 +94,10 @@ export default defineConfig({
     // },
     rollupOptions: {
       output: {
-        entryFileNames: "index.js", // Single JavaScript output file
-        assetFileNames: "index.css", // Single CSS output file
-        manualChunks: () => "index.js", // Force single chunk
+        // Generate hashed filenames for better cache control
+        entryFileNames: "index-[hash].js",
+        assetFileNames: "index-[hash][extname]",
+        manualChunks: () => "index", // Force single chunk but allow for hashing
       },
     },
     minify: true,

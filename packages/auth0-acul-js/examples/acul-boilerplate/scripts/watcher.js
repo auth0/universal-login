@@ -1,7 +1,7 @@
 import { execSync } from 'child_process';
 import path from 'path';
 import fs from 'fs';
-import { uploadAdvancedConfig } from './utils.js';
+import { uploadAdvancedConfig } from './utils/assetUploader.js';
 
 // Track last build time to avoid duplicate builds
 let lastBuildTime = 0;
@@ -18,6 +18,46 @@ export const watchAndUpload = async (screenName) => {
   
   console.log(`\n👀 Watching for changes in src directory...`);
   
+  // Process changes with debouncing
+  const processChanges = async () => {
+    if (isProcessing) return;
+    
+    try {
+      isProcessing = true;
+      
+      // Skip if we just built recently
+      const now = Date.now();
+      if (now - lastBuildTime < BUILD_COOLDOWN) {
+        console.log('⏱️ Skipping build - too soon after last build');
+        pendingChanges.clear();
+        isProcessing = false;
+        return;
+      }
+      
+      const changesList = Array.from(pendingChanges).join(', ');
+      console.log(`\n📝 Changes detected in: ${changesList}`);
+      pendingChanges.clear();
+      
+      console.log('🔨 Building...');
+      execSync('npm run build', { stdio: 'inherit' });
+      lastBuildTime = Date.now();
+      console.log('✅ Build completed');
+      
+      await uploadAdvancedConfig(screenName);
+      console.log('✨ Changes deployed successfully\n');
+    } catch (error) {
+      console.error('❌ Build failed:', error.message);
+    } finally {
+      isProcessing = false;
+      
+      // If more changes accumulated during processing, trigger another build
+      if (pendingChanges.size > 0) {
+        console.log('🔄 Processing additional changes...');
+        setTimeout(processChanges, 300);
+      }
+    }
+  };
+  
   // Set up recursive watchers
   const setupWatcher = (dirPath) => {
     try {
@@ -32,47 +72,8 @@ export const watchAndUpload = async (screenName) => {
           
           if (debounceTimer) clearTimeout(debounceTimer);
           
-          // Only process if not already processing
-          if (!isProcessing) {
-            debounceTimer = setTimeout(async () => {
-              try {
-                isProcessing = true;
-                
-                // Skip if we just built recently
-                const now = Date.now();
-                if (now - lastBuildTime < BUILD_COOLDOWN) {
-                  console.log('⏱️ Skipping build - too soon after last build');
-                  pendingChanges.clear();
-                  isProcessing = false;
-                  return;
-                }
-                
-                const changesList = Array.from(pendingChanges).join(', ');
-                console.log(`\n📝 Changes detected in: ${changesList}`);
-                pendingChanges.clear();
-                
-                console.log('🔨 Building...');
-                execSync('npm run build', { stdio: 'inherit' });
-                lastBuildTime = Date.now();
-                console.log('✅ Build completed');
-                
-                await uploadAdvancedConfig(screenName);
-                console.log('✨ Changes deployed successfully\n');
-              } catch (error) {
-                console.error('❌ Build failed:', error.message);
-              } finally {
-                isProcessing = false;
-                
-                // If more changes accumulated during processing, trigger another build
-                if (pendingChanges.size > 0) {
-                  console.log('🔄 Processing additional changes...');
-                  debounceTimer = setTimeout(() => {
-                    isProcessing = false;
-                  }, 100);
-                }
-              }
-            }, 300);
-          }
+          // Debounce the build process
+          debounceTimer = setTimeout(processChanges, 300);
         }
       });
       
@@ -96,4 +97,4 @@ export const watchAndUpload = async (screenName) => {
   if (fs.existsSync(stylesPath)) {
     setupWatcher(stylesPath);
   }
-}; 
+};

@@ -1,35 +1,17 @@
-import net from 'net';
-import path from 'path';
-import fs from 'fs';
 import axios from 'axios';
 import dotenv from 'dotenv';
 
 // Load environment variables
 dotenv.config({ path: '.env.local' });
 
-// Configuration
-export const CONFIG = {
-  port: 3032,
-  apiPort: 3001
-};
-
 // Token storage - simple, no expiration tracking
 let cachedToken = null;
 
-// Check if port is available
-export const isPortInUse = async (port) => {
-  return new Promise((resolve) => {
-    const server = net.createServer()
-      .once('error', () => resolve(true))
-      .once('listening', () => {
-        server.close();
-        resolve(false);
-      })
-      .listen(port);
-  });
-};
-
-// Get auth token for API calls
+/**
+ * Gets an Auth0 Management API token
+ * @param {boolean} forceRefresh - Whether to force a token refresh
+ * @returns {Promise<string>} - The Auth0 token
+ */
 export const getAuthToken = async (forceRefresh = false) => {
   // Use cached token if available and not forcing refresh
   if (cachedToken && !forceRefresh) {
@@ -72,7 +54,11 @@ export const getAuthToken = async (forceRefresh = false) => {
   }
 };
 
-// Upload screen configuration to Auth0
+/**
+ * Uploads screen configuration to Auth0
+ * @param {string} screenName - The name of the screen to configure
+ * @param {object} config - The configuration to upload
+ */
 export const uploadScreenConfig = async (screenName, config) => {
   try {
     console.log(`\n📤 Uploading ${config.rendering_mode} mode configuration for ${screenName}`);
@@ -113,59 +99,4 @@ export const uploadScreenConfig = async (screenName, config) => {
   } catch (error) {
     throw new Error(`Failed to upload configuration: ${error.message}`);
   }
-};
-
-// Get available screen folders
-export const getScreenFolders = () => {
-  try {
-    return fs.readdirSync(path.join(process.cwd(), 'src', 'screens'), { withFileTypes: true })
-      .filter(dirent => dirent.isDirectory())
-      .map(dirent => dirent.name.toLowerCase());
-  } catch (error) {
-    console.error('❌ Error reading screens folder:', error.message);
-    return [];
-  }
-};
-
-// Upload assets for advanced mode
-export const uploadAdvancedConfig = async (screenName) => {
-  console.log('\n📦 Preparing assets...');
-  
-  const distPath = path.join(process.cwd(), 'dist');
-  const files = fs.readdirSync(distPath);
-  const jsFiles = files.filter(f => f.endsWith('.js'));
-  const cssFiles = files.filter(f => f.endsWith('.css'));
-
-  console.log(`Found ${jsFiles.length} JS files and ${cssFiles.length} CSS files`);
-
-  const headTags = [
-    ...jsFiles.map(jsFile => ({
-      tag: "script",
-      attributes: {
-        src: `http://127.0.0.1:${CONFIG.port}/${jsFile}`,
-        defer: true
-      }
-    })),
-    ...cssFiles.map(cssFile => ({
-      tag: "link",
-      attributes: {
-        rel: "stylesheet",
-        href: `http://127.0.0.1:${CONFIG.port}/${cssFile}`
-      }
-    })),
-    {
-      tag: "meta",
-      attributes: {
-        name: "viewport",
-        content: "width=device-width, initial-scale=1"
-      }
-    }
-  ];
-
-  await uploadScreenConfig(screenName, {
-    rendering_mode: "advanced",
-    context_configuration: [],
-    default_head_tags_disabled: false,
-    head_tags: headTags
-  });
 }; 

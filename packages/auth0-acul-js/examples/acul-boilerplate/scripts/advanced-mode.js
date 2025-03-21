@@ -1,19 +1,17 @@
-import { getScreenFolders, uploadAdvancedConfig } from './utils.js';
+import { execSync } from 'child_process';
+import { validateScreenName } from './utils/screenManager.js';
+import { uploadAdvancedConfig } from './utils/assetUploader.js';
 import { startServers } from './server.js';
 
 // Main function for advanced mode
 const runAdvancedMode = async (screenName) => {
   try {
-    if (!screenName) {
-      throw new Error('Screen name required. Usage: npm run screen:advanced <screen-name>');
-    }
+    validateScreenName(screenName, 'advanced');
 
-    console.log(`🚀 Starting in advanced mode for ${screenName}`);
-    const screens = getScreenFolders();
-    
-    if (!screens.includes(screenName)) {
-      throw new Error(`Screen "${screenName}" not found in src/screens directory`);
-    }
+    // Perform initial build
+    console.log('🔨 Performing initial build...');
+    execSync('npm run build', { stdio: 'inherit' });
+    console.log('✅ Initial build completed');
 
     // Upload advanced configuration (includes setting rendering_mode to "advanced")
     await uploadAdvancedConfig(screenName);
@@ -27,7 +25,4 @@ const runAdvancedMode = async (screenName) => {
 
 // Start advanced mode
 const screenName = process.argv[2]?.toLowerCase();
-runAdvancedMode(screenName).catch(error => {
-  console.error('❌ Fatal error:', error.message);
-  process.exit(1);
-}); 
+runAdvancedMode(screenName); 
