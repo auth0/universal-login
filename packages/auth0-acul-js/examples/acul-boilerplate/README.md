@@ -1,18 +1,18 @@
 # Auth0 ACUL Boilerplate
 
-This project provides a boilerplate setup for Auth0's Advanced Custom Universal Login (ACUL). It includes a Next.js quickstart application for testing authentication flows in real-time using React, TypeScript, and TailwindCSS.
+This project provides a boilerplate setup for Auth0's Advanced Custom Universal Login (ACUL). ACUL allows you to build custom login screens using your own design systems and layouts. It includes a Next.js quickstart application for testing authentication flows in real-time using React, TypeScript, and TailwindCSS.
 
 ## Prerequisites
 
 Before you begin, ensure you have completed the following Auth0 setup steps:
 
 1. **Custom Domain Setup**
-   - Enable and configure a custom domain for your Auth0 tenant
+   - Enable and configure a [custom domain](https://auth0.com/docs/customize/custom-domains) for your Auth0 tenant
    - Verify the custom domain is working properly
    - This is required for ACUL functionality
 
 2. **Regular Web Application**
-   - Create a new Regular Web Application in Auth0
+   - Create a new [Regular Web Application](https://auth0.com/docs/get-started/auth0-overview/create-applications) in Auth0
    - Configure the following settings:
      - Allowed Callback URLs: `http://localhost:3000/api/auth/callback`
      - Allowed Logout URLs: `http://localhost:3000`
@@ -58,12 +58,12 @@ Before you begin, ensure you have completed the following Auth0 setup steps:
 3. Start development:
    ```bash
    # Standard mode (single screen)
-   npm run screen:standard login     # For login screen
-   npm run screen:standard login-id  # For login-id screen
+   npm run screen:standard <screen_name>
+   npm run screen:standard login  # For login screen. Other ex: login-id, login-password
 
    # Advanced mode with HMR (single screen)
-   npm run screen:advanced login     # For login screen with hot reload
-   npm run screen:advanced login-id  # For login-id screen with hot reload
+   npm run screen:advanced <screen_name>
+   npm run screen:advanced login  # For login screen. Other ex: login-id, login-password
    ```
 
 ## Project Structure
@@ -78,44 +78,13 @@ acul-boilerplate/
 └── scripts/            # Build and deployment scripts
 ```
 
-## Development Workflow
-
-### Standard Mode
-- Uses Auth0's standard rendering mode
-- Runs for a specific screen (e.g., login, login-id)
-- No asset management required
-- Suitable for simple development needs
-
-### Advanced Mode (with HMR)
-1. Start the development server with `npm run screen:advanced <screen-name>`
-2. Make changes to your screen's source files in `src/screens/<screen-name>`
-3. Changes are automatically:
-   - Detected by the file watcher
-   - Rebuilt using Vite
-   - Uploaded to Auth0
-   - Reflected in your browser
-
-The development server handles all the complexity of:
-- Building TypeScript and CSS
-- Managing asset versions
-- Uploading configurations to Auth0
-- Serving assets locally
-
 ## Features
 
 - Multiple authentication flows (Username/Password, Passwordless, Social)
-- Modern development stack (React 19, TypeScript, TailwindCSS)
+- Modern development stack (React 19, TypeScript, TailwindCSS).
 - Integrated Next.js testing environment
 - Optimized development workflow with smart HMR
-
-## Troubleshooting
-
-- **Port already in use**: Stop any existing processes using ports 3032 or 3001
-- **Authentication errors**: Verify your Auth0 credentials in `.env.local`
-- **Screen not found**: Ensure your screen directory exists in `src/screens`
-- **Invalid screen name**: Use only screen names that match your directory names in `src/screens`
-- **Token expired errors**: The system will automatically refresh expired tokens
-- **JavaScript errors in Auth0**: Check browser console for specific errors. If you see module-related errors, ensure the asset uploader is correctly setting `type="module"` for script tags
+- Theme configuration.
 
 ## Technical Details
 
@@ -227,17 +196,6 @@ The development server handles all the complexity of:
    - Starts Next.js development server
    - Starts file watcher for automatic rebuilds
 </details>
-
-## Development Notes
-
-- The server automatically handles Ctrl+C (SIGINT) for graceful shutdown
-- Each server restart will:
-  - Get a fresh auth token
-  - Upload screen configurations
-  - Start development servers
-- In advanced mode, file changes are automatically detected and deployed
-- Auth tokens are intelligently managed to minimize API calls
-- JavaScript files are loaded as ES modules with `type="module"` to support modern syntax
 
 ## License
 

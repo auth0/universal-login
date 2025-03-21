@@ -2,6 +2,7 @@ import React from 'react';
 import Button from '../../../components/common/Button';
 import Input from '../../../components/common/Input';
 import Captcha from '../../../components/common/Captcha';
+import './login.css';
 
 interface LoginFormProps {
   usernameRef: React.RefObject<HTMLInputElement>;
@@ -17,6 +18,9 @@ interface LoginFormProps {
   usernamePlaceholder?: string;
   passwordPlaceholder?: string;
   captchaPlaceholder?: string;
+  resetPasswordLink?: string;
+  resetPasswordText?: string;
+  onResetPasswordClick?: (e: React.MouseEvent<HTMLAnchorElement>, path: string) => void;
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({
@@ -32,7 +36,10 @@ const LoginForm: React.FC<LoginFormProps> = ({
   buttonText = "Continue",
   usernamePlaceholder = "Username or email address",
   passwordPlaceholder = "Password",
-  captchaPlaceholder = "Enter the code shown above"
+  captchaPlaceholder = "Enter the code shown above",
+  resetPasswordLink,
+  resetPasswordText = "Forgot password?",
+  onResetPasswordClick
 }) => {
   // Store country information for potential future use
   React.useEffect(() => {
@@ -44,37 +51,31 @@ const LoginForm: React.FC<LoginFormProps> = ({
   }, [countryCode, countryPrefix]);
 
   return (
-    <div className="auth0-form">
+    <form onSubmit={onSubmit} className="auth0-form">
       {/* Username/Email Input */}
-      <Input
-        id="username"
-        placeholder={usernamePlaceholder}
-        type="text"
-        autoComplete="username"
-        required
-        {...{ ref: usernameRef } as any}
-        icon={
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" style={{ color: 'var(--color-icons, #65676e)' }}>
-            <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-          </svg>
-        }
-      />
+      <div className="auth0-input-wrapper">
+        <Input
+          id="username"
+          placeholder={usernamePlaceholder}
+          type="text"
+          autoComplete="username"
+          required
+          {...{ ref: usernameRef } as any}
+        />
+      </div>
 
       {/* Password Input */}
-      <Input
-        id="password"
-        placeholder={passwordPlaceholder}
-        type="password"
-        autoComplete="current-password"
-        required
-        showPasswordToggle
-        {...{ ref: passwordRef } as any}
-        icon={
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" style={{ color: 'var(--color-icons, #65676e)' }}>
-            <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
-          </svg>
-        }
-      />
+      <div className="auth0-input-wrapper">
+        <Input
+          id="password"
+          placeholder={passwordPlaceholder}
+          type="password"
+          autoComplete="current-password"
+          required
+          showPasswordToggle
+          {...{ ref: passwordRef } as any}
+        />
+      </div>
 
       {/* Captcha */}
       {isCaptchaAvailable && (
@@ -85,18 +86,30 @@ const LoginForm: React.FC<LoginFormProps> = ({
         />
       )}
 
+      {/* Reset Password Link */}
+      {resetPasswordLink && resetPasswordText && (
+        <div className="auth0-forgot-password">
+          <a 
+            href={resetPasswordLink}
+            onClick={(e) => onResetPasswordClick ? onResetPasswordClick(e, resetPasswordLink) : undefined}
+          >
+            <strong>{resetPasswordText}</strong>
+          </a>
+        </div>
+      )}
+
       {/* Submit Button */}
       <div className="auth0-button-container">
         <Button 
-          onClick={onSubmit} 
+          type="submit"
+          variant="primary"
           fullWidth
           isLoading={isLoading}
-          className="auth0-continue-button"
         >
           {buttonText}
         </Button>
       </div>
-    </div>
+    </form>
   );
 };
 

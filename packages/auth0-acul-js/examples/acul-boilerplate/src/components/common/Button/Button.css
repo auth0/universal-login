@@ -1,0 +1,56 @@
+/* Common button styles */
+.auth0-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border-radius: var(--border-button-radius, 4px);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  height: 40px;
+  transition: all 0.2s ease;
+}
+
+/* Primary button */
+.auth0-button-primary {
+  background-color: var(--auth0-primary-color, #635dff);
+  color: var(--auth0-button-text-color, white);
+  border: 1px solid var(--auth0-primary-color, #635dff);
+}
+
+.auth0-button-primary:hover:not(:disabled) {
+  background-color: var(--auth0-primary-color-dark, #4b45c5);
+  border-color: var(--auth0-primary-color-dark, #4b45c5);
+}
+
+/* Secondary button */
+.auth0-button-secondary {
+  background-color: white;
+  color: var(--auth0-text-color, #1e212a);
+  border: 1px solid var(--auth0-border-color, #d1d5db);
+}
+
+.auth0-button-secondary:hover:not(:disabled) {
+  background-color: #f9fafb;
+}
+
+/* Width and state modifiers */
+.auth0-button-fullwidth {
+  width: 100%;
+}
+
+.auth0-button-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Spinner */
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+} 

@@ -1,27 +1,28 @@
 import React from 'react';
-import LoginForm, { LoginFormProps } from '../../organisms/LoginForm';
-import SocialLoginGroup, { SocialLoginGroupProps } from '../../organisms/SocialLoginGroup';
-import './LoginTemplate.css';
+import './AuthScreen.css';
 
-export interface LoginTemplateProps {
+export interface AuthScreenTemplateProps {
   title?: string;
   description?: string;
   logo?: React.ReactNode;
-  formProps: LoginFormProps;
-  socialLoginProps?: SocialLoginGroupProps;
-  footerLinks?: React.ReactNode;
   errorMessages?: React.ReactNode;
+  formContent: React.ReactNode;
+  footerLinks?: React.ReactNode;
   className?: string;
 }
 
-const LoginTemplate: React.FC<LoginTemplateProps> = ({
+/**
+ * A generic authentication screen template that can be used for login, login-id,
+ * and other authentication flows. This provides consistent layout and styling
+ * across different authentication screens.
+ */
+const AuthScreenTemplate: React.FC<AuthScreenTemplateProps> = ({
   title,
   description,
   logo,
-  formProps,
-  socialLoginProps,
-  footerLinks,
   errorMessages,
+  formContent,
+  footerLinks,
   className = '',
 }) => {
   return (
@@ -58,10 +59,7 @@ const LoginTemplate: React.FC<LoginTemplateProps> = ({
               </div>
             )}
             
-            <LoginForm {...formProps} />
-            
-            {socialLoginProps && <SocialLoginGroup {...socialLoginProps} />}
-
+            {formContent}
           </div>
           
           {footerLinks && (
@@ -75,4 +73,4 @@ const LoginTemplate: React.FC<LoginTemplateProps> = ({
   );
 };
 
-export default LoginTemplate; 
+export default AuthScreenTemplate; 

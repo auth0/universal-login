@@ -1,0 +1,68 @@
+/* Login form styles */
+.auth0-form {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.auth0-input-wrapper {
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.auth0-input-wrapper input {
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.auth0-captcha {
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.auth0-captcha-image {
+  margin-bottom: 8px;
+  border: 1px solid #e3e3e3;
+  border-radius: 4px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.auth0-button-container {
+  margin-top: 24px;
+  width: 100%;
+}
+
+/* Forgot password link */
+.auth0-forgot-password {
+  display: block;
+  text-align: left;
+  margin: 8px 0 16px;
+  font-size: 14px;
+}
+
+.auth0-forgot-password a {
+  color: #635dff;
+  text-decoration: none;
+}
+
+.auth0-forgot-password a:hover {
+  text-decoration: underline;
+}
+
+/* Error message styling */
+.auth0-error-message-container {
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.auth0-error-message {
+  background-color: rgba(208, 60, 56, 0.1);
+  border: 1px solid #d03c38;
+  color: #d03c38;
+  padding: 10px 12px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+} 

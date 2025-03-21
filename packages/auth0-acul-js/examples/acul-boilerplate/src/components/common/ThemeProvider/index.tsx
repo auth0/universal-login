@@ -519,6 +519,60 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children, instance: scree
       defaultValue: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif'
     });
     
+    // Set UI component colors from theme
+    const primaryResult = getValueWithFallback(theme, ['colors.primary'], '#635dff');
+    const primaryDarkResult = getValueWithFallback(theme, ['colors.primary_dark'], '#4b45c5');
+    const primaryLightResult = getValueWithFallback(theme, ['colors.primary_light'], '#8a85ff');
+    const buttonTextColorResult = getValueWithFallback(theme, ['colors.button_text'], '#ffffff');
+    
+    // Set primary color values
+    root.style.setProperty('--auth0-primary-color', primaryResult.value);
+    themeVariables.push({
+      cssVariable: '--auth0-primary-color',
+      value: primaryResult.value,
+      source: primaryResult.source,
+      path: primaryResult.path,
+      firstPreference: 'branding.themes.default.colors.primary',
+      firstPreferenceValue: theme.colors?.primary,
+      defaultValue: '#635dff'
+    });
+    
+    // Set primary dark color value (for hover states)
+    root.style.setProperty('--auth0-primary-color-dark', primaryDarkResult.value);
+    themeVariables.push({
+      cssVariable: '--auth0-primary-color-dark',
+      value: primaryDarkResult.value,
+      source: primaryDarkResult.source,
+      path: primaryDarkResult.path,
+      firstPreference: 'branding.themes.default.colors.primary_dark',
+      firstPreferenceValue: theme.colors?.primary_dark,
+      defaultValue: '#4b45c5'
+    });
+    
+    // Set primary light color value
+    root.style.setProperty('--auth0-primary-color-light', primaryLightResult.value);
+    themeVariables.push({
+      cssVariable: '--auth0-primary-color-light',
+      value: primaryLightResult.value,
+      source: primaryLightResult.source,
+      path: primaryLightResult.path,
+      firstPreference: 'branding.themes.default.colors.primary_light',
+      firstPreferenceValue: theme.colors?.primary_light,
+      defaultValue: '#8a85ff'
+    });
+    
+    // Set button text color value
+    root.style.setProperty('--auth0-button-text-color', buttonTextColorResult.value);
+    themeVariables.push({
+      cssVariable: '--auth0-button-text-color',
+      value: buttonTextColorResult.value,
+      source: buttonTextColorResult.source,
+      path: buttonTextColorResult.path,
+      firstPreference: 'branding.themes.default.colors.button_text',
+      firstPreferenceValue: theme.colors?.button_text,
+      defaultValue: '#ffffff'
+    });
+    
     // Create a simplified version of the theme variables for the console table
     const tableData = themeVariables.map(variable => ({
       'CSS Variable': variable.cssVariable,

@@ -10,6 +10,9 @@
 @import './styles/custom.css';
 
 /* Import component-specific styles */
-@import './components/templates/LoginTemplate/LoginTemplate.css';
+@import './components/templates/AuthScreen/AuthScreen.css';
 @import './components/organisms/LoginForm/LoginForm.css';
 @import './components/molecules/FormField/FormField.css';
+@import './components/common/Input/Input.css';
+@import './components/common/Button/Button.css';
+@import './screens/login-id/components/login-id.css';

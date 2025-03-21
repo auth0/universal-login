@@ -1,0 +1,177 @@
+/* Simple login ID form styles */
+.auth0-form {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.auth0-input-wrapper {
+  width: 100%;
+}
+
+.auth0-input-wrapper input {
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.auth0-captcha {
+  width: 100%;
+}
+
+.auth0-captcha-image {
+  margin-bottom: 8px;
+  border: 1px solid #e3e3e3;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.auth0-button-container {
+  width: 100%;
+}
+
+/* Button styling */
+.auth0-button-container button {
+  width: 100%;
+}
+
+/* Error message styling */
+.auth0-error-message-container {
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.auth0-error-message {
+  background-color: rgba(208, 60, 56, 0.1);
+  border: 1px solid #d03c38;
+  color: #d03c38;
+  padding: 10px 12px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.auth0-error-message-icon {
+  margin-right: 8px;
+  font-weight: bold;
+}
+
+.auth0-error-message-text {
+  font-size: 14px;
+}
+
+/* Links styling */
+.auth0-alternate-action-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  color: #1e212a;
+  font-size: 14px;
+}
+
+.auth0-alternate-link {
+  color: #635dff;
+  text-decoration: none;
+}
+
+.auth0-alternate-link:hover {
+  text-decoration: underline;
+}
+
+/* Forgot password link */
+.auth0-forgot-password {
+  display: block;
+  text-align: center;
+  margin: 16px 0;
+  font-size: 14px;
+}
+
+.auth0-forgot-password-left {
+  text-align: left !important;
+}
+
+.auth0-forgot-password a {
+  color: #635dff;
+  text-decoration: none;
+}
+
+.auth0-forgot-password a:hover {
+  text-decoration: underline;
+}
+
+/* Can't log in link */
+.auth0-cant-login {
+  display: block;
+  text-align: right;
+  margin-top: 6px;
+  font-size: 14px;
+}
+
+.auth0-cant-login a {
+  color: #635dff;
+  text-decoration: none;
+}
+
+.auth0-cant-login a:hover {
+  text-decoration: underline;
+}
+
+/* OR separator */
+.auth0-separator {
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.auth0-separator::before,
+.auth0-separator::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #e3e3e3;
+}
+
+.auth0-separator span {
+  padding: 0 12px;
+  color: #8c8c8c;
+  font-size: 14px;
+}
+
+/* Passkey Button Styles */
+.auth0-passkey-button-container {
+  margin-top: 0.5rem;
+}
+
+.auth0-passkey-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  background-color: white;
+  border: 1px solid #d1d5db;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #111827;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.auth0-passkey-button:hover {
+  background-color: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.auth0-passkey-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(99, 93, 255, 0.3);
+}
+
+/* AuthScreen adjustments */
+.auth0-widget-content {
+  padding: 24px 24px !important;
+}
+
+.auth0-title {
+  margin-bottom: 0.75rem;
+} 

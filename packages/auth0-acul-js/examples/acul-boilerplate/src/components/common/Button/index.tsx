@@ -1,4 +1,5 @@
 import React, { ButtonHTMLAttributes } from 'react';
+import './Button.css';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary';
@@ -21,7 +22,7 @@ const Button: React.FC<ButtonProps> = ({
   const widthClass = fullWidth ? "auth0-button-fullwidth" : "";
   const disabledClass = (isLoading || props.disabled) ? "auth0-button-disabled" : "";
   
-  const buttonClasses = `${variantClass} ${widthClass} ${disabledClass} ${className}`;
+  const buttonClasses = `auth0-button ${variantClass} ${widthClass} ${disabledClass} ${className}`;
   
   return (
     <button

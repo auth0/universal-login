@@ -1,32 +1,26 @@
 import React from 'react';
+import { navigateWithCurrentOrigin } from '../../../utils/url';
 
 interface LinksProps {
   signupLink?: string;
   signupText?: string;
   footerText?: string;
+  onLinkClick?: (e: React.MouseEvent<HTMLAnchorElement>, path: string) => void;
 }
 
 const Links: React.FC<LinksProps> = ({ 
   signupLink, 
   signupText = 'Sign up',
-  footerText = "Don't have an account?"
+  footerText = "Don't have an account?",
+  onLinkClick
 }) => {
-  // Function to ensure links use the current page's base URL
-  const getAbsoluteUrl = (url: string) => {
-    if (!url) return '';
-    
-    // If the URL is already absolute, return it as is
-    if (url.startsWith('http://') || url.startsWith('https://')) {
-      return url;
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, url: string) => {
+    e.preventDefault();
+    if (onLinkClick) {
+      onLinkClick(e, url);
+    } else {
+      navigateWithCurrentOrigin(url);
     }
-    
-    // Get the current page's base URL
-    const baseUrl = window.location.origin;
-    
-    // Ensure the URL starts with a slash
-    const normalizedUrl = url.startsWith('/') ? url : `/${url}`;
-    
-    return `${baseUrl}${normalizedUrl}`;
   };
 
   return (
@@ -35,8 +29,12 @@ const Links: React.FC<LinksProps> = ({
         {signupLink && (
           <div>
             <span className="auth0-footer-text">{footerText}</span>
-            <a href={getAbsoluteUrl(signupLink)} className="auth0-link">
-              {signupText}
+            <a 
+              href={signupLink}
+              className="auth0-link"
+              onClick={(e) => handleLinkClick(e, signupLink)}
+            >
+              <strong>{signupText}</strong>
             </a>
           </div>
         )}

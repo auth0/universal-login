@@ -3,10 +3,12 @@ import { useLoginManager } from './hooks/useLoginManager';
 import { useLoginForm } from './hooks/useLoginForm';
 import ThemeProvider from '../../components/common/ThemeProvider';
 import Logo from '../../components/common/Logo';
-import LoginTemplate from '../../components/templates/LoginTemplate';
+import LoginForm from './components/LoginForm';
+import SocialLoginGroup, { Connection } from '../../components/organisms/SocialLoginGroup';
 import Links from './components/Links';
 import ErrorMessages from './components/ErrorMessages';
-import { Connection } from '../../components/organisms/SocialLoginGroup';
+import AuthScreenTemplate from '../../components/templates/AuthScreen';
+import { navigateWithCurrentOrigin } from '../../utils/url';
 
 // Define the type for the connections from loginInstance
 interface LoginConnection {
@@ -26,6 +28,12 @@ const LoginScreen: React.FC = () => {
     handleLogin(username, password, captcha);
   };
 
+  // Handle link click (works for both reset password and signup links)
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
+    e.preventDefault();
+    navigateWithCurrentOrigin(path);
+  };
+
   // Extract texts from loginInstance
   const texts = loginInstance.screen?.texts || {};
   const isCaptchaAvailable = !!loginInstance.screen?.captcha;
@@ -36,7 +44,7 @@ const LoginScreen: React.FC = () => {
   const errors = loginInstance.transaction?.errors || [];
   const hasErrors = !!loginInstance.transaction?.hasErrors;
 
-  // Prepare props for LoginTemplate
+  // Prepare props for LoginForm
   const formProps = {
     usernameRef,
     passwordRef,
@@ -45,12 +53,13 @@ const LoginScreen: React.FC = () => {
     isLoading: false,
     isCaptchaAvailable,
     captchaImage,
-    buttonText: texts.buttonText,
+    buttonText: texts.buttonText || 'Continue',
     usernamePlaceholder: texts.usernameOrEmailPlaceholder || texts.phoneOrUsernameOrEmailPlaceholder || 'Username or Email',
-    passwordPlaceholder: texts.passwordPlaceholder,
-    captchaPlaceholder: texts.captchaCodePlaceholder,
-    resetPasswordLink: resetPasswordLink,
-    resetPasswordText: texts.forgotPasswordText,
+    passwordPlaceholder: texts.passwordPlaceholder || 'Password',
+    captchaPlaceholder: texts.captchaCodePlaceholder || 'Enter the code shown above',
+    resetPasswordLink,
+    resetPasswordText: texts.forgotPasswordText || 'Forgot password?',
+    onResetPasswordClick: handleLinkClick
   };
 
   const socialLoginProps = connections.length > 0 ? {
@@ -67,23 +76,31 @@ const LoginScreen: React.FC = () => {
   const footerLinks = (
     <Links
       signupLink={signupLink}
-      signupText={texts.signupActionLinkText}
-      footerText={texts.footerText}
+      signupText={texts.signupActionLinkText || 'Sign up'}
+      footerText={texts.footerText || "Don't have an account?"}
+      onLinkClick={handleLinkClick}
     />
   );
 
   const errorMessages = hasErrors ? <ErrorMessages errors={errors} /> : undefined;
 
+  // Render form content with social login options if available
+  const formContent = (
+    <>
+      <LoginForm {...formProps} />
+      {socialLoginProps && <SocialLoginGroup {...socialLoginProps} />}
+    </>
+  );
+
   return (
     <ThemeProvider instance={loginInstance}>
-      <LoginTemplate
+      <AuthScreenTemplate
         title={texts.title}
         description={texts.description}
         logo={<Logo instance={loginInstance} />}
-        formProps={formProps}
-        socialLoginProps={socialLoginProps}
-        footerLinks={footerLinks}
         errorMessages={errorMessages}
+        formContent={formContent}
+        footerLinks={footerLinks}
       />
     </ThemeProvider>
   );

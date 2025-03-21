@@ -194,7 +194,7 @@
 .auth0-input-container {
   position: relative;
   width: 100%;
-  margin-bottom: var(--spacing-sm, 0.5rem);
+  /* margin-bottom: var(--spacing-sm, 0.5rem); */
 }
 
 /* Add highlighting for password input when showing password */
