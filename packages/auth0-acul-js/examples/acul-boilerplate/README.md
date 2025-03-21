@@ -115,6 +115,7 @@ The development server handles all the complexity of:
 - **Screen not found**: Ensure your screen directory exists in `src/screens`
 - **Invalid screen name**: Use only screen names that match your directory names in `src/screens`
 - **Token expired errors**: The system will automatically refresh expired tokens
+- **JavaScript errors in Auth0**: Check browser console for specific errors. If you see module-related errors, ensure the asset uploader is correctly setting `type="module"` for script tags
 
 ## Technical Details
 
@@ -169,11 +170,13 @@ The development server handles all the complexity of:
    - Same as standard mode
 
 2. **Build Process**
-   - Compiles assets to `dist/` directory
-   - Generates JavaScript bundles and CSS files
+   - Compiles assets to `dist/assets/` directory
+   - Generates JavaScript bundles (main and vendor) and CSS files
+   - Applies code splitting for better performance
 
 3. **Asset Discovery**
-   - Scans `dist/` directory for JS and CSS files
+   - Scans `dist/assets/` directory for JS and CSS files
+   - Identifies main bundle, vendor bundle, and CSS files
    - Prepares asset URLs for configuration
 
 4. **Advanced Configuration Upload**
@@ -188,17 +191,31 @@ The development server handles all the complexity of:
      "default_head_tags_disabled": false,
      "head_tags": [
        {
-         "tag": "script",
-         "attributes": {
-           "src": "http://127.0.0.1:3032/main.js",
-           "defer": true
-         }
-       },
-       {
          "tag": "link",
          "attributes": {
            "rel": "stylesheet",
-           "href": "http://127.0.0.1:3032/main.css"
+           "href": "http://127.0.0.1:3032/assets/style.[hash].css"
+         }
+       },
+       {
+         "tag": "meta",
+         "attributes": {
+           "name": "viewport",
+           "content": "width=device-width, initial-scale=1"
+         }
+       },
+       {
+         "tag": "script",
+         "attributes": {
+           "src": "http://127.0.0.1:3032/assets/vendor.[hash].js",
+           "type": "module"
+         }
+       },
+       {
+         "tag": "script",
+         "attributes": {
+           "src": "http://127.0.0.1:3032/assets/index.[hash].js",
+           "type": "module"
          }
        }
      ]
@@ -220,6 +237,7 @@ The development server handles all the complexity of:
   - Start development servers
 - In advanced mode, file changes are automatically detected and deployed
 - Auth tokens are intelligently managed to minimize API calls
+- JavaScript files are loaded as ES modules with `type="module"` to support modern syntax
 
 ## License
 

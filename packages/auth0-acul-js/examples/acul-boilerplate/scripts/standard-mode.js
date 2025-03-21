@@ -1,5 +1,5 @@
 import { validateScreenName } from './utils/screenManager.js';
-import { uploadScreenConfig } from './utils/auth0Api.js';
+import { uploadScreenConfig } from './utils/auth0TokenFetch.js';
 import { startServers } from './server.js';
 
 // Main function for standard mode

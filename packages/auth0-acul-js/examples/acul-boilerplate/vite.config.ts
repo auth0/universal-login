@@ -1,19 +1,33 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
-import tailwindcss from '@tailwindcss/vite'
+import tailwindcss from '@tailwindcss/vite';
+import fs from 'fs';
 
-// Screen definitions - easier to add new screens here
-// const screens = [
-//   'Login',
-//   // Add more screens as needed
-// ];
+// Dynamically discover screen directories
+const screensDir = resolve(__dirname, 'src/screens');
+const screenEntries: Record<string, string> = {};
+
+// Only add screens that exist in the src/screens directory
+if (fs.existsSync(screensDir)) {
+  const screenDirs = fs.readdirSync(screensDir, { withFileTypes: true })
+    .filter(dirent => dirent.isDirectory())
+    .map(dirent => dirent.name);
+  
+  // Create an entry point for each screen
+  screenDirs.forEach(screen => {
+    const entryFile = resolve(screensDir, screen, 'index.tsx');
+    if (fs.existsSync(entryFile)) {
+      screenEntries[screen] = entryFile;
+    }
+  });
+}
 
 export default defineConfig({
-  plugins: [react(), tailwindcss(),],
+  plugins: [react(), tailwindcss()],
   server: {
     port: 3032,
-    strictPort: true, // Force the specified port
+    strictPort: true,
     watch: {
       usePolling: true,
     },
@@ -30,80 +44,57 @@ export default defineConfig({
     },
   },
   build: {
-    // rollupOptions: {
-    //   input: {
-    //     main: resolve(__dirname, 'index.html'),
-    //   },
-    //   output: {
-    //     manualChunks: (id) => {
-    //       // Create a 'vendor' chunk for node_modules
-    //       if (id.includes('node_modules')) {
-    //         if (id.includes('react') || 
-    //             id.includes('react-dom') || 
-    //             id.includes('react-router-dom') ||
-    //             id.includes('@auth0')) {
-    //           return 'common';
-    //         }
-    //         return 'vendor';
-    //       }
-
-    //       // Create separate chunks for each screen
-    //       for (const screen of screens) {
-    //         if (id.includes(`/screens/${screen}/`)) {
-    //           return `screen-${screen.toLowerCase()}`;
-    //         }
-    //       }
-
-    //       // Create a chunk for common components
-    //       if (id.includes('/components/common/')) {
-    //         return 'common-components';
-    //       }
-    //     },
-    //     // Configure the output filenames
-    //     entryFileNames: (chunkInfo) => {
-    //       // For main entry
-    //       if (chunkInfo.name === 'main') {
-    //         return 'assets/[name]-[hash].js';
-    //       }
-    //       return 'assets/[name]/[name]-[hash].js';
-    //     },
-    //     chunkFileNames: (chunkInfo) => {
-    //       // Special handling for screen chunks
-    //       if (chunkInfo.name?.startsWith('screen-')) {
-    //         const screenName = chunkInfo.name.replace('screen-', '');
-    //         return `assets/${screenName}/${screenName}-[hash].js`;
-    //       }
-    //       // For common and vendor chunks
-    //       return 'assets/[name]/[name]-[hash].js';
-    //     },
-    //     assetFileNames: (assetInfo) => {
-    //       // Handle CSS files
-    //       if (assetInfo.name?.endsWith('.css')) {
-    //         // Check if this CSS is part of a screen
-    //         for (const screen of screens) {
-    //           const screenLower = screen.toLowerCase();
-    //           if (assetInfo.name.includes(screenLower)) {
-    //             return `assets/${screenLower}/${screenLower}-[hash][extname]`;
-    //           }
-    //         }
-    //         return 'assets/[name]-[hash][extname]';
-    //       }
-    //       return 'assets/[name]-[hash][extname]';
-    //     },
-    //   },
-    // },
     rollupOptions: {
+      // Use multiple entry points - one for each screen
+      input: {
+        ...screenEntries,
+        // Include the main entry point for shared code
+        main: resolve(__dirname, 'index.html'),
+      },
       output: {
-        // Generate hashed filenames for better cache control
-        entryFileNames: "index-[hash].js",
-        assetFileNames: "index-[hash][extname]",
-        manualChunks: () => "index", // Force single chunk but allow for hashing
+        // Organize files into screen-specific directories
+        entryFileNames: (chunkInfo) => {
+          // For screen entries, place in screen-specific directories
+          if (screenEntries[chunkInfo.name]) {
+            return `assets/${chunkInfo.name}/index.[hash].js`;
+          }
+          // For main entry
+          return 'assets/main.[hash].js';
+        },
+        chunkFileNames: (chunkInfo) => {
+          // For chunks that belong to screens
+          if (chunkInfo.name && screenEntries[chunkInfo.name.split('-')[0]]) {
+            const screenName = chunkInfo.name.split('-')[0];
+            return `assets/${screenName}/[name].[hash].js`;
+          }
+          // For vendor and other shared chunks
+          return 'assets/shared/[name].[hash].js';
+        },
+        assetFileNames: (assetInfo) => {
+          // For CSS files
+          if (assetInfo.name && assetInfo.name.endsWith('.css')) {
+            return 'assets/shared/style.[hash][extname]';
+          }
+          // For other assets
+          return 'assets/shared/[name].[hash][extname]';
+        },
+        // Improved vendor chunk configuration with more dependencies
+        manualChunks: {
+          vendor: [
+            'react', 
+            'react-dom', 
+            'react/jsx-runtime',
+            'react-error-boundary',
+            '@auth0/auth0-acul-js'
+          ],
+          // Common components will be automatically extracted as shared chunks
+        }
       },
     },
     minify: true,
     emptyOutDir: true,
-    cssCodeSplit: false, // Disable CSS code-splitting to bundle CSS in one file
+    cssCodeSplit: false, // Keep CSS in a single file for simplicity
     sourcemap: true,
   },
-  logLevel: 'error' // Only show errors
+  logLevel: 'error'
 });

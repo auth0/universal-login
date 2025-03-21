@@ -4,11 +4,12 @@ import dotenv from 'dotenv';
 // Load environment variables
 dotenv.config({ path: '.env.local' });
 
-// Token storage - simple, no expiration tracking
+// Token storage with simple caching
 let cachedToken = null;
 
 /**
  * Gets an Auth0 Management API token
+ * 
  * @param {boolean} forceRefresh - Whether to force a token refresh
  * @returns {Promise<string>} - The Auth0 token
  */
@@ -18,13 +19,20 @@ export const getAuthToken = async (forceRefresh = false) => {
     return cachedToken;
   }
 
-  const requiredVars = ['AUTH0_M2M_DOMAIN', 'AUTH0_M2M_CLIENT_ID', 'AUTH0_M2M_CLIENT_SECRET'];
+  // Validate required environment variables
+  const requiredVars = [
+    'AUTH0_M2M_DOMAIN', 
+    'AUTH0_M2M_CLIENT_ID', 
+    'AUTH0_M2M_CLIENT_SECRET'
+  ];
+  
   const missingVars = requiredVars.filter(v => !process.env[v]);
   
   if (missingVars.length > 0) {
     throw new Error(`Missing environment variables: ${missingVars.join(', ')}`);
   }
 
+  // Prepare request data
   const url = `${process.env.AUTH0_M2M_DOMAIN}/oauth/token`;
   const body = {
     client_id: process.env.AUTH0_M2M_CLIENT_ID,
@@ -36,10 +44,12 @@ export const getAuthToken = async (forceRefresh = false) => {
   console.log('\n🔑 Fetching Auth0 token...');
   
   try {
+    // Request token from Auth0
     const response = await axios.post(url, body, {
       headers: { 'content-type': 'application/json' }
     });
 
+    // Validate response
     if (!response.data?.access_token) {
       throw new Error('Invalid response: Missing access token');
     }
@@ -56,8 +66,10 @@ export const getAuthToken = async (forceRefresh = false) => {
 
 /**
  * Uploads screen configuration to Auth0
+ * 
  * @param {string} screenName - The name of the screen to configure
  * @param {object} config - The configuration to upload
+ * @returns {Promise<void>}
  */
 export const uploadScreenConfig = async (screenName, config) => {
   try {
@@ -69,12 +81,8 @@ export const uploadScreenConfig = async (screenName, config) => {
     const url = `${domain}/api/v2/prompts/${screenName}/screen/${screenName}/rendering`;
     
     try {
-      await axios.patch(url, config, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
+      // First attempt with current token
+      await uploadConfig(url, token, config);
       console.log(`✅ Configuration uploaded for ${screenName}`);
     } catch (error) {
       // If we get a 401 Unauthorized, the token might have expired
@@ -85,12 +93,7 @@ export const uploadScreenConfig = async (screenName, config) => {
         token = await getAuthToken(true);
         
         // Try again with a fresh token
-        await axios.patch(url, config, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
+        await uploadConfig(url, token, config);
         console.log(`✅ Configuration uploaded for ${screenName} with refreshed token`);
       } else {
         throw error;
@@ -99,4 +102,21 @@ export const uploadScreenConfig = async (screenName, config) => {
   } catch (error) {
     throw new Error(`Failed to upload configuration: ${error.message}`);
   }
-}; 
+};
+
+/**
+ * Helper function to upload configuration to Auth0
+ * 
+ * @param {string} url - The API endpoint URL
+ * @param {string} token - The Auth0 token
+ * @param {object} config - The configuration to upload
+ * @returns {Promise<void>}
+ */
+async function uploadConfig(url, token, config) {
+  return axios.patch(url, config, {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
+  });
+} 
