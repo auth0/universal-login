@@ -4,22 +4,58 @@ This project provides a boilerplate setup for Auth0's Advanced Custom Universal 
 
 ## Prerequisites
 
-Before you begin, ensure you have completed the following Auth0 setup steps:
+### Development Prerequisites
 
-1. **Custom Domain Setup**
+1. **Repository Setup**
+   - Clone the universal-login repository:
+     ```bash
+     git clone https://github.com/auth0/universal-login.git
+     cd universal-login
+     ```
+
+2. **Node.js Environment**
+   - Node.js version 20 or above is required
+   - Check your current version: `node -v`
+   - We recommend using NVM (Node Version Manager) to manage Node.js versions:
+     - Install NVM:
+       - For macOS/Linux: `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash`
+       - For Windows: Install [nvm-windows](https://github.com/coreybutler/nvm-windows)
+     - Install and use Node.js v20:
+       ```bash
+       nvm install 20
+       nvm use 20
+       ```
+
+3. **Dependencies Installation**
+   - Install dependencies for both the main project and Next.js app:
+     ```bash
+     npm install
+     cd nextjs-quickstart && npm install
+     cd ..
+     ```
+
+### Auth0 Prerequisites
+
+1. **Auth0 Tenant**
+   - Create a new Auth0 tenant. This is important! Using a new tenant ensures you don't encounter conflicts with existing configurations.
+   - You can sign up for a free Auth0 account at [https://auth0.com/signup](https://auth0.com/signup)
+   - See [Create Tenants](https://auth0.com/docs/get-started/auth0-overview/create-tenants) in the Auth0 docs if you need help
+
+2. **Custom Domain Setup**
    - Enable and configure a [custom domain](https://auth0.com/docs/customize/custom-domains) for your Auth0 tenant
    - Verify the custom domain is working properly
    - This is required for ACUL functionality
 
-2. **Regular Web Application**
+3. **Regular Web Application**
    - Create a new [Regular Web Application](https://auth0.com/docs/get-started/auth0-overview/create-applications) in Auth0
    - Configure the following settings:
      - Allowed Callback URLs: `http://localhost:3000/api/auth/callback`
      - Allowed Logout URLs: `http://localhost:3000`
      - Allowed Web Origins: `http://localhost:3000`
    - This application will be used by the Next.js quickstart for authentication testing
+   - Follow the [Next.js Quickstart guide](https://auth0.com/docs/quickstart/webapp/nextjs/01-login) for additional configuration help
 
-3. **Machine-to-Machine (M2M) Application**
+4. **Machine-to-Machine (M2M) Application**
    - Create a new M2M application in Auth0
    - Grant the following permissions:
      - `read:prompts`
@@ -49,13 +85,7 @@ Before you begin, ensure you have completed the following Auth0 setup steps:
    AUTH0_M2M_AUDIENCE='YOUR_M2M_API_IDENTIFIER'
    ```
 
-2. Install dependencies:
-   ```bash
-   npm install
-   cd nextjs-quickstart && npm install
-   ```
-
-3. Start development:
+2. Start development:
    ```bash
    # Standard mode (single screen)
    npm run screen:standard <screen_name>

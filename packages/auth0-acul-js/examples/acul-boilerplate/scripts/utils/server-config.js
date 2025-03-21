@@ -1,6 +1,9 @@
 import net from 'net';
 
-// Development server configuration
+/**
+ * Development server configuration
+ * Defines ports and network settings for the application
+ */
 export const CONFIG = {
   port: 3032,  // Port for serving static assets
   apiPort: 3001  // Port for the Next.js API server

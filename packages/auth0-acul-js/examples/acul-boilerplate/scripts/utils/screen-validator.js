@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { logger } from './logger.js';
 
 /**
  * Gets a list of available screen folders from the src/screens directory
@@ -11,7 +12,7 @@ export const getScreenFolders = () => {
       .filter(dirent => dirent.isDirectory())
       .map(dirent => dirent.name.toLowerCase());
   } catch (error) {
-    console.error('❌ Error reading screens folder:', error.message);
+    logger.error('Error reading screens folder', error);
     return [];
   }
 };
@@ -20,7 +21,8 @@ export const getScreenFolders = () => {
  * Validates that a screen name exists and is valid
  * @param {string} screenName - The name of the screen to validate
  * @param {string} mode - The mode (standard or advanced) being used
- * @returns {string[]} - Array of all available screens
+ * @throws {Error} - If screen name is invalid or not found
+ * @returns {boolean} - Returns true if valid
  */
 export const validateScreenName = (screenName, mode) => {
   if (!screenName) {
@@ -30,9 +32,9 @@ export const validateScreenName = (screenName, mode) => {
   const screens = getScreenFolders();
   
   if (!screens.includes(screenName)) {
-    throw new Error(`Screen "${screenName}" not found in src/screens directory`);
+    throw new Error(`Screen "${screenName}" not found in src/screens directory. Available screens: ${screens.join(', ')}`);
   }
   
-  console.log(`🚀 Starting in ${mode} mode for ${screenName}`);
-  return screens;
+  logger.info(`Starting in ${mode} mode for screen: ${screenName}`);
+  return true;
 }; 
