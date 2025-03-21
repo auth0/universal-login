@@ -1,0 +1,159 @@
+name: ACUL Boilerplate - Build and Deploy
+
+on:
+  pull_request:
+    branches: [master]
+    types: [opened, synchronize]
+    paths:
+      - 'packages/auth0-acul-js/examples/acul-boilerplate/**'
+  workflow_dispatch:
+
+env:
+  WORKING_DIR: packages/auth0-acul-js/examples/acul-boilerplate
+
+jobs:
+  build-and-deploy:
+    if: |
+      github.head_ref == 'feature/acul-boilerplate' ||
+      github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build package
+        uses: ./.github/actions/build
+        with:
+          node-version: '18'
+          working-directory: ${{ env.WORKING_DIR }}
+
+      - name: Verify build artifacts
+        working-directory: ${{ env.WORKING_DIR }}
+        run: |
+          if [ ! -f "dist/index.js" ] || [ ! -f "dist/index.css" ]; then
+            echo "Error: Build artifacts missing"
+            exit 1
+          fi
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_S3_ARN }}
+          aws-region: ap-southeast-2
+          mask-aws-account-id: true
+
+      - name: Upload to S3
+        working-directory: ${{ env.WORKING_DIR }}
+        run: |
+          aws s3 cp ./dist s3://universal-login-sample-app/ --recursive \
+            || { echo "S3 upload failed"; exit 1; }
+
+      - name: Install jq
+        run: |
+          sudo apt-get update && sudo apt-get install jq -y \
+            || { echo "Failed to install jq"; exit 1; }
+
+      - name: Calculate file hashes
+        id: hashes
+        working-directory: ${{ env.WORKING_DIR }}
+        run: |
+          if [ ! -f "dist/index.js" ] || [ ! -f "dist/index.css" ]; then
+            echo "Error: Files not found for hashing"
+            exit 1
+          fi
+          jsHash=$(sha384sum dist/index.js | awk '{print $1}')
+          cssHash=$(sha384sum dist/index.css | awk '{print $1}')
+          echo "JS_HASH=$jsHash" >> $GITHUB_ENV
+          echo "CSS_HASH=$cssHash" >> $GITHUB_ENV
+
+      - name: Generate settings JSON file
+        working-directory: ${{ env.WORKING_DIR }}
+        run: |
+          if [ -z "${{ secrets.CDN_URL }}" ]; then
+            echo "Error: CDN_URL secret is not set"
+            exit 1
+          fi
+          
+          jq -n --arg cdn_url "${{ secrets.CDN_URL }}" \
+                --arg js_hash "$JS_HASH" \
+                --arg css_hash "$CSS_HASH" \
+                '{
+                  "rendering_mode": "advanced",
+                  "context_configuration": [
+                    "branding.settings",
+                    "branding.themes.default"
+                  ],
+                  "default_head_tags_disabled": false,
+                  "head_tags": [
+                    {
+                      "tag": "script",
+                      "attributes": {
+                        "src": ($cdn_url + "/index.js"),
+                        "defer": true,
+                        "integrity": ("sha384-" + $js_hash)
+                      }
+                    },
+                    {
+                      "tag": "link",
+                      "attributes": {
+                        "href": ($cdn_url + "/index.css"),
+                        "rel": "stylesheet",
+                        "integrity": ("sha384-" + $css_hash)
+                      }
+                    },
+                    {
+                      "tag": "meta",
+                      "attributes": {
+                        "name": "viewport",
+                        "content": "width=device-width, initial-scale=1"
+                      }
+                    }
+                  ]
+                }' > settings.json
+
+      - name: Install Auth0 CLI
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/auth0/auth0-cli/main/install.sh -o install.sh
+          sha256sum install.sh
+          chmod +x install.sh
+          ./install.sh -b .
+          sudo mv ./auth0 /usr/local/bin/
+          rm install.sh
+
+      - name: Authorize with Tenant Details
+        run: |
+          if [ -z "${{ secrets.AUTH0_DOMAIN }}" ] || [ -z "${{ secrets.AUTH0_CLIENT_ID }}" ] || [ -z "${{ secrets.AUTH0_CLIENT_SECRET }}" ]; then
+            echo "Error: Required Auth0 secrets are not set"
+            exit 1
+          fi
+          
+          auth0 login \
+            --domain ${{ secrets.AUTH0_DOMAIN }} \
+            --client-id ${{ secrets.AUTH0_CLIENT_ID }} \
+            --client-secret ${{ secrets.AUTH0_CLIENT_SECRET }}
+
+      - name: Update Management API using Auth0 CLI
+        working-directory: ${{ env.WORKING_DIR }}
+        run: |
+          if [ ! -f "settings.json" ]; then
+            echo "Error: settings.json file not found"
+            exit 1
+          fi
+          
+          auth0 ul customize \
+            --rendering-mode advanced \
+            --prompt login \
+            --screen login \
+            --settings-file settings.json
+          echo "Updated Auth0 UI configuration"
+
+      - name: Cleanup
+        if: always()
+        working-directory: ${{ env.WORKING_DIR }}
+        run: |
+          rm -f settings.json
+          rm -rf dist
