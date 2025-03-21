@@ -8,6 +8,7 @@
 /* Import common styles */
 @import './styles/common.css';
 @import './styles/custom.css';
+@import './styles/auth-common.css';
 
 /* Import component-specific styles */
 @import './components/templates/AuthScreen/AuthScreen.css';
@@ -16,3 +17,4 @@
 @import './components/common/Input/Input.css';
 @import './components/common/Button/Button.css';
 @import './screens/login-id/components/login-id.css';
+@import './components/common/SignupLink/SignupLink.css';

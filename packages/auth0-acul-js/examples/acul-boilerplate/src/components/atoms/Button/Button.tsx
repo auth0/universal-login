@@ -8,6 +8,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   className?: string;
+  'data-provider'?: string;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -20,6 +21,7 @@ const Button: React.FC<ButtonProps> = ({
   className = '',
   children,
   disabled,
+  'data-provider': dataProvider,
   ...rest
 }) => {
   const baseClass = variant === 'primary' ? 'auth0-button-primary' : 'auth0-button-secondary';
@@ -32,6 +34,7 @@ const Button: React.FC<ButtonProps> = ({
     <button
       className={combinedClassName}
       disabled={isLoading || disabled}
+      data-provider={dataProvider}
       {...rest}
     >
       {isLoading ? (

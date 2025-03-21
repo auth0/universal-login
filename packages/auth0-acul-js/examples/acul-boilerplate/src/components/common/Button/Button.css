@@ -14,14 +14,14 @@
 
 /* Primary button */
 .auth0-button-primary {
-  background-color: var(--auth0-primary-color, #635dff);
-  color: var(--auth0-button-text-color, white);
-  border: 1px solid var(--auth0-primary-color, #635dff);
+  background-color: var(--color-primary, var(--auth0-primary-color, #635dff));
+  color: var(--color-primary-button-label, #ffffff);
+  border: 1px solid var(--color-primary, var(--auth0-primary-color, #635dff));
 }
 
 .auth0-button-primary:hover:not(:disabled) {
-  background-color: var(--auth0-primary-color-dark, #4b45c5);
-  border-color: var(--auth0-primary-color-dark, #4b45c5);
+  background-color: var(--color-primary-dark, var(--auth0-primary-color-dark, #4b45c5));
+  border-color: var(--color-primary-dark, var(--auth0-primary-color-dark, #4b45c5));
 }
 
 /* Secondary button */

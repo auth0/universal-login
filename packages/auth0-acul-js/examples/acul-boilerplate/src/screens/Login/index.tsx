@@ -3,9 +3,9 @@ import { useLoginManager } from './hooks/useLoginManager';
 import { useLoginForm } from './hooks/useLoginForm';
 import ThemeProvider from '../../components/common/ThemeProvider';
 import Logo from '../../components/common/Logo';
+import SignupLink from '../../components/common/SignupLink';
 import LoginForm from './components/LoginForm';
 import SocialLoginGroup, { Connection } from '../../components/organisms/SocialLoginGroup';
-import Links from './components/Links';
 import ErrorMessages from './components/ErrorMessages';
 import AuthScreenTemplate from '../../components/templates/AuthScreen';
 import { navigateWithCurrentOrigin } from '../../utils/url';
@@ -73,21 +73,20 @@ const LoginScreen: React.FC = () => {
     labelTemplate: (name: string) => `Continue with ${name}`,
   } : undefined;
 
-  const footerLinks = (
-    <Links
-      signupLink={signupLink}
-      signupText={texts.signupActionLinkText || 'Sign up'}
-      footerText={texts.footerText || "Don't have an account?"}
-      onLinkClick={handleLinkClick}
-    />
-  );
-
   const errorMessages = hasErrors ? <ErrorMessages errors={errors} /> : undefined;
 
   // Render form content with social login options if available
   const formContent = (
     <>
       <LoginForm {...formProps} />
+      {signupLink && (
+        <SignupLink 
+          signupLink={signupLink}
+          signupText={texts.signupActionLinkText || 'Sign up'}
+          footerText={texts.footerText || "Don't have an account?"}
+          onLinkClick={handleLinkClick}
+        />
+      )}
       {socialLoginProps && <SocialLoginGroup {...socialLoginProps} />}
     </>
   );
@@ -100,7 +99,7 @@ const LoginScreen: React.FC = () => {
         logo={<Logo instance={loginInstance} />}
         errorMessages={errorMessages}
         formContent={formContent}
-        footerLinks={footerLinks}
+        footerLinks={null}
       />
     </ThemeProvider>
   );

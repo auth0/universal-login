@@ -7,11 +7,13 @@ interface LogoProps {
 }
 
 const Logo: React.FC<LogoProps> = ({ instance: screenInstance, altText, logoUrl: propLogoUrl }) => {
-  // Get logo URL from props, organization branding, or default
+  // Debug log to check logo sources
+
+  // Get logo URL with proper fallback sequence as per requirements
   const logoUrl = propLogoUrl || 
-                 screenInstance.organization?.branding?.logoUrl || 
-                 screenInstance.branding?.logoUrl ||
-                 'https://cdn.auth0.com/ulp/react-components/1.59/img/theme-generic/logo-generic.svg'; // Default Auth0 logo
+                  screenInstance.organization?.branding?.logo_url || 
+                  screenInstance.branding?.themes?.default?.widget?.logo_url || 
+                  'https://cdn.auth0.com/ulp/react-components/1.59/img/theme-generic/logo-generic.svg'; // Default Auth0 logo
   
   // Get alt text from screen texts or use provided alt text or default
   const logoAltText = altText || 

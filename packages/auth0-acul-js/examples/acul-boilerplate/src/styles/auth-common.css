@@ -1,10 +1,16 @@
-/* Simple login ID form styles */
+/**
+ * Common styles for authentication components
+ * These styles are shared across login, login-id, signup, and other authentication screens
+ */
+
+/* Form styles */
 .auth0-form {
   width: 100%;
   margin: 0 auto;
 }
 
 .auth0-input-wrapper {
+  margin-bottom: 16px;
   width: 100%;
 }
 
@@ -13,23 +19,8 @@
   box-sizing: border-box !important;
 }
 
-.auth0-captcha {
-  width: 100%;
-}
-
-.auth0-captcha-image {
-  margin-bottom: 8px;
-  border: 1px solid #e3e3e3;
-  border-radius: 4px;
-  width: 100%;
-}
-
 .auth0-button-container {
-  width: 100%;
-}
-
-/* Button styling */
-.auth0-button-container button {
+  margin-top: 24px;
   width: 100%;
 }
 
@@ -59,39 +50,31 @@
   font-size: 14px;
 }
 
-/* Links styling - using primary color variable */
-.auth0-alternate-action-text {
+/* Captcha container */
+.auth0-captcha {
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.auth0-captcha-image {
+  margin-bottom: 8px;
+  border: 1px solid #e3e3e3;
+  border-radius: 4px;
+  width: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
-  gap: 5px;
-  color: #1e212a;
-  font-size: 14px;
 }
 
-.auth0-alternate-link {
-  color: var(--color-primary, var(--auth0-primary-color, #635dff));
-  text-decoration: none;
-}
-
-.auth0-alternate-link:hover {
-  text-decoration: underline;
-}
-
-/* Forgot password link - using primary color variable */
+/* Forgot password link */
 .auth0-forgot-password {
   display: block;
-  text-align: center;
-  margin: 8px 0;
+  text-align: left;
+  margin: 8px 0 16px;
   font-size: 14px;
-}
-
-.auth0-forgot-password-left {
-  text-align: left !important;
 }
 
 .auth0-forgot-password a {
-  color: var(--color-primary, var(--auth0-primary-color, #635dff));
+  color: var(--color-primary, #635dff);
   text-decoration: none;
 }
 
@@ -99,47 +82,29 @@
   text-decoration: underline;
 }
 
-/* Can't log in link - using primary color variable */
-.auth0-cant-login {
-  display: block;
-  text-align: right;
-  margin-top: 6px;
-  font-size: 14px;
-}
-
-.auth0-cant-login a {
-  color: var(--color-primary, var(--auth0-primary-color, #635dff));
-  text-decoration: none;
-}
-
-.auth0-cant-login a:hover {
-  text-decoration: underline;
+.auth0-forgot-password-left {
+  text-align: left !important;
 }
 
 /* OR separator */
 .auth0-separator {
   display: flex;
   align-items: center;
-  margin: 12px 0;
-  text-align: center;
+  margin: 24px 0;
+  width: 100%;
 }
 
 .auth0-separator-line {
   flex-grow: 1;
   height: 1px;
-  background-color: #e5e7eb;
+  background-color: var(--auth0-border-color, #e3e3e3);
 }
 
 .auth0-separator-text {
-  padding: 0 10px;
+  padding: 0 16px;
   font-size: 14px;
-  color: #6b7280;
+  color: var(--color-body-text, #65676e);
   text-transform: uppercase;
-}
-
-/* Alternative authentication options container */
-.auth0-alternate-button-container {
-  margin-bottom: 12px;
 }
 
 /* Social Buttons Styles */
@@ -147,19 +112,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-}
-
-/* Ensure the primary button has the correct colors */
-.auth0-button-primary {
-  background-color: var(--color-primary, var(--auth0-primary-color, #635dff)) !important;
-  border-color: var(--color-primary, var(--auth0-primary-color, #635dff)) !important;
-  color: var(--color-primary-button-label, #ffffff) !important;
-}
-
-.auth0-button-primary:hover:not(:disabled),
-.auth0-button-primary:focus:not(:disabled) {
-  background-color: var(--color-primary-dark, var(--auth0-primary-color-dark, #4b45c5)) !important;
-  border-color: var(--color-primary-dark, var(--auth0-primary-color-dark, #4b45c5)) !important;
+  margin-top: 16px;
 }
 
 /* Style for social login buttons */
@@ -178,34 +131,66 @@ button[data-provider] {
   height: 40px;
   transition: all 0.2s ease;
   cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  margin-bottom: 8px;
 }
 
 button[data-provider]:hover,
 button[data-provider]:focus {
   background-color: #f9fafb;
   border-color: var(--color-primary, var(--auth0-primary-color, #635dff));
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
+/* Google button specific styling */
+button[data-provider="google-oauth2"] {
+  position: relative;
+  border-color: #e2e8f0;
+  color: #4a5568;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* When using the Button component with a leftIcon, hide the automatically added ::before content */
+button[data-provider="google-oauth2"] .auth0-button-icon-left {
+  margin-right: 10px;
+}
+
+/* For better cross-browser compatibility, use a standalone ::before for Google button */
 button[data-provider="google-oauth2"]::before {
   content: "";
   display: inline-block;
   width: 18px;
   height: 18px;
-  margin-right: 8px;
+  margin-right: 10px;
   background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTcuNiA5LjJsLS4xLTEuOEg5djMuNGg0LjhDMTMuNiAxMiAxMyAxMyAxMiAxMy42djIuMmgzYTguOCA4LjggMCAwIDAgMi42LTYuNnoiIGZpbGw9IiM0Mjg1RjQiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIGQ9Ik05IDE4YzIuNCAwIDQuNS0uOCA2LTIuMmwtMy0yLjJhNS40IDUuNCAwIDAgMS04LTIuOUgxVjEzYTkgOSAwIDAgMCA4IDV6IiBmaWxsPSIjMzRBODUzIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNNCAxMC43YTUuNCA1LjQgMCAwIDEgMC0zLjRWNUgxYTkgOSAwIDAgMCAwIDhsMy0yLjN6IiBmaWxsPSIjRkJCQzA1IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNOSAzLjZjMS4zIDAgMi41LjQgMy40IDEuM0wxNSAyLjNBOSA5IDAgMCAwIDEgNWwzIDIuNGE1LjQgNS40IDAgMCAxIDUtMy43eiIgZmlsbD0iI0VBNDMzNSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTAgMGgxOHYxOEgweiIvPjwvZz48L3N2Zz4=");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
+  position: relative;
+  top: 1px;
 }
 
-/* AuthScreen adjustments */
-.auth0-title {
-  margin-bottom: 0.75rem;
+/* Hide the default ::before when using the Button component with leftIcon */
+button[data-provider="google-oauth2"].auth0-button::before {
+  display: none;
 }
 
-/* Add styling for social login section */
-.auth0-social-login-container {
-  margin-top: 20px;
+/* Ensure the primary button has the correct colors */
+.auth0-button-primary {
+  background-color: var(--color-primary, var(--auth0-primary-color, #635dff)) !important;
+  border-color: var(--color-primary, var(--auth0-primary-color, #635dff)) !important;
+  color: var(--color-primary-button-label, #ffffff) !important;
+}
+
+.auth0-button-primary:hover:not(:disabled),
+.auth0-button-primary:focus:not(:disabled) {
+  background-color: var(--color-primary-dark, var(--auth0-primary-color-dark, #4b45c5)) !important;
+  border-color: var(--color-primary-dark, var(--auth0-primary-color-dark, #4b45c5)) !important;
+}
+
+/* Alternative authentication options container */
+.auth0-alternate-button-container {
+  margin-bottom: 12px;
 }
 
 /* Passkey Button Styles */

@@ -1,4 +1,4 @@
-import React, { InputHTMLAttributes, useState, useRef, useEffect } from 'react';
+import React, { InputHTMLAttributes, useState, useRef, useEffect, forwardRef } from 'react';
 import './Input.css';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -9,7 +9,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   icon?: React.ReactNode;
 }
 
-const Input: React.FC<InputProps> = ({ 
+const Input = forwardRef<HTMLInputElement, InputProps>(({ 
   label, 
   id, 
   error, 
@@ -18,11 +18,14 @@ const Input: React.FC<InputProps> = ({
   icon,
   placeholder,
   ...props 
-}) => {
+}, ref) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [hasValue, setHasValue] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const innerRef = useRef<HTMLInputElement>(null);
+  
+  // Use the forwarded ref if provided, otherwise use our internal ref
+  const inputRef = ref || innerRef;
   
   const isPasswordInput = props.type === 'password';
   
@@ -42,8 +45,8 @@ const Input: React.FC<InputProps> = ({
 
   useEffect(() => {
     // Check if input has value for initial state
-    if (inputRef.current) {
-      setHasValue(!!inputRef.current.value);
+    if (innerRef.current) {
+      setHasValue(!!innerRef.current.value);
     }
   }, [props.value]);
 
@@ -132,6 +135,6 @@ const Input: React.FC<InputProps> = ({
       )}
     </div>
   );
-};
+});
 
 export default Input;

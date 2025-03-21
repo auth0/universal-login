@@ -26,10 +26,11 @@ const SocialLoginButton: React.FC<SocialLoginButtonProps> = ({
       variant="secondary"
       onClick={onClick}
       fullWidth={fullWidth}
-      className={`auth0-social-button ${className}`}
+      className={`auth0-social-button auth0-social-${provider} ${className}`}
       leftIcon={
         <SocialIcon provider={provider} iconUrl={iconUrl} />
       }
+      data-provider={provider}
     >
       {labelTemplate(displayName)}
     </Button>

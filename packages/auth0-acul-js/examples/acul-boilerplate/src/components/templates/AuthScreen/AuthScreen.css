@@ -21,10 +21,13 @@
   margin: auto;
 }
 
-/* Widget Content */
+/* Widget Content - using CSS variables for consistent padding */
 .auth0-widget-content {
+  --inner-padding-vertical: var(--spacing-xl, 24px);
+  --inner-padding-horizontal: 40px;
+  
   background-color: var(--color-widget-background, #ffffff);
-  padding: var(--inner-padding); /* Use inner padding variable */
+  padding: var(--inner-padding-vertical) var(--inner-padding-horizontal);
   box-shadow: var(--widget-shadow, 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06));
   border-radius: var(--border-widget-radius, 5px);
   border: var(--border-widget-weight, 0px) solid var(--color-widget-border, #c9cace);
@@ -98,7 +101,7 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .auth0-widget-content {
-    padding: 32px 32px;
+    --inner-padding-vertical: 32px;
   }
 }
 
@@ -116,8 +119,8 @@
   }
   
   .auth0-widget-content {
+    --inner-padding-vertical: 24px;
     border-radius: 0;
-    padding: 24px 24px;
   }
   
   .auth0-title h1 {

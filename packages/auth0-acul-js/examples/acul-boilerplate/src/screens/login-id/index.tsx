@@ -1,80 +1,106 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useLoginIdManager } from './hooks/useLoginIdManager';
 import { useLoginIdForm } from './hooks/useLoginIdForm';
 import ThemeProvider from '../../components/common/ThemeProvider';
 import Logo from '../../components/common/Logo';
-import LoginIdForm from './components/LoginIdForm';
-import Links from './components/Links';
+import SignupLink from '../../components/common/SignupLink';
+import LoginIdForm, { LoginIdFormProps } from './components/LoginIdForm';
+// import Links from './components/Links';
 import ErrorMessages from './components/ErrorMessages';
 import AuthScreenTemplate from '../../components/templates/AuthScreen';
+import SocialButton from "../../components/common/SocialButton";
+import { navigateWithCurrentOrigin } from '../../utils/url';
+
+// Define the type for connection objects
+interface Connection {
+  name: string;
+  display_name?: string;
+  logo_url?: string;
+  strategy?: string;
+}
 
 const LoginIdScreen: React.FC = () => {
-  const { loginIdInstance, handleLoginId, handlePasskeyLogin } = useLoginIdManager();
+  const { loginIdInstance, handleLoginId, handlePasskeyLogin, handleSocialLogin } = useLoginIdManager();
   const { loginIdRef, captchaRef, getFormValues } = useLoginIdForm();
 
   const onLoginIdSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const { loginId, captcha } = getFormValues();
+    console.log('Form submitted');
+    
+    // Direct access to ref values for debugging
+    console.log('Ref current values:', {
+      loginId: loginIdRef.current?.value,
+      captcha: captchaRef.current?.value
+    });
+    
+    // Get form values
+    const formValues = getFormValues();
+    console.log('Form values:', formValues);
+    
+    // Check if loginId exists before proceeding
+    if (!formValues.loginId) {
+      console.error('Missing login ID value');
+      return;
+    }
+    
+    const { loginId, captcha } = formValues;
     handleLoginId(loginId, captcha);
   };
 
-  // Extract texts and configuration from loginIdInstance
+  // Extract data from loginIdInstance with safe access
   const texts = loginIdInstance.screen?.texts || {};
-  const isCaptchaAvailable = !!loginIdInstance.screen?.captcha;
-  const captchaImage = loginIdInstance.screen?.captcha?.image || '';
-  const signupLink = loginIdInstance.screen?.links?.signup || '';
-  const resetPasswordLink = loginIdInstance.screen?.links?.reset_password || '';
-  // We'll use window.location.origin in the component instead
-  const errors = loginIdInstance.transaction?.errors || [];
-  const hasErrors = !!loginIdInstance.transaction?.hasErrors;
-  const isPasskeyEnabled = !!loginIdInstance.transaction?.isPasskeyEnabled;
+  const screenData = loginIdInstance.screen || {};
+  const transactionData = loginIdInstance.transaction || {};
   
-  // Safely access passkey public key to avoid type errors
-  const hasPublicKey = !!loginIdInstance.screen?.data?.passkey && 
-    typeof loginIdInstance.screen.data.passkey === 'object' && 
-    'public_key' in loginIdInstance.screen.data.passkey;
+  // Extract configuration values
+  const isCaptchaAvailable = Boolean(screenData.captcha);
+  const captchaImage = screenData.captcha?.image || '';
+  const signupLink = screenData.links?.signup || '';
+  const resetPasswordLink = screenData.links?.reset_password || '';
+  const errors = transactionData.errors || [];
+  const hasErrors = Boolean(transactionData.hasErrors);
+  const isPasskeyEnabled = Boolean(transactionData.isPasskeyEnabled);
+  
+  // Safely access passkey public key
+  const hasPublicKey = Boolean(
+    screenData.data?.passkey && 
+    typeof screenData.data.passkey === 'object' && 
+    'public_key' in screenData.data.passkey
+  );
     
   const showPasskeyButton = isPasskeyEnabled && hasPublicKey;
 
-  // Determine the right placeholder for loginId input
-  const getLoginIdPlaceholder = () => {
-    const allowedIdentifiers = loginIdInstance.transaction?.allowedIdentifiers || [];
+  // Get alternative connections (social logins)
+  const alternateConnections = transactionData.alternateConnections || [];
+  const showSocialLogins = alternateConnections.length > 0;
+  
+  // Show the separator if passkey or social logins are available
+  const showSeparator = showPasskeyButton || showSocialLogins;
+  
+  // Determine the login ID placeholder based on allowed identifiers
+  const loginIdPlaceholder = useMemo(() => {
+    const allowedIdentifiers = transactionData.allowedIdentifiers || [];
     
-    if (allowedIdentifiers.includes('email') && allowedIdentifiers.includes('phone') && allowedIdentifiers.includes('username')) {
-      return texts.phoneOrUsernameOrEmailPlaceholder || 'Phone or Username or Email';
-    }
+    // Create a map of identifier combinations to placeholders
+    const placeholderMap = {
+      'email,phone,username': texts.phoneOrUsernameOrEmailPlaceholder || 'Phone or Username or Email',
+      'email,phone': texts.phoneOrEmailPlaceholder || 'Phone number or Email address',
+      'phone,username': texts.phoneOrUsernamePlaceholder || 'Phone Number or Username',
+      'email,username': texts.usernameOrEmailPlaceholder || 'Username or Email address',
+      'email': texts.emailPlaceholder || 'Email address',
+      'phone': texts.phonePlaceholder || 'Phone number',
+      'username': texts.usernameOnlyPlaceholder || 'Username',
+      'default': 'Enter your login ID'
+    };
     
-    if (allowedIdentifiers.includes('email') && allowedIdentifiers.includes('phone')) {
-      return texts.phoneOrEmailPlaceholder || 'Phone number or Email address';
-    }
+    // Sort identifiers to create a consistent key
+    const key = [...allowedIdentifiers].sort().join(',');
     
-    if (allowedIdentifiers.includes('phone') && allowedIdentifiers.includes('username')) {
-      return texts.phoneOrUsernamePlaceholder || 'Phone Number or Username';
-    }
-    
-    if (allowedIdentifiers.includes('email') && allowedIdentifiers.includes('username')) {
-      return texts.usernameOrEmailPlaceholder || 'Username or Email address';
-    }
-    
-    if (allowedIdentifiers.includes('email')) {
-      return texts.emailPlaceholder || 'Email address';
-    }
-    
-    if (allowedIdentifiers.includes('phone')) {
-      return texts.phonePlaceholder || 'Phone number';
-    }
-    
-    if (allowedIdentifiers.includes('username')) {
-      return texts.usernameOnlyPlaceholder || 'Username';
-    }
-    
-    return 'Enter your login ID';
-  };
+    return placeholderMap[key as keyof typeof placeholderMap].concat('*') || placeholderMap.default.concat('*');
+  }, [transactionData.allowedIdentifiers, texts]);
 
-  console.log('Debug texts:', texts); // Debug log to check available texts
-
-  // Prepare props for LoginIdForm
-  const formProps = {
+  // Prepare props for LoginIdForm using explicit type
+  const formProps: LoginIdFormProps = {
     loginIdRef,
     captchaRef,
     onSubmit: onLoginIdSubmit,
@@ -82,24 +108,61 @@ const LoginIdScreen: React.FC = () => {
     isCaptchaAvailable,
     captchaImage,
     buttonText: texts.buttonText || 'Continue',
-    loginIdPlaceholder: getLoginIdPlaceholder(),
+    loginIdPlaceholder,
     captchaPlaceholder: texts.captchaCodePlaceholder || 'Enter the code shown above',
-    showPasskeyButton,
-    onPasskeyClick: handlePasskeyLogin,
-    passkeyButtonText: texts.passkeyButtonText || 'Continue with a passkey',
+    showPasskeyButton: false, // Rendering passkey button separately outside the form
     forgotPasswordLink: resetPasswordLink,
     forgotPasswordText: texts.forgotPasswordText || "Can't log in to your account?"
   };
-
-  const footerLinks = (
-    <Links
-      signupLink={signupLink}
-      signupText={texts.signupActionLinkText || 'Sign up'}
-      footerText={texts.footerText}
-    />
-  );
+  
+  // Handler for signup link click
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
+    e.preventDefault();
+    navigateWithCurrentOrigin(path);
+  };
 
   const errorMessages = hasErrors ? <ErrorMessages errors={errors} /> : undefined;
+
+  // Alternative authentication options (passkey and social logins)
+  const alternativeOptions = (
+    <>
+      {showSeparator && (
+        <div className="auth0-separator" data-testid="auth0-separator">
+          <div className="auth0-separator-line"></div>
+          <span className="auth0-separator-text">{texts.separatorText || 'OR'}</span>
+          <div className="auth0-separator-line"></div>
+        </div>
+      )}
+      
+      {showPasskeyButton && (
+        <div className="auth0-alternate-button-container" data-testid="passkey-button-container">
+          <button 
+            type="button"
+            className="auth0-button auth0-button-secondary auth0-button-fullwidth"
+            onClick={handlePasskeyLogin}
+            data-testid="passkey-button"
+          >
+            {texts.passkeyButtonText || 'Continue with a passkey'}
+          </button>
+        </div>
+      )}
+      
+      {showSocialLogins && (
+        <div className="auth0-social-buttons" data-testid="social-buttons-container">
+          {alternateConnections.map((connection: Connection) => (
+            <SocialButton
+              key={connection.name}
+              name={connection.name}
+              displayName={connection.display_name || connection.name}
+              iconUrl={connection.logo_url}
+              onClick={() => handleSocialLogin(connection.name)}
+              data-testid={`social-button-${connection.name}`}
+            />
+          ))}
+        </div>
+      )}
+    </>
+  );
 
   return (
     <ThemeProvider instance={loginIdInstance}>
@@ -108,8 +171,21 @@ const LoginIdScreen: React.FC = () => {
         description={texts.description}
         logo={<Logo instance={loginIdInstance} />}
         errorMessages={errorMessages}
-        formContent={<LoginIdForm {...formProps} />}
-        footerLinks={footerLinks}
+        formContent={
+          <>
+            <LoginIdForm {...formProps} />
+            {signupLink && (
+              <SignupLink 
+                signupLink={signupLink}
+                signupText={texts.signupActionLinkText || 'Sign up'}
+                footerText={texts.footerText || "Don't have an account?"}
+                onLinkClick={handleLinkClick}
+              />
+            )}
+            {alternativeOptions}
+          </>
+        }
+        footerLinks={null}
       />
     </ThemeProvider>
   );

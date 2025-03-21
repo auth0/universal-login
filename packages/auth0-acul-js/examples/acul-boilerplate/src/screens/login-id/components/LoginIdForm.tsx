@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Button from '../../../components/common/Button';
 import Input from '../../../components/common/Input';
 import { navigateWithCurrentOrigin } from '../../../utils/url';
@@ -37,9 +37,6 @@ const LoginIdForm: React.FC<LoginIdFormProps> = ({
   loginIdError,
   captchaError,
   className = '',
-  showPasskeyButton = false,
-  onPasskeyClick,
-  passkeyButtonText = 'Continue with a passkey',
   forgotPasswordLink = '#',
   forgotPasswordText = "Can't log in to your account?"
 }) => {
@@ -47,29 +44,6 @@ const LoginIdForm: React.FC<LoginIdFormProps> = ({
     e.preventDefault();
     onSubmit(e);
   };
-
-  // Connect input refs
-  useEffect(() => {
-    if (loginIdRef && loginIdRef.current) {
-      const input = document.getElementById('login-id') as HTMLInputElement;
-      if (input) {
-        Object.defineProperty(loginIdRef, 'current', {
-          value: input,
-          writable: true
-        });
-      }
-    }
-    
-    if (captchaRef && captchaRef.current && isCaptchaAvailable) {
-      const input = document.getElementById('captcha') as HTMLInputElement;
-      if (input) {
-        Object.defineProperty(captchaRef, 'current', {
-          value: input,
-          writable: true
-        });
-      }
-    }
-  }, [loginIdRef, captchaRef, isCaptchaAvailable]);
 
   return (
     <form onSubmit={handleSubmit} className={`auth0-form ${className}`}>
@@ -82,6 +56,7 @@ const LoginIdForm: React.FC<LoginIdFormProps> = ({
           autoComplete="username email"
           required
           error={loginIdError}
+          ref={loginIdRef}
         />
       </div>
 
@@ -98,6 +73,7 @@ const LoginIdForm: React.FC<LoginIdFormProps> = ({
               type="text"
               required
               error={captchaError}
+              ref={captchaRef}
             />
           </div>
         </div>
@@ -125,27 +101,6 @@ const LoginIdForm: React.FC<LoginIdFormProps> = ({
           {buttonText}
         </Button>
       </div>
-
-      {/* Separator with OR if passkey is available */}
-      {showPasskeyButton && onPasskeyClick && (
-        <div className="auth0-separator">
-          <span>OR</span>
-        </div>
-      )}
-
-      {/* Passkey Button */}
-      {showPasskeyButton && onPasskeyClick && (
-        <div className="auth0-passkey-button-container">
-          <Button 
-            type="button"
-            variant="secondary"
-            fullWidth
-            onClick={onPasskeyClick}
-          >
-            {passkeyButtonText}
-          </Button>
-        </div>
-      )}
     </form>
   );
 };

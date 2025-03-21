@@ -1,23 +1,80 @@
 :root {
-  /* Colors */
-  --auth0-primary-color: #635dff;
+  /* Spacing variables */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+
+  /* Essential theme variables (set by ThemeProvider) */
+  --color-primary: #635dff;
+  --color-primary-light: rgba(99, 93, 255, 0.1);
+  --color-primary-dark: rgba(99, 93, 255, 0.8);
+  --color-page-background: #f2f2f2;
+  --logo-url: url("https://cdn.auth0.com/ulp/react-components/1.59/img/theme-generic/logo-generic.svg");
+
+  /* Auth0 compatibility */
+  --auth0-primary-color: var(--color-primary);
+  --auth0-primary-color-dark: var(--color-primary-dark);
+  --auth0-primary-color-light: var(--color-primary-light);
   --auth0-primary-hover: #4f49cc;
   --auth0-error-color: #d03c38;
   --auth0-text-color: #1e212a;
   --auth0-secondary-text: #65676e;
-  --auth0-border-color: #d9dbe0;
+  --auth0-border-color: #d1d5db;
   --auth0-background: #f5f7f9;
   --auth0-widget-background: #ffffff;
   --auth0-separator-color: #e6e8eb;
   --auth0-focus-color: rgba(99, 93, 255, 0.2);
-
-  /* Spacing */
-  --spacing-xs: 0.25rem; /* 4px */
-  --spacing-sm: 0.5rem;  /* 8px */
-  --spacing-md: 0.75rem; /* 12px */
-  --spacing-lg: 1rem;    /* 16px */
-  --spacing-xl: 1.5rem;  /* 24px */
-  --spacing-2xl: 2rem;   /* 32px */
+  --auth0-border-radius: 3px;
+  --auth0-input-height: 48px;
+  
+  /* Default values for removed theme variables */
+  --color-primary-button: var(--color-primary);
+  --color-primary-button-label: #ffffff;
+  --color-links: var(--color-primary);
+  --color-link-hover: var(--color-primary-dark);
+  --color-link-focus: var(--color-primary);
+  
+  /* Focus and border colors */
+  --color-focus-ring: var(--color-primary-light);
+  --color-focus-border: var(--color-primary);
+  --color-border-hover: var(--color-primary);
+  
+  /* Form elements */
+  --color-input-focus-border: var(--color-primary);
+  --color-input-focus-shadow: var(--color-primary-light);
+  --color-input-labels: #65676e;
+  --color-input-text: #000000;
+  --color-input-border: #c9cace;
+  --color-input-background: #ffffff;
+  
+  /* Widget and structural styles */
+  --color-widget-background: #ffffff;
+  --color-widget-border: #c9cace;
+  --border-widget-radius: 5px;
+  --border-widget-weight: 0px;
+  --widget-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  
+  /* Text colors */
+  --color-header: #1e212a;
+  --color-body-text: #1e212a;
+  
+  /* Border and radius styles */
+  --border-input-radius: 3px;
+  --border-button-radius: 3px;
+  --border-input-weight: 1px;
+  --border-button-weight: 1px;
+  
+  /* State colors */
+  --color-error: #d03c38;
+  --color-success: #13a688;
+  
+  /* Secondary button colors */
+  --color-secondary-button: #ffffff;
+  --color-secondary-button-border: #c9cace;
+  --color-secondary-button-label: #1e212a;
 
   /* Typography */
   --font-size-xs: 0.75rem;   /* 12px */
@@ -26,10 +83,17 @@
   --font-size-lg: 1.125rem;  /* 18px */
   --font-size-xl: 1.25rem;   /* 20px */
   --font-size-2xl: 1.5rem;   /* 24px */
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  --font-buttons-text-size: 1rem;
+  --font-buttons-text-weight: 700;
+  --font-links-size: 0.875rem;
+  --font-links-weight: 700;
+  --font-body-text-size: 0.875rem;
+  --font-body-text-weight: 400;
+  --font-title-size: 1.5rem;
+  --font-title-weight: 700;
 
   /* Input specific */
-  --auth0-input-height: 48px;
-  --auth0-border-radius: 4px;
   --input-padding-x: 1rem;
   --input-padding-y: 0.875rem;
   --input-with-icon-padding: 2.5rem;

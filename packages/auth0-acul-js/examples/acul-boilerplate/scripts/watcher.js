@@ -5,7 +5,7 @@ import { uploadAdvancedConfig } from './utils/assetUploader.js';
 
 // Track last build time to avoid duplicate builds
 let lastBuildTime = 0;
-const BUILD_COOLDOWN = 2000; // 2 seconds cooldown between builds
+const BUILD_COOLDOWN = 5000; // 5 seconds cooldown between builds
 
 // Watch source files and handle changes
 export const watchAndUpload = async (screenName) => {
