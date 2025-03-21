@@ -29,11 +29,6 @@ Before you begin, ensure you have completed the following Auth0 setup steps:
      - Upload screen configurations
      - Configure ACUL settings
 
-4. **ACUL Configuration**
-   - Enable Advanced Custom Universal Login in your tenant settings
-   - Configure the login experience to use the Universal Login v2
-   - Ensure CORS is properly configured for your development environment
-
 ## Quick Start
 
 1. Set up your environment variables in `.env.local`:
