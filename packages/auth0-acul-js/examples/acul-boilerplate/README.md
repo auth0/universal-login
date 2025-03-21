@@ -2,13 +2,37 @@
 
 This project provides a boilerplate setup for Auth0's Advanced Custom Universal Login (ACUL). It includes a Next.js quickstart application for testing authentication flows in real-time using React, TypeScript, and TailwindCSS.
 
-## Development Features
+## Prerequisites
 
-- **Hot Module Replacement (HMR)**: In advanced mode, the development server supports HMR for a seamless development experience:
-  - Auto-rebuilds when source files change
-  - Automatically uploads new assets to Auth0
-  - Real-time preview of changes
-  - Supports `.ts`, `.tsx`, and `.css` files
+Before you begin, ensure you have completed the following Auth0 setup steps:
+
+1. **Custom Domain Setup**
+   - Enable and configure a custom domain for your Auth0 tenant
+   - Verify the custom domain is working properly
+   - This is required for ACUL functionality
+
+2. **Regular Web Application**
+   - Create a new Regular Web Application in Auth0
+   - Configure the following settings:
+     - Allowed Callback URLs: `http://localhost:3000/api/auth/callback`
+     - Allowed Logout URLs: `http://localhost:3000`
+     - Allowed Web Origins: `http://localhost:3000`
+   - This application will be used by the Next.js quickstart for authentication testing
+
+3. **Machine-to-Machine (M2M) Application**
+   - Create a new M2M application in Auth0
+   - Grant the following permissions:
+     - `read:prompts`
+     - `update:prompts`
+   - This application will be used to:
+     - Generate authentication tokens
+     - Upload screen configurations
+     - Configure ACUL settings
+
+4. **ACUL Configuration**
+   - Enable Advanced Custom Universal Login in your tenant settings
+   - Configure the login experience to use the Universal Login v2
+   - Ensure CORS is properly configured for your development environment
 
 ## Quick Start
 
