@@ -35,7 +35,7 @@ This project provides a boilerplate setup for Auth0's Advanced Custom Universal 
      ```
 
 4. **Auth0 CLI Installation**
-   - This project uses the Auth0 CLI to configure your tenant:
+   - This project requires the Auth0 CLI to configure your tenant:
      - For macOS/Linux using Homebrew:
        ```bash
        brew tap auth0/auth0-cli && brew install auth0
@@ -54,6 +54,7 @@ This project provides a boilerplate setup for Auth0's Advanced Custom Universal 
      ```bash
      auth0 login
      ```
+   - **Important**: You must be logged in to the Auth0 CLI before running this project
 
 ### Auth0 Prerequisites
 
@@ -80,7 +81,7 @@ This project provides a boilerplate setup for Auth0's Advanced Custom Universal 
 
 1. Set up your environment variables in `.env.local`:
    ```env
-   # For Nextjs quickstart
+   # For Nextjs quickstart - only needed if you want to use the test application
    AUTH0_SECRET='LONG_RANDOM_VALUE'
    AUTH0_BASE_URL='http://localhost:3000'
    AUTH0_ISSUER_BASE_URL='https://YOUR_AUTH0_CUSTOM_DOMAIN.com'
@@ -92,13 +93,15 @@ This project provides a boilerplate setup for Auth0's Advanced Custom Universal 
 
 2. Start development:
    ```bash
-   # Standard mode (single screen)
+   # Standard mode (single screen) 
+   This is Universal login mode to see the mentioned screen as per tenant settings.
    npm run screen:standard <screen_name>
-   npm run screen:standard login  # For login screen. Other ex: login-id, login-password
+   npm run screen:standard login  # Other ex: login-id, login-password
 
    # Advanced mode with HMR (single screen)
+   This is ACUL(advanced mode) to see the mentioned screen as per code (under src/screens)
    npm run screen:advanced <screen_name>
-   npm run screen:advanced login  # For login screen. Other ex: login-id, login-password
+   npm run screen:advanced login  # Other ex: login-id, login-password
    ```
 
 ## Project Structure
@@ -110,52 +113,66 @@ acul-boilerplate/
 │   ├── components/      # Reusable UI components
 │   ├── screens/        # Login flow screens
 │   └── styles/         # Global styles
-└── scripts/            # Build and deployment scripts
+├── scripts/            # Build and deployment scripts
+│   ├── utils/          # Utility functions and helpers
+│   │   ├── auth0-cli.js     # Auth0 CLI integration
+│   │   ├── config-generator.js  # Configuration generators
+│   │   ├── error-handler.js  # Error handling utilities
+│   │   └── ... 
+│   ├── advanced-mode.js   # Advanced mode entry point
+│   ├── standard-mode.js   # Standard mode entry point
+│   └── server.js          # Development server
+└── settings/           # Auth0 CLI settings
 ```
 
 ## Features
 
 - Multiple authentication flows (Username/Password, Passwordless, Social)
-- Modern development stack (React 19, TypeScript, TailwindCSS).
+- Modern development stack (React 19, TypeScript, TailwindCSS)
 - Integrated Next.js testing environment
 - Optimized development workflow with smart HMR
-- Theme configuration.
+- Theme configuration
+- Auth0 CLI integration for both standard and advanced modes
+- Streamlined tenant selection with intuitive switching workflow
+- Strict validation with meaningful error messages
+- Well-organized codebase with clear separation of concerns
 
 ## Technical Details
 
 <details>
-<summary>🔍 What happens when you run npm run screen:standard login</summary>
+<summary>🔍 Technical Details: What happens when you run npm run screen:standard login</summary>
 
 1. **Environment Check**
    - Validates all required environment variables
    - Checks for Auth0 CLI installation and login status
 
 2. **Port Availability Check**
-   - Checks if ports 3032 (ACUL server) and 3001 (API server) are available
+   - Checks if ports 3032 (ACUL server) and 3001 (Next.js API server) are available
    - Fails if any port is in use
 
 3. **Screen Validation**
    - Checks if the specified screen exists in `src/screens` directory
    - Fails if screen directory is not found
 
-4. **Auth0 CLI Configuration**
-   - Uses Auth0 CLI to configure the screen in standard mode:
+4. **Tenant Selection**
+   - Shows the current tenant with visual highlighting for clarity
+   - Provides a simple yes/no option to switch tenants
+
+5. **Auth0 CLI Configuration**
+   - Uses Auth0 CLI to configure the screen in standard mode with explicit tenant:
    ```bash
-   auth0 universal-login switch --prompt login --screen login --rendering-mode standard
+   auth0 universal-login switch --tenant <tenant_name> --prompt <screen_name> --screen <screen_name> --rendering-mode standard
    ```
 
-5. **Development Server**
+6. **Development Server**
    - Starts a local development server on port 3032
    - Serves the screen for testing
 
-6. **Next.js Application**
-   - A Next.js application is available for testing real authentication flows
-   - Access it at http://localhost:3000
 
 </details>
 
 <details>
-<summary>🔍 What happens when you run npm run screen:advanced login</summary>
+<summary>🔍 Technical Details: What happens when you run npm run screen:advanced login</summary>
 
 1. **Same Environment and Validation Checks**
    - Same as standard mode
@@ -168,18 +185,22 @@ acul-boilerplate/
    - Finds all compiled assets for the login screen
    - Includes JavaScript bundles and CSS files
 
-4. **Advanced Configuration**
-   - Uses Auth0 CLI to configure the screen in advanced mode
-   - Uploads all the built assets as head tags
-   - Sets up context configuration
+4. **Tenant Selection**
+   - Shows the current tenant with visual highlighting for clarity
+   - Provides a simple yes/no option to switch tenants
 
-5. **Hot Module Replacement (HMR)**
+5. **Auth0 CLI Configuration**
+   - Generates a configuration JSON file
+   - Saves it to settings/<screen_name>_advanced.json
+   - Uses Auth0 CLI to apply the configuration:
+   ```bash
+   auth0 ul customize --tenant <tenant_name> --rendering-mode advanced --prompt <screen_name> --screen <screen_name> --settings-file settings.json
+   ```
+
+6. **Hot Module Replacement (HMR)**
    - Starts a development server with HMR support
    - Any changes to source code automatically rebuild and update
    - No need to restart the server or refresh the browser
-
-6. **Next.js Testing**
-   - Same as standard mode
    
 </details>
 

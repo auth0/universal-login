@@ -8,7 +8,6 @@
 import chalk from 'chalk';
 import { CONFIG } from './server-config.js';
 import { logger } from './logger.js';
-import ora from 'ora';
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
@@ -504,8 +503,9 @@ export function handleErrorWithInstructions(error, context = '') {
       
       instructions = [
         chalk.yellow(`\n${chalk.bold("Troubleshooting Suggestions:")}`),
-        "1. Check the logs above for specific error details",
-        "2. Ensure all environment variables are properly set"
+        "1. Check if pre-requisites are installed and configured correctly. Ex: Custom Domain, Auth0 CLI, etc.",
+        "2. Check the logs above for specific error details",
+        "3. Ensure all environment variables are properly set"
       ];
       
       // Platform-specific environment variable commands
@@ -515,7 +515,7 @@ export function handleErrorWithInstructions(error, context = '') {
         instructions.push(`   ${chalk.gray("env")}`);
       }
       
-      instructions.push("3. Check your network connection");
+      instructions.push("4. Check your network connection");
       
       // Platform-specific network test command
       if (currentPlatform === 'windows') {
@@ -527,14 +527,14 @@ export function handleErrorWithInstructions(error, context = '') {
       // Add Node.js version info
       if (nvmInfo.hasNvmrc) {
         instructions.push(
-          `4. Ensure you're using the correct Node.js version (${chalk.cyan(nvmInfo.version)})`,
+          `5. Ensure you're using the correct Node.js version (${chalk.cyan(nvmInfo.version)})`,
           `   ${chalk.gray(nvmInfo.useNvm)}`
         );
-        instructions.push("5. Try running with NODE_ENV=development for more verbose logging");
+        instructions.push("6. Try running with NODE_ENV=development for more verbose logging");
       } else {
         instructions.push(
-          "4. Try running with NODE_ENV=development for more verbose logging",
-          "5. Check for recent changes that might have introduced this issue\n" 
+          "5. Try running with NODE_ENV=development for more verbose logging",
+          "6. Check for recent changes that might have introduced this issue\n" 
         );
       }
       break;

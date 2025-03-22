@@ -1,8 +1,13 @@
+// Core imports
 import { validateScreenName } from './utils/screen-validator.js';
 import { startServers } from './server.js';
 import { logger } from './utils/logger.js';
 import { handleFatalError } from './utils/error-handler.js';
-import { checkAuth0CliInstalled, checkAuth0CliLoggedIn, configureStandardMode } from './utils/auth0-cli.js';
+import { 
+  checkAuth0CliInstalled, 
+  checkAuth0CliLoggedIn, 
+  configureStandardMode 
+} from './utils/auth0-cli.js';
 
 /**
  * Main function for standard mode

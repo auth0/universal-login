@@ -1,20 +1,21 @@
-/**
- * Entry point for utility functions
- * This file re-exports all utilities for easier imports
- */
-
-// Server utilities
+// Core utilities
+export * from './logger.js';
+export * from './error-handler.js';
+export * from './screen-validator.js';
 export * from './server-config.js';
 
-// Screen validation
-export * from './screen-validator.js';
+// Auth0 utilities
+export {
+  checkAuth0CliInstalled,
+  checkAuth0CliLoggedIn,
+  ensureAuth0Login,
+  configureStandardMode,
+  configureAdvancedMode,
+  switchTenant
+} from './auth0-cli.js';
 
-// File watching
-export * from './watcher.js';
+export * from './config-generator.js';
+export { findAssets, createHeadTags } from './assetUploader.js';
 
-// API and authentication
-export { uploadScreenConfig } from './auth0TokenFetch.js';
-export { uploadAdvancedConfig } from './assetUploader.js';
-
-// Logging
-export * from './logger.js'; 
+// Development server utilities
+export * from './watcher.js'; 

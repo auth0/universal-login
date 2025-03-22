@@ -1,48 +1,97 @@
+// Node.js built-in modules
 import { spawn } from 'child_process';
 import fs from 'fs';
 import path from 'path';
-import { validateScreenName } from './utils/screen-validator.js';
-import { startServers } from './server.js';
-import { uploadAdvancedConfig } from './utils/assetUploader.js';
-import { logger } from './utils/logger.js';
-import { handleFatalError } from './utils/error-handler.js';
+
+// Third-party modules
 import ora from 'ora';
 
+// Local modules
+import { validateScreenName } from './utils/screen-validator.js';
+import { startServers } from './server.js';
+import { logger } from './utils/logger.js';
+import { handleFatalError } from './utils/error-handler.js';
+import { createAdvancedModeConfig } from './utils/config-generator.js';
+import { 
+  checkAuth0CliInstalled, 
+  checkAuth0CliLoggedIn, 
+  configureAdvancedMode 
+} from './utils/auth0-cli.js';
+
 /**
- * Run a command as a promise
+ * Main function for advanced mode
+ * @param {string} screenName - The screen name to run
  */
-const runCommand = (command, args) => {
-  return new Promise((resolve, reject) => {
-    const proc = spawn(command, args, {
-      stdio: 'pipe',
-      shell: true,
-      env: { ...process.env, FORCE_COLOR: "true" }
-    });
+const runAdvancedMode = async (screenName) => {
+  logger.startupBanner('advanced', screenName || 'unknown');
+
+  try {
+    // 1. Validate the screen name
+    validateScreenName(screenName, 'advanced');
     
-    let stdout = '';
-    let stderr = '';
+    // 2. Build the application
+    await buildApp();
     
-    proc.stdout.on('data', data => {
-      stdout += data.toString();
-    });
+    // 3. Check Auth0 CLI requirements
+    const isCliInstalled = await checkAuth0CliInstalled();
+    if (!isCliInstalled) {
+      throw new Error('Auth0 CLI is required but not installed');
+    }
     
-    proc.stderr.on('data', data => {
-      stderr += data.toString();
-    });
+    const isLoggedIn = await checkAuth0CliLoggedIn();
+    if (!isLoggedIn) {
+      throw new Error('Please login to Auth0 CLI using: auth0 login');
+    }
     
-    proc.on('close', code => {
-      if (code === 0) {
-        resolve(stdout);
-      } else {
-        reject(new Error(`Command failed with exit code ${code}: ${stderr}`));
-      }
-    });
+    // 4. Configure using Auth0 CLI
+    await configureWithAuth0Cli(screenName);
     
-    proc.on('error', err => {
-      reject(new Error(`Failed to start command: ${err.message}`));
-    });
-  });
+    // 5. Start development servers
+    await startServers('advanced', screenName);
+  } catch (error) {
+    handleFatalError(error, 'Error running advanced mode');
+  }
 };
+
+/**
+ * Configure advanced mode using Auth0 CLI
+ * @param {string} screenName - The screen name to configure
+ */
+async function configureWithAuth0Cli(screenName) {
+  logger.section('Auth0 CLI Configuration');
+
+  // Generate the advanced mode configuration
+  const advancedConfig = await createAdvancedModeConfig(screenName);
+  
+  // Configure the screen using Auth0 CLI
+  const configSuccess = await configureAdvancedMode(screenName, advancedConfig);
+  if (!configSuccess) {
+    throw new Error(`Auth0 CLI command failed to configure screen '${screenName}' in advanced mode. Please fix the issue before continuing.`);
+  }
+  
+  logger.success(`Screen '${screenName}' configured in advanced mode using Auth0 CLI`);
+}
+
+/**
+ * Build the application
+ */
+async function buildApp() {
+  logger.section('Building Application');
+  await cleanDist();
+  
+  const spinner = ora({
+    text: '🔨 Building application...',
+    color: 'cyan'
+  }).start();
+
+  try {
+    await runCommand('npm', ['run', 'build']);
+    spinner.succeed('Application built successfully');
+  } catch (error) {
+    spinner.fail(`Build failed: ${error.message}`);
+    throw new Error(`Build failed: ${error.message}`);
+  }
+}
 
 /**
  * Clean the dist directory before building
@@ -80,42 +129,43 @@ async function cleanDist() {
 }
 
 /**
- * Build the application
+ * Run a command as a promise
  */
-async function buildApp() {
-  logger.section('Building Application');
-  await cleanDist();
-  
-  const spinner = ora({
-    text: '🔨 Building application...',
-    color: 'cyan'
-  }).start();
-
-  try {
-    await runCommand('npm', ['run', 'build']);
-    spinner.succeed('Application built successfully');
-  } catch (error) {
-    spinner.fail(`Build failed: ${error.message}`);
-    throw new Error(`Build failed: ${error.message}`);
-  }
-}
-
-/**
- * Main function for advanced mode
- */
-const runAdvancedMode = async (screenName) => {
-  logger.startupBanner('advanced', screenName || 'unknown');
-
-  try {
-    validateScreenName(screenName, 'advanced');
-    await buildApp();
-    await uploadAdvancedConfig(screenName);
-    await startServers('advanced', screenName);
-  } catch (error) {
-    handleFatalError(error, 'Error running advanced mode');
-  }
+const runCommand = (command, args) => {
+  return new Promise((resolve, reject) => {
+    const proc = spawn(command, args, {
+      stdio: 'pipe',
+      shell: true,
+      env: { ...process.env, FORCE_COLOR: "true" }
+    });
+    
+    let stdout = '';
+    let stderr = '';
+    
+    proc.stdout.on('data', data => {
+      stdout += data.toString();
+    });
+    
+    proc.stderr.on('data', data => {
+      stderr += data.toString();
+    });
+    
+    proc.on('close', code => {
+      if (code === 0) {
+        resolve(stdout);
+      } else {
+        reject(new Error(`Command failed with exit code ${code}: ${stderr}`));
+      }
+    });
+    
+    proc.on('error', err => {
+      reject(new Error(`Failed to start command: ${err.message}`));
+    });
+  });
 };
 
 // Get screen name from command line arguments
 const screenName = process.argv[2]?.toLowerCase();
+
+// Start the process
 runAdvancedMode(screenName); 

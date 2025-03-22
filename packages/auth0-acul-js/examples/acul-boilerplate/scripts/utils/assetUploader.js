@@ -1,5 +1,5 @@
 /**
- * Asset Discovery and Upload Utility for Advanced Mode
+ * Asset Discovery Utility for Advanced Mode
  * 
  * Finds built assets in the dist directory and creates
  * the head tags configuration for Auth0 custom login.
@@ -7,145 +7,6 @@
 
 import fs from 'fs';
 import path from 'path';
-import { spawn } from 'child_process';
-import { CONFIG } from './server-config.js';
-import { uploadScreenConfig } from './auth0TokenFetch.js';
-import { logger } from './logger.js';
-import ora from 'ora';
-
-/**
- * Runs a command as a promise
- * @param {string} command - The command to run
- * @param {Array} args - Command arguments
- * @returns {Promise<void>} - Promise that resolves when command completes
- */
-const runCommand = (command, args) => {
-  return new Promise((resolve, reject) => {
-    const process = spawn(command, args, {
-      stdio: 'pipe',
-      shell: true,
-      env: { ...process.env, FORCE_COLOR: "true" }
-    });
-    
-    // Capture and log stdout/stderr
-    process.stdout.on('data', (data) => {
-      logger.debug(data.toString().trim());
-    });
-    
-    process.stderr.on('data', (data) => {
-      logger.debug(data.toString().trim());
-    });
-    
-    process.on('close', (code) => {
-      if (code === 0) {
-        resolve();
-      } else {
-        reject(new Error(`Command failed with exit code ${code}`));
-      }
-    });
-  });
-};
-
-/**
- * Prepares and uploads assets for advanced mode configuration
- * @param {string} screenName - The name of the screen to configure
- */
-export const uploadAdvancedConfig = async (screenName) => {
-  logger.section('Preparing Advanced Mode Assets');
-  
-  // Check if dist directory exists, clean if needed
-  const distPath = path.join(process.cwd(), 'dist');
-  if (fs.existsSync(distPath)) {
-    logger.info('Using existing build from dist directory');
-  }
-  
-  const spinner = ora({
-    text: `🔍 Discovering assets for ${screenName}...`,
-    color: 'cyan'
-  }).start();
-  
-  try {
-    // Validate and locate all required assets
-    const { 
-      mainJsFile, 
-      screenJsFile,
-      vendorJsFile,
-      auth0AculJsFile,
-      dependenciesJsFile,
-      cssFiles 
-    } = findAssets(screenName);
-    
-    spinner.succeed(`Assets discovered for ${screenName}`);
-    
-    // Log asset details in a more structured way
-    logger.info(`Asset summary for ${screenName}:`);
-    const assetTable = [
-      { type: 'Main JS', path: mainJsFile || 'None' },
-      { type: 'Screen JS', path: `${screenName}/${screenJsFile}` },
-      { type: 'Vendor JS', path: vendorJsFile ? `shared/${vendorJsFile}` : 'None' },
-      { type: 'Auth0 ACUL JS', path: auth0AculJsFile ? `shared/${auth0AculJsFile}` : 'None' },
-      { type: 'Dependencies JS', path: dependenciesJsFile ? `shared/${dependenciesJsFile}` : 'None' },
-      { type: 'CSS Files', path: `${cssFiles.length} file(s)` }
-    ];
-    
-    // Display asset table
-    assetTable.forEach(asset => {
-      logger.info(`• ${asset.type.padEnd(15)} ${asset.path}`);
-    });
-    
-    // Create head tags configuration
-    const spinnerHeadTags = ora({
-      text: `🔧 Creating head tags configuration...`,
-      color: 'cyan'
-    }).start();
-    
-    const headTags = createHeadTags(
-      CONFIG.port, 
-      mainJsFile, 
-      screenJsFile, 
-      screenName, 
-      vendorJsFile,
-      auth0AculJsFile,
-      dependenciesJsFile,
-      cssFiles
-    );
-    
-    spinnerHeadTags.succeed(`Created ${headTags.length} head tags for configuration`);
-    
-    // Create the full configuration payload
-    const advancedConfig = {
-      rendering_mode: "advanced",
-      context_configuration: [
-        "branding.settings",
-        "branding.themes.default",
-        "client.logo_uri",
-        "client.description",
-        "organization.display_name",
-        "organization.branding",
-        "screen.texts",
-        "tenant.name",
-        "tenant.friendly_name",
-        "tenant.enabled_locales",
-        "untrusted_data.submitted_form_data",
-        "untrusted_data.authorization_params.ui_locales",
-        "untrusted_data.authorization_params.login_hint",
-        "untrusted_data.authorization_params.screen_hint"
-      ],
-      default_head_tags_disabled: false,
-      head_tags: headTags
-    };
-    
-    // Log head tag summary
-    logger.info(`Head tags summary: ${headTags.length} tags configured`);
-    logger.data('Sample tags (first 2)', headTags.slice(0, 2));
-    
-    // Upload the configuration
-    await uploadScreenConfig(screenName, advancedConfig);
-  } catch (error) {
-    spinner.fail(`Failed to prepare assets: ${error.message}`);
-    throw error;
-  }
-};
 
 /**
  * Find all required assets for the screen
@@ -207,17 +68,14 @@ export function findAssets(screenName) {
     const sharedFiles = fs.readdirSync(sharedDirPath);
     
     // Look for specific files with our bundling strategy
-    // 1. Fixed vendor file (no hash)
     vendorJsFile = sharedFiles.find(f => f === 'vendor.js');
     
-    // 2. Auth0 ACUL file (with hash)
     auth0AculJsFile = sharedFiles.find(f => 
       f.startsWith('auth0-acul.') && 
       f.endsWith('.js') && 
       !f.endsWith('.map')
     );
     
-    // 3. Dependencies file (with hash)
     dependenciesJsFile = sharedFiles.find(f => 
       f.startsWith('dependencies.') && 
       f.endsWith('.js') && 
@@ -307,7 +165,6 @@ export function createHeadTags(
   cssFiles.forEach(cssFile => {
     let href;
     
-    // Determine the path based on location
     if (cssFile.location === 'root') {
       href = `http://127.0.0.1:${port}/assets/${cssFile.path}`;
     } else if (cssFile.location === screenName) {
@@ -324,13 +181,6 @@ export function createHeadTags(
       }
     });
   });
-  
-  // Loading order for JS files:
-  // 1. Vendor (React, etc.) - no hash
-  // 2. Dependencies with hash
-  // 3. Auth0 ACUL with hash
-  // 4. Main entry point
-  // 5. Screen-specific bundle
   
   // Add vendor JS file first (if found)
   if (vendorJsFile) {

@@ -2,8 +2,9 @@ import { spawn } from 'child_process';
 import path from 'path';
 import fs from 'fs';
 import chokidar from 'chokidar';
-import { uploadAdvancedConfig } from './assetUploader.js';
 import { logger } from './logger.js';
+import { configureAdvancedMode } from './auth0-cli.js';
+import { createAdvancedModeConfig } from './config-generator.js';
 
 // Configuration for file watching
 const CONFIG = {
@@ -38,14 +39,12 @@ export const watchAndUpload = async (screenName) => {
     return new Promise((resolve) => {
       logger.info('🔨 Building...');
       
-      // Use spawn instead of execSync for better cross-platform support
       const buildProcess = spawn('npm', ['run', 'build'], { 
         stdio: 'pipe',
-        shell: true, // Required for npm commands to work consistently across platforms
+        shell: true,
         env: { ...process.env, FORCE_COLOR: "true" }
       });
       
-      // Capture and log stdout/stderr
       buildProcess.stdout.on('data', (data) => {
         process.stdout.write(data);
       });
@@ -76,18 +75,14 @@ export const watchAndUpload = async (screenName) => {
       isProcessing = true;
       
       const now = Date.now();
-      if (now - lastBuildTime < CONFIG.BUILD_COOLDOWN) {
-        logger.info('⏱️ Skipping build (cooldown period)');
+      const timeSinceLastBuild = now - lastBuildTime;
+      
+      if (lastBuildTime > 0 && timeSinceLastBuild < CONFIG.BUILD_COOLDOWN) {
+        // Calculate and show remaining cooldown time in seconds
+        const remainingTime = Math.ceil((CONFIG.BUILD_COOLDOWN - timeSinceLastBuild) / 1000);
+        logger.info(`⏱️ Cooldown active (${remainingTime}s remaining)`);
         pendingChanges.clear();
         isProcessing = false;
-        
-        // Reset debounce timer after cooldown expires
-        const remainingCooldown = CONFIG.BUILD_COOLDOWN - (now - lastBuildTime);
-        setTimeout(() => {
-          lastBuildTime = 0; // Reset the cooldown after it expires
-          logger.info('Cooldown period reset');
-        }, remainingCooldown);
-        
         return;
       }
       
@@ -104,8 +99,20 @@ export const watchAndUpload = async (screenName) => {
       lastBuildTime = Date.now();
       
       if (buildSuccess) {
-        await uploadAdvancedConfig(screenName);
-        logger.success('Changes deployed successfully');
+        logger.section('Hot Module Replacement');
+        
+        // Generate the advanced mode configuration
+        const advancedConfig = await createAdvancedModeConfig(screenName);
+        
+        // Apply the configuration using Auth0 CLI with the current tenant
+        logger.info('🔄 Reconfiguring screen with latest changes...');
+        const configSuccess = await configureAdvancedMode(screenName, advancedConfig, true);
+        
+        if (configSuccess) {
+          logger.success('✨ Hot reload complete');
+        } else {
+          logger.error('❌ Hot reload failed - screen reconfiguration unsuccessful');
+        }
       }
     } catch (error) {
       logger.error('Error during build process', error);
@@ -140,7 +147,7 @@ export const watchAndUpload = async (screenName) => {
     return () => {}; // Return empty cleanup function
   }
   
-  // Set up chokidar watcher - more reliable cross-platform solution than fs.watch
+  // Set up chokidar watcher
   watcher = chokidar.watch(validDirs, {
     ignoreInitial: true,
     ignored: /(^|[\/\\])\../, // ignore dotfiles

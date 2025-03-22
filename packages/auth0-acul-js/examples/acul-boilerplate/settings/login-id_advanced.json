@@ -1,0 +1,77 @@
+{
+  "rendering_mode": "advanced",
+  "context_configuration": [
+    "branding.settings",
+    "branding.themes.default",
+    "client.logo_uri",
+    "client.description",
+    "organization.display_name",
+    "organization.branding",
+    "screen.texts",
+    "tenant.name",
+    "tenant.friendly_name",
+    "tenant.enabled_locales",
+    "untrusted_data.submitted_form_data",
+    "untrusted_data.authorization_params.ui_locales",
+    "untrusted_data.authorization_params.login_hint",
+    "untrusted_data.authorization_params.screen_hint"
+  ],
+  "default_head_tags_disabled": false,
+  "head_tags": [
+    {
+      "tag": "base",
+      "attributes": {
+        "href": "http://127.0.0.1:3032/"
+      }
+    },
+    {
+      "tag": "meta",
+      "attributes": {
+        "name": "viewport",
+        "content": "width=device-width, initial-scale=1"
+      }
+    },
+    {
+      "tag": "link",
+      "attributes": {
+        "rel": "stylesheet",
+        "href": "http://127.0.0.1:3032/assets/shared/styles.hash.css"
+      }
+    },
+    {
+      "tag": "script",
+      "attributes": {
+        "src": "http://127.0.0.1:3032/assets/shared/vendor.js",
+        "type": "module"
+      }
+    },
+    {
+      "tag": "script",
+      "attributes": {
+        "src": "http://127.0.0.1:3032/assets/shared/dependencies.hash.js",
+        "type": "module"
+      }
+    },
+    {
+      "tag": "script",
+      "attributes": {
+        "src": "http://127.0.0.1:3032/assets/shared/auth0-acul.hash.js",
+        "type": "module"
+      }
+    },
+    {
+      "tag": "script",
+      "attributes": {
+        "src": "http://127.0.0.1:3032/assets/main.hash.js",
+        "type": "module"
+      }
+    },
+    {
+      "tag": "script",
+      "attributes": {
+        "src": "http://127.0.0.1:3032/assets/login-id/index.hash.js",
+        "type": "module"
+      }
+    }
+  ]
+}
