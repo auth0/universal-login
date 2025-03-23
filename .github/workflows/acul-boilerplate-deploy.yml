@@ -1,21 +1,17 @@
-name: ACUL Boilerplate - Build and Deploy
+name: ACUL Screens - Build and Deploy
 
 on:
-  pull_request:
-    branches: [master]
-    types: [opened, synchronize]
+  push:
+    branches: [main, master]
     paths:
       - 'packages/auth0-acul-js/examples/acul-boilerplate/**'
-  workflow_dispatch:
+  workflow_dispatch:  # Allow manual triggering
 
 env:
   WORKING_DIR: packages/auth0-acul-js/examples/acul-boilerplate
 
 jobs:
   build-and-deploy:
-    if: |
-      github.head_ref == 'feature/acul-boilerplate' ||
-      github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -25,19 +21,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Build package
-        uses: ./.github/actions/build
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          working-directory: ${{ env.WORKING_DIR }}
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: ${{ env.WORKING_DIR }}/package-lock.json
 
-      - name: Verify build artifacts
+      - name: Install dependencies
         working-directory: ${{ env.WORKING_DIR }}
-        run: |
-          if [ ! -f "dist/index.js" ] || [ ! -f "dist/index.css" ]; then
-            echo "Error: Build artifacts missing"
-            exit 1
-          fi
+        run: npm ci
+
+      - name: Build application
+        working-directory: ${{ env.WORKING_DIR }}
+        run: npm run build
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -46,114 +43,210 @@ jobs:
           aws-region: ap-southeast-2
           mask-aws-account-id: true
 
+      - name: Discover available screens
+        id: discover-screens
+        working-directory: ${{ env.WORKING_DIR }}
+        run: |
+          # Best to discover from built assets for deployment
+          SCREENS_FROM_DIST=$(find dist/assets -type d -depth 1 -not -path "*/\.*" -not -path "*/shared*" -exec basename {} \; | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          echo "screens=$SCREENS_FROM_DIST" >> $GITHUB_OUTPUT
+          echo "Found screens from dist: $SCREENS_FROM_DIST"
+
       - name: Upload to S3
         working-directory: ${{ env.WORKING_DIR }}
         run: |
-          aws s3 cp ./dist s3://universal-login-sample-app/ --recursive \
+          # Upload the entire dist directory to S3
+          aws s3 sync ./dist s3://${{ secrets.S3_BUCKET_NAME }}/ \
+            --delete \
+            --cache-control "max-age=31536000,public" \
             || { echo "S3 upload failed"; exit 1; }
-
-      - name: Install jq
-        run: |
-          sudo apt-get update && sudo apt-get install jq -y \
-            || { echo "Failed to install jq"; exit 1; }
-
-      - name: Calculate file hashes
-        id: hashes
-        working-directory: ${{ env.WORKING_DIR }}
-        run: |
-          if [ ! -f "dist/index.js" ] || [ ! -f "dist/index.css" ]; then
-            echo "Error: Files not found for hashing"
-            exit 1
-          fi
-          jsHash=$(sha384sum dist/index.js | awk '{print $1}')
-          cssHash=$(sha384sum dist/index.css | awk '{print $1}')
-          echo "JS_HASH=$jsHash" >> $GITHUB_ENV
-          echo "CSS_HASH=$cssHash" >> $GITHUB_ENV
-
-      - name: Generate settings JSON file
-        working-directory: ${{ env.WORKING_DIR }}
-        run: |
-          if [ -z "${{ secrets.CDN_URL }}" ]; then
-            echo "Error: CDN_URL secret is not set"
-            exit 1
-          fi
-          
-          jq -n --arg cdn_url "${{ secrets.CDN_URL }}" \
-                --arg js_hash "$JS_HASH" \
-                --arg css_hash "$CSS_HASH" \
-                '{
-                  "rendering_mode": "advanced",
-                  "context_configuration": [
-                    "branding.settings",
-                    "branding.themes.default"
-                  ],
-                  "default_head_tags_disabled": false,
-                  "head_tags": [
-                    {
-                      "tag": "script",
-                      "attributes": {
-                        "src": ($cdn_url + "/index.js"),
-                        "defer": true,
-                        "integrity": ("sha384-" + $js_hash)
-                      }
-                    },
-                    {
-                      "tag": "link",
-                      "attributes": {
-                        "href": ($cdn_url + "/index.css"),
-                        "rel": "stylesheet",
-                        "integrity": ("sha384-" + $css_hash)
-                      }
-                    },
-                    {
-                      "tag": "meta",
-                      "attributes": {
-                        "name": "viewport",
-                        "content": "width=device-width, initial-scale=1"
-                      }
-                    }
-                  ]
-                }' > settings.json
+          echo "Assets uploaded to S3 bucket: ${{ secrets.S3_BUCKET_NAME }}"
 
       - name: Install Auth0 CLI
         run: |
           curl -sSfL https://raw.githubusercontent.com/auth0/auth0-cli/main/install.sh -o install.sh
-          sha256sum install.sh
           chmod +x install.sh
           ./install.sh -b .
           sudo mv ./auth0 /usr/local/bin/
           rm install.sh
+          auth0 --version
 
-      - name: Authorize with Tenant Details
+      - name: Authorize with Auth0
         run: |
-          if [ -z "${{ secrets.AUTH0_DOMAIN }}" ] || [ -z "${{ secrets.AUTH0_CLIENT_ID }}" ] || [ -z "${{ secrets.AUTH0_CLIENT_SECRET }}" ]; then
-            echo "Error: Required Auth0 secrets are not set"
-            exit 1
-          fi
-          
           auth0 login \
             --domain ${{ secrets.AUTH0_DOMAIN }} \
             --client-id ${{ secrets.AUTH0_CLIENT_ID }} \
             --client-secret ${{ secrets.AUTH0_CLIENT_SECRET }}
 
-      - name: Update Management API using Auth0 CLI
+      - name: Configure Auth0 screens
         working-directory: ${{ env.WORKING_DIR }}
         run: |
-          if [ ! -f "settings.json" ]; then
-            echo "Error: settings.json file not found"
-            exit 1
-          fi
+          # Parse screens array from json
+          SCREENS=$(echo '${{ steps.discover-screens.outputs.screens }}' | jq -c '.[]' | tr -d '"')
           
-          auth0 ul customize \
-            --rendering-mode advanced \
-            --prompt login \
-            --screen login \
-            --settings-file settings.json
-          echo "Updated Auth0 UI configuration"
+          # Get CDN base URL
+          CDN_URL="${{ secrets.CDN_URL }}"
+          
+          # Configure each screen
+          for screen in $SCREENS; do
+            echo "Configuring screen: $screen"
+            
+            # Get assets for this screen
+            SCREEN_JS=$(find dist/assets/$screen -name "index.*.js" | head -n 1 | xargs basename)
+            SCREEN_CSS=$(find dist/assets/$screen -name "*.css" | head -n 1 | xargs basename || echo "")
+            
+            # Look for shared assets
+            VENDOR_JS=$(find dist/assets/shared -name "vendor.js" 2>/dev/null | head -n 1 | xargs basename 2>/dev/null || echo "")
+            AUTH0_ACUL_JS=$(find dist/assets/shared -name "auth0-acul.*.js" 2>/dev/null | head -n 1 | xargs basename 2>/dev/null || echo "")
+            DEPENDENCIES_JS=$(find dist/assets/shared -name "dependencies.*.js" 2>/dev/null | head -n 1 | xargs basename 2>/dev/null || echo "")
+            MAIN_JS=$(find dist/assets -maxdepth 1 -name "main.*.js" | head -n 1 | xargs basename 2>/dev/null || echo "")
+            
+            # Create settings.json with dynamic head tags
+            echo "Creating settings.json for $screen"
+            
+            # Initialize JSON structure
+            cat > settings.json << EOF
+            {
+              "rendering_mode": "advanced",
+              "context_configuration": [
+                "branding.settings",
+                "branding.themes.default",
+                "client.logo_uri",
+                "client.description",
+                "organization.display_name",
+                "organization.branding",
+                "screen.texts",
+                "tenant.name",
+                "tenant.friendly_name",
+                "tenant.enabled_locales",
+                "untrusted_data.submitted_form_data",
+                "untrusted_data.authorization_params.ui_locales",
+                "untrusted_data.authorization_params.login_hint",
+                "untrusted_data.authorization_params.screen_hint"
+              ],
+              "default_head_tags_disabled": false,
+              "head_tags": [
+            EOF
+            
+            # Add base and meta tags
+            cat >> settings.json << EOF
+                {
+                  "tag": "base",
+                  "attributes": {
+                    "href": "${CDN_URL}/"
+                  }
+                },
+                {
+                  "tag": "meta",
+                  "attributes": {
+                    "name": "viewport",
+                    "content": "width=device-width, initial-scale=1"
+                  }
+                }
+            EOF
+            
+            # Add CSS files if they exist
+            if [ ! -z "$SCREEN_CSS" ]; then
+              cat >> settings.json << EOF
+                ,{
+                  "tag": "link",
+                  "attributes": {
+                    "rel": "stylesheet",
+                    "href": "${CDN_URL}/assets/${screen}/${SCREEN_CSS}"
+                  }
+                }
+            EOF
+            fi
+            
+            # Add vendor JS if it exists
+            if [ ! -z "$VENDOR_JS" ]; then
+              cat >> settings.json << EOF
+                ,{
+                  "tag": "script",
+                  "attributes": {
+                    "src": "${CDN_URL}/assets/shared/${VENDOR_JS}",
+                    "type": "module"
+                  }
+                }
+            EOF
+            fi
+            
+            # Add dependencies JS if it exists
+            if [ ! -z "$DEPENDENCIES_JS" ]; then
+              cat >> settings.json << EOF
+                ,{
+                  "tag": "script",
+                  "attributes": {
+                    "src": "${CDN_URL}/assets/shared/${DEPENDENCIES_JS}",
+                    "type": "module"
+                  }
+                }
+            EOF
+            fi
+            
+            # Add Auth0 ACUL JS if it exists
+            if [ ! -z "$AUTH0_ACUL_JS" ]; then
+              cat >> settings.json << EOF
+                ,{
+                  "tag": "script",
+                  "attributes": {
+                    "src": "${CDN_URL}/assets/shared/${AUTH0_ACUL_JS}",
+                    "type": "module"
+                  }
+                }
+            EOF
+            fi
+            
+            # Add main JS if it exists
+            if [ ! -z "$MAIN_JS" ]; then
+              cat >> settings.json << EOF
+                ,{
+                  "tag": "script",
+                  "attributes": {
+                    "src": "${CDN_URL}/assets/${MAIN_JS}",
+                    "type": "module"
+                  }
+                }
+            EOF
+            fi
+            
+            # Add screen-specific JS (always exists)
+            cat >> settings.json << EOF
+                ,{
+                  "tag": "script",
+                  "attributes": {
+                    "src": "${CDN_URL}/assets/${screen}/${SCREEN_JS}",
+                    "type": "module"
+                  }
+                }
+              ]
+            }
+            EOF
+            
+            # Display the generated settings file for debugging
+            echo "Generated settings.json for $screen:"
+            cat settings.json
+            
+            # Configure the screen using Auth0 CLI
+            echo "Configuring Auth0 screen: $screen"
+            auth0 ul customize \
+              --rendering-mode advanced \
+              --prompt $screen \
+              --screen $screen \
+              --settings-file settings.json
+            
+            echo "✅ Screen $screen configured successfully"
+          done
+
+      - name: Invalidate CloudFront distribution (if needed)
+        if: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID != '' }}
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
+            --paths "/*"
 
       - name: Cleanup
         if: always()
         working-directory: ${{ env.WORKING_DIR }}
         run: |
           rm -f settings.json
-          rm -rf dist
