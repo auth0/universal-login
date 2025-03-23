@@ -125,6 +125,15 @@ acul-boilerplate/
 └── settings/           # Auth0 CLI settings
 ```
 
+## Screens
+
+This boilerplate includes implementations for several Universal Login screens:
+
+- **[Login Screen](src/screens/login/README.md)**
+- **[Login ID Screen](src/screens/login-id/README.md)**
+
+Each screen comes with its own documentation, implementation details, and configuration options. Check the README.md file in each screen directory for more information.
+
 ## Features
 
 - Multiple authentication flows (Username/Password, Passwordless, Social)
@@ -214,7 +223,23 @@ acul-boilerplate/
 
 ## Documentation
 
-For more details about ACUL, refer to the [Auth0 Documentation](https://auth0.com/docs/customize/universal-login-pages/universal-login-page-templates).
+### Advanced Custom Universal Login (ACUL)
+
+Auth0's Advanced Custom Universal Login (ACUL) allows you to create highly customized authentication experiences using your own design system and components. ACUL gives you complete control over the UI while Auth0 handles the security aspects of authentication.
+
+Learn more about ACUL in the [Auth0 Advanced Customizations documentation](https://auth0.com/docs/customize/login-pages/advanced-customizations).
+
+### ACUL JavaScript Library
+
+The ACUL JavaScript library provides a set of components, hooks, and utilities for building advanced custom login experiences with Auth0. It includes utilities for form handling, state management, and integration with Auth0's authentication APIs.
+
+Explore the [ACUL API documentation](https://auth0.github.io/universal-login/modules/Classes.html) to learn about all available modules and classes.
+
+### Auth0 CLI
+
+The Auth0 CLI is a command-line tool for managing Auth0 tenants, applications, and Universal Login configurations. This boilerplate project uses the Auth0 CLI to switch between standard and advanced modes for Universal Login screens.
+
+Learn more about the Auth0 CLI in the [official documentation](https://auth0.github.io/auth0-cli/).
 
 ## License
 
