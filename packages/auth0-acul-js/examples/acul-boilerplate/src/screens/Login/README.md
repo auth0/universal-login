@@ -1,4 +1,6 @@
 
+# Login Screen
+
 ## Overview
 
 The Login screen is the initial screen in the authentication journey that users encounter when logging into your application. It serves as the entry point for various authentication methods including:
@@ -9,8 +11,6 @@ The Login screen is the initial screen in the authentication journey that users 
 As the first touchpoint in your authentication flow, this screen is critical for creating a positive user experience and setting the tone for your brand identity.
 
 <img width="1728" alt="image" src="https://github.com/user-attachments/assets/6a009ebb-71cc-410c-85a2-660b14848561" />
-
-<img width="550" height="880" alt="image" src="https://github.com/user-attachments/assets/dadfc369-8b41-448e-b187-99d2bb4e9dd9" />
 
 ## Prerequisites
 
@@ -24,6 +24,14 @@ For the Login screen to function properly, your Auth0 tenant should have the app
 2. Select **Identifier + Password** and click Save
 
 This will enable the username/password flow within your tenant.
+
+<img width="550" height="800" alt="image" src="https://github.com/user-attachments/assets/dadfc369-8b41-448e-b187-99d2bb4e9dd9" />
+
+## Login screen features
+
+1. Default login.
+2. Configure captcha or bot detection.
+3. Configure Social login.
 
 ## Usage
 
@@ -79,8 +87,13 @@ Where `settings.json` contains the payload with your assets. For example:
     "screen.texts",
     "tenant.name",
     "tenant.friendly_name",
-    "tenant.enabled_locales"
+    "tenant.enabled_locales",
+    "untrusted_data.submitted_form_data",
+    "untrusted_data.authorization_params.ui_locales",
+    "untrusted_data.authorization_params.login_hint",
+    "untrusted_data.authorization_params.screen_hint"
   ],
+  "default_head_tags_disabled": false,
   "head_tags": [
     {
       "tag": "base",
@@ -89,16 +102,51 @@ Where `settings.json` contains the payload with your assets. For example:
       }
     },
     {
+      "tag": "meta",
+      "attributes": {
+        "name": "viewport",
+        "content": "width=device-width, initial-scale=1"
+      }
+    },
+    {
       "tag": "link",
       "attributes": {
         "rel": "stylesheet",
-        "href": "assets/styles.css"
+        "href": "http://127.0.0.1:3032/assets/shared/styles.hash.css"
       }
     },
     {
       "tag": "script",
       "attributes": {
-        "src": "assets/main.js",
+        "src": "http://127.0.0.1:3032/assets/shared/vendor.js",
+        "type": "module"
+      }
+    },
+    {
+      "tag": "script",
+      "attributes": {
+        "src": "http://127.0.0.1:3032/assets/shared/dependencies.hash.js",
+        "type": "module"
+      }
+    },
+    {
+      "tag": "script",
+      "attributes": {
+        "src": "http://127.0.0.1:3032/assets/shared/auth0-acul.hash.js",
+        "type": "module"
+      }
+    },
+    {
+      "tag": "script",
+      "attributes": {
+        "src": "http://127.0.0.1:3032/assets/main.yTsNeFmk.js",
+        "type": "module"
+      }
+    },
+    {
+      "tag": "script",
+      "attributes": {
+        "src": "http://127.0.0.1:3032/assets/login/index.hash.js",
         "type": "module"
       }
     }

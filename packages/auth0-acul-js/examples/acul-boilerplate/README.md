@@ -2,64 +2,75 @@
 
 This project provides a boilerplate setup for Auth0's Advanced Custom Universal Login (ACUL). ACUL allows you to build custom login screens using your own design systems and layouts. It includes a Next.js quickstart application for testing authentication flows in real-time using React, TypeScript, and TailwindCSS.
 
-## Prerequisites
+## ⚙️ Development Prerequisites
 
-### Development Prerequisites
+<details>
+<summary>📂 Repository Setup</summary>
 
-1. **Repository Setup**
-   - Clone the universal-login repository:
-     ```bash
-     git clone https://github.com/auth0/universal-login.git
-     cd universal-login
-     ```
+- Clone the universal-login repository:
+  ```bash
+  git clone https://github.com/auth0/universal-login.git
+  cd universal-login
+  ```
+</details>
 
-2. **Node.js Environment**
-   - Node.js version 20 or above is required
-   - Check your current version: `node -v`
-   - We recommend using NVM (Node Version Manager) to manage Node.js versions:
-     - Install NVM:
-       - For macOS/Linux: `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash`
-       - For Windows: Install [nvm-windows](https://github.com/coreybutler/nvm-windows)
-     - Install and use Node.js v20:
-       ```bash
-       nvm install 20
-       nvm use 20
-       ```
+<details>
+<summary>🔧 Node.js Environment</summary>
 
-3. **Dependencies Installation**
-   - Install dependencies for both the main project and Next.js app:
-     ```bash
-     npm install
-     cd nextjs-quickstart && npm install
-     cd ..
-     ```
+- Node.js version 20 or above is required
+- Check your current version: `node -v`
+- We recommend using NVM (Node Version Manager) to manage Node.js versions:
+  - Install NVM:
+    - For macOS/Linux: `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash`
+    - For Windows: Install [nvm-windows](https://github.com/coreybutler/nvm-windows)
+  - Install and use Node.js v20:
+    ```bash
+    nvm install 20
+    nvm use 20
+    ```
+</details>
 
-4. **Auth0 CLI Installation**
-   - This project requires the Auth0 CLI to configure your tenant:
-     - For macOS/Linux using Homebrew:
-       ```bash
-       brew tap auth0/auth0-cli && brew install auth0
-       ```
-     - For Windows using Scoop:
-       ```bash
-       scoop bucket add auth0 https://github.com/auth0/scoop-auth0-cli.git
-       scoop install auth0
-       ```
-     - Or download from [Auth0 CLI GitHub repository](https://github.com/auth0/auth0-cli)
-   - Verify installation with:
-     ```bash
-     auth0 --version
-     ```
-   - Log in to your Auth0 account:
-     ```bash
-     auth0 login
-     ```
-   - **Important**: You must be logged in to the Auth0 CLI before running this project
+<details>
+<summary>📦 Dependencies Installation</summary>
+
+- Install dependencies for both the main project and Next.js app:
+  ```bash
+  npm install
+  cd nextjs-quickstart && npm install
+  cd ..
+  ```
+</details>
+
+<details>
+<summary>* 🔨 Auth0 CLI Installation</summary>
+
+- This project requires the Auth0 CLI to configure your tenant:
+  - For macOS/Linux using Homebrew:
+    ```bash
+    brew tap auth0/auth0-cli && brew install auth0
+    ```
+  - For Windows using Scoop:
+    ```bash
+    scoop bucket add auth0 https://github.com/auth0/scoop-auth0-cli.git
+    scoop install auth0
+    ```
+  - Or download from [Auth0 CLI GitHub repository](https://github.com/auth0/auth0-cli)
+- Verify installation with:
+  ```bash
+  auth0 --version
+  ```
+- Log in to your Auth0 account:
+  ```bash
+  auth0 login
+  ```
+- **Important**: You must be logged in to the Auth0 CLI before running this project
+</details>
+</details>
 
 ### Auth0 Prerequisites
 
 1. **Auth0 Tenant**
-   - Create a new Auth0 tenant. This is important! Using a new tenant ensures you don't encounter conflicts with existing configurations.
+   - Create a Auth0 tenant. You can use existing tenant if you alraedy have auth0 tenant. Remember to work in Development tenants before changing configuration for Production tenants.
    - You can sign up for a free Auth0 account at [https://auth0.com/signup](https://auth0.com/signup)
    - See [Create Tenants](https://auth0.com/docs/get-started/auth0-overview/create-tenants) in the Auth0 docs if you need help
 
@@ -82,13 +93,14 @@ This project provides a boilerplate setup for Auth0's Advanced Custom Universal 
 1. Set up your environment variables in `.env.local`:
    ```env
    # For Nextjs quickstart - only needed if you want to use the test application
+   AUTH0_ISSUER_BASE_URL='https://YOUR_AUTH0_CUSTOM_DOMAIN.com'
    AUTH0_SECRET='LONG_RANDOM_VALUE'
    AUTH0_BASE_URL='http://localhost:3000'
-   AUTH0_ISSUER_BASE_URL='https://YOUR_AUTH0_CUSTOM_DOMAIN.com'
    AUTH0_CLIENT_ID='YOUR_AUTH0_CLIENT_ID'
    AUTH0_CLIENT_SECRET='YOUR_AUTH0_CLIENT_SECRET'
    AUTH0_AUDIENCE='YOUR_AUTH0_API_IDENTIFIER'
    AUTH0_SCOPE='openid profile'
+   AUTH0_ORGANIZATION='optional_field_organization_config'
    ```
 
 2. Start development:
@@ -102,6 +114,11 @@ This project provides a boilerplate setup for Auth0's Advanced Custom Universal 
    This is ACUL(advanced mode) to see the mentioned screen as per code (under src/screens)
    npm run screen:advanced <screen_name>
    npm run screen:advanced login  # Other ex: login-id, login-password
+   ```
+
+3. Run on browser:
+   ```bash
+   http://localhost:3000/
    ```
 
 ## Project Structure
@@ -129,22 +146,10 @@ acul-boilerplate/
 
 This boilerplate includes implementations for several Universal Login screens:
 
-- **[Login Screen](src/screens/login/README.md)**
+- **[Login Screen](src/screens/Login/README.md)**
 - **[Login ID Screen](src/screens/login-id/README.md)**
 
 Each screen comes with its own documentation, implementation details, and configuration options. Check the README.md file in each screen directory for more information.
-
-## Features
-
-- Multiple authentication flows (Username/Password, Passwordless, Social)
-- Modern development stack (React 19, TypeScript, TailwindCSS)
-- Integrated Next.js testing environment
-- Optimized development workflow with smart HMR
-- Theme configuration
-- Auth0 CLI integration for both standard and advanced modes
-- Streamlined tenant selection with intuitive switching workflow
-- Strict validation with meaningful error messages
-- Well-organized codebase with clear separation of concerns
 
 ## Technical Details
 
@@ -174,8 +179,8 @@ Each screen comes with its own documentation, implementation details, and config
    ```
 
 6. **Development Server**
-   - Starts a local development server on port 3032
-   - Serves the screen for testing
+   - Starts a local http server on port 3032 that serves assets
+   - Serves the screen for testing on port 3000
 
 
 </details>
@@ -212,14 +217,6 @@ Each screen comes with its own documentation, implementation details, and config
    - No need to restart the server or refresh the browser
    
 </details>
-
-## Development Workflow
-
-1. Choose a screen to work on
-2. Run the development script for that screen
-3. Make changes to components and styles
-4. Test your changes in real-time
-5. Switch to another screen if needed
 
 ## Documentation
 
