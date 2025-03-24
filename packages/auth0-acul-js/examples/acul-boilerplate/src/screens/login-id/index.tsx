@@ -25,21 +25,12 @@ const LoginIdScreen: React.FC = () => {
 
   const onLoginIdSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted');
-    
-    // Direct access to ref values for debugging
-    console.log('Ref current values:', {
-      loginId: loginIdRef.current?.value,
-      captcha: captchaRef.current?.value
-    });
     
     // Get form values
     const formValues = getFormValues();
-    console.log('Form values:', formValues);
     
     // Check if loginId exists before proceeding
     if (!formValues.loginId) {
-      console.error('Missing login ID value');
       return;
     }
     

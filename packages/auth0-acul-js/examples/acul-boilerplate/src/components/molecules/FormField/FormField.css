@@ -200,18 +200,18 @@
 /* Add highlighting for password input when showing password */
 .auth0-input-showing-password {
   background-color: rgba(99, 93, 255, 0.03) !important;
-  border-color: var(--auth0-primary-color, #635dff) !important;
+  border-color: var(--auth0-primary-hover, #635dff) !important;
 }
 
 .is-showing-password .auth0-input {
   background-color: rgba(99, 93, 255, 0.03);
-  border-color: var(--auth0-primary-color, #635dff);
+  border-color: var(--auth0-primary-hover, #635dff);
 }
 
 /* Password Toggle Button - Active State */
 .auth0-password-toggle.is-active {
   background-color: rgba(99, 93, 255, 0.08);
-  color: var(--auth0-primary-color, #635dff);
+  color: var(--auth0-primary-hover, #635dff);
 }
 
 .auth0-password-toggle.is-active svg {

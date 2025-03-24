@@ -59,7 +59,6 @@
 
 .auth0-password-toggle {
   position: absolute;
-  right: 0.75rem;
   top: 50%;
   transform: translateY(-50%);
   background: none;
