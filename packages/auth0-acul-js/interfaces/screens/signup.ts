@@ -1,6 +1,6 @@
 import type { BaseMembers } from '../models/base-context';
 import type { ScreenMembers } from '../models/screen';
-import type { TransactionMembers, UsernamePolicy } from '../models/transaction';
+import type { TransactionMembers, UsernamePolicy, PasswordPolicy } from '../models/transaction';
 
 export interface SignupOptions {
   email?: string;
@@ -25,6 +25,7 @@ export interface TransactionMembersOnSignup extends TransactionMembers {
   usernamePolicy: UsernamePolicy | null;
   requiredIdentifiers: ('email' | 'username' | 'phone')[] | null;
   optionalIdentifiers: ('email' | 'username' | 'phone')[] | null;
+  passwordPolicy: PasswordPolicy | null;
 }
 
 export interface SignupMembers extends BaseMembers {
