@@ -16,7 +16,7 @@ const MfaOtpChallengeScreen: React.FC = () => {
   const [error, setError] = useState('');
 
   const mfaOtpChallenge = new MfaOtpChallenge();
-  const { screen } = mfaOtpChallenge;
+  const { screen: { texts }, transaction } = mfaOtpChallenge;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,6 +29,7 @@ const MfaOtpChallengeScreen: React.FC = () => {
       });
     } catch (err) {
       setError('Failed to verify code. Please try again.');
+      console.error(err);
     }
   };
 
@@ -37,17 +38,18 @@ const MfaOtpChallengeScreen: React.FC = () => {
       await mfaOtpChallenge.tryAnotherMethod();
     } catch (err) {
       setError('Failed to try another method. Please try again.');
+      console.error(err);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-100 flex flex-col py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Enter Authentication Code
+          {texts?.title ?? 'Verify Your Identity'}
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
-          Please enter the code from your authentication app.
+          {texts?.description ?? 'Check your preferred one-time password application for a code.'}
         </p>
       </div>
 
@@ -56,13 +58,14 @@ const MfaOtpChallengeScreen: React.FC = () => {
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="code" className="block text-sm font-medium text-gray-700">
-                Code
+                {texts?.codePlaceholder ?? 'Enter your one-time code'}
               </label>
               <div className="mt-1">
                 <input
                   id="code"
                   name="code"
                   type="text"
+                  placeholder={texts?.codePlaceholder ?? 'Enter your one-time code'}
                   required
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
@@ -70,6 +73,14 @@ const MfaOtpChallengeScreen: React.FC = () => {
                 />
               </div>
             </div>
+
+            {transaction?.errors?.length && (
+              <div className="text-red-600 text-sm mt-2">
+                {transaction.errors.map((err, index) => (
+                  <p key={index}>{err.message}</p>
+                ))}
+              </div>
+            )}
 
             <div className="flex items-center">
               <input
@@ -81,7 +92,7 @@ const MfaOtpChallengeScreen: React.FC = () => {
                 onChange={(e) => setRememberBrowser(e.target.checked)}
               />
               <label htmlFor="rememberBrowser" className="ml-2 block text-sm text-gray-900">
-                Remember this browser for 30 days
+                {texts?.rememberMeText ?? 'Remember this browser for 30 days'}
               </label>
             </div>
 
@@ -107,7 +118,7 @@ const MfaOtpChallengeScreen: React.FC = () => {
                 onClick={handleTryAnotherMethod}
                 className="text-sm text-blue-600 hover:text-blue-500"
               >
-                Try Another Method
+                {texts?.pickAuthenticatorText ?? 'Try Another Method'}
               </button>
             </div>
           </div>
