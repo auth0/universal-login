@@ -7,6 +7,10 @@ describe('FormHandler', () => {
   const currentLocation = window.location.href;
 
   beforeEach(() => {
+    // Mock SDK window variables
+    (window as any).__SDK_NAME__ = '@auth0/auth0-acul-js';
+    (window as any).__SDK_VERSION__ = '1.0.0';
+    
     options = { route: '/submit', state: 'testState', telemetry: ['testScreen', 'testMethod'] };
     formHandler = new FormHandler(options);
     jest.spyOn(document.body, 'appendChild').mockImplementation((node: Node) => node);
@@ -15,6 +19,9 @@ describe('FormHandler', () => {
   afterEach(() => {
     jest.restoreAllMocks();
     document.body.innerHTML = '';
+    // Clean up window mocks
+    delete (window as any).__SDK_NAME__;
+    delete (window as any).__SDK_VERSION__;
   });
 
   it('should initialize FormHandler with provided options', () => {
@@ -101,5 +108,15 @@ describe('FormHandler', () => {
 
     expect(mockSubmit).toHaveBeenCalled();
     expect(document.body.appendChild).toHaveBeenCalled();
+  });
+
+  it('should add SDK telemetry field to form', () => {
+    const form = document.createElement('form');
+    const updatedForm = formHandler['addTelemetryField'](form);
+    
+    const telemetryInput = updatedForm.querySelector('input[name="acul-sdk"]') as HTMLInputElement;
+    expect(telemetryInput).toBeTruthy();
+    expect(telemetryInput.type).toBe('hidden');
+    expect(telemetryInput.value).toContain('@auth0/auth0-acul-js@1.0.0');
   });
 });
