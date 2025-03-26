@@ -1,6 +1,6 @@
 import type { OrganizationContext } from './organization';
 
-type ShortEntity<Key extends string> = { id: number } & Record<Key, string>;
+export type ShortEntity<Key extends string> = { id: number } & Record<Key, string>;
 
 export interface UserContext {
   id: string;

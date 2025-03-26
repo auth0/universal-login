@@ -1,7 +1,7 @@
 export type { ClientMembers } from '../models/client';
 export type { BrandingMembers } from '../models/branding';
 export type { PromptMembers } from '../models/prompt';
-export type { UserMembers } from '../models/user';
+export type { UserMembers, ShortEntity } from '../models/user';
 export type { OrganizationMembers } from '../models/organization';
 export type { ScreenMembers } from '../models/screen';
 export type { TenantMembers } from '../models/tenant';
