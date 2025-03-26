@@ -1,4 +1,4 @@
-import type { FormOptions, PostPayloadOptions, TelemetryOptions } from '../../interfaces/utils/form-handler';
+import type { FormOptions, PostPayloadOptions } from '../../interfaces/utils/form-handler';
 
 export class FormHandler {
   options: FormOptions;
@@ -39,18 +39,11 @@ export class FormHandler {
 
   private addTelemetryField(form: HTMLFormElement): HTMLFormElement {
     const input = document.createElement('input');
-    const [screenName, methodName] = this.options.telemetry ?? [];
     const sdkName = __SDK_NAME__;
     const sdkVersion = __SDK_VERSION__;
-    const telemetryPayload: TelemetryOptions = {
-      sdkVersion,
-      sdkName,
-      screenName,
-      methodName,
-    };
     input.type = 'hidden';
-    input.name = 'x-acul-sdk-analytics';
-    input.value = JSON.stringify(telemetryPayload);
+    input.name = 'acul-sdk';
+    input.value = `${sdkName}@${sdkVersion}`;
     form.appendChild(input);
 
     return form;
