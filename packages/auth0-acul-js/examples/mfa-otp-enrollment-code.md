@@ -26,40 +26,29 @@ import MfaOtpEnrollmentCode from '@auth0/auth0-acul-js/mfa-otp-enrollment-code';
 
 const MfaOtpEnrollmentCodeScreen: React.FC = () => {
   const [code, setCode] = useState('');
-  const [error, setError] = useState('');
 
   const mfaOtpEnrollmentCode = new MfaOtpEnrollmentCode();
-  const { screen } = mfaOtpEnrollmentCode;
+  const { screen, transaction } = mfaOtpEnrollmentCode;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-
-    try {
-      await mfaOtpEnrollmentCode.continue({
-        code,
-      });
-    } catch (err) {
-      setError('Failed to verify code. Please try again.');
-    }
+    await mfaOtpEnrollmentCode.continue({
+      code,
+    });
   };
 
   const handleTryAnotherMethod = async () => {
-    try {
-      await mfaOtpEnrollmentCode.tryAnotherMethod();
-    } catch (err) {
-      setError('Failed to try another method. Please try again.');
-    }
+    await mfaOtpEnrollmentCode.tryAnotherMethod();
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-100 flex flex-col py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Enter Authentication Code
+          { screen?.texts?.title ?? 'Secure Your Account' }
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
-          Please enter the authentication code shown on the screen.
+          { screen?.texts?.description ?? 'Manually enter the following code into your preferred authenticator app and then enter the provided one-time code below.' }
         </p>
         <p className="mt-2 text-center text-sm text-gray-600">
           Code: {screen.data?.text_code}
@@ -71,13 +60,14 @@ const MfaOtpEnrollmentCodeScreen: React.FC = () => {
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="code" className="block text-sm font-medium text-gray-700">
-                Code
+                {screen?.texts?.placeholder ?? 'Enter your one-time code'}
               </label>
               <div className="mt-1">
                 <input
                   id="code"
                   name="code"
                   type="text"
+                  placeholder={screen?.texts?.placeholder ?? 'Enter your one-time code'}
                   required
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
@@ -86,9 +76,13 @@ const MfaOtpEnrollmentCodeScreen: React.FC = () => {
               </div>
             </div>
 
-            {error && (
-              <div className="text-red-600 text-sm">
-                {error}
+            {transaction?.errors?.length && (
+              <div className="mt-2 mb-4">
+                {transaction?.errors.map((err, index) => (
+                  <p key={index} className="text-red-500">
+                    {err.message}
+                  </p>
+                ))}
               </div>
             )}
 
@@ -108,7 +102,7 @@ const MfaOtpEnrollmentCodeScreen: React.FC = () => {
                 onClick={handleTryAnotherMethod}
                 className="text-sm text-blue-600 hover:text-blue-500"
               >
-                Try Another Method
+                {screen?.texts?.tryAnotherMethod ?? 'Try another method'}
               </button>
             </div>
           </div>

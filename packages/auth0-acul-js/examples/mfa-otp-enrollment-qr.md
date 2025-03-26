@@ -44,14 +44,22 @@ const MfaOtpEnrollmentQrScreen: React.FC = () => {
         <p className="mb-4">{screen.texts?.description ?? 'Scan the QR Code below using your preferred authenticator app and then enter the provided one-time code below.'}</p>
 
         {qr_code ? (
-          <div className="mb-4">
-            <img src={qr_code} alt="QR Code" className="mb-4 mx-auto" />
+          <div className="">
+            <img src={qr_code} alt="QR Code" className="mx-auto" />
           </div>
         ) : (
           <p>Loading QR Code...</p>
         )}
 
-        <div className="flex justify-center flex-col items-center">
+        <button
+          className="mx-auto block text-blue-600 hover:text-blue-800 underline focus:outline-none"
+          type="button"
+          onClick={handleToggleView}
+        >
+          {screen.texts?.codeEnrollmentText ?? 'Trouble Scanning?'}
+        </button>
+
+        <div className="flex justify-center flex-col items-center mt-3">
           <input
             id="code"
             placeholder="Enter OTP code"
@@ -83,13 +91,7 @@ const MfaOtpEnrollmentQrScreen: React.FC = () => {
         <hr className="my-4" />
 
         <div className="flex justify-center items-end">
-          <button
-            className="mx-auto block bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-2"
-            type="button"
-            onClick={handleToggleView}
-          >
-            Toggle View
-          </button>
+
 
           <button
             className="mx-auto block bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-2"
