@@ -64,6 +64,7 @@ export function getPasswordPolicy(transaction: TransactionContext): PasswordPoli
   return {
     minLength: passwordPolicy.min_length,
     policy: passwordPolicy.policy as PasswordPolicy['policy'],
+    passwordSecurityInfo: passwordPolicy.password_security_info,
   };
 }
 
