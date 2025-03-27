@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "workspaces": {
-    "packages": ["packages/auth0-acul-js"],
+    "packages": ["packages/*"],
     "nohoist": ["**"]
   },
   "license": "ISC",
