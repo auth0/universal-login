@@ -9,8 +9,8 @@ export interface MfaSmsChallengeOptions {
 
 export interface ScreenMembersOnResetPasswordMfaSmsChallenge extends ScreenMembers {
   data: {
-    phone_number?: string;
-    remember_device?: boolean;
+    phoneNumber: string;
+    isVoiceEnabled: boolean;
   } | null;
 }
 
