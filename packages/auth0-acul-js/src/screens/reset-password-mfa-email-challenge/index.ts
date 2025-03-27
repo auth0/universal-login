@@ -41,7 +41,6 @@ export default class ResetPasswordMfaEmailChallenge extends BaseContext implemen
    * const resetPasswordMfaEmailChallenge = new ResetPasswordMfaEmailChallenge();
    * await resetPasswordMfaEmailChallenge.continue({
    *   code: '123456',
-   *   rememberDevice: true,
    * });
    * ```
    */
@@ -51,10 +50,6 @@ export default class ResetPasswordMfaEmailChallenge extends BaseContext implemen
       telemetry: [ResetPasswordMfaEmailChallenge.screenIdentifier, 'continue'],
     };
     const submitPayload: Record<string, string | number | boolean> = { ...payload, action: 'default' };
-
-    if (payload.rememberDevice) {
-      submitPayload.rememberDevice = 'true';
-    }
 
     await new FormHandler(options).submitData(submitPayload);
   }

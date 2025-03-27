@@ -12,7 +12,6 @@ describe('ResetPasswordMfaEmailChallenge', () => {
         name: ScreenIds.RESET_PASSWORD_MFA_EMAIL_CHALLENGE,
         data: {
           email: 'test@example.com',
-          remember_device: true,
         },
       },
       transaction: { state: 'testState' },
@@ -38,10 +37,6 @@ describe('ResetPasswordMfaEmailChallenge', () => {
     expect((resetPasswordMfaEmailChallenge.screen as ScreenMembersOnResetPasswordMfaEmailChallenge).data?.email).toBe('test@example.com');
   });
 
-  it('should have the correct remember_device from screen data', () => {
-    expect((resetPasswordMfaEmailChallenge.screen as ScreenMembersOnResetPasswordMfaEmailChallenge).data?.remember_device).toBe(true);
-  });
-
   describe('continue', () => {
     it('should call FormHandler.submitData with the correct parameters', async () => {
       const mockFormHandler = {
@@ -51,14 +46,12 @@ describe('ResetPasswordMfaEmailChallenge', () => {
 
       const payload = {
         code: '123456',
-        rememberDevice: true,
       };
 
       await resetPasswordMfaEmailChallenge.continue(payload);
 
       expect(mockFormHandler.submitData).toHaveBeenCalledWith({
         code: '123456',
-        rememberDevice: 'true',
         action: 'default'
       });
     });

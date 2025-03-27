@@ -8,7 +8,6 @@ describe('ScreenOverride', () => {
       name: 'reset-password-mfa-email-challenge',
       data: {
         email: 'test@example.com',
-        remember_device: true,
       },
     } as ScreenContext;
 
@@ -16,7 +15,6 @@ describe('ScreenOverride', () => {
 
     expect(screenOverride.data).toEqual({
       email: 'test@example.com',
-      remember_device: true,
     });
   });
 
@@ -35,7 +33,6 @@ describe('ScreenOverride', () => {
       name: 'reset-password-mfa-email-challenge',
       data: {
         email: 'test@example.com',
-        remember_device: true,
       },
     } as ScreenContext;
 

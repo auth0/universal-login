@@ -1,10 +1,7 @@
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
-import { ScreenOverride } from './screen-override';
-
 import type { CustomOptions } from '../../../interfaces/common';
-import type { ScreenContext } from '../../../interfaces/models/screen';
 import type {
   ResetPasswordMfaOtpChallengeMembers,
   ContinueOptions,
@@ -17,15 +14,11 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * Class implementing the reset-password-mfa-otp-challenge screen functionality
  */
 export default class ResetPasswordMfaOtpChallenge extends BaseContext implements ResetPasswordMfaOtpChallengeMembers {
-  screen: ScreenOptions;
-
   /**
    * Creates an instance of ResetPasswordMfaOtpChallenge screen manager
    */
   constructor() {
     super();
-    const screenContext = this.getContext('screen') as ScreenContext;
-    this.screen = new ScreenOverride(screenContext);
   }
 
   /**

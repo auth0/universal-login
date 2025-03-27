@@ -27,7 +27,6 @@ export class ScreenOverride extends Screen implements OverrideOptions {
 
     return {
       email: typeof data.email === 'string' ? data.email : '',
-      remember_device: typeof data.remember_device === 'boolean' ? data.remember_device : undefined,
     };
   };
 }

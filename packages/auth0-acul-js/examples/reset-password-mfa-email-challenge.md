@@ -12,50 +12,33 @@ import ResetPasswordMfaEmailChallenge from '@auth0/auth0-acul-js/reset-password-
 
 const ResetPasswordMfaEmailChallengeScreen: React.FC = () => {
   const [code, setCode] = useState('');
-  const [rememberDevice, setRememberDevice] = useState(false);
-  const [error, setError] = useState('');
 
   const resetPasswordMfaEmailChallenge = new ResetPasswordMfaEmailChallenge();
-  const { screen } = resetPasswordMfaEmailChallenge;
+  const { screen, transaction } = resetPasswordMfaEmailChallenge;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-
-    try {
-      await resetPasswordMfaEmailChallenge.continue({
-        code,
-        rememberDevice,
-      });
-    } catch (err) {
-      setError('Failed to verify code. Please try again.');
-    }
+    await resetPasswordMfaEmailChallenge.continue({
+      code
+    });
   };
 
   const handleResendCode = async () => {
-    try {
-      await resetPasswordMfaEmailChallenge.resendCode();
-    } catch (err) {
-      setError('Failed to resend code. Please try again.');
-    }
+    await resetPasswordMfaEmailChallenge.resendCode();
   };
 
   const handleTryAnotherMethod = async () => {
-    try {
-      await resetPasswordMfaEmailChallenge.tryAnotherMethod();
-    } catch (err) {
-      setError('Failed to try another method. Please try again.');
-    }
+    await resetPasswordMfaEmailChallenge.tryAnotherMethod();
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-100 flex flex-col py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Verify Your Email
+          { screen?.texts?.title ?? 'Verify Your Identity' }
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
-          Enter the code sent to {screen.data?.email}
+          { (screen?.texts?.description ?? 'We\'ve sent an email with your code to') + screen.data?.email }
         </p>
       </div>
 
@@ -64,7 +47,7 @@ const ResetPasswordMfaEmailChallengeScreen: React.FC = () => {
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="code" className="block text-sm font-medium text-gray-700">
-                Code
+                { screen?.texts?.placeholder ?? 'Enter the code' }
               </label>
               <div className="mt-1">
                 <input
@@ -72,32 +55,22 @@ const ResetPasswordMfaEmailChallengeScreen: React.FC = () => {
                   name="code"
                   type="text"
                   required
+                  placeholder={ screen?.texts?.placeholder ?? 'Enter the code' }
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
+              {transaction?.errors?.length && (
+                <div className="mt-2 mb-4">
+                  {transaction?.errors.map((err, index) => (
+                    <p key={index} className="text-red-500">
+                      {err.message}
+                    </p>
+                  ))}
+                </div>
+              )}
             </div>
-
-            <div className="flex items-center">
-              <input
-                id="rememberDevice"
-                name="rememberDevice"
-                type="checkbox"
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                checked={rememberDevice}
-                onChange={(e) => setRememberDevice(e.target.checked)}
-              />
-              <label htmlFor="rememberDevice" className="ml-2 block text-sm text-gray-900">
-                Remember this device
-              </label>
-            </div>
-
-            {error && (
-              <div className="text-red-600 text-sm">
-                {error}
-              </div>
-            )}
 
             <div>
               <button
@@ -115,13 +88,13 @@ const ResetPasswordMfaEmailChallengeScreen: React.FC = () => {
                 onClick={handleResendCode}
                 className="text-sm text-blue-600 hover:text-blue-500"
               >
-                Resend Code
+                { screen?.texts?.resendActionText ?? 'Resend Code' }
               </button>
               <button
                 onClick={handleTryAnotherMethod}
                 className="text-sm text-blue-600 hover:text-blue-500"
               >
-                Try Another Method
+                { screen?.texts?.pickAuthenticatorText ?? 'Try another method' }
               </button>
             </div>
           </div>
