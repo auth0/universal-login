@@ -46,7 +46,7 @@ export default class ResetPasswordMfaPushChallengePush extends BaseContext imple
   }
 
   /**
-   * Resends the push notification
+   * Re-sends the push notification
    * @param payload Optional custom options to include with the request
    * @example
    * ```typescript
