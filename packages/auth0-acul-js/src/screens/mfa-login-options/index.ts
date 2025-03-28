@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import type { MfaLoginOptionsMembers, LoginEnrollOptions, LoginFactorType } from '../../../interfaces/screens/mfa-login-options';
@@ -9,6 +10,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * This screen allows users to select which MFA factor they want to use for login
  */
 export default class MfaLoginOptions extends BaseContext implements MfaLoginOptionsMembers {
+  static screenIdentifier: string = ScreenIds.MFA_LOGIN_OPTIONS;
   /**
    * Creates an instance of MfaLoginOptions screen manager
    */
@@ -30,6 +32,7 @@ export default class MfaLoginOptions extends BaseContext implements MfaLoginOpti
   async enroll(payload: LoginEnrollOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaLoginOptions.screenIdentifier, 'enroll'],
     };
     await new FormHandler(options).submitData<LoginEnrollOptions>(payload);
   }

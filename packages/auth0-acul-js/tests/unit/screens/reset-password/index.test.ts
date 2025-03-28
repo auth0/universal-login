@@ -2,12 +2,15 @@ import ResetPassword from '../../../../src/screens/reset-password';
 import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { ResetPasswordOptions } from 'interfaces/screens/reset-password';
+import { ScreenIds } from '../../../../src/utils/enums';
+
 jest.mock('../../../../src/utils/form-handler');
 describe('ResetPassword', () => {
   let resetPassword: ResetPassword;
   let mockFormHandler: { submitData: jest.Mock };
   beforeEach(() => {
     global.window = Object.create(window);
+    baseContextData.screen.name = ScreenIds.RESET_PASSWORD;
     window.universal_login_context = baseContextData;
     resetPassword = new ResetPassword();
     mockFormHandler = {

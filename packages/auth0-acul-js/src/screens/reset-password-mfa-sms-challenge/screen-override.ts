@@ -9,6 +9,7 @@ import type { ScreenMembersOnResetPasswordMfaSmsChallenge as OverrideOptions } f
  * @extends Screen
  */
 export class ScreenOverride extends Screen implements OverrideOptions {
+  data: OverrideOptions['data'];
   /**
    * @constructor
    * @param {ScreenContext} screenContext - The screen context from the Universal Login context.
@@ -32,8 +33,8 @@ export class ScreenOverride extends Screen implements OverrideOptions {
     }
 
     return {
-      phone_number: data.phone_number as string,
-      remember_device: data.remember_device === true,
+      phoneNumber: data.phone_number as string,
+      isVoiceEnabled: data.show_link_voice as boolean,
     };
   };
 }

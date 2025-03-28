@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 import { createPasskeyCredentials } from '../../utils/passkeys';
 
@@ -10,6 +11,7 @@ import type { PasskeyEnrollmentMembers, ScreenMembersOnPasskeyEnrollment as Scre
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 export default class PasskeyEnrollment extends BaseContext implements PasskeyEnrollmentMembers {
+  static screenIdentifier: string = ScreenIds.PASSKEY_ENROLLMENT;
   screen: ScreenOptions;
 
   constructor() {
@@ -30,6 +32,7 @@ export default class PasskeyEnrollment extends BaseContext implements PasskeyEnr
   async continuePasskeyEnrollment(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [PasskeyEnrollment.screenIdentifier, 'continuePasskeyEnrollment'],
     };
 
     const publicKey = this.screen.publicKey;
@@ -48,6 +51,7 @@ export default class PasskeyEnrollment extends BaseContext implements PasskeyEnr
   async abortPasskeyEnrollment(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [PasskeyEnrollment.screenIdentifier, 'abortPasskeyEnrollment'],
     };
 
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'abort-passkey-enrollment' });

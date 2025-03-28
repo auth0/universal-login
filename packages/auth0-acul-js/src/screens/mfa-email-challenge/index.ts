@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -19,6 +20,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * This screen is shown when a user needs to verify their email during MFA
  */
 export default class MfaEmailChallenge extends BaseContext implements MfaEmailChallengeMembers {
+  static screenIdentifier: string = ScreenIds.MFA_EMAIL_CHALLENGE;
   screen: ScreenOptions;
 
   /**
@@ -47,6 +49,7 @@ export default class MfaEmailChallenge extends BaseContext implements MfaEmailCh
   async continue(payload: ContinueOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaEmailChallenge.screenIdentifier, 'continue'],
     };
     const submitPayload: Record<string, string | number | boolean> = { ...payload, action: 'default' };
     if (payload.rememberDevice) {
@@ -69,6 +72,7 @@ export default class MfaEmailChallenge extends BaseContext implements MfaEmailCh
   async resendCode(payload?: ResendCodeOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaEmailChallenge.screenIdentifier, 'resendCode'],
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
@@ -90,6 +94,7 @@ export default class MfaEmailChallenge extends BaseContext implements MfaEmailCh
   async tryAnotherMethod(payload?: TryAnotherMethodOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaEmailChallenge.screenIdentifier, 'tryAnotherMethod'],
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
@@ -112,6 +117,7 @@ export default class MfaEmailChallenge extends BaseContext implements MfaEmailCh
   async pickEmail(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaEmailChallenge.screenIdentifier, 'pickEmail'],
     };
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'pick-email' });
   }

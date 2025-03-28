@@ -13,7 +13,6 @@ describe('ScreenOverride', () => {
       name: 'reset-password-mfa-push-challenge-push',
       data: {
         device_name: 'Test Device',
-        remember_device: true
       }
     } as ScreenContext;
     screenOverride = new ScreenOverride(screenContext);
@@ -22,7 +21,6 @@ describe('ScreenOverride', () => {
   it('should initialize data correctly', () => {
     expect(screenOverride.data).toEqual({
       deviceName: 'Test Device',
-      rememberDevice: true
     });
   });
 
@@ -36,7 +34,6 @@ describe('ScreenOverride', () => {
     const result = ScreenOverride.getScreenData(screenContext);
     expect(result).toEqual({
       deviceName: 'Test Device',
-      rememberDevice: true
     });
   });
 

@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -17,6 +18,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * This screen is shown when a push notification has been sent to the user's device
  */
 export default class MfaPushChallengePush extends BaseContext implements MfaPushChallengePushMembers {
+  static screenIdentifier: string = ScreenIds.MFA_PUSH_CHALLENGE_PUSH;
   screen: ScreenOptions;
 
   /**
@@ -40,6 +42,7 @@ export default class MfaPushChallengePush extends BaseContext implements MfaPush
   async continue(payload?: WithRememberOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaPushChallengePush.screenIdentifier, 'continue'],
     };
 
     await new FormHandler(options).submitData<WithRememberOptions>({
@@ -61,6 +64,7 @@ export default class MfaPushChallengePush extends BaseContext implements MfaPush
   async resendPushNotification(payload?: WithRememberOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaPushChallengePush.screenIdentifier, 'resendPushNotification'],
     };
     await new FormHandler(options).submitData<WithRememberOptions>({
       rememberDevice: payload?.rememberDevice ?? false,
@@ -81,6 +85,7 @@ export default class MfaPushChallengePush extends BaseContext implements MfaPush
   async enterCodeManually(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaPushChallengePush.screenIdentifier, 'enterCodeManually'],
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
@@ -100,6 +105,7 @@ export default class MfaPushChallengePush extends BaseContext implements MfaPush
   async tryAnotherMethod(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaPushChallengePush.screenIdentifier, 'tryAnotherMethod'],
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,

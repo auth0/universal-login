@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -16,6 +17,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * This screen is shown when a push notification has been sent to the user's device during password reset
  */
 export default class ResetPasswordMfaPushChallengePush extends BaseContext implements ResetPasswordMfaPushChallengePushMembers {
+  static screenIdentifier: string = ScreenIds.RESET_PASSWORD_MFA_PUSH_CHALLENGE_PUSH;
   screen: ScreenOptions;
 
   constructor() {
@@ -38,12 +40,13 @@ export default class ResetPasswordMfaPushChallengePush extends BaseContext imple
   async continue(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [ResetPasswordMfaPushChallengePush.screenIdentifier, 'continue'],
     };
     await new FormHandler(options).submitData<CustomOptions>(payload || {});
   }
 
   /**
-   * Resends the push notification
+   * Re-sends the push notification
    * @param payload Optional custom options to include with the request
    * @example
    * ```typescript
@@ -56,6 +59,7 @@ export default class ResetPasswordMfaPushChallengePush extends BaseContext imple
   async resendPushNotification(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [ResetPasswordMfaPushChallengePush.screenIdentifier, 'resendPushNotification'],
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
@@ -77,6 +81,7 @@ export default class ResetPasswordMfaPushChallengePush extends BaseContext imple
   async enterCodeManually(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [ResetPasswordMfaPushChallengePush.screenIdentifier, 'enterCodeManually'],
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
@@ -98,6 +103,7 @@ export default class ResetPasswordMfaPushChallengePush extends BaseContext imple
   async tryAnotherMethod(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [ResetPasswordMfaPushChallengePush.screenIdentifier, 'tryAnotherMethod'],
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,

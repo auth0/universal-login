@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -18,6 +19,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * Class implementing the reset-password-mfa-email-challenge screen functionality
  */
 export default class ResetPasswordMfaEmailChallenge extends BaseContext implements ResetPasswordMfaEmailChallengeMembers {
+  static screenIdentifier: string = ScreenIds.RESET_PASSWORD_MFA_EMAIL_CHALLENGE;
   screen: ScreenOptions;
 
   /**
@@ -39,19 +41,15 @@ export default class ResetPasswordMfaEmailChallenge extends BaseContext implemen
    * const resetPasswordMfaEmailChallenge = new ResetPasswordMfaEmailChallenge();
    * await resetPasswordMfaEmailChallenge.continue({
    *   code: '123456',
-   *   rememberDevice: true,
    * });
    * ```
    */
   async continue(payload: ContinueOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [ResetPasswordMfaEmailChallenge.screenIdentifier, 'continue'],
     };
     const submitPayload: Record<string, string | number | boolean> = { ...payload, action: 'default' };
-
-    if (payload.rememberDevice) {
-      submitPayload.rememberDevice = 'true';
-    }
 
     await new FormHandler(options).submitData(submitPayload);
   }
@@ -70,6 +68,7 @@ export default class ResetPasswordMfaEmailChallenge extends BaseContext implemen
   async resendCode(payload?: ResendCodeOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [ResetPasswordMfaEmailChallenge.screenIdentifier, 'resendCode'],
     };
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'resend-code' });
   }
@@ -88,6 +87,7 @@ export default class ResetPasswordMfaEmailChallenge extends BaseContext implemen
   async tryAnotherMethod(payload?: TryAnotherMethodOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [ResetPasswordMfaEmailChallenge.screenIdentifier, 'tryAnotherMethod'],
     };
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'pick-authenticator' });
   }

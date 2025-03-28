@@ -2,6 +2,7 @@ import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { CustomOptions } from 'interfaces/common';
 import MfaPushEnrollmentQr from '../../../../src/screens/mfa-push-enrollment-qr';
+import { ScreenIds } from '../../../../src/utils/enums';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -11,6 +12,7 @@ describe('MfaPushEnrollmentQr', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
+    baseContextData.screen.name = ScreenIds.MFA_PUSH_ENROLLMENT_QR;
     window.universal_login_context = baseContextData;
     mfaPushEnrollmentQr = new MfaPushEnrollmentQr();
     mockFormHandler = {

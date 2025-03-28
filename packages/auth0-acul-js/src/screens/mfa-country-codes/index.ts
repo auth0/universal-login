@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -17,6 +18,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * This screen allows users to select a country code for MFA phone number verification
  */
 export default class MfaCountryCodes extends BaseContext implements MfaCountryCodesMembers {
+  static screenIdentifier: string = ScreenIds.MFA_COUNTRY_CODES;
   screen: ScreenOptions;
 
   /**
@@ -51,6 +53,7 @@ export default class MfaCountryCodes extends BaseContext implements MfaCountryCo
   async selectCountryCode(payload: SelectCountryCodeOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaCountryCodes.screenIdentifier, 'selectCountryCode'],
     };
     const { country_code, phone_prefix } = payload;
     const action = `selection-action::${country_code}${phone_prefix}`;
@@ -74,6 +77,7 @@ export default class MfaCountryCodes extends BaseContext implements MfaCountryCo
   async goBack(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaCountryCodes.screenIdentifier, 'goBack'],
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,

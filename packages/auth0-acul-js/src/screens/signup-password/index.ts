@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -15,6 +16,7 @@ import type {
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 export default class SignupPassword extends BaseContext implements SignupPasswordMembers {
+  static screenIdentifier: string = ScreenIds.SIGNUP_PASSWORD;
   screen: ScreenOptions;
   transaction: TransactionOptions;
 
@@ -57,6 +59,7 @@ export default class SignupPassword extends BaseContext implements SignupPasswor
   async signup(payload: SignupPasswordOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [this.constructor.name, 'signup'],
     };
 
     if (payload.phone?.trim() ?? '') {

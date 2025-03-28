@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import type { CustomOptions } from '../../../interfaces/common';
@@ -11,6 +12,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * Implements the mfa-push-welcome screen functionality.
  */
 export default class MfaPushWelcome extends BaseContext implements MfaPushWelcomeMembers {
+  static screenIdentifier: string = ScreenIds.MFA_PUSH_WELCOME;
   screen: ScreenOptions;
 
   /**
@@ -36,6 +38,7 @@ export default class MfaPushWelcome extends BaseContext implements MfaPushWelcom
   async enroll(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaPushWelcome.screenIdentifier, 'enroll'],
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
@@ -57,6 +60,7 @@ export default class MfaPushWelcome extends BaseContext implements MfaPushWelcom
   async pickAuthenticator(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaPushWelcome.screenIdentifier, 'pickAuthenticator'],
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,

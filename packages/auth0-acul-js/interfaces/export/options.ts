@@ -21,6 +21,10 @@ export type { SelectCountryCodeOptions } from '../screens/mfa-country-codes';
 export type { ContinueOptions, ResendCodeOptions, TryAnotherMethodOptions } from '../screens/reset-password-mfa-email-challenge';
 export type { MfaSmsChallengeOptions as ResetPasswordMfaSmsChallengeOptions } from '../screens/reset-password-mfa-sms-challenge';
 export type {
+  ContinueOptions as ResetPasswordMfaOtpChallengeContinueOptions,
+  TryAnotherMethodOptions as ResetPasswordMfaOtpChallengeTryAnotherMethodOptions,
+} from '../screens/reset-password-mfa-otp-challenge';
+export type {
   ContinueOptions as ContinuePayloadOptions,
   ResendCodeOptions as ResendCodePayloadOptions,
   TryAnotherMethodOptions as TryAnotherMethodPayloadOptions,
@@ -29,3 +33,13 @@ export type { SelectMfaEmailOptions } from '../screens/mfa-email-list';
 export type { MfaSmsListOptions } from '../screens/mfa-sms-list';
 export type { LoginEnrollOptions, LoginFactorType } from '../screens/mfa-login-options';
 export type { WithRememberOptions } from '../screens/mfa-push-challenge-push';
+export type {
+  ContinueOptions as ContinueOTPOptions,
+  TryAnotherMethodOptions as TryAnotherMethodMfaOtpChallengeOptions,
+} from '../screens/mfa-otp-challenge';
+export type {
+  ContinueOptions as MfaOtpContinueOptions,
+  TryAnotherMethodOptions as MfaOtpTryAnotherMethodOptions,
+} from '../screens/mfa-otp-enrollment-code';
+export type { ContinueWithOrganizationNameOptions } from '../screens/organization-selection';
+export type { SelectOrganizationOptions } from '../screens/organization-picker';

@@ -6,6 +6,7 @@ import { BaseContext } from '../../../../src/models/base-context';
 import type { ScreenContext } from '../../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../../interfaces/models/transaction';
 import type { SignupOptions, SocialSignupOptions } from '../../../../interfaces/screens/signup';
+import { ScreenIds } from '../../../../src/utils/enums';
 
 jest.mock('../../../../src/screens/signup/screen-override');
 jest.mock('../../../../src/screens/signup/transaction-override');
@@ -18,7 +19,7 @@ describe('Signup', () => {
   let transactionContext: TransactionContext;
 
   beforeEach(() => {
-    screenContext = { name: 'signup', data: {} } as ScreenContext;
+    screenContext = { name: ScreenIds.SIGNUP, data: {} } as ScreenContext;
     transactionContext = { state: 'mockState', locale: 'en' } as TransactionContext;
 
     (BaseContext.prototype.getContext as jest.Mock).mockImplementation((contextType: string) => {
@@ -47,7 +48,7 @@ describe('Signup', () => {
     it('should submit signup form data correctly', async () => {
       const payload: SignupOptions = { email: 'test@example.com', password: 'P@ssw0rd!' };
       await signup.signup(payload);
-      expect(FormHandler).toHaveBeenCalledWith({ state: 'mockState' });
+      expect(FormHandler).toHaveBeenCalledWith(expect.objectContaining({ state: 'mockState' }));
       expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(payload);
     });
   });
@@ -56,7 +57,7 @@ describe('Signup', () => {
     it('should submit social signup form data correctly', async () => {
       const payload: SocialSignupOptions = { connection: 'google-oauth2' };
       await signup.socialSignup(payload);
-      expect(FormHandler).toHaveBeenCalledWith({ state: 'mockState' });
+      expect(FormHandler).toHaveBeenCalledWith(expect.objectContaining({ state: 'mockState' }));
       expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(payload);
     });
   });
@@ -64,7 +65,7 @@ describe('Signup', () => {
   describe('pickCountryCode', () => {
     it('should submit pick-country-code action', async () => {
       await signup.pickCountryCode();
-      expect(FormHandler).toHaveBeenCalledWith({ state: 'mockState' });
+      expect(FormHandler).toHaveBeenCalledWith(expect.objectContaining({ state: 'mockState' }));
       expect(FormHandler.prototype.submitData).toHaveBeenCalledWith({
         action: 'pick-country-code',
       });

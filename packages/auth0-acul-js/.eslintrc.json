@@ -20,7 +20,7 @@
     "eqeqeq": ["error", "always"],
     "curly": "off",
     "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": ["error"],
+    "@typescript-eslint/no-unused-vars": "error",
     "no-var": "error",
     "prettier/prettier": [
       "error", {

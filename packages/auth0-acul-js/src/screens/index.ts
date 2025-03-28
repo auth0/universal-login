@@ -31,7 +31,14 @@ export { default as MfaEmailList } from './mfa-email-list';
 export { default as MfaEnrollResult } from './mfa-enroll-result';
 export { default as MfaLoginOptions } from './mfa-login-options';
 export { default as MfaPushChallengePush } from './mfa-push-challenge-push';
-
-// export { default as ResetPasswordMfaPushChallengePush } from './reset-password-mfa-push-challenge-push';
-// export { default as ResetPasswordMfaEmailChallenge } from './reset-password-mfa-email-challenge';
-// export { default as ResetPasswordMfaSmsChallenge } from './reset-password-mfa-sms-challenge';
+export { default as MfaOtpChallenge } from './mfa-otp-challenge';
+export { default as MfaOtpEnrollmentQr } from './mfa-otp-enrollment-qr';
+export { default as MfaOtpEnrollmentCode } from './mfa-otp-enrollment-code';
+export { default as ResetPasswordMfaPushChallengePush } from './reset-password-mfa-push-challenge-push';
+export { default as ResetPasswordMfaEmailChallenge } from './reset-password-mfa-email-challenge';
+export { default as ResetPasswordMfaSmsChallenge } from './reset-password-mfa-sms-challenge';
+export { default as ResetPasswordMfaOtpChallenge } from './reset-password-mfa-otp-challenge';
+export { default as OrganizationSelection } from './organization-selection';
+export { default as OrganizationPicker } from './organization-picker';
+export { default as AcceptInvitation } from './accept-invitation';
+// export { default as CustomizedConsent } from './customized-consent';

@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -19,6 +20,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * Login screen implementation class
  */
 export default class Login extends BaseContext implements LoginMembers {
+  static screenIdentifier: string = ScreenIds.LOGIN;
   screen: ScreenOptions;
   transaction: TransactionOptions;
 
@@ -48,7 +50,7 @@ export default class Login extends BaseContext implements LoginMembers {
    * ```
    */
   async login(payload: LoginOptions): Promise<void> {
-    const options: FormOptions = { state: this.transaction.state };
+    const options: FormOptions = { state: this.transaction.state, telemetry: [Login.screenIdentifier, 'login'] };
     await new FormHandler(options).submitData<LoginOptions>(payload);
   }
 
@@ -66,7 +68,7 @@ export default class Login extends BaseContext implements LoginMembers {
    * ```
    */
   async socialLogin(payload: SocialLoginOptions): Promise<void> {
-    const options: FormOptions = { state: this.transaction.state };
+    const options: FormOptions = { state: this.transaction.state, telemetry: [Login.screenIdentifier, 'login'] };
     await new FormHandler(options).submitData<SocialLoginOptions>(payload);
   }
 }

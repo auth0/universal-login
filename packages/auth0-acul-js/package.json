@@ -1,6 +1,6 @@
 {
   "name": "@auth0/auth0-acul-js",
-  "version": "0.1.0-beta.2",
+  "version": "0.1.0-beta.3",
   "type": "module",
   "module": "dist/index.js",
   "exports": {
@@ -84,10 +84,6 @@
       "import": "./dist/screens/reset-password-error/index.js",
       "types": "./dist/types/src/screens/reset-password-error/index.d.ts"
     },
-    "./reset-password-mfa-push-challenge-push": {
-      "import": "./dist/screens/reset-password-mfa-push-challenge-push/index.js",
-      "types": "./dist/types/src/screens/reset-password-mfa-push-challenge-push/index.d.ts"
-    },
     "./mfa-push-enrollment-qr": {
       "import": "./dist/screens/mfa-push-enrollment-qr/index.js",
       "types": "./dist/types/src/screens/mfa-push-enrollment-qr/index.d.ts"
@@ -120,9 +116,17 @@
       "import": "./dist/screens/mfa-country-codes/index.js",
       "types": "./dist/types/src/screens/mfa-country-codes/index.d.ts"
     },
+    "./reset-password-mfa-push-challenge-push": {
+      "import": "./dist/screens/reset-password-mfa-push-challenge-push/index.js",
+      "types": "./dist/types/src/screens/reset-password-mfa-push-challenge-push/index.d.ts"
+    },
     "./reset-password-mfa-email-challenge": {
       "import": "./dist/screens/reset-password-mfa-email-challenge/index.js",
       "types": "./dist/types/src/screens/reset-password-mfa-email-challenge/index.d.ts"
+    },
+    "./reset-password-mfa-otp-challenge": {
+      "import": "./dist/screens/reset-password-mfa-otp-challenge/index.js",
+      "types": "./dist/types/src/screens/reset-password-mfa-otp-challenge/index.d.ts"
     },
     "./reset-password-mfa-sms-challenge": {
       "import": "./dist/screens/reset-password-mfa-sms-challenge/index.js",
@@ -151,11 +155,40 @@
     "./mfa-push-challenge-push": {
       "import": "./dist/screens/mfa-push-challenge-push/index.js",
       "types": "./dist/types/src/screens/mfa-push-challenge-push/index.d.ts"
+    },
+    "./mfa-otp-challenge": {
+      "import": "./dist/screens/mfa-otp-challenge/index.js",
+      "types": "./dist/types/src/screens/mfa-otp-challenge/index.d.ts"
+    },
+    "./mfa-otp-enrollment-qr": {
+      "import": "./dist/screens/mfa-otp-enrollment-qr/index.js",
+      "types": "./dist/types/src/screens/mfa-otp-enrollment-qr/index.d.ts"
+    },
+    "./mfa-otp-enrollment-code": {
+      "import": "./dist/screens/mfa-otp-enrollment-code/index.js",
+      "types": "./dist/types/src/screens/mfa-otp-enrollment-code/index.d.ts"
+    },
+    "./organization-selection": {
+      "import": "./dist/screens/organization-selection/index.js",
+      "types": "./dist/types/src/screens/organization-selection/index.d.ts"
+    },
+    "./organization-picker": {
+      "import": "./dist/screens/organization-picker/index.js",
+      "types": "./dist/types/src/screens/organization-picker/index.d.ts"
+    },
+    "./accept-invitation": {
+      "import": "./dist/screens/accept-invitation/index.js",
+      "types": "./dist/types/src/screens/accept-invitation/index.d.ts"
+    },
+    "./customized-consent": {
+      "import": "./dist/screens/customized-consent/index.js",
+      "types": "./dist/types/src/screens/customized-consent/index.d.ts"
     }
   },
   "scripts": {
     "clean": "rimraf dist",
-    "build": "npm run clean && npm run lint:fix && npm run test && npm run docs && rollup -c rollup.config.js --bundleConfigAsCjs",
+    "build": "npm run clean && npm run lint && npm run test && npm run docs && rollup -c rollup.config.mjs",
+    "build:local": "rollup -c rollup.config.mjs",
     "test": "jest --verbose tests/unit/**/* --coverage",
     "test:e2e": "cypress open",
     "docs": "typedoc --options typedoc.json",
@@ -193,7 +226,9 @@
   ],
   "devDependencies": {
     "@rollup/plugin-alias": "^5.1.1",
+    "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.3.0",
+    "@rollup/plugin-replace": "^6.0.2",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^12.1.0",
     "@shikijs/core": "^1.24.0",

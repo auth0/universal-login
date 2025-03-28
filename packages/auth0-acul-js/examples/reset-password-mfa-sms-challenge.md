@@ -24,38 +24,28 @@ resetPasswordMfaSmsChallenge.getACall();
 ## React Component Example with TailwindCSS
 
 ```jsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import ResetPasswordMfaSmsChallenge from '@auth0/auth0-acul-js/reset-password-mfa-sms-challenge';
 
 const ResetPasswordMfaSmsChallengeScreen = () => {
   const resetPasswordMfaSmsChallenge = new ResetPasswordMfaSmsChallenge();
   const [code, setCode] = useState('');
 
-  const handleSubmit = async (e) => {
+  const { screen, transaction } = resetPasswordMfaSmsChallenge;
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      await resetPasswordMfaSmsChallenge.continueMfaSmsChallenge({
-        code,
-      });
-    } catch (error) {
-      console.error('MFA SMS Challenge failed:', error);
-    }
+    await resetPasswordMfaSmsChallenge.continueMfaSmsChallenge({
+      code,
+    });
   };
 
   const handleResendCode = async () => {
-    try {
-      await resetPasswordMfaSmsChallenge.resendCode();
-    } catch (error) {
-      console.error('Resend code failed:', error);
-    }
+    await resetPasswordMfaSmsChallenge.resendCode();
   };
 
   const handleTryAnotherMethod = async () => {
-    try {
-      await resetPasswordMfaSmsChallenge.tryAnotherMethod();
-    } catch (error) {
-      console.error('Try another method failed:', error);
-    }
+    await resetPasswordMfaSmsChallenge.tryAnotherMethod();
   };
 
   const handleGetACall = async () => {
@@ -67,11 +57,14 @@ const ResetPasswordMfaSmsChallengeScreen = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-100 flex flex-col py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Reset Password MFA SMS Challenge
+          { screen?.texts?.title ?? 'Verify Your Identity' }
         </h2>
+        <p className="mt-4">
+          { screen?.texts?.description ?? 'Enter the code sent to your phone number' + screen.data?.phoneNumber }
+        </p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -79,13 +72,14 @@ const ResetPasswordMfaSmsChallengeScreen = () => {
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="code" className="block text-sm font-medium text-gray-700">
-                Enter Code
+                { screen?.texts?.placeholder ?? 'Enter the 6-digit code' }
               </label>
               <div className="mt-1">
                 <input
                   id="code"
                   name="code"
                   type="text"
+                  placeholder={ screen?.texts?.placeholder ?? 'Enter the 6-digit code' }
                   required
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
@@ -99,9 +93,19 @@ const ResetPasswordMfaSmsChallengeScreen = () => {
                 type="submit"
                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
-                Continue
+               { screen?.texts?.buttonText ?? 'Continue' }
               </button>
             </div>
+            
+            {transaction?.errors?.length && (
+              <div className="mt-2 mb-4">
+                {transaction?.errors.map((err, index) => (
+                  <p key={index} className="text-red-500">
+                    {err.message}
+                  </p>
+                ))}
+              </div>
+            )}
           </form>
 
           <div className="mt-6">
@@ -109,20 +113,22 @@ const ResetPasswordMfaSmsChallengeScreen = () => {
               onClick={handleResendCode}
               className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 mt-2"
             >
-              Resend Code
+              { screen?.texts?.resendActionText ?? 'Resend Code' }
             </button>
             <button
               onClick={handleTryAnotherMethod}
               className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 mt-2"
             >
-              Try Another Method
+              { screen?.texts?.pickAuthenticatorText ?? 'Try Another Method' }
             </button>
-            <button
-              onClick={handleGetACall}
-              className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 mt-2"
-            >
-              Get a Call
-            </button>
+            { screen.data?.isVoiceEnabled && (
+              <button
+                onClick={handleGetACall}
+                className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 mt-2"
+              >
+                { screen?.texts?.resendVoiceActionText ?? 'Get a Call' }
+              </button>
+            )}
           </div>
         </div>
       </div>

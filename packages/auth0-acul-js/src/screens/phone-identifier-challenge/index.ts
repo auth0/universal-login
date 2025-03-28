@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -13,6 +14,7 @@ import type {
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 export default class PhoneIdentifierChallenge extends BaseContext implements PhoneIdentifierChallengeMembers {
+  static screenIdentifier: string = ScreenIds.PHONE_IDENTIFIER_CHALLENGE;
   screen: ScreenOptions;
 
   constructor() {
@@ -34,6 +36,7 @@ export default class PhoneIdentifierChallenge extends BaseContext implements Pho
   async submitPhoneChallenge(payload: PhoneChallengeOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [PhoneIdentifierChallenge.screenIdentifier, 'submitPhoneChallenge'],
     };
     await new FormHandler(options).submitData<PhoneChallengeOptions>(payload);
   }
@@ -48,6 +51,7 @@ export default class PhoneIdentifierChallenge extends BaseContext implements Pho
   async resendCode(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [PhoneIdentifierChallenge.screenIdentifier, 'resendCode'],
     };
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'resend-code' });
   }
@@ -62,6 +66,7 @@ export default class PhoneIdentifierChallenge extends BaseContext implements Pho
   async returnToPrevious(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [PhoneIdentifierChallenge.screenIdentifier, 'returnToPrevious'],
     };
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'back-action' });
   }

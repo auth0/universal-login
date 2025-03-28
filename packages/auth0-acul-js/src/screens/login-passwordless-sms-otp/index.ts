@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -16,6 +17,7 @@ import type {
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 export default class LoginPasswordlessSmsOtp extends BaseContext implements LoginPasswordlessSmsOtpMembers {
+  static screenIdentifier: string = ScreenIds.LOGIN_PASSWORDLESS_SMS_OTP;
   screen: ScreenOptions;
   transaction: TransactionOptions;
 
@@ -42,6 +44,7 @@ export default class LoginPasswordlessSmsOtp extends BaseContext implements Logi
   async submitOTP(payload: SubmitOTPOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [LoginPasswordlessSmsOtp.screenIdentifier, 'submitOTP'],
     };
     await new FormHandler(options).submitData<SubmitOTPOptions>(payload);
   }
@@ -56,6 +59,7 @@ export default class LoginPasswordlessSmsOtp extends BaseContext implements Logi
   async resendOTP(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [LoginPasswordlessSmsOtp.screenIdentifier, 'resendOTP'],
     };
 
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'resend' });

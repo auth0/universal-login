@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -16,6 +17,7 @@ import type {
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 export default class SignupId extends BaseContext implements SignupIdMembers {
+  static screenIdentifier: string = ScreenIds.SIGNUP_ID;
   screen: ScreenOptions;
   transaction: TransactionOptions;
 
@@ -54,6 +56,7 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
   async signup(payload: SignupOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [SignupId.screenIdentifier, 'signup'],
     };
 
     const activeIdentifiers = this.transaction.requiredIdentifiers || [];
@@ -93,6 +96,7 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
   async socialSignup(payload: SocialSignupOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [SignupId.screenIdentifier, 'socialSignup'],
     };
     await new FormHandler(options).submitData<SocialSignupOptions>(payload);
   }

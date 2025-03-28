@@ -7,16 +7,14 @@ describe('ScreenOverride', () => {
     const screenContext: ScreenContext = {
       name: 'reset-password-mfa-sms-challenge',
       data: {
-        phone_number: '+15551234567',
-        remember_device: true,
+        phone_number: '+15551234567'
       },
     } as ScreenContext;
 
     const screenOverride = new ScreenOverride(screenContext);
 
     expect(screenOverride.data).toEqual({
-      phone_number: '+15551234567',
-      remember_device: true,
+      phoneNumber: '+15551234567'
     });
   });
 
@@ -34,16 +32,14 @@ describe('ScreenOverride', () => {
     const screenContext: ScreenContext = {
       name: 'reset-password-mfa-sms-challenge',
       data: {
-        phone_number: '+15551234567',
-        remember_device: false,
+        phone_number: '+15551234567'
       },
     } as ScreenContext;
 
     const screenOverride = new ScreenOverride(screenContext);
 
     expect(screenOverride.data).toEqual({
-      phone_number: '+15551234567',
-      remember_device: false,
+      phoneNumber: '+15551234567'
     });
   });
 
@@ -51,16 +47,14 @@ describe('ScreenOverride', () => {
     const screenContext: ScreenContext = {
       name: 'reset-password-mfa-sms-challenge',
       data: {
-        phone_number: '+15551234567',
-        remember_device: false,
+        phone_number: '+15551234567'
       },
     } as ScreenContext;
 
     const screenOverride = new ScreenOverride(screenContext);
 
     expect(screenOverride.data).toEqual({
-      phone_number: '+15551234567',
-      remember_device: false,
+      phoneNumber: '+15551234567'
     });
   });
 
@@ -68,8 +62,7 @@ describe('ScreenOverride', () => {
     const screenContext: ScreenContext = {
       name: 'reset-password-mfa-sms-challenge',
       data: {
-        phone_number: '+15551234567',
-        remember_device: true,
+        phone_number: '+15551234567'
       },
     } as ScreenContext;
 

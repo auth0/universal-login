@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import type { CustomOptions } from '../../../interfaces/common';
@@ -9,6 +10,8 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * Class implementing the mfa-push-list screen functionality
  */
 export default class MfaPushList extends BaseContext implements MfaPushListMembers {
+  static screenIdentifier: string = ScreenIds.MFA_PUSH_LIST;
+
   constructor() {
     super();
   }
@@ -28,6 +31,7 @@ export default class MfaPushList extends BaseContext implements MfaPushListMembe
   async selectMfaPushDevice(payload: SelectMfaPushDeviceOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaPushList.screenIdentifier, 'selectMfaPushDevice'],
     };
 
     const { deviceIndex, ...restPayload } = payload;
@@ -52,6 +56,7 @@ export default class MfaPushList extends BaseContext implements MfaPushListMembe
   async goBack(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaPushList.screenIdentifier, 'goBack'],
     };
 
     await new FormHandler(options).submitData<CustomOptions>({

@@ -1,6 +1,7 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { Errors } from '../../utils/errors';
-import { FormHandler, getAnalyticsData } from '../../utils/form-handler';
+import { FormHandler } from '../../utils/form-handler';
 import { getPasskeyCredentials } from '../../utils/passkeys';
 
 import { ScreenOverride } from './screen-override';
@@ -19,6 +20,7 @@ import type {
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 export default class LoginId extends BaseContext implements LoginIdMembers {
+  static screenIdentifier: string = ScreenIds.LOGIN_ID;
   screen: ScreenOptions;
   transaction: TransactionOptions;
 
@@ -50,7 +52,7 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
   async login(payload: LoginOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
-      analytics: getAnalyticsData(this.screen.name, 'login'),
+      telemetry: [LoginId.screenIdentifier, 'login'],
     };
 
     await new FormHandler(options).submitData<LoginOptions>(payload);
@@ -80,6 +82,7 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
   async socialLogin(payload: SocialLoginOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [LoginId.screenIdentifier, 'socialLogin'],
     };
 
     await new FormHandler(options).submitData<SocialLoginOptions>(payload);
@@ -100,6 +103,7 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
     const passkey = await getPasskeyCredentials(publicKey);
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [LoginId.screenIdentifier, 'passkeyLogin'],
     };
 
     await new FormHandler(options).submitData<CustomOptions>({
@@ -118,6 +122,7 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
   async pickCountryCode(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [LoginId.screenIdentifier, 'pickCountryCode'],
     };
 
     await new FormHandler(options).submitData<CustomOptions>({

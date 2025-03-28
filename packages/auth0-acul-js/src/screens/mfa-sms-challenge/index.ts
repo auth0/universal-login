@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -17,6 +18,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * @extends BaseContext
  */
 export default class MfaSmsChallenge extends BaseContext implements MfaSmsChallengeMembers {
+  static screenIdentifier: string = ScreenIds.MFA_SMS_CHALLENGE;
   screen: ScreenOptions;
 
   constructor() {
@@ -43,6 +45,7 @@ export default class MfaSmsChallenge extends BaseContext implements MfaSmsChalle
   async continueMfaSmsChallenge(payload: MfaSmsChallengeOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaSmsChallenge.screenIdentifier, 'continueMfaSmsChallenge'],
     };
 
     const submitPayload: Record<string, string | number | boolean> = { ...payload, action: 'default' };
@@ -69,6 +72,7 @@ export default class MfaSmsChallenge extends BaseContext implements MfaSmsChalle
   async pickSms(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaSmsChallenge.screenIdentifier, 'pickSms'],
     };
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'pick-sms' });
   }
@@ -88,6 +92,7 @@ export default class MfaSmsChallenge extends BaseContext implements MfaSmsChalle
   async resendCode(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaSmsChallenge.screenIdentifier, 'resendCode'],
     };
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'resend-code' });
   }
@@ -107,6 +112,7 @@ export default class MfaSmsChallenge extends BaseContext implements MfaSmsChalle
   async tryAnotherMethod(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaSmsChallenge.screenIdentifier, 'tryAnotherMethod'],
     };
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'pick-authenticator' });
   }
@@ -126,6 +132,7 @@ export default class MfaSmsChallenge extends BaseContext implements MfaSmsChalle
   async getACall(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaSmsChallenge.screenIdentifier, 'getACall'],
     };
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'switch-to-voice' });
   }

@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -16,6 +17,7 @@ import type {
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 export default class LoginPasswordlessEmailCode extends BaseContext implements LoginPasswordlessEmailCodeMembers {
+  static screenIdentifier: string = ScreenIds.LOGIN_PASSWORDLESS_EMAIL_CODE;
   screen: ScreenOptions;
   transaction: TransactionOptions;
 
@@ -44,6 +46,7 @@ export default class LoginPasswordlessEmailCode extends BaseContext implements L
   async submitCode(payload: SubmitCodeOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [LoginPasswordlessEmailCode.screenIdentifier, 'submitCode'],
     };
 
     await new FormHandler(options).submitData<SubmitCodeOptions>(payload);
@@ -59,6 +62,7 @@ export default class LoginPasswordlessEmailCode extends BaseContext implements L
   async resendCode(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [LoginPasswordlessEmailCode.screenIdentifier, 'resendCode'],
     };
 
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'resend' });

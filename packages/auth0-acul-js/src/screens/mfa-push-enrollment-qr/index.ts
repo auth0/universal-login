@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -15,6 +16,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * Class implementing the mfa-push-enrollment-qr screen functionality
  */
 export default class MfaPushEnrollmentQr extends BaseContext implements MfaPushEnrollmentQrMembers {
+  static screenIdentifier: string = ScreenIds.MFA_PUSH_ENROLLMENT_QR;
   screen: ScreenOptions;
 
   constructor() {
@@ -37,6 +39,7 @@ export default class MfaPushEnrollmentQr extends BaseContext implements MfaPushE
   async pickAuthenticator(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaPushEnrollmentQr.screenIdentifier, 'pickAuthenticator'],
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,

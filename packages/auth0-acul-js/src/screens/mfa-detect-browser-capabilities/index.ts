@@ -1,5 +1,6 @@
 import { isJsAvailable, isBrave, isWebAuthAvailable, isWebAuthPlatformAvailable } from '../../../src/utils/browser-capabilities';
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import type { MfaDetectBrowserCapabilitiesMembers } from '../../../interfaces/screens/mfa-detect-browser-capabilities';
@@ -11,6 +12,8 @@ import type { CustomOptions } from 'interfaces/common';
  * This screen detects browser capabilities for MFA authentication methods
  */
 export default class MfaDetectBrowserCapabilities extends BaseContext implements MfaDetectBrowserCapabilitiesMembers {
+  static screenIdentifier: string = ScreenIds.MFA_DETECT_BROWSER_CAPABILITIES;
+
   /**
    * Creates an instance of MfaDetectBrowserCapabilities screen manager
    */
@@ -30,6 +33,7 @@ export default class MfaDetectBrowserCapabilities extends BaseContext implements
   async detectCapabilities(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaDetectBrowserCapabilities.screenIdentifier, 'detectCapabilities'],
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,

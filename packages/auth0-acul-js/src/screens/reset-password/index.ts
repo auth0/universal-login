@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -11,7 +12,9 @@ import type {
 } from '../../../interfaces/screens/reset-password';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 export default class ResetPassword extends BaseContext implements ResetPasswordMembers {
+  static screenIdentifier: string = ScreenIds.RESET_PASSWORD;
   screen: ScreenOptions;
+
   constructor() {
     super();
     const screenContext = this.getContext('screen') as ScreenContext;
@@ -30,6 +33,7 @@ export default class ResetPassword extends BaseContext implements ResetPasswordM
   async resetPassword(payload: ResetPasswordOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [ResetPassword.screenIdentifier, 'resetPassword'],
     };
     await new FormHandler(options).submitData(payload);
   }

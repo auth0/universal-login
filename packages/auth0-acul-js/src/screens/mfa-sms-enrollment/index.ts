@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import type { CustomOptions } from '../../../interfaces/common';
@@ -13,6 +14,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * Represents the MFA SMS Enrollment screen.
  */
 export default class MfaSmsEnrollment extends BaseContext implements MfaSmsEnrollmentMembers {
+  static screenIdentifier: string = ScreenIds.MFA_SMS_ENROLLMENT;
   screen: ScreenMembersOnMfaSmsEnrollment;
 
   /**
@@ -38,6 +40,7 @@ export default class MfaSmsEnrollment extends BaseContext implements MfaSmsEnrol
   async pickCountryCode(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaSmsEnrollment.screenIdentifier, 'pickCountryCode'],
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
@@ -65,6 +68,7 @@ export default class MfaSmsEnrollment extends BaseContext implements MfaSmsEnrol
 
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaSmsEnrollment.screenIdentifier, 'continueEnrollment'],
     };
     await new FormHandler(options).submitData<MfaSmsEnrollmentOptions>({
       ...payload,
@@ -87,6 +91,7 @@ export default class MfaSmsEnrollment extends BaseContext implements MfaSmsEnrol
   async tryAnotherMethod(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [MfaSmsEnrollment.screenIdentifier, 'tryAnotherMethod'],
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,

@@ -3,6 +3,8 @@ import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { CustomOptions } from '../../../../interfaces/common';
 import { isJsAvailable, isBrave, isWebAuthAvailable, isWebAuthPlatformAvailable } from '../../../../src/utils/browser-capabilities';
+import { ScreenIds } from '../../../../src/utils/enums';
+
 jest.mock('../../../../src/utils/form-handler');
 jest.mock('../../../../src/utils/browser-capabilities', () => ({
   isJsAvailable: jest.fn(),
@@ -18,6 +20,7 @@ describe('MfaDetectBrowserCapabilities', () => {
   beforeEach(() => {
     // Mock global context
     global.window = Object.create(window);
+    baseContextData.screen.name = ScreenIds.MFA_DETECT_BROWSER_CAPABILITIES;
     window.universal_login_context = baseContextData;
 
     // Initialize the class

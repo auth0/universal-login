@@ -3,6 +3,7 @@ import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { EmailChallengeOptions } from 'interfaces/screens/email-identifier-challenge';
 import { CustomOptions } from 'interfaces/common';
+import { ScreenIds } from '../../../../src/utils/enums';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -12,6 +13,7 @@ describe('EmailIdentifierChallenge', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
+    baseContextData.screen.name = ScreenIds.EMAIL_IDENTIFIER_CHALLENGE;
     window.universal_login_context = baseContextData;
 
     emailIdentifierChallenge = new EmailIdentifierChallenge();

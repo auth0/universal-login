@@ -8,6 +8,7 @@ import { BaseContext } from '../../../../src/models/base-context';
 import type { ScreenContext } from '../../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../../interfaces/models/transaction';
 import type { LoginOptions, SocialLoginOptions } from '../../../../interfaces/screens/login-id';
+import { ScreenIds } from '../../../../src/utils/enums';
 
 jest.mock('../../../../src/screens/login-id/screen-override');
 jest.mock('../../../../src/screens/login-id/transaction-override');
@@ -21,7 +22,7 @@ describe('LoginId', () => {
   let transactionContext: TransactionContext;
 
   beforeEach(() => {
-    screenContext = { name: 'login-id', data: { public_key: 'mockChallenge' } } as unknown as ScreenContext;
+    screenContext = { name: ScreenIds.LOGIN_ID, data: { public_key: 'mockChallenge' } } as unknown as ScreenContext;
     transactionContext = { state: 'mockState', locale: 'en' } as TransactionContext;
 
     (BaseContext.prototype.getContext as jest.Mock).mockImplementation((contextType: string) => {
@@ -50,7 +51,7 @@ describe('LoginId', () => {
     it('should submit login form data correctly', async () => {
       const payload: LoginOptions = { username: 'testuser' };
       await loginId.login(payload);
-      expect(FormHandler).toHaveBeenCalledWith({ state: 'mockState' });
+      expect(FormHandler).toHaveBeenCalledWith(expect.objectContaining({ state: 'mockState' }));
       expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(payload);
     });
   });
@@ -59,7 +60,7 @@ describe('LoginId', () => {
     it('should submit social login form data correctly', async () => {
       const payload: SocialLoginOptions = { connection: 'google' };
       await loginId.socialLogin(payload);
-      expect(FormHandler).toHaveBeenCalledWith({ state: 'mockState' });
+      expect(FormHandler).toHaveBeenCalledWith(expect.objectContaining({ state: 'mockState' }));
       expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(payload);
     });
   });
@@ -79,7 +80,7 @@ describe('LoginId', () => {
 
       await loginId.passkeyLogin();
       expect(getPasskeyCredentials).toHaveBeenCalledWith(screenContext.data?.public_key);
-      expect(FormHandler).toHaveBeenCalledWith({ state: 'mockState' });
+      expect(FormHandler).toHaveBeenCalledWith(expect.objectContaining({ state: 'mockState' }));
       expect(FormHandler.prototype.submitData).toHaveBeenCalledWith({
         passkey: JSON.stringify({ id: 'mockPasskey' }),
       });
@@ -89,7 +90,7 @@ describe('LoginId', () => {
   describe('pickCountryCode', () => {
     it('should submit pick-country-code action', async () => {
       await loginId.pickCountryCode();
-      expect(FormHandler).toHaveBeenCalledWith({ state: 'mockState' });
+      expect(FormHandler).toHaveBeenCalledWith(expect.objectContaining({ state: 'mockState' }));
       expect(FormHandler.prototype.submitData).toHaveBeenCalledWith({
         action: 'pick-country-code',
       });

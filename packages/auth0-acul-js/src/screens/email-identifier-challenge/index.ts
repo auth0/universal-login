@@ -1,4 +1,5 @@
 import { BaseContext } from '../../models/base-context';
+import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -14,6 +15,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 export default class EmailIdentifierChallenge extends BaseContext implements EmailIdentifierChallengeMembers {
   screen: ScreenOptions;
+  static screenIdentifier: string = ScreenIds.EMAIL_IDENTIFIER_CHALLENGE;
 
   constructor() {
     super();
@@ -33,6 +35,7 @@ export default class EmailIdentifierChallenge extends BaseContext implements Ema
   async submitEmailChallenge(payload: EmailChallengeOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [EmailIdentifierChallenge.screenIdentifier, 'submitEmailChallenge'],
     };
     await new FormHandler(options).submitData(payload);
   }
@@ -47,6 +50,7 @@ export default class EmailIdentifierChallenge extends BaseContext implements Ema
   async resendCode(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [EmailIdentifierChallenge.screenIdentifier, 'resendCode'],
     };
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'resend-code' });
   }
@@ -61,6 +65,7 @@ export default class EmailIdentifierChallenge extends BaseContext implements Ema
   async returnToPrevious(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
+      telemetry: [EmailIdentifierChallenge.screenIdentifier, 'returnToPrevious'],
     };
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'back-action' });
   }
