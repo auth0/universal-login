@@ -41,4 +41,4 @@ export { default as ResetPasswordMfaOtpChallenge } from './reset-password-mfa-ot
 export { default as OrganizationSelection } from './organization-selection';
 export { default as OrganizationPicker } from './organization-picker';
 export { default as AcceptInvitation } from './accept-invitation';
-export { default as CustomizedConsent } from './customized-consent';
+// export { default as CustomizedConsent } from './customized-consent';

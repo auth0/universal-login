@@ -1,4 +1,4 @@
-## [auth0-acul-js@0.1.0-beta.3](https://github.com/auth0/universal-login/tree/auth0-acul-js%400.1.0-beta.3) (2024-03-27)
+## [auth0-acul-js@0.1.0-beta.3](https://github.com/auth0/universal-login/tree/auth0-acul-js%400.1.0-beta.3) (2024-03-28)
 
 ### ⚠️ Breaking Changes
 

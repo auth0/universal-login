@@ -13,7 +13,7 @@ The **Auth0 ACUL JS SDK** enables you to work with Advanced Customization for Un
 
 It simplifies integrating authentication screens (login, signup, passwordless, passkey enrollment, etc.) into your web applications, providing the necessary tools for seamless implementation.
 
-⚠ This feature is still in **Limited EA**. Please contact your Account Manager to get this feature enabled on your Auth0 tenant. [read more...](#legal)
+⚠ This feature is still in **Early Access**. Please contact your Account Manager to get this feature enabled on your Auth0 tenant. [read more...](#legal)
 
 ##  Documentation
 
