@@ -1,3 +1,62 @@
+## [auth0-acul-js@0.1.0-beta.3](https://github.com/auth0/universal-login/tree/auth0-acul-js%400.1.0-beta.3) (2024-03-27)
+
+### ⚠️ Breaking Changes
+
+#### MFA Screen Property Update
+The Enrollment factor list property for MFA screens has been updated from an array of strings to an array of objects to provide better structure and additional metadata support.
+
+**Affected Components:**
+- `mfa-begin-enroll-options`
+- `mfa-login-options`
+- `mfa-email-list`
+- `mfa-sms-list`
+- `mfa-push-list`
+
+**Migration Example:**
+```javascript
+// Before (0.1.0-beta.2)
+const phoneNumbers = mfaSmsList.user.enrolledPhoneNumbers;
+// Returns: ['XXXXXXXXX4761', 'XXXX907856']
+
+// After (0.1.0-beta.3)
+const phoneNumbers = mfaSmsList.user.enrolledPhoneNumbers;
+// Returns: [
+//   { id: 0, phoneNumber: 'XXXXXXXXX4761' },
+//   { id: 1, phoneNumber: 'XXXX907856' }
+// ]
+```
+
+### ✨ New Features
+
+
+#### Password Policy Enhancement
+- Added password policy validation for enhanced security
+- Added support in:
+  - `signup` screen
+  - `signup-password` screen
+
+  It will be part of transaction property for above screens 
+  ```javascript
+  const loginInstance = new Login();
+  const { passwordPolicy } = loginInstance.transaction;
+  ```
+
+### 🚀 Added Screen Support
+
+| #  | Screen Name | Documentation |
+|----|-------------|---------------|
+| 1  | accept-invitation | [Link](https://auth0.github.io/universal-login/classes/Classes.AcceptInvitation.html) |
+| 2  | organization-picker | [Link](https://auth0.github.io/universal-login/classes/Classes.OrganizationPicker.html) |
+| 3  | organization-selection | [Link](https://auth0.github.io/universal-login/classes/Classes.OrganizationSelection.html) |
+| 4  | mfa-otp-challenge | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaOtpChallenge.html) |
+| 5  | mfa-otp-enrollment-code | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaOtpEnrollmentCode.html) |
+| 6  | mfa-otp-enrollment-qr | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaOtpEnrollmentQr.html) |
+| 7  | reset-password-mfa-email-challenge | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaEmailChallenge.html) |
+| 8  | reset-password-mfa-push-challenge-push | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaPushChallengePush.html) |
+| 9  | reset-password-mfa-sms-challenge | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaSmsChallenge.html) |
+| 10 | reset-password-mfa-otp-challenge | [Link](https://auth0.github.io/universal-login/classes/Classes.OrganizationSelection.html) |
+
+---
 
 ## [auth0-acul-js@0.1.0-beta.2](https://github.com/auth0/universal-login/tree/auth0-acul-js%400.1.0-beta.2) (2024-02-21)
 
