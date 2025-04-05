@@ -1,6 +1,6 @@
 // Node.js built-in modules
 import { spawn } from 'child_process';
-import fs from 'fs';
+import fs from 'fs-extra';
 import path from 'path';
 
 // Third-party modules
@@ -8,8 +8,7 @@ import ora from 'ora';
 
 // Local modules
 import { validateScreenName } from './utils/screen-validator.js';
-import { startServers } from './server.js';
-import { logger } from './utils/logger.js';
+import { logger } from './utils/index.js';
 import { handleFatalError } from './utils/error-handler.js';
 import { createAdvancedModeConfig } from './utils/config-generator.js';
 import { 
@@ -17,6 +16,11 @@ import {
   checkAuth0CliLoggedIn, 
   configureAdvancedMode 
 } from './utils/auth0-cli.js';
+import { fileURLToPath } from 'url';
+import { startAdvancedEnv } from './dev-environment.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 /**
  * Main function for advanced mode
@@ -44,12 +48,24 @@ const runAdvancedMode = async (screenName) => {
     }
     
     // 4. Configure using Auth0 CLI
-    await configureWithAuth0Cli(screenName);
-    
-    // 5. Start development servers
-    await startServers('advanced', screenName);
+    const configSuccess = await configureWithAuth0Cli(screenName);
+    if (!configSuccess) {
+      throw new Error(`Failed to configure screen '${screenName}' with Auth0 CLI`);
+    }
+    logger.success(`Screen '${screenName}' configured in advanced mode`);
+
+    // === Call centralized function to start environment ===
+    await startAdvancedEnv(screenName);
+    // === End ===
+
   } catch (error) {
-    handleFatalError(error, 'Error running advanced mode');
+    // Catch errors from configure steps or startAdvancedEnv
+    // Check if it's just a Ctrl+C / clean exit from concurrently
+    if (!(error?.exitCode === 0 || error?.signal === 'SIGINT' || error?.isCanceled || error?.exitCode === null)) {
+      handleFatalError(error, 'Error running advanced mode');
+    }
+    // If it was Ctrl+C or clean exit, exit gracefully
+    process.exit(0);
   }
 };
 
@@ -70,6 +86,7 @@ async function configureWithAuth0Cli(screenName) {
   }
   
   logger.success(`Screen '${screenName}' configured in advanced mode using Auth0 CLI`);
+  return configSuccess;
 }
 
 /**
