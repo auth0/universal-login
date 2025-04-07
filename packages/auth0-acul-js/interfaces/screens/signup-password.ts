@@ -1,3 +1,4 @@
+import { IdentifierType } from '../../src/constants';
 import type { BaseContext, BaseMembers } from '../models/base-context';
 import type { ScreenContext, ScreenMembers } from '../models/screen';
 import type { PasswordPolicy, TransactionMembers } from '../models/transaction';
@@ -32,8 +33,8 @@ export interface ScreenMembersOnSignupPassword extends ScreenMembers {
 export interface TransactionMembersOnSignupPassword extends TransactionMembers {
   isPasskeyEnabled: boolean;
   passwordPolicy: PasswordPolicy | null;
-  requiredIdentifiers: ('email' | 'username' | 'phone')[] | null;
-  optionalIdentifiers: ('email' | 'username' | 'phone')[] | null;
+  requiredIdentifiers: IdentifierType[] | null;
+  optionalIdentifiers: IdentifierType[] | null;
 }
 
 export interface SignupPasswordOptions {

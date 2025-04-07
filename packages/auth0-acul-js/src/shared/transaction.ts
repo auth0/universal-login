@@ -1,3 +1,4 @@
+import { IdentifierType } from 'src/constants';
 import type { DBConnection, UsernamePolicy, PasswordPolicy, TransactionContext } from '../../interfaces/models/transaction';
 import type { TransactionMembersOnLoginId } from '../../interfaces/screens/login-id';
 import type { TransactionMembersOnSignupId } from '../../interfaces/screens/signup-id';
@@ -103,14 +104,14 @@ export function hasFlexibleIdentifier(transaction: TransactionContext): boolean 
 function extractIdentifiersByStatus(
   connection: DBConnection | undefined,
   statuses: ('required' | 'optional')[],
-): ('email' | 'username' | 'phone')[] | null {
+): IdentifierType[] | null {
   if (!connection?.options?.attributes) return null;
 
   return Object.entries(connection.options.attributes)
     .filter(([, value]) => value.signup_status && statuses.includes(value.signup_status as 'required' | 'optional'))
-    .map(([key]) => key as 'email' | 'username' | 'phone').length > 0
+    .map(([key]) => key as IdentifierType).length > 0
     ? Object.entries(connection.options.attributes)
         .filter(([, value]) => value.signup_status && statuses.includes(value.signup_status as 'required' | 'optional'))
-        .map(([key]) => key as 'email' | 'username' | 'phone')
+        .map(([key]) => key as IdentifierType)
     : null;
 }
