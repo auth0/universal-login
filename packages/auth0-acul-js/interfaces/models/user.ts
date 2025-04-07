@@ -1,6 +1,19 @@
 import type { OrganizationContext } from './organization';
 
-export type ShortEntity<Key extends string> = { id: number } & Record<Key, string>;
+export interface EnrolledEmail {
+  id: number;
+  email: string;
+}
+
+export interface EnrolledPhoneNumber {
+  id: number;
+  phoneNumber: string;
+}
+
+export interface EnrolledDevice {
+  id: number;
+  device: string;
+}
 
 export interface UserContext {
   id: string;
@@ -9,9 +22,9 @@ export interface UserContext {
   phone_number?: string;
   picture?: string;
   enrolled_factors?: string[];
-  enrolled_emails?: ShortEntity<'email'>[];
-  enrolled_phone_numbers?: ShortEntity<'phoneNumber'>[];
-  enrolled_devices?: ShortEntity<'device'>[];
+  enrolled_emails?: EnrolledEmail[];
+  enrolled_phone_numbers?: EnrolledPhoneNumber[];
+  enrolled_devices?: EnrolledDevice[];
   organizations?: OrganizationContext[];
   user_metadata?: Record<string, string>;
   app_metadata?: Record<string, string>;
@@ -24,9 +37,9 @@ export interface UserMembers {
   phoneNumber: string | null;
   picture: string | null;
   enrolledFactors: Array<string> | null;
-  enrolledEmails: Array<ShortEntity<'email'>> | null;
-  enrolledPhoneNumbers: Array<ShortEntity<'phoneNumber'>> | null;
-  enrolledDevices: Array<ShortEntity<'device'>> | null;
+  enrolledEmails: Array<EnrolledEmail> | null;
+  enrolledPhoneNumbers: Array<EnrolledPhoneNumber> | null;
+  enrolledDevices: Array<EnrolledDevice> | null;
   organizations:
     | {
         organizationId: string | undefined;
