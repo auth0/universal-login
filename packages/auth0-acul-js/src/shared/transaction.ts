@@ -5,13 +5,19 @@ import type { TransactionMembersOnSignupId } from '../../interfaces/screens/sign
 
 /**
  * Checks if signup is enabled for the current connection.
+ *
+ * @param transaction - The transaction context from Universal Login
+ * @returns True if signup is enabled, false otherwise
  */
 export function isSignupEnabled(transaction: TransactionContext): boolean {
   return transaction?.connection?.options?.signup_enabled === true;
 }
 
 /**
- * Checks if forgot password is enabled.
+ * Checks if forgot password is enabled for the current database connection.
+ *
+ * @param transaction - The transaction context from Universal Login
+ * @returns True if forgot password is enabled, false otherwise
  */
 export function isForgotPasswordEnabled(transaction: TransactionContext): boolean {
   const connection = transaction?.connection as DBConnection;
@@ -19,7 +25,10 @@ export function isForgotPasswordEnabled(transaction: TransactionContext): boolea
 }
 
 /**
- * Checks if passkeys are enabled in the current connection.
+ * Checks if passkeys are enabled in the current connection configuration.
+ *
+ * @param transaction - The transaction context from Universal Login
+ * @returns True if passkeys are enabled, false otherwise
  */
 export function isPasskeyEnabled(transaction: TransactionContext): boolean {
   const connection = transaction?.connection as DBConnection;
@@ -27,7 +36,10 @@ export function isPasskeyEnabled(transaction: TransactionContext): boolean {
 }
 
 /**
- * Determines if a username is required for authentication.
+ * Determines if a username is required for authentication based on connection settings.
+ *
+ * @param transaction - The transaction context from Universal Login
+ * @returns True if username is required, false otherwise
  */
 export function isUsernameRequired(transaction: TransactionContext): boolean {
   const connection = transaction?.connection as DBConnection;
@@ -35,7 +47,11 @@ export function isUsernameRequired(transaction: TransactionContext): boolean {
 }
 
 /**
- * Retrieves the username policy from the transaction context.
+ * Retrieves the username policy configuration from the transaction context.
+ * This includes settings like minimum/maximum length and allowed formats.
+ *
+ * @param transaction - The transaction context from Universal Login
+ * @returns The username policy object or null if not defined
  */
 export function getUsernamePolicy(transaction: TransactionContext): UsernamePolicy | null {
   const connection = transaction?.connection as DBConnection;
@@ -54,7 +70,11 @@ export function getUsernamePolicy(transaction: TransactionContext): UsernamePoli
 }
 
 /**
- * Retrieves the password policy from the transaction context.
+ * Retrieves the password policy configuration from the transaction context.
+ * This includes properties like minimum length and complexity requirements.
+ *
+ * @param transaction - The transaction context from Universal Login
+ * @returns The password policy object or null if not defined
  */
 export function getPasswordPolicy(transaction: TransactionContext): PasswordPolicy | null {
   const connection = transaction?.connection as DBConnection;
@@ -71,6 +91,10 @@ export function getPasswordPolicy(transaction: TransactionContext): PasswordPoli
 
 /**
  * Returns the allowed identifiers (email, username, phone) based on the connection settings.
+ * This includes both required and optional identifier types.
+ *
+ * @param transaction - The transaction context from Universal Login
+ * @returns An array of allowed identifier types or null if none are defined
  */
 export function getAllowedIdentifiers(transaction: TransactionContext): TransactionMembersOnLoginId['allowedIdentifiers'] {
   const connection = transaction?.connection as DBConnection;
@@ -80,26 +104,44 @@ export function getAllowedIdentifiers(transaction: TransactionContext): Transact
 }
 
 /**
- * Returns the required identifiers for signup (email, username, phone).
+ * Returns only the required identifiers for signup flow based on connection settings.
+ *
+ * @param transaction - The transaction context from Universal Login
+ * @returns An array of required identifier types or null if none are defined
  */
 export function getRequiredIdentifiers(transaction: TransactionContext): TransactionMembersOnSignupId['requiredIdentifiers'] {
   return extractIdentifiersByStatus(transaction?.connection as DBConnection, ['required']);
 }
 
 /**
- * Returns the optional identifiers for signup (email, username, phone).
+ * Returns only the optional identifiers for signup flow based on connection settings.
+ *
+ * @param transaction - The transaction context from Universal Login
+ * @returns An array of optional identifier types or null if none are defined
  */
 export function getOptionalIdentifiers(transaction: TransactionContext): TransactionMembersOnSignupId['optionalIdentifiers'] {
   return extractIdentifiersByStatus(transaction?.connection as DBConnection, ['optional']);
 }
 
+/**
+ * Checks if the connection supports flexible identifiers.
+ * A connection supports flexible identifiers if it has attributes configured.
+ *
+ * @param transaction - The transaction context from Universal Login
+ * @returns True if flexible identifiers are supported, false otherwise
+ */
 export function hasFlexibleIdentifier(transaction: TransactionContext): boolean {
   const connection = transaction.connection as DBConnection;
   return connection?.options?.attributes ? true : false;
 }
 
 /**
- * Extracts identifiers based on their signup status.
+ * Helper function that extracts identifiers based on their signup status.
+ * Used internally by getAllowedIdentifiers, getRequiredIdentifiers, and getOptionalIdentifiers.
+ *
+ * @param connection - The database connection object
+ * @param statuses - Array of statuses to filter by ('required' or 'optional')
+ * @returns Array of matching identifier types or null if none are found
  */
 function extractIdentifiersByStatus(
   connection: DBConnection | undefined,
