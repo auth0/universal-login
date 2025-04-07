@@ -14,6 +14,7 @@ import type {
   TryAnotherMethodOptions,
 } from '../../../interfaces/screens/reset-password-mfa-email-challenge';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import { FormActions } from '../../../src/constants';
 
 /**
  * Class implementing the reset-password-mfa-email-challenge screen functionality
@@ -70,7 +71,7 @@ export default class ResetPasswordMfaEmailChallenge extends BaseContext implemen
       state: this.transaction.state,
       telemetry: [ResetPasswordMfaEmailChallenge.screenIdentifier, 'resendCode'],
     };
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'resend-code' });
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.RESEND_CODE });
   }
 
   /**
@@ -89,7 +90,7 @@ export default class ResetPasswordMfaEmailChallenge extends BaseContext implemen
       state: this.transaction.state,
       telemetry: [ResetPasswordMfaEmailChallenge.screenIdentifier, 'tryAnotherMethod'],
     };
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'pick-authenticator' });
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.PICK_AUTHENTICATOR });
   }
 }
 

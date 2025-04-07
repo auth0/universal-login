@@ -5,6 +5,7 @@ import { FormHandler } from '../../utils/form-handler';
 import type { CustomOptions } from '../../../interfaces/common';
 import type { MfaPushListMembers, SelectMfaPushDeviceOptions } from '../../../interfaces/screens/mfa-push-list';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import { FormActions } from '../../../src/constants';
 
 /**
  * Class implementing the mfa-push-list screen functionality
@@ -61,7 +62,7 @@ export default class MfaPushList extends BaseContext implements MfaPushListMembe
 
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'back-action',
+      action: FormActions.BACK,
     });
   }
 }

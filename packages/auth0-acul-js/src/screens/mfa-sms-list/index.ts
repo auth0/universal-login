@@ -5,6 +5,7 @@ import { FormHandler } from '../../utils/form-handler';
 import type { CustomOptions } from '../../../interfaces/common';
 import type { MfaSmsListMembers, MfaSmsListOptions } from '../../../interfaces/screens/mfa-sms-list';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import { FormActions } from '../../../src/constants';
 
 /**
  * @class MfaSmsList
@@ -53,7 +54,7 @@ export default class MfaSmsList extends BaseContext implements MfaSmsListMembers
 
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'back-action',
+      action: FormActions.BACK,
     });
   }
 }

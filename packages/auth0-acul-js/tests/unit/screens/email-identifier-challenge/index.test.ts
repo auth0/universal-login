@@ -4,6 +4,7 @@ import { FormHandler } from '../../../../src/utils/form-handler';
 import { EmailChallengeOptions } from 'interfaces/screens/email-identifier-challenge';
 import { CustomOptions } from 'interfaces/common';
 import { ScreenIds } from '../../../../src/utils/enums';
+import { FormActions } from '../../../../src/constants';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -70,7 +71,7 @@ describe('EmailIdentifierChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'resend-code',
+          action: FormActions.RESEND_CODE,
         })
       );
     });
@@ -81,7 +82,7 @@ describe('EmailIdentifierChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'resend-code',
+          action: FormActions.RESEND_CODE,
         })
       );
     });
@@ -108,7 +109,7 @@ describe('EmailIdentifierChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'back-action',
+          action: FormActions.BACK,
         })
       );
     });
@@ -119,7 +120,7 @@ describe('EmailIdentifierChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'back-action',
+          action: FormActions.BACK,
         })
       );
     });

@@ -9,6 +9,7 @@ import type {
   ScreenMembersOnMfaSmsEnrollment,
 } from '../../../interfaces/screens/mfa-sms-enrollment';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import { FormActions } from '../../../src/constants';
 
 /**
  * Represents the MFA SMS Enrollment screen.
@@ -44,7 +45,7 @@ export default class MfaSmsEnrollment extends BaseContext implements MfaSmsEnrol
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'pick-country-code',
+      action: FormActions.PICK_COUNTRY_CODE,
     });
   }
 
@@ -72,7 +73,7 @@ export default class MfaSmsEnrollment extends BaseContext implements MfaSmsEnrol
     };
     await new FormHandler(options).submitData<MfaSmsEnrollmentOptions>({
       ...payload,
-      action: 'default',
+      action: FormActions.DEFAULT,
     });
   }
 
@@ -95,7 +96,7 @@ export default class MfaSmsEnrollment extends BaseContext implements MfaSmsEnrol
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'pick-authenticator',
+      action: FormActions.PICK_AUTHENTICATOR,
     });
   }
 }

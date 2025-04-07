@@ -12,6 +12,7 @@ import type {
   PhoneEnrollmentOptions,
 } from '../../../interfaces/screens/phone-identifier-enrollment';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import { FormActions } from '../../../src/constants';
 
 export default class PhoneIdentifierEnrollment extends BaseContext implements PhoneIdentifierEnrollmentMembers {
   static screenIdentifier: string = ScreenIds.PHONE_IDENTIFIER_ENROLLMENT;
@@ -54,7 +55,7 @@ export default class PhoneIdentifierEnrollment extends BaseContext implements Ph
       state: this.transaction.state,
       telemetry: [PhoneIdentifierEnrollment.screenIdentifier, 'returnToPrevious'],
     };
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'back-action' });
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.BACK });
   }
 }
 

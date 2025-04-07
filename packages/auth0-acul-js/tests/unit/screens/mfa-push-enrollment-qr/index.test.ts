@@ -3,6 +3,7 @@ import { FormHandler } from '../../../../src/utils/form-handler';
 import { CustomOptions } from 'interfaces/common';
 import MfaPushEnrollmentQr from '../../../../src/screens/mfa-push-enrollment-qr';
 import { ScreenIds } from '../../../../src/utils/enums';
+import { FormActions } from '../../../../src/constants';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -31,7 +32,7 @@ describe('MfaPushEnrollmentQr', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'pick-authenticator',
+          action: FormActions.PICK_AUTHENTICATOR,
         })
       );
     });
@@ -41,7 +42,7 @@ describe('MfaPushEnrollmentQr', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'pick-authenticator',
+          action: FormActions.PICK_AUTHENTICATOR,
         })
       );
     });

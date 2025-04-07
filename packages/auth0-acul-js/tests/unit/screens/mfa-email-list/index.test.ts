@@ -4,6 +4,7 @@ import { FormHandler } from '../../../../src/utils/form-handler';
 import { CustomOptions } from '../../../../interfaces/common';
 import { SelectMfaEmailOptions } from '../../../../interfaces/screens/mfa-email-list';
 import { ScreenIds } from '../../../../src/utils/enums';
+import { FormActions } from '../../../../src/constants';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -61,7 +62,7 @@ describe('MfaEmailList', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'back-action',
+          action: FormActions.BACK,
         })
       );
     });
@@ -71,7 +72,7 @@ describe('MfaEmailList', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'back-action',
+          action: FormActions.BACK,
         })
       );
     });

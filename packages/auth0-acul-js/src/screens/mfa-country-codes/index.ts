@@ -12,6 +12,7 @@ import type {
   SelectCountryCodeOptions,
 } from '../../../interfaces/screens/mfa-country-codes';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import { FormActions } from '../../../src/constants';
 
 /**
  * Class implementing the mfa-country-codes screen functionality
@@ -81,7 +82,7 @@ export default class MfaCountryCodes extends BaseContext implements MfaCountryCo
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'back-action',
+      action: FormActions.BACK,
     });
   }
 }

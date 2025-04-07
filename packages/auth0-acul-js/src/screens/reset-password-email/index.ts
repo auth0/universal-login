@@ -12,6 +12,7 @@ import type {
   ScreenMembersOnResetPasswordEmail as ScreenOptions,
 } from '../../../interfaces/screens/reset-password-email';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import { FormActions } from '../../../src/constants';
 
 export default class ResetPasswordEmail extends BaseContext implements ResetPasswordEmailMembers {
   static screenIdentifier: string = ScreenIds.RESET_PASSWORD_EMAIL;
@@ -34,7 +35,7 @@ export default class ResetPasswordEmail extends BaseContext implements ResetPass
       state: this.transaction.state,
       telemetry: [ResetPasswordEmail.screenIdentifier, 'resendEmail'],
     };
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'resend-email-action' });
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.RESEND_EMAIL });
   }
 }
 export { ResetPasswordEmailMembers, ResetPasswordEmailOptions, ScreenOptions as ScreenMembersOnResetPasswordEmail };

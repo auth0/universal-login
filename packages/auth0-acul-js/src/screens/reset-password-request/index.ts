@@ -15,6 +15,7 @@ import type {
   TransactionMembersOnResetPasswordRequest as TransactionOptions,
 } from '../../../interfaces/screens/reset-password-request';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import { FormActions } from '../../../src/constants';
 
 export default class ResetPasswordRequest extends BaseContext implements ResetPasswordRequestMembers {
   static screenIdentifier: string = ScreenIds.RESET_PASSWORD_REQUEST;
@@ -57,7 +58,7 @@ export default class ResetPasswordRequest extends BaseContext implements ResetPa
       state: this.transaction.state,
       telemetry: [ResetPasswordRequest.screenIdentifier, 'backToLogin'],
     };
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'back-to-login' });
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.BACK_TO_LOGIN });
   }
 }
 

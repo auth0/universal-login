@@ -1,5 +1,6 @@
 import type { BaseMembers } from '../models/base-context';
 import type { ScreenMembers } from '../models/screen';
+import {MfaLoginFactorType} from '../../src/constants/index'
 
 /**
  * Interface for the screen data specific to mfa-login-options screen
@@ -11,24 +12,12 @@ export interface ScreenMembersOnMfaLoginOptions extends ScreenMembers {
   } | null;
 }
 
-export type LoginFactorType =
-  | 'sms'
-  | 'phone'
-  | 'voice'
-  | 'otp'
-  | 'email'
-  | 'recovery-code'
-  | 'push-notification'
-  | 'webauthn-platform'
-  | 'webauthn-roaming'
-  | 'duo';
-
 /**
  * Options for continuing with a selected MFA factor
  */
 export interface LoginEnrollOptions {
   /** The action indicating which factor to use for login */
-  action: LoginFactorType;
+  action: MfaLoginFactorType;
   /** Any additional custom options */
   [key: string]: string | number | boolean | undefined;
 }

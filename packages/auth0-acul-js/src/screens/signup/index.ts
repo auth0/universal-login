@@ -15,6 +15,7 @@ import type {
   TransactionMembersOnSignup as TransactionOptions,
 } from '../../../interfaces/screens/signup';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import { FormActions } from '../../../src/constants';
 export default class Signup extends BaseContext implements SignupMembers {
   static screenIdentifier: string = ScreenIds.SIGNUP;
   screen: ScreenOptions;
@@ -93,7 +94,7 @@ export default class Signup extends BaseContext implements SignupMembers {
     };
 
     await new FormHandler(options).submitData({
-      action: 'pick-country-code',
+      action: FormActions.PICK_COUNTRY_CODE,
     });
   }
 }

@@ -8,6 +8,7 @@ import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { AcceptInvitationMembers, ScreenMembersOnAcceptInvitation as ScreenOptions } from '../../../interfaces/screens/accept-invitation';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import { FormActions } from '../../../src/constants';
 
 /**
  * Class implementing the accept-invitation screen functionality.
@@ -42,7 +43,7 @@ export default class AcceptInvitation extends BaseContext implements AcceptInvit
       state: this.transaction.state,
       telemetry: [AcceptInvitation.screenIdentifier, 'acceptInvitation'],
     };
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'default' });
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.DEFAULT });
   }
 }
 

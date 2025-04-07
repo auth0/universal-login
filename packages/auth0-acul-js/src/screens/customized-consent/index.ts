@@ -7,6 +7,7 @@ import { ScreenOverride } from './screen-override';
 import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { CustomizedConsentMembers, ScreenMembersOnCustomizedConsent } from '../../../interfaces/screens/customized-consent';
+import { FormActions } from '../../../src/constants';
 
 /**
  * Class implementing the Customized Consent screen functionality.
@@ -37,7 +38,7 @@ export default class CustomizedConsent extends BaseContext implements Customized
 
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'accept',
+      action: FormActions.ACCEPT,
     });
   }
 
@@ -54,7 +55,7 @@ export default class CustomizedConsent extends BaseContext implements Customized
 
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'deny',
+      action: FormActions.DENY,
     });
   }
 }

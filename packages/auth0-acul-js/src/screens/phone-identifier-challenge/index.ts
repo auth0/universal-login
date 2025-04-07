@@ -12,6 +12,7 @@ import type {
   PhoneIdentifierChallengeMembers,
 } from '../../../interfaces/screens/phone-identifier-challenge';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import { FormActions } from '../../../src/constants';
 
 export default class PhoneIdentifierChallenge extends BaseContext implements PhoneIdentifierChallengeMembers {
   static screenIdentifier: string = ScreenIds.PHONE_IDENTIFIER_CHALLENGE;
@@ -53,7 +54,7 @@ export default class PhoneIdentifierChallenge extends BaseContext implements Pho
       state: this.transaction.state,
       telemetry: [PhoneIdentifierChallenge.screenIdentifier, 'resendCode'],
     };
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'resend-code' });
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.RESEND_CODE });
   }
 
   /**
@@ -68,7 +69,7 @@ export default class PhoneIdentifierChallenge extends BaseContext implements Pho
       state: this.transaction.state,
       telemetry: [PhoneIdentifierChallenge.screenIdentifier, 'returnToPrevious'],
     };
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'back-action' });
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.BACK });
   }
 }
 

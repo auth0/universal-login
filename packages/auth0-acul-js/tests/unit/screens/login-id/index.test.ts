@@ -9,6 +9,7 @@ import type { ScreenContext } from '../../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../../interfaces/models/transaction';
 import type { LoginOptions, SocialLoginOptions } from '../../../../interfaces/screens/login-id';
 import { ScreenIds } from '../../../../src/utils/enums';
+import { FormActions } from '../../../../src/constants';
 
 jest.mock('../../../../src/screens/login-id/screen-override');
 jest.mock('../../../../src/screens/login-id/transaction-override');
@@ -92,7 +93,7 @@ describe('LoginId', () => {
       await loginId.pickCountryCode();
       expect(FormHandler).toHaveBeenCalledWith(expect.objectContaining({ state: 'mockState' }));
       expect(FormHandler.prototype.submitData).toHaveBeenCalledWith({
-        action: 'pick-country-code',
+        action: FormActions.PICK_COUNTRY_CODE,
       });
     });
   });

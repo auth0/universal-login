@@ -12,6 +12,7 @@ import type {
   ScreenMembersOnMfaOtpEnrollmentCode as ScreenOptions,
 } from '../../../interfaces/screens/mfa-otp-enrollment-code';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import { FormActions } from '../../../src/constants';
 
 /**
  * Class implementing the mfa-otp-enrollment-code screen functionality.
@@ -54,7 +55,7 @@ export default class MfaOtpEnrollmentCode extends BaseContext implements MfaOtpE
     };
     await new FormHandler(options).submitData<ContinueOptions>({
       ...payload,
-      action: 'default',
+      action: FormActions.DEFAULT,
     });
   }
 
@@ -78,7 +79,7 @@ export default class MfaOtpEnrollmentCode extends BaseContext implements MfaOtpE
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'pick-authenticator',
+      action: FormActions.PICK_AUTHENTICATOR,
     });
   }
 }

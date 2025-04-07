@@ -13,6 +13,7 @@ import type {
   AbortEnrollmentOptions,
 } from '../../../interfaces/screens/passkey-enrollment-local';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import { FormActions } from '../../constants';
 
 export default class PasskeyEnrollmentLocal extends BaseContext implements PasskeyEnrollmentLocalMembers {
   static screenIdentifier: string = ScreenIds.PASSKEY_ENROLLMENT_LOCAL;
@@ -64,7 +65,7 @@ export default class PasskeyEnrollmentLocal extends BaseContext implements Passk
     if (payload['doNotShowAgain'] === true) {
       userActions['dontShowAgain'] = 'on';
     }
-    await new FormHandler(options).submitData<AbortEnrollmentOptions>({ ...payload, action: 'abort-passkey-enrollment', ...userActions });
+    await new FormHandler(options).submitData<AbortEnrollmentOptions>({ ...payload, action: FormActions.ABORT_PASSKEY_ENROLLMENT, ...userActions });
   }
 }
 

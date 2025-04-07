@@ -12,6 +12,7 @@ import type {
   ScreenMembersOnEmailIdentifierChallenge as ScreenOptions,
 } from '../../../interfaces/screens/email-identifier-challenge';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import { FormActions } from '../../../src/constants';
 
 export default class EmailIdentifierChallenge extends BaseContext implements EmailIdentifierChallengeMembers {
   screen: ScreenOptions;
@@ -52,7 +53,7 @@ export default class EmailIdentifierChallenge extends BaseContext implements Ema
       state: this.transaction.state,
       telemetry: [EmailIdentifierChallenge.screenIdentifier, 'resendCode'],
     };
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'resend-code' });
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.RESEND_CODE });
   }
 
   /**
@@ -67,7 +68,7 @@ export default class EmailIdentifierChallenge extends BaseContext implements Ema
       state: this.transaction.state,
       telemetry: [EmailIdentifierChallenge.screenIdentifier, 'returnToPrevious'],
     };
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'back-action' });
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.BACK });
   }
 }
 

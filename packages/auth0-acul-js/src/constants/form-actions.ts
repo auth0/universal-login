@@ -1,0 +1,29 @@
+/**
+ * Authentication Action Types
+ * Constants for various action types used in form submissions
+ */
+export const FormActions = {
+    DEFAULT: 'default' as const,
+    BACK: 'back-action' as const,
+    PICK_AUTHENTICATOR: 'pick-authenticator' as const,
+    PICK_SMS: 'pick-sms' as const,
+    PICK_EMAIL: 'pick-email' as const,
+    PICK_COUNTRY_CODE: 'pick-country-code' as const,
+    RESEND_CODE: 'resend-code' as const,
+    RESEND: 'resend' as const,
+    CONTINUE: 'continue' as const,
+    TOGGLE_VIEW: 'toggle-view' as const,
+    ENTER_OTP_CODE: 'enter-otp-code' as const,
+    SWITCH_TO_VOICE: 'switch-to-voice' as const,
+    ABORT_PASSKEY_ENROLLMENT: 'abort-passkey-enrollment' as const,
+    BACK_TO_LOGIN: 'back-to-login' as const,
+    ACCEPT: 'accept' as const,
+    DENY: 'deny' as const,
+    ENROLL: 'enroll' as const,
+    RESEND_EMAIL: 'resend-email-action' as const
+  } as const;
+  
+  /**
+   * Type definition for action type constants
+   */
+  export type FormActionsType = typeof FormActions[keyof typeof FormActions];

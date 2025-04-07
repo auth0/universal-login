@@ -18,6 +18,7 @@ import type {
   SocialLoginOptions,
 } from '../../../interfaces/screens/login-id';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import { FormActions } from '../../../src/constants';
 
 export default class LoginId extends BaseContext implements LoginIdMembers {
   static screenIdentifier: string = ScreenIds.LOGIN_ID;
@@ -127,7 +128,7 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
 
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'pick-country-code',
+      action: FormActions.PICK_COUNTRY_CODE,
     });
   }
 }

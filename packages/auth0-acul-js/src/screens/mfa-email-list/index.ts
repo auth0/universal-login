@@ -9,6 +9,7 @@ import type {
   SelectMfaEmailOptions,
 } from '../../../interfaces/screens/mfa-email-list';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import { FormActions } from '../../../src/constants';
 
 /**
  * Class implementing the mfa-email-list screen functionality
@@ -70,7 +71,7 @@ export default class MfaEmailList extends BaseContext implements MfaEmailListMem
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'back-action',
+      action: FormActions.BACK,
     });
   }
 }

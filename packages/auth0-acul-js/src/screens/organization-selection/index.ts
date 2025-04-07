@@ -8,6 +8,7 @@ import type {
   ScreenMembersOnOrganizationSelection as ScreenOptions,
 } from '../../../interfaces/screens/organization-selection';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import { FormActions } from '../../../src/constants';
 
 /**
  * Class implementing the organization-selection screen functionality.
@@ -45,7 +46,7 @@ export default class OrganizationSelection extends BaseContext implements Organi
     };
     await new FormHandler(options).submitData<ContinueWithOrganizationNameOptions>({
       ...payload,
-      action: 'default',
+      action: FormActions.DEFAULT,
     });
   }
 }

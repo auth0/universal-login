@@ -4,6 +4,7 @@ import { FormHandler } from '../../../../src/utils/form-handler';
 import { ScreenIds } from '../../../../src/utils/enums';
 import { ResetPasswordRequestOptions } from '../../../../interfaces/screens/reset-password-request';
 import { CustomOptions } from '../../../../interfaces/common';
+import { FormActions } from '../../../../src/constants';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -65,7 +66,7 @@ describe('ResetPasswordRequest', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'back-to-login',
+          action: FormActions.BACK_TO_LOGIN,
         })
       );
     });
@@ -75,7 +76,7 @@ describe('ResetPasswordRequest', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'back-to-login',
+          action: FormActions.BACK_TO_LOGIN,
         })
       );
     });

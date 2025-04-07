@@ -6,6 +6,7 @@ import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { MfaPushWelcomeMembers, ScreenMembersOnMfaPushWelcome as ScreenOptions } from '../../../interfaces/screens/mfa-push-welcome';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import { FormActions } from '../../../src/constants';
 
 /**
  * @extends {BaseContext}
@@ -42,7 +43,7 @@ export default class MfaPushWelcome extends BaseContext implements MfaPushWelcom
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'enroll',
+      action: FormActions.ENROLL,
     });
   }
 
@@ -64,7 +65,7 @@ export default class MfaPushWelcome extends BaseContext implements MfaPushWelcom
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'pick-authenticator',
+      action: FormActions.PICK_AUTHENTICATOR,
     });
   }
 }

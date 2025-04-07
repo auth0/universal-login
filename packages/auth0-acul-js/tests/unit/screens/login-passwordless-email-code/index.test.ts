@@ -4,6 +4,7 @@ import { FormHandler } from '../../../../src/utils/form-handler';
 import { SubmitCodeOptions } from 'interfaces/screens/login-passwordless-email-code';
 import { CustomOptions } from 'interfaces/common';
 import { ScreenIds } from '../../../../src/utils/enums';
+import { FormActions } from '../../../../src/constants';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -83,7 +84,7 @@ describe('LoginPasswordlessEmailCode', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'resend',
+          action: FormActions.RESEND,
         })
       );
     });
@@ -94,7 +95,7 @@ describe('LoginPasswordlessEmailCode', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'resend',
+          action: FormActions.RESEND,
         })
       );
     });

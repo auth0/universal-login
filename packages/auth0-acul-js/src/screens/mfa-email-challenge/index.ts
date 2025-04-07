@@ -14,6 +14,7 @@ import type {
   ScreenMembersOnMfaEmailChallenge as ScreenOptions,
 } from '../../../interfaces/screens/mfa-email-challenge';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import { FormActions } from '../../../src/constants';
 
 /**
  * Class implementing the mfa-email-challenge screen functionality
@@ -76,7 +77,7 @@ export default class MfaEmailChallenge extends BaseContext implements MfaEmailCh
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'resend-code',
+      action: FormActions.RESEND_CODE,
     });
   }
 
@@ -98,7 +99,7 @@ export default class MfaEmailChallenge extends BaseContext implements MfaEmailCh
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'pick-authenticator',
+      action: FormActions.PICK_AUTHENTICATOR,
     });
   }
 
@@ -119,7 +120,7 @@ export default class MfaEmailChallenge extends BaseContext implements MfaEmailCh
       state: this.transaction.state,
       telemetry: [MfaEmailChallenge.screenIdentifier, 'pickEmail'],
     };
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'pick-email' });
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.PICK_EMAIL });
   }
 }
 

@@ -5,6 +5,7 @@ import { ScreenIds } from '../../../../src/utils/enums';
 
 import type { MfaSmsChallengeOptions } from 'interfaces/screens/reset-password-mfa-sms-challenge';
 import type { CustomOptions } from 'interfaces/common';
+import { FormActions } from '../../../../src/constants';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -33,7 +34,7 @@ describe('ResetPasswordMfaSmsChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'default',
+          action: FormActions.DEFAULT,
         })
       );
     });
@@ -57,7 +58,7 @@ describe('ResetPasswordMfaSmsChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'resend-code',
+          action: FormActions.RESEND_CODE,
         })
       );
     });
@@ -67,7 +68,7 @@ describe('ResetPasswordMfaSmsChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'resend-code',
+          action: FormActions.RESEND_CODE,
         })
       );
     });
@@ -91,7 +92,7 @@ describe('ResetPasswordMfaSmsChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'pick-authenticator',
+          action: FormActions.PICK_AUTHENTICATOR,
         })
       );
     });
@@ -101,7 +102,7 @@ describe('ResetPasswordMfaSmsChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'pick-authenticator',
+          action: FormActions.PICK_AUTHENTICATOR,
         })
       );
     });
@@ -125,7 +126,7 @@ describe('ResetPasswordMfaSmsChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'switch-to-voice',
+          action: FormActions.SWITCH_TO_VOICE,
         })
       );
     });
@@ -135,7 +136,7 @@ describe('ResetPasswordMfaSmsChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'switch-to-voice',
+          action: FormActions.SWITCH_TO_VOICE,
         })
       );
     });

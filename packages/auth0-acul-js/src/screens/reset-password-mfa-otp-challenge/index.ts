@@ -9,6 +9,7 @@ import type {
   ScreenMembersOnResetPasswordMfaOtpChallenge as ScreenOptions,
 } from '../../../interfaces/screens/reset-password-mfa-otp-challenge';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import { FormActions } from '../../../src/constants';
 
 /**
  * Class implementing the reset-password-mfa-otp-challenge screen functionality
@@ -41,7 +42,7 @@ export default class ResetPasswordMfaOtpChallenge extends BaseContext implements
     };
     await new FormHandler(options).submitData<ContinueOptions>({
       ...payload,
-      action: 'default',
+      action: FormActions.DEFAULT,
     });
   }
 
@@ -63,7 +64,7 @@ export default class ResetPasswordMfaOtpChallenge extends BaseContext implements
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'pick-authenticator',
+      action: FormActions.PICK_AUTHENTICATOR,
     });
   }
 }

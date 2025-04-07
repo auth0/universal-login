@@ -11,6 +11,7 @@ import type {
   ScreenMembersOnResetPasswordMfaPushChallengePush as ScreenOptions,
 } from '../../../interfaces/screens/reset-password-mfa-push-challenge-push';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import { FormActions } from '../../../src/constants';
 
 /**
  * Class representing the reset-password-mfa-push-challenge-push screen functionality
@@ -63,7 +64,7 @@ export default class ResetPasswordMfaPushChallengePush extends BaseContext imple
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'resend',
+      action: FormActions.RESEND,
     });
   }
 
@@ -85,7 +86,7 @@ export default class ResetPasswordMfaPushChallengePush extends BaseContext imple
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'enter-otp-code',
+      action: FormActions.ENTER_OTP_CODE,
     });
   }
 
@@ -107,7 +108,7 @@ export default class ResetPasswordMfaPushChallengePush extends BaseContext imple
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'pick-authenticator',
+      action: FormActions.PICK_AUTHENTICATOR,
     });
   }
 }

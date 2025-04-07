@@ -4,6 +4,7 @@ import { FormHandler } from '../../../../src/utils/form-handler';
 import type { ContinueOptions } from '../../../../interfaces/screens/mfa-otp-challenge';
 import type { CustomOptions } from '../../../../interfaces/common';
 import { ScreenIds } from '../../../../src/utils/enums';
+import { FormActions } from '../../../../src/constants';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -35,7 +36,7 @@ describe('MfaOtpChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'default',
+          action: FormActions.DEFAULT,
           rememberBrowser: 'true',
         })
       );
@@ -52,7 +53,7 @@ describe('MfaOtpChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'default',
+          action: FormActions.DEFAULT,
         })
       );
     });
@@ -81,7 +82,7 @@ describe('MfaOtpChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'pick-authenticator',
+          action: FormActions.PICK_AUTHENTICATOR,
         })
       );
     });
@@ -92,7 +93,7 @@ describe('MfaOtpChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'pick-authenticator',
+          action: FormActions.PICK_AUTHENTICATOR,
         })
       );
     });

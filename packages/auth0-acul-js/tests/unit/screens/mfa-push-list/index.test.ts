@@ -4,6 +4,7 @@ import MfaPushList from '../../../../src/screens/mfa-push-list';
 import { CustomOptions } from 'interfaces/common';
 import { SelectMfaPushDeviceOptions } from 'interfaces/screens/mfa-push-list';
 import { ScreenIds } from '../../../../src/utils/enums';
+import { FormActions } from '../../../../src/constants';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -59,7 +60,7 @@ describe('MfaPushList', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'back-action',
+          action: FormActions.BACK,
         })
       );
     });
@@ -69,7 +70,7 @@ describe('MfaPushList', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'back-action',
+          action: FormActions.BACK,
         })
       );
     });

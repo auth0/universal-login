@@ -11,6 +11,7 @@ import type {
   ScreenMembersOnMfaPushEnrollmentQr as ScreenOptions,
 } from '../../../interfaces/screens/mfa-push-enrollment-qr';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import { FormActions } from '../../../src/constants';
 
 /**
  * Class implementing the mfa-push-enrollment-qr screen functionality
@@ -43,7 +44,7 @@ export default class MfaPushEnrollmentQr extends BaseContext implements MfaPushE
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'pick-authenticator',
+      action: FormActions.PICK_AUTHENTICATOR,
     });
   }
 }

@@ -10,6 +10,7 @@ import type {
   ScreenMembersOnMfaOtpEnrollmentQr as ScreenOptions,
 } from '../../../interfaces/screens/mfa-otp-enrollment-qr';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import { FormActions } from '../../../src/constants';
 
 /**
  * Class implementing the mfa-otp-enrollment-qr screen functionality
@@ -44,7 +45,7 @@ export default class MfaOtpEnrollmentQr extends BaseContext implements MfaOtpEnr
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'toggle-view',
+      action: FormActions.TOGGLE_VIEW,
     });
   }
 
@@ -66,7 +67,7 @@ export default class MfaOtpEnrollmentQr extends BaseContext implements MfaOtpEnr
     };
     await new FormHandler(options).submitData({
       ...payload,
-      action: 'default',
+      action: FormActions.DEFAULT,
     });
   }
 
@@ -88,7 +89,7 @@ export default class MfaOtpEnrollmentQr extends BaseContext implements MfaOtpEnr
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'pick-authenticator',
+      action: FormActions.PICK_AUTHENTICATOR,
     });
   }
 }

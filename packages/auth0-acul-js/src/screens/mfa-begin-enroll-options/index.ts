@@ -2,7 +2,8 @@ import { BaseContext } from '../../models/base-context';
 import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
-import type { MfaBeginEnrollOptionsMembers, MfaEnrollOptions, FactorType } from '../../../interfaces/screens/mfa-begin-enroll-options';
+import type { MfaBeginEnrollOptionsMembers, MfaEnrollOptions } from '../../../interfaces/screens/mfa-begin-enroll-options';
+import { MfaEnrollFactorType } from '../../../src/constants'
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 /**
@@ -38,7 +39,7 @@ export default class MfaBeginEnrollOptions extends BaseContext implements MfaBeg
   }
 }
 
-export { MfaBeginEnrollOptionsMembers, MfaEnrollOptions, FactorType };
+export { MfaBeginEnrollOptionsMembers, MfaEnrollOptions, MfaEnrollFactorType };
 
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';

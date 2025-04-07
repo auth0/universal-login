@@ -4,6 +4,7 @@ import { FormHandler } from '../../../../src/utils/form-handler';
 import type { ContinueOptions } from '../../../../interfaces/screens/mfa-email-challenge';
 import type { CustomOptions } from '../../../../interfaces/common';
 import { ScreenIds } from '../../../../src/utils/enums';
+import { FormActions } from '../../../../src/constants';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -33,7 +34,7 @@ describe('MfaEmailChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'default',
+          action: FormActions.DEFAULT,
           rememberDevice: 'true',
         })
       );
@@ -48,7 +49,7 @@ describe('MfaEmailChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'default',
+          action: FormActions.DEFAULT,
         })
       );
     });
@@ -73,7 +74,7 @@ describe('MfaEmailChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'resend-code',
+          action: FormActions.RESEND_CODE,
         })
       );
     });
@@ -83,7 +84,7 @@ describe('MfaEmailChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'resend-code',
+          action: FormActions.RESEND_CODE,
         })
       );
     });
@@ -107,7 +108,7 @@ describe('MfaEmailChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'pick-authenticator',
+          action: FormActions.PICK_AUTHENTICATOR,
         })
       );
     });
@@ -117,7 +118,7 @@ describe('MfaEmailChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'pick-authenticator',
+          action: FormActions.PICK_AUTHENTICATOR,
         })
       );
     });

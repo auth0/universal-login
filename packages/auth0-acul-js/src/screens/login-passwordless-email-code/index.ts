@@ -15,6 +15,7 @@ import type {
   SubmitCodeOptions,
 } from '../../../interfaces/screens/login-passwordless-email-code';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import { FormActions } from '../../../src/constants';
 
 export default class LoginPasswordlessEmailCode extends BaseContext implements LoginPasswordlessEmailCodeMembers {
   static screenIdentifier: string = ScreenIds.LOGIN_PASSWORDLESS_EMAIL_CODE;
@@ -65,7 +66,7 @@ export default class LoginPasswordlessEmailCode extends BaseContext implements L
       telemetry: [LoginPasswordlessEmailCode.screenIdentifier, 'resendCode'],
     };
 
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'resend' });
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.RESEND });
   }
 }
 

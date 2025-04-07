@@ -1,13 +1,12 @@
+import type { MfaEnrollFactorType } from '../../src/constants';
 import type { BaseMembers } from '../models/base-context';
-
-export type FactorType = 'push-notification' | 'otp' | 'sms' | 'phone' | 'voice' | 'webauthn-roaming';
 
 /**
  * Options for continuing with factor enrollment
  */
 export interface MfaEnrollOptions {
   /** The action indicating which factor to enroll */
-  action: FactorType;
+  action: MfaEnrollFactorType;
   /** Any additional custom options */
   [key: string]: string | number | boolean | undefined;
 }

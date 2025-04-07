@@ -12,6 +12,7 @@ import type {
   ScreenMembersOnMfaSmsChallenge as ScreenOptions,
 } from '../../../interfaces/screens/mfa-sms-challenge';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import { FormActions } from '../../../src/constants';
 
 /**
  * This class provides methods to handle the mfa-sms-challenge screen.
@@ -74,7 +75,7 @@ export default class MfaSmsChallenge extends BaseContext implements MfaSmsChalle
       state: this.transaction.state,
       telemetry: [MfaSmsChallenge.screenIdentifier, 'pickSms'],
     };
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'pick-sms' });
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.PICK_SMS });
   }
 
   /**
@@ -94,7 +95,7 @@ export default class MfaSmsChallenge extends BaseContext implements MfaSmsChalle
       state: this.transaction.state,
       telemetry: [MfaSmsChallenge.screenIdentifier, 'resendCode'],
     };
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'resend-code' });
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.RESEND_CODE });
   }
 
   /**
@@ -114,7 +115,7 @@ export default class MfaSmsChallenge extends BaseContext implements MfaSmsChalle
       state: this.transaction.state,
       telemetry: [MfaSmsChallenge.screenIdentifier, 'tryAnotherMethod'],
     };
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'pick-authenticator' });
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.PICK_AUTHENTICATOR });
   }
 
   /**
@@ -134,7 +135,7 @@ export default class MfaSmsChallenge extends BaseContext implements MfaSmsChalle
       state: this.transaction.state,
       telemetry: [MfaSmsChallenge.screenIdentifier, 'getACall'],
     };
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'switch-to-voice' });
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.SWITCH_TO_VOICE });
   }
 }
 
