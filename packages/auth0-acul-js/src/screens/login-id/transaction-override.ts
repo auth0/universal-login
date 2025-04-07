@@ -10,6 +10,7 @@ import {
 
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type { TransactionMembersOnLoginId as OverrideMembers } from '../../../interfaces/screens/login-id';
+import { ConnectionStrategy, Identifiers } from '../../../src/constants';
 
 export class TransactionOverride extends Transaction implements OverrideMembers {
   isSignupEnabled: OverrideMembers['isSignupEnabled'];
@@ -30,8 +31,8 @@ export class TransactionOverride extends Transaction implements OverrideMembers 
   }
 
   static getAllowedIdentifiers(transactionContext: TransactionContext, connectionStrategy: string | null): OverrideMembers['allowedIdentifiers'] {
-    if (connectionStrategy === 'sms') return ['phone'];
-    if (connectionStrategy === 'email') return ['email'];
+    if (connectionStrategy === ConnectionStrategy.SMS) return [Identifiers.PHONE];
+    if (connectionStrategy === ConnectionStrategy.EMAIL) return [Identifiers.EMAIL];
     return getAllowedIdentifiers(transactionContext);
   }
 }
