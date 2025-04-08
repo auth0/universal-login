@@ -1,4 +1,4 @@
-import { IdentifierType } from '../../src/constants';
+import type { IdentifierType } from '../../src/constants';
 import type { BaseMembers } from '../models/base-context';
 import type { ScreenMembers } from '../models/screen';
 import type { TransactionMembers, UsernamePolicy, PasswordPolicy } from '../models/transaction';

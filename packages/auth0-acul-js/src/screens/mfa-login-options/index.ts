@@ -3,8 +3,8 @@ import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import type { MfaLoginOptionsMembers, LoginEnrollOptions } from '../../../interfaces/screens/mfa-login-options';
-import type { MfaLoginFactorType } from '../../../src/constants'
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import type { MfaLoginFactorType } from '../../../src/constants';
 
 /**
  * Class implementing the mfa-login-options screen functionality

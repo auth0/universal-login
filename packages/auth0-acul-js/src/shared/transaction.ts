@@ -1,7 +1,7 @@
-import { IdentifierType } from 'src/constants';
 import type { DBConnection, UsernamePolicy, PasswordPolicy, TransactionContext } from '../../interfaces/models/transaction';
 import type { TransactionMembersOnLoginId } from '../../interfaces/screens/login-id';
 import type { TransactionMembersOnSignupId } from '../../interfaces/screens/signup-id';
+import type { IdentifierType } from '../../src/constants';
 
 /**
  * Checks if signup is enabled for the current connection.
@@ -143,10 +143,7 @@ export function hasFlexibleIdentifier(transaction: TransactionContext): boolean 
  * @param statuses - Array of statuses to filter by ('required' or 'optional')
  * @returns Array of matching identifier types or null if none are found
  */
-function extractIdentifiersByStatus(
-  connection: DBConnection | undefined,
-  statuses: ('required' | 'optional')[],
-): IdentifierType[] | null {
+function extractIdentifiersByStatus(connection: DBConnection | undefined, statuses: ('required' | 'optional')[]): IdentifierType[] | null {
   if (!connection?.options?.attributes) return null;
 
   return Object.entries(connection.options.attributes)

@@ -1,3 +1,4 @@
+import { FormActions } from '../../../src/constants';
 import { BaseContext } from '../../models/base-context';
 import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
@@ -12,7 +13,6 @@ import type {
   SelectCountryCodeOptions,
 } from '../../../interfaces/screens/mfa-country-codes';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import { FormActions } from '../../../src/constants';
 
 /**
  * Class implementing the mfa-country-codes screen functionality

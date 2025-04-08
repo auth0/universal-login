@@ -1,6 +1,6 @@
+import type { MfaLoginFactorType } from '../../src/constants';
 import type { BaseMembers } from '../models/base-context';
 import type { ScreenMembers } from '../models/screen';
-import {MfaLoginFactorType} from '../../src/constants/index'
 
 /**
  * Interface for the screen data specific to mfa-login-options screen

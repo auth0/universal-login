@@ -8,7 +8,7 @@ import type { UntrustedDataContext, UntrustedDataMembers } from '../../interface
 export class UntrustedData implements UntrustedDataMembers {
   /** @property {Record<string, string | number | boolean | undefined> | null} submittedFormData - Form data submitted by the user */
   submittedFormData: UntrustedDataMembers['submittedFormData'];
-  
+
   /** @property {Record<string, string> | null} authorizationParams - Authorization parameters from the request */
   authorizationParams: UntrustedDataMembers['authorizationParams'];
 

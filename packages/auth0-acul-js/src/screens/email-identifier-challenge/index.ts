@@ -1,3 +1,4 @@
+import { FormActions } from '../../../src/constants';
 import { BaseContext } from '../../models/base-context';
 import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
@@ -12,7 +13,6 @@ import type {
   ScreenMembersOnEmailIdentifierChallenge as ScreenOptions,
 } from '../../../interfaces/screens/email-identifier-challenge';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import { FormActions } from '../../../src/constants';
 
 export default class EmailIdentifierChallenge extends BaseContext implements EmailIdentifierChallengeMembers {
   screen: ScreenOptions;

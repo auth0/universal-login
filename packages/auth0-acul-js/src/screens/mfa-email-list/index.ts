@@ -1,3 +1,4 @@
+import { FormActions } from '../../../src/constants';
 import { BaseContext } from '../../models/base-context';
 import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
@@ -9,7 +10,6 @@ import type {
   SelectMfaEmailOptions,
 } from '../../../interfaces/screens/mfa-email-list';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import { FormActions } from '../../../src/constants';
 
 /**
  * Class implementing the mfa-email-list screen functionality

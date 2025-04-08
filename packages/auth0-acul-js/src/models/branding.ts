@@ -8,7 +8,7 @@ import type { BrandingContext, BrandingMembers } from '../../interfaces/models/b
 export class Branding implements BrandingMembers {
   /** @property {BrandingSettings | null} settings - Branding settings like colors, logo URLs, etc. */
   settings: BrandingMembers['settings'];
-  
+
   /** @property {BrandingThemes | null} themes - Branding themes defining the visual appearance */
   themes: BrandingMembers['themes'];
 

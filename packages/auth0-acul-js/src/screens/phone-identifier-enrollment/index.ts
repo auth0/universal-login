@@ -1,3 +1,4 @@
+import { FormActions } from '../../../src/constants';
 import { BaseContext } from '../../models/base-context';
 import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
@@ -12,7 +13,6 @@ import type {
   PhoneEnrollmentOptions,
 } from '../../../interfaces/screens/phone-identifier-enrollment';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import { FormActions } from '../../../src/constants';
 
 export default class PhoneIdentifierEnrollment extends BaseContext implements PhoneIdentifierEnrollmentMembers {
   static screenIdentifier: string = ScreenIds.PHONE_IDENTIFIER_ENROLLMENT;

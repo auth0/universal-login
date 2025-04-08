@@ -1,3 +1,4 @@
+import { ConnectionStrategy, Identifiers } from '../../../src/constants';
 import { Transaction } from '../../../src/models/transaction';
 import {
   isUsernameRequired,
@@ -10,7 +11,6 @@ import {
 
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type { TransactionMembersOnLoginId as OverrideMembers } from '../../../interfaces/screens/login-id';
-import { ConnectionStrategy, Identifiers } from '../../../src/constants';
 
 export class TransactionOverride extends Transaction implements OverrideMembers {
   isSignupEnabled: OverrideMembers['isSignupEnabled'];

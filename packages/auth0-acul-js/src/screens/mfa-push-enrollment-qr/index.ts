@@ -1,3 +1,4 @@
+import { FormActions } from '../../../src/constants';
 import { BaseContext } from '../../models/base-context';
 import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
@@ -11,7 +12,6 @@ import type {
   ScreenMembersOnMfaPushEnrollmentQr as ScreenOptions,
 } from '../../../interfaces/screens/mfa-push-enrollment-qr';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import { FormActions } from '../../../src/constants';
 
 /**
  * Class implementing the mfa-push-enrollment-qr screen functionality

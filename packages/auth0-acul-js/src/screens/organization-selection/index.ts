@@ -1,3 +1,4 @@
+import { FormActions } from '../../../src/constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
@@ -8,7 +9,6 @@ import type {
   ScreenMembersOnOrganizationSelection as ScreenOptions,
 } from '../../../interfaces/screens/organization-selection';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import { FormActions } from '../../../src/constants';
 
 /**
  * Class implementing the organization-selection screen functionality.

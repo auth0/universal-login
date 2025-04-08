@@ -8,28 +8,28 @@ import type { ScreenContext, ScreenMembers } from '../../interfaces/models/scree
 export class Screen implements ScreenMembers {
   /** @property {string} name - The name of the current screen */
   name: ScreenMembers['name'];
-  
+
   /** @property {string | null} captchaImage - URL to the captcha image if available */
   captchaImage: ScreenMembers['captchaImage'];
-  
+
   /** @property {string | null} captchaSiteKey - The site key for captcha integration */
   captchaSiteKey: ScreenMembers['captchaSiteKey'];
-  
+
   /** @property {string | null} captchaProvider - The provider of the captcha service */
   captchaProvider: ScreenMembers['captchaProvider'];
-  
+
   /** @property {boolean} isCaptchaAvailable - Indicates if captcha is available on this screen */
   isCaptchaAvailable: ScreenMembers['isCaptchaAvailable'];
-  
+
   /** @property {Record<string, any> | null} data - Screen-specific data for rendering or logic */
   data: ScreenMembers['data'];
-  
+
   /** @property {Record<string, string> | null} links - Navigation links available on this screen */
   links: ScreenMembers['links'];
-  
+
   /** @property {Record<string, string> | null} texts - Text content for UI elements */
   texts: ScreenMembers['texts'];
-  
+
   /** @property {CaptchaContext | null} captcha - Complete captcha configuration */
   captcha: ScreenMembers['captcha'];
 

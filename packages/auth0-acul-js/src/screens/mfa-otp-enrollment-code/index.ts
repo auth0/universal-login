@@ -1,3 +1,4 @@
+import { FormActions } from '../../../src/constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
@@ -12,7 +13,6 @@ import type {
   ScreenMembersOnMfaOtpEnrollmentCode as ScreenOptions,
 } from '../../../interfaces/screens/mfa-otp-enrollment-code';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import { FormActions } from '../../../src/constants';
 
 /**
  * Class implementing the mfa-otp-enrollment-code screen functionality.

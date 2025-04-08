@@ -1,3 +1,4 @@
+import { FormActions } from '../../../src/constants';
 import { BaseContext } from '../../models/base-context';
 import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
@@ -9,7 +10,6 @@ import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { PasskeyEnrollmentMembers, ScreenMembersOnPasskeyEnrollment as ScreenOptions } from '../../../interfaces/screens/passkey-enrollment';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import { FormActions } from '../../../src/constants';
 
 export default class PasskeyEnrollment extends BaseContext implements PasskeyEnrollmentMembers {
   static screenIdentifier: string = ScreenIds.PASSKEY_ENROLLMENT;
@@ -55,7 +55,7 @@ export default class PasskeyEnrollment extends BaseContext implements PasskeyEnr
       telemetry: [PasskeyEnrollment.screenIdentifier, 'abortPasskeyEnrollment'],
     };
 
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.ABORT_PASSKEY_ENROLLMENT});
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.ABORT_PASSKEY_ENROLLMENT });
   }
 }
 

@@ -1,9 +1,9 @@
+import { ConnectionStrategy, Identifiers } from '../../../src/constants';
 import { Transaction } from '../../models/transaction';
 import { isSignupEnabled, isForgotPasswordEnabled, isPasskeyEnabled, getPasswordPolicy, getAllowedIdentifiers } from '../../shared/transaction';
 
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type { TransactionMembersOnLogin as OverrideOptions } from '../../../interfaces/screens/login';
-import { ConnectionStrategy, Identifiers } from '../../../src/constants';
 
 /**
  * Login transaction override implementation

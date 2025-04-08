@@ -1,9 +1,9 @@
+import { ConnectionStrategy, Identifiers } from '../../../src/constants';
 import { Transaction } from '../../models/transaction';
 import { isPasskeyEnabled, getUsernamePolicy, getRequiredIdentifiers, getOptionalIdentifiers, getPasswordPolicy } from '../../shared/transaction';
 
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type { TransactionMembersOnSignup as OverrideOptions } from '../../../interfaces/screens/signup';
-import { ConnectionStrategy, Identifiers } from '../../../src/constants';
 
 export class TransactionOverride extends Transaction implements OverrideOptions {
   isPasskeyEnabled: OverrideOptions['isPasskeyEnabled'];

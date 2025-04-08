@@ -1,3 +1,4 @@
+import { FormActions } from '../../../src/constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
@@ -9,7 +10,6 @@ import type {
   ScreenMembersOnResetPasswordMfaOtpChallenge as ScreenOptions,
 } from '../../../interfaces/screens/reset-password-mfa-otp-challenge';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import { FormActions } from '../../../src/constants';
 
 /**
  * Class implementing the reset-password-mfa-otp-challenge screen functionality

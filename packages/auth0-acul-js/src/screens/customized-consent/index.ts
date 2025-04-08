@@ -1,3 +1,4 @@
+import { FormActions } from '../../../src/constants';
 import { BaseContext } from '../../models/base-context';
 import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
@@ -7,7 +8,6 @@ import { ScreenOverride } from './screen-override';
 import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { CustomizedConsentMembers, ScreenMembersOnCustomizedConsent } from '../../../interfaces/screens/customized-consent';
-import { FormActions } from '../../../src/constants';
 
 /**
  * Class implementing the Customized Consent screen functionality.

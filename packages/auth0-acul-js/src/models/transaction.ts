@@ -8,28 +8,28 @@ import type { TransactionContext, TransactionMembers } from '../../interfaces/mo
 export class Transaction implements TransactionMembers {
   /** @property {string} state - The current state of the authentication transaction */
   state: TransactionMembers['state'];
-  
+
   /** @property {boolean} hasErrors - Indicates if the transaction has errors */
   hasErrors: TransactionMembers['hasErrors'];
-  
+
   /** @property {string} locale - The current locale for the transaction */
   locale: TransactionMembers['locale'];
-  
+
   /** @property {string | null} countryCode - The country code if available */
   countryCode: TransactionMembers['countryCode'];
-  
+
   /** @property {string | null} countryPrefix - The phone prefix for the country */
   countryPrefix: TransactionMembers['countryCode'];
-  
+
   /** @property {string | null} connectionStrategy - The strategy of the current connection */
   connectionStrategy: TransactionMembers['connectionStrategy'];
-  
+
   /** @property {Error[] | null} errors - List of errors in the transaction */
   errors: TransactionMembers['errors'];
-  
+
   /** @property {Connection | null} currentConnection - The connection being used */
   currentConnection: TransactionMembers['currentConnection'];
-  
+
   /** @property {(Connection | EnterpriseConnection)[] | null} alternateConnections - Other available connections */
   alternateConnections: TransactionMembers['alternateConnections'];
 

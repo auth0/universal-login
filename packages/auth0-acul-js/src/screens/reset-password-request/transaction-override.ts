@@ -1,9 +1,9 @@
+import { ConnectionStrategy, Identifiers } from '../../../src/constants';
 import { Transaction } from '../../../src/models/transaction';
 import { getAllowedIdentifiers, getRequiredIdentifiers, hasFlexibleIdentifier } from '../../shared/transaction';
 
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type { TransactionMembersOnResetPasswordRequest as OverrideMembers } from '../../../interfaces/screens/reset-password-request';
-import { ConnectionStrategy, Identifiers } from '../../../src/constants';
 
 export class TransactionOverride extends Transaction implements OverrideMembers {
   allowedIdentifiers: OverrideMembers['allowedIdentifiers'];

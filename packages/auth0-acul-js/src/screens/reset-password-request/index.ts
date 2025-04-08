@@ -1,3 +1,4 @@
+import { FormActions } from '../../../src/constants';
 import { BaseContext } from '../../models/base-context';
 import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
@@ -15,7 +16,6 @@ import type {
   TransactionMembersOnResetPasswordRequest as TransactionOptions,
 } from '../../../interfaces/screens/reset-password-request';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import { FormActions } from '../../../src/constants';
 
 export default class ResetPasswordRequest extends BaseContext implements ResetPasswordRequestMembers {
   static screenIdentifier: string = ScreenIds.RESET_PASSWORD_REQUEST;

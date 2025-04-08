@@ -2,4 +2,4 @@
 export * from './mfa-factors';
 export * from './form-actions';
 export * from './identifiers';
-export * from './connection-strategy'
+export * from './connection-strategy';

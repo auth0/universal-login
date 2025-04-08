@@ -1,4 +1,4 @@
-import { IdentifierType } from '../../src/constants';
+import type { IdentifierType } from '../../src/constants';
 import type { CustomOptions } from '../common';
 import type { BaseMembers } from '../models/base-context';
 import type { ScreenMembers } from '../models/screen';

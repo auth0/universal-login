@@ -30,7 +30,7 @@ export class BaseContext implements BaseMembers {
   untrustedData: UntrustedDataMembers;
 
   private static context: UniversalLoginContext | null = null;
-  
+
   /**
    * @property {string} screenIdentifier - Identifier for the current screen, used to verify correct screen imports
    */

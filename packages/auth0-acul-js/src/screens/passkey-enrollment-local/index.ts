@@ -1,3 +1,4 @@
+import { FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
@@ -13,7 +14,6 @@ import type {
   AbortEnrollmentOptions,
 } from '../../../interfaces/screens/passkey-enrollment-local';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import { FormActions } from '../../constants';
 
 export default class PasskeyEnrollmentLocal extends BaseContext implements PasskeyEnrollmentLocalMembers {
   static screenIdentifier: string = ScreenIds.PASSKEY_ENROLLMENT_LOCAL;
