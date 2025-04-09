@@ -4,61 +4,59 @@ on:
   push:
     branches: [main, master]
     # Only trigger if files within the boilerplate example change.
-    # IMPORTANT: This path is relative to the MONOREPO ROOT when run there.
     paths:
-      - 'packages/auth0-acul-js/examples/acul-boilerplate/**'
+      - '**/*'
       # Exclude changes *only* to this workflow file itself or docs from triggering a deployment
-      - '!.github/workflows/acul-deploy.yml' # Adjusted path relative to monorepo root
-      - '!packages/auth0-acul-js/examples/acul-boilerplate/DEPLOYMENT.md'
-      - '!packages/auth0-acul-js/examples/acul-boilerplate/README.md'
+      - '!.github/workflows/acul-deploy.yml'
+      - '!DEPLOYMENT.md'
+      - '!README.md'
   workflow_dispatch: # Allow manual triggering from the GitHub Actions UI
 
 env:
-  # Set the working directory relative to the root of the checkout.
-  # This assumes the workflow is run from the context of the MONOREPO ROOT (e.g., universal-login).
-  # If a user runs this from a standalone boilerplate checkout, they might need to set WORKING_DIR to '.'
-  WORKING_DIR: packages/auth0-acul-js/examples/acul-boilerplate
-  # Default Node version
-  NODE_VERSION: '20'
+  NODE_VERSION: "20"
+  # When running in the context of the standalone boilerplate, the working directory is just '.'
+  WORKING_DIR: "."
 
 jobs:
   build-and-deploy:
     name: Build & Deploy ACUL Screens
     runs-on: ubuntu-latest
-    # Permissions needed for AWS OIDC and checking out code
     permissions:
-      id-token: write # Required for AWS OIDC authentication
-      contents: read   # Required to check out the repository
+      id-token: write
+      contents: read
 
-    # Define outputs for this job
     outputs:
       deployed_screens: ${{ steps.configure-auth0.outputs.deployed_screens }}
       failed_screens: ${{ steps.configure-auth0.outputs.failed_screens }}
 
     steps:
-      # Step 1: Checkout repository
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Step 2: Setup Node.js
       - name: Setup Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: "npm"
+          registry-url: 'https://registry.npmjs.org'
           cache-dependency-path: ${{ env.WORKING_DIR }}/package-lock.json
 
-      # Step 3: Install dependencies
       - name: Install dependencies
+        shell: bash
         working-directory: ${{ env.WORKING_DIR }}
-        run: npm ci
+        env:
+          NPM_CONFIG_REGISTRY: 'https://registry.npmjs.org'
+          NODE_AUTH_TOKEN: ''  # Explicitly unset any auth token to force public registry
+        run: |
+          npm config set registry https://registry.npmjs.org/
+          npm ci
 
-      # Step 4: Build application
       - name: Build application
+        shell: bash
         working-directory: ${{ env.WORKING_DIR }}
-        run: npm run build --if-present
+        run: |
+          npm run build --if-present
 
-      # Step 5: Configure AWS credentials
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -66,21 +64,18 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION || 'us-east-1' }}
           mask-aws-account-id: true
 
-      # Step 6: Discover available screens
       - name: Discover available screens
         id: discover-screens
-        uses: ./.github/actions/discover-screens
+        uses: ./.github/actions/discover-acul-screens
         with:
           working-directory: ${{ env.WORKING_DIR }}
 
-      # Step 7: Upload assets to S3
       - name: Upload assets to S3
-        uses: ./.github/actions/upload-to-s3
+        uses: ./.github/actions/upload-acul-to-s3
         with:
           working-directory: ${{ env.WORKING_DIR }}
           s3-bucket-name: ${{ secrets.S3_BUCKET_NAME }}
 
-      # Step 8: Setup Auth0 CLI
       - name: Setup Auth0 CLI
         uses: ./.github/actions/setup-auth0-cli
         with:
@@ -88,22 +83,20 @@ jobs:
           auth0-client-id: ${{ secrets.AUTH0_CLIENT_ID }}
           auth0-client-secret: ${{ secrets.AUTH0_CLIENT_SECRET }}
 
-      # Step 9: Configure Auth0 screens
       - name: Configure Auth0 screens
         id: configure-auth0
         uses: ./.github/actions/configure-auth0-screens
         with:
           working-directory: ${{ env.WORKING_DIR }}
-          cdn-url: ${{ secrets.CDN_URL }}
+          cdn-url: ${{ secrets.S3_CDN_URL }}
           screens-json: ${{ steps.discover-screens.outputs.screens }}
 
-      # Step 10: Generate deployment summary
       - name: Deployment Summary
-        if: always() # Run even if previous steps fail
-        uses: ./.github/actions/deployment-summary
+        if: always()
+        uses: ./.github/actions/acul-deployment-summary
         with:
           job-status: ${{ job.status }}
           deployed-screens: ${{ steps.configure-auth0.outputs.deployed_screens }}
           failed-screens: ${{ steps.configure-auth0.outputs.failed_screens }}
           s3-bucket-name: ${{ secrets.S3_BUCKET_NAME }}
-          cdn-url: ${{ secrets.CDN_URL }} 
+          cdn-url: ${{ secrets.S3_CDN_URL }} 

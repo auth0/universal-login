@@ -1,8 +1,8 @@
-name: 'Deployment Summary'
-description: 'Generate a deployment summary for GitHub Actions'
+name: 'ACUL Deployment Summary'
+description: 'Provides a summary of the ACUL screen deployment process'
 inputs:
   job-status:
-    description: 'Status of the job'
+    description: 'Status of the job (success, failure, cancelled)'
     required: true
   deployed-screens:
     description: 'Comma-separated list of successfully deployed screens'
@@ -13,12 +13,11 @@ inputs:
     required: false
     default: ''
   s3-bucket-name:
-    description: 'Name of the S3 bucket where assets were uploaded'
+    description: 'Name of the S3 bucket where assets are deployed'
     required: true
   cdn-url:
     description: 'Base URL of the CDN'
-    required: false
-    default: ''
+    required: true
 runs:
   using: 'composite'
   steps:

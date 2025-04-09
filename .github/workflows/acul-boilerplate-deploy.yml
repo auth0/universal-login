@@ -55,26 +55,13 @@ jobs:
           NODE_AUTH_TOKEN: ''  # Explicitly unset any auth token to force public registry
         run: |
           npm config set registry https://registry.npmjs.org/
-          npm ci --no-fund --no-audit --verbose
+          npm ci
 
       - name: Build application
         shell: bash
         working-directory: ${{ env.WORKING_DIR }}
         run: |
-          # Debug: List directory contents to verify structure
-          echo "Checking directory structure before build:"
-          ls -la
-          echo "Checking screens directory:"
-          ls -la src/screens || echo "Screens directory not found!"
-          
-          # More verbose build command with proper error reporting
-          npm run build --if-present || { 
-            echo "Build failed. Checking for additional error information:"
-            cat tsconfig.json
-            echo "TypeScript paths configured in tsconfig files:"
-            grep -r "paths" --include="tsconfig*.json" .
-            exit 1
-          }
+          npm run build --if-present
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4

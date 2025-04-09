@@ -1,5 +1,5 @@
-name: 'Upload Assets to S3'
-description: 'Uploads build assets to S3 with proper cache settings'
+name: 'Upload ACUL Assets to S3'
+description: 'Uploads ACUL build assets to S3 with proper cache settings'
 inputs:
   working-directory:
     description: 'Working directory relative to repository root'
