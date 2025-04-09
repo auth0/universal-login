@@ -7,7 +7,7 @@ import {
   uint8ArrayToBase64Url,
 } from '../../../src/utils/codec';
 import { isWebAuthPlatformAvailable } from '../../../src/utils/browser-capabilities';
-import { Errors } from '../../../src/utils/errors';
+import { Errors } from '../../../src/constants';
 import type {
   PasskeyRead,
   PasskeyCreate,

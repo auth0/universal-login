@@ -3,12 +3,12 @@ import { ScreenOverride } from '../../../../src/screens/login-id/screen-override
 import { TransactionOverride } from '../../../../src/screens/login-id/transaction-override';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { getPasskeyCredentials } from '../../../../src/utils/passkeys';
-import { Errors } from '../../../../src/utils/errors';
+import { Errors } from '../../../../src/constants';
 import { BaseContext } from '../../../../src/models/base-context';
 import type { ScreenContext } from '../../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../../interfaces/models/transaction';
 import type { LoginOptions, SocialLoginOptions } from '../../../../interfaces/screens/login-id';
-import { ScreenIds } from '../../../../src/utils/enums';
+import { ScreenIds } from '../../../../src//constants';
 import { FormActions } from '../../../../src/constants';
 
 jest.mock('../../../../src/screens/login-id/screen-override');

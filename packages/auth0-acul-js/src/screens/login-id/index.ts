@@ -1,7 +1,5 @@
-import { FormActions } from '../../../src/constants';
+import { ScreenIds, FormActions, Errors } from '../../constants';
 import { BaseContext } from '../../models/base-context';
-import { ScreenIds } from '../../utils/enums';
-import { Errors } from '../../utils/errors';
 import { FormHandler } from '../../utils/form-handler';
 import { getPasskeyCredentials } from '../../utils/passkeys';
 

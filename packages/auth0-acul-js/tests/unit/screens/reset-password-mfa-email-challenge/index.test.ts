@@ -1,6 +1,6 @@
 import ResetPasswordMfaEmailChallenge from '../../../../src/screens/reset-password-mfa-email-challenge';
 import type { ScreenMembersOnResetPasswordMfaEmailChallenge } from '../../../../interfaces/screens/reset-password-mfa-email-challenge';
-import { ScreenIds } from '../../../../src/utils/enums';
+import { ScreenIds } from '../../../../src//constants';
 import { FormActions } from '../../../../src/constants';
 
 describe('ResetPasswordMfaEmailChallenge', () => {

@@ -2,7 +2,7 @@ import MfaLoginOptions from '../../../../src/screens/mfa-login-options';
 import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import type { LoginEnrollOptions } from '../../../../interfaces/screens/mfa-login-options';
-import { ScreenIds } from '../../../../src/utils/enums';
+import { ScreenIds } from '../../../../src//constants';
 import { MFA_LOGIN_FACTORS } from '../../../../src/constants';
 
 jest.mock('../../../../src/utils/form-handler');

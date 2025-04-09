@@ -1,6 +1,7 @@
+import { Errors } from '../constants';
+
 import { isWebAuthPlatformAvailable } from './browser-capabilities';
 import { base64UrlToUint8Array, uint8ArrayToBase64Url } from './codec';
-import { Errors } from './errors';
 
 import type { PasskeyRead, PasskeyCreate } from '../../interfaces/models/screen';
 import type { PasskeyCreateResponse, PasskeyCredentialResponse } from '../../interfaces/utils/passkeys';

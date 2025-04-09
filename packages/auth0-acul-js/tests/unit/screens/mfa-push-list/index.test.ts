@@ -3,7 +3,7 @@ import { FormHandler } from '../../../../src/utils/form-handler';
 import MfaPushList from '../../../../src/screens/mfa-push-list';
 import { CustomOptions } from 'interfaces/common';
 import { SelectMfaPushDeviceOptions } from 'interfaces/screens/mfa-push-list';
-import { ScreenIds } from '../../../../src/utils/enums';
+import { ScreenIds } from '../../../../src//constants';
 import { FormActions } from '../../../../src/constants';
 
 jest.mock('../../../../src/utils/form-handler');

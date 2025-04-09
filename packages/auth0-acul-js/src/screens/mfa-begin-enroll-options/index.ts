@@ -1,6 +1,5 @@
-import { MfaEnrollFactorType } from '../../../src/constants';
+import { ScreenIds, MfaEnrollFactorType } from '../../constants';
 import { BaseContext } from '../../models/base-context';
-import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import type { MfaBeginEnrollOptionsMembers, MfaEnrollOptions } from '../../../interfaces/screens/mfa-begin-enroll-options';

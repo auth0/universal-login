@@ -1,7 +1,7 @@
 import MfaSmsList from '../../../../src/screens/mfa-sms-list';
 import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
-import { ScreenIds } from '../../../../src/utils/enums';
+import { ScreenIds } from '../../../../src//constants';
 import { FormActions } from '../../../../src/constants';
 
 jest.mock('../../../../src/utils/form-handler');

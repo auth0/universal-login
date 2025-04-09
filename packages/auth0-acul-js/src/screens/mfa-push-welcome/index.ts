@@ -1,6 +1,5 @@
-import { FormActions } from '../../../src/constants';
+import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
-import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import type { CustomOptions } from '../../../interfaces/common';

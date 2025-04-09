@@ -1,7 +1,7 @@
 import ResetPasswordMfaSmsChallenge from '../../../../src/screens/reset-password-mfa-sms-challenge';
 import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
-import { ScreenIds } from '../../../../src/utils/enums';
+import { ScreenIds } from '../../../../src//constants';
 
 import type { MfaSmsChallengeOptions } from 'interfaces/screens/reset-password-mfa-sms-challenge';
 import type { CustomOptions } from 'interfaces/common';

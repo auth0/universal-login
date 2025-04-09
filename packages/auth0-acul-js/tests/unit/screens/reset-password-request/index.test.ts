@@ -1,7 +1,7 @@
 import ResetPasswordRequest from '../../../../src/screens/reset-password-request';
 import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
-import { ScreenIds } from '../../../../src/utils/enums';
+import { ScreenIds } from '../../../../src//constants';
 import { ResetPasswordRequestOptions } from '../../../../interfaces/screens/reset-password-request';
 import { CustomOptions } from '../../../../interfaces/common';
 import { FormActions } from '../../../../src/constants';
