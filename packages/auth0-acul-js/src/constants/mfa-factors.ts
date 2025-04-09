@@ -33,7 +33,17 @@ export const MfaLoginFactorEnum = {
 /**
  * Type definition for MFA login factor constants
  */
-export type MfaLoginFactorType = (typeof MfaLoginFactorEnum)[keyof typeof MfaLoginFactorEnum];
+export type MfaLoginFactorType =
+  | 'push-notification'
+  | 'otp'
+  | 'sms'
+  | 'phone'
+  | 'voice'
+  | 'email'
+  | 'recovery-code'
+  | 'webauthn-roaming'
+  | 'webauthn-platform'
+  | 'duo';
 
 /**
  * MFA Factor Types
@@ -60,4 +70,4 @@ export const MfaEnrollFactorEnum = {
 /**
  * Type definition for MFA enroll factor constants
  */
-export type MfaEnrollFactorType = (typeof MfaEnrollFactorEnum)[keyof typeof MfaEnrollFactorEnum];
+export type MfaEnrollFactorType = 'push-notification' | 'otp' | 'sms' | 'phone' | 'voice' | 'webauthn-roaming';

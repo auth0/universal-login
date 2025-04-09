@@ -10,7 +10,7 @@ export const Identifiers = {
 /**
  * Type representing valid identifier values
  */
-export type IdentifierType = (typeof Identifiers)[keyof typeof Identifiers];
+export type IdentifierType = 'phone' | 'email' | 'username';
 
 /**
  * Array of all available identifiers
