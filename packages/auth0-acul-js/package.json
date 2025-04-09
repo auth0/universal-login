@@ -183,6 +183,10 @@
     "./customized-consent": {
       "import": "./dist/screens/customized-consent/index.js",
       "types": "./dist/types/src/screens/customized-consent/index.d.ts"
+    },
+    "./mfa-phone-enrollment": {
+      "import": "./dist/screens/mfa-phone-enrollment/index.js",
+      "types": "./dist/types/src/screens/mfa-phone-enrollment/index.d.ts"
     }
   },
   "scripts": {

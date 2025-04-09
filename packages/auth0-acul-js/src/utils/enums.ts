@@ -43,4 +43,5 @@ export const ScreenIds = {
   ORGANIZATION_PICKER: 'organization-picker',
   ACCEPT_INVITATION: 'accept-invitation',
   CUSTOMIZED_CONSENT: 'customized-consent',
+  MFA_PHONE_ENROLLMENT: 'mfa-phone-enrollment',
 };

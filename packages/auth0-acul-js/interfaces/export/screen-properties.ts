@@ -42,3 +42,4 @@ export type { OrganizationSelectionMembers } from '../screens/organization-selec
 export type { OrganizationPickerMembers } from '../screens/organization-picker';
 export type { AcceptInvitationMembers } from '../screens/accept-invitation';
 export type { CustomizedConsentMembers } from '../screens/customized-consent';
+export type { MfaPhoneEnrollmentMembers } from '../screens/mfa-phone-enrollment';
