@@ -1,19 +1,27 @@
 name: ACUL Screens - Build and Deploy
 
 on:
+  pull_request:
+    branches: [main, master]
+    paths:
+      - "packages/auth0-acul-js/examples/acul-boilerplate/**"
+      # Exclude changes only to workflow files or docs
+      - "!.github/workflows/acul-boilerplate-deploy.yml"
+      - "!packages/auth0-acul-js/examples/acul-boilerplate/DEPLOYMENT.md"
+      - "!packages/auth0-acul-js/examples/acul-boilerplate/README.md"
   push:
     branches: [main, master]
     paths:
-      - 'packages/auth0-acul-js/examples/acul-boilerplate/**'
+      - "packages/auth0-acul-js/examples/acul-boilerplate/**"
       # Exclude changes only to workflow files or docs
-      - '!.github/workflows/acul-boilerplate-deploy.yml'
-      - '!packages/auth0-acul-js/examples/acul-boilerplate/DEPLOYMENT.md'
-      - '!packages/auth0-acul-js/examples/acul-boilerplate/README.md'
+      - "!.github/workflows/acul-boilerplate-deploy.yml"
+      - "!packages/auth0-acul-js/examples/acul-boilerplate/DEPLOYMENT.md"
+      - "!packages/auth0-acul-js/examples/acul-boilerplate/README.md"
   workflow_dispatch:
 
 env:
   WORKING_DIR: packages/auth0-acul-js/examples/acul-boilerplate
-  NODE_VERSION: '20'
+  NODE_VERSION: "18"
 
 jobs:
   build-and-deploy:
@@ -35,7 +43,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: "npm"
           cache-dependency-path: ${{ env.WORKING_DIR }}/package-lock.json
 
       - name: Install dependencies
