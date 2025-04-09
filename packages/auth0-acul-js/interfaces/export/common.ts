@@ -3,3 +3,4 @@ export type { Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, 
 export type { BrandingSettings, BrandingThemes } from '../models/branding';
 export type { CustomOptions } from '../common/index';
 export type { EnrolledEmail, EnrolledPhoneNumber, EnrolledDevice } from '../models/user';
+export type { IdentifierType } from '../../src/constants';

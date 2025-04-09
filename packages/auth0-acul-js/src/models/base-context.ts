@@ -72,8 +72,7 @@ export class BaseContext implements BaseMembers {
   }
 
   /**
-   * @method getContext
-   * @description Retrieves a specific part of the Universal Login Context.
+   * Retrieves a specific part of the Universal Login Context.
    * @template K - The key type of the UniversalLoginContext
    * @param {K} model - The key of the context to retrieve
    * @returns {UniversalLoginContext[K] | undefined} The requested context portion or undefined if not available
