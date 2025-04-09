@@ -1,15 +1,40 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useMemo } from 'react';
+import { getCurrentScreen } from '@auth0/auth0-acul-js';
+import { ScreenMap } from '../utils/screen-map';
 
-// @ts-ignore
-const UniversalLoginContext = createContext(window.universal_login_context);
+const ScreenContext = createContext<any>(null);
 
-export const Auth0Provider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+function toPascalCase(str: string): string {
+  return str
+    .split('-')
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join('');
+}
+
+export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
+  const screenInstance = useMemo(() => {
+    const screenKey = getCurrentScreen(); // "login-id"
+    const className = screenKey ? toPascalCase(screenKey) : null;
+
+    if (!className || !(className in ScreenMap)) {
+      throw new Error(`Screen class not found for: ${screenKey}`);
+    }
+
+    const ScreenClass = ScreenMap[className];
+    return new ScreenClass();
+  }, []);
+
   return (
-    //@ts-ignore
-    <UniversalLoginContext.Provider value={window.universal_login_context}>
+    <ScreenContext.Provider value={screenInstance}>
       {children}
-    </UniversalLoginContext.Provider>
+    </ScreenContext.Provider>
   );
 };
 
-export const useUniversalLoginContext = () => useContext(UniversalLoginContext);
+export const useCurrentScreen = () => {
+  const ctx = useContext(ScreenContext);
+  if (!ctx) {
+    throw new Error('useCurrentScreen must be used within an <Auth0Provider>');
+  }
+  return ctx;
+};

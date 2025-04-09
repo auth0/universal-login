@@ -1,23 +1,207 @@
 {
-  "name": "auth0-acul-react",
+  "name": "@auth0/auth0-acul-react",
   "version": "0.1.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "test": "jest"
+    "test": "jest",
+    "docs": "tsx ./scripts/generate-docs.ts"
   },
   "peerDependencies": {
     "react": "^18.0.0"
   },
-  "dependencies": {
-    "@auth0/auth0-acul-js": "file:../auth0-acul-js"
-  },
   "devDependencies": {
-    "@types/react": "^18.0.0",
-    "typescript": "^5.0.0",
-    "jest": "^29.0.0",
     "@testing-library/react-hooks": "^8.0.1",
-    "@types/jest": "^29.0.0"
+    "@types/jest": "^29.0.0",
+    "@types/react": "^18.0.0",
+    "jest": "^29.0.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./login-id": {
+      "import": "./dist/hooks/login-id.js",
+      "types": "./dist/hooks/login-id.d.ts"
+    },
+    "./login-password": {
+      "import": "./dist/hooks/login-password.js",
+      "types": "./dist/hooks/login-password.d.ts"
+    },
+    "./signup-id": {
+      "import": "./dist/hooks/signup-id.js",
+      "types": "./dist/hooks/signup-id.d.ts"
+    },
+    "./signup-password": {
+      "import": "./dist/hooks/signup-password.js",
+      "types": "./dist/hooks/signup-password.d.ts"
+    },
+    "./login-passwordless-email-code": {
+      "import": "./dist/hooks/login-passwordless-email-code.js",
+      "types": "./dist/hooks/login-passwordless-email-code.d.ts"
+    },
+    "./login-passwordless-sms-otp": {
+      "import": "./dist/hooks/login-passwordless-sms-otp.js",
+      "types": "./dist/hooks/login-passwordless-sms-otp.d.ts"
+    },
+    "./passkey-enrollment": {
+      "import": "./dist/hooks/passkey-enrollment.js",
+      "types": "./dist/hooks/passkey-enrollment.d.ts"
+    },
+    "./passkey-enrollment-local": {
+      "import": "./dist/hooks/passkey-enrollment-local.js",
+      "types": "./dist/hooks/passkey-enrollment-local.d.ts"
+    },
+    "./phone-identifier-challenge": {
+      "import": "./dist/hooks/phone-identifier-challenge.js",
+      "types": "./dist/hooks/phone-identifier-challenge.d.ts"
+    },
+    "./phone-identifier-enrollment": {
+      "import": "./dist/hooks/phone-identifier-enrollment.js",
+      "types": "./dist/hooks/phone-identifier-enrollment.d.ts"
+    },
+    "./email-identifier-challenge": {
+      "import": "./dist/hooks/email-identifier-challenge.js",
+      "types": "./dist/hooks/email-identifier-challenge.d.ts"
+    },
+    "./interstitial-captcha": {
+      "import": "./dist/hooks/interstitial-captcha.js",
+      "types": "./dist/hooks/interstitial-captcha.d.ts"
+    },
+    "./signup": {
+      "import": "./dist/hooks/signup.js",
+      "types": "./dist/hooks/signup.d.ts"
+    },
+    "./login": {
+      "import": "./dist/hooks/login.js",
+      "types": "./dist/hooks/login.d.ts"
+    },
+    "./reset-password": {
+      "import": "./dist/hooks/reset-password.js",
+      "types": "./dist/hooks/reset-password.d.ts"
+    },
+    "./reset-password-request": {
+      "import": "./dist/hooks/reset-password-request.js",
+      "types": "./dist/hooks/reset-password-request.d.ts"
+    },
+    "./reset-password-email": {
+      "import": "./dist/hooks/reset-password-email.js",
+      "types": "./dist/hooks/reset-password-email.d.ts"
+    },
+    "./reset-password-error": {
+      "import": "./dist/hooks/reset-password-error.js",
+      "types": "./dist/hooks/reset-password-error.d.ts"
+    },
+    "./reset-password-success": {
+      "import": "./dist/hooks/reset-password-success.js",
+      "types": "./dist/hooks/reset-password-success.d.ts"
+    },
+    "./mfa-push-enrollment-qr": {
+      "import": "./dist/hooks/mfa-push-enrollment-qr.js",
+      "types": "./dist/hooks/mfa-push-enrollment-qr.d.ts"
+    },
+    "./mfa-push-list": {
+      "import": "./dist/hooks/mfa-push-list.js",
+      "types": "./dist/hooks/mfa-push-list.d.ts"
+    },
+    "./mfa-push-welcome": {
+      "import": "./dist/hooks/mfa-push-welcome.js",
+      "types": "./dist/hooks/mfa-push-welcome.d.ts"
+    },
+    "./mfa-sms-enrollment": {
+      "import": "./dist/hooks/mfa-sms-enrollment.js",
+      "types": "./dist/hooks/mfa-sms-enrollment.d.ts"
+    },
+    "./mfa-begin-enroll-options": {
+      "import": "./dist/hooks/mfa-begin-enroll-options.js",
+      "types": "./dist/hooks/mfa-begin-enroll-options.d.ts"
+    },
+    "./mfa-sms-challenge": {
+      "import": "./dist/hooks/mfa-sms-challenge.js",
+      "types": "./dist/hooks/mfa-sms-challenge.d.ts"
+    },
+    "./mfa-sms-list": {
+      "import": "./dist/hooks/mfa-sms-list.js",
+      "types": "./dist/hooks/mfa-sms-list.d.ts"
+    },
+    "./mfa-country-codes": {
+      "import": "./dist/hooks/mfa-country-codes.js",
+      "types": "./dist/hooks/mfa-country-codes.d.ts"
+    },
+    "./mfa-detect-browser-capabilities": {
+      "import": "./dist/hooks/mfa-detect-browser-capabilities.js",
+      "types": "./dist/hooks/mfa-detect-browser-capabilities.d.ts"
+    },
+    "./mfa-email-challenge": {
+      "import": "./dist/hooks/mfa-email-challenge.js",
+      "types": "./dist/hooks/mfa-email-challenge.d.ts"
+    },
+    "./mfa-email-list": {
+      "import": "./dist/hooks/mfa-email-list.js",
+      "types": "./dist/hooks/mfa-email-list.d.ts"
+    },
+    "./mfa-enroll-result": {
+      "import": "./dist/hooks/mfa-enroll-result.js",
+      "types": "./dist/hooks/mfa-enroll-result.d.ts"
+    },
+    "./mfa-login-options": {
+      "import": "./dist/hooks/mfa-login-options.js",
+      "types": "./dist/hooks/mfa-login-options.d.ts"
+    },
+    "./mfa-push-challenge-push": {
+      "import": "./dist/hooks/mfa-push-challenge-push.js",
+      "types": "./dist/hooks/mfa-push-challenge-push.d.ts"
+    },
+    "./mfa-otp-challenge": {
+      "import": "./dist/hooks/mfa-otp-challenge.js",
+      "types": "./dist/hooks/mfa-otp-challenge.d.ts"
+    },
+    "./mfa-otp-enrollment-qr": {
+      "import": "./dist/hooks/mfa-otp-enrollment-qr.js",
+      "types": "./dist/hooks/mfa-otp-enrollment-qr.d.ts"
+    },
+    "./mfa-otp-enrollment-code": {
+      "import": "./dist/hooks/mfa-otp-enrollment-code.js",
+      "types": "./dist/hooks/mfa-otp-enrollment-code.d.ts"
+    },
+    "./reset-password-mfa-push-challenge-push": {
+      "import": "./dist/hooks/reset-password-mfa-push-challenge-push.js",
+      "types": "./dist/hooks/reset-password-mfa-push-challenge-push.d.ts"
+    },
+    "./reset-password-mfa-email-challenge": {
+      "import": "./dist/hooks/reset-password-mfa-email-challenge.js",
+      "types": "./dist/hooks/reset-password-mfa-email-challenge.d.ts"
+    },
+    "./reset-password-mfa-sms-challenge": {
+      "import": "./dist/hooks/reset-password-mfa-sms-challenge.js",
+      "types": "./dist/hooks/reset-password-mfa-sms-challenge.d.ts"
+    },
+    "./reset-password-mfa-otp-challenge": {
+      "import": "./dist/hooks/reset-password-mfa-otp-challenge.js",
+      "types": "./dist/hooks/reset-password-mfa-otp-challenge.d.ts"
+    },
+    "./organization-selection": {
+      "import": "./dist/hooks/organization-selection.js",
+      "types": "./dist/hooks/organization-selection.d.ts"
+    },
+    "./organization-picker": {
+      "import": "./dist/hooks/organization-picker.js",
+      "types": "./dist/hooks/organization-picker.d.ts"
+    },
+    "./accept-invitation": {
+      "import": "./dist/hooks/accept-invitation.js",
+      "types": "./dist/hooks/accept-invitation.d.ts"
+    },
+    "./customized-consent": {
+      "import": "./dist/hooks/customized-consent.js",
+      "types": "./dist/hooks/customized-consent.d.ts"
+    }
+  },
+  "dependencies": {
+    "@auth0/auth0-acul-js": "0.1.0-beta.3"
   }
 }

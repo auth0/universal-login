@@ -3,8 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "workspaces": {
-    "packages": ["packages/*"],
-    "nohoist": ["**"]
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**"
+    ]
   },
   "license": "ISC",
   "scripts": {
@@ -28,8 +32,10 @@
     "eslint-plugin-prettier": "^5.2.1",
     "markdown-it": "^14.1.0",
     "prettier": "^3.3.3",
+    "ts-morph": "^25.0.1",
+    "tsx": "^4.19.3",
     "typedoc": "^0.24.6",
-    "typescript": "^5.0.2",
+    "typescript": "^5.8.3",
     "yaml": "^2.6.1"
   }
 }
