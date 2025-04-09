@@ -1,1 +1,1 @@
-export { MFA_ENROLL_FACTORS, MFA_LOGIN_FACTORS, Identifiers } from './';
+export { MfaEnrollFactorEnum, MfaLoginFactorEnum, Identifiers } from './';

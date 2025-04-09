@@ -3,7 +3,7 @@ import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import type { MfaEnrollOptions } from '../../../../interfaces/screens/mfa-begin-enroll-options';
 import { ScreenIds } from '../../../../src//constants';
-import { MFA_ENROLL_FACTORS } from '../../../../src/constants';
+import { MfaEnrollFactorEnum } from '../../../../src/constants';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -25,7 +25,7 @@ describe('MfaBeginEnrollOptions', () => {
   describe('enroll method', () => {
     it('should handle factor enrollment with valid payload correctly', async () => {
       const payload: MfaEnrollOptions = {
-        action: MFA_ENROLL_FACTORS.PUSH_NOTIFICATION,
+        action: MfaEnrollFactorEnum.PUSH_NOTIFICATION,
       };
 
       await mfaBeginEnrollOptions.enroll(payload);
@@ -40,7 +40,7 @@ describe('MfaBeginEnrollOptions', () => {
       mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
 
       const payload: MfaEnrollOptions = {
-        action: MFA_ENROLL_FACTORS.PUSH_NOTIFICATION,
+        action: MfaEnrollFactorEnum.PUSH_NOTIFICATION,
       };
 
       await expect(
@@ -50,7 +50,7 @@ describe('MfaBeginEnrollOptions', () => {
 
     it('should handle additional custom options correctly', async () => {
       const payload: MfaEnrollOptions = {
-        action: MFA_ENROLL_FACTORS.PUSH_NOTIFICATION,
+        action: MfaEnrollFactorEnum.PUSH_NOTIFICATION,
         customOption: 'test',
       };
 

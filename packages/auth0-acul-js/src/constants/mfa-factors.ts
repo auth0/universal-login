@@ -2,7 +2,7 @@
  * MFA Factor Types
  * Constants for available MFA login factor types used across authentication flows
  */
-export const MFA_LOGIN_FACTORS = {
+export const MfaLoginFactorEnum = {
   // Push notification factors
   PUSH_NOTIFICATION: 'push-notification' as const,
 
@@ -33,13 +33,13 @@ export const MFA_LOGIN_FACTORS = {
 /**
  * Type definition for MFA login factor constants
  */
-export type MfaLoginFactorType = (typeof MFA_LOGIN_FACTORS)[keyof typeof MFA_LOGIN_FACTORS];
+export type MfaLoginFactorType = (typeof MfaLoginFactorEnum)[keyof typeof MfaLoginFactorEnum];
 
 /**
  * MFA Factor Types
  * Constants for available MFA enroll factor types used across authentication flows
  */
-export const MFA_ENROLL_FACTORS = {
+export const MfaEnrollFactorEnum = {
   // Push notification factors
   PUSH_NOTIFICATION: 'push-notification' as const,
 
@@ -60,4 +60,4 @@ export const MFA_ENROLL_FACTORS = {
 /**
  * Type definition for MFA enroll factor constants
  */
-export type MfaEnrollFactorType = (typeof MFA_ENROLL_FACTORS)[keyof typeof MFA_ENROLL_FACTORS];
+export type MfaEnrollFactorType = (typeof MfaEnrollFactorEnum)[keyof typeof MfaEnrollFactorEnum];

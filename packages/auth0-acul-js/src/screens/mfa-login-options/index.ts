@@ -1,10 +1,9 @@
-import { ScreenIds } from '../../constants';
+import { type MfaLoginFactorType, ScreenIds } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
 import type { MfaLoginOptionsMembers, LoginEnrollOptions } from '../../../interfaces/screens/mfa-login-options';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import type { MfaLoginFactorType } from '../../../src/constants';
 
 /**
  * Class implementing the mfa-login-options screen functionality

@@ -3,7 +3,7 @@ import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import type { LoginEnrollOptions } from '../../../../interfaces/screens/mfa-login-options';
 import { ScreenIds } from '../../../../src//constants';
-import { MFA_LOGIN_FACTORS } from '../../../../src/constants';
+import { MfaLoginFactorEnum } from '../../../../src/constants';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -25,7 +25,7 @@ describe('MfaLoginOptions', () => {
   describe('enroll method', () => {
     it('should handle enroll with valid payload correctly', async () => {
       const payload: LoginEnrollOptions = {
-        action: MFA_LOGIN_FACTORS.PUSH_NOTIFICATION,
+        action: MfaLoginFactorEnum.PUSH_NOTIFICATION,
       };
       await mfaLoginOptions.enroll(payload);
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
@@ -37,7 +37,7 @@ describe('MfaLoginOptions', () => {
     it('should throw error when promise is rejected', async () => {
       mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
       const payload: LoginEnrollOptions = {
-        action: MFA_LOGIN_FACTORS.PUSH_NOTIFICATION,
+        action: MfaLoginFactorEnum.PUSH_NOTIFICATION,
       };
       await expect(mfaLoginOptions.enroll(payload)).rejects.toThrow(
         'Mocked reject'
@@ -46,7 +46,7 @@ describe('MfaLoginOptions', () => {
 
     it('should handle additional custom options correctly', async () => {
       const payload: LoginEnrollOptions = {
-        action: MFA_LOGIN_FACTORS.PUSH_NOTIFICATION,
+        action: MfaLoginFactorEnum.PUSH_NOTIFICATION,
         customOption: 'test',
       };
       await mfaLoginOptions.enroll(payload);
