@@ -1,0 +1,194 @@
+name: 'Configure Auth0 ACUL Screens'
+description: 'Configures Auth0 Universal Login screens using the discovered assets'
+inputs:
+  working-directory:
+    description: 'Working directory relative to repository root'
+    required: true
+    default: '.'
+  cdn-url:
+    description: 'Base URL of the CDN (without trailing slash)'
+    required: true
+  screens-json:
+    description: 'JSON array of screens to configure'
+    required: true
+outputs:
+  deployed_screens:
+    description: 'Comma-separated list of successfully deployed screens'
+    value: ${{ steps.configure.outputs.deployed_screens }}
+  failed_screens:
+    description: 'Comma-separated list of screens that failed to deploy'
+    value: ${{ steps.configure.outputs.failed_screens }}
+runs:
+  using: 'composite'
+  steps:
+    - id: configure
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      env:
+        CDN_URL: ${{ inputs.cdn-url }}
+        SCREENS_JSON: ${{ inputs.screens-json }}
+      run: |
+        set -eo pipefail # Exit immediately if a command exits with non-zero status
+
+        echo "Starting Auth0 screen configuration..."
+        CDN_BASE_URL="${CDN_URL}"
+        if [ -z "$CDN_BASE_URL" ]; then
+          echo "::error::CDN_URL input is not set."
+          exit 1
+        fi
+        # Ensure CDN_URL does not have a trailing slash
+        if [[ "$CDN_BASE_URL" == */ ]]; then
+           echo "::warning::CDN_URL ends with a slash. Removing it: $CDN_BASE_URL"
+           CDN_BASE_URL=${CDN_BASE_URL%/}
+        fi
+
+        echo "CDN Base URL: $CDN_BASE_URL"
+        echo "Screens to configure (JSON): $SCREENS_JSON"
+
+        # Use temporary file for settings to avoid issues with complex JSON in env vars
+        SETTINGS_FILE=$(mktemp settings_XXXXXX.json)
+        # Ensure cleanup even if script exits early
+        trap 'echo "Cleaning up temporary settings file: $SETTINGS_FILE"; rm -f "$SETTINGS_FILE"' EXIT
+
+        SUCCESS_SCREENS=()
+        FAILED_SCREENS=()
+
+        # Iterate over the JSON array of screen names using jq
+        while IFS= read -r screen; do
+          echo "--------------------------------------------------"
+          echo "Processing screen: $screen"
+
+          # --- Asset Discovery for the screen ---
+          SCREEN_ASSETS_DIR="dist/assets/$screen"
+          SHARED_ASSETS_DIR="dist/assets/shared"
+          ROOT_ASSETS_DIR="dist/assets" # For files like main.js if they exist at this level
+
+          # Find the main JS entry point (index.<hash>.js)
+          SCREEN_JS_FILE=$(find "$SCREEN_ASSETS_DIR" -name 'index.*.js' -type f -print -quit)
+          if [ -z "$SCREEN_JS_FILE" ]; then
+              echo "::warning::Could not find index.*.js for screen '$screen' in $SCREEN_ASSETS_DIR. Skipping JS tag addition."
+              SCREEN_JS_BASENAME=""
+          else
+              SCREEN_JS_BASENAME=$(basename "$SCREEN_JS_FILE")
+              echo "Found screen JS: $SCREEN_JS_BASENAME"
+          fi
+
+          # Find the CSS file (*.css)
+          SCREEN_CSS_FILE=$(find "$SCREEN_ASSETS_DIR" -name '*.css' -type f -print -quit)
+          SCREEN_CSS_BASENAME=""
+          if [ -n "$SCREEN_CSS_FILE" ]; then
+            SCREEN_CSS_BASENAME=$(basename "$SCREEN_CSS_FILE")
+            echo "Found screen CSS: $SCREEN_CSS_BASENAME"
+          else
+            echo "No CSS file found for screen '$screen'."
+          fi
+
+          # Find shared JS files (vendor, auth0-acul, dependencies)
+          # Use xargs -r to avoid running basename if find returns nothing
+          VENDOR_JS_BASENAME=$(find "$SHARED_ASSETS_DIR" -name 'vendor.*.js' -type f -print -quit | xargs -r basename)
+          AUTH0_ACUL_JS_BASENAME=$(find "$SHARED_ASSETS_DIR" -name 'auth0-acul.*.js' -type f -print -quit | xargs -r basename)
+          DEPENDENCIES_JS_BASENAME=$(find "$SHARED_ASSETS_DIR" -name 'dependencies.*.js' -type f -print -quit | xargs -r basename)
+          # Find main JS (if it exists at root assets level)
+          MAIN_JS_BASENAME=$(find "$ROOT_ASSETS_DIR" -maxdepth 1 -name 'main.*.js' -type f -print -quit | xargs -r basename)
+
+          echo "Found shared Vendor JS: ${VENDOR_JS_BASENAME:-None}"
+          echo "Found shared Auth0 ACUL JS: ${AUTH0_ACUL_JS_BASENAME:-None}"
+          echo "Found shared Dependencies JS: ${DEPENDENCIES_JS_BASENAME:-None}"
+          echo "Found Main JS: ${MAIN_JS_BASENAME:-None}"
+
+          # --- Generate settings.json --- 
+          echo "Generating settings.json for $screen..."
+          # Use jq -n to create JSON safely, passing shell vars as arguments
+          JSON_CONTENT=$(jq -n \
+            --argjson cfg '[ # context_configuration array
+              "branding.settings", "branding.themes.default", "client.logo_uri",
+              "client.description", "organization.display_name", "organization.branding",
+              "screen.texts", "tenant.name", "tenant.friendly_name",
+              "tenant.enabled_locales", "untrusted_data.submitted_form_data",
+              "untrusted_data.authorization_params.ui_locales",
+              "untrusted_data.authorization_params.login_hint",
+              "untrusted_data.authorization_params.screen_hint"
+            ]' \
+            --arg base_href "${CDN_BASE_URL}/" \
+            '{ # Base JSON structure
+              rendering_mode: "advanced",
+              context_configuration: $cfg,
+              default_head_tags_disabled: false,
+              head_tags: [ # Start with base tags
+                { tag: "base", attributes: { href: $base_href } },
+                { tag: "meta", attributes: { name: "viewport", content: "width=device-width, initial-scale=1" } }
+              ]
+            }'
+          )
+
+          # Dynamically add link/script tags using jq, checking if basenames are non-empty
+          if [ -n "$SCREEN_CSS_BASENAME" ]; then
+            JSON_CONTENT=$(echo "$JSON_CONTENT" | jq --arg url "${CDN_BASE_URL}/assets/${screen}/${SCREEN_CSS_BASENAME}" '.head_tags += [{ tag: "link", attributes: { rel: "stylesheet", href: $url } }]')
+          fi
+          if [ -n "$VENDOR_JS_BASENAME" ]; then
+            JSON_CONTENT=$(echo "$JSON_CONTENT" | jq --arg url "${CDN_BASE_URL}/assets/shared/${VENDOR_JS_BASENAME}" '.head_tags += [{ tag: "script", attributes: { src: $url, type: "module" } }]')
+          fi
+          if [ -n "$DEPENDENCIES_JS_BASENAME" ]; then
+            JSON_CONTENT=$(echo "$JSON_CONTENT" | jq --arg url "${CDN_BASE_URL}/assets/shared/${DEPENDENCIES_JS_BASENAME}" '.head_tags += [{ tag: "script", attributes: { src: $url, type: "module" } }]')
+          fi
+          if [ -n "$AUTH0_ACUL_JS_BASENAME" ]; then
+            JSON_CONTENT=$(echo "$JSON_CONTENT" | jq --arg url "${CDN_BASE_URL}/assets/shared/${AUTH0_ACUL_JS_BASENAME}" '.head_tags += [{ tag: "script", attributes: { src: $url, type: "module" } }]')
+          fi
+          if [ -n "$MAIN_JS_BASENAME" ]; then
+            # Assuming main.js is directly under assets/
+            JSON_CONTENT=$(echo "$JSON_CONTENT" | jq --arg url "${CDN_BASE_URL}/assets/${MAIN_JS_BASENAME}" '.head_tags += [{ tag: "script", attributes: { src: $url, type: "module" } }]')
+          fi
+          # Ensure screen-specific JS is added last only if found
+          if [ -n "$SCREEN_JS_BASENAME" ]; then
+            JSON_CONTENT=$(echo "$JSON_CONTENT" | jq --arg url "${CDN_BASE_URL}/assets/${screen}/${SCREEN_JS_BASENAME}" '.head_tags += [{ tag: "script", attributes: { src: $url, type: "module" } }]')
+          fi
+
+          # Write the final JSON to the temp file
+          echo "$JSON_CONTENT" > "$SETTINGS_FILE"
+
+          echo "Generated settings.json content:"
+          jq . "$SETTINGS_FILE" # Pretty print JSON for logs
+
+          # --- Configure Auth0 Screen ---
+          echo "Attempting to configure Auth0 prompt: $screen"
+          # Run the command and capture output and exit code separately
+          if OUTPUT=$(auth0 ul customize \
+            --rendering-mode advanced \
+            --prompt "$screen" \
+            --screen "$screen" \
+            --settings-file "$SETTINGS_FILE" 2>&1); then
+            echo "✅ Successfully configured prompt: $screen"
+            SUCCESS_SCREENS+=("$screen")
+          else
+            exit_code=$?
+            echo "::error::Failed to configure prompt: $screen (Exit Code: $exit_code). Output below:"
+            echo "$OUTPUT" # Print the captured output on error
+            FAILED_SCREENS+=("$screen")
+            # Continue to next screen
+          fi
+        done < <(echo "$SCREENS_JSON" | jq -r '.[]') # End of screen loop
+
+        # --- Final Reporting ---
+        echo "--------------------------------------------------"
+        echo "Configuration Summary:"
+        # Join arrays with commas for output, handle empty arrays gracefully
+        printf -v deployed_screens_output '%s,' "${SUCCESS_SCREENS[@]}"
+        printf -v failed_screens_output '%s,' "${FAILED_SCREENS[@]}"
+        # Remove trailing comma if list is not empty
+        deployed_screens_output=${deployed_screens_output%,}
+        failed_screens_output=${failed_screens_output%,}
+
+        echo "Successfully configured: ${deployed_screens_output:-None}"
+        echo "Failed to configure: ${failed_screens_output:-None}"
+
+        # Set job outputs
+        echo "deployed_screens=${deployed_screens_output}" >> $GITHUB_OUTPUT
+        echo "failed_screens=${failed_screens_output}" >> $GITHUB_OUTPUT
+
+        # Check if any screens failed
+        if [ ${#FAILED_SCREENS[@]} -ne 0 ]; then
+          echo "::error::One or more screens failed to configure."
+          exit 1 # Fail the workflow step
+        fi
+
+        echo "✅ All discovered screens configured successfully." 

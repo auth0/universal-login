@@ -121,6 +121,16 @@ This project provides a boilerplate setup for Auth0's Advanced Custom Universal 
    http://localhost:3000/
    ```
 
+## 🚀 Deployment (Automated via GitHub Actions)
+
+This boilerplate includes a GitHub Actions workflow to automate the process of building your customized ACUL screens, uploading them to an S3 bucket, and configuring your Auth0 tenant to use them in Advanced mode.
+
+This is ideal for Continuous Integration/Continuous Deployment (CI/CD) pipelines.
+
+**For detailed setup instructions and prerequisites (Auth0 M2M App, AWS IAM Role, S3 Bucket, GitHub Secrets, etc.), please refer to the dedicated deployment guide:**
+
+➡️ **[./DEPLOYMENT.md](./DEPLOYMENT.md)**
+
 ## Project Structure
 ```
 acul-boilerplate/

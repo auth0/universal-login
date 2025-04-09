@@ -68,7 +68,12 @@ export function findAssets(screenName) {
     const sharedFiles = fs.readdirSync(sharedDirPath);
     
     // Look for specific files with our bundling strategy
-    vendorJsFile = sharedFiles.find(f => f === 'vendor.js');
+    // Now vendor.js will have a hash - find it by starting pattern
+    vendorJsFile = sharedFiles.find(f => 
+      f.startsWith('vendor.') && 
+      f.endsWith('.js') && 
+      !f.endsWith('.map')
+    );
     
     auth0AculJsFile = sharedFiles.find(f => 
       f.startsWith('auth0-acul.') && 

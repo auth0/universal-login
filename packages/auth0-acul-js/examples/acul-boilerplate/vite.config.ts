@@ -29,25 +29,22 @@ if (fs.existsSync(screensDir)) {
  * 
  * This defines how our application code is split into different bundles:
  * 
- * 1. Fixed chunks (no hash):
- *    - vendor.js: Core libraries that rarely change (React, React DOM)
- *    - These use fixed filenames without hashes for better caching across builds
- * 
- * 2. Hashed bundles (with hash for proper cache invalidation):
- *    - auth0-acul.[hash].js: Auth0 ACUL library that might change independently
+ * 1. All chunks now include hash for proper cache invalidation:
+ *    - vendor.[hash].js: Core libraries (React, React DOM)
+ *    - auth0-acul.[hash].js: Auth0 ACUL library
  *    - dependencies.[hash].js: Other third-party dependencies
  *    - main.[hash].js: Entry point bootstrapping code
  *    - [screen]/index.[hash].js: Screen-specific code for each screen
  *    - styles.[hash].css: All application styles
  * 
- * 3. Each screen gets its own directory with isolated bundles:
+ * 2. Each screen gets its own directory with isolated bundles:
  *    - assets/login/index.[hash].js
  *    - assets/login-id/index.[hash].js
  *    - etc.
  */
 const CHUNK_CONFIG = {
-  // Fixed chunks won't have hash in filename for more stable references
-  FIXED_CHUNKS: ['vendor'],
+  // All chunks will have hash in filename for proper cache invalidation
+  FIXED_CHUNKS: [],
   
   // Dependencies to include in vendor chunk (core libraries that rarely change)
   VENDOR_DEPS: [
@@ -104,12 +101,6 @@ export default defineConfig({
           // Apply different naming strategies based on chunk type
           const chunkName = chunkInfo.name || '';
           
-          // For fixed chunks (like vendor), use stable names without hash
-          // This improves caching as these core libraries rarely change
-          if (CHUNK_CONFIG.FIXED_CHUNKS.includes(chunkName)) {
-            return `assets/shared/${chunkName}.js`;
-          }
-          
           // For screen-specific chunks
           const screenMatch = Object.keys(screenEntries).find(
             screen => chunkName.startsWith(`${screen}-`)
@@ -119,7 +110,7 @@ export default defineConfig({
             return `assets/${screenMatch}/[name].[hash].js`;
           }
           
-          // For all other shared chunks (needs hash for proper versioning)
+          // For all shared chunks (needs hash for proper versioning)
           return 'assets/shared/[name].[hash].js';
         },
         assetFileNames: (assetInfo) => {
@@ -141,7 +132,7 @@ export default defineConfig({
             return;
           }
           
-          // Bundle #1: vendor.js (no hash)
+          // Bundle #1: vendor.[hash].js
           // Core libraries that rarely change (React, React DOM)
           // Using fixed name for better caching across deployments
           const isVendor = CHUNK_CONFIG.VENDOR_DEPS.some(dep => 

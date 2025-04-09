@@ -1,0 +1,25 @@
+name: 'Upload ACUL Assets to S3'
+description: 'Uploads ACUL build assets to S3 with proper cache settings'
+inputs:
+  working-directory:
+    description: 'Working directory relative to repository root'
+    required: true
+    default: '.'
+  s3-bucket-name:
+    description: 'Name of the S3 bucket to upload to'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        # Sync the entire dist directory to the root of the S3 bucket
+        # --delete removes files in S3 that are not in the local dist directory
+        # --cache-control sets cache headers (long max-age assuming hashed filenames)
+        echo "Syncing ./dist to s3://${{ inputs.s3-bucket-name }}/"
+        aws s3 sync ./dist s3://${{ inputs.s3-bucket-name }}/ \
+          --delete \
+          --cache-control "max-age=31536000,public,immutable" # Cache forever, rely on hash
+
+        echo "✅ Assets successfully uploaded to S3 bucket: ${{ inputs.s3-bucket-name }}" 

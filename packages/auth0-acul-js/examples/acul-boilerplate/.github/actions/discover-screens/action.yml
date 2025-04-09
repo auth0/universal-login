@@ -1,0 +1,30 @@
+name: 'Discover ACUL Screens'
+description: 'Discovers available ACUL screens from the build output'
+inputs:
+  working-directory:
+    description: 'Working directory relative to repository root'
+    required: true
+    default: '.'
+outputs:
+  screens:
+    description: 'JSON array of discovered screens'
+    value: ${{ steps.discover.outputs.screens }}
+runs:
+  using: 'composite'
+  steps:
+    - id: discover
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        echo "Searching for screen entry points in dist/assets..."
+        # Find directories directly under dist/assets, excluding hidden (.name) and 'shared'
+        # Output as a JSON array string
+        SCREENS_JSON=$(find dist/assets -maxdepth 1 -mindepth 1 -type d ! -name '.*' ! -name 'shared' -exec basename {} \; | jq -R -s -c 'split("\n") | map(select(length > 0))')
+
+        if [ -z "$SCREENS_JSON" ] || [ "$SCREENS_JSON" == "[]" ]; then
+          echo "::error::No screen directories found in dist/assets. Build might have failed or output structure changed."
+          exit 1
+        fi
+
+        echo "Discovered screens: $SCREENS_JSON"
+        echo "screens=$SCREENS_JSON" >> $GITHUB_OUTPUT 

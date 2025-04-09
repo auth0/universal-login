@@ -1,0 +1,38 @@
+name: 'Setup Auth0 CLI'
+description: 'Installs and authorizes the Auth0 CLI'
+inputs:
+  auth0-domain:
+    description: 'Auth0 domain'
+    required: true
+  auth0-client-id:
+    description: 'Auth0 client ID for M2M API access'
+    required: true
+  auth0-client-secret:
+    description: 'Auth0 client secret for M2M API access'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Install Auth0 CLI
+      shell: bash
+      run: |
+        echo "Installing Auth0 CLI..."
+        # Use the official installer script
+        curl -sSfL https://raw.githubusercontent.com/auth0/auth0-cli/main/install.sh | sh -s -- -b /usr/local/bin
+        echo "Auth0 CLI installed. Version:"
+        auth0 --version
+
+    - name: Authorize Auth0 CLI using Client Credentials
+      shell: bash
+      env:
+        AUTH0_DOMAIN: ${{ inputs.auth0-domain }}
+        AUTH0_CLIENT_ID: ${{ inputs.auth0-client-id }}
+        AUTH0_CLIENT_SECRET: ${{ inputs.auth0-client-secret }}
+      run: |
+        echo "Attempting to log in to Auth0 CLI for domain: $AUTH0_DOMAIN"
+        # The CLI automatically picks up the env vars for non-interactive login
+        # Explicitly specify scopes needed for UL customization
+        auth0 login --scopes "read:branding_settings update:branding_settings read:prompts update:prompts"
+        echo "✅ Auth0 CLI authorized."
+        # Verify connection by listing prompts
+        auth0 prompts list 
