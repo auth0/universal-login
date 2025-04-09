@@ -25,44 +25,63 @@ export async function createAdvancedModeConfig(screenName) {
   
   try {
     // Validate and locate all required assets
-    const { 
-      mainJsFile, 
-      screenJsFile,
-      vendorJsFile,
-      auth0AculJsFile,
-      dependenciesJsFile,
-      cssFiles 
-    } = findAssets(screenName);
+    const assets = findAssets(screenName);
     
     spinner.succeed(`Assets discovered for ${screenName}`);
     
     // Log asset details
     logger.info(`Asset summary for ${screenName}:`);
-    const assetTable = [
-      { type: 'Main JS', path: mainJsFile || 'None' },
-      { type: 'Screen JS', path: `${screenName}/${screenJsFile}` },
-      { type: 'Vendor JS', path: vendorJsFile ? `shared/${vendorJsFile}` : 'None' },
-      { type: 'Auth0 ACUL JS', path: auth0AculJsFile ? `shared/${auth0AculJsFile}` : 'None' },
-      { type: 'Dependencies JS', path: dependenciesJsFile ? `shared/${dependenciesJsFile}` : 'None' },
-      { type: 'CSS Files', path: `${cssFiles.length} file(s)` }
+    
+    // Create a better asset summary
+    const assetSummary = [
+      {
+        type: 'CSS Files',
+        count: assets.cssFiles.length,
+        details: assets.cssFiles.length <= 3 
+          ? assets.cssFiles.map(f => `${f.location}/${f.path}`).join(', ')
+          : `(${assets.cssFiles.length} files across multiple locations)`
+      },
+      {
+        type: 'Screen JS',
+        count: assets.screenJsFiles.length,
+        details: assets.screenJsFiles.join(', ')
+      },
+      {
+        type: 'Framework JS',
+        count: assets.frameworkFiles.length,
+        details: assets.frameworkFiles.length 
+          ? `${assets.frameworkFiles.length} file(s)` 
+          : 'None'
+      },
+      {
+        type: 'Library JS',
+        count: assets.libraryFiles.length,
+        details: assets.libraryFiles.length 
+          ? `${assets.libraryFiles.length} file(s)` 
+          : 'None'
+      },
+      {
+        type: 'Utility JS',
+        count: assets.utilityFiles.length,
+        details: assets.utilityFiles.length 
+          ? `${assets.utilityFiles.length} file(s)` 
+          : 'None'
+      },
+      {
+        type: 'Main Entry',
+        count: assets.mainJsFiles.length,
+        details: assets.mainJsFiles.join(', ') || 'None'
+      }
     ];
     
-    // Display asset table
-    assetTable.forEach(asset => {
-      logger.info(`• ${asset.type.padEnd(15)} ${asset.path}`);
+    // Display asset summary
+    assetSummary.forEach(asset => {
+      const countDisplay = `(${asset.count})`.padStart(5);
+      logger.info(`• ${asset.type.padEnd(15)} ${countDisplay} ${asset.details}`);
     });
     
     // Create head tags configuration
-    const headTags = createHeadTags(
-      CONFIG.port, 
-      mainJsFile, 
-      screenJsFile, 
-      screenName, 
-      vendorJsFile,
-      auth0AculJsFile,
-      dependenciesJsFile,
-      cssFiles
-    );
+    const headTags = createHeadTags(CONFIG.port, assets, screenName);
     
     logger.info(`Created ${headTags.length} head tags for configuration`);
     

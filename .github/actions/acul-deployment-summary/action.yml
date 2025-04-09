@@ -1,0 +1,42 @@
+name: 'ACUL Deployment Summary'
+description: 'Provides a summary of the ACUL screen deployment process'
+inputs:
+  job-status:
+    description: 'Status of the job (success, failure, cancelled)'
+    required: true
+  deployed-screens:
+    description: 'Comma-separated list of successfully deployed screens'
+    required: false
+    default: ''
+  failed-screens:
+    description: 'Comma-separated list of screens that failed to deploy'
+    required: false
+    default: ''
+  s3-bucket-name:
+    description: 'Name of the S3 bucket where assets are deployed'
+    required: true
+  cdn-url:
+    description: 'Base URL of the CDN'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - shell: bash
+      env:
+        JOB_STATUS: ${{ inputs.job-status }}
+        DEPLOYED_LIST: ${{ inputs.deployed-screens }}
+        FAILED_LIST: ${{ inputs.failed-screens }}
+        S3_BUCKET_NAME: ${{ inputs.s3-bucket-name }}
+        CDN_URL: ${{ inputs.cdn-url }}
+      run: |
+        echo "### ACUL Deployment Summary" >> $GITHUB_STEP_SUMMARY
+        echo "- **Result:** $JOB_STATUS" >> $GITHUB_STEP_SUMMARY
+        echo "- **Successfully Deployed Screens:** \`${DEPLOYED_LIST:-None}\`" >> $GITHUB_STEP_SUMMARY
+        echo "- **Failed Screens:** \`${FAILED_LIST:-None}\`" >> $GITHUB_STEP_SUMMARY
+        echo "- **Assets Location:** \`s3://${S3_BUCKET_NAME}/\`" >> $GITHUB_STEP_SUMMARY
+        # Add trailing slash back for display URL consistency if needed
+        CDN_DISPLAY_URL="${CDN_URL}"
+        [[ "$CDN_DISPLAY_URL" != */ ]] && [ -n "$CDN_DISPLAY_URL" ] && CDN_DISPLAY_URL="$CDN_DISPLAY_URL/" || :
+        echo "- **CDN Base URL:** \`${CDN_DISPLAY_URL:-Not Set}\`" >> $GITHUB_STEP_SUMMARY
+        echo "- **Workflow Run:** [Link](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY

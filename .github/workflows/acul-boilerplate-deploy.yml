@@ -21,7 +21,7 @@ on:
 
 env:
   WORKING_DIR: packages/auth0-acul-js/examples/acul-boilerplate
-  NODE_VERSION: "18"
+  NODE_VERSION: "20"
 
 jobs:
   build-and-deploy:
@@ -44,15 +44,37 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
+          registry-url: 'https://registry.npmjs.org'
           cache-dependency-path: ${{ env.WORKING_DIR }}/package-lock.json
 
       - name: Install dependencies
+        shell: bash
         working-directory: ${{ env.WORKING_DIR }}
-        run: npm ci
+        env:
+          NPM_CONFIG_REGISTRY: 'https://registry.npmjs.org'
+          NODE_AUTH_TOKEN: ''  # Explicitly unset any auth token to force public registry
+        run: |
+          npm config set registry https://registry.npmjs.org/
+          npm ci --no-fund --no-audit --verbose
 
       - name: Build application
+        shell: bash
         working-directory: ${{ env.WORKING_DIR }}
-        run: npm run build --if-present
+        run: |
+          # Debug: List directory contents to verify structure
+          echo "Checking directory structure before build:"
+          ls -la
+          echo "Checking screens directory:"
+          ls -la src/screens || echo "Screens directory not found!"
+          
+          # More verbose build command with proper error reporting
+          npm run build --if-present || { 
+            echo "Build failed. Checking for additional error information:"
+            cat tsconfig.json
+            echo "TypeScript paths configured in tsconfig files:"
+            grep -r "paths" --include="tsconfig*.json" .
+            exit 1
+          }
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4

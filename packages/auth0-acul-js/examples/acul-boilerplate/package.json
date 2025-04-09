@@ -6,7 +6,10 @@
   "scripts": {
     "screen:standard": "node scripts/standard-mode.js",
     "screen:advanced": "node scripts/advanced-mode.js",
-    "build": "tsc -b && vite build",
+    "prenormalize": "chmod +x scripts/build/normalize-case.js",
+    "normalize": "node scripts/build/normalize-case.js",
+    "prebuild": "npm run normalize && rimraf dist && rimraf tsconfig.tsbuildinfo",
+    "build": "tsc -b --force && vite build",
     "serve": "http-server dist -p 3032 --cors --silent",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
@@ -42,6 +45,7 @@
     "fs-extra": "^11.3.0",
     "globals": "^15.15.0",
     "nodemon": "^3.1.9",
+    "rimraf": "^5.0.5",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.24.1",
     "vite": "^6.2.0"
