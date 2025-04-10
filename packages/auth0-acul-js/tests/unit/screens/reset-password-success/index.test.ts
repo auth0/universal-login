@@ -1,7 +1,7 @@
 import ResetPasswordSuccess from '../../../../src/screens/reset-password-success';
 import { BaseContext } from '../../../../src/models/base-context';
 import type { ScreenContext } from '../../../../interfaces/models/screen';
-import { ScreenIds } from '../../../../src/utils/enums';
+import { ScreenIds } from '../../../../src//constants';
 
 jest.mock('../../../../src/models/base-context');
 

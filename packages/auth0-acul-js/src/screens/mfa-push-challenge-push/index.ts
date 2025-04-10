@@ -1,5 +1,5 @@
+import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
-import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -48,7 +48,7 @@ export default class MfaPushChallengePush extends BaseContext implements MfaPush
     await new FormHandler(options).submitData<WithRememberOptions>({
       rememberDevice: payload?.rememberDevice ?? false,
       ...payload,
-      action: 'continue',
+      action: FormActions.CONTINUE,
     });
   }
 
@@ -69,7 +69,7 @@ export default class MfaPushChallengePush extends BaseContext implements MfaPush
     await new FormHandler(options).submitData<WithRememberOptions>({
       rememberDevice: payload?.rememberDevice ?? false,
       ...payload,
-      action: 'resend',
+      action: FormActions.RESEND,
     });
   }
 
@@ -89,7 +89,7 @@ export default class MfaPushChallengePush extends BaseContext implements MfaPush
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'enter-otp-code',
+      action: FormActions.ENTER_OTP_CODE,
     });
   }
 
@@ -109,7 +109,7 @@ export default class MfaPushChallengePush extends BaseContext implements MfaPush
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'pick-authenticator',
+      action: FormActions.PICK_AUTHENTICATOR,
     });
   }
 }

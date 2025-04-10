@@ -3,6 +3,7 @@ import { FormHandler } from '../../../../src/utils/form-handler';
 import type { CustomOptions } from 'interfaces/common';
 import type { ContinueOptions } from 'interfaces/screens/mfa-otp-enrollment-code';
 import MfaOtpEnrollmentCode from '../../../../src/screens/mfa-otp-enrollment-code';
+import { FormActions } from '../../../../src/constants';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -34,7 +35,7 @@ describe('MfaOtpEnrollmentCode', () => {
 
       expect(mockFormHandler.submitData).toHaveBeenCalledWith({
         code: '123456',
-        action: 'default',
+        action: FormActions.DEFAULT,
       });
     });
 
@@ -59,7 +60,7 @@ describe('MfaOtpEnrollmentCode', () => {
 
       expect(mockFormHandler.submitData).toHaveBeenCalledWith({
         customOption: 'customValue',
-        action: 'pick-authenticator',
+        action: FormActions.PICK_AUTHENTICATOR,
       });
     });
 
@@ -67,7 +68,7 @@ describe('MfaOtpEnrollmentCode', () => {
       await mfaOtpEnrollmentCode.tryAnotherMethod();
 
       expect(mockFormHandler.submitData).toHaveBeenCalledWith({
-        action: 'pick-authenticator',
+        action: FormActions.PICK_AUTHENTICATOR,
       });
     });
 

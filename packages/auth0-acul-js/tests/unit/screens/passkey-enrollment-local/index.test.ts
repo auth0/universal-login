@@ -4,7 +4,8 @@ import { FormHandler } from '../../../../src/utils/form-handler';
 import { createPasskeyCredentials } from '../../../../src/utils/passkeys';
 import { CustomOptions } from 'interfaces/common';
 import { AbortEnrollmentOptions } from 'interfaces/screens/passkey-enrollment-local';
-import { ScreenIds } from '../../../../src/utils/enums';
+import { ScreenIds } from '../../../../src//constants';
+import { FormActions } from '../../../../src/constants';
 
 jest.mock('../../../../src/utils/form-handler');
 jest.mock('../../../../src/utils/passkeys');
@@ -110,7 +111,7 @@ describe('PasskeyEnrollmentLocal', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'abort-passkey-enrollment',
+          action: FormActions.ABORT_PASSKEY_ENROLLMENT,
         })
       );
     });
@@ -126,7 +127,7 @@ describe('PasskeyEnrollmentLocal', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'abort-passkey-enrollment',
+          action: FormActions.ABORT_PASSKEY_ENROLLMENT,
           dontShowAgain: 'on',
         })
       );
@@ -138,7 +139,7 @@ describe('PasskeyEnrollmentLocal', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'abort-passkey-enrollment',
+          action: FormActions.ABORT_PASSKEY_ENROLLMENT,
         })
       );
     });

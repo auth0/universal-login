@@ -1,3 +1,4 @@
+import { FormActions } from '../../../src/constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
@@ -44,7 +45,7 @@ export default class MfaOtpEnrollmentQr extends BaseContext implements MfaOtpEnr
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'toggle-view',
+      action: FormActions.TOGGLE_VIEW,
     });
   }
 
@@ -66,7 +67,7 @@ export default class MfaOtpEnrollmentQr extends BaseContext implements MfaOtpEnr
     };
     await new FormHandler(options).submitData({
       ...payload,
-      action: 'default',
+      action: FormActions.DEFAULT,
     });
   }
 
@@ -88,7 +89,7 @@ export default class MfaOtpEnrollmentQr extends BaseContext implements MfaOtpEnr
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'pick-authenticator',
+      action: FormActions.PICK_AUTHENTICATOR,
     });
   }
 }

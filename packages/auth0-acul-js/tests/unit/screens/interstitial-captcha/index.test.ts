@@ -2,7 +2,7 @@ import InterstitialCaptcha from '../../../../src/screens/interstitial-captcha';
 import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { SubmitCaptchaOptions } from 'interfaces/screens/interstitial-captcha';
-import { ScreenIds } from '../../../../src/utils/enums';
+import { ScreenIds } from '../../../../src//constants';
 
 jest.mock('../../../../src/utils/form-handler');
 

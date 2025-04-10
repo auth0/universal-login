@@ -1,5 +1,5 @@
+import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
-import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -76,7 +76,7 @@ export default class MfaEmailChallenge extends BaseContext implements MfaEmailCh
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'resend-code',
+      action: FormActions.RESEND_CODE,
     });
   }
 
@@ -98,7 +98,7 @@ export default class MfaEmailChallenge extends BaseContext implements MfaEmailCh
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'pick-authenticator',
+      action: FormActions.PICK_AUTHENTICATOR,
     });
   }
 
@@ -119,7 +119,7 @@ export default class MfaEmailChallenge extends BaseContext implements MfaEmailCh
       state: this.transaction.state,
       telemetry: [MfaEmailChallenge.screenIdentifier, 'pickEmail'],
     };
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'pick-email' });
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.PICK_EMAIL });
   }
 }
 

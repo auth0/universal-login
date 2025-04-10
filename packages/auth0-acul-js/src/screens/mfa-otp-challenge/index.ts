@@ -1,5 +1,5 @@
+import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
-import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -77,7 +77,7 @@ export default class MfaOtpChallenge extends BaseContext implements MfaOtpChalle
       telemetry: [MfaOtpChallenge.screenIdentifier, 'tryAnotherMethod'],
     };
 
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'pick-authenticator' });
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.PICK_AUTHENTICATOR });
   }
 }
 

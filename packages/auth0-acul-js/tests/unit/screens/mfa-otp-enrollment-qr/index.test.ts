@@ -2,6 +2,7 @@ import MfaOtpEnrollmentQr from '../../../../src/screens/mfa-otp-enrollment-qr';
 import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { CustomOptions } from 'interfaces/common';
+import { FormActions } from '../../../../src/constants';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -29,7 +30,7 @@ describe('MfaOtpEnrollmentQr', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'toggle-view',
+          action: FormActions.TOGGLE_VIEW,
         })
       );
     });
@@ -39,7 +40,7 @@ describe('MfaOtpEnrollmentQr', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'toggle-view',
+          action: FormActions.TOGGLE_VIEW,
         })
       );
     });
@@ -63,7 +64,7 @@ describe('MfaOtpEnrollmentQr', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'pick-authenticator',
+          action: FormActions.PICK_AUTHENTICATOR,
         })
       );
     });
@@ -73,7 +74,7 @@ describe('MfaOtpEnrollmentQr', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'pick-authenticator',
+          action: FormActions.PICK_AUTHENTICATOR,
         })
       );
     });
@@ -97,7 +98,7 @@ describe('MfaOtpEnrollmentQr', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'default',
+          action: FormActions.DEFAULT,
         })
       );
     });

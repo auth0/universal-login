@@ -1,5 +1,5 @@
+import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
-import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import type { CustomOptions } from '../../../interfaces/common';
@@ -42,7 +42,7 @@ export default class MfaPushWelcome extends BaseContext implements MfaPushWelcom
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'enroll',
+      action: FormActions.ENROLL,
     });
   }
 
@@ -64,7 +64,7 @@ export default class MfaPushWelcome extends BaseContext implements MfaPushWelcom
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'pick-authenticator',
+      action: FormActions.PICK_AUTHENTICATOR,
     });
   }
 }

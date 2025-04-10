@@ -1,3 +1,4 @@
+import { FormActions } from '../../../src/constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
@@ -41,7 +42,7 @@ export default class ResetPasswordMfaOtpChallenge extends BaseContext implements
     };
     await new FormHandler(options).submitData<ContinueOptions>({
       ...payload,
-      action: 'default',
+      action: FormActions.DEFAULT,
     });
   }
 
@@ -63,7 +64,7 @@ export default class ResetPasswordMfaOtpChallenge extends BaseContext implements
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'pick-authenticator',
+      action: FormActions.PICK_AUTHENTICATOR,
     });
   }
 }

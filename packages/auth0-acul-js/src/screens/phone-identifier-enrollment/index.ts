@@ -1,5 +1,5 @@
+import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
-import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -54,7 +54,7 @@ export default class PhoneIdentifierEnrollment extends BaseContext implements Ph
       state: this.transaction.state,
       telemetry: [PhoneIdentifierEnrollment.screenIdentifier, 'returnToPrevious'],
     };
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'back-action' });
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.BACK });
   }
 }
 

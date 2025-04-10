@@ -2,7 +2,8 @@ import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { CustomOptions } from '../../../../interfaces/common';
 import MfaPushChallengePush, { WithRememberOptions } from '../../../../src/screens/mfa-push-challenge-push';
-import { ScreenIds } from '../../../../src/utils/enums';
+import { ScreenIds } from '../../../../src//constants';
+import { FormActions } from '../../../../src/constants';
 jest.mock('../../../../src/utils/form-handler');
 
 describe('MfaPushChallengePush', () => {
@@ -36,7 +37,7 @@ describe('MfaPushChallengePush', () => {
       await mfaPushChallengePush.continue();
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith({
-        action: 'continue',
+        action: FormActions.CONTINUE,
         rememberDevice: false,
       });
     });
@@ -55,7 +56,7 @@ describe('MfaPushChallengePush', () => {
       expect(mockFormHandler.submitData).toHaveBeenLastCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'continue',
+          action: FormActions.CONTINUE,
         })
       );
     });
@@ -65,7 +66,7 @@ describe('MfaPushChallengePush', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'continue',
+          action: FormActions.CONTINUE,
           rememberDevice: false,
         })
       );
@@ -82,7 +83,7 @@ describe('MfaPushChallengePush', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'resend',
+          action: FormActions.RESEND,
           rememberDevice: false,
         })
       );
@@ -93,7 +94,7 @@ describe('MfaPushChallengePush', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'resend',
+          action: FormActions.RESEND,
         })
       );
     });
@@ -109,7 +110,7 @@ describe('MfaPushChallengePush', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'enter-otp-code',
+          action: FormActions.ENTER_OTP_CODE,
         })
       );
     });
@@ -119,7 +120,7 @@ describe('MfaPushChallengePush', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'enter-otp-code',
+          action: FormActions.ENTER_OTP_CODE,
         })
       );
     });
@@ -135,7 +136,7 @@ describe('MfaPushChallengePush', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'pick-authenticator',
+          action: FormActions.PICK_AUTHENTICATOR,
         })
       );
     });
@@ -145,7 +146,7 @@ describe('MfaPushChallengePush', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'pick-authenticator',
+          action: FormActions.PICK_AUTHENTICATOR,
         })
       );
     });

@@ -2,7 +2,7 @@ import MfaPhoneEnrollment from '../../../../src/screens/mfa-phone-enrollment';
 import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { CustomOptions } from 'interfaces/common';
-import { ScreenIds } from '../../../../src/utils/enums';
+import { ScreenIds } from '../../../../src/constants';
 
 jest.mock('../../../../src/utils/form-handler');
 

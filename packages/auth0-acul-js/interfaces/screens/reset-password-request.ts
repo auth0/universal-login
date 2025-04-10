@@ -1,3 +1,4 @@
+import type { IdentifierType } from '../../src/constants';
 import type { CustomOptions } from '../common';
 import type { BaseMembers } from '../models/base-context';
 import type { ScreenMembers } from '../models/screen';
@@ -10,8 +11,8 @@ export interface ResetPasswordRequestOptions {
 }
 
 export interface TransactionMembersOnResetPasswordRequest extends TransactionMembers {
-  allowedIdentifiers: ('email' | 'username' | 'phone')[] | null;
-  requiredIdentifiers: ('email' | 'username' | 'phone')[] | null;
+  allowedIdentifiers: IdentifierType[] | null;
+  requiredIdentifiers: IdentifierType[] | null;
   hasFlexibleIdentifier: boolean;
 }
 

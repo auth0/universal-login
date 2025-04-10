@@ -6,7 +6,8 @@ import { BaseContext } from '../../../../src/models/base-context';
 import type { ScreenContext } from '../../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../../interfaces/models/transaction';
 import type { SignupOptions, SocialSignupOptions } from '../../../../interfaces/screens/signup';
-import { ScreenIds } from '../../../../src/utils/enums';
+import { ScreenIds } from '../../../../src//constants';
+import { FormActions } from '../../../../src/constants';
 
 jest.mock('../../../../src/screens/signup/screen-override');
 jest.mock('../../../../src/screens/signup/transaction-override');
@@ -67,7 +68,7 @@ describe('Signup', () => {
       await signup.pickCountryCode();
       expect(FormHandler).toHaveBeenCalledWith(expect.objectContaining({ state: 'mockState' }));
       expect(FormHandler.prototype.submitData).toHaveBeenCalledWith({
-        action: 'pick-country-code',
+        action: FormActions.PICK_COUNTRY_CODE,
       });
     });
   });

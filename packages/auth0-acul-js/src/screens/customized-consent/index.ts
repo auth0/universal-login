@@ -1,5 +1,5 @@
+import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
-import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -37,7 +37,7 @@ export default class CustomizedConsent extends BaseContext implements Customized
 
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'accept',
+      action: FormActions.ACCEPT,
     });
   }
 
@@ -54,7 +54,7 @@ export default class CustomizedConsent extends BaseContext implements Customized
 
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'deny',
+      action: FormActions.DENY,
     });
   }
 }
