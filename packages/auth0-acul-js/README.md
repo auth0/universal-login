@@ -163,6 +163,7 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 | 41     | reset-password-mfa-push-challenge-push          | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaPushChallengePush.html)   |
 | 42     | reset-password-mfa-sms-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaSmsChallenge.html)   |
 | 43     | reset-password-mfa-otp-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.OrganizationSelection.html)   |
+| 44     | mfa-phone-enrollment          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaPhoneEnrollment.html)   |
 
 
 </details>
