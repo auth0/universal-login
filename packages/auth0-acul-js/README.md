@@ -164,6 +164,7 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 | 42     | reset-password-mfa-sms-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaSmsChallenge.html)   |
 | 43     | reset-password-mfa-otp-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.OrganizationSelection.html)   |
 | 44     | mfa-phone-enrollment          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaPhoneEnrollment.html)   |
+| 45     | mfa-voice-enrollment          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaVoiceEnrollment.html)   |
 
 
 </details>

@@ -187,6 +187,10 @@
     "./mfa-phone-enrollment": {
       "import": "./dist/screens/mfa-phone-enrollment/index.js",
       "types": "./dist/types/src/screens/mfa-phone-enrollment/index.d.ts"
+    },
+    "./mfa-voice-enrollment": {
+      "import": "./dist/screens/mfa-voice-enrollment/index.js",
+      "types": "./dist/types/src/screens/mfa-voice-enrollment/index.d.ts"
     }
   },
   "scripts": {

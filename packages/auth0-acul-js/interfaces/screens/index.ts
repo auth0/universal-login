@@ -41,3 +41,5 @@ export * as OrganizationSelection from './organization-selection';
 export * as OrganizationPicker from './organization-picker';
 export * as AcceptInvitation from './accept-invitation';
 export * as CustomizedConsent from './customized-consent';
+export * as MfaPhoneEnrollment from './mfa-phone-enrollment';
+export * as MfaVoiceEnrollment from './mfa-voice-enrollment';
