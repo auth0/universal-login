@@ -45,4 +45,5 @@ export const ScreenIds = {
   CUSTOMIZED_CONSENT: 'customized-consent',
   MFA_PHONE_ENROLLMENT: 'mfa-phone-enrollment',
   MFA_VOICE_ENROLLMENT: 'mfa-voice-enrollment',
+  MFA_RECOVERY_CODE_CHALLENGE: 'mfa-recovery-code-challenge',
 };

@@ -43,3 +43,4 @@ export * as AcceptInvitation from './accept-invitation';
 export * as CustomizedConsent from './customized-consent';
 export * as MfaPhoneEnrollment from './mfa-phone-enrollment';
 export * as MfaVoiceEnrollment from './mfa-voice-enrollment';
+export * as MfaRecoveryCodeChallenge from './mfa-recovery-code-challenge';

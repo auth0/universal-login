@@ -44,3 +44,4 @@ export { default as AcceptInvitation } from './accept-invitation';
 // export { default as CustomizedConsent } from './customized-consent';
 export { default as MfaPhoneEnrollment } from './mfa-phone-enrollment';
 export { default as MfaVoiceEnrollment } from './mfa-voice-enrollment';
+export { default as MfaRecoveryCodeChallenge } from './mfa-recovery-code-challenge';

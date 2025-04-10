@@ -191,6 +191,10 @@
     "./mfa-voice-enrollment": {
       "import": "./dist/screens/mfa-voice-enrollment/index.js",
       "types": "./dist/types/src/screens/mfa-voice-enrollment/index.d.ts"
+    },
+    "./mfa-recovery-code-challenge": {
+      "import": "./dist/screens/mfa-recovery-code-challenge/index.js",
+      "types": "./dist/types/src/screens/mfa-recovery-code-challenge/index.d.ts"
     }
   },
   "scripts": {
