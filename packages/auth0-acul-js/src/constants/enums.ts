@@ -48,4 +48,5 @@ export const ScreenIds = {
   MFA_RECOVERY_CODE_CHALLENGE: 'mfa-recovery-code-challenge',
   DEVICE_CODE_ACTIVATION_ALLOWED: 'device-code-activation-allowed',
   DEVICE_CODE_ACTIVATION_DENIED: 'device-code-activation-denied',
+  DEVICE_CODE_ACTIVATION: 'device-code-activation',
 };

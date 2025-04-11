@@ -47,3 +47,4 @@ export { default as MfaVoiceEnrollment } from './mfa-voice-enrollment';
 export { default as MfaRecoveryCodeChallenge } from './mfa-recovery-code-challenge';
 export { default as DeviceCodeActivationAllowed } from './device-code-activation-allowed';
 export { default as DeviceCodeActivationDenied } from './device-code-activation-denied';
+export { default as DeviceCodeActivation } from './device-code-activation';

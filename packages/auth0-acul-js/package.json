@@ -203,6 +203,10 @@
     "./device-code-activation-denied": {
       "import": "./dist/screens/device-code-activation-denied/index.js",
       "types": "./dist/types/src/screens/device-code-activation-denied/index.d.ts"
+    },
+    "./device-code-activation": {
+      "import": "./dist/screens/device-code-activation/index.js",
+      "types": "./dist/types/src/screens/device-code-activation/index.d.ts"
     }
   },
   "scripts": {
