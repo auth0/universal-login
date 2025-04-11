@@ -80,6 +80,7 @@ runs:
           # --- Asset Discovery for the screen ---
           SCREEN_ASSETS_DIR="dist/assets/$screen"
           SHARED_ASSETS_DIR="dist/assets/shared"
+          ROOT_ASSETS_DIR="dist/assets"
           
           # Check if screen directory exists
           if [ ! -d "$SCREEN_ASSETS_DIR" ]; then
@@ -93,6 +94,7 @@ runs:
           echo "🔍 Asset discovery for screen: $screen"
           echo "  - Screen directory: $SCREEN_ASSETS_DIR"
           echo "  - Shared directory: $SHARED_ASSETS_DIR"
+          echo "  - Root assets directory: $ROOT_ASSETS_DIR"
           
           # Temp file for settings
           SETTINGS_FILE=$(mktemp settings_XXXXXX.json)
@@ -101,6 +103,7 @@ runs:
           # Find JS and CSS files for the screen
           SCREEN_JS_FILES=($(find "$SCREEN_ASSETS_DIR" -type f -name "*.js" ! -name "*.map.js" | sort))
           SHARED_JS_FILES=($(find "$SHARED_ASSETS_DIR" -type f -name "*.js" ! -name "*.map.js" 2>/dev/null | sort))
+          ROOT_JS_FILES=($(find "$ROOT_ASSETS_DIR" -maxdepth 1 -type f -name "main.*.js" ! -name "*.map.js" 2>/dev/null | sort))
           SCREEN_CSS_FILES=($(find "$SCREEN_ASSETS_DIR" -type f -name "*.css" | sort))
           SHARED_CSS_FILES=($(find "$SHARED_ASSETS_DIR" -type f -name "*.css" 2>/dev/null | sort))
           
@@ -135,6 +138,7 @@ runs:
           echo "📋 Asset Summary for $screen:"
           echo "- Screen JS Files: ${#SCREEN_JS_FILES[@]}"
           echo "- Shared JS Files: ${#SHARED_JS_FILES[@]}"
+          echo "- Root JS Files: ${#ROOT_JS_FILES[@]}"
           echo "- Screen CSS Files: ${#SCREEN_CSS_FILES[@]}"
           echo "- Shared CSS Files: ${#SHARED_CSS_FILES[@]}"
           echo "- Entry Point: $(basename "$SCREEN_ENTRY_FILE")"
@@ -194,8 +198,21 @@ runs:
             fi
           done
 
-          # Add JS files in proper order: Shared files first, then screen-specific entry
+          # Add JS files in proper order: Root main.js, Shared files, then screen-specific entry
           echo "Adding JavaScript files to configuration..."
+          
+          # Add main.js from root assets directory first (if exists)
+          for js_file in "${ROOT_JS_FILES[@]}"; do
+            js_basename=$(basename "$js_file")
+            if [[ ! "$js_basename" =~ ^[^a-zA-Z0-9] ]]; then
+              relative_path="${js_file#dist/}"
+              echo "  - Adding root main JS: $js_basename"
+              JSON_CONTENT=$(echo "$JSON_CONTENT" | jq --arg url "${CDN_BASE_URL}/${relative_path}" '.head_tags += [{ tag: "script", attributes: { src: $url, type: "module" } }]')
+              if [ $? -ne 0 ]; then
+                echo "::warning::Failed to add root main JS file to JSON: $js_basename"
+              fi
+            fi
+          done
           
           # Shared JS files (framework, libraries, etc.)
           for js_file in "${SHARED_JS_FILES[@]}"; do
