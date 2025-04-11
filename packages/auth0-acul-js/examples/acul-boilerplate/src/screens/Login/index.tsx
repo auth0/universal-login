@@ -65,7 +65,7 @@ const LoginScreen: React.FC = () => {
       texts.usernameOrEmailPlaceholder ||
       texts.phoneOrUsernameOrEmailPlaceholder ||
       "Username or Email",
-    passwordPlaceholder: texts.passwordPlaceholder.concat("test") || "Password",
+    passwordPlaceholder: texts.passwordPlaceholder.concat("test-acul") || "Password",
     captchaPlaceholder:
       texts.captchaCodePlaceholder || "Enter the code shown above",
     resetPasswordLink,
