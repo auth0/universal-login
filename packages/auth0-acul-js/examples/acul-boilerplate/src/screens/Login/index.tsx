@@ -62,12 +62,12 @@ const LoginScreen: React.FC = () => {
     captchaImage,
     buttonText: texts.buttonText || "Continue",
     usernamePlaceholder:
-      texts.usernameOrEmailPlaceholder ||
+      texts.usernameOrEmailPlaceholder.concat("testing") ||
       texts.phoneOrUsernameOrEmailPlaceholder ||
       "Username or Email",
-    passwordPlaceholder: texts.passwordPlaceholder || "Password",
+    passwordPlaceholder: texts.passwordPlaceholder.concat("testing") || "Password",
     captchaPlaceholder:
-      texts.captchaCodePlaceholder || "Enter the code shown above",
+      texts.captchaCodePlaceholder.concat("testing") || "Enter the code shown above",
     resetPasswordLink,
     resetPasswordText: texts.forgotPasswordText || "Forgot password?",
     onResetPasswordClick: handleLinkClick,
