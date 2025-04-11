@@ -45,3 +45,5 @@ export { default as AcceptInvitation } from './accept-invitation';
 export { default as MfaPhoneEnrollment } from './mfa-phone-enrollment';
 export { default as MfaVoiceEnrollment } from './mfa-voice-enrollment';
 export { default as MfaRecoveryCodeChallenge } from './mfa-recovery-code-challenge';
+export { default as DeviceCodeActivationAllowed } from './device-code-activation-allowed';
+export { default as DeviceCodeActivationDenied } from './device-code-activation-denied';
