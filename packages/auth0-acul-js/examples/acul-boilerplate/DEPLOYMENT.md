@@ -1,138 +1,322 @@
 # Deploying ACUL Boilerplate Screens via GitHub Actions
 
-This document outlines the steps required to configure and use the provided GitHub Actions workflow (`.github/workflows/acul-deploy.yml`) to automatically build, deploy, and configure your customized ACUL screens.
+This document provides a comprehensive guide to set up the infrastructure and configuration required to deploy Auth0 Custom Universal Login (ACUL) screens using GitHub Actions.
 
 ## Overview
 
-The workflow performs the following actions:
+The deployment workflow automatically:
 
-1.  Checks out your code.
-2.  Sets up Node.js.
-3.  Installs dependencies (`npm ci`).
-4.  Builds the ACUL screen application (`npm run build`).
-5.  Configures AWS credentials using OpenID Connect (OIDC).
-6.  Discovers the ACUL screens built in the `dist/` directory.
-7.  Uploads the contents of the `dist/` directory to a specified S3 bucket.
-8.  Installs the Auth0 CLI.
-9.  Logs into the Auth0 CLI using configured M2M application credentials.
-10. For each discovered screen, generates the necessary `settings.json` with dynamic asset URLs (pointing to your CDN).
-11. Configures the corresponding Auth0 Universal Login prompt to use "Advanced" rendering mode with the generated settings.
-12. Provides a summary of the deployment.
+1. Builds your custom login screens
+2. Deploys the assets to AWS S3
+3. Configures the screens in your Auth0 tenant
+4. Serves the assets through a CDN for optimal performance
 
-This enables a CI/CD process where pushing changes to your ACUL screens automatically updates them in your Auth0 tenant.
+In technical terms, the workflow performs these actions:
+1. Checks out your code
+2. Sets up Node.js and installs dependencies
+3. Builds the ACUL screen application
+4. Configures AWS credentials using OpenID Connect (OIDC)
+5. Discovers ACUL screens in the `dist/` directory
+6. Uploads assets to your S3 bucket
+7. Configures Auth0 for each discovered screen with dynamic asset URLs
+8. Provides a deployment summary
 
 ## Prerequisites
 
-Before using this workflow, you need the following resources configured:
+Before setting up the workflow, ensure you have:
 
-1.  **Auth0 Tenant** with a **Custom Domain** configured and verified.
-    - _Why?_ Advanced ACUL rendering mode requires a custom domain.
-    - _Where?_ `Auth0 Dashboard > Branding > Custom Domains`
-2.  **AWS S3 Bucket** to store the built screen assets.
-    - _Why?_ A publicly accessible location is needed to serve the assets.
-    - Ensure the bucket has appropriate public read access configured (either fully public or restricted to your CDN).
-3.  **(Optional but Recommended) CDN:** A Content Delivery Network (e.g., AWS CloudFront) pointing to your S3 bucket.
-    - _Why?_ Improves performance and provides HTTPS.
-    - The workflow assumes filenames include content hashes, so explicit CDN cache invalidation is _not_ performed.
-4.  **Auth0 Machine-to-Machine (M2M) Application** for the workflow to interact with the Auth0 Management API.
-    - _Setup Guide:_ See below.
-5.  **AWS IAM Role** that the GitHub Actions workflow can assume via OIDC.
-    - _Setup Guide:_ See below.
-6.  **GitHub Repository Secrets** containing credentials and configuration values.
-    - _Setup Guide:_ See below.
+- An Auth0 tenant with administrative access
+- An AWS account with permissions to create IAM roles and S3 buckets
+- A GitHub repository containing your ACUL code
 
-## Setup Guides
+## Step-by-Step Setup Guide
 
-### 1. Auth0 M2M Application Setup
+### 1. Auth0 Configuration
 
-This application allows the GitHub workflow (via the Auth0 CLI) to securely update your Universal Login settings.
+#### 1.1. Set Up a Custom Domain (Required)
 
-1.  Navigate to your Auth0 Dashboard: `Applications > Applications`.
-2.  Click **Create Application**.
-3.  Choose **Machine to Machine Applications** and give it a descriptive name (e.g., `GitHub ACUL Deployer`).
-4.  Click **Create**.
-5.  **Authorize API Access:** Go to the **APIs** tab for the new M2M application.
-6.  In the dropdown, select **Auth0 Management API**.
-7.  Toggle the switch to authorize access.
-8.  Expand the permissions list by clicking the down arrow next to the authorized API.
-9.  Grant the following specific permissions:
-    - `read:branding_settings`
-    - `update:branding_settings`
-    - `read:prompts`
-    - `update:prompts`
-10. Click **Update**.
-11. **Retrieve Credentials:** Go back to the **Settings** tab of the M2M application.
-12. Note down the **Domain**, **Client ID**, and **Client Secret**. These will be used for GitHub Secrets.
+Advanced ACUL rendering requires a custom domain:
 
-### 2. AWS IAM Role for GitHub Actions OIDC
+1. Navigate to: `Auth0 Dashboard > Branding > Custom Domains`
+2. Click **Add Domain**
+3. Follow the verification steps to set up your domain
+4. Ensure the domain is verified and active before proceeding
 
-This role grants the GitHub workflow permission to upload files to your S3 bucket.
+#### 1.2. Create a Machine-to-Machine (M2M) Application
 
-1.  Navigate to the AWS IAM Console: `Roles > Create role`.
-2.  **Select trusted entity:** Choose **Web identity**.
-3.  **Identity provider:** Select `token.actions.githubusercontent.com` (if it doesn't exist, you may need to create it first under `Identity providers`).
-4.  **Audience:** Enter `sts.amazonaws.com`.
-5.  **GitHub organization/repository (Optional but Recommended):** Add your GitHub organization and optionally the specific repository (`your-org/your-repo`) to restrict which workflows can assume this role.
-6.  Click **Next**.
-7.  **Add permissions:** Attach an IAM policy that grants the necessary S3 permissions. You can create a new policy or use an existing one. The minimum required permissions are:
-    - `s3:PutObject`
-    - `s3:GetObject`
-    - `s3:DeleteObject`
-    - `s3:ListBucket`
-    - **Resource:** Ensure these permissions target your specific S3 bucket ARN (e.g., `arn:aws:s3:::your-acul-bucket-name/*` for object actions and `arn:aws:s3:::your-acul-bucket-name` for `ListBucket`).
-    - _Example Policy JSON:_
-      ```json
-      {
-        "Version": "2012-10-17",
-        "Statement": [
-          {
-            "Effect": "Allow",
-            "Action": ["s3:PutObject", "s3:GetObject", "s3:DeleteObject"],
-            "Resource": "arn:aws:s3:::<YOUR-BUCKET-NAME>/*"
-          },
-          {
-            "Effect": "Allow",
-            "Action": "s3:ListBucket",
-            "Resource": "arn:aws:s3:::<YOUR-BUCKET-NAME>"
-          }
-        ]
+This application allows the workflow to interact with Auth0's Management API:
+
+1. Go to `Auth0 Dashboard > Applications > Applications`
+2. Click **Create Application**
+3. Select **Machine to Machine Applications**
+4. Name it descriptively (e.g., "GitHub ACUL Deployment")
+5. Click **Create**
+6. Under the **APIs** tab, select **Auth0 Management API**
+7. Toggle the switch to authorize access
+8. Expand the permissions list and grant these specific permissions:
+   - `read:branding_settings`
+   - `update:branding_settings`
+   - `read:prompts`
+   - `update:prompts`
+9. Click **Update**
+10. Go to the **Settings** tab and note down:
+    - Domain
+    - Client ID
+    - Client Secret (you'll need these for GitHub secrets)
+
+### 2. AWS Infrastructure Setup
+
+#### 2.1. Create an S3 Bucket
+
+1. Sign in to the AWS Console and navigate to S3
+2. Click **Create bucket**
+3. Enter a globally unique name for your bucket
+4. Select your preferred AWS region
+5. For public assets (simplest approach):
+   - Uncheck "Block all public access"
+   - Acknowledge the warning
+6. Enable versioning (recommended)
+7. Click **Create bucket**
+
+#### 2.2. Configure S3 Bucket Permissions
+
+There are two main approaches to configure your S3 bucket:
+
+For public assets (Option 1 - Simpler):
+
+1. Select your newly created bucket
+2. Go to the **Permissions** tab
+3. Click **Bucket policy**
+4. Add a policy that allows public read access:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "PublicReadGetObject",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::YOUR-BUCKET-NAME/*"
+    }
+  ]
+}
+```
+
+For CloudFront with private S3 (Option 2 - Recommended for security):
+
+1. Keep your S3 bucket private (Block all public access)
+2. Continue with CloudFront setup below, then return to add the CloudFront access policy
+3. This approach keeps your S3 bucket secure while CloudFront provides public access to the assets
+
+#### 2.3. Set Up CloudFront (Recommended)
+
+CloudFront acts as a secure gateway to your S3 assets. It allows end users to access your content through CloudFront's public URLs while keeping your S3 bucket private and secure:
+
+1. Go to the CloudFront console
+2. Click **Create Distribution**
+3. For **Origin Domain**, select your S3 bucket
+4. For **Origin Access**:
+   - Select "Origin access control settings (recommended)"
+   - Create a new OAC with default settings
+5. Under **Default Cache Behavior**:
+   - For **Viewer Protocol Policy**, select "Redirect HTTP to HTTPS"
+   - For **Cache Policy**, select "CachingOptimized" 
+6. Under **Settings**:
+   - Set **Default Root Object** to `index.html`
+   - Choose your desired **Price Class**
+7. Click **Create Distribution**
+8. **Note the CloudFront domain name** (e.g., `d1234abcdef.cloudfront.net`) - this will be your public URL for accessing assets
+
+9. Update your S3 bucket policy with CloudFront access:
+   - Go back to your S3 bucket permissions
+   - Add the CloudFront access policy (AWS will suggest this policy when you create the distribution):
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowCloudFrontServicePrincipal",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "cloudfront.amazonaws.com"
+      },
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::YOUR-BUCKET-NAME/*",
+      "Condition": {
+        "StringEquals": {
+          "AWS:SourceArn": "arn:aws:cloudfront::YOUR-ACCOUNT-ID:distribution/YOUR-DISTRIBUTION-ID"
+        }
       }
-      ```
-      _(Replace `<YOUR-BUCKET-NAME>` with your actual bucket name)_
-8.  Click **Next**.
-9.  **Name, review, and create:** Give the role a descriptive name (e.g., `GitHubActions-ACUL-S3-UploadRole`). Review the settings and click **Create role**.
-10. **Retrieve Role ARN:** Once created, view the role and copy its **ARN**. This will be used for a GitHub Secret.
+    }
+  ]
+}
+```
 
-### 3. Required GitHub Secrets
+This configuration means:
+- Your S3 bucket remains private (no direct public access)
+- CloudFront has permission to access objects in your bucket
+- Users access your content through CloudFront URLs, not direct S3 URLs
+- You get the security benefits of a private bucket while still having publicly accessible content
 
-Configure the following secrets in your GitHub repository (`Settings > Secrets and variables > Actions > Repository secrets`):
+#### 2.4. Create IAM Role for GitHub Actions
 
-- `AWS_S3_ARN`: The full ARN of the IAM Role created in the previous step.
-  - _Example:_ `arn:aws:iam::123456789012:role/GitHubActions-ACUL-S3-UploadRole`
-- `S3_BUCKET_NAME`: The exact name of your S3 bucket where assets will be uploaded.
-  - _Example:_ `my-acul-boilerplate-assets`
-- `AWS_REGION` (Optional): The AWS region where your S3 bucket resides. Defaults to `us-east-1` if not provided.
-  - _Example:_ `ap-southeast-2`
-- `S3_CDN_URL`: The **base URL** from which your assets will be served (your CDN distribution URL or the S3 public URL if not using a CDN). **IMPORTANT:** Do **NOT** include a trailing slash (`/`) at the end.
-  - _Example (CloudFront):_ `https://d111111abcdef8.cloudfront.net`
-  - _Example (S3 Public):_ `https://my-acul-boilerplate-assets.s3.us-east-1.amazonaws.com`
-- `S3_CDN_URL`: The **base URL** from which your assets will be served (your CDN distribution URL or the S3 public URL if not using a CDN). **IMPORTANT:** Do **NOT** include a trailing slash (`/`) at the end.
-  - _Example (CloudFront):_ `https://d111111abcdef8.cloudfront.net`
-  - _Example (S3 Public):_ `https://my-acul-boilerplate-assets.s3.us-east-1.amazonaws.com`
-- `AUTH0_DOMAIN`: Your Auth0 tenant domain (copied from the M2M application settings).
-  - _Example:_ `https://www.custom_domain.com`
-- `AUTH0_CLIENT_ID`: The Client ID of the Auth0 M2M application created earlier.
-- `AUTH0_CLIENT_SECRET`: The Client Secret of the Auth0 M2M application.
+1. Go to the IAM Console and select **Roles**
+2. Click **Create role**
+3. Select **Web identity** as the trusted entity type
+4. For **Identity Provider**, select or add `token.actions.githubusercontent.com`
+5. For **Audience**, enter `sts.amazonaws.com`
+6. Under **GitHub organization/repository**:
+   - Enter your GitHub organization name
+   - Optionally specify the repository name for enhanced security
+7. Click **Next**
+8. Create or attach a policy with these permissions:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject",
+        "s3:GetObject",
+        "s3:DeleteObject"
+      ],
+      "Resource": "arn:aws:s3:::YOUR-BUCKET-NAME/*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::YOUR-BUCKET-NAME"
+    }
+  ]
+}
+```
+
+9. Give the role a descriptive name (e.g., "GitHubActions-ACUL-Deployment")
+10. Click **Create role**
+11. View the role and copy its ARN for GitHub secrets
+
+### 3. GitHub Repository Configuration
+
+#### 3.1. Add GitHub Secrets
+
+Go to your repository, then:
+1. Navigate to `Settings > Secrets and variables > Actions`
+2. Click **New repository secret**
+3. Add the following secrets:
+
+| Secret Name | Value | Description |
+|-------------|-------|-------------|
+| `AWS_S3_ARN` | `arn:aws:iam::123456789012:role/GitHubActions-ACUL-Deployment` | The ARN of your IAM role |
+| `S3_BUCKET_NAME` | `your-acul-assets-bucket` | Your S3 bucket name |
+| `AWS_REGION` | `us-east-1` | Region where your bucket is located |
+| `S3_CDN_URL` | `https://d1234abcdef.cloudfront.net` or `https://your-bucket.s3.region.amazonaws.com` | Base URL for assets (no trailing slash) |
+| `AUTH0_DOMAIN` | `your-domain.auth0.com` | Your Auth0 domain |
+| `AUTH0_CLIENT_ID` | `abcdef123456789` | M2M application client ID |
+| `AUTH0_CLIENT_SECRET` | `your-secret-here` | M2M application client secret |
+
+#### 3.2. Add Workflow File
+
+The workflow file (`.github/workflows/acul-deploy.yml`) should be placed in your repository. If you're working with a monorepo, ensure the `WORKING_DIR` environment variable points to your ACUL project location.
+
+### 4. Deployment Options & Considerations
+
+#### 4.1. Hosting Alternatives
+
+1. **S3 with Public Access (Basic)**
+   - Pros: Simpler setup
+   - Cons: No HTTPS unless using bucket website endpoints with CloudFront, less performant globally
+
+2. **S3 with CloudFront (Recommended)**
+   - Pros: Better security, HTTPS, global performance, lower latency
+   - Cons: More complex setup, additional service to manage
+
+3. **Other CDN Providers**
+   - You can use any CDN that can serve assets from S3 or public URLs
+   - Update the `S3_CDN_URL` to point to your chosen CDN
+
+#### 4.2. Asset Handling and Caching
+
+The CI/CD pipeline leverages content-based hashing for all assets:
+- Each file gets a unique hash in its filename based on content
+- When the content changes, the hash changes
+- This enables long cache times without stale content
+- No CDN invalidation is required for most deployments
+
+#### 4.3. Partial Deployments
+
+The workflow is designed to be resilient:
+- Each screen is processed independently
+- If one screen fails to deploy, others can still succeed
+- The workflow only fails completely if all screens fail
+- This allows for progressive updates and improvements
 
 ## Usage
 
-1.  **Push Changes:** Once the prerequisites are met and secrets are configured, pushing changes to the `main` or `master` branch within the `packages/auth0-acul-js/examples/acul-boilerplate/` path (relative to the monorepo root) will automatically trigger the workflow.
-2.  **Manual Trigger:** You can also manually trigger the workflow from the GitHub Actions tab in your repository.
+### Automatic Deployment
+
+1. Push changes to your repository's main branch
+2. The workflow will automatically run if files within the monitored directory change
+3. Monitor the workflow in the GitHub Actions tab
+
+### Manual Deployment
+
+1. Navigate to the Actions tab in your GitHub repository
+2. Select the deployment workflow
+3. Click "Run workflow"
+4. Select your branch and click "Run workflow"
 
 ## Troubleshooting
 
-- **Workflow Fails on Auth0 Login:** Double-check `AUTH0_DOMAIN`, `AUTH0_CLIENT_ID`, and `AUTH0_CLIENT_SECRET` secrets. Ensure the M2M application has the correct Management API permissions granted.
-- **Workflow Fails on S3 Upload:** Verify the `AWS_S3_ARN` secret is correct. Check the IAM Role's trust policy (ensure it trusts your GitHub org/repo) and attached permissions policy (ensure it allows the required S3 actions on the correct bucket).
-- **Workflow Fails Configuring Screens:** Examine the workflow logs for the specific error message from the Auth0 CLI. Ensure the `S3_CDN_URL` is correct and accessible. Verify the M2M application has the required `update:prompts` permission.
-- **Screens Don't Update Visually:** Ensure your browser cache is cleared. Double-check the `S3_CDN_URL` points to the correct location where assets are being uploaded. Verify the Auth0 prompt configuration in the dashboard reflects the new asset URLs.
-- **Working Directory Note:** The workflow is configured with `WORKING_DIR: packages/auth0-acul-js/examples/acul-boilerplate`. This assumes the workflow is running from the root of the `universal-login` monorepo. If you are running this workflow from a repository containing _only_ the boilerplate code, you might need to adjust `WORKING_DIR` to `.` in the workflow file.
+### Common Issues
+
+#### Authentication Failures
+
+- **Symptom:** Workflow fails with Auth0 authentication errors
+- **Check:** Verify `AUTH0_DOMAIN`, `AUTH0_CLIENT_ID`, and `AUTH0_CLIENT_SECRET` values
+- **Solution:** Ensure the M2M application has the correct permissions
+
+#### S3 Upload Failures
+
+- **Symptom:** Workflow fails while uploading to S3
+- **Check:** Verify `AWS_S3_ARN` and IAM role trust relationships
+- **Solution:** Confirm the IAM role allows the GitHub Actions workflow to assume it and has the necessary S3 permissions
+
+#### Screen Configuration Failures
+
+- **Symptom:** Assets upload but screens fail to configure in Auth0
+- **Check:** Look for specific error messages in the workflow logs
+- **Solution:** Verify that your Auth0 tenant has a custom domain set up and M2M application has `update:prompts` permission
+
+#### Assets Not Loading
+
+- **Symptom:** Screens update but assets don't load
+- **Check:** Browser console for 404 errors on assets
+- **Solution:** Verify `S3_CDN_URL` is correct and assets are publicly accessible
+
+### Logs and Monitoring
+
+- The GitHub Actions workflow provides detailed logs for each step
+- Each screen deployment includes asset discovery information
+- Successful and failed deployments are tracked and reported
+- The workflow outputs a summary at the end with links to deployed screens
+
+## Working Directory Note
+
+If you're using this workflow in a monorepo, the default setting assumes:
+```yaml
+env:
+  WORKING_DIR: packages/auth0-acul-js/examples/acul-boilerplate
+```
+
+If your ACUL code is in the repository root, change this to:
+```yaml
+env:
+  WORKING_DIR: .
+```
+
+Adjust this path according to your repository structure.

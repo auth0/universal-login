@@ -1,42 +1,34 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { BrowserRouter as Router, useNavigate } from 'react-router-dom';
-import { Auth0Provider, AppState } from '@auth0/auth0-react';
-import App from './App.tsx';
-import './index.css';
-
-// Debug all available environment variables
-console.log('---- Environment Variables ----');
-console.log('AUTH0_ISSUER_BASE_URL:', import.meta.env.AUTH0_ISSUER_BASE_URL);
-console.log('AUTH0_CLIENT_ID:', import.meta.env.AUTH0_CLIENT_ID);
-console.log('AUTH0_AUDIENCE:', import.meta.env.AUTH0_AUDIENCE);
-console.log('AUTH0_ORGANIZATION:', import.meta.env.AUTH0_ORGANIZATION);
-console.log('SCREEN_NAME:', import.meta.env.SCREEN_NAME);
-console.log('RUN_MODE:', import.meta.env.RUN_MODE);
-
-// Legacy variables too (for debugging)
-console.log('VITE_AUTH0_DOMAIN:', import.meta.env.VITE_AUTH0_DOMAIN);
-console.log('VITE_AUTH0_CLIENT_ID:', import.meta.env.VITE_AUTH0_CLIENT_ID);
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter as Router, useNavigate } from "react-router-dom";
+import { Auth0Provider, AppState } from "@auth0/auth0-react";
+import App from "./App.tsx";
+import "./index.css";
 
 // Component to handle provider setup and redirection
-const Auth0ProviderWithRedirectCallback: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
+const Auth0ProviderWithRedirectCallback: React.FC<
+  React.PropsWithChildren<{}>
+> = ({ children }) => {
   const navigate = useNavigate();
 
   // Try to use either the new or legacy variable format
-  const domain = import.meta.env.VITE_AUTH0_DOMAIN || 
-                 (import.meta.env.AUTH0_ISSUER_BASE_URL?.toString() || '').replace(/^https?:\/\//, '');
-  const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID || import.meta.env.AUTH0_CLIENT_ID;
-  const audience = import.meta.env.VITE_AUTH0_AUDIENCE || import.meta.env.AUTH0_AUDIENCE;
-  const organization = import.meta.env.VITE_AUTH0_ORGANIZATION || import.meta.env.AUTH0_ORGANIZATION;
-  const redirectUri = window.location.origin + '/callback';
-
-  console.log('Using domain:', domain);
-  console.log('Using clientId:', clientId);
-  console.log('Using audience:', audience);
-  console.log('Using organization:', organization);
+  const domain =
+    import.meta.env.VITE_AUTH0_DOMAIN ||
+    (import.meta.env.AUTH0_ISSUER_BASE_URL?.toString() || "").replace(
+      /^https?:\/\//,
+      ""
+    );
+  const clientId =
+    import.meta.env.VITE_AUTH0_CLIENT_ID || import.meta.env.AUTH0_CLIENT_ID;
+  const audience =
+    import.meta.env.VITE_AUTH0_AUDIENCE || import.meta.env.AUTH0_AUDIENCE;
+  const organization =
+    import.meta.env.VITE_AUTH0_ORGANIZATION ||
+    import.meta.env.AUTH0_ORGANIZATION;
+  const redirectUri = window.location.origin + "/callback";
 
   if (!domain || !clientId) {
-    throw new Error('Missing Auth0 domain or client ID environment variables.');
+    throw new Error("Missing Auth0 domain or client ID environment variables.");
   }
 
   const onRedirectCallback = (appState?: AppState) => {
@@ -61,12 +53,12 @@ const Auth0ProviderWithRedirectCallback: React.FC<React.PropsWithChildren<{}>> =
   );
 };
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Router>
       <Auth0ProviderWithRedirectCallback>
         <App />
       </Auth0ProviderWithRedirectCallback>
     </Router>
-  </React.StrictMode>,
+  </React.StrictMode>
 );
