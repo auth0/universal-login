@@ -25,8 +25,7 @@ export const startServers = async (mode, screenName) => {
     // Define ports and their purposes
     const portsInfo = [
       { port: CONFIG.port, name: 'ACUL assets server' },
-      { port: CONFIG.apiPort, name: 'Next.js API server' },
-      { port: 3000, name: 'Next.js application' }
+      { port: CONFIG.reactPort, name: 'React screen tester application' }
     ];
     
     // Check each port

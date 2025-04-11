@@ -104,9 +104,12 @@ This project provides a boilerplate setup for Auth0's Advanced Custom Universal 
 1. Set up your environment variables in `.env.local`:
    ```env
    # Auth0 Configuration
-   AUTH0_DOMAIN='https://your-custom-domain.com'
+   AUTH0_CUSTOM_DOMAIN='https://your-custom-domain.com'
    AUTH0_CLIENT_ID='your-client-id'
    AUTH0_AUDIENCE='your-audience'
+
+   # Optional
+   AUTH0_ORGANIZATION='optional_org_id'
    ```
 
 2. Start development:

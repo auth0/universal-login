@@ -6,7 +6,7 @@ import net from 'net';
  */
 export const CONFIG = {
   port: 3032,  // Port for serving static assets
-  apiPort: 3001  // Port for the Next.js API server
+  reactPort: 4040  // Port for the screen tester
 };
 
 /**

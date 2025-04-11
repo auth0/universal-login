@@ -14,7 +14,7 @@ const Auth0ProviderWithRedirectCallback: React.FC<
   // Try to use either the new or legacy variable format
   const domain =
     import.meta.env.VITE_AUTH0_DOMAIN ||
-    (import.meta.env.AUTH0_ISSUER_BASE_URL?.toString() || "").replace(
+    (import.meta.env.AUTH0_CUSTOM_DOMAIN?.toString() || "").replace(
       /^https?:\/\//,
       ""
     );

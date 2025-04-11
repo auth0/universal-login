@@ -139,7 +139,7 @@ const extractPortFromError = (errorMessage) => {
  */
 const getPortConflictInstructions = (port, serviceName) => {
   const currentPlatform = getCurrentPlatform();
-  const isCorePort = port === CONFIG.port || port === CONFIG.apiPort || port === 3000;
+  const isCorePort = port === CONFIG.port || port === CONFIG.reactPort;
   
   const instructions = [
     chalk.yellow(`\n${chalk.bold("Port Conflict Resolution Instructions:")}`),
