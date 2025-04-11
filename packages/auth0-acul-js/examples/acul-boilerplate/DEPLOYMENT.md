@@ -1,8 +1,21 @@
-# Deploying ACUL Boilerplate Screens via GitHub Actions
+# 🚀 Deploying ACUL Boilerplate Screens via GitHub Actions
 
 This document provides a comprehensive guide to set up the infrastructure and configuration required to deploy Auth0 Custom Universal Login (ACUL) screens using GitHub Actions.
 
-## Overview
+## 📑 Table of Contents
+- [Overview](#overview)
+- [Prerequisites](#prerequisites)
+- [Step-by-Step Setup Guide](#step-by-step-setup-guide)
+  - [Auth0 Configuration](#1-auth0-configuration)
+  - [AWS Infrastructure Setup](#2-aws-infrastructure-setup)
+  - [GitHub Repository Configuration](#3-github-repository-configuration)
+- [Deployment Options](#deployment-options)
+- [Usage](#usage)
+- [Troubleshooting](#troubleshooting)
+- [Working Directory Configuration](#working-directory-configuration)
+
+<a id="overview"></a>
+## 📋 Overview
 
 The deployment workflow automatically:
 
@@ -21,7 +34,8 @@ In technical terms, the workflow performs these actions:
 7. Configures Auth0 for each discovered screen with dynamic asset URLs
 8. Provides a deployment summary
 
-## Prerequisites
+<a id="prerequisites"></a>
+## ⚙️ Prerequisites
 
 Before setting up the workflow, ensure you have:
 
@@ -29,10 +43,13 @@ Before setting up the workflow, ensure you have:
 - An AWS account with permissions to create IAM roles and S3 buckets
 - A GitHub repository containing your ACUL code
 
-## Step-by-Step Setup Guide
+<a id="step-by-step-setup-guide"></a>
+## 📝 Step-by-Step Setup Guide
 
-### 1. Auth0 Configuration
+<a id="1-auth0-configuration"></a>
+### 1. 🔐 Auth0 Configuration
 
+<a id="1-1-set-up-a-custom-domain-required"></a>
 #### 1.1. Set Up a Custom Domain (Required)
 
 Advanced ACUL rendering requires a custom domain:
@@ -42,6 +59,7 @@ Advanced ACUL rendering requires a custom domain:
 3. Follow the verification steps to set up your domain
 4. Ensure the domain is verified and active before proceeding
 
+<a id="1-2-create-a-machine-to-machine-m2m-application"></a>
 #### 1.2. Create a Machine-to-Machine (M2M) Application
 
 This application allows the workflow to interact with Auth0's Management API:
@@ -64,8 +82,10 @@ This application allows the workflow to interact with Auth0's Management API:
     - Client ID
     - Client Secret (you'll need these for GitHub secrets)
 
-### 2. AWS Infrastructure Setup
+<a id="2-aws-infrastructure-setup"></a>
+### 2. ☁️ AWS Infrastructure Setup
 
+<a id="2-1-create-an-s3-bucket"></a>
 #### 2.1. Create an S3 Bucket
 
 1. Sign in to the AWS Console and navigate to S3
@@ -78,11 +98,13 @@ This application allows the workflow to interact with Auth0's Management API:
 6. Enable versioning (recommended)
 7. Click **Create bucket**
 
+<a id="2-2-configure-s3-bucket-permissions"></a>
 #### 2.2. Configure S3 Bucket Permissions
 
 There are two main approaches to configure your S3 bucket:
 
-For public assets (Option 1 - Simpler):
+<details>
+<summary><strong>Option 1: S3 with Public Access (Simpler)</strong></summary>
 
 1. Select your newly created bucket
 2. Go to the **Permissions** tab
@@ -103,13 +125,17 @@ For public assets (Option 1 - Simpler):
   ]
 }
 ```
+</details>
 
-For CloudFront with private S3 (Option 2 - Recommended for security):
+<details>
+<summary><strong>Option 2: CloudFront with private S3 (Recommended for security)</strong></summary>
 
 1. Keep your S3 bucket private (Block all public access)
 2. Continue with CloudFront setup below, then return to add the CloudFront access policy
 3. This approach keeps your S3 bucket secure while CloudFront provides public access to the assets
+</details>
 
+<a id="2-3-set-up-cloudfront-recommended"></a>
 #### 2.3. Set Up CloudFront (Recommended)
 
 CloudFront acts as a secure gateway to your S3 assets. It allows end users to access your content through CloudFront's public URLs while keeping your S3 bucket private and secure:
@@ -161,6 +187,7 @@ This configuration means:
 - Users access your content through CloudFront URLs, not direct S3 URLs
 - You get the security benefits of a private bucket while still having publicly accessible content
 
+<a id="2-4-create-iam-role-for-github-actions"></a>
 #### 2.4. Create IAM Role for GitHub Actions
 
 1. Go to the IAM Console and select **Roles**
@@ -200,8 +227,10 @@ This configuration means:
 10. Click **Create role**
 11. View the role and copy its ARN for GitHub secrets
 
-### 3. GitHub Repository Configuration
+<a id="3-github-repository-configuration"></a>
+### 3. 🔄 GitHub Repository Configuration
 
+<a id="3-1-add-github-secrets"></a>
 #### 3.1. Add GitHub Secrets
 
 Go to your repository, then:
@@ -219,50 +248,67 @@ Go to your repository, then:
 | `AUTH0_CLIENT_ID` | `abcdef123456789` | M2M application client ID |
 | `AUTH0_CLIENT_SECRET` | `your-secret-here` | M2M application client secret |
 
+<a id="3-2-add-workflow-file"></a>
 #### 3.2. Add Workflow File
 
 The workflow file (`.github/workflows/acul-deploy.yml`) should be placed in your repository. If you're working with a monorepo, ensure the `WORKING_DIR` environment variable points to your ACUL project location.
 
-### 4. Deployment Options & Considerations
+<a id="deployment-options"></a>
+## 🔀 Deployment Options & Considerations
 
-#### 4.1. Hosting Alternatives
+<a id="4-1-hosting-alternatives"></a>
+### 4.1. Hosting Alternatives
 
-1. **S3 with Public Access (Basic)**
-   - Pros: Simpler setup
-   - Cons: No HTTPS unless using bucket website endpoints with CloudFront, less performant globally
+<details>
+<summary><strong>S3 with Public Access (Basic)</strong></summary>
 
-2. **S3 with CloudFront (Recommended)**
-   - Pros: Better security, HTTPS, global performance, lower latency
-   - Cons: More complex setup, additional service to manage
+- ✅ **Pros**: Simpler setup
+- ❌ **Cons**: No HTTPS unless using bucket website endpoints with CloudFront, less performant globally
+</details>
 
-3. **Other CDN Providers**
-   - You can use any CDN that can serve assets from S3 or public URLs
-   - Update the `S3_CDN_URL` to point to your chosen CDN
+<details>
+<summary><strong>S3 with CloudFront (Recommended)</strong></summary>
 
-#### 4.2. Asset Handling and Caching
+- ✅ **Pros**: Better security, HTTPS, global performance, lower latency
+- ❌ **Cons**: More complex setup, additional service to manage
+</details>
+
+<details>
+<summary><strong>Other CDN Providers</strong></summary>
+
+- You can use any CDN that can serve assets from S3 or public URLs
+- Update the `S3_CDN_URL` to point to your chosen CDN
+</details>
+
+<a id="4-2-asset-handling-and-caching"></a>
+### 4.2. Asset Handling and Caching
 
 The CI/CD pipeline leverages content-based hashing for all assets:
-- Each file gets a unique hash in its filename based on content
-- When the content changes, the hash changes
-- This enables long cache times without stale content
-- No CDN invalidation is required for most deployments
+- 📦 Each file gets a unique hash in its filename based on content
+- 🔄 When the content changes, the hash changes
+- ⏱️ This enables long cache times without stale content
+- 🚫 No CDN invalidation is required for most deployments
 
-#### 4.3. Partial Deployments
+<a id="4-3-partial-deployments"></a>
+### 4.3. Partial Deployments
 
 The workflow is designed to be resilient:
-- Each screen is processed independently
-- If one screen fails to deploy, others can still succeed
-- The workflow only fails completely if all screens fail
-- This allows for progressive updates and improvements
+- 🔍 Each screen is processed independently
+- 🛡️ If one screen fails to deploy, others can still succeed
+- 🚨 The workflow only fails completely if all screens fail
+- 📈 This allows for progressive updates and improvements
 
-## Usage
+<a id="usage"></a>
+## 🖥️ Usage
 
+<a id="automatic-deployment"></a>
 ### Automatic Deployment
 
 1. Push changes to your repository's main branch
 2. The workflow will automatically run if files within the monitored directory change
 3. Monitor the workflow in the GitHub Actions tab
 
+<a id="manual-deployment"></a>
 ### Manual Deployment
 
 1. Navigate to the Actions tab in your GitHub repository
@@ -270,42 +316,54 @@ The workflow is designed to be resilient:
 3. Click "Run workflow"
 4. Select your branch and click "Run workflow"
 
-## Troubleshooting
+<a id="troubleshooting"></a>
+## ❓ Troubleshooting
 
+<a id="common-issues"></a>
 ### Common Issues
 
-#### Authentication Failures
+<details>
+<summary><strong>Authentication Failures</strong></summary>
 
 - **Symptom:** Workflow fails with Auth0 authentication errors
 - **Check:** Verify `AUTH0_DOMAIN`, `AUTH0_CLIENT_ID`, and `AUTH0_CLIENT_SECRET` values
 - **Solution:** Ensure the M2M application has the correct permissions
+</details>
 
-#### S3 Upload Failures
+<details>
+<summary><strong>S3 Upload Failures</strong></summary>
 
 - **Symptom:** Workflow fails while uploading to S3
 - **Check:** Verify `AWS_S3_ARN` and IAM role trust relationships
 - **Solution:** Confirm the IAM role allows the GitHub Actions workflow to assume it and has the necessary S3 permissions
+</details>
 
-#### Screen Configuration Failures
+<details>
+<summary><strong>Screen Configuration Failures</strong></summary>
 
 - **Symptom:** Assets upload but screens fail to configure in Auth0
 - **Check:** Look for specific error messages in the workflow logs
 - **Solution:** Verify that your Auth0 tenant has a custom domain set up and M2M application has `update:prompts` permission
+</details>
 
-#### Assets Not Loading
+<details>
+<summary><strong>Assets Not Loading</strong></summary>
 
 - **Symptom:** Screens update but assets don't load
 - **Check:** Browser console for 404 errors on assets
 - **Solution:** Verify `S3_CDN_URL` is correct and assets are publicly accessible
+</details>
 
+<a id="logs-and-monitoring"></a>
 ### Logs and Monitoring
 
-- The GitHub Actions workflow provides detailed logs for each step
-- Each screen deployment includes asset discovery information
-- Successful and failed deployments are tracked and reported
-- The workflow outputs a summary at the end with links to deployed screens
+- 📊 The GitHub Actions workflow provides detailed logs for each step
+- 🔎 Each screen deployment includes asset discovery information
+- ✅ Successful and failed deployments are tracked and reported
+- 📑 The workflow outputs a summary at the end with links to deployed screens
 
-## Working Directory Note
+<a id="working-directory-configuration"></a>
+## 🗂️ Working Directory Configuration
 
 If you're using this workflow in a monorepo, the default setting assumes:
 ```yaml
