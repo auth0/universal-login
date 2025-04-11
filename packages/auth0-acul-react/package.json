@@ -11,14 +11,6 @@
   "peerDependencies": {
     "react": "^18.0.0"
   },
-  "devDependencies": {
-    "@testing-library/react-hooks": "^8.0.1",
-    "@types/jest": "^29.0.0",
-    "@types/react": "^18.0.0",
-    "jest": "^29.0.0",
-    "tsx": "^4.19.3",
-    "typescript": "^5.8.2"
-  },
   "exports": {
     ".": {
       "import": "./dist/index.js",
@@ -200,6 +192,11 @@
       "import": "./dist/hooks/customized-consent.js",
       "types": "./dist/hooks/customized-consent.d.ts"
     }
+  },
+  "devDependencies": {
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/jest-dom": "^6.0.0",
+    "@types/react": "^18.0.0"
   },
   "dependencies": {
     "@auth0/auth0-acul-js": "0.1.0-beta.3"
