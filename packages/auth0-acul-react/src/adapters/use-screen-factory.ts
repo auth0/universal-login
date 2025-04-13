@@ -30,9 +30,9 @@ type KebabToScreenClass = {
 
 /**
  * Hook to get a screen class instance using a kebab-case name.
- * E.g., useScreen('login-id') will instantiate new LoginId()
+ * E.g., useAculScreen('login-id') will instantiate new LoginId()
  */
-export function useScreen<T extends keyof KebabToScreenClass>(
+export function useAculScreen<T extends keyof KebabToScreenClass>(
   kebabName: T
 ): InstanceType<(typeof Screens)[KebabToScreenClass[T]]> {
   return useMemo(() => {

@@ -7,7 +7,7 @@ export function useResetPasswordMfaEmailChallenge(): ResetPasswordMfaEmailChalle
   return useMemo(() => new ResetPasswordMfaEmailChallenge(), []);
 }
 
-export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
+export const Auth0AculProvider = ({ children }: { children: React.ReactNode }) => {
   const screen = useResetPasswordMfaEmailChallenge();
   return <ResetPasswordMfaEmailChallengeContext.Provider value={screen}>{children}</ResetPasswordMfaEmailChallengeContext.Provider>;
 };
@@ -15,7 +15,7 @@ export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
 export function useCurrentScreen(): ResetPasswordMfaEmailChallenge {
   const screen = useContext(ResetPasswordMfaEmailChallengeContext);
   if (!screen) {
-    throw new Error('useCurrentScreen must be used within an <Auth0Provider>');
+    throw new Error('useCurrentScreen must be used within an <Auth0AculProvider>');
   }
   return screen;
 }

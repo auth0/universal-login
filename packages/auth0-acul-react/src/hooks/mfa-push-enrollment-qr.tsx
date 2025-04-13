@@ -7,7 +7,7 @@ export function useMfaPushEnrollmentQr(): MfaPushEnrollmentQr {
   return useMemo(() => new MfaPushEnrollmentQr(), []);
 }
 
-export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
+export const Auth0AculProvider = ({ children }: { children: React.ReactNode }) => {
   const screen = useMfaPushEnrollmentQr();
   return <MfaPushEnrollmentQrContext.Provider value={screen}>{children}</MfaPushEnrollmentQrContext.Provider>;
 };
@@ -15,7 +15,7 @@ export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
 export function useCurrentScreen(): MfaPushEnrollmentQr {
   const screen = useContext(MfaPushEnrollmentQrContext);
   if (!screen) {
-    throw new Error('useCurrentScreen must be used within an <Auth0Provider>');
+    throw new Error('useCurrentScreen must be used within an <Auth0AculProvider>');
   }
   return screen;
 }

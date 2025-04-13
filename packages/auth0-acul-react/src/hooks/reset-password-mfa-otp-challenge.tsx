@@ -7,7 +7,7 @@ export function useResetPasswordMfaOtpChallenge(): ResetPasswordMfaOtpChallenge 
   return useMemo(() => new ResetPasswordMfaOtpChallenge(), []);
 }
 
-export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
+export const Auth0AculProvider = ({ children }: { children: React.ReactNode }) => {
   const screen = useResetPasswordMfaOtpChallenge();
   return <ResetPasswordMfaOtpChallengeContext.Provider value={screen}>{children}</ResetPasswordMfaOtpChallengeContext.Provider>;
 };
@@ -15,7 +15,7 @@ export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
 export function useCurrentScreen(): ResetPasswordMfaOtpChallenge {
   const screen = useContext(ResetPasswordMfaOtpChallengeContext);
   if (!screen) {
-    throw new Error('useCurrentScreen must be used within an <Auth0Provider>');
+    throw new Error('useCurrentScreen must be used within an <Auth0AculProvider>');
   }
   return screen;
 }

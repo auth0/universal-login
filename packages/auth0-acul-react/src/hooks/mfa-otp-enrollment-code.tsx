@@ -7,7 +7,7 @@ export function useMfaOtpEnrollmentCode(): MfaOtpEnrollmentCode {
   return useMemo(() => new MfaOtpEnrollmentCode(), []);
 }
 
-export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
+export const Auth0AculProvider = ({ children }: { children: React.ReactNode }) => {
   const screen = useMfaOtpEnrollmentCode();
   return <MfaOtpEnrollmentCodeContext.Provider value={screen}>{children}</MfaOtpEnrollmentCodeContext.Provider>;
 };
@@ -15,7 +15,7 @@ export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
 export function useCurrentScreen(): MfaOtpEnrollmentCode {
   const screen = useContext(MfaOtpEnrollmentCodeContext);
   if (!screen) {
-    throw new Error('useCurrentScreen must be used within an <Auth0Provider>');
+    throw new Error('useCurrentScreen must be used within an <Auth0AculProvider>');
   }
   return screen;
 }

@@ -7,7 +7,7 @@ export function useInterstitialCaptcha(): InterstitialCaptcha {
   return useMemo(() => new InterstitialCaptcha(), []);
 }
 
-export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
+export const Auth0AculProvider = ({ children }: { children: React.ReactNode }) => {
   const screen = useInterstitialCaptcha();
   return <InterstitialCaptchaContext.Provider value={screen}>{children}</InterstitialCaptchaContext.Provider>;
 };
@@ -15,7 +15,7 @@ export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
 export function useCurrentScreen(): InterstitialCaptcha {
   const screen = useContext(InterstitialCaptchaContext);
   if (!screen) {
-    throw new Error('useCurrentScreen must be used within an <Auth0Provider>');
+    throw new Error('useCurrentScreen must be used within an <Auth0AculProvider>');
   }
   return screen;
 }

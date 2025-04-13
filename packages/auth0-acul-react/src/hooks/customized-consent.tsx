@@ -7,7 +7,7 @@ export function useCustomizedConsent(): CustomizedConsent {
   return useMemo(() => new CustomizedConsent(), []);
 }
 
-export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
+export const Auth0AculProvider = ({ children }: { children: React.ReactNode }) => {
   const screen = useCustomizedConsent();
   return <CustomizedConsentContext.Provider value={screen}>{children}</CustomizedConsentContext.Provider>;
 };
@@ -15,7 +15,7 @@ export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
 export function useCurrentScreen(): CustomizedConsent {
   const screen = useContext(CustomizedConsentContext);
   if (!screen) {
-    throw new Error('useCurrentScreen must be used within an <Auth0Provider>');
+    throw new Error('useCurrentScreen must be used within an <Auth0AculProvider>');
   }
   return screen;
 }

@@ -7,7 +7,7 @@ export function useMfaPushList(): MfaPushList {
   return useMemo(() => new MfaPushList(), []);
 }
 
-export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
+export const Auth0AculProvider = ({ children }: { children: React.ReactNode }) => {
   const screen = useMfaPushList();
   return <MfaPushListContext.Provider value={screen}>{children}</MfaPushListContext.Provider>;
 };
@@ -15,7 +15,7 @@ export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
 export function useCurrentScreen(): MfaPushList {
   const screen = useContext(MfaPushListContext);
   if (!screen) {
-    throw new Error('useCurrentScreen must be used within an <Auth0Provider>');
+    throw new Error('useCurrentScreen must be used within an <Auth0AculProvider>');
   }
   return screen;
 }

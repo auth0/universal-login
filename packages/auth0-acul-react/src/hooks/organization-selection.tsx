@@ -7,7 +7,7 @@ export function useOrganizationSelection(): OrganizationSelection {
   return useMemo(() => new OrganizationSelection(), []);
 }
 
-export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
+export const Auth0AculProvider = ({ children }: { children: React.ReactNode }) => {
   const screen = useOrganizationSelection();
   return <OrganizationSelectionContext.Provider value={screen}>{children}</OrganizationSelectionContext.Provider>;
 };
@@ -15,7 +15,7 @@ export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
 export function useCurrentScreen(): OrganizationSelection {
   const screen = useContext(OrganizationSelectionContext);
   if (!screen) {
-    throw new Error('useCurrentScreen must be used within an <Auth0Provider>');
+    throw new Error('useCurrentScreen must be used within an <Auth0AculProvider>');
   }
   return screen;
 }

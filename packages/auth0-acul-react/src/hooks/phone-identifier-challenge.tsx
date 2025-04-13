@@ -7,7 +7,7 @@ export function usePhoneIdentifierChallenge(): PhoneIdentifierChallenge {
   return useMemo(() => new PhoneIdentifierChallenge(), []);
 }
 
-export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
+export const Auth0AculProvider = ({ children }: { children: React.ReactNode }) => {
   const screen = usePhoneIdentifierChallenge();
   return <PhoneIdentifierChallengeContext.Provider value={screen}>{children}</PhoneIdentifierChallengeContext.Provider>;
 };
@@ -15,7 +15,7 @@ export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
 export function useCurrentScreen(): PhoneIdentifierChallenge {
   const screen = useContext(PhoneIdentifierChallengeContext);
   if (!screen) {
-    throw new Error('useCurrentScreen must be used within an <Auth0Provider>');
+    throw new Error('useCurrentScreen must be used within an <Auth0AculProvider>');
   }
   return screen;
 }

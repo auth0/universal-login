@@ -7,7 +7,7 @@ export function useMfaBeginEnrollOptions(): MfaBeginEnrollOptions {
   return useMemo(() => new MfaBeginEnrollOptions(), []);
 }
 
-export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
+export const Auth0AculProvider = ({ children }: { children: React.ReactNode }) => {
   const screen = useMfaBeginEnrollOptions();
   return <MfaBeginEnrollOptionsContext.Provider value={screen}>{children}</MfaBeginEnrollOptionsContext.Provider>;
 };
@@ -15,7 +15,7 @@ export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
 export function useCurrentScreen(): MfaBeginEnrollOptions {
   const screen = useContext(MfaBeginEnrollOptionsContext);
   if (!screen) {
-    throw new Error('useCurrentScreen must be used within an <Auth0Provider>');
+    throw new Error('useCurrentScreen must be used within an <Auth0AculProvider>');
   }
   return screen;
 }

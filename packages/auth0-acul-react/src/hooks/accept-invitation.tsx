@@ -7,7 +7,7 @@ export function useAcceptInvitation(): AcceptInvitation {
   return useMemo(() => new AcceptInvitation(), []);
 }
 
-export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
+export const Auth0AculProvider = ({ children }: { children: React.ReactNode }) => {
   const screen = useAcceptInvitation();
   return <AcceptInvitationContext.Provider value={screen}>{children}</AcceptInvitationContext.Provider>;
 };
@@ -15,7 +15,7 @@ export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
 export function useCurrentScreen(): AcceptInvitation {
   const screen = useContext(AcceptInvitationContext);
   if (!screen) {
-    throw new Error('useCurrentScreen must be used within an <Auth0Provider>');
+    throw new Error('useCurrentScreen must be used within an <Auth0AculProvider>');
   }
   return screen;
 }

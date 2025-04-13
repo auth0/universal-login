@@ -7,7 +7,7 @@ export function useMfaSmsChallenge(): MfaSmsChallenge {
   return useMemo(() => new MfaSmsChallenge(), []);
 }
 
-export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
+export const Auth0AculProvider = ({ children }: { children: React.ReactNode }) => {
   const screen = useMfaSmsChallenge();
   return <MfaSmsChallengeContext.Provider value={screen}>{children}</MfaSmsChallengeContext.Provider>;
 };
@@ -15,7 +15,7 @@ export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
 export function useCurrentScreen(): MfaSmsChallenge {
   const screen = useContext(MfaSmsChallengeContext);
   if (!screen) {
-    throw new Error('useCurrentScreen must be used within an <Auth0Provider>');
+    throw new Error('useCurrentScreen must be used within an <Auth0AculProvider>');
   }
   return screen;
 }

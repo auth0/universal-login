@@ -7,7 +7,7 @@ export function useMfaLoginOptions(): MfaLoginOptions {
   return useMemo(() => new MfaLoginOptions(), []);
 }
 
-export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
+export const Auth0AculProvider = ({ children }: { children: React.ReactNode }) => {
   const screen = useMfaLoginOptions();
   return <MfaLoginOptionsContext.Provider value={screen}>{children}</MfaLoginOptionsContext.Provider>;
 };
@@ -15,7 +15,7 @@ export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
 export function useCurrentScreen(): MfaLoginOptions {
   const screen = useContext(MfaLoginOptionsContext);
   if (!screen) {
-    throw new Error('useCurrentScreen must be used within an <Auth0Provider>');
+    throw new Error('useCurrentScreen must be used within an <Auth0AculProvider>');
   }
   return screen;
 }

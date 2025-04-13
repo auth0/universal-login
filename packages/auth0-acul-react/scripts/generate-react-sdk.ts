@@ -1,6 +1,10 @@
 import fs from 'fs';
 import path from 'path';
 import { Project } from 'ts-morph';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const CORE_SDK_PATH = path.resolve(__dirname, '../../auth0-acul-js');
 const HOOKS_OUTPUT_PATH = path.resolve(__dirname, '../src/hooks');
@@ -52,7 +56,7 @@ export function ${hookName}(): ${screenName} {
   return useMemo(() => new ${screenName}(), []);
 }
 
-export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
+export const Auth0AculProvider = ({ children }: { children: React.ReactNode }) => {
   const screen = ${hookName}();
   return <${contextName}.Provider value={screen}>{children}</${contextName}.Provider>;
 };
@@ -60,7 +64,7 @@ export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
 export function useCurrentScreen(): ${screenName} {
   const screen = useContext(${contextName});
   if (!screen) {
-    throw new Error('useCurrentScreen must be used within an <Auth0Provider>');
+    throw new Error('useCurrentScreen must be used within an <Auth0AculProvider>');
   }
   return screen;
 }

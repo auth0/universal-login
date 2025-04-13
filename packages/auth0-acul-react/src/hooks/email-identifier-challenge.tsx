@@ -7,7 +7,7 @@ export function useEmailIdentifierChallenge(): EmailIdentifierChallenge {
   return useMemo(() => new EmailIdentifierChallenge(), []);
 }
 
-export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
+export const Auth0AculProvider = ({ children }: { children: React.ReactNode }) => {
   const screen = useEmailIdentifierChallenge();
   return <EmailIdentifierChallengeContext.Provider value={screen}>{children}</EmailIdentifierChallengeContext.Provider>;
 };
@@ -15,7 +15,7 @@ export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
 export function useCurrentScreen(): EmailIdentifierChallenge {
   const screen = useContext(EmailIdentifierChallengeContext);
   if (!screen) {
-    throw new Error('useCurrentScreen must be used within an <Auth0Provider>');
+    throw new Error('useCurrentScreen must be used within an <Auth0AculProvider>');
   }
   return screen;
 }

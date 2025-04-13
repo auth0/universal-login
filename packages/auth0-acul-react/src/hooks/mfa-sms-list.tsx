@@ -7,7 +7,7 @@ export function useMfaSmsList(): MfaSmsList {
   return useMemo(() => new MfaSmsList(), []);
 }
 
-export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
+export const Auth0AculProvider = ({ children }: { children: React.ReactNode }) => {
   const screen = useMfaSmsList();
   return <MfaSmsListContext.Provider value={screen}>{children}</MfaSmsListContext.Provider>;
 };
@@ -15,7 +15,7 @@ export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
 export function useCurrentScreen(): MfaSmsList {
   const screen = useContext(MfaSmsListContext);
   if (!screen) {
-    throw new Error('useCurrentScreen must be used within an <Auth0Provider>');
+    throw new Error('useCurrentScreen must be used within an <Auth0AculProvider>');
   }
   return screen;
 }

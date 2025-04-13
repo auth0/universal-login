@@ -7,7 +7,7 @@ export function useResetPasswordEmail(): ResetPasswordEmail {
   return useMemo(() => new ResetPasswordEmail(), []);
 }
 
-export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
+export const Auth0AculProvider = ({ children }: { children: React.ReactNode }) => {
   const screen = useResetPasswordEmail();
   return <ResetPasswordEmailContext.Provider value={screen}>{children}</ResetPasswordEmailContext.Provider>;
 };
@@ -15,7 +15,7 @@ export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
 export function useCurrentScreen(): ResetPasswordEmail {
   const screen = useContext(ResetPasswordEmailContext);
   if (!screen) {
-    throw new Error('useCurrentScreen must be used within an <Auth0Provider>');
+    throw new Error('useCurrentScreen must be used within an <Auth0AculProvider>');
   }
   return screen;
 }

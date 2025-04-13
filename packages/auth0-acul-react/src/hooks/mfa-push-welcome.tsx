@@ -7,7 +7,7 @@ export function useMfaPushWelcome(): MfaPushWelcome {
   return useMemo(() => new MfaPushWelcome(), []);
 }
 
-export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
+export const Auth0AculProvider = ({ children }: { children: React.ReactNode }) => {
   const screen = useMfaPushWelcome();
   return <MfaPushWelcomeContext.Provider value={screen}>{children}</MfaPushWelcomeContext.Provider>;
 };
@@ -15,7 +15,7 @@ export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
 export function useCurrentScreen(): MfaPushWelcome {
   const screen = useContext(MfaPushWelcomeContext);
   if (!screen) {
-    throw new Error('useCurrentScreen must be used within an <Auth0Provider>');
+    throw new Error('useCurrentScreen must be used within an <Auth0AculProvider>');
   }
   return screen;
 }

@@ -7,7 +7,7 @@ export function useLoginPasswordlessEmailCode(): LoginPasswordlessEmailCode {
   return useMemo(() => new LoginPasswordlessEmailCode(), []);
 }
 
-export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
+export const Auth0AculProvider = ({ children }: { children: React.ReactNode }) => {
   const screen = useLoginPasswordlessEmailCode();
   return <LoginPasswordlessEmailCodeContext.Provider value={screen}>{children}</LoginPasswordlessEmailCodeContext.Provider>;
 };
@@ -15,7 +15,7 @@ export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
 export function useCurrentScreen(): LoginPasswordlessEmailCode {
   const screen = useContext(LoginPasswordlessEmailCodeContext);
   if (!screen) {
-    throw new Error('useCurrentScreen must be used within an <Auth0Provider>');
+    throw new Error('useCurrentScreen must be used within an <Auth0AculProvider>');
   }
   return screen;
 }

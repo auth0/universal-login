@@ -7,7 +7,7 @@ export function useMfaDetectBrowserCapabilities(): MfaDetectBrowserCapabilities 
   return useMemo(() => new MfaDetectBrowserCapabilities(), []);
 }
 
-export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
+export const Auth0AculProvider = ({ children }: { children: React.ReactNode }) => {
   const screen = useMfaDetectBrowserCapabilities();
   return <MfaDetectBrowserCapabilitiesContext.Provider value={screen}>{children}</MfaDetectBrowserCapabilitiesContext.Provider>;
 };
@@ -15,7 +15,7 @@ export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
 export function useCurrentScreen(): MfaDetectBrowserCapabilities {
   const screen = useContext(MfaDetectBrowserCapabilitiesContext);
   if (!screen) {
-    throw new Error('useCurrentScreen must be used within an <Auth0Provider>');
+    throw new Error('useCurrentScreen must be used within an <Auth0AculProvider>');
   }
   return screen;
 }

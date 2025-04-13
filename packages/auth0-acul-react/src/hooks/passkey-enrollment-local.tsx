@@ -7,7 +7,7 @@ export function usePasskeyEnrollmentLocal(): PasskeyEnrollmentLocal {
   return useMemo(() => new PasskeyEnrollmentLocal(), []);
 }
 
-export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
+export const Auth0AculProvider = ({ children }: { children: React.ReactNode }) => {
   const screen = usePasskeyEnrollmentLocal();
   return <PasskeyEnrollmentLocalContext.Provider value={screen}>{children}</PasskeyEnrollmentLocalContext.Provider>;
 };
@@ -15,7 +15,7 @@ export const Auth0Provider = ({ children }: { children: React.ReactNode }) => {
 export function useCurrentScreen(): PasskeyEnrollmentLocal {
   const screen = useContext(PasskeyEnrollmentLocalContext);
   if (!screen) {
-    throw new Error('useCurrentScreen must be used within an <Auth0Provider>');
+    throw new Error('useCurrentScreen must be used within an <Auth0AculProvider>');
   }
   return screen;
 }
