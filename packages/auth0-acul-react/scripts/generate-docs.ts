@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { Project, SyntaxKind } from 'ts-morph';
+import { Project, SyntaxKind, MethodDeclaration } from 'ts-morph';
 import { fileURLToPath } from 'url';
 
 // ESM-compatible __dirname
@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 // === Paths ===
 const CORE_SDK_PATH = path.resolve(__dirname, '../../auth0-acul-js');
 const SCREENS_PATH = path.join(CORE_SDK_PATH, 'src/screens');
-const DOCS_OUTPUT_PATH = path.resolve(__dirname, '../docs/screens');
+const DOCS_OUTPUT_PATH = path.resolve(__dirname, '../docs');
 
 // === Utility: PascalCase → kebab-case
 function toKebabCase(str: string): string {
@@ -37,22 +37,23 @@ const project = new Project({
 });
 project.addSourceFilesAtPaths(path.join(SCREENS_PATH, '**/*.ts'));
 
-// === Step 3: Load exported screen classes from index
 const entryFile = project.getSourceFileOrThrow(path.join(SCREENS_PATH, 'index.ts'));
 
+// === Step 3: Find screen classes ===
 const screenExports = entryFile.getExportSymbols().filter((symbol) => {
   const aliasedSymbol = symbol.getAliasedSymbol?.();
   const classDecl = aliasedSymbol?.getDeclarations()[0];
   return classDecl?.getKindName() === 'ClassDeclaration';
 });
 
-// === Step 4: Generate markdown per screen
+// === Step 4: Generate docs for each screen ===
 for (const symbol of screenExports) {
   const screenName = symbol.getName(); // e.g., MfaCountryCodes
   const kebabName = toKebabCase(screenName); // e.g., mfa-country-codes
-  const hookName = `use${screenName}`; // useMfaCountryCodes
+  const hookName = `use${screenName}`;
   const docPath = path.join(DOCS_OUTPUT_PATH, `${kebabName}.md`);
   const screenPath = path.join(SCREENS_PATH, kebabName, 'index.ts');
+  const membersTypeName = `${screenName}Members`;
 
   const sourceFile = project.getSourceFile(screenPath);
   if (!sourceFile) {
@@ -60,36 +61,72 @@ for (const symbol of screenExports) {
     continue;
   }
 
-  // Extract exported interfaces/types
+  // === Find public methods for screen example
+  const classDecl = sourceFile.getClasses().find((cls) => cls.getName() === screenName);
+  const methods: string[] = classDecl
+    ? classDecl.getMembers()
+        .filter((m) => m.getKind() === SyntaxKind.MethodDeclaration)
+        .map((m) => (m as MethodDeclaration).getName())
+    : [];
+
+  const exampleMethod =
+    methods.length > 0
+      ? `screen.${methods[0]}(${methods[0] === 'login' ? `{ identifier: 'user@example.com', password: '***' }` : '...' });`
+      : '// screen method call';
+
+  // === Extract exported types
   const exportedTypes: string[] = [];
+  const exportedInterfaces: string[] = [];
+  const exportedTypeAliases: string[] = [];
+
   const exports = sourceFile.getExportedDeclarations();
   for (const [name, declarations] of exports) {
-    const isType = declarations.some((d) =>
-      [SyntaxKind.InterfaceDeclaration, SyntaxKind.TypeAliasDeclaration].includes(d.getKind())
-    );
-    if (isType) exportedTypes.push(name);
+    declarations.forEach((d) => {
+      if (d.getKind() === SyntaxKind.InterfaceDeclaration) exportedInterfaces.push(name);
+      if (d.getKind() === SyntaxKind.TypeAliasDeclaration) exportedTypeAliases.push(name);
+    });
+    exportedTypes.push(name);
   }
 
   const interfaceImportBlock = exportedTypes.length
     ? `\`\`\`ts
 import type { ${exportedTypes.join(', ')} } from '@auth0/auth0-acul-react/${kebabName}';
 \`\`\``
-    : '> _(No interfaces exported for this screen)_';
+    : '> _(No interfaces or types exported for this screen)_';
 
-  const interfaceLinksBlock = exportedTypes.length
-    ? `### 🔸 Interface Documentation
-  
-  You can find detailed documentation for the available interfaces below.  
-  These types help with typing screen inputs, properties, and screen-specific data models:\n\n${exportedTypes
-    .map(
-      (name) =>
-        `- [\`${name}\`](https://auth0.github.io/universal-login/interfaces/Classes.${name}.html)`
-    )
-    .join('\n')}`
-    : '';
+  // === API References Block
+  const apiReferencesBlock = `## 🔸 API References
 
-  const membersTypeName = `${screenName}Members`;
+This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
 
+**Context Type (via Provider):**
+- [\`${membersTypeName}\`](https://auth0.github.io/universal-login/interfaces/Classes.${membersTypeName}.html) — gives all contextual properties for this screen.
+
+${
+  exportedInterfaces.length
+    ? '**Interfaces:**\n' +
+      exportedInterfaces
+        .map(
+          (name) =>
+            `- [\`${name}\`](https://auth0.github.io/universal-login/interfaces/Classes.${name}.html)`
+        )
+        .join('\n')
+    : ''
+}
+
+${
+  exportedTypeAliases.length
+    ? '\n**Types:**\n' +
+      exportedTypeAliases
+        .map(
+          (name) =>
+            `- [\`${name}\`](https://auth0.github.io/universal-login/types/Classes.${name}.html)`
+        )
+        .join('\n')
+    : ''
+}`.trim();
+
+  // === Final Markdown Content
   const content = `---
 title: ${kebabName}
 sidebar_label: ${screenName}
@@ -108,9 +145,11 @@ This creates a new \`${screenName}\` instance:
 \`\`\`tsx
 import { ${hookName} } from '@auth0/auth0-acul-react/${kebabName}';
 
-const screen = ${hookName}();
-screen.login({ identifier: 'user@example.com', password: '***' });
+const screen = ${hookName}(); // typed as ${membersTypeName}
+${exampleMethod}
 \`\`\`
+
+> View [\`${membersTypeName}\`](https://auth0.github.io/universal-login/interfaces/Classes.${membersTypeName}.html) — gives all contextual properties for this screen.
 
 ---
 
@@ -134,21 +173,22 @@ Then access the screen instance anywhere via context:
 \`\`\`tsx
 const screen = useCurrentScreen(); // typed as ${membersTypeName}
 \`\`\`
-
-> View [\`${membersTypeName}\`](https://auth0.github.io/universal-login/interfaces/Classes.${membersTypeName}.html) — provides all contextual properties for this screen.
+> View [\`${membersTypeName}\`](https://auth0.github.io/universal-login/interfaces/Classes.${membersTypeName}.html) — gives all contextual properties for this screen.
 
 ---
 
 ## 🔹 Interface Usage
 
-The following interfaces are supported by \`${screenName}\` and are useful for typing inputs, outputs, and screen properties.
+The following interfaces and types are available for \`${screenName}\`:
 
 ${interfaceImportBlock}
 
-${interfaceLinksBlock}
+---
+
+${apiReferencesBlock}
 `;
 
   fs.writeFileSync(docPath, content.trim() + '\n', 'utf-8');
 }
 
-console.log('📘 Successfully generated screen docs at: docs/screens/');
+console.log('📘 Successfully generated screen docs at: docs/');
