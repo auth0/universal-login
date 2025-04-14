@@ -20,7 +20,7 @@ const screen = useSignup(); // typed as SignupMembers
 screen.signup(...);
 ```
 
-> View [`SignupMembers`](https://auth0.github.io/universal-login/interfaces/Classes.SignupMembers.html) — gives all contextual properties for this screen.
+> View [`SignupMembers`](https://auth0.github.io/universal-login/interfaces/Classes.SignupMembers.html) — this interface describes all properties and methods exposed by the `Signup` screen.
 
 ---
 
@@ -44,7 +44,8 @@ Then access the screen instance anywhere via context:
 ```tsx
 const screen = useCurrentScreen(); // typed as SignupMembers
 ```
-> View [`SignupMembers`](https://auth0.github.io/universal-login/interfaces/Classes.SignupMembers.html) — gives all contextual properties for this screen.
+
+> View [`SignupMembers`](https://auth0.github.io/universal-login/interfaces/Classes.SignupMembers.html) — this interface describes all properties and methods exposed by the `Signup` screen.
 
 ---
 
@@ -52,18 +53,17 @@ const screen = useCurrentScreen(); // typed as SignupMembers
 
 The following interfaces and types are available for `Signup`:
 
-```ts
-import type { default, SignupMembers, SignupOptions, ScreenMembersOnSignup, TransactionMembersOnSignup, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/signup';
-```
+**Import:**
+`import type { default, SignupMembers, SignupOptions, ScreenMembersOnSignup, TransactionMembersOnSignup, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/signup';`
 
 ---
 
 ## 🔸 API References
 
-This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
+This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
 
-**Context Type (via Provider):**
-- [`SignupMembers`](https://auth0.github.io/universal-login/interfaces/Classes.SignupMembers.html) — gives all contextual properties for this screen.
+**Screen Class Reference:**  
+- [`SignupMembers`](https://auth0.github.io/universal-login/interfaces/Classes.SignupMembers.html) — this interface describes all properties and methods exposed by the `Signup` screen.
 
 **Interfaces:**
 - [`SignupMembers`](https://auth0.github.io/universal-login/interfaces/Classes.SignupMembers.html)

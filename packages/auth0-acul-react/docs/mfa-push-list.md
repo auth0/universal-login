@@ -20,7 +20,7 @@ const screen = useMfaPushList(); // typed as MfaPushListMembers
 screen.selectMfaPushDevice(...);
 ```
 
-> View [`MfaPushListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushListMembers.html) — gives all contextual properties for this screen.
+> View [`MfaPushListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushListMembers.html) — this interface describes all properties and methods exposed by the `MfaPushList` screen.
 
 ---
 
@@ -44,7 +44,8 @@ Then access the screen instance anywhere via context:
 ```tsx
 const screen = useCurrentScreen(); // typed as MfaPushListMembers
 ```
-> View [`MfaPushListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushListMembers.html) — gives all contextual properties for this screen.
+
+> View [`MfaPushListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushListMembers.html) — this interface describes all properties and methods exposed by the `MfaPushList` screen.
 
 ---
 
@@ -52,18 +53,17 @@ const screen = useCurrentScreen(); // typed as MfaPushListMembers
 
 The following interfaces and types are available for `MfaPushList`:
 
-```ts
-import type { default, MfaPushListMembers, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-push-list';
-```
+**Import:**
+`import type { default, MfaPushListMembers, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-push-list';`
 
 ---
 
 ## 🔸 API References
 
-This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
+This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
 
-**Context Type (via Provider):**
-- [`MfaPushListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushListMembers.html) — gives all contextual properties for this screen.
+**Screen Class Reference:**  
+- [`MfaPushListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushListMembers.html) — this interface describes all properties and methods exposed by the `MfaPushList` screen.
 
 **Interfaces:**
 - [`MfaPushListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushListMembers.html)

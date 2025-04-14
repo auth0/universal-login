@@ -20,7 +20,7 @@ const screen = useMfaOtpChallenge(); // typed as MfaOtpChallengeMembers
 screen.continue(...);
 ```
 
-> View [`MfaOtpChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpChallengeMembers.html) — gives all contextual properties for this screen.
+> View [`MfaOtpChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpChallengeMembers.html) — this interface describes all properties and methods exposed by the `MfaOtpChallenge` screen.
 
 ---
 
@@ -44,7 +44,8 @@ Then access the screen instance anywhere via context:
 ```tsx
 const screen = useCurrentScreen(); // typed as MfaOtpChallengeMembers
 ```
-> View [`MfaOtpChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpChallengeMembers.html) — gives all contextual properties for this screen.
+
+> View [`MfaOtpChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpChallengeMembers.html) — this interface describes all properties and methods exposed by the `MfaOtpChallenge` screen.
 
 ---
 
@@ -52,18 +53,17 @@ const screen = useCurrentScreen(); // typed as MfaOtpChallengeMembers
 
 The following interfaces and types are available for `MfaOtpChallenge`:
 
-```ts
-import type { default, MfaOtpChallengeMembers, ContinueOptions, TryAnotherMethodOptions, ScreenMembersOnMfaOtpChallenge, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-otp-challenge';
-```
+**Import:**
+`import type { default, MfaOtpChallengeMembers, ContinueOptions, TryAnotherMethodOptions, ScreenMembersOnMfaOtpChallenge, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-otp-challenge';`
 
 ---
 
 ## 🔸 API References
 
-This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
+This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
 
-**Context Type (via Provider):**
-- [`MfaOtpChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpChallengeMembers.html) — gives all contextual properties for this screen.
+**Screen Class Reference:**  
+- [`MfaOtpChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpChallengeMembers.html) — this interface describes all properties and methods exposed by the `MfaOtpChallenge` screen.
 
 **Interfaces:**
 - [`MfaOtpChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpChallengeMembers.html)

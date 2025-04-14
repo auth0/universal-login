@@ -20,7 +20,7 @@ const screen = useLoginPasswordlessSmsOtp(); // typed as LoginPasswordlessSmsOtp
 screen.submitOTP(...);
 ```
 
-> View [`LoginPasswordlessSmsOtpMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordlessSmsOtpMembers.html) — gives all contextual properties for this screen.
+> View [`LoginPasswordlessSmsOtpMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordlessSmsOtpMembers.html) — this interface describes all properties and methods exposed by the `LoginPasswordlessSmsOtp` screen.
 
 ---
 
@@ -44,7 +44,8 @@ Then access the screen instance anywhere via context:
 ```tsx
 const screen = useCurrentScreen(); // typed as LoginPasswordlessSmsOtpMembers
 ```
-> View [`LoginPasswordlessSmsOtpMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordlessSmsOtpMembers.html) — gives all contextual properties for this screen.
+
+> View [`LoginPasswordlessSmsOtpMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordlessSmsOtpMembers.html) — this interface describes all properties and methods exposed by the `LoginPasswordlessSmsOtp` screen.
 
 ---
 
@@ -52,18 +53,17 @@ const screen = useCurrentScreen(); // typed as LoginPasswordlessSmsOtpMembers
 
 The following interfaces and types are available for `LoginPasswordlessSmsOtp`:
 
-```ts
-import type { default, LoginPasswordlessSmsOtpMembers, SubmitOTPOptions, ScreenMembersOnLoginPasswordlessSmsOtp, TransactionMembersOnLoginPasswordlessSmsOtp, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/login-passwordless-sms-otp';
-```
+**Import:**
+`import type { default, LoginPasswordlessSmsOtpMembers, SubmitOTPOptions, ScreenMembersOnLoginPasswordlessSmsOtp, TransactionMembersOnLoginPasswordlessSmsOtp, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/login-passwordless-sms-otp';`
 
 ---
 
 ## 🔸 API References
 
-This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
+This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
 
-**Context Type (via Provider):**
-- [`LoginPasswordlessSmsOtpMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordlessSmsOtpMembers.html) — gives all contextual properties for this screen.
+**Screen Class Reference:**  
+- [`LoginPasswordlessSmsOtpMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordlessSmsOtpMembers.html) — this interface describes all properties and methods exposed by the `LoginPasswordlessSmsOtp` screen.
 
 **Interfaces:**
 - [`LoginPasswordlessSmsOtpMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordlessSmsOtpMembers.html)

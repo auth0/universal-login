@@ -20,7 +20,7 @@ const screen = usePasskeyEnrollment(); // typed as PasskeyEnrollmentMembers
 screen.continuePasskeyEnrollment(...);
 ```
 
-> View [`PasskeyEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PasskeyEnrollmentMembers.html) — gives all contextual properties for this screen.
+> View [`PasskeyEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PasskeyEnrollmentMembers.html) — this interface describes all properties and methods exposed by the `PasskeyEnrollment` screen.
 
 ---
 
@@ -44,7 +44,8 @@ Then access the screen instance anywhere via context:
 ```tsx
 const screen = useCurrentScreen(); // typed as PasskeyEnrollmentMembers
 ```
-> View [`PasskeyEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PasskeyEnrollmentMembers.html) — gives all contextual properties for this screen.
+
+> View [`PasskeyEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PasskeyEnrollmentMembers.html) — this interface describes all properties and methods exposed by the `PasskeyEnrollment` screen.
 
 ---
 
@@ -52,18 +53,17 @@ const screen = useCurrentScreen(); // typed as PasskeyEnrollmentMembers
 
 The following interfaces and types are available for `PasskeyEnrollment`:
 
-```ts
-import type { default, PasskeyEnrollmentMembers, ScreenMembersOnPasskeyEnrollment, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/passkey-enrollment';
-```
+**Import:**
+`import type { default, PasskeyEnrollmentMembers, ScreenMembersOnPasskeyEnrollment, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/passkey-enrollment';`
 
 ---
 
 ## 🔸 API References
 
-This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
+This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
 
-**Context Type (via Provider):**
-- [`PasskeyEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PasskeyEnrollmentMembers.html) — gives all contextual properties for this screen.
+**Screen Class Reference:**  
+- [`PasskeyEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PasskeyEnrollmentMembers.html) — this interface describes all properties and methods exposed by the `PasskeyEnrollment` screen.
 
 **Interfaces:**
 - [`PasskeyEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PasskeyEnrollmentMembers.html)

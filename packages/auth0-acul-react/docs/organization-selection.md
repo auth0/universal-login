@@ -20,7 +20,7 @@ const screen = useOrganizationSelection(); // typed as OrganizationSelectionMemb
 screen.continueWithOrganizationName(...);
 ```
 
-> View [`OrganizationSelectionMembers`](https://auth0.github.io/universal-login/interfaces/Classes.OrganizationSelectionMembers.html) — gives all contextual properties for this screen.
+> View [`OrganizationSelectionMembers`](https://auth0.github.io/universal-login/interfaces/Classes.OrganizationSelectionMembers.html) — this interface describes all properties and methods exposed by the `OrganizationSelection` screen.
 
 ---
 
@@ -44,7 +44,8 @@ Then access the screen instance anywhere via context:
 ```tsx
 const screen = useCurrentScreen(); // typed as OrganizationSelectionMembers
 ```
-> View [`OrganizationSelectionMembers`](https://auth0.github.io/universal-login/interfaces/Classes.OrganizationSelectionMembers.html) — gives all contextual properties for this screen.
+
+> View [`OrganizationSelectionMembers`](https://auth0.github.io/universal-login/interfaces/Classes.OrganizationSelectionMembers.html) — this interface describes all properties and methods exposed by the `OrganizationSelection` screen.
 
 ---
 
@@ -52,18 +53,17 @@ const screen = useCurrentScreen(); // typed as OrganizationSelectionMembers
 
 The following interfaces and types are available for `OrganizationSelection`:
 
-```ts
-import type { default, OrganizationSelectionMembers, ContinueWithOrganizationNameOptions, ScreenMembersOnOrganizationSelection, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/organization-selection';
-```
+**Import:**
+`import type { default, OrganizationSelectionMembers, ContinueWithOrganizationNameOptions, ScreenMembersOnOrganizationSelection, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/organization-selection';`
 
 ---
 
 ## 🔸 API References
 
-This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
+This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
 
-**Context Type (via Provider):**
-- [`OrganizationSelectionMembers`](https://auth0.github.io/universal-login/interfaces/Classes.OrganizationSelectionMembers.html) — gives all contextual properties for this screen.
+**Screen Class Reference:**  
+- [`OrganizationSelectionMembers`](https://auth0.github.io/universal-login/interfaces/Classes.OrganizationSelectionMembers.html) — this interface describes all properties and methods exposed by the `OrganizationSelection` screen.
 
 **Interfaces:**
 - [`OrganizationSelectionMembers`](https://auth0.github.io/universal-login/interfaces/Classes.OrganizationSelectionMembers.html)

@@ -20,7 +20,7 @@ const screen = useEmailIdentifierChallenge(); // typed as EmailIdentifierChallen
 screen.submitEmailChallenge(...);
 ```
 
-> View [`EmailIdentifierChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.EmailIdentifierChallengeMembers.html) — gives all contextual properties for this screen.
+> View [`EmailIdentifierChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.EmailIdentifierChallengeMembers.html) — this interface describes all properties and methods exposed by the `EmailIdentifierChallenge` screen.
 
 ---
 
@@ -44,7 +44,8 @@ Then access the screen instance anywhere via context:
 ```tsx
 const screen = useCurrentScreen(); // typed as EmailIdentifierChallengeMembers
 ```
-> View [`EmailIdentifierChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.EmailIdentifierChallengeMembers.html) — gives all contextual properties for this screen.
+
+> View [`EmailIdentifierChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.EmailIdentifierChallengeMembers.html) — this interface describes all properties and methods exposed by the `EmailIdentifierChallenge` screen.
 
 ---
 
@@ -52,18 +53,17 @@ const screen = useCurrentScreen(); // typed as EmailIdentifierChallengeMembers
 
 The following interfaces and types are available for `EmailIdentifierChallenge`:
 
-```ts
-import type { default, EmailIdentifierChallengeMembers, ScreenMembersOnEmailIdentifierChallenge, EmailChallengeOptions, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/email-identifier-challenge';
-```
+**Import:**
+`import type { default, EmailIdentifierChallengeMembers, ScreenMembersOnEmailIdentifierChallenge, EmailChallengeOptions, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/email-identifier-challenge';`
 
 ---
 
 ## 🔸 API References
 
-This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
+This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
 
-**Context Type (via Provider):**
-- [`EmailIdentifierChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.EmailIdentifierChallengeMembers.html) — gives all contextual properties for this screen.
+**Screen Class Reference:**  
+- [`EmailIdentifierChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.EmailIdentifierChallengeMembers.html) — this interface describes all properties and methods exposed by the `EmailIdentifierChallenge` screen.
 
 **Interfaces:**
 - [`EmailIdentifierChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.EmailIdentifierChallengeMembers.html)

@@ -20,7 +20,7 @@ const screen = useCustomizedConsent(); // typed as CustomizedConsentMembers
 screen.accept(...);
 ```
 
-> View [`CustomizedConsentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.CustomizedConsentMembers.html) — gives all contextual properties for this screen.
+> View [`CustomizedConsentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.CustomizedConsentMembers.html) — this interface describes all properties and methods exposed by the `CustomizedConsent` screen.
 
 ---
 
@@ -44,7 +44,8 @@ Then access the screen instance anywhere via context:
 ```tsx
 const screen = useCurrentScreen(); // typed as CustomizedConsentMembers
 ```
-> View [`CustomizedConsentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.CustomizedConsentMembers.html) — gives all contextual properties for this screen.
+
+> View [`CustomizedConsentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.CustomizedConsentMembers.html) — this interface describes all properties and methods exposed by the `CustomizedConsent` screen.
 
 ---
 
@@ -52,15 +53,14 @@ const screen = useCurrentScreen(); // typed as CustomizedConsentMembers
 
 The following interfaces and types are available for `CustomizedConsent`:
 
-```ts
-import type { default } from '@auth0/auth0-acul-react/customized-consent';
-```
+**Import:**
+`import type { default } from '@auth0/auth0-acul-react/customized-consent';`
 
 ---
 
 ## 🔸 API References
 
-This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
+This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
 
-**Context Type (via Provider):**
-- [`CustomizedConsentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.CustomizedConsentMembers.html) — gives all contextual properties for this screen.
+**Screen Class Reference:**  
+- [`CustomizedConsentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.CustomizedConsentMembers.html) — this interface describes all properties and methods exposed by the `CustomizedConsent` screen.

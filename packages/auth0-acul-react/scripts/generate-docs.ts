@@ -89,18 +89,16 @@ for (const symbol of screenExports) {
   }
 
   const interfaceImportBlock = exportedTypes.length
-    ? `\`\`\`ts
-import type { ${exportedTypes.join(', ')} } from '@auth0/auth0-acul-react/${kebabName}';
-\`\`\``
+    ? `**Import:**\n\`import type { ${exportedTypes.join(', ')} } from '@auth0/auth0-acul-react/${kebabName}';\``
     : '> _(No interfaces or types exported for this screen)_';
 
   // === API References Block
   const apiReferencesBlock = `## 🔸 API References
 
-This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
+This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
 
-**Context Type (via Provider):**
-- [\`${membersTypeName}\`](https://auth0.github.io/universal-login/interfaces/Classes.${membersTypeName}.html) — gives all contextual properties for this screen.
+**Screen Class Reference:**  
+- [\`${membersTypeName}\`](https://auth0.github.io/universal-login/interfaces/Classes.${membersTypeName}.html) — this interface describes all properties and methods exposed by the \`${screenName}\` screen.
 
 ${
   exportedInterfaces.length
@@ -149,7 +147,7 @@ const screen = ${hookName}(); // typed as ${membersTypeName}
 ${exampleMethod}
 \`\`\`
 
-> View [\`${membersTypeName}\`](https://auth0.github.io/universal-login/interfaces/Classes.${membersTypeName}.html) — gives all contextual properties for this screen.
+> View [\`${membersTypeName}\`](https://auth0.github.io/universal-login/interfaces/Classes.${membersTypeName}.html) — this interface describes all properties and methods exposed by the \`${screenName}\` screen.
 
 ---
 
@@ -173,7 +171,8 @@ Then access the screen instance anywhere via context:
 \`\`\`tsx
 const screen = useCurrentScreen(); // typed as ${membersTypeName}
 \`\`\`
-> View [\`${membersTypeName}\`](https://auth0.github.io/universal-login/interfaces/Classes.${membersTypeName}.html) — gives all contextual properties for this screen.
+
+> View [\`${membersTypeName}\`](https://auth0.github.io/universal-login/interfaces/Classes.${membersTypeName}.html) — this interface describes all properties and methods exposed by the \`${screenName}\` screen.
 
 ---
 

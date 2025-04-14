@@ -20,7 +20,7 @@ const screen = useLogin(); // typed as LoginMembers
 screen.login({ identifier: 'user@example.com', password: '***' });
 ```
 
-> View [`LoginMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginMembers.html) — gives all contextual properties for this screen.
+> View [`LoginMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginMembers.html) — this interface describes all properties and methods exposed by the `Login` screen.
 
 ---
 
@@ -44,7 +44,8 @@ Then access the screen instance anywhere via context:
 ```tsx
 const screen = useCurrentScreen(); // typed as LoginMembers
 ```
-> View [`LoginMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginMembers.html) — gives all contextual properties for this screen.
+
+> View [`LoginMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginMembers.html) — this interface describes all properties and methods exposed by the `Login` screen.
 
 ---
 
@@ -52,18 +53,17 @@ const screen = useCurrentScreen(); // typed as LoginMembers
 
 The following interfaces and types are available for `Login`:
 
-```ts
-import type { default, LoginMembers, LoginOptions, SocialLoginOptions, ScreenMembersOnLogin, TransactionMembersOnLogin, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/login';
-```
+**Import:**
+`import type { default, LoginMembers, LoginOptions, SocialLoginOptions, ScreenMembersOnLogin, TransactionMembersOnLogin, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/login';`
 
 ---
 
 ## 🔸 API References
 
-This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
+This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
 
-**Context Type (via Provider):**
-- [`LoginMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginMembers.html) — gives all contextual properties for this screen.
+**Screen Class Reference:**  
+- [`LoginMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginMembers.html) — this interface describes all properties and methods exposed by the `Login` screen.
 
 **Interfaces:**
 - [`LoginMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginMembers.html)

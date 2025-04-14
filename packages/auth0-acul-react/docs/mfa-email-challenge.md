@@ -20,7 +20,7 @@ const screen = useMfaEmailChallenge(); // typed as MfaEmailChallengeMembers
 screen.continue(...);
 ```
 
-> View [`MfaEmailChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEmailChallengeMembers.html) — gives all contextual properties for this screen.
+> View [`MfaEmailChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEmailChallengeMembers.html) — this interface describes all properties and methods exposed by the `MfaEmailChallenge` screen.
 
 ---
 
@@ -44,7 +44,8 @@ Then access the screen instance anywhere via context:
 ```tsx
 const screen = useCurrentScreen(); // typed as MfaEmailChallengeMembers
 ```
-> View [`MfaEmailChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEmailChallengeMembers.html) — gives all contextual properties for this screen.
+
+> View [`MfaEmailChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEmailChallengeMembers.html) — this interface describes all properties and methods exposed by the `MfaEmailChallenge` screen.
 
 ---
 
@@ -52,18 +53,17 @@ const screen = useCurrentScreen(); // typed as MfaEmailChallengeMembers
 
 The following interfaces and types are available for `MfaEmailChallenge`:
 
-```ts
-import type { default, MfaEmailChallengeMembers, ContinueOptions, ResendCodeOptions, TryAnotherMethodOptions, ScreenMembersOnMfaEmailChallenge, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-email-challenge';
-```
+**Import:**
+`import type { default, MfaEmailChallengeMembers, ContinueOptions, ResendCodeOptions, TryAnotherMethodOptions, ScreenMembersOnMfaEmailChallenge, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-email-challenge';`
 
 ---
 
 ## 🔸 API References
 
-This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
+This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
 
-**Context Type (via Provider):**
-- [`MfaEmailChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEmailChallengeMembers.html) — gives all contextual properties for this screen.
+**Screen Class Reference:**  
+- [`MfaEmailChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEmailChallengeMembers.html) — this interface describes all properties and methods exposed by the `MfaEmailChallenge` screen.
 
 **Interfaces:**
 - [`MfaEmailChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEmailChallengeMembers.html)

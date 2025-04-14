@@ -20,7 +20,7 @@ const screen = useResetPasswordMfaSmsChallenge(); // typed as ResetPasswordMfaSm
 screen.continueMfaSmsChallenge(...);
 ```
 
-> View [`ResetPasswordMfaSmsChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaSmsChallengeMembers.html) — gives all contextual properties for this screen.
+> View [`ResetPasswordMfaSmsChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaSmsChallengeMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordMfaSmsChallenge` screen.
 
 ---
 
@@ -44,7 +44,8 @@ Then access the screen instance anywhere via context:
 ```tsx
 const screen = useCurrentScreen(); // typed as ResetPasswordMfaSmsChallengeMembers
 ```
-> View [`ResetPasswordMfaSmsChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaSmsChallengeMembers.html) — gives all contextual properties for this screen.
+
+> View [`ResetPasswordMfaSmsChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaSmsChallengeMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordMfaSmsChallenge` screen.
 
 ---
 
@@ -52,18 +53,17 @@ const screen = useCurrentScreen(); // typed as ResetPasswordMfaSmsChallengeMembe
 
 The following interfaces and types are available for `ResetPasswordMfaSmsChallenge`:
 
-```ts
-import type { default, ResetPasswordMfaSmsChallengeMembers, MfaSmsChallengeOptions, ScreenMembersOnResetPasswordMfaSmsChallenge, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/reset-password-mfa-sms-challenge';
-```
+**Import:**
+`import type { default, ResetPasswordMfaSmsChallengeMembers, MfaSmsChallengeOptions, ScreenMembersOnResetPasswordMfaSmsChallenge, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/reset-password-mfa-sms-challenge';`
 
 ---
 
 ## 🔸 API References
 
-This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
+This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
 
-**Context Type (via Provider):**
-- [`ResetPasswordMfaSmsChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaSmsChallengeMembers.html) — gives all contextual properties for this screen.
+**Screen Class Reference:**  
+- [`ResetPasswordMfaSmsChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaSmsChallengeMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordMfaSmsChallenge` screen.
 
 **Interfaces:**
 - [`ResetPasswordMfaSmsChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaSmsChallengeMembers.html)

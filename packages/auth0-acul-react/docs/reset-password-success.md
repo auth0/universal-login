@@ -20,7 +20,7 @@ const screen = useResetPasswordSuccess(); // typed as ResetPasswordSuccessMember
 // screen method call
 ```
 
-> View [`ResetPasswordSuccessMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordSuccessMembers.html) — gives all contextual properties for this screen.
+> View [`ResetPasswordSuccessMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordSuccessMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordSuccess` screen.
 
 ---
 
@@ -44,7 +44,8 @@ Then access the screen instance anywhere via context:
 ```tsx
 const screen = useCurrentScreen(); // typed as ResetPasswordSuccessMembers
 ```
-> View [`ResetPasswordSuccessMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordSuccessMembers.html) — gives all contextual properties for this screen.
+
+> View [`ResetPasswordSuccessMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordSuccessMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordSuccess` screen.
 
 ---
 
@@ -52,18 +53,17 @@ const screen = useCurrentScreen(); // typed as ResetPasswordSuccessMembers
 
 The following interfaces and types are available for `ResetPasswordSuccess`:
 
-```ts
-import type { default, ResetPasswordSuccessMembers, ScreenMembersOnResetPasswordSuccess, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/reset-password-success';
-```
+**Import:**
+`import type { default, ResetPasswordSuccessMembers, ScreenMembersOnResetPasswordSuccess, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/reset-password-success';`
 
 ---
 
 ## 🔸 API References
 
-This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
+This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
 
-**Context Type (via Provider):**
-- [`ResetPasswordSuccessMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordSuccessMembers.html) — gives all contextual properties for this screen.
+**Screen Class Reference:**  
+- [`ResetPasswordSuccessMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordSuccessMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordSuccess` screen.
 
 **Interfaces:**
 - [`ResetPasswordSuccessMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordSuccessMembers.html)

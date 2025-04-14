@@ -20,7 +20,7 @@ const screen = useAcceptInvitation(); // typed as AcceptInvitationMembers
 screen.acceptInvitation(...);
 ```
 
-> View [`AcceptInvitationMembers`](https://auth0.github.io/universal-login/interfaces/Classes.AcceptInvitationMembers.html) — gives all contextual properties for this screen.
+> View [`AcceptInvitationMembers`](https://auth0.github.io/universal-login/interfaces/Classes.AcceptInvitationMembers.html) — this interface describes all properties and methods exposed by the `AcceptInvitation` screen.
 
 ---
 
@@ -44,7 +44,8 @@ Then access the screen instance anywhere via context:
 ```tsx
 const screen = useCurrentScreen(); // typed as AcceptInvitationMembers
 ```
-> View [`AcceptInvitationMembers`](https://auth0.github.io/universal-login/interfaces/Classes.AcceptInvitationMembers.html) — gives all contextual properties for this screen.
+
+> View [`AcceptInvitationMembers`](https://auth0.github.io/universal-login/interfaces/Classes.AcceptInvitationMembers.html) — this interface describes all properties and methods exposed by the `AcceptInvitation` screen.
 
 ---
 
@@ -52,18 +53,17 @@ const screen = useCurrentScreen(); // typed as AcceptInvitationMembers
 
 The following interfaces and types are available for `AcceptInvitation`:
 
-```ts
-import type { default, AcceptInvitationMembers, ScreenMembersOnAcceptInvitation, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/accept-invitation';
-```
+**Import:**
+`import type { default, AcceptInvitationMembers, ScreenMembersOnAcceptInvitation, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/accept-invitation';`
 
 ---
 
 ## 🔸 API References
 
-This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
+This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
 
-**Context Type (via Provider):**
-- [`AcceptInvitationMembers`](https://auth0.github.io/universal-login/interfaces/Classes.AcceptInvitationMembers.html) — gives all contextual properties for this screen.
+**Screen Class Reference:**  
+- [`AcceptInvitationMembers`](https://auth0.github.io/universal-login/interfaces/Classes.AcceptInvitationMembers.html) — this interface describes all properties and methods exposed by the `AcceptInvitation` screen.
 
 **Interfaces:**
 - [`AcceptInvitationMembers`](https://auth0.github.io/universal-login/interfaces/Classes.AcceptInvitationMembers.html)

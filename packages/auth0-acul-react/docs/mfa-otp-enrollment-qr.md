@@ -20,7 +20,7 @@ const screen = useMfaOtpEnrollmentQr(); // typed as MfaOtpEnrollmentQrMembers
 screen.toggleView(...);
 ```
 
-> View [`MfaOtpEnrollmentQrMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpEnrollmentQrMembers.html) — gives all contextual properties for this screen.
+> View [`MfaOtpEnrollmentQrMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpEnrollmentQrMembers.html) — this interface describes all properties and methods exposed by the `MfaOtpEnrollmentQr` screen.
 
 ---
 
@@ -44,7 +44,8 @@ Then access the screen instance anywhere via context:
 ```tsx
 const screen = useCurrentScreen(); // typed as MfaOtpEnrollmentQrMembers
 ```
-> View [`MfaOtpEnrollmentQrMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpEnrollmentQrMembers.html) — gives all contextual properties for this screen.
+
+> View [`MfaOtpEnrollmentQrMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpEnrollmentQrMembers.html) — this interface describes all properties and methods exposed by the `MfaOtpEnrollmentQr` screen.
 
 ---
 
@@ -52,18 +53,17 @@ const screen = useCurrentScreen(); // typed as MfaOtpEnrollmentQrMembers
 
 The following interfaces and types are available for `MfaOtpEnrollmentQr`:
 
-```ts
-import type { default, MfaOtpEnrollmentQrMembers, ScreenMembersOnMfaOtpEnrollmentQr, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-otp-enrollment-qr';
-```
+**Import:**
+`import type { default, MfaOtpEnrollmentQrMembers, ScreenMembersOnMfaOtpEnrollmentQr, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-otp-enrollment-qr';`
 
 ---
 
 ## 🔸 API References
 
-This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
+This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
 
-**Context Type (via Provider):**
-- [`MfaOtpEnrollmentQrMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpEnrollmentQrMembers.html) — gives all contextual properties for this screen.
+**Screen Class Reference:**  
+- [`MfaOtpEnrollmentQrMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpEnrollmentQrMembers.html) — this interface describes all properties and methods exposed by the `MfaOtpEnrollmentQr` screen.
 
 **Interfaces:**
 - [`MfaOtpEnrollmentQrMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpEnrollmentQrMembers.html)

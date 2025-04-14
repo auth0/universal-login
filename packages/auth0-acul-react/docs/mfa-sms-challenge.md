@@ -20,7 +20,7 @@ const screen = useMfaSmsChallenge(); // typed as MfaSmsChallengeMembers
 screen.continueMfaSmsChallenge(...);
 ```
 
-> View [`MfaSmsChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsChallengeMembers.html) — gives all contextual properties for this screen.
+> View [`MfaSmsChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsChallengeMembers.html) — this interface describes all properties and methods exposed by the `MfaSmsChallenge` screen.
 
 ---
 
@@ -44,7 +44,8 @@ Then access the screen instance anywhere via context:
 ```tsx
 const screen = useCurrentScreen(); // typed as MfaSmsChallengeMembers
 ```
-> View [`MfaSmsChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsChallengeMembers.html) — gives all contextual properties for this screen.
+
+> View [`MfaSmsChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsChallengeMembers.html) — this interface describes all properties and methods exposed by the `MfaSmsChallenge` screen.
 
 ---
 
@@ -52,18 +53,17 @@ const screen = useCurrentScreen(); // typed as MfaSmsChallengeMembers
 
 The following interfaces and types are available for `MfaSmsChallenge`:
 
-```ts
-import type { default, MfaSmsChallengeMembers, MfaSmsChallengeOptions, ScreenMembersOnMfaSmsChallenge, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-sms-challenge';
-```
+**Import:**
+`import type { default, MfaSmsChallengeMembers, MfaSmsChallengeOptions, ScreenMembersOnMfaSmsChallenge, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-sms-challenge';`
 
 ---
 
 ## 🔸 API References
 
-This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
+This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
 
-**Context Type (via Provider):**
-- [`MfaSmsChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsChallengeMembers.html) — gives all contextual properties for this screen.
+**Screen Class Reference:**  
+- [`MfaSmsChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsChallengeMembers.html) — this interface describes all properties and methods exposed by the `MfaSmsChallenge` screen.
 
 **Interfaces:**
 - [`MfaSmsChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsChallengeMembers.html)

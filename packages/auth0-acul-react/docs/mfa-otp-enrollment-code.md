@@ -20,7 +20,7 @@ const screen = useMfaOtpEnrollmentCode(); // typed as MfaOtpEnrollmentCodeMember
 screen.continue(...);
 ```
 
-> View [`MfaOtpEnrollmentCodeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpEnrollmentCodeMembers.html) — gives all contextual properties for this screen.
+> View [`MfaOtpEnrollmentCodeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpEnrollmentCodeMembers.html) — this interface describes all properties and methods exposed by the `MfaOtpEnrollmentCode` screen.
 
 ---
 
@@ -44,7 +44,8 @@ Then access the screen instance anywhere via context:
 ```tsx
 const screen = useCurrentScreen(); // typed as MfaOtpEnrollmentCodeMembers
 ```
-> View [`MfaOtpEnrollmentCodeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpEnrollmentCodeMembers.html) — gives all contextual properties for this screen.
+
+> View [`MfaOtpEnrollmentCodeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpEnrollmentCodeMembers.html) — this interface describes all properties and methods exposed by the `MfaOtpEnrollmentCode` screen.
 
 ---
 
@@ -52,18 +53,17 @@ const screen = useCurrentScreen(); // typed as MfaOtpEnrollmentCodeMembers
 
 The following interfaces and types are available for `MfaOtpEnrollmentCode`:
 
-```ts
-import type { default, MfaOtpEnrollmentCodeMembers, ContinueOptions, TryAnotherMethodOptions, ScreenMembersOnMfaOtpEnrollmentCode, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-otp-enrollment-code';
-```
+**Import:**
+`import type { default, MfaOtpEnrollmentCodeMembers, ContinueOptions, TryAnotherMethodOptions, ScreenMembersOnMfaOtpEnrollmentCode, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-otp-enrollment-code';`
 
 ---
 
 ## 🔸 API References
 
-This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
+This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
 
-**Context Type (via Provider):**
-- [`MfaOtpEnrollmentCodeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpEnrollmentCodeMembers.html) — gives all contextual properties for this screen.
+**Screen Class Reference:**  
+- [`MfaOtpEnrollmentCodeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpEnrollmentCodeMembers.html) — this interface describes all properties and methods exposed by the `MfaOtpEnrollmentCode` screen.
 
 **Interfaces:**
 - [`MfaOtpEnrollmentCodeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpEnrollmentCodeMembers.html)

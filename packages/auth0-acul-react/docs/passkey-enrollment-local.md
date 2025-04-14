@@ -20,7 +20,7 @@ const screen = usePasskeyEnrollmentLocal(); // typed as PasskeyEnrollmentLocalMe
 screen.continuePasskeyEnrollment(...);
 ```
 
-> View [`PasskeyEnrollmentLocalMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PasskeyEnrollmentLocalMembers.html) — gives all contextual properties for this screen.
+> View [`PasskeyEnrollmentLocalMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PasskeyEnrollmentLocalMembers.html) — this interface describes all properties and methods exposed by the `PasskeyEnrollmentLocal` screen.
 
 ---
 
@@ -44,7 +44,8 @@ Then access the screen instance anywhere via context:
 ```tsx
 const screen = useCurrentScreen(); // typed as PasskeyEnrollmentLocalMembers
 ```
-> View [`PasskeyEnrollmentLocalMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PasskeyEnrollmentLocalMembers.html) — gives all contextual properties for this screen.
+
+> View [`PasskeyEnrollmentLocalMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PasskeyEnrollmentLocalMembers.html) — this interface describes all properties and methods exposed by the `PasskeyEnrollmentLocal` screen.
 
 ---
 
@@ -52,18 +53,17 @@ const screen = useCurrentScreen(); // typed as PasskeyEnrollmentLocalMembers
 
 The following interfaces and types are available for `PasskeyEnrollmentLocal`:
 
-```ts
-import type { default, PasskeyEnrollmentLocalMembers, AbortEnrollmentOptions, ScreenMembersOnPasskeyEnrollmentLocal, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/passkey-enrollment-local';
-```
+**Import:**
+`import type { default, PasskeyEnrollmentLocalMembers, AbortEnrollmentOptions, ScreenMembersOnPasskeyEnrollmentLocal, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/passkey-enrollment-local';`
 
 ---
 
 ## 🔸 API References
 
-This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
+This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
 
-**Context Type (via Provider):**
-- [`PasskeyEnrollmentLocalMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PasskeyEnrollmentLocalMembers.html) — gives all contextual properties for this screen.
+**Screen Class Reference:**  
+- [`PasskeyEnrollmentLocalMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PasskeyEnrollmentLocalMembers.html) — this interface describes all properties and methods exposed by the `PasskeyEnrollmentLocal` screen.
 
 **Interfaces:**
 - [`PasskeyEnrollmentLocalMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PasskeyEnrollmentLocalMembers.html)

@@ -20,7 +20,7 @@ const screen = useLoginPassword(); // typed as LoginPasswordMembers
 screen.login({ identifier: 'user@example.com', password: '***' });
 ```
 
-> View [`LoginPasswordMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordMembers.html) — gives all contextual properties for this screen.
+> View [`LoginPasswordMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordMembers.html) — this interface describes all properties and methods exposed by the `LoginPassword` screen.
 
 ---
 
@@ -44,7 +44,8 @@ Then access the screen instance anywhere via context:
 ```tsx
 const screen = useCurrentScreen(); // typed as LoginPasswordMembers
 ```
-> View [`LoginPasswordMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordMembers.html) — gives all contextual properties for this screen.
+
+> View [`LoginPasswordMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordMembers.html) — this interface describes all properties and methods exposed by the `LoginPassword` screen.
 
 ---
 
@@ -52,18 +53,17 @@ const screen = useCurrentScreen(); // typed as LoginPasswordMembers
 
 The following interfaces and types are available for `LoginPassword`:
 
-```ts
-import type { default, LoginPasswordMembers, LoginPasswordOptions, ScreenMembersOnLoginPassword, TransactionMembersOnLoginPassword, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/login-password';
-```
+**Import:**
+`import type { default, LoginPasswordMembers, LoginPasswordOptions, ScreenMembersOnLoginPassword, TransactionMembersOnLoginPassword, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/login-password';`
 
 ---
 
 ## 🔸 API References
 
-This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
+This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
 
-**Context Type (via Provider):**
-- [`LoginPasswordMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordMembers.html) — gives all contextual properties for this screen.
+**Screen Class Reference:**  
+- [`LoginPasswordMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordMembers.html) — this interface describes all properties and methods exposed by the `LoginPassword` screen.
 
 **Interfaces:**
 - [`LoginPasswordMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordMembers.html)

@@ -20,7 +20,7 @@ const screen = useResetPasswordMfaPushChallengePush(); // typed as ResetPassword
 screen.continue(...);
 ```
 
-> View [`ResetPasswordMfaPushChallengePushMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaPushChallengePushMembers.html) — gives all contextual properties for this screen.
+> View [`ResetPasswordMfaPushChallengePushMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaPushChallengePushMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordMfaPushChallengePush` screen.
 
 ---
 
@@ -44,7 +44,8 @@ Then access the screen instance anywhere via context:
 ```tsx
 const screen = useCurrentScreen(); // typed as ResetPasswordMfaPushChallengePushMembers
 ```
-> View [`ResetPasswordMfaPushChallengePushMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaPushChallengePushMembers.html) — gives all contextual properties for this screen.
+
+> View [`ResetPasswordMfaPushChallengePushMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaPushChallengePushMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordMfaPushChallengePush` screen.
 
 ---
 
@@ -52,18 +53,17 @@ const screen = useCurrentScreen(); // typed as ResetPasswordMfaPushChallengePush
 
 The following interfaces and types are available for `ResetPasswordMfaPushChallengePush`:
 
-```ts
-import type { default, ResetPasswordMfaPushChallengePushMembers, ScreenMembersOnResetPasswordMfaPushChallengePush, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/reset-password-mfa-push-challenge-push';
-```
+**Import:**
+`import type { default, ResetPasswordMfaPushChallengePushMembers, ScreenMembersOnResetPasswordMfaPushChallengePush, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/reset-password-mfa-push-challenge-push';`
 
 ---
 
 ## 🔸 API References
 
-This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
+This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
 
-**Context Type (via Provider):**
-- [`ResetPasswordMfaPushChallengePushMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaPushChallengePushMembers.html) — gives all contextual properties for this screen.
+**Screen Class Reference:**  
+- [`ResetPasswordMfaPushChallengePushMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaPushChallengePushMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordMfaPushChallengePush` screen.
 
 **Interfaces:**
 - [`ResetPasswordMfaPushChallengePushMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaPushChallengePushMembers.html)

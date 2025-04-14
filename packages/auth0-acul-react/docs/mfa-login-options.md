@@ -20,7 +20,7 @@ const screen = useMfaLoginOptions(); // typed as MfaLoginOptionsMembers
 screen.enroll(...);
 ```
 
-> View [`MfaLoginOptionsMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaLoginOptionsMembers.html) — gives all contextual properties for this screen.
+> View [`MfaLoginOptionsMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaLoginOptionsMembers.html) — this interface describes all properties and methods exposed by the `MfaLoginOptions` screen.
 
 ---
 
@@ -44,7 +44,8 @@ Then access the screen instance anywhere via context:
 ```tsx
 const screen = useCurrentScreen(); // typed as MfaLoginOptionsMembers
 ```
-> View [`MfaLoginOptionsMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaLoginOptionsMembers.html) — gives all contextual properties for this screen.
+
+> View [`MfaLoginOptionsMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaLoginOptionsMembers.html) — this interface describes all properties and methods exposed by the `MfaLoginOptions` screen.
 
 ---
 
@@ -52,18 +53,17 @@ const screen = useCurrentScreen(); // typed as MfaLoginOptionsMembers
 
 The following interfaces and types are available for `MfaLoginOptions`:
 
-```ts
-import type { default, MfaLoginOptionsMembers, LoginEnrollOptions, LoginFactorType, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-login-options';
-```
+**Import:**
+`import type { default, MfaLoginOptionsMembers, LoginEnrollOptions, LoginFactorType, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-login-options';`
 
 ---
 
 ## 🔸 API References
 
-This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
+This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
 
-**Context Type (via Provider):**
-- [`MfaLoginOptionsMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaLoginOptionsMembers.html) — gives all contextual properties for this screen.
+**Screen Class Reference:**  
+- [`MfaLoginOptionsMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaLoginOptionsMembers.html) — this interface describes all properties and methods exposed by the `MfaLoginOptions` screen.
 
 **Interfaces:**
 - [`MfaLoginOptionsMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaLoginOptionsMembers.html)

@@ -20,7 +20,7 @@ const screen = useResetPasswordEmail(); // typed as ResetPasswordEmailMembers
 screen.resendEmail(...);
 ```
 
-> View [`ResetPasswordEmailMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordEmailMembers.html) — gives all contextual properties for this screen.
+> View [`ResetPasswordEmailMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordEmailMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordEmail` screen.
 
 ---
 
@@ -44,7 +44,8 @@ Then access the screen instance anywhere via context:
 ```tsx
 const screen = useCurrentScreen(); // typed as ResetPasswordEmailMembers
 ```
-> View [`ResetPasswordEmailMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordEmailMembers.html) — gives all contextual properties for this screen.
+
+> View [`ResetPasswordEmailMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordEmailMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordEmail` screen.
 
 ---
 
@@ -52,18 +53,17 @@ const screen = useCurrentScreen(); // typed as ResetPasswordEmailMembers
 
 The following interfaces and types are available for `ResetPasswordEmail`:
 
-```ts
-import type { default, ResetPasswordEmailMembers, ResetPasswordEmailOptions, ScreenMembersOnResetPasswordEmail, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/reset-password-email';
-```
+**Import:**
+`import type { default, ResetPasswordEmailMembers, ResetPasswordEmailOptions, ScreenMembersOnResetPasswordEmail, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/reset-password-email';`
 
 ---
 
 ## 🔸 API References
 
-This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
+This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
 
-**Context Type (via Provider):**
-- [`ResetPasswordEmailMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordEmailMembers.html) — gives all contextual properties for this screen.
+**Screen Class Reference:**  
+- [`ResetPasswordEmailMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordEmailMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordEmail` screen.
 
 **Interfaces:**
 - [`ResetPasswordEmailMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordEmailMembers.html)

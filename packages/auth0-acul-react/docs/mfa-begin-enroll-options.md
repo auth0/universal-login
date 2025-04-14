@@ -20,7 +20,7 @@ const screen = useMfaBeginEnrollOptions(); // typed as MfaBeginEnrollOptionsMemb
 screen.enroll(...);
 ```
 
-> View [`MfaBeginEnrollOptionsMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaBeginEnrollOptionsMembers.html) — gives all contextual properties for this screen.
+> View [`MfaBeginEnrollOptionsMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaBeginEnrollOptionsMembers.html) — this interface describes all properties and methods exposed by the `MfaBeginEnrollOptions` screen.
 
 ---
 
@@ -44,7 +44,8 @@ Then access the screen instance anywhere via context:
 ```tsx
 const screen = useCurrentScreen(); // typed as MfaBeginEnrollOptionsMembers
 ```
-> View [`MfaBeginEnrollOptionsMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaBeginEnrollOptionsMembers.html) — gives all contextual properties for this screen.
+
+> View [`MfaBeginEnrollOptionsMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaBeginEnrollOptionsMembers.html) — this interface describes all properties and methods exposed by the `MfaBeginEnrollOptions` screen.
 
 ---
 
@@ -52,18 +53,17 @@ const screen = useCurrentScreen(); // typed as MfaBeginEnrollOptionsMembers
 
 The following interfaces and types are available for `MfaBeginEnrollOptions`:
 
-```ts
-import type { default, MfaBeginEnrollOptionsMembers, MfaEnrollOptions, FactorType, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-begin-enroll-options';
-```
+**Import:**
+`import type { default, MfaBeginEnrollOptionsMembers, MfaEnrollOptions, FactorType, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-begin-enroll-options';`
 
 ---
 
 ## 🔸 API References
 
-This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
+This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
 
-**Context Type (via Provider):**
-- [`MfaBeginEnrollOptionsMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaBeginEnrollOptionsMembers.html) — gives all contextual properties for this screen.
+**Screen Class Reference:**  
+- [`MfaBeginEnrollOptionsMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaBeginEnrollOptionsMembers.html) — this interface describes all properties and methods exposed by the `MfaBeginEnrollOptions` screen.
 
 **Interfaces:**
 - [`MfaBeginEnrollOptionsMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaBeginEnrollOptionsMembers.html)

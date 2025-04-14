@@ -20,7 +20,7 @@ const screen = useMfaCountryCodes(); // typed as MfaCountryCodesMembers
 screen.selectCountryCode(...);
 ```
 
-> View [`MfaCountryCodesMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaCountryCodesMembers.html) — gives all contextual properties for this screen.
+> View [`MfaCountryCodesMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaCountryCodesMembers.html) — this interface describes all properties and methods exposed by the `MfaCountryCodes` screen.
 
 ---
 
@@ -44,7 +44,8 @@ Then access the screen instance anywhere via context:
 ```tsx
 const screen = useCurrentScreen(); // typed as MfaCountryCodesMembers
 ```
-> View [`MfaCountryCodesMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaCountryCodesMembers.html) — gives all contextual properties for this screen.
+
+> View [`MfaCountryCodesMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaCountryCodesMembers.html) — this interface describes all properties and methods exposed by the `MfaCountryCodes` screen.
 
 ---
 
@@ -52,18 +53,17 @@ const screen = useCurrentScreen(); // typed as MfaCountryCodesMembers
 
 The following interfaces and types are available for `MfaCountryCodes`:
 
-```ts
-import type { default, MfaCountryCodesMembers, ScreenMembersOnMfaCountryCodes, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-country-codes';
-```
+**Import:**
+`import type { default, MfaCountryCodesMembers, ScreenMembersOnMfaCountryCodes, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-country-codes';`
 
 ---
 
 ## 🔸 API References
 
-This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
+This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
 
-**Context Type (via Provider):**
-- [`MfaCountryCodesMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaCountryCodesMembers.html) — gives all contextual properties for this screen.
+**Screen Class Reference:**  
+- [`MfaCountryCodesMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaCountryCodesMembers.html) — this interface describes all properties and methods exposed by the `MfaCountryCodes` screen.
 
 **Interfaces:**
 - [`MfaCountryCodesMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaCountryCodesMembers.html)

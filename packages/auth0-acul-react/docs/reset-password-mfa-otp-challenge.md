@@ -20,7 +20,7 @@ const screen = useResetPasswordMfaOtpChallenge(); // typed as ResetPasswordMfaOt
 screen.continue(...);
 ```
 
-> View [`ResetPasswordMfaOtpChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaOtpChallengeMembers.html) — gives all contextual properties for this screen.
+> View [`ResetPasswordMfaOtpChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaOtpChallengeMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordMfaOtpChallenge` screen.
 
 ---
 
@@ -44,7 +44,8 @@ Then access the screen instance anywhere via context:
 ```tsx
 const screen = useCurrentScreen(); // typed as ResetPasswordMfaOtpChallengeMembers
 ```
-> View [`ResetPasswordMfaOtpChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaOtpChallengeMembers.html) — gives all contextual properties for this screen.
+
+> View [`ResetPasswordMfaOtpChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaOtpChallengeMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordMfaOtpChallenge` screen.
 
 ---
 
@@ -52,18 +53,17 @@ const screen = useCurrentScreen(); // typed as ResetPasswordMfaOtpChallengeMembe
 
 The following interfaces and types are available for `ResetPasswordMfaOtpChallenge`:
 
-```ts
-import type { default, ResetPasswordMfaOtpChallengeMembers, ContinueOptions, TryAnotherMethodOptions, ScreenMembersOnResetPasswordMfaOtpChallenge, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/reset-password-mfa-otp-challenge';
-```
+**Import:**
+`import type { default, ResetPasswordMfaOtpChallengeMembers, ContinueOptions, TryAnotherMethodOptions, ScreenMembersOnResetPasswordMfaOtpChallenge, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/reset-password-mfa-otp-challenge';`
 
 ---
 
 ## 🔸 API References
 
-This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
+This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
 
-**Context Type (via Provider):**
-- [`ResetPasswordMfaOtpChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaOtpChallengeMembers.html) — gives all contextual properties for this screen.
+**Screen Class Reference:**  
+- [`ResetPasswordMfaOtpChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaOtpChallengeMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordMfaOtpChallenge` screen.
 
 **Interfaces:**
 - [`ResetPasswordMfaOtpChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaOtpChallengeMembers.html)

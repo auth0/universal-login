@@ -20,7 +20,7 @@ const screen = useResetPasswordError(); // typed as ResetPasswordErrorMembers
 // screen method call
 ```
 
-> View [`ResetPasswordErrorMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordErrorMembers.html) — gives all contextual properties for this screen.
+> View [`ResetPasswordErrorMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordErrorMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordError` screen.
 
 ---
 
@@ -44,7 +44,8 @@ Then access the screen instance anywhere via context:
 ```tsx
 const screen = useCurrentScreen(); // typed as ResetPasswordErrorMembers
 ```
-> View [`ResetPasswordErrorMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordErrorMembers.html) — gives all contextual properties for this screen.
+
+> View [`ResetPasswordErrorMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordErrorMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordError` screen.
 
 ---
 
@@ -52,18 +53,17 @@ const screen = useCurrentScreen(); // typed as ResetPasswordErrorMembers
 
 The following interfaces and types are available for `ResetPasswordError`:
 
-```ts
-import type { default, ResetPasswordErrorMembers, ScreenMembersOnResetPasswordError, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/reset-password-error';
-```
+**Import:**
+`import type { default, ResetPasswordErrorMembers, ScreenMembersOnResetPasswordError, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/reset-password-error';`
 
 ---
 
 ## 🔸 API References
 
-This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
+This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
 
-**Context Type (via Provider):**
-- [`ResetPasswordErrorMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordErrorMembers.html) — gives all contextual properties for this screen.
+**Screen Class Reference:**  
+- [`ResetPasswordErrorMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordErrorMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordError` screen.
 
 **Interfaces:**
 - [`ResetPasswordErrorMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordErrorMembers.html)

@@ -20,7 +20,7 @@ const screen = useLoginPasswordlessEmailCode(); // typed as LoginPasswordlessEma
 screen.submitCode(...);
 ```
 
-> View [`LoginPasswordlessEmailCodeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordlessEmailCodeMembers.html) — gives all contextual properties for this screen.
+> View [`LoginPasswordlessEmailCodeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordlessEmailCodeMembers.html) — this interface describes all properties and methods exposed by the `LoginPasswordlessEmailCode` screen.
 
 ---
 
@@ -44,7 +44,8 @@ Then access the screen instance anywhere via context:
 ```tsx
 const screen = useCurrentScreen(); // typed as LoginPasswordlessEmailCodeMembers
 ```
-> View [`LoginPasswordlessEmailCodeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordlessEmailCodeMembers.html) — gives all contextual properties for this screen.
+
+> View [`LoginPasswordlessEmailCodeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordlessEmailCodeMembers.html) — this interface describes all properties and methods exposed by the `LoginPasswordlessEmailCode` screen.
 
 ---
 
@@ -52,18 +53,17 @@ const screen = useCurrentScreen(); // typed as LoginPasswordlessEmailCodeMembers
 
 The following interfaces and types are available for `LoginPasswordlessEmailCode`:
 
-```ts
-import type { default, LoginPasswordlessEmailCodeMembers, SubmitCodeOptions, ScreenMembersOnLoginPasswordlessEmailCode, TransactionMembersOnLoginPasswordlessEmailCode, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/login-passwordless-email-code';
-```
+**Import:**
+`import type { default, LoginPasswordlessEmailCodeMembers, SubmitCodeOptions, ScreenMembersOnLoginPasswordlessEmailCode, TransactionMembersOnLoginPasswordlessEmailCode, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/login-passwordless-email-code';`
 
 ---
 
 ## 🔸 API References
 
-This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
+This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
 
-**Context Type (via Provider):**
-- [`LoginPasswordlessEmailCodeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordlessEmailCodeMembers.html) — gives all contextual properties for this screen.
+**Screen Class Reference:**  
+- [`LoginPasswordlessEmailCodeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordlessEmailCodeMembers.html) — this interface describes all properties and methods exposed by the `LoginPasswordlessEmailCode` screen.
 
 **Interfaces:**
 - [`LoginPasswordlessEmailCodeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordlessEmailCodeMembers.html)

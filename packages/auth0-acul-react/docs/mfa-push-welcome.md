@@ -20,7 +20,7 @@ const screen = useMfaPushWelcome(); // typed as MfaPushWelcomeMembers
 screen.enroll(...);
 ```
 
-> View [`MfaPushWelcomeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushWelcomeMembers.html) — gives all contextual properties for this screen.
+> View [`MfaPushWelcomeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushWelcomeMembers.html) — this interface describes all properties and methods exposed by the `MfaPushWelcome` screen.
 
 ---
 
@@ -44,7 +44,8 @@ Then access the screen instance anywhere via context:
 ```tsx
 const screen = useCurrentScreen(); // typed as MfaPushWelcomeMembers
 ```
-> View [`MfaPushWelcomeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushWelcomeMembers.html) — gives all contextual properties for this screen.
+
+> View [`MfaPushWelcomeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushWelcomeMembers.html) — this interface describes all properties and methods exposed by the `MfaPushWelcome` screen.
 
 ---
 
@@ -52,18 +53,17 @@ const screen = useCurrentScreen(); // typed as MfaPushWelcomeMembers
 
 The following interfaces and types are available for `MfaPushWelcome`:
 
-```ts
-import type { default, MfaPushWelcomeMembers, ScreenMembersOnMfaPushWelcome, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-push-welcome';
-```
+**Import:**
+`import type { default, MfaPushWelcomeMembers, ScreenMembersOnMfaPushWelcome, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-push-welcome';`
 
 ---
 
 ## 🔸 API References
 
-This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
+This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
 
-**Context Type (via Provider):**
-- [`MfaPushWelcomeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushWelcomeMembers.html) — gives all contextual properties for this screen.
+**Screen Class Reference:**  
+- [`MfaPushWelcomeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushWelcomeMembers.html) — this interface describes all properties and methods exposed by the `MfaPushWelcome` screen.
 
 **Interfaces:**
 - [`MfaPushWelcomeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushWelcomeMembers.html)

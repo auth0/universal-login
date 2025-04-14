@@ -20,7 +20,7 @@ const screen = useMfaEnrollResult(); // typed as MfaEnrollResultMembers
 // screen method call
 ```
 
-> View [`MfaEnrollResultMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEnrollResultMembers.html) — gives all contextual properties for this screen.
+> View [`MfaEnrollResultMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEnrollResultMembers.html) — this interface describes all properties and methods exposed by the `MfaEnrollResult` screen.
 
 ---
 
@@ -44,7 +44,8 @@ Then access the screen instance anywhere via context:
 ```tsx
 const screen = useCurrentScreen(); // typed as MfaEnrollResultMembers
 ```
-> View [`MfaEnrollResultMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEnrollResultMembers.html) — gives all contextual properties for this screen.
+
+> View [`MfaEnrollResultMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEnrollResultMembers.html) — this interface describes all properties and methods exposed by the `MfaEnrollResult` screen.
 
 ---
 
@@ -52,18 +53,17 @@ const screen = useCurrentScreen(); // typed as MfaEnrollResultMembers
 
 The following interfaces and types are available for `MfaEnrollResult`:
 
-```ts
-import type { default, MfaEnrollResultMembers, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-enroll-result';
-```
+**Import:**
+`import type { default, MfaEnrollResultMembers, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-enroll-result';`
 
 ---
 
 ## 🔸 API References
 
-This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
+This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
 
-**Context Type (via Provider):**
-- [`MfaEnrollResultMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEnrollResultMembers.html) — gives all contextual properties for this screen.
+**Screen Class Reference:**  
+- [`MfaEnrollResultMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEnrollResultMembers.html) — this interface describes all properties and methods exposed by the `MfaEnrollResult` screen.
 
 **Interfaces:**
 - [`MfaEnrollResultMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEnrollResultMembers.html)

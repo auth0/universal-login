@@ -20,7 +20,7 @@ const screen = useMfaEmailList(); // typed as MfaEmailListMembers
 screen.selectMfaEmail(...);
 ```
 
-> View [`MfaEmailListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEmailListMembers.html) — gives all contextual properties for this screen.
+> View [`MfaEmailListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEmailListMembers.html) — this interface describes all properties and methods exposed by the `MfaEmailList` screen.
 
 ---
 
@@ -44,7 +44,8 @@ Then access the screen instance anywhere via context:
 ```tsx
 const screen = useCurrentScreen(); // typed as MfaEmailListMembers
 ```
-> View [`MfaEmailListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEmailListMembers.html) — gives all contextual properties for this screen.
+
+> View [`MfaEmailListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEmailListMembers.html) — this interface describes all properties and methods exposed by the `MfaEmailList` screen.
 
 ---
 
@@ -52,18 +53,17 @@ const screen = useCurrentScreen(); // typed as MfaEmailListMembers
 
 The following interfaces and types are available for `MfaEmailList`:
 
-```ts
-import type { default, MfaEmailListMembers, ScreenMembersOnMfaEmailList, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-email-list';
-```
+**Import:**
+`import type { default, MfaEmailListMembers, ScreenMembersOnMfaEmailList, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-email-list';`
 
 ---
 
 ## 🔸 API References
 
-This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
+This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
 
-**Context Type (via Provider):**
-- [`MfaEmailListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEmailListMembers.html) — gives all contextual properties for this screen.
+**Screen Class Reference:**  
+- [`MfaEmailListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEmailListMembers.html) — this interface describes all properties and methods exposed by the `MfaEmailList` screen.
 
 **Interfaces:**
 - [`MfaEmailListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEmailListMembers.html)

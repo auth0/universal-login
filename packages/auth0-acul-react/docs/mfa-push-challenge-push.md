@@ -20,7 +20,7 @@ const screen = useMfaPushChallengePush(); // typed as MfaPushChallengePushMember
 screen.continue(...);
 ```
 
-> View [`MfaPushChallengePushMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushChallengePushMembers.html) — gives all contextual properties for this screen.
+> View [`MfaPushChallengePushMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushChallengePushMembers.html) — this interface describes all properties and methods exposed by the `MfaPushChallengePush` screen.
 
 ---
 
@@ -44,7 +44,8 @@ Then access the screen instance anywhere via context:
 ```tsx
 const screen = useCurrentScreen(); // typed as MfaPushChallengePushMembers
 ```
-> View [`MfaPushChallengePushMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushChallengePushMembers.html) — gives all contextual properties for this screen.
+
+> View [`MfaPushChallengePushMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushChallengePushMembers.html) — this interface describes all properties and methods exposed by the `MfaPushChallengePush` screen.
 
 ---
 
@@ -52,18 +53,17 @@ const screen = useCurrentScreen(); // typed as MfaPushChallengePushMembers
 
 The following interfaces and types are available for `MfaPushChallengePush`:
 
-```ts
-import type { default, MfaPushChallengePushMembers, WithRememberOptions, ScreenMembersOnMfaPushChallengePush, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-push-challenge-push';
-```
+**Import:**
+`import type { default, MfaPushChallengePushMembers, WithRememberOptions, ScreenMembersOnMfaPushChallengePush, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-push-challenge-push';`
 
 ---
 
 ## 🔸 API References
 
-This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
+This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
 
-**Context Type (via Provider):**
-- [`MfaPushChallengePushMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushChallengePushMembers.html) — gives all contextual properties for this screen.
+**Screen Class Reference:**  
+- [`MfaPushChallengePushMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushChallengePushMembers.html) — this interface describes all properties and methods exposed by the `MfaPushChallengePush` screen.
 
 **Interfaces:**
 - [`MfaPushChallengePushMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushChallengePushMembers.html)

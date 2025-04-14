@@ -20,7 +20,7 @@ const screen = useMfaSmsEnrollment(); // typed as MfaSmsEnrollmentMembers
 screen.pickCountryCode(...);
 ```
 
-> View [`MfaSmsEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsEnrollmentMembers.html) — gives all contextual properties for this screen.
+> View [`MfaSmsEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsEnrollmentMembers.html) — this interface describes all properties and methods exposed by the `MfaSmsEnrollment` screen.
 
 ---
 
@@ -44,7 +44,8 @@ Then access the screen instance anywhere via context:
 ```tsx
 const screen = useCurrentScreen(); // typed as MfaSmsEnrollmentMembers
 ```
-> View [`MfaSmsEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsEnrollmentMembers.html) — gives all contextual properties for this screen.
+
+> View [`MfaSmsEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsEnrollmentMembers.html) — this interface describes all properties and methods exposed by the `MfaSmsEnrollment` screen.
 
 ---
 
@@ -52,18 +53,17 @@ const screen = useCurrentScreen(); // typed as MfaSmsEnrollmentMembers
 
 The following interfaces and types are available for `MfaSmsEnrollment`:
 
-```ts
-import type { default, MfaSmsEnrollmentMembers, MfaSmsEnrollmentOptions, ScreenMembersOnMfaSmsEnrollment, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-sms-enrollment';
-```
+**Import:**
+`import type { default, MfaSmsEnrollmentMembers, MfaSmsEnrollmentOptions, ScreenMembersOnMfaSmsEnrollment, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-sms-enrollment';`
 
 ---
 
 ## 🔸 API References
 
-This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
+This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
 
-**Context Type (via Provider):**
-- [`MfaSmsEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsEnrollmentMembers.html) — gives all contextual properties for this screen.
+**Screen Class Reference:**  
+- [`MfaSmsEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsEnrollmentMembers.html) — this interface describes all properties and methods exposed by the `MfaSmsEnrollment` screen.
 
 **Interfaces:**
 - [`MfaSmsEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsEnrollmentMembers.html)

@@ -20,7 +20,7 @@ const screen = usePhoneIdentifierEnrollment(); // typed as PhoneIdentifierEnroll
 screen.continuePhoneEnrollment(...);
 ```
 
-> View [`PhoneIdentifierEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PhoneIdentifierEnrollmentMembers.html) — gives all contextual properties for this screen.
+> View [`PhoneIdentifierEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PhoneIdentifierEnrollmentMembers.html) — this interface describes all properties and methods exposed by the `PhoneIdentifierEnrollment` screen.
 
 ---
 
@@ -44,7 +44,8 @@ Then access the screen instance anywhere via context:
 ```tsx
 const screen = useCurrentScreen(); // typed as PhoneIdentifierEnrollmentMembers
 ```
-> View [`PhoneIdentifierEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PhoneIdentifierEnrollmentMembers.html) — gives all contextual properties for this screen.
+
+> View [`PhoneIdentifierEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PhoneIdentifierEnrollmentMembers.html) — this interface describes all properties and methods exposed by the `PhoneIdentifierEnrollment` screen.
 
 ---
 
@@ -52,18 +53,17 @@ const screen = useCurrentScreen(); // typed as PhoneIdentifierEnrollmentMembers
 
 The following interfaces and types are available for `PhoneIdentifierEnrollment`:
 
-```ts
-import type { default, PhoneIdentifierEnrollmentMembers, PhoneEnrollmentOptions, ScreenMembersOnPhoneIdentifierEnrollment, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/phone-identifier-enrollment';
-```
+**Import:**
+`import type { default, PhoneIdentifierEnrollmentMembers, PhoneEnrollmentOptions, ScreenMembersOnPhoneIdentifierEnrollment, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/phone-identifier-enrollment';`
 
 ---
 
 ## 🔸 API References
 
-This section includes all the related types and interfaces for this screen. Use these for advanced typing or extending screen logic.
+This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
 
-**Context Type (via Provider):**
-- [`PhoneIdentifierEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PhoneIdentifierEnrollmentMembers.html) — gives all contextual properties for this screen.
+**Screen Class Reference:**  
+- [`PhoneIdentifierEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PhoneIdentifierEnrollmentMembers.html) — this interface describes all properties and methods exposed by the `PhoneIdentifierEnrollment` screen.
 
 **Interfaces:**
 - [`PhoneIdentifierEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PhoneIdentifierEnrollmentMembers.html)
