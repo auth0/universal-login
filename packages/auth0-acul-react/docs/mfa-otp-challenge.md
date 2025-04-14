@@ -54,7 +54,10 @@ const screen = useCurrentScreen(); // typed as MfaOtpChallengeMembers
 The following interfaces and types are available for `MfaOtpChallenge`:
 
 **Import:**
-`import type { default, MfaOtpChallengeMembers, ContinueOptions, TryAnotherMethodOptions, ScreenMembersOnMfaOtpChallenge, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-otp-challenge';`
+
+```ts
+import type { default, MfaOtpChallengeMembers, ContinueOptions, TryAnotherMethodOptions, ScreenMembersOnMfaOtpChallenge, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-otp-challenge';
+```
 
 ---
 

@@ -54,7 +54,10 @@ const screen = useCurrentScreen(); // typed as MfaDetectBrowserCapabilitiesMembe
 The following interfaces and types are available for `MfaDetectBrowserCapabilities`:
 
 **Import:**
-`import type { default, MfaDetectBrowserCapabilitiesMembers, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-detect-browser-capabilities';`
+
+```ts
+import type { default, MfaDetectBrowserCapabilitiesMembers, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-detect-browser-capabilities';
+```
 
 ---
 

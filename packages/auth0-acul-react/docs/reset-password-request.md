@@ -54,7 +54,10 @@ const screen = useCurrentScreen(); // typed as ResetPasswordRequestMembers
 The following interfaces and types are available for `ResetPasswordRequest`:
 
 **Import:**
-`import type { default, ResetPasswordRequestMembers, ResetPasswordRequestOptions, ScreenMembersOnResetPasswordRequest, TransactionMembersOnResetPasswordRequest, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/reset-password-request';`
+
+```ts
+import type { default, ResetPasswordRequestMembers, ResetPasswordRequestOptions, ScreenMembersOnResetPasswordRequest, TransactionMembersOnResetPasswordRequest, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/reset-password-request';
+```
 
 ---
 

@@ -64,14 +64,15 @@ for (const symbol of screenExports) {
   // === Find public methods for screen example
   const classDecl = sourceFile.getClasses().find((cls) => cls.getName() === screenName);
   const methods: string[] = classDecl
-    ? classDecl.getMembers()
+    ? classDecl
+        .getMembers()
         .filter((m) => m.getKind() === SyntaxKind.MethodDeclaration)
         .map((m) => (m as MethodDeclaration).getName())
     : [];
 
   const exampleMethod =
     methods.length > 0
-      ? `screen.${methods[0]}(${methods[0] === 'login' ? `{ identifier: 'user@example.com', password: '***' }` : '...' });`
+      ? `screen.${methods[0]}(${methods[0] === 'login' ? `{ identifier: 'user@example.com', password: '***' }` : '...'});`
       : '// screen method call';
 
   // === Extract exported types
@@ -89,7 +90,7 @@ for (const symbol of screenExports) {
   }
 
   const interfaceImportBlock = exportedTypes.length
-    ? `**Import:**\n\`import type { ${exportedTypes.join(', ')} } from '@auth0/auth0-acul-react/${kebabName}';\``
+    ? `**Import:**\n\n\`\`\`ts\nimport type { ${exportedTypes.join(', ')} } from '@auth0/auth0-acul-react/${kebabName}';\n\`\`\``
     : '> _(No interfaces or types exported for this screen)_';
 
   // === API References Block

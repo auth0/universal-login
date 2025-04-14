@@ -54,7 +54,10 @@ const screen = useCurrentScreen(); // typed as LoginPasswordMembers
 The following interfaces and types are available for `LoginPassword`:
 
 **Import:**
-`import type { default, LoginPasswordMembers, LoginPasswordOptions, ScreenMembersOnLoginPassword, TransactionMembersOnLoginPassword, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/login-password';`
+
+```ts
+import type { default, LoginPasswordMembers, LoginPasswordOptions, ScreenMembersOnLoginPassword, TransactionMembersOnLoginPassword, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/login-password';
+```
 
 ---
 

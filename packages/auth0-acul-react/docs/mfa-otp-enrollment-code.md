@@ -54,7 +54,10 @@ const screen = useCurrentScreen(); // typed as MfaOtpEnrollmentCodeMembers
 The following interfaces and types are available for `MfaOtpEnrollmentCode`:
 
 **Import:**
-`import type { default, MfaOtpEnrollmentCodeMembers, ContinueOptions, TryAnotherMethodOptions, ScreenMembersOnMfaOtpEnrollmentCode, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-otp-enrollment-code';`
+
+```ts
+import type { default, MfaOtpEnrollmentCodeMembers, ContinueOptions, TryAnotherMethodOptions, ScreenMembersOnMfaOtpEnrollmentCode, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-otp-enrollment-code';
+```
 
 ---
 

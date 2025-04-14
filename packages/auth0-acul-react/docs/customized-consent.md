@@ -54,7 +54,10 @@ const screen = useCurrentScreen(); // typed as CustomizedConsentMembers
 The following interfaces and types are available for `CustomizedConsent`:
 
 **Import:**
-`import type { default } from '@auth0/auth0-acul-react/customized-consent';`
+
+```ts
+import type { default } from '@auth0/auth0-acul-react/customized-consent';
+```
 
 ---
 

@@ -54,7 +54,10 @@ const screen = useCurrentScreen(); // typed as PhoneIdentifierChallengeMembers
 The following interfaces and types are available for `PhoneIdentifierChallenge`:
 
 **Import:**
-`import type { default, PhoneIdentifierChallengeMembers, PhoneChallengeOptions, ScreenMembersOnPhoneIdentifierChallenge, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/phone-identifier-challenge';`
+
+```ts
+import type { default, PhoneIdentifierChallengeMembers, PhoneChallengeOptions, ScreenMembersOnPhoneIdentifierChallenge, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/phone-identifier-challenge';
+```
 
 ---
 

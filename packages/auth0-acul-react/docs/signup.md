@@ -54,7 +54,10 @@ const screen = useCurrentScreen(); // typed as SignupMembers
 The following interfaces and types are available for `Signup`:
 
 **Import:**
-`import type { default, SignupMembers, SignupOptions, ScreenMembersOnSignup, TransactionMembersOnSignup, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/signup';`
+
+```ts
+import type { default, SignupMembers, SignupOptions, ScreenMembersOnSignup, TransactionMembersOnSignup, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/signup';
+```
 
 ---
 

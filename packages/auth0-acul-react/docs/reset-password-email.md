@@ -54,7 +54,10 @@ const screen = useCurrentScreen(); // typed as ResetPasswordEmailMembers
 The following interfaces and types are available for `ResetPasswordEmail`:
 
 **Import:**
-`import type { default, ResetPasswordEmailMembers, ResetPasswordEmailOptions, ScreenMembersOnResetPasswordEmail, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/reset-password-email';`
+
+```ts
+import type { default, ResetPasswordEmailMembers, ResetPasswordEmailOptions, ScreenMembersOnResetPasswordEmail, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/reset-password-email';
+```
 
 ---
 

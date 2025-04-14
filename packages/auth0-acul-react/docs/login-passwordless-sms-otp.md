@@ -54,7 +54,10 @@ const screen = useCurrentScreen(); // typed as LoginPasswordlessSmsOtpMembers
 The following interfaces and types are available for `LoginPasswordlessSmsOtp`:
 
 **Import:**
-`import type { default, LoginPasswordlessSmsOtpMembers, SubmitOTPOptions, ScreenMembersOnLoginPasswordlessSmsOtp, TransactionMembersOnLoginPasswordlessSmsOtp, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/login-passwordless-sms-otp';`
+
+```ts
+import type { default, LoginPasswordlessSmsOtpMembers, SubmitOTPOptions, ScreenMembersOnLoginPasswordlessSmsOtp, TransactionMembersOnLoginPasswordlessSmsOtp, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/login-passwordless-sms-otp';
+```
 
 ---
 

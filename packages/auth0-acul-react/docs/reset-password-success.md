@@ -54,7 +54,10 @@ const screen = useCurrentScreen(); // typed as ResetPasswordSuccessMembers
 The following interfaces and types are available for `ResetPasswordSuccess`:
 
 **Import:**
-`import type { default, ResetPasswordSuccessMembers, ScreenMembersOnResetPasswordSuccess, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/reset-password-success';`
+
+```ts
+import type { default, ResetPasswordSuccessMembers, ScreenMembersOnResetPasswordSuccess, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/reset-password-success';
+```
 
 ---
 
