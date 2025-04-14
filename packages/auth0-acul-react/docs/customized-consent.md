@@ -56,7 +56,9 @@ The following interfaces and types are available for `CustomizedConsent`:
 **Import:**
 
 ```ts
-import type { default } from '@auth0/auth0-acul-react/customized-consent';
+import type {
+  default
+} from '@auth0/auth0-acul-react/customized-consent';
 ```
 
 ---

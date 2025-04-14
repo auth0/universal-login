@@ -90,8 +90,9 @@ for (const symbol of screenExports) {
   }
 
   const interfaceImportBlock = exportedTypes.length
-    ? `**Import:**\n\n\`\`\`ts\nimport type { ${exportedTypes.join(', ')} } from '@auth0/auth0-acul-react/${kebabName}';\n\`\`\``
-    : '> _(No interfaces or types exported for this screen)_';
+  ? `**Import:**\n\n\`\`\`ts\nimport type {\n  ${exportedTypes.join(',\n  ')}\n} from '@auth0/auth0-acul-react/${kebabName}';\n\`\`\``
+  : '> _(No interfaces or types exported for this screen)_';
+
 
   // === API References Block
   const apiReferencesBlock = `## 🔸 API References

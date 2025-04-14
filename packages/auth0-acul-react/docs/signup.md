@@ -56,7 +56,34 @@ The following interfaces and types are available for `Signup`:
 **Import:**
 
 ```ts
-import type { default, SignupMembers, SignupOptions, ScreenMembersOnSignup, TransactionMembersOnSignup, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/signup';
+import type {
+  default,
+  SignupMembers,
+  SignupOptions,
+  ScreenMembersOnSignup,
+  TransactionMembersOnSignup,
+  CaptchaContext,
+  PhonePrefix,
+  Connection,
+  EnterpriseConnection,
+  PasswordPolicy,
+  UsernamePolicy,
+  Error,
+  PasswordComplexityRule,
+  BrandingSettings,
+  BrandingThemes,
+  CustomOptions,
+  ShortEntity,
+  ClientMembers,
+  BrandingMembers,
+  PromptMembers,
+  UserMembers,
+  OrganizationMembers,
+  ScreenMembers,
+  TenantMembers,
+  TransactionMembers,
+  UntrustedDataMembers
+} from '@auth0/auth0-acul-react/signup';
 ```
 
 ---

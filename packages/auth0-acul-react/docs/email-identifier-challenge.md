@@ -56,7 +56,33 @@ The following interfaces and types are available for `EmailIdentifierChallenge`:
 **Import:**
 
 ```ts
-import type { default, EmailIdentifierChallengeMembers, ScreenMembersOnEmailIdentifierChallenge, EmailChallengeOptions, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/email-identifier-challenge';
+import type {
+  default,
+  EmailIdentifierChallengeMembers,
+  ScreenMembersOnEmailIdentifierChallenge,
+  EmailChallengeOptions,
+  CaptchaContext,
+  PhonePrefix,
+  Connection,
+  EnterpriseConnection,
+  PasswordPolicy,
+  UsernamePolicy,
+  Error,
+  PasswordComplexityRule,
+  BrandingSettings,
+  BrandingThemes,
+  CustomOptions,
+  ShortEntity,
+  ClientMembers,
+  BrandingMembers,
+  PromptMembers,
+  UserMembers,
+  OrganizationMembers,
+  ScreenMembers,
+  TenantMembers,
+  TransactionMembers,
+  UntrustedDataMembers
+} from '@auth0/auth0-acul-react/email-identifier-challenge';
 ```
 
 ---

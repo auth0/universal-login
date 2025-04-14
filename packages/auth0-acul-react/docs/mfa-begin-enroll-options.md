@@ -56,7 +56,33 @@ The following interfaces and types are available for `MfaBeginEnrollOptions`:
 **Import:**
 
 ```ts
-import type { default, MfaBeginEnrollOptionsMembers, MfaEnrollOptions, FactorType, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-begin-enroll-options';
+import type {
+  default,
+  MfaBeginEnrollOptionsMembers,
+  MfaEnrollOptions,
+  FactorType,
+  CaptchaContext,
+  PhonePrefix,
+  Connection,
+  EnterpriseConnection,
+  PasswordPolicy,
+  UsernamePolicy,
+  Error,
+  PasswordComplexityRule,
+  BrandingSettings,
+  BrandingThemes,
+  CustomOptions,
+  ShortEntity,
+  ClientMembers,
+  BrandingMembers,
+  PromptMembers,
+  UserMembers,
+  OrganizationMembers,
+  ScreenMembers,
+  TenantMembers,
+  TransactionMembers,
+  UntrustedDataMembers
+} from '@auth0/auth0-acul-react/mfa-begin-enroll-options';
 ```
 
 ---

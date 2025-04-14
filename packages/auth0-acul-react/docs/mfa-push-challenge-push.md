@@ -56,7 +56,33 @@ The following interfaces and types are available for `MfaPushChallengePush`:
 **Import:**
 
 ```ts
-import type { default, MfaPushChallengePushMembers, WithRememberOptions, ScreenMembersOnMfaPushChallengePush, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-push-challenge-push';
+import type {
+  default,
+  MfaPushChallengePushMembers,
+  WithRememberOptions,
+  ScreenMembersOnMfaPushChallengePush,
+  CaptchaContext,
+  PhonePrefix,
+  Connection,
+  EnterpriseConnection,
+  PasswordPolicy,
+  UsernamePolicy,
+  Error,
+  PasswordComplexityRule,
+  BrandingSettings,
+  BrandingThemes,
+  CustomOptions,
+  ShortEntity,
+  ClientMembers,
+  BrandingMembers,
+  PromptMembers,
+  UserMembers,
+  OrganizationMembers,
+  ScreenMembers,
+  TenantMembers,
+  TransactionMembers,
+  UntrustedDataMembers
+} from '@auth0/auth0-acul-react/mfa-push-challenge-push';
 ```
 
 ---

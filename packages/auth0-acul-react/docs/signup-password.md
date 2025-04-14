@@ -56,7 +56,34 @@ The following interfaces and types are available for `SignupPassword`:
 **Import:**
 
 ```ts
-import type { default, SignupPasswordMembers, SignupPasswordOptions, ScreenMembersOnSignupPassword, TransactionMembersOnSignupPassword, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/signup-password';
+import type {
+  default,
+  SignupPasswordMembers,
+  SignupPasswordOptions,
+  ScreenMembersOnSignupPassword,
+  TransactionMembersOnSignupPassword,
+  CaptchaContext,
+  PhonePrefix,
+  Connection,
+  EnterpriseConnection,
+  PasswordPolicy,
+  UsernamePolicy,
+  Error,
+  PasswordComplexityRule,
+  BrandingSettings,
+  BrandingThemes,
+  CustomOptions,
+  ShortEntity,
+  ClientMembers,
+  BrandingMembers,
+  PromptMembers,
+  UserMembers,
+  OrganizationMembers,
+  ScreenMembers,
+  TenantMembers,
+  TransactionMembers,
+  UntrustedDataMembers
+} from '@auth0/auth0-acul-react/signup-password';
 ```
 
 ---

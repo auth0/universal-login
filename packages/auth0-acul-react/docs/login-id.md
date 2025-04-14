@@ -56,7 +56,35 @@ The following interfaces and types are available for `LoginId`:
 **Import:**
 
 ```ts
-import type { default, LoginIdMembers, LoginOptions, SocialLoginOptions, ScreenMembersOnLoginId, TransactionMembersOnLoginId, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/login-id';
+import type {
+  default,
+  LoginIdMembers,
+  LoginOptions,
+  SocialLoginOptions,
+  ScreenMembersOnLoginId,
+  TransactionMembersOnLoginId,
+  CaptchaContext,
+  PhonePrefix,
+  Connection,
+  EnterpriseConnection,
+  PasswordPolicy,
+  UsernamePolicy,
+  Error,
+  PasswordComplexityRule,
+  BrandingSettings,
+  BrandingThemes,
+  CustomOptions,
+  ShortEntity,
+  ClientMembers,
+  BrandingMembers,
+  PromptMembers,
+  UserMembers,
+  OrganizationMembers,
+  ScreenMembers,
+  TenantMembers,
+  TransactionMembers,
+  UntrustedDataMembers
+} from '@auth0/auth0-acul-react/login-id';
 ```
 
 ---

@@ -56,7 +56,33 @@ The following interfaces and types are available for `MfaSmsEnrollment`:
 **Import:**
 
 ```ts
-import type { default, MfaSmsEnrollmentMembers, MfaSmsEnrollmentOptions, ScreenMembersOnMfaSmsEnrollment, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-sms-enrollment';
+import type {
+  default,
+  MfaSmsEnrollmentMembers,
+  MfaSmsEnrollmentOptions,
+  ScreenMembersOnMfaSmsEnrollment,
+  CaptchaContext,
+  PhonePrefix,
+  Connection,
+  EnterpriseConnection,
+  PasswordPolicy,
+  UsernamePolicy,
+  Error,
+  PasswordComplexityRule,
+  BrandingSettings,
+  BrandingThemes,
+  CustomOptions,
+  ShortEntity,
+  ClientMembers,
+  BrandingMembers,
+  PromptMembers,
+  UserMembers,
+  OrganizationMembers,
+  ScreenMembers,
+  TenantMembers,
+  TransactionMembers,
+  UntrustedDataMembers
+} from '@auth0/auth0-acul-react/mfa-sms-enrollment';
 ```
 
 ---

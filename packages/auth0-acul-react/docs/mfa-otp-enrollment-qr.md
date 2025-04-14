@@ -56,7 +56,32 @@ The following interfaces and types are available for `MfaOtpEnrollmentQr`:
 **Import:**
 
 ```ts
-import type { default, MfaOtpEnrollmentQrMembers, ScreenMembersOnMfaOtpEnrollmentQr, CaptchaContext, PhonePrefix, Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule, BrandingSettings, BrandingThemes, CustomOptions, ShortEntity, ClientMembers, BrandingMembers, PromptMembers, UserMembers, OrganizationMembers, ScreenMembers, TenantMembers, TransactionMembers, UntrustedDataMembers } from '@auth0/auth0-acul-react/mfa-otp-enrollment-qr';
+import type {
+  default,
+  MfaOtpEnrollmentQrMembers,
+  ScreenMembersOnMfaOtpEnrollmentQr,
+  CaptchaContext,
+  PhonePrefix,
+  Connection,
+  EnterpriseConnection,
+  PasswordPolicy,
+  UsernamePolicy,
+  Error,
+  PasswordComplexityRule,
+  BrandingSettings,
+  BrandingThemes,
+  CustomOptions,
+  ShortEntity,
+  ClientMembers,
+  BrandingMembers,
+  PromptMembers,
+  UserMembers,
+  OrganizationMembers,
+  ScreenMembers,
+  TenantMembers,
+  TransactionMembers,
+  UntrustedDataMembers
+} from '@auth0/auth0-acul-react/mfa-otp-enrollment-qr';
 ```
 
 ---
