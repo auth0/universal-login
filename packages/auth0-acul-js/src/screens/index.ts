@@ -48,3 +48,4 @@ export { default as MfaRecoveryCodeChallenge } from './mfa-recovery-code-challen
 export { default as DeviceCodeActivationAllowed } from './device-code-activation-allowed';
 export { default as DeviceCodeActivationDenied } from './device-code-activation-denied';
 export { default as DeviceCodeActivation } from './device-code-activation';
+export { default as MfaVoiceChallenge } from './mfa-voice-challenge';

@@ -21,6 +21,7 @@ export const FormActions = {
   DENY: 'deny' as const,
   ENROLL: 'enroll' as const,
   RESEND_EMAIL: 'resend-email-action' as const,
+  PICK_PHONE: 'pick-phone' as const,
 } as const;
 
 /**

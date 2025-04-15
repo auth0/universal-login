@@ -207,6 +207,10 @@
     "./device-code-activation": {
       "import": "./dist/screens/device-code-activation/index.js",
       "types": "./dist/types/src/screens/device-code-activation/index.d.ts"
+    },
+    "./mfa-voice-challenge": {
+      "import": "./dist/screens/mfa-voice-challenge/index.js",
+      "types": "./dist/types/src/screens/mfa-voice-challenge/index.d.ts"
     }
   },
   "scripts": {

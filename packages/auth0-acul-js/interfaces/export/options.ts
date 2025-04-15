@@ -45,3 +45,4 @@ export type {
 } from '../screens/mfa-otp-enrollment-code';
 export type { ContinueWithOrganizationNameOptions } from '../screens/organization-selection';
 export type { SelectOrganizationOptions } from '../screens/organization-picker';
+export type { ContinueOptions as MfaVoiceChallengeContinueOptions } from '../screens/mfa-voice-challenge';

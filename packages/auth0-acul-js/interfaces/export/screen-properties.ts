@@ -48,3 +48,4 @@ export type { MfaRecoveryCodeChallengeMembers } from '../screens/mfa-recovery-co
 export type { DeviceCodeActivationAllowedMembers } from '../screens/device-code-activation-allowed';
 export type { DeviceCodeActivationDeniedMembers } from '../screens/device-code-activation-denied';
 export type { DeviceCodeActivationMembers } from '../screens/device-code-activation';
+export type { MfaVoiceChallengeMembers } from '../screens/mfa-voice-challenge';

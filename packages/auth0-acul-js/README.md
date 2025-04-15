@@ -169,6 +169,7 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 | 47     | device-code-activation-allowed          | [Link](https://auth0.github.io/universal-login/classes/Classes.DeviceCodeActivationAllowed.html)   |
 | 48     | device-code-activation-denied          | [Link](https://auth0.github.io/universal-login/classes/Classes.DeviceCodeActivationDenied.html)   |
 | 49     | device-code-activation          | [Link](https://auth0.github.io/universal-login/classes/Classes.DeviceCodeActivation.html)   |
+| 50     | mfa-voice-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaVoiceChallenge.html)   |
 
 
 </details>
