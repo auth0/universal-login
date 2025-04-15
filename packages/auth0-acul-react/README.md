@@ -47,6 +47,11 @@ npm install react
 
 ---
 
+## 🏗 Architecture
+![Architecture Diagram](./assets/architecture.png)
+
+This diagram provides an overview of how the `@auth0/auth0-acul-react` SDK integrates with the core `@auth0/auth0-acul-js` library and your React application. Each screen is modular, allowing for partial imports and seamless customization.
+
 ## 🧭 How to Use
 
 ### ✅ **Recommended: Partial Imports (per screen)**
