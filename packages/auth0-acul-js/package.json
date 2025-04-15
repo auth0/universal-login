@@ -207,6 +207,10 @@
     "./device-code-activation": {
       "import": "./dist/screens/device-code-activation/index.js",
       "types": "./dist/types/src/screens/device-code-activation/index.d.ts"
+    },
+    "./reset-password-mfa-recovery-code-challenge": {
+      "import": "./dist/screens/reset-password-mfa-recovery-code-challenge/index.js",
+      "types": "./dist/types/src/screens/reset-password-mfa-recovery-code-challenge/index.d.ts"
     }
   },
   "scripts": {
