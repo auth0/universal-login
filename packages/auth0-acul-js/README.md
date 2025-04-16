@@ -170,6 +170,7 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 | 48     | device-code-activation-denied          | [Link](https://auth0.github.io/universal-login/classes/Classes.DeviceCodeActivationDenied.html)   |
 | 49     | device-code-activation          | [Link](https://auth0.github.io/universal-login/classes/Classes.DeviceCodeActivation.html)   |
 | 50     | reset-password-mfa-recovery-code-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaRecoveryCodeChallenge.html)   |
+| 51     | reset-password-mfa-voice          | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaVoiceChallenge.html)   |
 
 
 </details>

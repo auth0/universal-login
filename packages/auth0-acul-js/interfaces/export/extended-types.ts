@@ -39,3 +39,4 @@ export type { ScreenMembersOnResetPasswordMfaOtpChallenge } from '../screens/res
 export type { ScreenMembersOnOrganizationSelection } from '../screens/organization-selection';
 export type { ScreenMembersOnAcceptInvitation } from '../screens/accept-invitation';
 export type { ScreenMembersOnCustomizedConsent } from '../screens/customized-consent';
+export type { ScreenMembersOnResetPasswordMfaVoiceChallenge } from '../screens/reset-password-mfa-voice-challenge';

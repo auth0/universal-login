@@ -49,3 +49,4 @@ export { default as DeviceCodeActivationAllowed } from './device-code-activation
 export { default as DeviceCodeActivationDenied } from './device-code-activation-denied';
 export { default as DeviceCodeActivation } from './device-code-activation';
 export { default as ResetPasswordMfaRecoveryCodeChallenge } from './reset-password-mfa-recovery-code-challenge';
+export { default as ResetPasswordMfaVoiceChallenge } from './reset-password-mfa-voice-challenge';

@@ -49,3 +49,4 @@ export type { DeviceCodeActivationAllowedMembers } from '../screens/device-code-
 export type { DeviceCodeActivationDeniedMembers } from '../screens/device-code-activation-denied';
 export type { DeviceCodeActivationMembers } from '../screens/device-code-activation';
 export type { ResetPasswordMfaRecoveryCodeChallengeMembers } from '../screens/reset-password-mfa-recovery-code-challenge';
+export type { ResetPasswordMfaVoiceChallengeMembers } from '../screens/reset-password-mfa-voice-challenge';
