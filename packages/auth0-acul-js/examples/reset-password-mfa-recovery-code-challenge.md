@@ -62,7 +62,7 @@ const ResetPasswordMfaRecoveryCodeChallengeScreen: React.FC = () => {
         )}
 
         <button
-          className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-2"
+          className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4"
           type="button"
           onClick={handleSubmit}
         >
@@ -70,11 +70,11 @@ const ResetPasswordMfaRecoveryCodeChallengeScreen: React.FC = () => {
         </button>
 
         <button
-          className="w-full bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          className="text-blue-600 hover:underline text-sm text-center w-full"
           type="button"
           onClick={handleTryAnotherMethod}
         >
-          {texts.tryAnotherMethodText ?? 'Try Another Method'}
+          {texts.pickAuthenticatorText ?? 'Try another method'}
         </button>
       </div>
     </div>
