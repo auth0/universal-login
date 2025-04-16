@@ -1,8 +1,3 @@
----
-title: mfa-begin-enroll-options
-sidebar_label: MfaBeginEnrollOptions
----
-
 # `mfa-begin-enroll-options` Screen
 
 > This screen represents the **MfaBeginEnrollOptions** flow in the Auth0 Universal Login.

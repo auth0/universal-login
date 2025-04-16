@@ -1,8 +1,3 @@
----
-title: mfa-sms-list
-sidebar_label: MfaSmsList
----
-
 # `mfa-sms-list` Screen
 
 > This screen represents the **MfaSmsList** flow in the Auth0 Universal Login.

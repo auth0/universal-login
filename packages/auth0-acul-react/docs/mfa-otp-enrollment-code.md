@@ -1,8 +1,3 @@
----
-title: mfa-otp-enrollment-code
-sidebar_label: MfaOtpEnrollmentCode
----
-
 # `mfa-otp-enrollment-code` Screen
 
 > This screen represents the **MfaOtpEnrollmentCode** flow in the Auth0 Universal Login.

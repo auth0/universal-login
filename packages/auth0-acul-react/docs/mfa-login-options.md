@@ -1,8 +1,3 @@
----
-title: mfa-login-options
-sidebar_label: MfaLoginOptions
----
-
 # `mfa-login-options` Screen
 
 > This screen represents the **MfaLoginOptions** flow in the Auth0 Universal Login.

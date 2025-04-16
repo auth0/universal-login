@@ -1,8 +1,3 @@
----
-title: email-identifier-challenge
-sidebar_label: EmailIdentifierChallenge
----
-
 # `email-identifier-challenge` Screen
 
 > This screen represents the **EmailIdentifierChallenge** flow in the Auth0 Universal Login.

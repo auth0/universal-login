@@ -1,8 +1,3 @@
----
-title: customized-consent
-sidebar_label: CustomizedConsent
----
-
 # `customized-consent` Screen
 
 > This screen represents the **CustomizedConsent** flow in the Auth0 Universal Login.

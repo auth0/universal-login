@@ -1,8 +1,3 @@
----
-title: accept-invitation
-sidebar_label: AcceptInvitation
----
-
 # `accept-invitation` Screen
 
 > This screen represents the **AcceptInvitation** flow in the Auth0 Universal Login.

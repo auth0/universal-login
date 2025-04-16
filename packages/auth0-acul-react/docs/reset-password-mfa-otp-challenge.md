@@ -1,8 +1,3 @@
----
-title: reset-password-mfa-otp-challenge
-sidebar_label: ResetPasswordMfaOtpChallenge
----
-
 # `reset-password-mfa-otp-challenge` Screen
 
 > This screen represents the **ResetPasswordMfaOtpChallenge** flow in the Auth0 Universal Login.

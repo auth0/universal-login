@@ -1,8 +1,3 @@
----
-title: phone-identifier-enrollment
-sidebar_label: PhoneIdentifierEnrollment
----
-
 # `phone-identifier-enrollment` Screen
 
 > This screen represents the **PhoneIdentifierEnrollment** flow in the Auth0 Universal Login.

@@ -1,8 +1,3 @@
----
-title: mfa-push-enrollment-qr
-sidebar_label: MfaPushEnrollmentQr
----
-
 # `mfa-push-enrollment-qr` Screen
 
 > This screen represents the **MfaPushEnrollmentQr** flow in the Auth0 Universal Login.

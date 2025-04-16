@@ -1,8 +1,3 @@
----
-title: signup
-sidebar_label: Signup
----
-
 # `signup` Screen
 
 > This screen represents the **Signup** flow in the Auth0 Universal Login.

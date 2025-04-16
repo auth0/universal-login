@@ -1,8 +1,3 @@
----
-title: mfa-otp-challenge
-sidebar_label: MfaOtpChallenge
----
-
 # `mfa-otp-challenge` Screen
 
 > This screen represents the **MfaOtpChallenge** flow in the Auth0 Universal Login.

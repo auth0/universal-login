@@ -1,8 +1,3 @@
----
-title: reset-password-mfa-push-challenge-push
-sidebar_label: ResetPasswordMfaPushChallengePush
----
-
 # `reset-password-mfa-push-challenge-push` Screen
 
 > This screen represents the **ResetPasswordMfaPushChallengePush** flow in the Auth0 Universal Login.

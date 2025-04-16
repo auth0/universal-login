@@ -1,8 +1,3 @@
----
-title: login-password
-sidebar_label: LoginPassword
----
-
 # `login-password` Screen
 
 > This screen represents the **LoginPassword** flow in the Auth0 Universal Login.

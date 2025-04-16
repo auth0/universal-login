@@ -1,8 +1,3 @@
----
-title: mfa-sms-challenge
-sidebar_label: MfaSmsChallenge
----
-
 # `mfa-sms-challenge` Screen
 
 > This screen represents the **MfaSmsChallenge** flow in the Auth0 Universal Login.

@@ -1,8 +1,3 @@
----
-title: mfa-email-challenge
-sidebar_label: MfaEmailChallenge
----
-
 # `mfa-email-challenge` Screen
 
 > This screen represents the **MfaEmailChallenge** flow in the Auth0 Universal Login.

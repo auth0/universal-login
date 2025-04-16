@@ -1,8 +1,3 @@
----
-title: reset-password-success
-sidebar_label: ResetPasswordSuccess
----
-
 # `reset-password-success` Screen
 
 > This screen represents the **ResetPasswordSuccess** flow in the Auth0 Universal Login.

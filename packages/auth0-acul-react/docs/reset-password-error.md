@@ -1,8 +1,3 @@
----
-title: reset-password-error
-sidebar_label: ResetPasswordError
----
-
 # `reset-password-error` Screen
 
 > This screen represents the **ResetPasswordError** flow in the Auth0 Universal Login.

@@ -1,8 +1,3 @@
----
-title: interstitial-captcha
-sidebar_label: InterstitialCaptcha
----
-
 # `interstitial-captcha` Screen
 
 > This screen represents the **InterstitialCaptcha** flow in the Auth0 Universal Login.

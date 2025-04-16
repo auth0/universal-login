@@ -1,8 +1,3 @@
----
-title: signup-password
-sidebar_label: SignupPassword
----
-
 # `signup-password` Screen
 
 > This screen represents the **SignupPassword** flow in the Auth0 Universal Login.

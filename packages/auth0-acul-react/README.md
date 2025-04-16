@@ -151,7 +151,7 @@ To customize a screen:
 Per-screen usage documentation is available in [`docs/screens`](../docs/screens) and is auto-generated.
 
 Example:
-- [`docs/screens/login-id.md`](../docs/screens/login-id.md)
+- [`docs/login-id.md`](./docs/login-id.md)
 
 ---
 

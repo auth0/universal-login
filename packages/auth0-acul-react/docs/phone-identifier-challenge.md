@@ -1,8 +1,3 @@
----
-title: phone-identifier-challenge
-sidebar_label: PhoneIdentifierChallenge
----
-
 # `phone-identifier-challenge` Screen
 
 > This screen represents the **PhoneIdentifierChallenge** flow in the Auth0 Universal Login.

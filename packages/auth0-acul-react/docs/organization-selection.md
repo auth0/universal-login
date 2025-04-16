@@ -1,8 +1,3 @@
----
-title: organization-selection
-sidebar_label: OrganizationSelection
----
-
 # `organization-selection` Screen
 
 > This screen represents the **OrganizationSelection** flow in the Auth0 Universal Login.

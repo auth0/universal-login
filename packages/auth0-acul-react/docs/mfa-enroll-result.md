@@ -1,8 +1,3 @@
----
-title: mfa-enroll-result
-sidebar_label: MfaEnrollResult
----
-
 # `mfa-enroll-result` Screen
 
 > This screen represents the **MfaEnrollResult** flow in the Auth0 Universal Login.

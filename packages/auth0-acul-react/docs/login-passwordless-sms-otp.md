@@ -1,8 +1,3 @@
----
-title: login-passwordless-sms-otp
-sidebar_label: LoginPasswordlessSmsOtp
----
-
 # `login-passwordless-sms-otp` Screen
 
 > This screen represents the **LoginPasswordlessSmsOtp** flow in the Auth0 Universal Login.

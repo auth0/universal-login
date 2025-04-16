@@ -1,8 +1,3 @@
----
-title: mfa-country-codes
-sidebar_label: MfaCountryCodes
----
-
 # `mfa-country-codes` Screen
 
 > This screen represents the **MfaCountryCodes** flow in the Auth0 Universal Login.

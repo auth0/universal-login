@@ -1,8 +1,3 @@
----
-title: login-id
-sidebar_label: LoginId
----
-
 # `login-id` Screen
 
 > This screen represents the **LoginId** flow in the Auth0 Universal Login.

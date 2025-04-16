@@ -1,8 +1,3 @@
----
-title: passkey-enrollment
-sidebar_label: PasskeyEnrollment
----
-
 # `passkey-enrollment` Screen
 
 > This screen represents the **PasskeyEnrollment** flow in the Auth0 Universal Login.

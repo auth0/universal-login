@@ -1,8 +1,3 @@
----
-title: mfa-email-list
-sidebar_label: MfaEmailList
----
-
 # `mfa-email-list` Screen
 
 > This screen represents the **MfaEmailList** flow in the Auth0 Universal Login.

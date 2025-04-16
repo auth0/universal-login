@@ -1,8 +1,3 @@
----
-title: organization-picker
-sidebar_label: OrganizationPicker
----
-
 # `organization-picker` Screen
 
 > This screen represents the **OrganizationPicker** flow in the Auth0 Universal Login.

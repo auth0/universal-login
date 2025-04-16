@@ -1,8 +1,3 @@
----
-title: mfa-otp-enrollment-qr
-sidebar_label: MfaOtpEnrollmentQr
----
-
 # `mfa-otp-enrollment-qr` Screen
 
 > This screen represents the **MfaOtpEnrollmentQr** flow in the Auth0 Universal Login.

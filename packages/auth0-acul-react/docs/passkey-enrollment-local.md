@@ -1,8 +1,3 @@
----
-title: passkey-enrollment-local
-sidebar_label: PasskeyEnrollmentLocal
----
-
 # `passkey-enrollment-local` Screen
 
 > This screen represents the **PasskeyEnrollmentLocal** flow in the Auth0 Universal Login.

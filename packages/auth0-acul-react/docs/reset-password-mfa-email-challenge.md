@@ -1,8 +1,3 @@
----
-title: reset-password-mfa-email-challenge
-sidebar_label: ResetPasswordMfaEmailChallenge
----
-
 # `reset-password-mfa-email-challenge` Screen
 
 > This screen represents the **ResetPasswordMfaEmailChallenge** flow in the Auth0 Universal Login.

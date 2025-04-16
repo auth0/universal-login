@@ -1,8 +1,3 @@
----
-title: mfa-detect-browser-capabilities
-sidebar_label: MfaDetectBrowserCapabilities
----
-
 # `mfa-detect-browser-capabilities` Screen
 
 > This screen represents the **MfaDetectBrowserCapabilities** flow in the Auth0 Universal Login.

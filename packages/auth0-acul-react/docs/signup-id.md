@@ -1,8 +1,3 @@
----
-title: signup-id
-sidebar_label: SignupId
----
-
 # `signup-id` Screen
 
 > This screen represents the **SignupId** flow in the Auth0 Universal Login.

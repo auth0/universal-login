@@ -1,8 +1,3 @@
----
-title: mfa-push-list
-sidebar_label: MfaPushList
----
-
 # `mfa-push-list` Screen
 
 > This screen represents the **MfaPushList** flow in the Auth0 Universal Login.

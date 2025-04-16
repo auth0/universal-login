@@ -1,8 +1,3 @@
----
-title: reset-password
-sidebar_label: ResetPassword
----
-
 # `reset-password` Screen
 
 > This screen represents the **ResetPassword** flow in the Auth0 Universal Login.

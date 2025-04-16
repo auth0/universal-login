@@ -1,8 +1,3 @@
----
-title: mfa-push-challenge-push
-sidebar_label: MfaPushChallengePush
----
-
 # `mfa-push-challenge-push` Screen
 
 > This screen represents the **MfaPushChallengePush** flow in the Auth0 Universal Login.

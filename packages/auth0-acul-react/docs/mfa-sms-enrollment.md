@@ -1,8 +1,3 @@
----
-title: mfa-sms-enrollment
-sidebar_label: MfaSmsEnrollment
----
-
 # `mfa-sms-enrollment` Screen
 
 > This screen represents the **MfaSmsEnrollment** flow in the Auth0 Universal Login.

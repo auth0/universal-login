@@ -1,8 +1,3 @@
----
-title: login
-sidebar_label: Login
----
-
 # `login` Screen
 
 > This screen represents the **Login** flow in the Auth0 Universal Login.

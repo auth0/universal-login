@@ -1,8 +1,3 @@
----
-title: reset-password-email
-sidebar_label: ResetPasswordEmail
----
-
 # `reset-password-email` Screen
 
 > This screen represents the **ResetPasswordEmail** flow in the Auth0 Universal Login.

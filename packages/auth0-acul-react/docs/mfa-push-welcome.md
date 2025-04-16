@@ -1,8 +1,3 @@
----
-title: mfa-push-welcome
-sidebar_label: MfaPushWelcome
----
-
 # `mfa-push-welcome` Screen
 
 > This screen represents the **MfaPushWelcome** flow in the Auth0 Universal Login.

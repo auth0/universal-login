@@ -1,8 +1,3 @@
----
-title: login-passwordless-email-code
-sidebar_label: LoginPasswordlessEmailCode
----
-
 # `login-passwordless-email-code` Screen
 
 > This screen represents the **LoginPasswordlessEmailCode** flow in the Auth0 Universal Login.
