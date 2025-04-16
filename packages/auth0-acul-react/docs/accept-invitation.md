@@ -6,22 +6,19 @@
 
 ## 🔹 Hook Usage: `useAcceptInvitation()`
 
-This creates a new `AcceptInvitation` instance:
-
 ```tsx
 import { useAcceptInvitation } from '@auth0/auth0-acul-react/accept-invitation';
 
 const screen = useAcceptInvitation(); // typed as AcceptInvitationMembers
-screen.acceptInvitation(...);
+// Accepts the invitation to the organization.
+screen.acceptInvitation({ /* args */ });
 ```
 
-> View [`AcceptInvitationMembers`](https://auth0.github.io/universal-login/interfaces/Classes.AcceptInvitationMembers.html) — this interface describes all properties and methods exposed by the `AcceptInvitation` screen.
+> View [`AcceptInvitationMembers`](https://auth0.github.io/universal-login/interfaces/Classes.AcceptInvitationMembers.html) — this interface documents the full API for the `AcceptInvitation` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +31,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as AcceptInvitationMembers
 ```
 
-> View [`AcceptInvitationMembers`](https://auth0.github.io/universal-login/interfaces/Classes.AcceptInvitationMembers.html) — this interface describes all properties and methods exposed by the `AcceptInvitation` screen.
+> View [`AcceptInvitationMembers`](https://auth0.github.io/universal-login/interfaces/Classes.AcceptInvitationMembers.html) — this interface documents the full API for the `AcceptInvitation` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `AcceptInvitation`:
 
 **Import:**
 
@@ -83,12 +78,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`AcceptInvitationMembers`](https://auth0.github.io/universal-login/interfaces/Classes.AcceptInvitationMembers.html) — documents all methods and properties available on the `AcceptInvitation` screen.
 
-**Screen Class Reference:**  
-- [`AcceptInvitationMembers`](https://auth0.github.io/universal-login/interfaces/Classes.AcceptInvitationMembers.html) — this interface describes all properties and methods exposed by the `AcceptInvitation` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`AcceptInvitationMembers`](https://auth0.github.io/universal-login/interfaces/Classes.AcceptInvitationMembers.html)
 - [`ScreenMembersOnAcceptInvitation`](https://auth0.github.io/universal-login/interfaces/Classes.ScreenMembersOnAcceptInvitation.html)
 - [`CaptchaContext`](https://auth0.github.io/universal-login/interfaces/Classes.CaptchaContext.html)
@@ -113,5 +106,5 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)

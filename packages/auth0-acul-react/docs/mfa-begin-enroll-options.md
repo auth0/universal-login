@@ -6,22 +6,19 @@
 
 ## 🔹 Hook Usage: `useMfaBeginEnrollOptions()`
 
-This creates a new `MfaBeginEnrollOptions` instance:
-
 ```tsx
 import { useMfaBeginEnrollOptions } from '@auth0/auth0-acul-react/mfa-begin-enroll-options';
 
 const screen = useMfaBeginEnrollOptions(); // typed as MfaBeginEnrollOptionsMembers
-screen.enroll(...);
+// Continues the enrollment process with the selected factor
+screen.enroll({ action: 'action_value' });
 ```
 
-> View [`MfaBeginEnrollOptionsMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaBeginEnrollOptionsMembers.html) — this interface describes all properties and methods exposed by the `MfaBeginEnrollOptions` screen.
+> View [`MfaBeginEnrollOptionsMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaBeginEnrollOptionsMembers.html) — this interface documents the full API for the `MfaBeginEnrollOptions` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +31,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as MfaBeginEnrollOptionsMembers
 ```
 
-> View [`MfaBeginEnrollOptionsMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaBeginEnrollOptionsMembers.html) — this interface describes all properties and methods exposed by the `MfaBeginEnrollOptions` screen.
+> View [`MfaBeginEnrollOptionsMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaBeginEnrollOptionsMembers.html) — this interface documents the full API for the `MfaBeginEnrollOptions` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `MfaBeginEnrollOptions`:
 
 **Import:**
 
@@ -84,12 +79,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`MfaBeginEnrollOptionsMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaBeginEnrollOptionsMembers.html) — documents all methods and properties available on the `MfaBeginEnrollOptions` screen.
 
-**Screen Class Reference:**  
-- [`MfaBeginEnrollOptionsMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaBeginEnrollOptionsMembers.html) — this interface describes all properties and methods exposed by the `MfaBeginEnrollOptions` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`MfaBeginEnrollOptionsMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaBeginEnrollOptionsMembers.html)
 - [`MfaEnrollOptions`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEnrollOptions.html)
 - [`CaptchaContext`](https://auth0.github.io/universal-login/interfaces/Classes.CaptchaContext.html)
@@ -114,6 +107,6 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`FactorType`](https://auth0.github.io/universal-login/types/Classes.FactorType.html)
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)

@@ -6,22 +6,22 @@
 
 ## 🔹 Hook Usage: `useCustomizedConsent()`
 
-This creates a new `CustomizedConsent` instance:
-
 ```tsx
 import { useCustomizedConsent } from '@auth0/auth0-acul-react/customized-consent';
 
 const screen = useCustomizedConsent(); // typed as CustomizedConsentMembers
-screen.accept(...);
+// Accepts the consent.
+screen.accept({ /* args */ });
+
+// Declines the consent.
+screen.deny({ /* args */ });
 ```
 
-> View [`CustomizedConsentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.CustomizedConsentMembers.html) — this interface describes all properties and methods exposed by the `CustomizedConsent` screen.
+> View [`CustomizedConsentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.CustomizedConsentMembers.html) — this interface documents the full API for the `CustomizedConsent` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +34,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as CustomizedConsentMembers
 ```
 
-> View [`CustomizedConsentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.CustomizedConsentMembers.html) — this interface describes all properties and methods exposed by the `CustomizedConsent` screen.
+> View [`CustomizedConsentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.CustomizedConsentMembers.html) — this interface documents the full API for the `CustomizedConsent` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `CustomizedConsent`:
 
 **Import:**
 
@@ -60,7 +58,5 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
-
-**Screen Class Reference:**  
-- [`CustomizedConsentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.CustomizedConsentMembers.html) — this interface describes all properties and methods exposed by the `CustomizedConsent` screen.
+📝 **Documentation:**  
+- [`CustomizedConsentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.CustomizedConsentMembers.html) — documents all methods and properties available on the `CustomizedConsent` screen.

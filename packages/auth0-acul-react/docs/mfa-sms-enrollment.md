@@ -6,22 +6,25 @@
 
 ## 🔹 Hook Usage: `useMfaSmsEnrollment()`
 
-This creates a new `MfaSmsEnrollment` instance:
-
 ```tsx
 import { useMfaSmsEnrollment } from '@auth0/auth0-acul-react/mfa-sms-enrollment';
 
 const screen = useMfaSmsEnrollment(); // typed as MfaSmsEnrollmentMembers
-screen.pickCountryCode(...);
+// Handles the action to pick a country code for SMS enrollment.
+screen.pickCountryCode({ /* args */ });
+
+// Continues the SMS enrollment process with the provided phone number.
+screen.continueEnrollment({ /* args */ });
+
+// Handles the action to try another method for MFA.
+screen.tryAnotherMethod({ /* args */ });
 ```
 
-> View [`MfaSmsEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsEnrollmentMembers.html) — this interface describes all properties and methods exposed by the `MfaSmsEnrollment` screen.
+> View [`MfaSmsEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsEnrollmentMembers.html) — this interface documents the full API for the `MfaSmsEnrollment` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +37,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as MfaSmsEnrollmentMembers
 ```
 
-> View [`MfaSmsEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsEnrollmentMembers.html) — this interface describes all properties and methods exposed by the `MfaSmsEnrollment` screen.
+> View [`MfaSmsEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsEnrollmentMembers.html) — this interface documents the full API for the `MfaSmsEnrollment` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `MfaSmsEnrollment`:
 
 **Import:**
 
@@ -84,12 +85,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`MfaSmsEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsEnrollmentMembers.html) — documents all methods and properties available on the `MfaSmsEnrollment` screen.
 
-**Screen Class Reference:**  
-- [`MfaSmsEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsEnrollmentMembers.html) — this interface describes all properties and methods exposed by the `MfaSmsEnrollment` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`MfaSmsEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsEnrollmentMembers.html)
 - [`MfaSmsEnrollmentOptions`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsEnrollmentOptions.html)
 - [`ScreenMembersOnMfaSmsEnrollment`](https://auth0.github.io/universal-login/interfaces/Classes.ScreenMembersOnMfaSmsEnrollment.html)
@@ -115,5 +114,5 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)

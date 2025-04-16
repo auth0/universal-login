@@ -6,8 +6,6 @@
 
 ## 🔹 Hook Usage: `useResetPasswordError()`
 
-This creates a new `ResetPasswordError` instance:
-
 ```tsx
 import { useResetPasswordError } from '@auth0/auth0-acul-react/reset-password-error';
 
@@ -15,13 +13,11 @@ const screen = useResetPasswordError(); // typed as ResetPasswordErrorMembers
 // screen method call
 ```
 
-> View [`ResetPasswordErrorMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordErrorMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordError` screen.
+> View [`ResetPasswordErrorMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordErrorMembers.html) — this interface documents the full API for the `ResetPasswordError` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +30,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as ResetPasswordErrorMembers
 ```
 
-> View [`ResetPasswordErrorMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordErrorMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordError` screen.
+> View [`ResetPasswordErrorMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordErrorMembers.html) — this interface documents the full API for the `ResetPasswordError` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `ResetPasswordError`:
 
 **Import:**
 
@@ -83,12 +77,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`ResetPasswordErrorMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordErrorMembers.html) — documents all methods and properties available on the `ResetPasswordError` screen.
 
-**Screen Class Reference:**  
-- [`ResetPasswordErrorMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordErrorMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordError` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`ResetPasswordErrorMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordErrorMembers.html)
 - [`ScreenMembersOnResetPasswordError`](https://auth0.github.io/universal-login/interfaces/Classes.ScreenMembersOnResetPasswordError.html)
 - [`CaptchaContext`](https://auth0.github.io/universal-login/interfaces/Classes.CaptchaContext.html)
@@ -113,5 +105,5 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)

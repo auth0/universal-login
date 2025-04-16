@@ -6,22 +6,22 @@
 
 ## 🔹 Hook Usage: `useMfaOtpChallenge()`
 
-This creates a new `MfaOtpChallenge` instance:
-
 ```tsx
 import { useMfaOtpChallenge } from '@auth0/auth0-acul-react/mfa-otp-challenge';
 
 const screen = useMfaOtpChallenge(); // typed as MfaOtpChallengeMembers
-screen.continue(...);
+// Continues with the OTP challenge using the provided code
+screen.continue({ code: '123456', rememberBrowser: 'rememberBrowser_value' });
+
+// Allows the user to try another MFA method
+screen.tryAnotherMethod({ /* args */ });
 ```
 
-> View [`MfaOtpChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpChallengeMembers.html) — this interface describes all properties and methods exposed by the `MfaOtpChallenge` screen.
+> View [`MfaOtpChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpChallengeMembers.html) — this interface documents the full API for the `MfaOtpChallenge` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +34,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as MfaOtpChallengeMembers
 ```
 
-> View [`MfaOtpChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpChallengeMembers.html) — this interface describes all properties and methods exposed by the `MfaOtpChallenge` screen.
+> View [`MfaOtpChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpChallengeMembers.html) — this interface documents the full API for the `MfaOtpChallenge` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `MfaOtpChallenge`:
 
 **Import:**
 
@@ -85,12 +83,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`MfaOtpChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpChallengeMembers.html) — documents all methods and properties available on the `MfaOtpChallenge` screen.
 
-**Screen Class Reference:**  
-- [`MfaOtpChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpChallengeMembers.html) — this interface describes all properties and methods exposed by the `MfaOtpChallenge` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`MfaOtpChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpChallengeMembers.html)
 - [`ContinueOptions`](https://auth0.github.io/universal-login/interfaces/Classes.ContinueOptions.html)
 - [`TryAnotherMethodOptions`](https://auth0.github.io/universal-login/interfaces/Classes.TryAnotherMethodOptions.html)
@@ -117,5 +113,5 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)

@@ -6,22 +6,22 @@
 
 ## 🔹 Hook Usage: `useMfaCountryCodes()`
 
-This creates a new `MfaCountryCodes` instance:
-
 ```tsx
 import { useMfaCountryCodes } from '@auth0/auth0-acul-react/mfa-country-codes';
 
 const screen = useMfaCountryCodes(); // typed as MfaCountryCodesMembers
-screen.selectCountryCode(...);
+// Selects a country code from the available options
+screen.selectCountryCode({ country_code: '123456', phone_prefix: 'phone_prefix_value' });
+
+// Navigates back to the previous screen
+screen.goBack({ /* args */ });
 ```
 
-> View [`MfaCountryCodesMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaCountryCodesMembers.html) — this interface describes all properties and methods exposed by the `MfaCountryCodes` screen.
+> View [`MfaCountryCodesMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaCountryCodesMembers.html) — this interface documents the full API for the `MfaCountryCodes` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +34,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as MfaCountryCodesMembers
 ```
 
-> View [`MfaCountryCodesMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaCountryCodesMembers.html) — this interface describes all properties and methods exposed by the `MfaCountryCodes` screen.
+> View [`MfaCountryCodesMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaCountryCodesMembers.html) — this interface documents the full API for the `MfaCountryCodes` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `MfaCountryCodes`:
 
 **Import:**
 
@@ -83,12 +81,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`MfaCountryCodesMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaCountryCodesMembers.html) — documents all methods and properties available on the `MfaCountryCodes` screen.
 
-**Screen Class Reference:**  
-- [`MfaCountryCodesMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaCountryCodesMembers.html) — this interface describes all properties and methods exposed by the `MfaCountryCodes` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`MfaCountryCodesMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaCountryCodesMembers.html)
 - [`ScreenMembersOnMfaCountryCodes`](https://auth0.github.io/universal-login/interfaces/Classes.ScreenMembersOnMfaCountryCodes.html)
 - [`CaptchaContext`](https://auth0.github.io/universal-login/interfaces/Classes.CaptchaContext.html)
@@ -113,5 +109,5 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)

@@ -6,22 +6,19 @@
 
 ## 🔹 Hook Usage: `useMfaLoginOptions()`
 
-This creates a new `MfaLoginOptions` instance:
-
 ```tsx
 import { useMfaLoginOptions } from '@auth0/auth0-acul-react/mfa-login-options';
 
 const screen = useMfaLoginOptions(); // typed as MfaLoginOptionsMembers
-screen.enroll(...);
+// Continues the login process with the selected MFA factor
+screen.enroll({ action: 'action_value' });
 ```
 
-> View [`MfaLoginOptionsMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaLoginOptionsMembers.html) — this interface describes all properties and methods exposed by the `MfaLoginOptions` screen.
+> View [`MfaLoginOptionsMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaLoginOptionsMembers.html) — this interface documents the full API for the `MfaLoginOptions` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +31,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as MfaLoginOptionsMembers
 ```
 
-> View [`MfaLoginOptionsMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaLoginOptionsMembers.html) — this interface describes all properties and methods exposed by the `MfaLoginOptions` screen.
+> View [`MfaLoginOptionsMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaLoginOptionsMembers.html) — this interface documents the full API for the `MfaLoginOptions` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `MfaLoginOptions`:
 
 **Import:**
 
@@ -84,12 +79,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`MfaLoginOptionsMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaLoginOptionsMembers.html) — documents all methods and properties available on the `MfaLoginOptions` screen.
 
-**Screen Class Reference:**  
-- [`MfaLoginOptionsMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaLoginOptionsMembers.html) — this interface describes all properties and methods exposed by the `MfaLoginOptions` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`MfaLoginOptionsMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaLoginOptionsMembers.html)
 - [`LoginEnrollOptions`](https://auth0.github.io/universal-login/interfaces/Classes.LoginEnrollOptions.html)
 - [`CaptchaContext`](https://auth0.github.io/universal-login/interfaces/Classes.CaptchaContext.html)
@@ -114,6 +107,6 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`LoginFactorType`](https://auth0.github.io/universal-login/types/Classes.LoginFactorType.html)
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)

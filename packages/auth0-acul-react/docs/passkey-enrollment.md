@@ -6,22 +6,22 @@
 
 ## 🔹 Hook Usage: `usePasskeyEnrollment()`
 
-This creates a new `PasskeyEnrollment` instance:
-
 ```tsx
 import { usePasskeyEnrollment } from '@auth0/auth0-acul-react/passkey-enrollment';
 
 const screen = usePasskeyEnrollment(); // typed as PasskeyEnrollmentMembers
-screen.continuePasskeyEnrollment(...);
+
+screen.continuePasskeyEnrollment({ /* args */ });
+
+
+screen.abortPasskeyEnrollment({ /* args */ });
 ```
 
-> View [`PasskeyEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PasskeyEnrollmentMembers.html) — this interface describes all properties and methods exposed by the `PasskeyEnrollment` screen.
+> View [`PasskeyEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PasskeyEnrollmentMembers.html) — this interface documents the full API for the `PasskeyEnrollment` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +34,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as PasskeyEnrollmentMembers
 ```
 
-> View [`PasskeyEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PasskeyEnrollmentMembers.html) — this interface describes all properties and methods exposed by the `PasskeyEnrollment` screen.
+> View [`PasskeyEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PasskeyEnrollmentMembers.html) — this interface documents the full API for the `PasskeyEnrollment` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `PasskeyEnrollment`:
 
 **Import:**
 
@@ -83,12 +81,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`PasskeyEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PasskeyEnrollmentMembers.html) — documents all methods and properties available on the `PasskeyEnrollment` screen.
 
-**Screen Class Reference:**  
-- [`PasskeyEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PasskeyEnrollmentMembers.html) — this interface describes all properties and methods exposed by the `PasskeyEnrollment` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`PasskeyEnrollmentMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PasskeyEnrollmentMembers.html)
 - [`ScreenMembersOnPasskeyEnrollment`](https://auth0.github.io/universal-login/interfaces/Classes.ScreenMembersOnPasskeyEnrollment.html)
 - [`CaptchaContext`](https://auth0.github.io/universal-login/interfaces/Classes.CaptchaContext.html)
@@ -113,5 +109,5 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)

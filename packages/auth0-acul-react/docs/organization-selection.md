@@ -6,22 +6,19 @@
 
 ## 🔹 Hook Usage: `useOrganizationSelection()`
 
-This creates a new `OrganizationSelection` instance:
-
 ```tsx
 import { useOrganizationSelection } from '@auth0/auth0-acul-react/organization-selection';
 
 const screen = useOrganizationSelection(); // typed as OrganizationSelectionMembers
-screen.continueWithOrganizationName(...);
+// Continues with the selected organization name.
+screen.continueWithOrganizationName({ organizationName: 'organizationName_value' });
 ```
 
-> View [`OrganizationSelectionMembers`](https://auth0.github.io/universal-login/interfaces/Classes.OrganizationSelectionMembers.html) — this interface describes all properties and methods exposed by the `OrganizationSelection` screen.
+> View [`OrganizationSelectionMembers`](https://auth0.github.io/universal-login/interfaces/Classes.OrganizationSelectionMembers.html) — this interface documents the full API for the `OrganizationSelection` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +31,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as OrganizationSelectionMembers
 ```
 
-> View [`OrganizationSelectionMembers`](https://auth0.github.io/universal-login/interfaces/Classes.OrganizationSelectionMembers.html) — this interface describes all properties and methods exposed by the `OrganizationSelection` screen.
+> View [`OrganizationSelectionMembers`](https://auth0.github.io/universal-login/interfaces/Classes.OrganizationSelectionMembers.html) — this interface documents the full API for the `OrganizationSelection` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `OrganizationSelection`:
 
 **Import:**
 
@@ -84,12 +79,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`OrganizationSelectionMembers`](https://auth0.github.io/universal-login/interfaces/Classes.OrganizationSelectionMembers.html) — documents all methods and properties available on the `OrganizationSelection` screen.
 
-**Screen Class Reference:**  
-- [`OrganizationSelectionMembers`](https://auth0.github.io/universal-login/interfaces/Classes.OrganizationSelectionMembers.html) — this interface describes all properties and methods exposed by the `OrganizationSelection` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`OrganizationSelectionMembers`](https://auth0.github.io/universal-login/interfaces/Classes.OrganizationSelectionMembers.html)
 - [`ContinueWithOrganizationNameOptions`](https://auth0.github.io/universal-login/interfaces/Classes.ContinueWithOrganizationNameOptions.html)
 - [`ScreenMembersOnOrganizationSelection`](https://auth0.github.io/universal-login/interfaces/Classes.ScreenMembersOnOrganizationSelection.html)
@@ -115,5 +108,5 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)

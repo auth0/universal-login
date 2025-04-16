@@ -6,22 +6,28 @@
 
 ## 🔹 Hook Usage: `useMfaEmailChallenge()`
 
-This creates a new `MfaEmailChallenge` instance:
-
 ```tsx
 import { useMfaEmailChallenge } from '@auth0/auth0-acul-react/mfa-email-challenge';
 
 const screen = useMfaEmailChallenge(); // typed as MfaEmailChallengeMembers
-screen.continue(...);
+// Continues with the email challenge using the provided code
+screen.continue({ code: '123456', rememberDevice: 'rememberDevice_value' });
+
+// Resends the email code
+screen.resendCode({ /* args */ });
+
+// Allows the user to try another MFA method
+screen.tryAnotherMethod({ /* args */ });
+
+// Submits the action to pick a different Email configuration, if available.
+screen.pickEmail();
 ```
 
-> View [`MfaEmailChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEmailChallengeMembers.html) — this interface describes all properties and methods exposed by the `MfaEmailChallenge` screen.
+> View [`MfaEmailChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEmailChallengeMembers.html) — this interface documents the full API for the `MfaEmailChallenge` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +40,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as MfaEmailChallengeMembers
 ```
 
-> View [`MfaEmailChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEmailChallengeMembers.html) — this interface describes all properties and methods exposed by the `MfaEmailChallenge` screen.
+> View [`MfaEmailChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEmailChallengeMembers.html) — this interface documents the full API for the `MfaEmailChallenge` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `MfaEmailChallenge`:
 
 **Import:**
 
@@ -86,12 +90,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`MfaEmailChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEmailChallengeMembers.html) — documents all methods and properties available on the `MfaEmailChallenge` screen.
 
-**Screen Class Reference:**  
-- [`MfaEmailChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEmailChallengeMembers.html) — this interface describes all properties and methods exposed by the `MfaEmailChallenge` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`MfaEmailChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEmailChallengeMembers.html)
 - [`ContinueOptions`](https://auth0.github.io/universal-login/interfaces/Classes.ContinueOptions.html)
 - [`ResendCodeOptions`](https://auth0.github.io/universal-login/interfaces/Classes.ResendCodeOptions.html)
@@ -119,5 +121,5 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)

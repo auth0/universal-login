@@ -6,22 +6,22 @@
 
 ## 🔹 Hook Usage: `useMfaPushWelcome()`
 
-This creates a new `MfaPushWelcome` instance:
-
 ```tsx
 import { useMfaPushWelcome } from '@auth0/auth0-acul-react/mfa-push-welcome';
 
 const screen = useMfaPushWelcome(); // typed as MfaPushWelcomeMembers
-screen.enroll(...);
+// Navigates to the enrollment screen.
+screen.enroll({ /* args */ });
+
+// Navigates to the authenticator selection screen.
+screen.pickAuthenticator({ /* args */ });
 ```
 
-> View [`MfaPushWelcomeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushWelcomeMembers.html) — this interface describes all properties and methods exposed by the `MfaPushWelcome` screen.
+> View [`MfaPushWelcomeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushWelcomeMembers.html) — this interface documents the full API for the `MfaPushWelcome` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +34,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as MfaPushWelcomeMembers
 ```
 
-> View [`MfaPushWelcomeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushWelcomeMembers.html) — this interface describes all properties and methods exposed by the `MfaPushWelcome` screen.
+> View [`MfaPushWelcomeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushWelcomeMembers.html) — this interface documents the full API for the `MfaPushWelcome` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `MfaPushWelcome`:
 
 **Import:**
 
@@ -83,12 +81,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`MfaPushWelcomeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushWelcomeMembers.html) — documents all methods and properties available on the `MfaPushWelcome` screen.
 
-**Screen Class Reference:**  
-- [`MfaPushWelcomeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushWelcomeMembers.html) — this interface describes all properties and methods exposed by the `MfaPushWelcome` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`MfaPushWelcomeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushWelcomeMembers.html)
 - [`ScreenMembersOnMfaPushWelcome`](https://auth0.github.io/universal-login/interfaces/Classes.ScreenMembersOnMfaPushWelcome.html)
 - [`CaptchaContext`](https://auth0.github.io/universal-login/interfaces/Classes.CaptchaContext.html)
@@ -113,5 +109,5 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)

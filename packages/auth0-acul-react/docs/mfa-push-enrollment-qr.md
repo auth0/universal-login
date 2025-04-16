@@ -6,22 +6,19 @@
 
 ## 🔹 Hook Usage: `useMfaPushEnrollmentQr()`
 
-This creates a new `MfaPushEnrollmentQr` instance:
-
 ```tsx
 import { useMfaPushEnrollmentQr } from '@auth0/auth0-acul-react/mfa-push-enrollment-qr';
 
 const screen = useMfaPushEnrollmentQr(); // typed as MfaPushEnrollmentQrMembers
-screen.pickAuthenticator(...);
+// Navigates to the authenticator selection screen.
+screen.pickAuthenticator({ /* args */ });
 ```
 
-> View [`MfaPushEnrollmentQrMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushEnrollmentQrMembers.html) — this interface describes all properties and methods exposed by the `MfaPushEnrollmentQr` screen.
+> View [`MfaPushEnrollmentQrMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushEnrollmentQrMembers.html) — this interface documents the full API for the `MfaPushEnrollmentQr` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +31,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as MfaPushEnrollmentQrMembers
 ```
 
-> View [`MfaPushEnrollmentQrMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushEnrollmentQrMembers.html) — this interface describes all properties and methods exposed by the `MfaPushEnrollmentQr` screen.
+> View [`MfaPushEnrollmentQrMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushEnrollmentQrMembers.html) — this interface documents the full API for the `MfaPushEnrollmentQr` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `MfaPushEnrollmentQr`:
 
 **Import:**
 
@@ -83,12 +78,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`MfaPushEnrollmentQrMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushEnrollmentQrMembers.html) — documents all methods and properties available on the `MfaPushEnrollmentQr` screen.
 
-**Screen Class Reference:**  
-- [`MfaPushEnrollmentQrMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushEnrollmentQrMembers.html) — this interface describes all properties and methods exposed by the `MfaPushEnrollmentQr` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`MfaPushEnrollmentQrMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushEnrollmentQrMembers.html)
 - [`ScreenMembersOnMfaPushEnrollmentQr`](https://auth0.github.io/universal-login/interfaces/Classes.ScreenMembersOnMfaPushEnrollmentQr.html)
 - [`CaptchaContext`](https://auth0.github.io/universal-login/interfaces/Classes.CaptchaContext.html)
@@ -113,5 +106,5 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)

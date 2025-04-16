@@ -6,22 +6,22 @@
 
 ## 🔹 Hook Usage: `useOrganizationPicker()`
 
-This creates a new `OrganizationPicker` instance:
-
 ```tsx
 import { useOrganizationPicker } from '@auth0/auth0-acul-react/organization-picker';
 
 const screen = useOrganizationPicker(); // typed as OrganizationPickerMembers
-screen.selectOrganization(...);
+// Submits the selected organization ID.
+screen.selectOrganization({ /* args */ });
+
+// Submits the action to skip the organization selection.
+screen.skipOrganizationSelection({ /* args */ });
 ```
 
-> View [`OrganizationPickerMembers`](https://auth0.github.io/universal-login/interfaces/Classes.OrganizationPickerMembers.html) — this interface describes all properties and methods exposed by the `OrganizationPicker` screen.
+> View [`OrganizationPickerMembers`](https://auth0.github.io/universal-login/interfaces/Classes.OrganizationPickerMembers.html) — this interface documents the full API for the `OrganizationPicker` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +34,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as OrganizationPickerMembers
 ```
 
-> View [`OrganizationPickerMembers`](https://auth0.github.io/universal-login/interfaces/Classes.OrganizationPickerMembers.html) — this interface describes all properties and methods exposed by the `OrganizationPicker` screen.
+> View [`OrganizationPickerMembers`](https://auth0.github.io/universal-login/interfaces/Classes.OrganizationPickerMembers.html) — this interface documents the full API for the `OrganizationPicker` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `OrganizationPicker`:
 
 **Import:**
 
@@ -83,12 +81,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`OrganizationPickerMembers`](https://auth0.github.io/universal-login/interfaces/Classes.OrganizationPickerMembers.html) — documents all methods and properties available on the `OrganizationPicker` screen.
 
-**Screen Class Reference:**  
-- [`OrganizationPickerMembers`](https://auth0.github.io/universal-login/interfaces/Classes.OrganizationPickerMembers.html) — this interface describes all properties and methods exposed by the `OrganizationPicker` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`OrganizationPickerMembers`](https://auth0.github.io/universal-login/interfaces/Classes.OrganizationPickerMembers.html)
 - [`SelectOrganizationOptions`](https://auth0.github.io/universal-login/interfaces/Classes.SelectOrganizationOptions.html)
 - [`CaptchaContext`](https://auth0.github.io/universal-login/interfaces/Classes.CaptchaContext.html)
@@ -113,5 +109,5 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)

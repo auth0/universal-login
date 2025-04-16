@@ -6,22 +6,25 @@
 
 ## 🔹 Hook Usage: `useResetPasswordMfaEmailChallenge()`
 
-This creates a new `ResetPasswordMfaEmailChallenge` instance:
-
 ```tsx
 import { useResetPasswordMfaEmailChallenge } from '@auth0/auth0-acul-react/reset-password-mfa-email-challenge';
 
 const screen = useResetPasswordMfaEmailChallenge(); // typed as ResetPasswordMfaEmailChallengeMembers
-screen.continue(...);
+// Continues with the email challenge using the provided code.
+screen.continue({ code: '123456', rememberDevice: 'rememberDevice_value' });
+
+// Resends the email code.
+screen.resendCode({ /* args */ });
+
+// Allows the user to try another MFA method.
+screen.tryAnotherMethod({ /* args */ });
 ```
 
-> View [`ResetPasswordMfaEmailChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaEmailChallengeMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordMfaEmailChallenge` screen.
+> View [`ResetPasswordMfaEmailChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaEmailChallengeMembers.html) — this interface documents the full API for the `ResetPasswordMfaEmailChallenge` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +37,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as ResetPasswordMfaEmailChallengeMembers
 ```
 
-> View [`ResetPasswordMfaEmailChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaEmailChallengeMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordMfaEmailChallenge` screen.
+> View [`ResetPasswordMfaEmailChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaEmailChallengeMembers.html) — this interface documents the full API for the `ResetPasswordMfaEmailChallenge` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `ResetPasswordMfaEmailChallenge`:
 
 **Import:**
 
@@ -86,12 +87,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`ResetPasswordMfaEmailChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaEmailChallengeMembers.html) — documents all methods and properties available on the `ResetPasswordMfaEmailChallenge` screen.
 
-**Screen Class Reference:**  
-- [`ResetPasswordMfaEmailChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaEmailChallengeMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordMfaEmailChallenge` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`ResetPasswordMfaEmailChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaEmailChallengeMembers.html)
 - [`ContinueOptions`](https://auth0.github.io/universal-login/interfaces/Classes.ContinueOptions.html)
 - [`ResendCodeOptions`](https://auth0.github.io/universal-login/interfaces/Classes.ResendCodeOptions.html)
@@ -119,5 +118,5 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)

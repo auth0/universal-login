@@ -6,22 +6,19 @@
 
 ## 🔹 Hook Usage: `useLoginPassword()`
 
-This creates a new `LoginPassword` instance:
-
 ```tsx
 import { useLoginPassword } from '@auth0/auth0-acul-react/login-password';
 
 const screen = useLoginPassword(); // typed as LoginPasswordMembers
-screen.login({ identifier: 'user@example.com', password: '***' });
+
+screen.login({ username: 'demo-user', password: '<password>', captcha: 'abc123' });
 ```
 
-> View [`LoginPasswordMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordMembers.html) — this interface describes all properties and methods exposed by the `LoginPassword` screen.
+> View [`LoginPasswordMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordMembers.html) — this interface documents the full API for the `LoginPassword` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +31,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as LoginPasswordMembers
 ```
 
-> View [`LoginPasswordMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordMembers.html) — this interface describes all properties and methods exposed by the `LoginPassword` screen.
+> View [`LoginPasswordMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordMembers.html) — this interface documents the full API for the `LoginPassword` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `LoginPassword`:
 
 **Import:**
 
@@ -85,12 +80,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`LoginPasswordMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordMembers.html) — documents all methods and properties available on the `LoginPassword` screen.
 
-**Screen Class Reference:**  
-- [`LoginPasswordMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordMembers.html) — this interface describes all properties and methods exposed by the `LoginPassword` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`LoginPasswordMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordMembers.html)
 - [`LoginPasswordOptions`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordOptions.html)
 - [`ScreenMembersOnLoginPassword`](https://auth0.github.io/universal-login/interfaces/Classes.ScreenMembersOnLoginPassword.html)
@@ -117,5 +110,5 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)

@@ -6,22 +6,22 @@
 
 ## 🔹 Hook Usage: `useResetPasswordRequest()`
 
-This creates a new `ResetPasswordRequest` instance:
-
 ```tsx
 import { useResetPasswordRequest } from '@auth0/auth0-acul-react/reset-password-request';
 
 const screen = useResetPasswordRequest(); // typed as ResetPasswordRequestMembers
-screen.resetPassword(...);
+
+screen.resetPassword({ username: 'demo-user', captcha: 'abc123' });
+
+
+screen.backToLogin({ /* args */ });
 ```
 
-> View [`ResetPasswordRequestMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordRequestMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordRequest` screen.
+> View [`ResetPasswordRequestMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordRequestMembers.html) — this interface documents the full API for the `ResetPasswordRequest` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +34,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as ResetPasswordRequestMembers
 ```
 
-> View [`ResetPasswordRequestMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordRequestMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordRequest` screen.
+> View [`ResetPasswordRequestMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordRequestMembers.html) — this interface documents the full API for the `ResetPasswordRequest` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `ResetPasswordRequest`:
 
 **Import:**
 
@@ -85,12 +83,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`ResetPasswordRequestMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordRequestMembers.html) — documents all methods and properties available on the `ResetPasswordRequest` screen.
 
-**Screen Class Reference:**  
-- [`ResetPasswordRequestMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordRequestMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordRequest` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`ResetPasswordRequestMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordRequestMembers.html)
 - [`ResetPasswordRequestOptions`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordRequestOptions.html)
 - [`ScreenMembersOnResetPasswordRequest`](https://auth0.github.io/universal-login/interfaces/Classes.ScreenMembersOnResetPasswordRequest.html)
@@ -117,5 +113,5 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)

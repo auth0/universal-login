@@ -6,22 +6,22 @@
 
 ## 🔹 Hook Usage: `usePasskeyEnrollmentLocal()`
 
-This creates a new `PasskeyEnrollmentLocal` instance:
-
 ```tsx
 import { usePasskeyEnrollmentLocal } from '@auth0/auth0-acul-react/passkey-enrollment-local';
 
 const screen = usePasskeyEnrollmentLocal(); // typed as PasskeyEnrollmentLocalMembers
-screen.continuePasskeyEnrollment(...);
+
+screen.continuePasskeyEnrollment({ /* args */ });
+
+
+screen.abortPasskeyEnrollment({ doNotShowAgain: 'doNotShowAgain_value' });
 ```
 
-> View [`PasskeyEnrollmentLocalMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PasskeyEnrollmentLocalMembers.html) — this interface describes all properties and methods exposed by the `PasskeyEnrollmentLocal` screen.
+> View [`PasskeyEnrollmentLocalMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PasskeyEnrollmentLocalMembers.html) — this interface documents the full API for the `PasskeyEnrollmentLocal` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +34,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as PasskeyEnrollmentLocalMembers
 ```
 
-> View [`PasskeyEnrollmentLocalMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PasskeyEnrollmentLocalMembers.html) — this interface describes all properties and methods exposed by the `PasskeyEnrollmentLocal` screen.
+> View [`PasskeyEnrollmentLocalMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PasskeyEnrollmentLocalMembers.html) — this interface documents the full API for the `PasskeyEnrollmentLocal` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `PasskeyEnrollmentLocal`:
 
 **Import:**
 
@@ -84,12 +82,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`PasskeyEnrollmentLocalMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PasskeyEnrollmentLocalMembers.html) — documents all methods and properties available on the `PasskeyEnrollmentLocal` screen.
 
-**Screen Class Reference:**  
-- [`PasskeyEnrollmentLocalMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PasskeyEnrollmentLocalMembers.html) — this interface describes all properties and methods exposed by the `PasskeyEnrollmentLocal` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`PasskeyEnrollmentLocalMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PasskeyEnrollmentLocalMembers.html)
 - [`AbortEnrollmentOptions`](https://auth0.github.io/universal-login/interfaces/Classes.AbortEnrollmentOptions.html)
 - [`ScreenMembersOnPasskeyEnrollmentLocal`](https://auth0.github.io/universal-login/interfaces/Classes.ScreenMembersOnPasskeyEnrollmentLocal.html)
@@ -115,5 +111,5 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)

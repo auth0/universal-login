@@ -6,8 +6,6 @@
 
 ## 🔹 Hook Usage: `useMfaEnrollResult()`
 
-This creates a new `MfaEnrollResult` instance:
-
 ```tsx
 import { useMfaEnrollResult } from '@auth0/auth0-acul-react/mfa-enroll-result';
 
@@ -15,13 +13,11 @@ const screen = useMfaEnrollResult(); // typed as MfaEnrollResultMembers
 // screen method call
 ```
 
-> View [`MfaEnrollResultMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEnrollResultMembers.html) — this interface describes all properties and methods exposed by the `MfaEnrollResult` screen.
+> View [`MfaEnrollResultMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEnrollResultMembers.html) — this interface documents the full API for the `MfaEnrollResult` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +30,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as MfaEnrollResultMembers
 ```
 
-> View [`MfaEnrollResultMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEnrollResultMembers.html) — this interface describes all properties and methods exposed by the `MfaEnrollResult` screen.
+> View [`MfaEnrollResultMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEnrollResultMembers.html) — this interface documents the full API for the `MfaEnrollResult` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `MfaEnrollResult`:
 
 **Import:**
 
@@ -82,12 +76,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`MfaEnrollResultMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEnrollResultMembers.html) — documents all methods and properties available on the `MfaEnrollResult` screen.
 
-**Screen Class Reference:**  
-- [`MfaEnrollResultMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEnrollResultMembers.html) — this interface describes all properties and methods exposed by the `MfaEnrollResult` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`MfaEnrollResultMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEnrollResultMembers.html)
 - [`CaptchaContext`](https://auth0.github.io/universal-login/interfaces/Classes.CaptchaContext.html)
 - [`PhonePrefix`](https://auth0.github.io/universal-login/interfaces/Classes.PhonePrefix.html)
@@ -111,5 +103,5 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)

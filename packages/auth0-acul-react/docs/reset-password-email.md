@@ -6,22 +6,19 @@
 
 ## 🔹 Hook Usage: `useResetPasswordEmail()`
 
-This creates a new `ResetPasswordEmail` instance:
-
 ```tsx
 import { useResetPasswordEmail } from '@auth0/auth0-acul-react/reset-password-email';
 
 const screen = useResetPasswordEmail(); // typed as ResetPasswordEmailMembers
-screen.resendEmail(...);
+
+screen.resendEmail({ /* args */ });
 ```
 
-> View [`ResetPasswordEmailMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordEmailMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordEmail` screen.
+> View [`ResetPasswordEmailMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordEmailMembers.html) — this interface documents the full API for the `ResetPasswordEmail` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +31,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as ResetPasswordEmailMembers
 ```
 
-> View [`ResetPasswordEmailMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordEmailMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordEmail` screen.
+> View [`ResetPasswordEmailMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordEmailMembers.html) — this interface documents the full API for the `ResetPasswordEmail` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `ResetPasswordEmail`:
 
 **Import:**
 
@@ -84,12 +79,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`ResetPasswordEmailMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordEmailMembers.html) — documents all methods and properties available on the `ResetPasswordEmail` screen.
 
-**Screen Class Reference:**  
-- [`ResetPasswordEmailMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordEmailMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordEmail` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`ResetPasswordEmailMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordEmailMembers.html)
 - [`ResetPasswordEmailOptions`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordEmailOptions.html)
 - [`ScreenMembersOnResetPasswordEmail`](https://auth0.github.io/universal-login/interfaces/Classes.ScreenMembersOnResetPasswordEmail.html)
@@ -115,5 +108,5 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)

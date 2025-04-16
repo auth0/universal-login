@@ -6,22 +6,25 @@
 
 ## 🔹 Hook Usage: `useSignup()`
 
-This creates a new `Signup` instance:
-
 ```tsx
 import { useSignup } from '@auth0/auth0-acul-react/signup';
 
 const screen = useSignup(); // typed as SignupMembers
-screen.signup(...);
+
+screen.signup({ email: 'user@example.com', username: 'demo-user', phone_number: 'phone_number_value', password: '<password>', captcha: 'abc123' });
+
+// Handles the submission of the social signup form.
+screen.socialSignup();
+
+
+screen.pickCountryCode();
 ```
 
-> View [`SignupMembers`](https://auth0.github.io/universal-login/interfaces/Classes.SignupMembers.html) — this interface describes all properties and methods exposed by the `Signup` screen.
+> View [`SignupMembers`](https://auth0.github.io/universal-login/interfaces/Classes.SignupMembers.html) — this interface documents the full API for the `Signup` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +37,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as SignupMembers
 ```
 
-> View [`SignupMembers`](https://auth0.github.io/universal-login/interfaces/Classes.SignupMembers.html) — this interface describes all properties and methods exposed by the `Signup` screen.
+> View [`SignupMembers`](https://auth0.github.io/universal-login/interfaces/Classes.SignupMembers.html) — this interface documents the full API for the `Signup` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `Signup`:
 
 **Import:**
 
@@ -85,12 +86,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`SignupMembers`](https://auth0.github.io/universal-login/interfaces/Classes.SignupMembers.html) — documents all methods and properties available on the `Signup` screen.
 
-**Screen Class Reference:**  
-- [`SignupMembers`](https://auth0.github.io/universal-login/interfaces/Classes.SignupMembers.html) — this interface describes all properties and methods exposed by the `Signup` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`SignupMembers`](https://auth0.github.io/universal-login/interfaces/Classes.SignupMembers.html)
 - [`SignupOptions`](https://auth0.github.io/universal-login/interfaces/Classes.SignupOptions.html)
 - [`ScreenMembersOnSignup`](https://auth0.github.io/universal-login/interfaces/Classes.ScreenMembersOnSignup.html)
@@ -117,5 +116,5 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)

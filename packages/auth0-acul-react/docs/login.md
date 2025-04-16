@@ -6,22 +6,22 @@
 
 ## 🔹 Hook Usage: `useLogin()`
 
-This creates a new `Login` instance:
-
 ```tsx
 import { useLogin } from '@auth0/auth0-acul-react/login';
 
 const screen = useLogin(); // typed as LoginMembers
-screen.login({ identifier: 'user@example.com', password: '***' });
+// Performs login with username/password
+screen.login({ username: 'demo-user', password: '<password>', captcha: 'abc123' });
+
+// Performs login with social provider
+screen.socialLogin({ connection: 'google-oauth2' });
 ```
 
-> View [`LoginMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginMembers.html) — this interface describes all properties and methods exposed by the `Login` screen.
+> View [`LoginMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginMembers.html) — this interface documents the full API for the `Login` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +34,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as LoginMembers
 ```
 
-> View [`LoginMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginMembers.html) — this interface describes all properties and methods exposed by the `Login` screen.
+> View [`LoginMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginMembers.html) — this interface documents the full API for the `Login` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `Login`:
 
 **Import:**
 
@@ -86,12 +84,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`LoginMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginMembers.html) — documents all methods and properties available on the `Login` screen.
 
-**Screen Class Reference:**  
-- [`LoginMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginMembers.html) — this interface describes all properties and methods exposed by the `Login` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`LoginMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginMembers.html)
 - [`LoginOptions`](https://auth0.github.io/universal-login/interfaces/Classes.LoginOptions.html)
 - [`SocialLoginOptions`](https://auth0.github.io/universal-login/interfaces/Classes.SocialLoginOptions.html)
@@ -119,5 +115,5 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)

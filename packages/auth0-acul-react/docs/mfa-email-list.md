@@ -6,22 +6,22 @@
 
 ## 🔹 Hook Usage: `useMfaEmailList()`
 
-This creates a new `MfaEmailList` instance:
-
 ```tsx
 import { useMfaEmailList } from '@auth0/auth0-acul-react/mfa-email-list';
 
 const screen = useMfaEmailList(); // typed as MfaEmailListMembers
-screen.selectMfaEmail(...);
+// Selects an enrolled email address from the list
+screen.selectMfaEmail({ index: 'index_value' });
+
+// Navigates back to the previous screen
+screen.goBack({ /* args */ });
 ```
 
-> View [`MfaEmailListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEmailListMembers.html) — this interface describes all properties and methods exposed by the `MfaEmailList` screen.
+> View [`MfaEmailListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEmailListMembers.html) — this interface documents the full API for the `MfaEmailList` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +34,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as MfaEmailListMembers
 ```
 
-> View [`MfaEmailListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEmailListMembers.html) — this interface describes all properties and methods exposed by the `MfaEmailList` screen.
+> View [`MfaEmailListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEmailListMembers.html) — this interface documents the full API for the `MfaEmailList` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `MfaEmailList`:
 
 **Import:**
 
@@ -83,12 +81,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`MfaEmailListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEmailListMembers.html) — documents all methods and properties available on the `MfaEmailList` screen.
 
-**Screen Class Reference:**  
-- [`MfaEmailListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEmailListMembers.html) — this interface describes all properties and methods exposed by the `MfaEmailList` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`MfaEmailListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaEmailListMembers.html)
 - [`ScreenMembersOnMfaEmailList`](https://auth0.github.io/universal-login/interfaces/Classes.ScreenMembersOnMfaEmailList.html)
 - [`CaptchaContext`](https://auth0.github.io/universal-login/interfaces/Classes.CaptchaContext.html)
@@ -113,5 +109,5 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)

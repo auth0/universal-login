@@ -6,22 +6,25 @@
 
 ## 🔹 Hook Usage: `usePhoneIdentifierChallenge()`
 
-This creates a new `PhoneIdentifierChallenge` instance:
-
 ```tsx
 import { usePhoneIdentifierChallenge } from '@auth0/auth0-acul-react/phone-identifier-challenge';
 
 const screen = usePhoneIdentifierChallenge(); // typed as PhoneIdentifierChallengeMembers
-screen.submitPhoneChallenge(...);
+
+screen.submitPhoneChallenge({ code: '123456', captcha: 'abc123' });
+
+
+screen.resendCode({ /* args */ });
+
+
+screen.returnToPrevious({ /* args */ });
 ```
 
-> View [`PhoneIdentifierChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PhoneIdentifierChallengeMembers.html) — this interface describes all properties and methods exposed by the `PhoneIdentifierChallenge` screen.
+> View [`PhoneIdentifierChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PhoneIdentifierChallengeMembers.html) — this interface documents the full API for the `PhoneIdentifierChallenge` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +37,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as PhoneIdentifierChallengeMembers
 ```
 
-> View [`PhoneIdentifierChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PhoneIdentifierChallengeMembers.html) — this interface describes all properties and methods exposed by the `PhoneIdentifierChallenge` screen.
+> View [`PhoneIdentifierChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PhoneIdentifierChallengeMembers.html) — this interface documents the full API for the `PhoneIdentifierChallenge` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `PhoneIdentifierChallenge`:
 
 **Import:**
 
@@ -84,12 +85,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`PhoneIdentifierChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PhoneIdentifierChallengeMembers.html) — documents all methods and properties available on the `PhoneIdentifierChallenge` screen.
 
-**Screen Class Reference:**  
-- [`PhoneIdentifierChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PhoneIdentifierChallengeMembers.html) — this interface describes all properties and methods exposed by the `PhoneIdentifierChallenge` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`PhoneIdentifierChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.PhoneIdentifierChallengeMembers.html)
 - [`PhoneChallengeOptions`](https://auth0.github.io/universal-login/interfaces/Classes.PhoneChallengeOptions.html)
 - [`ScreenMembersOnPhoneIdentifierChallenge`](https://auth0.github.io/universal-login/interfaces/Classes.ScreenMembersOnPhoneIdentifierChallenge.html)
@@ -115,5 +114,5 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)

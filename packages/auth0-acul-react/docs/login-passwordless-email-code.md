@@ -6,22 +6,22 @@
 
 ## 🔹 Hook Usage: `useLoginPasswordlessEmailCode()`
 
-This creates a new `LoginPasswordlessEmailCode` instance:
-
 ```tsx
 import { useLoginPasswordlessEmailCode } from '@auth0/auth0-acul-react/login-passwordless-email-code';
 
 const screen = useLoginPasswordlessEmailCode(); // typed as LoginPasswordlessEmailCodeMembers
-screen.submitCode(...);
+
+screen.submitCode({ code: '123456', captcha: 'abc123' });
+
+
+screen.resendCode({ /* args */ });
 ```
 
-> View [`LoginPasswordlessEmailCodeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordlessEmailCodeMembers.html) — this interface describes all properties and methods exposed by the `LoginPasswordlessEmailCode` screen.
+> View [`LoginPasswordlessEmailCodeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordlessEmailCodeMembers.html) — this interface documents the full API for the `LoginPasswordlessEmailCode` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +34,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as LoginPasswordlessEmailCodeMembers
 ```
 
-> View [`LoginPasswordlessEmailCodeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordlessEmailCodeMembers.html) — this interface describes all properties and methods exposed by the `LoginPasswordlessEmailCode` screen.
+> View [`LoginPasswordlessEmailCodeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordlessEmailCodeMembers.html) — this interface documents the full API for the `LoginPasswordlessEmailCode` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `LoginPasswordlessEmailCode`:
 
 **Import:**
 
@@ -85,12 +83,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`LoginPasswordlessEmailCodeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordlessEmailCodeMembers.html) — documents all methods and properties available on the `LoginPasswordlessEmailCode` screen.
 
-**Screen Class Reference:**  
-- [`LoginPasswordlessEmailCodeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordlessEmailCodeMembers.html) — this interface describes all properties and methods exposed by the `LoginPasswordlessEmailCode` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`LoginPasswordlessEmailCodeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordlessEmailCodeMembers.html)
 - [`SubmitCodeOptions`](https://auth0.github.io/universal-login/interfaces/Classes.SubmitCodeOptions.html)
 - [`ScreenMembersOnLoginPasswordlessEmailCode`](https://auth0.github.io/universal-login/interfaces/Classes.ScreenMembersOnLoginPasswordlessEmailCode.html)
@@ -117,5 +113,5 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)

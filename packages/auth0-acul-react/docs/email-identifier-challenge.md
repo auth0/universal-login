@@ -6,22 +6,25 @@
 
 ## 🔹 Hook Usage: `useEmailIdentifierChallenge()`
 
-This creates a new `EmailIdentifierChallenge` instance:
-
 ```tsx
 import { useEmailIdentifierChallenge } from '@auth0/auth0-acul-react/email-identifier-challenge';
 
 const screen = useEmailIdentifierChallenge(); // typed as EmailIdentifierChallengeMembers
-screen.submitEmailChallenge(...);
+
+screen.submitEmailChallenge({ code: '123456', captcha: 'abc123' });
+
+
+screen.resendCode({ /* args */ });
+
+
+screen.returnToPrevious({ /* args */ });
 ```
 
-> View [`EmailIdentifierChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.EmailIdentifierChallengeMembers.html) — this interface describes all properties and methods exposed by the `EmailIdentifierChallenge` screen.
+> View [`EmailIdentifierChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.EmailIdentifierChallengeMembers.html) — this interface documents the full API for the `EmailIdentifierChallenge` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +37,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as EmailIdentifierChallengeMembers
 ```
 
-> View [`EmailIdentifierChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.EmailIdentifierChallengeMembers.html) — this interface describes all properties and methods exposed by the `EmailIdentifierChallenge` screen.
+> View [`EmailIdentifierChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.EmailIdentifierChallengeMembers.html) — this interface documents the full API for the `EmailIdentifierChallenge` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `EmailIdentifierChallenge`:
 
 **Import:**
 
@@ -84,12 +85,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`EmailIdentifierChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.EmailIdentifierChallengeMembers.html) — documents all methods and properties available on the `EmailIdentifierChallenge` screen.
 
-**Screen Class Reference:**  
-- [`EmailIdentifierChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.EmailIdentifierChallengeMembers.html) — this interface describes all properties and methods exposed by the `EmailIdentifierChallenge` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`EmailIdentifierChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.EmailIdentifierChallengeMembers.html)
 - [`ScreenMembersOnEmailIdentifierChallenge`](https://auth0.github.io/universal-login/interfaces/Classes.ScreenMembersOnEmailIdentifierChallenge.html)
 - [`EmailChallengeOptions`](https://auth0.github.io/universal-login/interfaces/Classes.EmailChallengeOptions.html)
@@ -115,5 +114,5 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)

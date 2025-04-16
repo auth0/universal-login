@@ -6,22 +6,22 @@
 
 ## 🔹 Hook Usage: `useMfaSmsList()`
 
-This creates a new `MfaSmsList` instance:
-
 ```tsx
 import { useMfaSmsList } from '@auth0/auth0-acul-react/mfa-sms-list';
 
 const screen = useMfaSmsList(); // typed as MfaSmsListMembers
-screen.selectPhoneNumber(...);
+// Selects a phone number from the list of enrolled phone numbers.
+screen.selectPhoneNumber({ /* args */ });
+
+// Navigates back to the previous screen.
+screen.backAction({ /* args */ });
 ```
 
-> View [`MfaSmsListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsListMembers.html) — this interface describes all properties and methods exposed by the `MfaSmsList` screen.
+> View [`MfaSmsListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsListMembers.html) — this interface documents the full API for the `MfaSmsList` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +34,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as MfaSmsListMembers
 ```
 
-> View [`MfaSmsListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsListMembers.html) — this interface describes all properties and methods exposed by the `MfaSmsList` screen.
+> View [`MfaSmsListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsListMembers.html) — this interface documents the full API for the `MfaSmsList` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `MfaSmsList`:
 
 **Import:**
 
@@ -83,12 +81,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`MfaSmsListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsListMembers.html) — documents all methods and properties available on the `MfaSmsList` screen.
 
-**Screen Class Reference:**  
-- [`MfaSmsListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsListMembers.html) — this interface describes all properties and methods exposed by the `MfaSmsList` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`MfaSmsListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsListMembers.html)
 - [`MfaSmsListOptions`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsListOptions.html)
 - [`CaptchaContext`](https://auth0.github.io/universal-login/interfaces/Classes.CaptchaContext.html)
@@ -113,5 +109,5 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)

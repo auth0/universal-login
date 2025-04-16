@@ -6,22 +6,22 @@
 
 ## 🔹 Hook Usage: `useMfaPushList()`
 
-This creates a new `MfaPushList` instance:
-
 ```tsx
 import { useMfaPushList } from '@auth0/auth0-acul-react/mfa-push-list';
 
 const screen = useMfaPushList(); // typed as MfaPushListMembers
-screen.selectMfaPushDevice(...);
+// Selects a registered device from the list to initiate MFA push.
+screen.selectMfaPushDevice({ deviceIndex: 'deviceIndex_value' });
+
+// Navigates back to the previous screen.
+screen.goBack({ /* args */ });
 ```
 
-> View [`MfaPushListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushListMembers.html) — this interface describes all properties and methods exposed by the `MfaPushList` screen.
+> View [`MfaPushListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushListMembers.html) — this interface documents the full API for the `MfaPushList` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +34,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as MfaPushListMembers
 ```
 
-> View [`MfaPushListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushListMembers.html) — this interface describes all properties and methods exposed by the `MfaPushList` screen.
+> View [`MfaPushListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushListMembers.html) — this interface documents the full API for the `MfaPushList` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `MfaPushList`:
 
 **Import:**
 
@@ -82,12 +80,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`MfaPushListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushListMembers.html) — documents all methods and properties available on the `MfaPushList` screen.
 
-**Screen Class Reference:**  
-- [`MfaPushListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushListMembers.html) — this interface describes all properties and methods exposed by the `MfaPushList` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`MfaPushListMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushListMembers.html)
 - [`CaptchaContext`](https://auth0.github.io/universal-login/interfaces/Classes.CaptchaContext.html)
 - [`PhonePrefix`](https://auth0.github.io/universal-login/interfaces/Classes.PhonePrefix.html)
@@ -111,5 +107,5 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)

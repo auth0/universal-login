@@ -6,22 +6,22 @@
 
 ## 🔹 Hook Usage: `useLoginPasswordlessSmsOtp()`
 
-This creates a new `LoginPasswordlessSmsOtp` instance:
-
 ```tsx
 import { useLoginPasswordlessSmsOtp } from '@auth0/auth0-acul-react/login-passwordless-sms-otp';
 
 const screen = useLoginPasswordlessSmsOtp(); // typed as LoginPasswordlessSmsOtpMembers
-screen.submitOTP(...);
+
+screen.submitOTP({ username: 'demo-user', otp: 'otp_value', captcha: 'abc123' });
+
+
+screen.resendOTP({ /* args */ });
 ```
 
-> View [`LoginPasswordlessSmsOtpMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordlessSmsOtpMembers.html) — this interface describes all properties and methods exposed by the `LoginPasswordlessSmsOtp` screen.
+> View [`LoginPasswordlessSmsOtpMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordlessSmsOtpMembers.html) — this interface documents the full API for the `LoginPasswordlessSmsOtp` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +34,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as LoginPasswordlessSmsOtpMembers
 ```
 
-> View [`LoginPasswordlessSmsOtpMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordlessSmsOtpMembers.html) — this interface describes all properties and methods exposed by the `LoginPasswordlessSmsOtp` screen.
+> View [`LoginPasswordlessSmsOtpMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordlessSmsOtpMembers.html) — this interface documents the full API for the `LoginPasswordlessSmsOtp` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `LoginPasswordlessSmsOtp`:
 
 **Import:**
 
@@ -85,12 +83,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`LoginPasswordlessSmsOtpMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordlessSmsOtpMembers.html) — documents all methods and properties available on the `LoginPasswordlessSmsOtp` screen.
 
-**Screen Class Reference:**  
-- [`LoginPasswordlessSmsOtpMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordlessSmsOtpMembers.html) — this interface describes all properties and methods exposed by the `LoginPasswordlessSmsOtp` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`LoginPasswordlessSmsOtpMembers`](https://auth0.github.io/universal-login/interfaces/Classes.LoginPasswordlessSmsOtpMembers.html)
 - [`SubmitOTPOptions`](https://auth0.github.io/universal-login/interfaces/Classes.SubmitOTPOptions.html)
 - [`ScreenMembersOnLoginPasswordlessSmsOtp`](https://auth0.github.io/universal-login/interfaces/Classes.ScreenMembersOnLoginPasswordlessSmsOtp.html)
@@ -117,5 +113,5 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)

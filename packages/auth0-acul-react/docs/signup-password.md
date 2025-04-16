@@ -6,22 +6,19 @@
 
 ## 🔹 Hook Usage: `useSignupPassword()`
 
-This creates a new `SignupPassword` instance:
-
 ```tsx
 import { useSignupPassword } from '@auth0/auth0-acul-react/signup-password';
 
 const screen = useSignupPassword(); // typed as SignupPasswordMembers
-screen.signup(...);
+
+screen.signup({ email: 'user@example.com', username: 'demo-user', phone: 'phone_value', password: '<password>', captcha: 'abc123' });
 ```
 
-> View [`SignupPasswordMembers`](https://auth0.github.io/universal-login/interfaces/Classes.SignupPasswordMembers.html) — this interface describes all properties and methods exposed by the `SignupPassword` screen.
+> View [`SignupPasswordMembers`](https://auth0.github.io/universal-login/interfaces/Classes.SignupPasswordMembers.html) — this interface documents the full API for the `SignupPassword` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +31,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as SignupPasswordMembers
 ```
 
-> View [`SignupPasswordMembers`](https://auth0.github.io/universal-login/interfaces/Classes.SignupPasswordMembers.html) — this interface describes all properties and methods exposed by the `SignupPassword` screen.
+> View [`SignupPasswordMembers`](https://auth0.github.io/universal-login/interfaces/Classes.SignupPasswordMembers.html) — this interface documents the full API for the `SignupPassword` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `SignupPassword`:
 
 **Import:**
 
@@ -85,12 +80,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`SignupPasswordMembers`](https://auth0.github.io/universal-login/interfaces/Classes.SignupPasswordMembers.html) — documents all methods and properties available on the `SignupPassword` screen.
 
-**Screen Class Reference:**  
-- [`SignupPasswordMembers`](https://auth0.github.io/universal-login/interfaces/Classes.SignupPasswordMembers.html) — this interface describes all properties and methods exposed by the `SignupPassword` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`SignupPasswordMembers`](https://auth0.github.io/universal-login/interfaces/Classes.SignupPasswordMembers.html)
 - [`SignupPasswordOptions`](https://auth0.github.io/universal-login/interfaces/Classes.SignupPasswordOptions.html)
 - [`ScreenMembersOnSignupPassword`](https://auth0.github.io/universal-login/interfaces/Classes.ScreenMembersOnSignupPassword.html)
@@ -117,5 +110,5 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)

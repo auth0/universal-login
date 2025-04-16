@@ -1,18 +1,24 @@
 import fs from 'fs';
 import path from 'path';
-import { Project, SyntaxKind, MethodDeclaration } from 'ts-morph';
+import {
+  Project,
+  SyntaxKind,
+  InterfaceDeclaration,
+  PropertySignature,
+  JSDoc
+} from 'ts-morph';
 import { fileURLToPath } from 'url';
 
-// ESM-compatible __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // === Paths ===
 const CORE_SDK_PATH = path.resolve(__dirname, '../../auth0-acul-js');
 const SCREENS_PATH = path.join(CORE_SDK_PATH, 'src/screens');
+const INTERFACE_PATH = path.join(CORE_SDK_PATH, 'interfaces/screens');
 const DOCS_OUTPUT_PATH = path.resolve(__dirname, '../docs');
 
-// === Utility: PascalCase → kebab-case
+// === Helpers ===
 function toKebabCase(str: string): string {
   return str
     .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
@@ -20,7 +26,38 @@ function toKebabCase(str: string): string {
     .toLowerCase();
 }
 
-// === Step 1: Clean old docs ===
+function getMockValue(name: string): string {
+  const lower = name.toLowerCase();
+  if (lower.includes('email')) return `'user@example.com'`;
+  if (lower.includes('username')) return `'demo-user'`;
+  if (lower.includes('password')) return `'<password>'`;
+  if (lower.includes('captcha')) return `'abc123'`;
+  if (lower.includes('connection')) return `'google-oauth2'`;
+  if (lower.includes('code')) return `'123456'`;
+  if (lower.includes('token')) return `'abc.def.ghi'`;
+  if (lower.includes('id')) return `'user_abc123'`;
+  return `'${name}_value'`;
+}
+
+function buildPayloadExample(properties: PropertySignature[]): string {
+  return (
+    '{ ' +
+    properties
+      .map((prop) => {
+        const key = prop.getName();
+        return `${key}: ${getMockValue(key)}`;
+      })
+      .join(', ') +
+    ' }'
+  );
+}
+
+function getJSDocText(jsDocs: JSDoc[]): string {
+  const comment = jsDocs[0]?.getComment();
+  return comment ? `// ${comment}` : '';
+}
+
+// === Step 1: Cleanup
 if (fs.existsSync(DOCS_OUTPUT_PATH)) {
   for (const file of fs.readdirSync(DOCS_OUTPUT_PATH)) {
     if (file.endsWith('.md')) {
@@ -31,51 +68,67 @@ if (fs.existsSync(DOCS_OUTPUT_PATH)) {
   fs.mkdirSync(DOCS_OUTPUT_PATH, { recursive: true });
 }
 
-// === Step 2: Load ts-morph project ===
+// === Step 2: Load Project
 const project = new Project({
   tsConfigFilePath: path.join(CORE_SDK_PATH, 'tsconfig.json'),
 });
 project.addSourceFilesAtPaths(path.join(SCREENS_PATH, '**/*.ts'));
+project.addSourceFilesAtPaths(path.join(INTERFACE_PATH, '**/*.ts'));
 
 const entryFile = project.getSourceFileOrThrow(path.join(SCREENS_PATH, 'index.ts'));
-
-// === Step 3: Find screen classes ===
 const screenExports = entryFile.getExportSymbols().filter((symbol) => {
-  const aliasedSymbol = symbol.getAliasedSymbol?.();
-  const classDecl = aliasedSymbol?.getDeclarations()[0];
-  return classDecl?.getKindName() === 'ClassDeclaration';
+  const aliased = symbol.getAliasedSymbol?.();
+  const decl = aliased?.getDeclarations()[0];
+  return decl?.getKindName() === 'ClassDeclaration';
 });
 
-// === Step 4: Generate docs for each screen ===
+// === Step 3: For each screen
 for (const symbol of screenExports) {
-  const screenName = symbol.getName(); // e.g., MfaCountryCodes
-  const kebabName = toKebabCase(screenName); // e.g., mfa-country-codes
-  const hookName = `use${screenName}`;
+  const screenName = symbol.getName();
+  const kebabName = toKebabCase(screenName);
   const docPath = path.join(DOCS_OUTPUT_PATH, `${kebabName}.md`);
   const screenPath = path.join(SCREENS_PATH, kebabName, 'index.ts');
-  const membersTypeName = `${screenName}Members`;
+  const hookName = `use${screenName}`;
+  const membersName = `${screenName}Members`;
 
   const sourceFile = project.getSourceFile(screenPath);
-  if (!sourceFile) {
-    console.warn(`⚠️ Skipping ${screenName}: could not find ${screenPath}`);
-    continue;
-  }
+  if (!sourceFile) continue;
 
-  // === Find public methods for screen example
   const classDecl = sourceFile.getClasses().find((cls) => cls.getName() === screenName);
-  const methods: string[] = classDecl
-    ? classDecl
-        .getMembers()
-        .filter((m) => m.getKind() === SyntaxKind.MethodDeclaration)
-        .map((m) => (m as MethodDeclaration).getName())
+  const methods = classDecl
+    ? classDecl.getMethods().filter((m) => m.getScope() === 'public')
     : [];
 
-  const exampleMethod =
-    methods.length > 0
-      ? `screen.${methods[0]}(${methods[0] === 'login' ? `{ identifier: 'user@example.com', password: '***' }` : '...'});`
+  // Get corresponding interface for parameter structure
+  const interfaceFile = project.getSourceFile(path.join(INTERFACE_PATH, `${kebabName}.ts`));
+  const membersInterface = interfaceFile?.getInterface(membersName);
+
+  // Build example block with JSDoc
+  const examples =
+    methods.length && membersInterface
+      ? methods
+          .map((method) => {
+            const name = method.getName();
+            const memberMethod = membersInterface.getMethod(name);
+            const params = memberMethod?.getParameters();
+            const jsDocComment = getJSDocText(method.getJsDocs());
+            if (!params?.length) {
+              return `${jsDocComment}\nscreen.${name}();`;
+            }
+
+            const paramType = params[0].getType().getSymbol()?.getDeclarations()[0];
+            if (!paramType || !paramType.getKindName().includes('Interface')) {
+              return `${jsDocComment}\nscreen.${name}({ /* args */ });`;
+            }
+
+            const props = (paramType as InterfaceDeclaration).getProperties();
+            const payload = buildPayloadExample(props);
+            return `${jsDocComment}\nscreen.${name}(${payload});`;
+          })
+          .join('\n\n')
       : '// screen method call';
 
-  // === Extract exported types
+  // Extract exports
   const exportedTypes: string[] = [];
   const exportedInterfaces: string[] = [];
   const exportedTypeAliases: string[] = [];
@@ -90,21 +143,17 @@ for (const symbol of screenExports) {
   }
 
   const interfaceImportBlock = exportedTypes.length
-  ? `**Import:**\n\n\`\`\`ts\nimport type {\n  ${exportedTypes.join(',\n  ')}\n} from '@auth0/auth0-acul-react/${kebabName}';\n\`\`\``
-  : '> _(No interfaces or types exported for this screen)_';
+    ? `**Import:**\n\n\`\`\`ts\nimport type {\n  ${exportedTypes.join(',\n  ')}\n} from '@auth0/auth0-acul-react/${kebabName}';\n\`\`\``
+    : '> _(No interfaces or types exported for this screen)_';
 
-
-  // === API References Block
   const apiReferencesBlock = `## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
-
-**Screen Class Reference:**  
-- [\`${membersTypeName}\`](https://auth0.github.io/universal-login/interfaces/Classes.${membersTypeName}.html) — this interface describes all properties and methods exposed by the \`${screenName}\` screen.
+📝 **Documentation:**  
+- [\`${membersName}\`](https://auth0.github.io/universal-login/interfaces/Classes.${membersName}.html) — documents all methods and properties available on the \`${screenName}\` screen.
 
 ${
   exportedInterfaces.length
-    ? '**Interfaces:**\n' +
+    ? '📃 **Interfaces:**\n' +
       exportedInterfaces
         .map(
           (name) =>
@@ -116,7 +165,7 @@ ${
 
 ${
   exportedTypeAliases.length
-    ? '\n**Types:**\n' +
+    ? '\n📃 **Types:**\n' +
       exportedTypeAliases
         .map(
           (name) =>
@@ -126,12 +175,7 @@ ${
     : ''
 }`.trim();
 
-  // === Final Markdown Content
-  const content = `---
-title: ${kebabName}
-sidebar_label: ${screenName}
----
-
+  const markdown = `
 # \`${kebabName}\` Screen
 
 > This screen represents the **${screenName}** flow in the Auth0 Universal Login.
@@ -140,22 +184,18 @@ sidebar_label: ${screenName}
 
 ## 🔹 Hook Usage: \`${hookName}()\`
 
-This creates a new \`${screenName}\` instance:
-
 \`\`\`tsx
 import { ${hookName} } from '@auth0/auth0-acul-react/${kebabName}';
 
-const screen = ${hookName}(); // typed as ${membersTypeName}
-${exampleMethod}
+const screen = ${hookName}(); // typed as ${membersName}
+${examples}
 \`\`\`
 
-> View [\`${membersTypeName}\`](https://auth0.github.io/universal-login/interfaces/Classes.${membersTypeName}.html) — this interface describes all properties and methods exposed by the \`${screenName}\` screen.
+> View [\`${membersName}\`](https://auth0.github.io/universal-login/interfaces/Classes.${membersName}.html) — this interface documents the full API for the \`${screenName}\` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 \`\`\`tsx
 import {
@@ -168,19 +208,17 @@ import {
 </Auth0AculProvider>
 \`\`\`
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 \`\`\`tsx
-const screen = useCurrentScreen(); // typed as ${membersTypeName}
+const screen = useCurrentScreen(); // typed as ${membersName}
 \`\`\`
 
-> View [\`${membersTypeName}\`](https://auth0.github.io/universal-login/interfaces/Classes.${membersTypeName}.html) — this interface describes all properties and methods exposed by the \`${screenName}\` screen.
+> View [\`${membersName}\`](https://auth0.github.io/universal-login/interfaces/Classes.${membersName}.html) — this interface documents the full API for the \`${screenName}\` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for \`${screenName}\`:
 
 ${interfaceImportBlock}
 
@@ -189,7 +227,7 @@ ${interfaceImportBlock}
 ${apiReferencesBlock}
 `;
 
-  fs.writeFileSync(docPath, content.trim() + '\n', 'utf-8');
+  fs.writeFileSync(docPath, markdown.trim() + '\n', 'utf-8');
 }
 
 console.log('📘 Successfully generated screen docs at: docs/');

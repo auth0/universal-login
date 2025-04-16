@@ -6,22 +6,28 @@
 
 ## 🔹 Hook Usage: `useMfaPushChallengePush()`
 
-This creates a new `MfaPushChallengePush` instance:
-
 ```tsx
 import { useMfaPushChallengePush } from '@auth0/auth0-acul-react/mfa-push-challenge-push';
 
 const screen = useMfaPushChallengePush(); // typed as MfaPushChallengePushMembers
-screen.continue(...);
+// Continues with the push notification challenge
+screen.continue({ /* args */ });
+
+// Resends the push notification
+screen.resendPushNotification({ /* args */ });
+
+// Switches to entering the verification code manually
+screen.enterCodeManually({ /* args */ });
+
+// Allows trying another authentication method
+screen.tryAnotherMethod({ /* args */ });
 ```
 
-> View [`MfaPushChallengePushMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushChallengePushMembers.html) — this interface describes all properties and methods exposed by the `MfaPushChallengePush` screen.
+> View [`MfaPushChallengePushMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushChallengePushMembers.html) — this interface documents the full API for the `MfaPushChallengePush` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +40,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as MfaPushChallengePushMembers
 ```
 
-> View [`MfaPushChallengePushMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushChallengePushMembers.html) — this interface describes all properties and methods exposed by the `MfaPushChallengePush` screen.
+> View [`MfaPushChallengePushMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushChallengePushMembers.html) — this interface documents the full API for the `MfaPushChallengePush` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `MfaPushChallengePush`:
 
 **Import:**
 
@@ -84,12 +88,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`MfaPushChallengePushMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushChallengePushMembers.html) — documents all methods and properties available on the `MfaPushChallengePush` screen.
 
-**Screen Class Reference:**  
-- [`MfaPushChallengePushMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushChallengePushMembers.html) — this interface describes all properties and methods exposed by the `MfaPushChallengePush` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`MfaPushChallengePushMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaPushChallengePushMembers.html)
 - [`WithRememberOptions`](https://auth0.github.io/universal-login/interfaces/Classes.WithRememberOptions.html)
 - [`ScreenMembersOnMfaPushChallengePush`](https://auth0.github.io/universal-login/interfaces/Classes.ScreenMembersOnMfaPushChallengePush.html)
@@ -115,5 +117,5 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)

@@ -6,22 +6,31 @@
 
 ## 🔹 Hook Usage: `useMfaSmsChallenge()`
 
-This creates a new `MfaSmsChallenge` instance:
-
 ```tsx
 import { useMfaSmsChallenge } from '@auth0/auth0-acul-react/mfa-sms-challenge';
 
 const screen = useMfaSmsChallenge(); // typed as MfaSmsChallengeMembers
-screen.continueMfaSmsChallenge(...);
+// Submits the MFA SMS challenge with the provided code and rememberBrowser option.
+screen.continueMfaSmsChallenge({ code: '123456', rememberBrowser: 'rememberBrowser_value' });
+
+// Submits the action to pick a different SMS configuration, if available.
+screen.pickSms({ /* args */ });
+
+// Submits the action to resend the SMS code.
+screen.resendCode({ /* args */ });
+
+// Submits the action to try another MFA method.
+screen.tryAnotherMethod({ /* args */ });
+
+// Submits the action to switch to voice call verification.
+screen.getACall({ /* args */ });
 ```
 
-> View [`MfaSmsChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsChallengeMembers.html) — this interface describes all properties and methods exposed by the `MfaSmsChallenge` screen.
+> View [`MfaSmsChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsChallengeMembers.html) — this interface documents the full API for the `MfaSmsChallenge` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +43,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as MfaSmsChallengeMembers
 ```
 
-> View [`MfaSmsChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsChallengeMembers.html) — this interface describes all properties and methods exposed by the `MfaSmsChallenge` screen.
+> View [`MfaSmsChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsChallengeMembers.html) — this interface documents the full API for the `MfaSmsChallenge` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `MfaSmsChallenge`:
 
 **Import:**
 
@@ -84,12 +91,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`MfaSmsChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsChallengeMembers.html) — documents all methods and properties available on the `MfaSmsChallenge` screen.
 
-**Screen Class Reference:**  
-- [`MfaSmsChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsChallengeMembers.html) — this interface describes all properties and methods exposed by the `MfaSmsChallenge` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`MfaSmsChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsChallengeMembers.html)
 - [`MfaSmsChallengeOptions`](https://auth0.github.io/universal-login/interfaces/Classes.MfaSmsChallengeOptions.html)
 - [`ScreenMembersOnMfaSmsChallenge`](https://auth0.github.io/universal-login/interfaces/Classes.ScreenMembersOnMfaSmsChallenge.html)
@@ -115,5 +120,5 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)

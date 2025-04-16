@@ -6,22 +6,25 @@
 
 ## 🔹 Hook Usage: `useMfaOtpEnrollmentQr()`
 
-This creates a new `MfaOtpEnrollmentQr` instance:
-
 ```tsx
 import { useMfaOtpEnrollmentQr } from '@auth0/auth0-acul-react/mfa-otp-enrollment-qr';
 
 const screen = useMfaOtpEnrollmentQr(); // typed as MfaOtpEnrollmentQrMembers
-screen.toggleView(...);
+// Navigates to the authenticator selection screen.
+screen.toggleView({ /* args */ });
+
+// Continues with the default action.
+screen.continue({ /* args */ });
+
+// Navigates to the authenticator selection screen.
+screen.tryAnotherMethod({ /* args */ });
 ```
 
-> View [`MfaOtpEnrollmentQrMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpEnrollmentQrMembers.html) — this interface describes all properties and methods exposed by the `MfaOtpEnrollmentQr` screen.
+> View [`MfaOtpEnrollmentQrMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpEnrollmentQrMembers.html) — this interface documents the full API for the `MfaOtpEnrollmentQr` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +37,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as MfaOtpEnrollmentQrMembers
 ```
 
-> View [`MfaOtpEnrollmentQrMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpEnrollmentQrMembers.html) — this interface describes all properties and methods exposed by the `MfaOtpEnrollmentQr` screen.
+> View [`MfaOtpEnrollmentQrMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpEnrollmentQrMembers.html) — this interface documents the full API for the `MfaOtpEnrollmentQr` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `MfaOtpEnrollmentQr`:
 
 **Import:**
 
@@ -83,12 +84,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`MfaOtpEnrollmentQrMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpEnrollmentQrMembers.html) — documents all methods and properties available on the `MfaOtpEnrollmentQr` screen.
 
-**Screen Class Reference:**  
-- [`MfaOtpEnrollmentQrMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpEnrollmentQrMembers.html) — this interface describes all properties and methods exposed by the `MfaOtpEnrollmentQr` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`MfaOtpEnrollmentQrMembers`](https://auth0.github.io/universal-login/interfaces/Classes.MfaOtpEnrollmentQrMembers.html)
 - [`ScreenMembersOnMfaOtpEnrollmentQr`](https://auth0.github.io/universal-login/interfaces/Classes.ScreenMembersOnMfaOtpEnrollmentQr.html)
 - [`CaptchaContext`](https://auth0.github.io/universal-login/interfaces/Classes.CaptchaContext.html)
@@ -113,5 +112,5 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)

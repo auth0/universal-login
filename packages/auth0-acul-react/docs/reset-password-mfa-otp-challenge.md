@@ -6,22 +6,22 @@
 
 ## 🔹 Hook Usage: `useResetPasswordMfaOtpChallenge()`
 
-This creates a new `ResetPasswordMfaOtpChallenge` instance:
-
 ```tsx
 import { useResetPasswordMfaOtpChallenge } from '@auth0/auth0-acul-react/reset-password-mfa-otp-challenge';
 
 const screen = useResetPasswordMfaOtpChallenge(); // typed as ResetPasswordMfaOtpChallengeMembers
-screen.continue(...);
+// Continues with the OTP challenge using the provided code.
+screen.continue({ code: '123456' });
+
+// Allows the user to try another MFA method.
+screen.tryAnotherMethod({ /* args */ });
 ```
 
-> View [`ResetPasswordMfaOtpChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaOtpChallengeMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordMfaOtpChallenge` screen.
+> View [`ResetPasswordMfaOtpChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaOtpChallengeMembers.html) — this interface documents the full API for the `ResetPasswordMfaOtpChallenge` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +34,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as ResetPasswordMfaOtpChallengeMembers
 ```
 
-> View [`ResetPasswordMfaOtpChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaOtpChallengeMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordMfaOtpChallenge` screen.
+> View [`ResetPasswordMfaOtpChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaOtpChallengeMembers.html) — this interface documents the full API for the `ResetPasswordMfaOtpChallenge` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `ResetPasswordMfaOtpChallenge`:
 
 **Import:**
 
@@ -85,12 +83,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`ResetPasswordMfaOtpChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaOtpChallengeMembers.html) — documents all methods and properties available on the `ResetPasswordMfaOtpChallenge` screen.
 
-**Screen Class Reference:**  
-- [`ResetPasswordMfaOtpChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaOtpChallengeMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordMfaOtpChallenge` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`ResetPasswordMfaOtpChallengeMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaOtpChallengeMembers.html)
 - [`ContinueOptions`](https://auth0.github.io/universal-login/interfaces/Classes.ContinueOptions.html)
 - [`TryAnotherMethodOptions`](https://auth0.github.io/universal-login/interfaces/Classes.TryAnotherMethodOptions.html)
@@ -117,5 +113,5 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)

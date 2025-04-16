@@ -6,22 +6,28 @@
 
 ## 🔹 Hook Usage: `useResetPasswordMfaPushChallengePush()`
 
-This creates a new `ResetPasswordMfaPushChallengePush` instance:
-
 ```tsx
 import { useResetPasswordMfaPushChallengePush } from '@auth0/auth0-acul-react/reset-password-mfa-push-challenge-push';
 
 const screen = useResetPasswordMfaPushChallengePush(); // typed as ResetPasswordMfaPushChallengePushMembers
-screen.continue(...);
+// Continues with the push notification challenge
+screen.continue({ /* args */ });
+
+// Resends the push notification
+screen.resendPushNotification({ /* args */ });
+
+// Switches to entering the verification code manually
+screen.enterCodeManually({ /* args */ });
+
+// Allows trying another authentication method
+screen.tryAnotherMethod({ /* args */ });
 ```
 
-> View [`ResetPasswordMfaPushChallengePushMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaPushChallengePushMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordMfaPushChallengePush` screen.
+> View [`ResetPasswordMfaPushChallengePushMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaPushChallengePushMembers.html) — this interface documents the full API for the `ResetPasswordMfaPushChallengePush` hook.
 
 ---
 
 ## 🔹 Provider Usage
-
-Wrap your component tree using the screen-specific provider:
 
 ```tsx
 import {
@@ -34,19 +40,17 @@ import {
 </Auth0AculProvider>
 ```
 
-Then access the screen instance anywhere via context:
+Then access the screen instance via context:
 
 ```tsx
 const screen = useCurrentScreen(); // typed as ResetPasswordMfaPushChallengePushMembers
 ```
 
-> View [`ResetPasswordMfaPushChallengePushMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaPushChallengePushMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordMfaPushChallengePush` screen.
+> View [`ResetPasswordMfaPushChallengePushMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaPushChallengePushMembers.html) — this interface documents the full API for the `ResetPasswordMfaPushChallengePush` context.
 
 ---
 
 ## 🔹 Interface Usage
-
-The following interfaces and types are available for `ResetPasswordMfaPushChallengePush`:
 
 **Import:**
 
@@ -83,12 +87,10 @@ import type {
 
 ## 🔸 API References
 
-This section includes all the relevant types and interfaces for this screen. Use them for typing props, payloads, and extending behaviors.
+📝 **Documentation:**  
+- [`ResetPasswordMfaPushChallengePushMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaPushChallengePushMembers.html) — documents all methods and properties available on the `ResetPasswordMfaPushChallengePush` screen.
 
-**Screen Class Reference:**  
-- [`ResetPasswordMfaPushChallengePushMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaPushChallengePushMembers.html) — this interface describes all properties and methods exposed by the `ResetPasswordMfaPushChallengePush` screen.
-
-**Interfaces:**
+📃 **Interfaces:**
 - [`ResetPasswordMfaPushChallengePushMembers`](https://auth0.github.io/universal-login/interfaces/Classes.ResetPasswordMfaPushChallengePushMembers.html)
 - [`ScreenMembersOnResetPasswordMfaPushChallengePush`](https://auth0.github.io/universal-login/interfaces/Classes.ScreenMembersOnResetPasswordMfaPushChallengePush.html)
 - [`CaptchaContext`](https://auth0.github.io/universal-login/interfaces/Classes.CaptchaContext.html)
@@ -113,5 +115,5 @@ This section includes all the relevant types and interfaces for this screen. Use
 - [`UntrustedDataMembers`](https://auth0.github.io/universal-login/interfaces/Classes.UntrustedDataMembers.html)
 
 
-**Types:**
+📃 **Types:**
 - [`ShortEntity`](https://auth0.github.io/universal-login/types/Classes.ShortEntity.html)
