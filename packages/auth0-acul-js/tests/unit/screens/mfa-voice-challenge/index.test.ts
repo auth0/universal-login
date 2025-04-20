@@ -3,6 +3,7 @@ import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { ContinueOptions } from '../../../../interfaces/screens/mfa-voice-challenge';
 import { CustomOptions } from '../../../../interfaces/common';
+import { FormActions } from 'src/constants';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -48,7 +49,7 @@ describe('MfaVoiceChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           code: '123456',
-          action: 'default',
+          action: FormActions.DEFAULT,
         })
       );
     });
@@ -65,7 +66,7 @@ describe('MfaVoiceChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           code: '123456',
-          action: 'default',
+          action: FormActions.DEFAULT,
           rememberBrowser: 'true',
         })
       );
@@ -91,7 +92,7 @@ describe('MfaVoiceChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'pick-phone',
+          action: FormActions.PICK_PHONE,
         })
       );
     });
@@ -107,7 +108,7 @@ describe('MfaVoiceChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'pick-phone',
+          action: FormActions.PICK_PHONE,
         })
       );
     });
@@ -128,7 +129,7 @@ describe('MfaVoiceChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'switch-to-sms',
+          action: FormActions.SWITCH_TO_SMS,
         })
       );
     });
@@ -144,7 +145,7 @@ describe('MfaVoiceChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'switch-to-sms',
+          action: FormActions.SWITCH_TO_SMS,
         })
       );
     });
@@ -165,7 +166,7 @@ describe('MfaVoiceChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'resend-code',
+          action: FormActions.RESEND_CODE,
         })
       );
     });
@@ -181,7 +182,7 @@ describe('MfaVoiceChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'resend-code',
+          action: FormActions.RESEND_CODE,
         })
       );
     });
@@ -202,7 +203,7 @@ describe('MfaVoiceChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'pick-authenticator',
+          action: FormActions.PICK_AUTHENTICATOR,
         })
       );
     });
@@ -218,7 +219,7 @@ describe('MfaVoiceChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'pick-authenticator',
+          action: FormActions.PICK_AUTHENTICATOR,
         })
       );
     });

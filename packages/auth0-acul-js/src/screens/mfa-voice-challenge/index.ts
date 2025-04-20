@@ -11,6 +11,7 @@ import type {
   ContinueOptions as MfaVoiceChallengeContinueOptions,
 } from '../../../interfaces/screens/mfa-voice-challenge';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import { FormActions } from 'src/constants';
 
 /**
  * MFA Voice Challenge screen implementation.
@@ -56,7 +57,7 @@ export default class MfaVoiceChallenge extends BaseContext implements MfaVoiceCh
 
     const formPayload = {
       ...payload,
-      action: 'default',
+      action: FormActions.DEFAULT,
       rememberBrowser: payload.rememberBrowser ? 'true' : undefined,
     };
 
@@ -83,7 +84,7 @@ export default class MfaVoiceChallenge extends BaseContext implements MfaVoiceCh
 
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'pick-phone',
+      action: FormActions.PICK_PHONE,
     });
   }
 
@@ -107,7 +108,7 @@ export default class MfaVoiceChallenge extends BaseContext implements MfaVoiceCh
 
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'switch-to-sms',
+      action: FormActions.SWITCH_TO_SMS,
     });
   }
 
@@ -131,7 +132,7 @@ export default class MfaVoiceChallenge extends BaseContext implements MfaVoiceCh
 
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'resend-code',
+      action: FormActions.RESEND_CODE,
     });
   }
 
@@ -155,7 +156,7 @@ export default class MfaVoiceChallenge extends BaseContext implements MfaVoiceCh
 
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'pick-authenticator',
+      action: FormActions.PICK_AUTHENTICATOR,
     });
   }
 }

@@ -211,6 +211,14 @@
     "./mfa-voice-challenge": {
       "import": "./dist/screens/mfa-voice-challenge/index.js",
       "types": "./dist/types/src/screens/mfa-voice-challenge/index.d.ts"
+    },
+    "./reset-password-mfa-recovery-code-challenge": {
+      "import": "./dist/screens/reset-password-mfa-recovery-code-challenge/index.js",
+      "types": "./dist/types/src/screens/reset-password-mfa-recovery-code-challenge/index.d.ts"
+    },
+    "./reset-password-mfa-voice-challenge": {
+      "import": "./dist/screens/reset-password-mfa-voice-challenge/index.js",
+      "types": "./dist/types/src/screens/reset-password-mfa-voice-challenge/index.d.ts"
     }
   },
   "scripts": {

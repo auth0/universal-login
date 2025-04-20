@@ -1,7 +1,3 @@
-/**
- * Authentication Action Types
- * Constants for various action types used in form submissions
- */
 export const FormActions = {
   DEFAULT: 'default' as const,
   BACK: 'back-action' as const,
@@ -22,9 +18,5 @@ export const FormActions = {
   ENROLL: 'enroll' as const,
   RESEND_EMAIL: 'resend-email-action' as const,
   PICK_PHONE: 'pick-phone' as const,
+  SWITCH_TO_SMS: 'switch-to-sms' as const,
 } as const;
-
-/**
- * Type definition for action type constants
- */
-export type FormActionsType = (typeof FormActions)[keyof typeof FormActions];
