@@ -1,3 +1,4 @@
+import { FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
@@ -11,7 +12,6 @@ import type {
   ContinueOptions as MfaVoiceChallengeContinueOptions,
 } from '../../../interfaces/screens/mfa-voice-challenge';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import { FormActions } from 'src/constants';
 
 /**
  * MFA Voice Challenge screen implementation.

@@ -3,7 +3,7 @@ import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { ContinueOptions } from '../../../../interfaces/screens/mfa-voice-challenge';
 import { CustomOptions } from '../../../../interfaces/common';
-import { FormActions } from 'src/constants';
+import { FormActions } from '../../../../src/constants';
 
 jest.mock('../../../../src/utils/form-handler');
 
