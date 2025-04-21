@@ -50,3 +50,4 @@ export { default as DeviceCodeActivationDenied } from './device-code-activation-
 export { default as DeviceCodeActivation } from './device-code-activation';
 export { default as ResetPasswordMfaRecoveryCodeChallenge } from './reset-password-mfa-recovery-code-challenge';
 export { default as ResetPasswordMfaVoiceChallenge } from './reset-password-mfa-voice-challenge';
+export { default as RedeemTicket } from './redeem-ticket';

@@ -215,6 +215,10 @@
     "./reset-password-mfa-voice-challenge": {
       "import": "./dist/screens/reset-password-mfa-voice-challenge/index.js",
       "types": "./dist/types/src/screens/reset-password-mfa-voice-challenge/index.d.ts"
+    },
+    "./redeem-ticket": {
+      "import": "./dist/screens/redeem-ticket/index.js",
+      "types": "./dist/types/src/screens/redeem-ticket/index.d.ts"
     }
   },
   "scripts": {

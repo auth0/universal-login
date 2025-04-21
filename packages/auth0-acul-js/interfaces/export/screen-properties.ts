@@ -50,3 +50,4 @@ export type { DeviceCodeActivationDeniedMembers } from '../screens/device-code-a
 export type { DeviceCodeActivationMembers } from '../screens/device-code-activation';
 export type { ResetPasswordMfaRecoveryCodeChallengeMembers } from '../screens/reset-password-mfa-recovery-code-challenge';
 export type { ResetPasswordMfaVoiceChallengeMembers } from '../screens/reset-password-mfa-voice-challenge';
+export type { RedeemTicketMembers } from '../screens/redeem-ticket';
