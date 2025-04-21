@@ -52,4 +52,5 @@ export const ScreenIds = {
   RESET_PASSWORD_MFA_RECOVERY_CODE_CHALLENGE: 'reset-password-mfa-recovery-code-challenge',
   RESET_PASSWORD_MFA_VOICE_CHALLENGE: 'reset-password-mfa-voice-challenge',
   REDEEM_TICKET: 'redeem-ticket',
+  DEVICE_CODE_CONFIRMATION: 'device-code-confirmation',
 };

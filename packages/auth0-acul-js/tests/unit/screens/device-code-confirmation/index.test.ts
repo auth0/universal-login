@@ -1,7 +1,7 @@
 import DeviceCodeConfirmation from '../../../../src/screens/device-code-confirmation';
 import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
-import { ScreenIds, FormActions } from '../../../../src/constants';
+import { ScreenIds } from '../../../../src/constants';
 
 jest.mock('../../../../src/utils/form-handler');
 

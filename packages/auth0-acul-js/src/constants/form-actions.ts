@@ -18,4 +18,6 @@ export const FormActions = {
   ENROLL: 'enroll' as const,
   RESEND_EMAIL: 'resend-email-action' as const,
   SWITCH_TO_SMS: 'switch-to-sms' as const,
+  CONFIRM: 'confirm' as const,
+  CANCEL: 'cancel' as const,
 } as const;

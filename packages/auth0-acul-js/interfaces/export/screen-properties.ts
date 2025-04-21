@@ -51,3 +51,4 @@ export type { DeviceCodeActivationMembers } from '../screens/device-code-activat
 export type { ResetPasswordMfaRecoveryCodeChallengeMembers } from '../screens/reset-password-mfa-recovery-code-challenge';
 export type { ResetPasswordMfaVoiceChallengeMembers } from '../screens/reset-password-mfa-voice-challenge';
 export type { RedeemTicketMembers } from '../screens/redeem-ticket';
+export type { DeviceCodeConfirmationMembers } from '../screens/device-code-confirmation';
