@@ -51,4 +51,5 @@ export const ScreenIds = {
   DEVICE_CODE_ACTIVATION: 'device-code-activation',
   RESET_PASSWORD_MFA_RECOVERY_CODE_CHALLENGE: 'reset-password-mfa-recovery-code-challenge',
   RESET_PASSWORD_MFA_VOICE_CHALLENGE: 'reset-password-mfa-voice-challenge',
+  MFA_PHONE_CHALLENGE: 'mfa-phone-challenge',
 };

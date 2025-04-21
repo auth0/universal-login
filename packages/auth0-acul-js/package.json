@@ -215,7 +215,11 @@
     "./reset-password-mfa-voice-challenge": {
       "import": "./dist/screens/reset-password-mfa-voice-challenge/index.js",
       "types": "./dist/types/src/screens/reset-password-mfa-voice-challenge/index.d.ts"
-    }
+    },
+    "./mfa-phone-challenge": {
+      "import": "./dist/screens/mfa-phone-challenge/index.js",
+      "types": "./dist/types/src/screens/mfa-phone-challenge/index.d.ts"
+     }
   },
   "scripts": {
     "clean": "rimraf dist",
