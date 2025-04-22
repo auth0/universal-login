@@ -40,4 +40,5 @@ export type { ScreenMembersOnOrganizationSelection } from '../screens/organizati
 export type { ScreenMembersOnAcceptInvitation } from '../screens/accept-invitation';
 export type { ScreenMembersOnCustomizedConsent } from '../screens/customized-consent';
 export type { ScreenMembersOnResetPasswordMfaVoiceChallenge } from '../screens/reset-password-mfa-voice-challenge';
+export type { ScreenMembersOnDeviceCodeConfirmation } from '../screens/device-code-confirmation';
 export type { ScreenMembersOnMfaPhoneChallenge } from '../screens/mfa-phone-challenge';
