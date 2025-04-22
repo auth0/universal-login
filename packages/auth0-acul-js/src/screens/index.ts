@@ -52,3 +52,4 @@ export { default as ResetPasswordMfaRecoveryCodeChallenge } from './reset-passwo
 export { default as ResetPasswordMfaVoiceChallenge } from './reset-password-mfa-voice-challenge';
 export { default as RedeemTicket } from './redeem-ticket';
 export { default as DeviceCodeConfirmation } from './device-code-confirmation';
+export { default as MfaPhoneChallenge } from './mfa-phone-challenge';

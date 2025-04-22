@@ -173,6 +173,7 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 | 51     | reset-password-mfa-voice          | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaVoiceChallenge.html)   |
 | 52     | redeem-ticket          | [Link](https://auth0.github.io/universal-login/classes/Classes.RedeemTicket.html)   |
 | 53     | device-code-confirmation          | [Link](https://auth0.github.io/universal-login/classes/Classes.DeviceCodeConfirmation.html)   |
+| 54     | mfa-phone-challenge | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaPhoneChallenge.html) |
 
 
 </details>
