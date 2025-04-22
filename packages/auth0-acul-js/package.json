@@ -208,9 +208,9 @@
       "import": "./dist/screens/device-code-activation/index.js",
       "types": "./dist/types/src/screens/device-code-activation/index.d.ts"
     },
-    "./mfa-voice-challenge": {
-      "import": "./dist/screens/mfa-voice-challenge/index.js",
-      "types": "./dist/types/src/screens/mfa-voice-challenge/index.d.ts"
+    "./device-code-confirmation": {
+      "import": "./dist/screens/device-code-confirmation/index.js",
+      "types": "./dist/types/src/screens/device-code-confirmation/index.d.ts"
     },
     "./reset-password-mfa-recovery-code-challenge": {
       "import": "./dist/screens/reset-password-mfa-recovery-code-challenge/index.js",
@@ -219,7 +219,19 @@
     "./reset-password-mfa-voice-challenge": {
       "import": "./dist/screens/reset-password-mfa-voice-challenge/index.js",
       "types": "./dist/types/src/screens/reset-password-mfa-voice-challenge/index.d.ts"
-    }
+    },
+    "./redeem-ticket": {
+      "import": "./dist/screens/redeem-ticket/index.js",
+      "types": "./dist/types/src/screens/redeem-ticket/index.d.ts"
+    },
+    "./mfa-phone-challenge": {
+      "import": "./dist/screens/mfa-phone-challenge/index.js",
+      "types": "./dist/types/src/screens/mfa-phone-challenge/index.d.ts"
+     },
+     "./mfa-voice-challenge": {
+      "import": "./dist/screens/mfa-voice-challenge/index.js",
+      "types": "./dist/types/src/screens/mfa-voice-challenge/index.d.ts"
+     }
   },
   "scripts": {
     "clean": "rimraf dist",

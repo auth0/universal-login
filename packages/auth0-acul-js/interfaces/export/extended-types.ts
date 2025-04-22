@@ -41,3 +41,5 @@ export type { ScreenMembersOnAcceptInvitation } from '../screens/accept-invitati
 export type { ScreenMembersOnCustomizedConsent } from '../screens/customized-consent';
 export type { ScreenMembersOnMfaVoiceChallenge } from '../screens/mfa-voice-challenge';
 export type { ScreenMembersOnResetPasswordMfaVoiceChallenge } from '../screens/reset-password-mfa-voice-challenge';
+export type { ScreenMembersOnDeviceCodeConfirmation } from '../screens/device-code-confirmation';
+export type { ScreenMembersOnMfaPhoneChallenge } from '../screens/mfa-phone-challenge';
