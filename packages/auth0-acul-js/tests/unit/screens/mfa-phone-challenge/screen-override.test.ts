@@ -21,7 +21,7 @@ describe('MfaPhoneChallenge ScreenOverride', () => {
     expect(screenOverride).toBeInstanceOf(Screen); // Check inheritance
     expect(screenOverride.data).toBeDefined();
     expect(screenOverride.data).toEqual({
-      phone_number: '+19876543210',
+      phoneNumber: '+19876543210',
     });
   });
 
@@ -57,7 +57,7 @@ describe('MfaPhoneChallenge ScreenOverride', () => {
         },
       } as ScreenContext;
       const data = ScreenOverride.getScreenData(screenContext);
-      expect(data).toEqual({ phone_number: '+1112223333' });
+      expect(data).toEqual({ phoneNumber: '+1112223333' });
     });
 
     it('should return null if data is missing', () => {

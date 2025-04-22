@@ -5,11 +5,7 @@
 
 import type { CustomOptions } from '../common';
 import type { BaseMembers } from '../models/base-context';
-import type { ClientMembers } from '../models/client';
-import type { OrganizationMembers } from '../models/organization';
-import type { PromptMembers } from '../models/prompt';
 import type { ScreenMembers } from '../models/screen';
-import type { TransactionMembers } from '../models/transaction';
 
 /**
  * @interface ScreenMembersOnMfaPhoneChallenge
@@ -24,7 +20,7 @@ export interface ScreenMembersOnMfaPhoneChallenge extends ScreenMembers {
    */
   data: {
     /** The phone number (often masked) associated with this MFA challenge. */
-    phone_number: string;
+    phoneNumber: string;
   } | null;
 }
 
@@ -65,25 +61,9 @@ export interface PickAuthenticatorOptions extends CustomOptions {}
  */
 export interface MfaPhoneChallengeMembers extends BaseMembers {
   /**
-   * @property {ClientMembers} client - Information about the Auth0 client (application).
-   */
-  client: ClientMembers;
-  /**
-   * @property {OrganizationMembers} organization - Information about the organization, if applicable.
-   */
-  organization: OrganizationMembers;
-  /**
-   * @property {PromptMembers} prompt - Information about the current authentication prompt.
-   */
-  prompt: PromptMembers;
-  /**
    * @property {ScreenMembersOnMfaPhoneChallenge} screen - Specific screen information for the MFA Phone Challenge.
    */
   screen: ScreenMembersOnMfaPhoneChallenge;
-  /**
-   * @property {TransactionMembers} transaction - Information about the current authentication transaction.
-   */
-  transaction: TransactionMembers;
 
   /**
    * continue

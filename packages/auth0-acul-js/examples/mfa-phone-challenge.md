@@ -57,7 +57,7 @@ const MfaPhoneChallengeScreen: React.FC = () => {
   // Extract texts for UI elements, providing default fallbacks
   const texts = screen?.texts ?? {};
   const title = texts.title ?? 'Verify Your Identity';
-  const description = texts.description ?? `How would you like to get the verification code sent to ${screen.data?.phone_number ?? 'your phone'}?`;
+  const description = texts.description ?? `How would you like to get the verification code sent to ${screen.data?.phoneNumber ?? 'your phone'}?`;
   const smsButtonText = texts.smsButtonText ?? 'Send code via SMS';
   const voiceButtonText = texts.voiceButtonText ?? 'Send code via Voice Call';
   const tryAnotherMethodText = texts.pickAuthenticatorText ?? 'Try Another Method';
@@ -122,7 +122,6 @@ const MfaPhoneChallengeScreen: React.FC = () => {
 
         {/* Note: The 'pickPhone' action is less common for this specific screen */}
         {/* but could be added similarly if needed: */}
-        {/*
         <button
           onClick={async () => {
             setIsLoading(true);
@@ -139,7 +138,6 @@ const MfaPhoneChallengeScreen: React.FC = () => {
         >
           Use a different phone number
         </button>
-        */}
       </div>
     </div>
   );
@@ -158,7 +156,7 @@ import MfaPhoneChallenge from '@auth0/auth0-acul-js/mfa-phone-challenge';
 const mfaPhoneChallenge = new MfaPhoneChallenge();
 
 // You can access screen data like the phone number
-const phoneNumber = mfaPhoneChallenge.screen.data?.phone_number;
+const phoneNumber = mfaPhoneChallenge.screen.data?.phoneNumber;
 console.log('Phone number for challenge:', phoneNumber);
 
 // Access transaction details like errors

@@ -53,7 +53,7 @@ describe('MfaPhoneChallenge', () => {
   it('should correctly initialize with screen data', () => {
     expect(mfaPhoneChallenge).toBeInstanceOf(MfaPhoneChallenge);
     expect(mfaPhoneChallenge.screen.name).toBe(ScreenIds.MFA_PHONE_CHALLENGE);
-    expect(mfaPhoneChallenge.screen.data?.phone_number).toBe(testPhoneNumber);
+    expect(mfaPhoneChallenge.screen.data?.phoneNumber).toBe(testPhoneNumber);
     expect(mfaPhoneChallenge.transaction.state).toBe(testState);
   });
 

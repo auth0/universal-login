@@ -50,7 +50,7 @@ export class ScreenOverride extends Screen implements OverrideOptions {
 
     // Return the structured data object
     return {
-      phone_number: data.phone_number,
+      phoneNumber: data.phone_number,
     };
   };
 }
