@@ -6,7 +6,10 @@ import { ScreenOverride } from './screen-override';
 
 import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
-import type { DeviceCodeConfirmationMembers } from '../../../interfaces/screens/device-code-confirmation';
+import type {
+  DeviceCodeConfirmationMembers,
+  ScreenMembersOnDeviceCodeConfirmation as screenOptions,
+} from '../../../interfaces/screens/device-code-confirmation';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 /**
@@ -15,7 +18,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  */
 export default class DeviceCodeConfirmation extends BaseContext implements DeviceCodeConfirmationMembers {
   static screenIdentifier: string = ScreenIds.DEVICE_CODE_CONFIRMATION;
-  screen: DeviceCodeConfirmationMembers['screen'];
+  screen: screenOptions;
 
   /**
    * Creates an instance of the DeviceCodeConfirmation screen.
@@ -40,9 +43,9 @@ export default class DeviceCodeConfirmation extends BaseContext implements Devic
   async confirm(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
-      telemetry: [DeviceCodeConfirmation.screenIdentifier, 'confirm'],
+      telemetry: [DeviceCodeConfirmation.screenIdentifier, FormActions.CONFIRM],
     };
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'confirm' });
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.CONFIRM });
   }
 
   /**

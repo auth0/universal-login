@@ -175,6 +175,7 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 | 53     | device-code-confirmation          | [Link](https://auth0.github.io/universal-login/classes/Classes.DeviceCodeConfirmation.html)   |
 | 54     | mfa-phone-challenge | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaPhoneChallenge.html) |
 | 55     | mfa-voice-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaVoiceChallenge.html)   |
+| 56     | mfa-recovery-code-enrollment          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaRecoveryCodeEnrollment.html)   |
 
 </details>
 

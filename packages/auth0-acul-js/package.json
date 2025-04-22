@@ -231,6 +231,10 @@
      "./mfa-voice-challenge": {
       "import": "./dist/screens/mfa-voice-challenge/index.js",
       "types": "./dist/types/src/screens/mfa-voice-challenge/index.d.ts"
+     },
+     "./mfa-recovery-code-enrollment": {
+      "import": "./dist/screens/mfa-recovery-code-enrollment/index.js",
+      "types": "./dist/types/src/screens/mfa-recovery-code-enrollment/index.d.ts"
      }
   },
   "scripts": {
