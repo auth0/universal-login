@@ -54,4 +54,5 @@ export const ScreenIds = {
   REDEEM_TICKET: 'redeem-ticket',
   DEVICE_CODE_CONFIRMATION: 'device-code-confirmation',
   MFA_PHONE_CHALLENGE: 'mfa-phone-challenge',
+  RESET_PASSWORD_MFA_PHONE_CHALLENGE: 'reset-password-mfa-phone-challenge',
 };

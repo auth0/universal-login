@@ -43,3 +43,4 @@ export type { ScreenMembersOnMfaVoiceChallenge } from '../screens/mfa-voice-chal
 export type { ScreenMembersOnResetPasswordMfaVoiceChallenge } from '../screens/reset-password-mfa-voice-challenge';
 export type { ScreenMembersOnDeviceCodeConfirmation } from '../screens/device-code-confirmation';
 export type { ScreenMembersOnMfaPhoneChallenge } from '../screens/mfa-phone-challenge';
+export type { ScreenMembersOnResetPasswordMfaPhoneChallenge } from '../screens/reset-password-mfa-phone-challenge';

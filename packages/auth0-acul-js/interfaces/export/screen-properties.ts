@@ -54,3 +54,4 @@ export type { ResetPasswordMfaVoiceChallengeMembers } from '../screens/reset-pas
 export type { RedeemTicketMembers } from '../screens/redeem-ticket';
 export type { DeviceCodeConfirmationMembers } from '../screens/device-code-confirmation';
 export type { MfaPhoneChallengeMembers } from '../screens/mfa-phone-challenge';
+export type { ResetPasswordMfaPhoneChallengeMembers } from '../screens/reset-password-mfa-phone-challenge';
