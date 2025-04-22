@@ -227,6 +227,10 @@
     "./mfa-phone-challenge": {
       "import": "./dist/screens/mfa-phone-challenge/index.js",
       "types": "./dist/types/src/screens/mfa-phone-challenge/index.d.ts"
+     },
+     "./mfa-voice-challenge": {
+      "import": "./dist/screens/mfa-voice-challenge/index.js",
+      "types": "./dist/types/src/screens/mfa-voice-challenge/index.d.ts"
      }
   },
   "scripts": {

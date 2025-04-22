@@ -17,6 +17,7 @@ export const FormActions = {
   DENY: 'deny' as const,
   ENROLL: 'enroll' as const,
   RESEND_EMAIL: 'resend-email-action' as const,
+  PICK_PHONE: 'pick-phone' as const,
   SWITCH_TO_SMS: 'switch-to-sms' as const,
   CONFIRM: 'confirm' as const,
   CANCEL: 'cancel' as const,

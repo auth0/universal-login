@@ -50,3 +50,4 @@ export type {
   PickPhoneOptions as MfaPhoneChallengePickPhoneOptions,
   PickAuthenticatorOptions as MfaPhoneChallengePickAuthenticatorOptions,
 } from '../screens/mfa-phone-challenge';
+export type { ContinueOptions as MfaVoiceChallengeContinueOptions } from '../screens/mfa-voice-challenge';
