@@ -228,13 +228,17 @@
       "import": "./dist/screens/mfa-phone-challenge/index.js",
       "types": "./dist/types/src/screens/mfa-phone-challenge/index.d.ts"
      },
-     "./mfa-voice-challenge": {
+    "./mfa-voice-challenge": {
       "import": "./dist/screens/mfa-voice-challenge/index.js",
       "types": "./dist/types/src/screens/mfa-voice-challenge/index.d.ts"
      },
-     "./mfa-recovery-code-enrollment": {
-      "import": "./dist/screens/mfa-recovery-code-enrollment/index.js",
-      "types": "./dist/types/src/screens/mfa-recovery-code-enrollment/index.d.ts"
+    "./mfa-recovery-code-enrollment": {
+       "import": "./dist/screens/mfa-recovery-code-enrollment/index.js",
+       "types": "./dist/types/src/screens/mfa-recovery-code-enrollment/index.d.ts"
+     },
+    "./reset-password-mfa-phone-challenge": {
+        "import": "./dist/screens/reset-password-mfa-phone-challenge/index.js",
+        "types": "./dist/types/src/screens/reset-password-mfa-phone-challenge/index.d.ts"
      }
   },
   "scripts": {
