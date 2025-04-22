@@ -4,9 +4,9 @@ import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
 
-import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type {
+  ContinueOptions,
   MfaRecoveryCodeEnrollmentMembers,
   ScreenMembersOnMfaRecoveryCodeEnrollment,
 } from '../../../interfaces/screens/mfa-recovery-code-enrollment';
@@ -38,17 +38,20 @@ export default class MfaRecoveryCodeEnrollment extends BaseContext implements Mf
    * @returns {Promise<void>} A promise that resolves when the action is successfully submitted.
    * Rejects with an error if the submission fails.
    */
-  async continue(payload?: CustomOptions): Promise<void> {
+  async continue(payload: ContinueOptions): Promise<void> {
     const formOptions = {
       state: this.transaction.state,
-      telemetry: [MfaRecoveryCodeEnrollment.screenIdentifier, 'continue'],
+      telemetry: [MfaRecoveryCodeEnrollment.screenIdentifier, FormActions.CONTINUE],
     };
 
-    await new FormHandler(formOptions).submitData<CustomOptions>({
-      ...payload,
-      action: FormActions.DEFAULT,
-      saved: 'on',
-    });
+    const { isCodeCopied, ...rest } = payload;
+
+    const options: Omit<ContinueOptions, 'isCodeCopied'> = {
+      ...rest,
+      ...(isCodeCopied === true ? { saved: 'on' as unknown as boolean } : {}),
+    };
+
+    await new FormHandler(formOptions).submitData<Omit<ContinueOptions, 'isCodeCopied'> & { saved?: 'string' }>(options);
   }
 }
 

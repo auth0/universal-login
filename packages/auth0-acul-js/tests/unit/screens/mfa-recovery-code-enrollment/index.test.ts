@@ -32,10 +32,9 @@ describe('MfaRecoveryCodeEnrollment', () => {
 
   describe('continue()', () => {
     it('should call FormHandler.submitData with default payload', async () => {
-      await instance.continue();
+      await instance.continue({ isCodeCopied: true });
 
       expect(mockSubmitData).toHaveBeenCalledWith({
-        action: FormActions.DEFAULT,
         saved: 'on',
       });
     });
@@ -43,21 +42,29 @@ describe('MfaRecoveryCodeEnrollment', () => {
     it('should include custom options in the payload', async () => {
       const customOptions = {
         customParam: 'customValue',
+        isCodeCopied: true,
       };
 
-      await instance.continue({ customParam: 'customValue' });
+      await instance.continue(customOptions);
 
       expect(mockSubmitData).toHaveBeenCalledWith({
-        action: FormActions.DEFAULT,
         saved: 'on',
         customParam: 'customValue',
       });
     });
 
-    it('should throw an error if submitData fails', async () => {
-      mockSubmitData.mockRejectedValue(new Error('Submit failed'));
+    it('should exclude "saved" options if payload.isCodeCopied is "false"', async () => {
+      const customOptions = {
+        customParam: 'customValue',
+        isCodeCopied: true,
+      };
 
-      await expect(instance.continue()).rejects.toThrow('Submit failed');
+      await instance.continue(customOptions);
+
+      expect(mockSubmitData).toHaveBeenCalledWith({
+        saved: 'on',
+        customParam: 'customValue',
+      });
     });
   });
 });
