@@ -414,8 +414,10 @@ export async function configureAdvancedMode(screenName, config, isHmr = false) {
       
       // Provide more detailed error information for troubleshooting
       if (error.stderr) {
-        logger.data('Command error details', error.stderr);
+        // Log the raw stderr using logger.error for better visibility
+        logger.error(error.stderr); 
       } else if (error.message) {
+        // Keep logging other error messages using logger.data
         logger.data('Error details', error.message);
       }
       

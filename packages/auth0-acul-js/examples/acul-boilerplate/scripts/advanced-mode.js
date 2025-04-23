@@ -50,7 +50,8 @@ const runAdvancedMode = async (screenName) => {
     // 4. Configure using Auth0 CLI
     const configSuccess = await configureWithAuth0Cli(screenName);
     if (!configSuccess) {
-      throw new Error(`Failed to configure screen '${screenName}' with Auth0 CLI`);
+      logger.info('Exiting due to configuration failure.');
+      process.exit(1);
     }
     logger.success(`Screen '${screenName}' configured in advanced mode`);
 
@@ -81,11 +82,11 @@ async function configureWithAuth0Cli(screenName) {
   
   // Configure the screen using Auth0 CLI
   const configSuccess = await configureAdvancedMode(screenName, advancedConfig);
-  if (!configSuccess) {
-    throw new Error(`Auth0 CLI command failed to configure screen '${screenName}' in advanced mode. Please fix the issue before continuing.`);
+  
+  if (configSuccess) {
+    logger.success(`Screen '${screenName}' configured in advanced mode using Auth0 CLI`);
   }
   
-  logger.success(`Screen '${screenName}' configured in advanced mode using Auth0 CLI`);
   return configSuccess;
 }
 
