@@ -1,5 +1,4 @@
 import { ScreenOverride } from '../../../../src/screens/mfa-voice-challenge/screen-override';
-import { getEditIdentifierLink } from '../../../../src/shared/screen';
 import { Screen } from '../../../../src/models/screen';
 import type { ScreenContext } from '../../../../interfaces/models/screen';
 
@@ -13,20 +12,13 @@ describe('ScreenOverride', () => {
   beforeEach(() => {
     screenContext = {
       name: 'mfa-voice-challenge',
-      links: { edit_identifier: '/edit-identifier' },
       data: { 
         phone_number: '+15555555555', 
         remember_device: false 
       },
     } as ScreenContext;
-
-    (getEditIdentifierLink as jest.Mock).mockReturnValue('/edit-identifier');
     
     screenOverride = new ScreenOverride(screenContext);
-  });
-
-  it('should initialize editIdentifierLink correctly', () => {
-    expect(screenOverride.editIdentifierLink).toBe('/edit-identifier');
   });
 
   it('should initialize data correctly', () => {
@@ -34,10 +26,6 @@ describe('ScreenOverride', () => {
       phoneNumber: '+15555555555',
       rememberDevice: false,
     });
-  });
-
-  it('should call getEditIdentifierLink with screenContext', () => {
-    expect(getEditIdentifierLink).toHaveBeenCalledWith(screenContext);
   });
 
   it('should return null for data when screenContext.data is undefined', () => {
