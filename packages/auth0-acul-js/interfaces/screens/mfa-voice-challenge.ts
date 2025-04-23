@@ -40,11 +40,6 @@ export interface ScreenMembersOnMfaVoiceChallenge extends ScreenMembers {
      */
     rememberDevice?: boolean;
   } | null;
-
-  /**
-   * Link to edit the user's identifier.
-   */
-  editIdentifierLink: string | null;
 }
 
 /**
