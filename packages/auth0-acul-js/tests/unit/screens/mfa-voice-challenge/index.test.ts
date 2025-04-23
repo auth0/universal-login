@@ -18,10 +18,7 @@ describe('MfaVoiceChallenge', () => {
       screen: {
         ...baseContextData.screen,
         name: 'mfa-voice-challenge',
-        links: {
-          ...baseContextData.screen.links,
-          edit_identifier: '/edit-identifier'
-        },
+        links: baseContextData.screen.links,
         data: {
           phone_number: '+15555555555',
           remember_device: false
