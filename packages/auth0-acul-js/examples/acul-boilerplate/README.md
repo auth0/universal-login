@@ -3,6 +3,7 @@
 This project provides a boilerplate setup for Auth0's Advanced Custom Universal Login (ACUL). ACUL allows you to build custom login screens using your own design systems and layouts. It includes a minimal React-based screen tester for initiating authentication flows and testing your screens in real-time.
 
 ## 📑 Table of Contents
+
 - [Prerequisites](#prerequisites)
 - [Quick Start](#quick-start)
 - [Project Structure](#project-structure)
@@ -14,6 +15,7 @@ This project provides a boilerplate setup for Auth0's Advanced Custom Universal 
 - [Troubleshooting](#troubleshooting)
 
 <a id="prerequisites"></a>
+
 ## ⚙️ Prerequisites
 
 <details>
@@ -24,7 +26,7 @@ This project provides a boilerplate setup for Auth0's Advanced Custom Universal 
   git clone https://github.com/auth0/universal-login.git
   cd universal-login
   ```
-</details>
+  </details>
 
 <details>
 <summary>🔧 Node.js Environment</summary>
@@ -36,11 +38,11 @@ This project provides a boilerplate setup for Auth0's Advanced Custom Universal 
     - For macOS/Linux: `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash`
     - For Windows: Install [nvm-windows](https://github.com/coreybutler/nvm-windows)
   - Install and use Node.js v20:
-    ```bash
+  `bash
     nvm install 20
     nvm use 20
-    ```
-</details>
+    `
+  </details>
 
 <details>
 <summary>📦 Dependencies Installation</summary>
@@ -51,11 +53,9 @@ This project provides a boilerplate setup for Auth0's Advanced Custom Universal 
   cd screen-tester && npm install
   cd ..
   ```
-</details>
-
-<details>
-<summary>🔨 Auth0 CLI Installation</summary>
-
+  </details>
+  <details>
+  <summary>🔨 Auth0 CLI Installation</summary>
 - This project requires the Auth0 CLI to configure your tenant:
   - For macOS/Linux using Homebrew:
     ```bash
@@ -81,11 +81,13 @@ This project provides a boilerplate setup for Auth0's Advanced Custom Universal 
 ### Auth0 Setup
 
 1. **Auth0 Tenant**
+
    - Create or use an existing Auth0 tenant. Remember to work in Development tenants before making changes to Production tenants.
    - You can sign up for a free Auth0 account at [https://auth0.com/signup](https://auth0.com/signup)
    - See [Create Tenants](https://auth0.com/docs/get-started/auth0-overview/create-tenants) in the Auth0 docs if you need help
 
 2. **Custom Domain Setup**
+
    - Enable and configure a [custom domain](https://auth0.com/docs/customize/custom-domains) for your Auth0 tenant
    - Verify the custom domain is working properly
    - This is required for ACUL functionality in advanced mode
@@ -99,9 +101,21 @@ This project provides a boilerplate setup for Auth0's Advanced Custom Universal 
    - This application will be used by the Screen Tester for authentication testing
 
 <a id="quick-start"></a>
+
 ## 🚀 Quick Start
 
-1. Set up your environment variables in `.env.local`:
+1. Auth0 CLI login: (Follow Auth0 CLI Installation steps)
+
+   ```bash
+   auth0 login
+   ```
+
+   - This will open a browser window for you to log in to your Auth0 account
+   - Make sure to select the correct tenant if you have multiple tenants. Choose development tenants for testing.
+   - Make sure the selected tenant has a custom domain configured.
+
+2. Set up your environment variables in `.env.local`:
+
    ```env
    # Auth0 Configuration
    AUTH0_CUSTOM_DOMAIN='https://your-custom-domain.com'
@@ -112,9 +126,10 @@ This project provides a boilerplate setup for Auth0's Advanced Custom Universal 
    AUTH0_ORGANIZATION='optional_org_id'
    ```
 
-2. Start development:
+3. Start development:
+
    ```bash
-   # Standard mode (single screen) 
+   # Standard mode (single screen)
    # This uses Universal Login mode to see the screen configured in your tenant
    npm run screen:standard <screen_name>
    npm run screen:standard login  # Examples: login, login-id, login-password
@@ -125,11 +140,12 @@ This project provides a boilerplate setup for Auth0's Advanced Custom Universal 
    npm run screen:advanced login  # Examples: login, login-id, login-password
    ```
 
-3. Access in browser:
+4. Access in browser:
    - Screen Tester: `http://localhost:4040/`
    - After clicking "Log In" in the tester, you will be redirected to your custom login screen
 
 <a id="project-structure"></a>
+
 ## 📁 Project Structure
 
 ```
@@ -156,15 +172,18 @@ acul-boilerplate/
 ```
 
 <a id="screens"></a>
+
 ## 🖥️ Screens
 
 This boilerplate includes implementations for several Universal Login screens:
 
 - **[Login Screen](src/screens/Login/README.md)**
+
   - Main login screen with username/email and password
   - Customizable with your design system
 
 - **[Login ID Screen](src/screens/login-id/README.md)**
+
   - Username/email input step in a multi-step login flow
   - Follows modern authentication patterns
 
@@ -175,6 +194,7 @@ This boilerplate includes implementations for several Universal Login screens:
 Each screen comes with its own documentation. Check the README.md file in each screen directory for more information.
 
 <a id="development-workflow"></a>
+
 ## 🔄 Development Workflow
 
 ### Standard Mode Development
@@ -186,6 +206,7 @@ npm run screen:standard login
 ```
 
 This command:
+
 1. Configures your Auth0 tenant to use standard mode for the specified screen
 2. Launches the Screen Tester application for initiating the authentication flow
 3. Any changes to the tenant configuration will be reflected in the login experience
@@ -199,17 +220,20 @@ npm run screen:advanced login
 ```
 
 This command:
+
 1. Builds your screen and serves it locally with Hot Module Replacement (HMR)
 2. Configures your Auth0 tenant to use advanced mode with your local assets
 3. Launches the Screen Tester application for initiating the authentication flow
 4. Any changes to your code will be immediately reflected without page reloads
 
 <a id="deployment"></a>
+
 ## 📤 Deployment
 
 ### Automated Deployment with GitHub Actions
 
 This boilerplate includes a GitHub Actions workflow to automate the process of:
+
 1. Building your customized ACUL screens
 2. Uploading the assets to an AWS S3 bucket
 3. Configuring your Auth0 tenant to use these assets in Advanced mode
@@ -227,29 +251,36 @@ This boilerplate includes a GitHub Actions workflow to automate the process of:
 - **Automatic Screen Discovery**: No need to manually update configuration when adding new screens
 
 <a id="technical-details"></a>
+
 ## 🔍 Technical Details
 
 <details>
 <summary>Standard Mode Process Flow</summary>
 
 1. **Environment Check**
+
    - Validates all required environment variables
    - Checks for Auth0 CLI installation and login status
 
 2. **Port Availability Check**
+
    - Checks if ports 4040 (Screen Tester) and 3000 (Auth0 redirect) are available
    - Fails if any port is in use
 
 3. **Screen Validation**
+
    - Checks if the specified screen exists in `src/screens` directory
    - Fails if screen directory is not found
 
 4. **Tenant Selection**
+
    - Shows the current tenant with visual highlighting for clarity
    - Provides a simple yes/no option to switch tenants
 
 5. **Auth0 CLI Configuration**
+
    - Uses Auth0 CLI to configure the screen in standard mode:
+
    ```bash
    auth0 universal-login switch --tenant <tenant_name> --prompt <screen_name> --screen <screen_name> --rendering-mode standard
    ```
@@ -257,30 +288,36 @@ This boilerplate includes a GitHub Actions workflow to automate the process of:
 6. **Screen Tester**
    - Starts the Screen Tester SPA on port 4040
    - The tester initiates authentication flows using `@auth0/auth0-react`
-</details>
+   </details>
 
 <details>
 <summary>Advanced Mode Process Flow</summary>
 
 1. **Same Environment and Validation Checks**
+
    - Same as standard mode
 
 2. **Build Process**
+
    - Runs a production build of your screen
    - Outputs to the `dist` directory
 
 3. **Asset Discovery**
+
    - Finds all compiled assets for the screen
    - Includes JavaScript bundles and CSS files
 
 4. **Tenant Selection**
+
    - Shows the current tenant with visual highlighting for clarity
    - Provides a simple yes/no option to switch tenants
 
 5. **Auth0 CLI Configuration**
+
    - Generates a configuration JSON file
-   - Saves it to settings/<screen_name>_advanced.json
+   - Saves it to settings/<screen_name>\_advanced.json
    - Uses Auth0 CLI to apply the configuration:
+
    ```bash
    auth0 ul customize --tenant <tenant_name> --rendering-mode advanced --prompt <screen_name> --screen <screen_name> --settings-file settings.json
    ```
@@ -289,13 +326,13 @@ This boilerplate includes a GitHub Actions workflow to automate the process of:
    - Starts a development server with Hot Module Replacement support
    - Any changes to source code automatically rebuild and update
    - No need to restart the server or refresh the browser
-   
 7. **Screen Tester**
    - Starts the Screen Tester SPA on port 4040
    - The tester initiates authentication flows using `@auth0/auth0-react`
-</details>
+   </details>
 
 <a id="documentation"></a>
+
 ## 📚 Documentation
 
 ### Advanced Custom Universal Login (ACUL)
@@ -317,6 +354,7 @@ The Auth0 CLI is a command-line tool for managing Auth0 tenants, applications, a
 Learn more about the Auth0 CLI in the [official documentation](https://auth0.github.io/auth0-cli/).
 
 <a id="troubleshooting"></a>
+
 ## ❓ Troubleshooting
 
 ### Common Issues
@@ -329,7 +367,7 @@ Learn more about the Auth0 CLI in the [official documentation](https://auth0.git
   1. Check your Auth0 application settings to ensure the correct callback URLs are set
   2. Verify your `.env.local` file has the correct AUTH0_CLIENT_ID
   3. Make sure your tenant is properly configured with the Auth0 CLI
-</details>
+  </details>
 
 <details>
 <summary>Assets Not Loading in Advanced Mode</summary>
@@ -340,7 +378,7 @@ Learn more about the Auth0 CLI in the [official documentation](https://auth0.git
   2. Ensure your Auth0 tenant has a custom domain configured
   3. Verify the advanced mode configuration was properly applied
   4. Try running `npm run build` manually to check for build errors
-</details>
+  </details>
 
 <details>
 <summary>Screen Not Found Error</summary>
@@ -350,7 +388,7 @@ Learn more about the Auth0 CLI in the [official documentation](https://auth0.git
   1. Make sure the screen name matches a directory in `src/screens/`
   2. Screen names are case-sensitive, so use the exact name as the directory
   3. If creating a new screen, ensure it has the required files structure
-</details>
+  </details>
 
 ### Getting Help
 

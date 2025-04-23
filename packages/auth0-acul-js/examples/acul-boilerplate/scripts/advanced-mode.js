@@ -53,7 +53,6 @@ const runAdvancedMode = async (screenName) => {
       logger.info('Exiting due to configuration failure.');
       process.exit(1);
     }
-    logger.success(`Screen '${screenName}' configured in advanced mode`);
 
     // === Call centralized function to start environment ===
     await startAdvancedEnv(screenName);
