@@ -12,10 +12,6 @@ export interface ScreenMembersOnResetPasswordMfaVoiceChallenge extends ScreenMem
      */
     phoneNumber: string;
   } | null;
-  links: {
-    editIdentifier: string;
-  } | null;
-  editIdentifierLink: string | null;
 }
 
 /**
