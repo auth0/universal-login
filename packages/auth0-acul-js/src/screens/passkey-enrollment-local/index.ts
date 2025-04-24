@@ -40,7 +40,7 @@ export default class PasskeyEnrollmentLocal extends BaseContext implements Passk
     };
 
     const publicKey = this.screen.publicKey;
-    const encoded = publicKey && createPasskeyCredentials(publicKey);
+    const encoded = publicKey && (await createPasskeyCredentials(publicKey));
 
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, passkey: JSON.stringify(encoded) });
   }
