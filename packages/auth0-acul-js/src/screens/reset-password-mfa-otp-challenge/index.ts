@@ -7,7 +7,6 @@ import type {
   ResetPasswordMfaOtpChallengeMembers,
   ContinueOptions,
   TryAnotherMethodOptions,
-  ScreenMembersOnResetPasswordMfaOtpChallenge as ScreenOptions,
 } from '../../../interfaces/screens/reset-password-mfa-otp-challenge';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
@@ -69,11 +68,6 @@ export default class ResetPasswordMfaOtpChallenge extends BaseContext implements
   }
 }
 
-export {
-  ResetPasswordMfaOtpChallengeMembers,
-  ContinueOptions,
-  TryAnotherMethodOptions,
-  ScreenOptions as ScreenMembersOnResetPasswordMfaOtpChallenge,
-};
+export { ResetPasswordMfaOtpChallengeMembers, ContinueOptions, TryAnotherMethodOptions };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';
