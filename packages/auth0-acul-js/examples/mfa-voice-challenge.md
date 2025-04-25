@@ -59,35 +59,41 @@ mfaVoiceChallenge.tryAnotherMethod();
 ### Below is a complete React component implementing the MFA Voice Challenge screen with TailwindCSS:
 
 ```typescript
-import React, { useState, useEffect, FormEvent, ChangeEvent } from 'react';
-import MfaVoiceChallenge from '@auth0/auth0-acul-js/mfa-voice-challenge';
+import React, { useState, useEffect, FormEvent, ChangeEvent } from "react";
+import MfaVoiceChallenge from "@auth0/auth0-acul-js/mfa-voice-challenge";
 
 /**
  * MFA Voice Challenge Screen Component
- * 
+ *
  * This component renders a form for users to submit their voice verification code
  * received during multi-factor authentication.
  */
 const MfaVoiceChallengeScreen: React.FC = () => {
   // State for form inputs
-  const [code, setCode] = useState<string>('');
+  const [code, setCode] = useState<string>("");
   const [rememberBrowser, setRememberBrowser] = useState<boolean>(false);
-  
+
   // UI state
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [phoneNumber, setPhoneNumber] = useState<string>('');
-  
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
+  const [showRememberDevice, setShowRememberDevice] = useState<boolean>(false);
+
   // Initialize MFA Voice Challenge SDK
   const mfaVoiceChallenge = new MfaVoiceChallenge();
-  
+
   useEffect(() => {
-    // Get the phone number from the screen data when component mounts
-    if (mfaVoiceChallenge.screen.data && mfaVoiceChallenge.screen.data.phoneNumber) {
-      setPhoneNumber(mfaVoiceChallenge.screen.data.phoneNumber);
+    // Get the phone number and showRememberDevice flag from the screen data when component mounts
+    if (mfaVoiceChallenge.screen.data) {
+      if (mfaVoiceChallenge.screen.data.phoneNumber) {
+        setPhoneNumber(mfaVoiceChallenge.screen.data.phoneNumber);
+      }
+      if (mfaVoiceChallenge.screen.data.showRememberDevice !== undefined) {
+        setShowRememberDevice(mfaVoiceChallenge.screen.data.showRememberDevice);
+      }
     }
   }, [mfaVoiceChallenge.screen.data]);
-  
+
   /**
    * Handles the form submission to verify the voice code
    */
@@ -95,50 +101,52 @@ const MfaVoiceChallengeScreen: React.FC = () => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
-    
+
     try {
       await mfaVoiceChallenge.continue({
         code,
-        rememberBrowser
+        rememberBrowser,
       });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to verify code');
+      setError(err instanceof Error ? err.message : "Failed to verify code");
     } finally {
       setIsLoading(false);
     }
   };
-  
+
   /**
    * Handles the resend code action
    */
   const handleResendCode = async (): Promise<void> => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       await mfaVoiceChallenge.resendCode();
       // Could set a success message here if needed
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to resend code');
+      setError(err instanceof Error ? err.message : "Failed to resend code");
     } finally {
       setIsLoading(false);
     }
   };
-  
+
   /**
    * Handles the change event for the code input field
    */
   const handleCodeChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setCode(e.target.value);
   };
-  
+
   /**
    * Handles the change event for the remember browser checkbox
    */
-  const handleRememberBrowserChange = (e: ChangeEvent<HTMLInputElement>): void => {
+  const handleRememberBrowserChange = (
+    e: ChangeEvent<HTMLInputElement>
+  ): void => {
     setRememberBrowser(e.target.checked);
   };
-  
+
   /**
    * Handles switching to SMS verification
    */
@@ -147,11 +155,11 @@ const MfaVoiceChallengeScreen: React.FC = () => {
     try {
       await mfaVoiceChallenge.switchToSms();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to switch to SMS');
+      setError(err instanceof Error ? err.message : "Failed to switch to SMS");
       setIsLoading(false);
     }
   };
-  
+
   /**
    * Handles navigating to pick a different phone number
    */
@@ -160,11 +168,15 @@ const MfaVoiceChallengeScreen: React.FC = () => {
     try {
       await mfaVoiceChallenge.pickPhone();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to navigate to phone selection');
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Failed to navigate to phone selection"
+      );
       setIsLoading(false);
     }
   };
-  
+
   /**
    * Handles navigating to try another MFA method
    */
@@ -173,11 +185,15 @@ const MfaVoiceChallengeScreen: React.FC = () => {
     try {
       await mfaVoiceChallenge.tryAnotherMethod();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to navigate to method selection');
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Failed to navigate to method selection"
+      );
       setIsLoading(false);
     }
   };
-  
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -187,10 +203,11 @@ const MfaVoiceChallengeScreen: React.FC = () => {
         <p className="mt-2 text-center text-sm text-gray-600">
           {phoneNumber ? (
             <>
-              We've called <span className="font-medium">{phoneNumber}</span> with your verification code.
+              We've called <span className="font-medium">{phoneNumber}</span>{" "}
+              with your verification code.
             </>
           ) : (
-            'We\'ve called your phone with a verification code.'
+            "We've called your phone with a verification code."
           )}
         </p>
       </div>
@@ -199,7 +216,10 @@ const MfaVoiceChallengeScreen: React.FC = () => {
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
-              <label htmlFor="code" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="code"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Verification Code
               </label>
               <div className="mt-1">
@@ -218,19 +238,24 @@ const MfaVoiceChallengeScreen: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-center">
-              <input
-                id="remember-browser"
-                name="remember-browser"
-                type="checkbox"
-                checked={rememberBrowser}
-                onChange={handleRememberBrowserChange}
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-              />
-              <label htmlFor="remember-browser" className="ml-2 block text-sm text-gray-900">
-                Remember this device for 30 days
-              </label>
-            </div>
+            {showRememberDevice && (
+              <div className="flex items-center">
+                <input
+                  id="remember-browser"
+                  name="remember-browser"
+                  type="checkbox"
+                  checked={rememberBrowser}
+                  onChange={handleRememberBrowserChange}
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                />
+                <label
+                  htmlFor="remember-browser"
+                  className="ml-2 block text-sm text-gray-900"
+                >
+                  Remember this device for 30 days
+                </label>
+              </div>
+            )}
 
             {error && (
               <div className="rounded-md bg-red-50 p-4">
@@ -248,9 +273,13 @@ const MfaVoiceChallengeScreen: React.FC = () => {
                 type="submit"
                 disabled={isLoading}
                 className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white 
-                  ${isLoading ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'}`}
+                  ${
+                    isLoading
+                      ? "bg-blue-400 cursor-not-allowed"
+                      : "bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  }`}
               >
-                {isLoading ? 'Verifying...' : 'Verify'}
+                {isLoading ? "Verifying..." : "Verify"}
               </button>
             </div>
           </form>
@@ -274,7 +303,7 @@ const MfaVoiceChallengeScreen: React.FC = () => {
               >
                 Resend code
               </button>
-              
+
               <button
                 onClick={handleSwitchToSms}
                 disabled={isLoading}
@@ -283,7 +312,7 @@ const MfaVoiceChallengeScreen: React.FC = () => {
               >
                 Send a text message instead
               </button>
-              
+
               <button
                 onClick={handlePickPhone}
                 disabled={isLoading}
@@ -292,7 +321,7 @@ const MfaVoiceChallengeScreen: React.FC = () => {
               >
                 Use a different phone
               </button>
-              
+
               <button
                 onClick={handleTryAnotherMethod}
                 disabled={isLoading}
@@ -310,4 +339,5 @@ const MfaVoiceChallengeScreen: React.FC = () => {
 };
 
 export default MfaVoiceChallengeScreen;
+
 ```

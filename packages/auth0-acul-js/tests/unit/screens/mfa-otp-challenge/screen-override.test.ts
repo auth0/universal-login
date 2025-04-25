@@ -10,7 +10,7 @@ describe('ScreenOverride', () => {
     screenContext = {
       name: 'mfa-otp-challenge',
       data: {
-        remember_device: true,
+        show_remember_device: true,
       },
     } as ScreenContext;
 
@@ -19,7 +19,7 @@ describe('ScreenOverride', () => {
 
   it('should initialize data correctly', () => {
     expect(screenOverride.data).toEqual({
-      remember_device: true,
+      showRememberDevice: true,
     });
   });
 

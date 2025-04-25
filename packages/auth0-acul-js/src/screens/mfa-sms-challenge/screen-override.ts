@@ -32,8 +32,8 @@ export class ScreenOverride extends Screen implements OverrideOptions {
     }
 
     return {
-      phone_number: data.phone_number as string,
-      remember_device: data.remember_device === true,
+      phoneNumber: data.phone_number as string,
+      showRememberDevice: data.show_remember_device === true,
     };
   };
 }

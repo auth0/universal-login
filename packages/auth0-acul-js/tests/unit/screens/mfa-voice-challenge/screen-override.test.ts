@@ -14,7 +14,7 @@ describe('ScreenOverride', () => {
       name: 'mfa-voice-challenge',
       data: { 
         phone_number: '+15555555555', 
-        remember_device: false 
+        show_remember_device: false 
       },
     } as ScreenContext;
     
@@ -24,7 +24,7 @@ describe('ScreenOverride', () => {
   it('should initialize data correctly', () => {
     expect(screenOverride.data).toEqual({
       phoneNumber: '+15555555555',
-      rememberDevice: false,
+      showRememberDevice: false,
     });
   });
 
@@ -34,11 +34,11 @@ describe('ScreenOverride', () => {
     expect(result).toBeNull();
   });
 
-  it('should map phone_number to phoneNumber and remember_device to rememberDevice', () => {
+  it('should map phone_number to phoneNumber and show_remember_device', () => {
     const result = ScreenOverride.getScreenData(screenContext);
     expect(result).toEqual({
       phoneNumber: '+15555555555',
-      rememberDevice: false,
+      showRememberDevice: false,
     });
   });
 
@@ -51,7 +51,7 @@ describe('ScreenOverride', () => {
     const result = ScreenOverride.getScreenData(partialContext);
     expect(result).toEqual({
       phoneNumber: '+15555555555',
-      rememberDevice: undefined,
+      showRememberDevice: undefined,
     });
   });
 

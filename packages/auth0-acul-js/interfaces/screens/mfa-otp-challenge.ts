@@ -6,7 +6,7 @@ import type { ScreenMembers } from '../models/screen';
  */
 export interface ScreenMembersOnMfaOtpChallenge extends ScreenMembers {
   data: {
-    remember_device?: boolean;
+    showRememberDevice?: boolean;
   } | null;
 }
 

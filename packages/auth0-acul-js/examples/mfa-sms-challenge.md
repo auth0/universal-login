@@ -4,8 +4,8 @@ import MfaSmsChallenge from '@auth0/auth0-acul-js/mfa-sms-challenge';
 const mfaSmsChallenge = new MfaSmsChallenge();
 
 // Access screen data
-const phoneNumber = mfaSmsChallenge.screen.data?.phone_number;
-const rememberDevice = mfaSmsChallenge.screen.data?.remember_device;
+const phoneNumber = mfaSmsChallenge.screen.data?.phoneNumber;
+const showRememberDevice = mfaSmsChallenge.screen.data?.showRememberDevice;
 
 // Example of submitting the MFA SMS challenge
 mfaSmsChallenge.continueMfaSmsChallenge({
@@ -28,15 +28,16 @@ mfaSmsChallenge.getACall();
 ## React Component Example with TailwindCSS
 
 ```jsx
-import React, { useState } from 'react';
-import MfaSmsChallenge from '@auth0/auth0-acul-js/mfa-sms-challenge';
+import { useState } from "react";
+import MfaSmsChallenge from "@auth0/auth0-acul-js/mfa-sms-challenge";
 
 const MfaSmsChallengeScreen = () => {
   const mfaSmsChallenge = new MfaSmsChallenge();
-  const [code, setCode] = useState('');
+  const [code, setCode] = useState("");
   const [rememberDevice, setRememberDevice] = useState(false);
+  const { phoneNumber, showRememberDevice } = mfaSmsChallenge.screen.data || {};
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     try {
       await mfaSmsChallenge.continueMfaSmsChallenge({
@@ -44,7 +45,7 @@ const MfaSmsChallengeScreen = () => {
         rememberBrowser: rememberDevice,
       });
     } catch (error) {
-      console.error('MFA SMS Challenge failed:', error);
+      console.error("MFA SMS Challenge failed:", error);
     }
   };
 
@@ -52,7 +53,7 @@ const MfaSmsChallengeScreen = () => {
     try {
       await mfaSmsChallenge.pickSms();
     } catch (error) {
-      console.error('Pick SMS failed:', error);
+      console.error("Pick SMS failed:", error);
     }
   };
 
@@ -60,7 +61,7 @@ const MfaSmsChallengeScreen = () => {
     try {
       await mfaSmsChallenge.resendCode();
     } catch (error) {
-      console.error('Resend code failed:', error);
+      console.error("Resend code failed:", error);
     }
   };
 
@@ -68,7 +69,7 @@ const MfaSmsChallengeScreen = () => {
     try {
       await mfaSmsChallenge.tryAnotherMethod();
     } catch (error) {
-      console.error('Try another method failed:', error);
+      console.error("Try another method failed:", error);
     }
   };
 
@@ -76,7 +77,7 @@ const MfaSmsChallengeScreen = () => {
     try {
       await mfaSmsChallenge.getACall();
     } catch (error) {
-      console.error('Get a call failed:', error);
+      console.error("Get a call failed:", error);
     }
   };
 
@@ -86,13 +87,21 @@ const MfaSmsChallengeScreen = () => {
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
           MFA SMS Challenge
         </h2>
+        {phoneNumber && (
+          <p className="mt-2 text-center text-sm text-gray-600">
+            Enter the code sent to {phoneNumber}
+          </p>
+        )}
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
-              <label htmlFor="code" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="code"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Enter Code
               </label>
               <div className="mt-1">
@@ -108,19 +117,24 @@ const MfaSmsChallengeScreen = () => {
               </div>
             </div>
 
-            <div className="flex items-center">
-              <input
-                id="rememberDevice"
-                name="rememberDevice"
-                type="checkbox"
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                checked={rememberDevice}
-                onChange={(e) => setRememberDevice(e.target.checked)}
-              />
-              <label htmlFor="rememberDevice" className="ml-2 block text-sm text-gray-900">
-                Remember this device
-              </label>
-            </div>
+            {showRememberDevice && (
+              <div className="flex items-center">
+                <input
+                  id="rememberDevice"
+                  name="rememberDevice"
+                  type="checkbox"
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  checked={rememberDevice}
+                  onChange={(e) => setRememberDevice(e.target.checked)}
+                />
+                <label
+                  htmlFor="rememberDevice"
+                  className="ml-2 block text-sm text-gray-900"
+                >
+                  Remember this device
+                </label>
+              </div>
+            )}
 
             <div>
               <button
@@ -165,4 +179,5 @@ const MfaSmsChallengeScreen = () => {
 };
 
 export default MfaSmsChallengeScreen;
+
 ```

@@ -7,7 +7,7 @@ import type { ScreenMembers } from '../models/screen';
 export interface ScreenMembersOnMfaEmailChallenge extends ScreenMembers {
   data: {
     email: string;
-    remember_device?: boolean;
+    showRememberDevice?: boolean;
   } | null;
 }
 

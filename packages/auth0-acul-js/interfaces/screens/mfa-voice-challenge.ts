@@ -36,9 +36,9 @@ export interface ScreenMembersOnMfaVoiceChallenge extends ScreenMembers {
     phoneNumber?: string;
 
     /**
-     * The state of the remember device option.
+     * Whether to show the remember device option.
      */
-    rememberDevice?: boolean;
+    showRememberDevice?: boolean;
   } | null;
 }
 
