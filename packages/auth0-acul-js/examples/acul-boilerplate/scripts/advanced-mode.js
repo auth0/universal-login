@@ -151,27 +151,16 @@ async function cleanDist() {
 const runCommand = (command, args) => {
   return new Promise((resolve, reject) => {
     const proc = spawn(command, args, {
-      stdio: 'pipe',
+      stdio: 'inherit',
       shell: true,
       env: { ...process.env, FORCE_COLOR: "true" }
     });
     
-    let stdout = '';
-    let stderr = '';
-    
-    proc.stdout.on('data', data => {
-      stdout += data.toString();
-    });
-    
-    proc.stderr.on('data', data => {
-      stderr += data.toString();
-    });
-    
     proc.on('close', code => {
       if (code === 0) {
-        resolve(stdout);
+        resolve();
       } else {
-        reject(new Error(`Command failed with exit code ${code}: ${stderr}`));
+        reject(new Error(`Command failed with exit code ${code}`));
       }
     });
     
