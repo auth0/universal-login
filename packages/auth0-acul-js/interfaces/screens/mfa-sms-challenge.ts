@@ -8,10 +8,23 @@ export interface MfaSmsChallengeOptions {
   [key: string]: string | number | boolean | undefined;
 }
 
+/**
+ * Interface for the screen data specific to mfa-sms-challenge screen
+ */
 export interface ScreenMembersOnMfaSmsChallenge extends ScreenMembers {
   data: {
-    phone_number?: string;
-    remember_device?: boolean;
+    /**
+     * The phone number where the SMS was sent
+     */
+    phoneNumber?: string;
+    /**
+     * Whether to show the remember device option
+     */
+    showRememberDevice?: boolean;
+    /**
+     * Whether to show the link to switch to voice call verification
+     */
+    showLinkVoice?: boolean;
   } | null;
 }
 

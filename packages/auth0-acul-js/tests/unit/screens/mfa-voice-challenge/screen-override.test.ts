@@ -14,7 +14,8 @@ describe('ScreenOverride', () => {
       name: 'mfa-voice-challenge',
       data: { 
         phone_number: '+15555555555', 
-        remember_device: false 
+        show_remember_device: false,
+        show_link_sms: true
       },
     } as ScreenContext;
     
@@ -24,7 +25,8 @@ describe('ScreenOverride', () => {
   it('should initialize data correctly', () => {
     expect(screenOverride.data).toEqual({
       phoneNumber: '+15555555555',
-      rememberDevice: false,
+      showRememberDevice: false,
+      showLinkSms: true
     });
   });
 
@@ -34,12 +36,47 @@ describe('ScreenOverride', () => {
     expect(result).toBeNull();
   });
 
-  it('should map phone_number to phoneNumber and remember_device to rememberDevice', () => {
+  it('should map phone_number to phoneNumber and show_remember_device', () => {
     const result = ScreenOverride.getScreenData(screenContext);
     expect(result).toEqual({
       phoneNumber: '+15555555555',
-      rememberDevice: false,
+      showRememberDevice: false,
+      showLinkSms: true
     });
+  });
+
+  it('should handle show_link_sms field correctly', () => {
+    // Test with explicit true value
+    const contextWithShowLinkSmsTrue = {
+      name: 'mfa-voice-challenge',
+      data: { 
+        phone_number: '+15555555555',
+        show_link_sms: true
+      },
+    } as ScreenContext;
+    let result = ScreenOverride.getScreenData(contextWithShowLinkSmsTrue);
+    expect(result?.showLinkSms).toBe(true);
+    
+    // Test with explicit false value
+    const contextWithShowLinkSmsFalse = {
+      name: 'mfa-voice-challenge',
+      data: { 
+        phone_number: '+15555555555',
+        show_link_sms: false
+      },
+    } as ScreenContext;
+    result = ScreenOverride.getScreenData(contextWithShowLinkSmsFalse);
+    expect(result?.showLinkSms).toBe(false);
+    
+    // Test with missing show_link_sms (should be falsy)
+    const contextWithoutShowLinkSms = {
+      name: 'mfa-voice-challenge',
+      data: { 
+        phone_number: '+15555555555' 
+      },
+    } as ScreenContext;
+    result = ScreenOverride.getScreenData(contextWithoutShowLinkSms);
+    expect(result?.showLinkSms).toBe(false);
   });
 
   it('should handle missing fields gracefully', () => {
@@ -51,7 +88,8 @@ describe('ScreenOverride', () => {
     const result = ScreenOverride.getScreenData(partialContext);
     expect(result).toEqual({
       phoneNumber: '+15555555555',
-      rememberDevice: undefined,
+      showLinkSms: false,
+      showRememberDevice: undefined,
     });
   });
 

@@ -21,7 +21,7 @@ describe('MfaVoiceChallenge', () => {
         links: baseContextData.screen.links,
         data: {
           phone_number: '+15555555555',
-          remember_device: false
+          show_remember_device: true
         }
       }
     };

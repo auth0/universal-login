@@ -16,7 +16,10 @@ const MfaOtpChallengeScreen: React.FC = () => {
   const [error, setError] = useState('');
 
   const mfaOtpChallenge = new MfaOtpChallenge();
-  const { screen: { texts }, transaction } = mfaOtpChallenge;
+  const {
+    screen: { texts, data },
+    transaction,
+  } = mfaOtpChallenge;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,7 +52,8 @@ const MfaOtpChallengeScreen: React.FC = () => {
           {texts?.title ?? 'Verify Your Identity'}
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
-          {texts?.description ?? 'Check your preferred one-time password application for a code.'}
+          {texts?.description ??
+            'Check your preferred one-time password application for a code.'}
         </p>
       </div>
 
@@ -57,7 +61,10 @@ const MfaOtpChallengeScreen: React.FC = () => {
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
-              <label htmlFor="code" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="code"
+                className="block text-sm font-medium text-gray-700"
+              >
                 {texts?.codePlaceholder ?? 'Enter your one-time code'}
               </label>
               <div className="mt-1">
@@ -65,7 +72,9 @@ const MfaOtpChallengeScreen: React.FC = () => {
                   id="code"
                   name="code"
                   type="text"
-                  placeholder={texts?.codePlaceholder ?? 'Enter your one-time code'}
+                  placeholder={
+                    texts?.codePlaceholder ?? 'Enter your one-time code'
+                  }
                   required
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
@@ -82,25 +91,26 @@ const MfaOtpChallengeScreen: React.FC = () => {
               </div>
             )}
 
-            <div className="flex items-center">
-              <input
-                id="rememberBrowser"
-                name="rememberBrowser"
-                type="checkbox"
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                checked={rememberBrowser}
-                onChange={(e) => setRememberBrowser(e.target.checked)}
-              />
-              <label htmlFor="rememberBrowser" className="ml-2 block text-sm text-gray-900">
-                {texts?.rememberMeText ?? 'Remember this browser for 30 days'}
-              </label>
-            </div>
-
-            {error && (
-              <div className="text-red-600 text-sm">
-                {error}
+            {data?.showRememberDevice && (
+              <div className="flex items-center">
+                <input
+                  id="rememberBrowser"
+                  name="rememberBrowser"
+                  type="checkbox"
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  checked={rememberBrowser}
+                  onChange={(e) => setRememberBrowser(e.target.checked)}
+                />
+                <label
+                  htmlFor="rememberBrowser"
+                  className="ml-2 block text-sm text-gray-900"
+                >
+                  {texts?.rememberMeText ?? 'Remember this browser for 30 days'}
+                </label>
               </div>
             )}
+
+            {error && <div className="text-red-600 text-sm">{error}</div>}
 
             <div>
               <button
@@ -129,6 +139,7 @@ const MfaOtpChallengeScreen: React.FC = () => {
 };
 
 export default MfaOtpChallengeScreen;
+
 ```
 
 ## Usage Examples

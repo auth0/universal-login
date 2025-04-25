@@ -10,7 +10,10 @@ export interface MfaSmsChallengeOptions {
 export interface ScreenMembersOnResetPasswordMfaSmsChallenge extends ScreenMembers {
   data: {
     phoneNumber: string;
-    isVoiceEnabled: boolean;
+    /**
+     * Whether to show the link to switch to voice call verification
+     */
+    showLinkVoice?: boolean;
   } | null;
 }
 

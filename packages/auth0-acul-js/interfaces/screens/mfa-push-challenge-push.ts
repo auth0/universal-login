@@ -9,8 +9,8 @@ export interface ScreenMembersOnMfaPushChallengePush extends ScreenMembers {
   data: {
     /** The name of the device receiving the push notification */
     deviceName: string;
-    /** Whether to remember this device for future authentications */
-    rememberDevice?: boolean;
+    /** Whether to show the remember device option */
+    showRememberDevice?: boolean;
   } | null;
 }
 

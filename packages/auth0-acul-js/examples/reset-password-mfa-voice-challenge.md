@@ -12,9 +12,17 @@ import ResetPasswordMfaVoiceChallenge from '@auth0/auth0-acul-js/reset-password-
 
 const ResetPasswordMfaVoiceChallengeScreen: React.FC = () => {
   const [code, setCode] = useState('');
+  const [showLinkSms, setShowLinkSms] = useState(false);
   const resetPasswordMfaVoiceChallenge = new ResetPasswordMfaVoiceChallenge();
   const { screen, transaction } = resetPasswordMfaVoiceChallenge;
   const texts = screen?.texts ?? {};
+
+  // Initialize state from screen data
+  React.useEffect(() => {
+    if (screen?.data?.showLinkSms !== undefined) {
+      setShowLinkSms(screen.data.showLinkSms);
+    }
+  }, [screen?.data]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -97,13 +105,17 @@ const ResetPasswordMfaVoiceChallengeScreen: React.FC = () => {
           >
             {texts.resendActionText ?? 'Call Again'}
           </button>
-          <button
-            onClick={handleSwitchToSms}
-            className="text-blue-600 hover:underline"
-            type="button"
-          >
-            {texts.resendSmsActionText ?? 'Send a text'}
-          </button>
+          
+          {showLinkSms && (
+            <button
+              onClick={handleSwitchToSms}
+              className="text-blue-600 hover:underline"
+              type="button"
+            >
+              {texts.resendSmsActionText ?? 'Send a text'}
+            </button>
+          )}
+          
           <button
             onClick={handleTryAnotherMethod}
             className="text-blue-600 hover:underline"

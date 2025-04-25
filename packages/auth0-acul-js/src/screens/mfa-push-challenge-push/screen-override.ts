@@ -29,7 +29,7 @@ export class ScreenOverride extends Screen implements OverrideOptions {
 
     return {
       deviceName: typeof data.device_name === 'string' ? data.device_name : '',
-      rememberDevice: typeof data.remember_device === 'boolean' ? data.remember_device : undefined,
+      showRememberDevice: typeof data.show_remember_device === 'boolean' ? data.show_remember_device : undefined,
     };
   };
 }
