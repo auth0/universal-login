@@ -39,6 +39,11 @@ export interface ScreenMembersOnMfaVoiceChallenge extends ScreenMembers {
      * Whether to show the remember device option.
      */
     showRememberDevice?: boolean;
+
+    /**
+     * Whether to show the link to switch to SMS verification.
+     */
+    showLinkSms?: boolean;
   } | null;
 }
 

@@ -78,18 +78,22 @@ const MfaVoiceChallengeScreen: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [showRememberDevice, setShowRememberDevice] = useState<boolean>(false);
+  const [showLinkSms, setShowLinkSms] = useState<boolean>(false);
 
   // Initialize MFA Voice Challenge SDK
   const mfaVoiceChallenge = new MfaVoiceChallenge();
 
   useEffect(() => {
-    // Get the phone number and showRememberDevice flag from the screen data when component mounts
+    // Get data from the screen when component mounts
     if (mfaVoiceChallenge.screen.data) {
       if (mfaVoiceChallenge.screen.data.phoneNumber) {
         setPhoneNumber(mfaVoiceChallenge.screen.data.phoneNumber);
       }
       if (mfaVoiceChallenge.screen.data.showRememberDevice !== undefined) {
         setShowRememberDevice(mfaVoiceChallenge.screen.data.showRememberDevice);
+      }
+      if (mfaVoiceChallenge.screen.data.showLinkSms !== undefined) {
+        setShowLinkSms(mfaVoiceChallenge.screen.data.showLinkSms);
       }
     }
   }, [mfaVoiceChallenge.screen.data]);
@@ -304,14 +308,16 @@ const MfaVoiceChallengeScreen: React.FC = () => {
                 Resend code
               </button>
 
-              <button
-                onClick={handleSwitchToSms}
-                disabled={isLoading}
-                type="button"
-                className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
-              >
-                Send a text message instead
-              </button>
+              {showLinkSms && (
+                <button
+                  onClick={handleSwitchToSms}
+                  disabled={isLoading}
+                  type="button"
+                  className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+                >
+                  Send a text message instead
+                </button>
+              )}
 
               <button
                 onClick={handlePickPhone}

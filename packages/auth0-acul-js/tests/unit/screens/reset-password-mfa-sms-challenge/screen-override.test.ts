@@ -39,4 +39,54 @@ describe('ScreenOverride', () => {
     const screenOverride = new ScreenOverride(screenContext);
     expect(screenOverride).toBeInstanceOf(Screen);
   });
+
+  it('should initialize data correctly with show_link_voice true', () => {
+    const screenContext: ScreenContext = {
+      name: 'reset-password-mfa-sms-challenge',
+      data: {
+        phone_number: '+15551234567',
+        show_link_voice: true
+      },
+    } as ScreenContext;
+
+    const screenOverride = new ScreenOverride(screenContext);
+
+    expect(screenOverride.data).toEqual({
+      phoneNumber: '+15551234567',
+      showLinkVoice: true
+    });
+  });
+
+  it('should initialize data correctly with show_link_voice false', () => {
+    const screenContext: ScreenContext = {
+      name: 'reset-password-mfa-sms-challenge',
+      data: {
+        phone_number: '+15551234567',
+        show_link_voice: false
+      },
+    } as ScreenContext;
+
+    const screenOverride = new ScreenOverride(screenContext);
+
+    expect(screenOverride.data).toEqual({
+      phoneNumber: '+15551234567',
+      showLinkVoice: false
+    });
+  });
+
+  it('should handle missing show_link_voice correctly', () => {
+    const screenContext: ScreenContext = {
+      name: 'reset-password-mfa-sms-challenge',
+      data: {
+        phone_number: '+15551234567'
+      },
+    } as ScreenContext;
+
+    const screenOverride = new ScreenOverride(screenContext);
+
+    expect(screenOverride.data).toEqual({
+      phoneNumber: '+15551234567',
+      showLinkVoice: undefined
+    });
+  });
 });

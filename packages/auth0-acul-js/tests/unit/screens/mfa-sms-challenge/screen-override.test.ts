@@ -8,7 +8,7 @@ describe('ScreenOverride', () => {
       name: 'mfa-sms-challenge',
       data: {
         phone_number: '+15551234567',
-        show_remember_device: 'true',
+        show_remember_device: true,
       },
     } as ScreenContext;
 
@@ -17,6 +17,7 @@ describe('ScreenOverride', () => {
     expect(screenOverride.data).toEqual({
       phoneNumber: '+15551234567',
       showRememberDevice: true,
+      showLinkVoice: undefined
     });
   });
 
@@ -27,10 +28,7 @@ describe('ScreenOverride', () => {
 
     const screenOverride = new ScreenOverride(screenContext);
 
-    expect(screenOverride.data).toEqual({
-      phoneNumber: undefined,
-      showRememberDevice: undefined,
-    });
+    expect(screenOverride.data).toBeNull();
   });
 
   it('should handle show_remember_device as undefined', () => {
@@ -47,6 +45,7 @@ describe('ScreenOverride', () => {
     expect(screenOverride.data).toEqual({
       phoneNumber: '+15551234567',
       showRememberDevice: undefined,
+      showLinkVoice: undefined
     });
   });
 
@@ -55,7 +54,7 @@ describe('ScreenOverride', () => {
       name: 'mfa-sms-challenge',
       data: {
         phone_number: '+15551234567',
-        show_remember_device: 'false',
+        show_remember_device: false,
       },
     } as ScreenContext;
 
@@ -64,6 +63,60 @@ describe('ScreenOverride', () => {
     expect(screenOverride.data).toEqual({
       phoneNumber: '+15551234567',
       showRememberDevice: false,
+      showLinkVoice: undefined
+    });
+  });
+
+  it('should handle show_link_voice correctly when true', () => {
+    const screenContext: ScreenContext = {
+      name: 'mfa-sms-challenge',
+      data: {
+        phone_number: '+15551234567',
+        show_link_voice: true
+      },
+    } as ScreenContext;
+
+    const screenOverride = new ScreenOverride(screenContext);
+
+    expect(screenOverride.data).toEqual({
+      phoneNumber: '+15551234567',
+      showLinkVoice: true,
+      showRememberDevice: undefined
+    });
+  });
+
+  it('should handle show_link_voice correctly when false', () => {
+    const screenContext: ScreenContext = {
+      name: 'mfa-sms-challenge',
+      data: {
+        phone_number: '+15551234567',
+        show_link_voice: false
+      },
+    } as ScreenContext;
+
+    const screenOverride = new ScreenOverride(screenContext);
+
+    expect(screenOverride.data).toEqual({
+      phoneNumber: '+15551234567',
+      showLinkVoice: false,
+      showRememberDevice: undefined
+    });
+  });
+
+  it('should handle show_link_voice correctly when missing', () => {
+    const screenContext: ScreenContext = {
+      name: 'mfa-sms-challenge',
+      data: {
+        phone_number: '+15551234567'
+      },
+    } as ScreenContext;
+
+    const screenOverride = new ScreenOverride(screenContext);
+
+    expect(screenOverride.data).toEqual({
+      phoneNumber: '+15551234567',
+      showLinkVoice: undefined,
+      showRememberDevice: undefined
     });
   });
 
@@ -72,7 +125,7 @@ describe('ScreenOverride', () => {
       name: 'mfa-sms-challenge',
       data: {
         phone_number: '+15551234567',
-        show_remember_device: 'true',
+        show_remember_device: true,
       },
     } as ScreenContext;
     const screenOverride = new ScreenOverride(screenContext);

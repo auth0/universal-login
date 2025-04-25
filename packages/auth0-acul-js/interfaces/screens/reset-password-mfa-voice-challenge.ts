@@ -11,6 +11,11 @@ export interface ScreenMembersOnResetPasswordMfaVoiceChallenge extends ScreenMem
      * The phone number to send the voice call to.
      */
     phoneNumber: string;
+
+    /**
+     * Whether to show the link to switch to SMS verification.
+     */
+    showLinkSms?: boolean;
   } | null;
 }
 

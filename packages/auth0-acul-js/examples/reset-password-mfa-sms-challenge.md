@@ -4,8 +4,8 @@ import ResetPasswordMfaSmsChallenge from '@auth0/auth0-acul-js/reset-password-mf
 const resetPasswordMfaSmsChallenge = new ResetPasswordMfaSmsChallenge();
 
 // Access screen data
-const phoneNumber = resetPasswordMfaSmsChallenge.screen.data?.phone_number;
-const rememberDevice = resetPasswordMfaSmsChallenge.screen.data?.remember_device;
+const phoneNumber = resetPasswordMfaSmsChallenge.screen.data?.phoneNumber;
+const showLinkVoice = resetPasswordMfaSmsChallenge.screen.data?.showLinkVoice;
 
 // Example of submitting the MFA SMS challenge
 resetPasswordMfaSmsChallenge.continueMfaSmsChallenge({
@@ -121,7 +121,7 @@ const ResetPasswordMfaSmsChallengeScreen = () => {
             >
               { screen?.texts?.pickAuthenticatorText ?? 'Try Another Method' }
             </button>
-            { screen.data?.isVoiceEnabled && (
+            { screen.data?.showLinkVoice && (
               <button
                 onClick={handleGetACall}
                 className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 mt-2"

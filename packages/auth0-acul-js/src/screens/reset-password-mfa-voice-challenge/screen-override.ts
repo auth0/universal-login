@@ -34,6 +34,7 @@ export class ScreenOverride extends Screen implements OverrideOptions {
 
     return {
       phoneNumber: typeof data.phone_number === 'string' ? data.phone_number : '',
+      showLinkSms: data.show_link_sms as boolean,
     };
   };
 }
