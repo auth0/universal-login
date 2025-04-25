@@ -96,7 +96,13 @@ const MfaVoiceChallengeScreen: React.FC = () => {
         setShowLinkSms(mfaVoiceChallenge.screen.data.showLinkSms);
       }
     }
-  }, [mfaVoiceChallenge.screen.data]);
+    
+    // Use untrustedData to prepopulate form fields if available
+    const savedFormData = mfaVoiceChallenge.untrustedData.submittedFormData;
+    if (savedFormData?.rememberDevice !== undefined) {
+      setRememberBrowser(savedFormData.rememberDevice);
+    }
+  }, []);
 
   /**
    * Handles the form submission to verify the voice code

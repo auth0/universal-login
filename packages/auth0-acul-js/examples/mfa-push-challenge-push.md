@@ -22,6 +22,15 @@ const MfaPushChallengePushScreen: React.FC = () => {
   const { screen, transaction } = mfaPushChallengePush;
   const { deviceName, showRememberDevice } =
     mfaPushChallengePush.screen.data || {};
+    
+  // Initialize form values from untrustedData
+  useEffect(() => {
+    // Use untrustedData to prepopulate form fields if available
+    const savedFormData = mfaPushChallengePush.untrustedData.submittedFormData;
+    if (savedFormData?.rememberDevice !== undefined) {
+      setRememberDevice(savedFormData.rememberDevice);
+    }
+  }, []);
 
   const screenText = {
     title: screen.texts?.title ?? 'Push Notification Sent',

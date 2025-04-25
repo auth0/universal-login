@@ -1,5 +1,6 @@
 import type { BaseMembers } from '../models/base-context';
 import type { ScreenMembers } from '../models/screen';
+import type { UntrustedDataMembers } from '../models/untrusted-data';
 
 /**
  * Interface for the screen data specific to mfa-otp-challenge screen
@@ -7,6 +8,16 @@ import type { ScreenMembers } from '../models/screen';
 export interface ScreenMembersOnMfaOtpChallenge extends ScreenMembers {
   data: {
     showRememberDevice?: boolean;
+  } | null;
+}
+
+/**
+ * Interface for untrusted data specific to mfa-otp-challenge screen
+ */
+export interface UntrustedDataMembersOnMfaOtpChallenge extends UntrustedDataMembers {
+  submittedFormData: {
+    rememberDevice?: boolean;
+    [key: string]: string | number | boolean | undefined;
   } | null;
 }
 
@@ -35,6 +46,7 @@ export interface TryAnotherMethodOptions {
  */
 export interface MfaOtpChallengeMembers extends BaseMembers {
   screen: ScreenMembersOnMfaOtpChallenge;
+  untrustedData: UntrustedDataMembersOnMfaOtpChallenge;
 
   /**
    * Continues with the OTP challenge using the provided code

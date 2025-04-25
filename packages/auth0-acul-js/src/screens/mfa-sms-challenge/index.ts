@@ -3,13 +3,16 @@ import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
+import { UntrustedDataOverride } from './untrusted-data-overrider';
 
 import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
+import type { UntrustedDataContext } from '../../../interfaces/models/untrusted-data';
 import type {
   MfaSmsChallengeMembers,
   MfaSmsChallengeOptions,
   ScreenMembersOnMfaSmsChallenge as ScreenOptions,
+  UntrustedDataMembersOnMfaSmsChallenge as UntrustedDataOptions,
 } from '../../../interfaces/screens/mfa-sms-challenge';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
@@ -20,11 +23,17 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
 export default class MfaSmsChallenge extends BaseContext implements MfaSmsChallengeMembers {
   static screenIdentifier: string = ScreenIds.MFA_SMS_CHALLENGE;
   screen: ScreenOptions;
+  untrustedData: UntrustedDataOptions;
 
+  /**
+   * Creates an instance of MfaSmsChallenge screen manager
+   */
   constructor() {
     super();
     const screenContext = this.getContext('screen') as ScreenContext;
+    const untrustedDataContext = this.getContext('untrusted_data') as UntrustedDataContext;
     this.screen = new ScreenOverride(screenContext);
+    this.untrustedData = new UntrustedDataOverride(untrustedDataContext);
   }
 
   /**
@@ -138,6 +147,11 @@ export default class MfaSmsChallenge extends BaseContext implements MfaSmsChalle
   }
 }
 
-export { MfaSmsChallengeMembers, MfaSmsChallengeOptions, ScreenOptions as ScreenMembersOnMfaSmsChallenge };
+export {
+  MfaSmsChallengeMembers,
+  MfaSmsChallengeOptions,
+  ScreenOptions as ScreenMembersOnMfaSmsChallenge,
+  UntrustedDataOptions as UntrustedDataMembersOnMfaSmsChallenge,
+};
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';

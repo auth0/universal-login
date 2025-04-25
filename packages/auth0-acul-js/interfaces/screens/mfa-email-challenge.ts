@@ -1,5 +1,6 @@
 import type { BaseMembers } from '../models/base-context';
 import type { ScreenMembers } from '../models/screen';
+import type { UntrustedDataMembers } from '../models/untrusted-data';
 
 /**
  * Interface for the screen data specific to mfa-email-challenge screen
@@ -8,6 +9,16 @@ export interface ScreenMembersOnMfaEmailChallenge extends ScreenMembers {
   data: {
     email: string;
     showRememberDevice?: boolean;
+  } | null;
+}
+
+/**
+ * Interface for untrusted data specific to mfa-email-challenge screen
+ */
+export interface UntrustedDataMembersOnMfaEmailChallenge extends UntrustedDataMembers {
+  submittedFormData: {
+    rememberDevice?: boolean;
+    [key: string]: string | number | boolean | undefined;
   } | null;
 }
 
@@ -44,6 +55,7 @@ export interface TryAnotherMethodOptions {
  */
 export interface MfaEmailChallengeMembers extends BaseMembers {
   screen: ScreenMembersOnMfaEmailChallenge;
+  untrustedData: UntrustedDataMembersOnMfaEmailChallenge;
 
   /**
    * Continues with the email challenge using the provided code

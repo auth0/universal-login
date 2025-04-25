@@ -5,7 +5,7 @@ This screen is displayed when a user needs to verify their email during MFA.
 ## React Component Example with TailwindCSS
 
 ```tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MfaEmailChallenge from '@auth0/auth0-acul-js/mfa-email-challenge';
 
 const MfaEmailChallengeScreen: React.FC = () => {
@@ -15,6 +15,15 @@ const MfaEmailChallengeScreen: React.FC = () => {
 
   const mfaEmailChallenge = new MfaEmailChallenge();
   const { screen } = mfaEmailChallenge;
+  
+  // Initialize form values from untrustedData
+  useEffect(() => {
+    // Use untrustedData to prepopulate form fields if available
+    const savedFormData = mfaEmailChallenge.untrustedData.submittedFormData;
+    if (savedFormData?.rememberDevice !== undefined) {
+      setRememberDevice(savedFormData.rememberDevice);
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -159,9 +168,12 @@ import MfaEmailChallenge from '@auth0/auth0-acul-js/mfa-email-challenge';
 
 const mfaEmailChallenge = new MfaEmailChallenge();
 
+// Access untrustedData to prepopulate form fields
+const { rememberDevice } = mfaEmailChallenge.untrustedData.submittedFormData || {};
+
 mfaEmailChallenge.continue({
   code: '123456',
-  rememberDevice: true,
+  rememberDevice: rememberDevice || false,
 });
 ```
 

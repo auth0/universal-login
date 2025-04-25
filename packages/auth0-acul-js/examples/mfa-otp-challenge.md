@@ -7,7 +7,7 @@ This screen is displayed when the user needs to enter the code sent to their aut
 ## React Component Example with TailwindCSS
 
 ```tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MfaOtpChallenge from '@auth0/auth0-acul-js/mfa-otp-challenge';
 
 const MfaOtpChallengeScreen: React.FC = () => {
@@ -20,6 +20,15 @@ const MfaOtpChallengeScreen: React.FC = () => {
     screen: { texts, data },
     transaction,
   } = mfaOtpChallenge;
+
+  // Initialize form values from untrustedData
+  useEffect(() => {
+    // Use untrustedData to prepopulate form fields if available
+    const savedFormData = mfaOtpChallenge.untrustedData.submittedFormData;
+    if (savedFormData?.rememberBrowser !== undefined) {
+      setRememberBrowser(savedFormData.rememberBrowser);
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

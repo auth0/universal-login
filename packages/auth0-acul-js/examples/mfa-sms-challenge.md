@@ -8,10 +8,13 @@ const phoneNumber = mfaSmsChallenge.screen.data?.phoneNumber;
 const showRememberDevice = mfaSmsChallenge.screen.data?.showRememberDevice;
 const showLinkVoice = mfaSmsChallenge.screen.data?.showLinkVoice;
 
-// Example of submitting the MFA SMS challenge
+// Access untrustedData to prepopulate form fields
+const { rememberDevice } = mfaSmsChallenge.untrustedData.submittedFormData || {};
+
+// Example of submitting the MFA SMS challenge with values from untrustedData
 mfaSmsChallenge.continueMfaSmsChallenge({
   code: '123456',
-  rememberBrowser: true,
+  rememberBrowser: rememberDevice || false,
 });
 
 // Example of picking a different SMS configuration
@@ -29,7 +32,7 @@ mfaSmsChallenge.getACall();
 ## React Component Example with TailwindCSS
 
 ```jsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import MfaSmsChallenge from '@auth0/auth0-acul-js/mfa-sms-challenge';
 
 const MfaSmsChallengeScreen = () => {
@@ -37,8 +40,17 @@ const MfaSmsChallengeScreen = () => {
   const [code, setCode] = useState('');
   const [rememberDevice, setRememberDevice] = useState(false);
   const { phoneNumber, showRememberDevice, showLinkVoice } = mfaSmsChallenge.screen.data || {};
+  
+  // Initialize form values from untrustedData
+  useEffect(() => {
+    // Use untrustedData to prepopulate form fields if available
+    const savedFormData = mfaSmsChallenge.untrustedData.submittedFormData;
+    if (savedFormData?.rememberDevice !== undefined) {
+      setRememberDevice(savedFormData.rememberDevice);
+    }
+  }, []);
 
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     try {
       await mfaSmsChallenge.continueMfaSmsChallenge({
@@ -182,4 +194,5 @@ const MfaSmsChallengeScreen = () => {
 };
 
 export default MfaSmsChallengeScreen;
+
 ```

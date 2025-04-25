@@ -1,6 +1,7 @@
 import type { CustomOptions } from '../common';
 import type { BaseMembers } from '../models/base-context';
 import type { ScreenMembers } from '../models/screen';
+import type { UntrustedDataMembers } from '../models/untrusted-data';
 
 /**
  * Options for submitting the voice challenge code.
@@ -55,6 +56,8 @@ export interface MfaVoiceChallengeMembers extends BaseMembers {
    * Screen-specific properties and data.
    */
   screen: ScreenMembersOnMfaVoiceChallenge;
+
+  untrustedData: UntrustedDataMembersOnMfaVoiceChallenge;
 
   /**
    * Submits the voice verification code to validate the MFA challenge.
@@ -128,4 +131,14 @@ export interface MfaVoiceChallengeMembers extends BaseMembers {
    * ```
    */
   tryAnotherMethod(payload?: CustomOptions): Promise<void>;
+}
+
+/**
+ * Interface for untrusted data specific to mfa-voice-challenge screen
+ */
+export interface UntrustedDataMembersOnMfaVoiceChallenge extends UntrustedDataMembers {
+  submittedFormData: {
+    rememberDevice?: boolean;
+    [key: string]: string | number | boolean | undefined;
+  } | null;
 }
