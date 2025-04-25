@@ -11,8 +11,8 @@ import React, {
   useRef,
   useCallback,
   useMemo,
-} from "react";
-import MfaPushChallengePush from "@auth0/auth0-acul-js/mfa-push-challenge-push";
+} from 'react';
+import MfaPushChallengePush from '@auth0/auth0-acul-js/mfa-push-challenge-push';
 
 const MfaPushChallengePushScreen: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -24,22 +24,22 @@ const MfaPushChallengePushScreen: React.FC = () => {
     mfaPushChallengePush.screen.data || {};
 
   const screenText = {
-    title: screen.texts?.title ?? "Push Notification Sent",
+    title: screen.texts?.title ?? 'Push Notification Sent',
     description:
       screen.texts?.description ??
       "We've sent a push notification to your device",
     rememberMe:
-      screen.texts?.rememberMeText ?? "Remember this device for 30 days",
-    resend: screen.texts?.resendActionText ?? "Resend Push Notification",
-    enterCode: screen.texts?.enterOtpCode ?? "Enter Code Manually",
-    tryAnother: screen.texts?.pickAuthenticatorText ?? "Try Another Method",
+      screen.texts?.rememberMeText ?? 'Remember this device for 30 days',
+    resend: screen.texts?.resendActionText ?? 'Resend Push Notification',
+    enterCode: screen.texts?.enterOtpCode ?? 'Enter Code Manually',
+    tryAnother: screen.texts?.pickAuthenticatorText ?? 'Try Another Method',
     waiting:
       screen.texts?.spinner_push_notification_label ??
-      "Waiting for you to accept the push notification...",
-    errorResend: "Failed to resend push notification. Please try again.",
-    errorManualCode: "Failed to switch to manual code entry. Please try again.",
+      'Waiting for you to accept the push notification...',
+    errorResend: 'Failed to resend push notification. Please try again.',
+    errorManualCode: 'Failed to switch to manual code entry. Please try again.',
     errorAnotherMethod:
-      "Failed to switch authentication method. Please try again.",
+      'Failed to switch authentication method. Please try again.',
   };
 
   const startPolling = useCallback(async () => {

@@ -7,13 +7,13 @@ This screen is displayed when the user needs to enter the code sent to their aut
 ## React Component Example with TailwindCSS
 
 ```tsx
-import React, { useState } from "react";
-import MfaOtpChallenge from "@auth0/auth0-acul-js/mfa-otp-challenge";
+import React, { useState } from 'react';
+import MfaOtpChallenge from '@auth0/auth0-acul-js/mfa-otp-challenge';
 
 const MfaOtpChallengeScreen: React.FC = () => {
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState('');
   const [rememberBrowser, setRememberBrowser] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   const mfaOtpChallenge = new MfaOtpChallenge();
   const {
@@ -23,7 +23,7 @@ const MfaOtpChallengeScreen: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    setError('');
 
     try {
       await mfaOtpChallenge.continue({
@@ -31,7 +31,7 @@ const MfaOtpChallengeScreen: React.FC = () => {
         rememberBrowser,
       });
     } catch (err) {
-      setError("Failed to verify code. Please try again.");
+      setError('Failed to verify code. Please try again.');
       console.error(err);
     }
   };
@@ -40,7 +40,7 @@ const MfaOtpChallengeScreen: React.FC = () => {
     try {
       await mfaOtpChallenge.tryAnotherMethod();
     } catch (err) {
-      setError("Failed to try another method. Please try again.");
+      setError('Failed to try another method. Please try again.');
       console.error(err);
     }
   };
@@ -49,11 +49,11 @@ const MfaOtpChallengeScreen: React.FC = () => {
     <div className="min-h-screen bg-gray-100 flex flex-col py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          {texts?.title ?? "Verify Your Identity"}
+          {texts?.title ?? 'Verify Your Identity'}
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
           {texts?.description ??
-            "Check your preferred one-time password application for a code."}
+            'Check your preferred one-time password application for a code.'}
         </p>
       </div>
 
@@ -65,7 +65,7 @@ const MfaOtpChallengeScreen: React.FC = () => {
                 htmlFor="code"
                 className="block text-sm font-medium text-gray-700"
               >
-                {texts?.codePlaceholder ?? "Enter your one-time code"}
+                {texts?.codePlaceholder ?? 'Enter your one-time code'}
               </label>
               <div className="mt-1">
                 <input
@@ -73,7 +73,7 @@ const MfaOtpChallengeScreen: React.FC = () => {
                   name="code"
                   type="text"
                   placeholder={
-                    texts?.codePlaceholder ?? "Enter your one-time code"
+                    texts?.codePlaceholder ?? 'Enter your one-time code'
                   }
                   required
                   value={code}
@@ -105,7 +105,7 @@ const MfaOtpChallengeScreen: React.FC = () => {
                   htmlFor="rememberBrowser"
                   className="ml-2 block text-sm text-gray-900"
                 >
-                  {texts?.rememberMeText ?? "Remember this browser for 30 days"}
+                  {texts?.rememberMeText ?? 'Remember this browser for 30 days'}
                 </label>
               </div>
             )}
@@ -128,7 +128,7 @@ const MfaOtpChallengeScreen: React.FC = () => {
                 onClick={handleTryAnotherMethod}
                 className="text-sm text-blue-600 hover:text-blue-500"
               >
-                {texts?.pickAuthenticatorText ?? "Try Another Method"}
+                {texts?.pickAuthenticatorText ?? 'Try Another Method'}
               </button>
             </div>
           </div>

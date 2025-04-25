@@ -29,12 +29,12 @@ mfaSmsChallenge.getACall();
 ## React Component Example with TailwindCSS
 
 ```jsx
-import { useState } from "react";
-import MfaSmsChallenge from "@auth0/auth0-acul-js/mfa-sms-challenge";
+import { useState } from 'react';
+import MfaSmsChallenge from '@auth0/auth0-acul-js/mfa-sms-challenge';
 
 const MfaSmsChallengeScreen = () => {
   const mfaSmsChallenge = new MfaSmsChallenge();
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState('');
   const [rememberDevice, setRememberDevice] = useState(false);
   const { phoneNumber, showRememberDevice, showLinkVoice } = mfaSmsChallenge.screen.data || {};
 
@@ -46,7 +46,7 @@ const MfaSmsChallengeScreen = () => {
         rememberBrowser: rememberDevice,
       });
     } catch (error) {
-      console.error("MFA SMS Challenge failed:", error);
+      console.error('MFA SMS Challenge failed:', error);
     }
   };
 
@@ -54,7 +54,7 @@ const MfaSmsChallengeScreen = () => {
     try {
       await mfaSmsChallenge.pickSms();
     } catch (error) {
-      console.error("Pick SMS failed:", error);
+      console.error('Pick SMS failed:', error);
     }
   };
 
@@ -62,7 +62,7 @@ const MfaSmsChallengeScreen = () => {
     try {
       await mfaSmsChallenge.resendCode();
     } catch (error) {
-      console.error("Resend code failed:", error);
+      console.error('Resend code failed:', error);
     }
   };
 
@@ -70,7 +70,7 @@ const MfaSmsChallengeScreen = () => {
     try {
       await mfaSmsChallenge.tryAnotherMethod();
     } catch (error) {
-      console.error("Try another method failed:", error);
+      console.error('Try another method failed:', error);
     }
   };
 
@@ -78,7 +78,7 @@ const MfaSmsChallengeScreen = () => {
     try {
       await mfaSmsChallenge.getACall();
     } catch (error) {
-      console.error("Get a call failed:", error);
+      console.error('Get a call failed:', error);
     }
   };
 
