@@ -153,13 +153,21 @@ acul-boilerplate/
 ├── dist/                # Production build output
 ├── screen-tester/       # React SPA for initiating auth flows
 ├── src/                 # Source files
-│   ├── components/      # Reusable UI components (atomic design pattern)
-│   │   ├── atoms/       # Basic UI elements (buttons, inputs, icons)
-│   │   ├── molecules/   # Groups of atoms (form fields, alerts)
-│   │   ├── organisms/   # Complex UI components (forms, navigation)
-│   │   └── templates/   # Page layouts
+│   ├── components/      # Shared, reusable UI components (grouped by function)
+│   │   ├── Button/      # e.g., Button components
+│   │   ├── Input/       # e.g., Input components
+│   │   ├── Layout/      # e.g., Layout templates like AuthScreen
+│   │   ├── Link/        # e.g., Link components like SignupLink
+│   │   ├── Alert/       # e.g., ErrorMessages
+│   │   └── ...          # etc. (other functional groups)
 │   ├── screens/         # Login flow screens
-│   └── styles/          # Global styles
+│   │   └── [screen-name]/
+│   │       ├── components/ # Components specific ONLY to this screen
+│   │       │   └── ...
+│   │       ├── hooks/      # Hooks specific ONLY to this screen
+│   │       └── index.tsx   # Main screen component
+│   ├── styles/          # Global styles & CSS variables
+│   └── utils/           # Shared utility functions
 ├── scripts/             # Build and development scripts
 │   ├── utils/           # Utility functions and helpers
 │   ├── advanced-mode.js # Advanced mode entry point

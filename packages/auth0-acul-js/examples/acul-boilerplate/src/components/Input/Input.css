@@ -1,0 +1,121 @@
+/* Simple input styles */
+.auth0-input-container {
+  position: relative;
+  width: 100%;
+}
+
+.auth0-input {
+  width: 100% !important;
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #1e212a;
+  height: 40px;
+  box-sizing: border-box !important;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.auth0-input:focus {
+  outline: none;
+  border-color: #635dff;
+  box-shadow: 0 0 0 1px #635dff;
+}
+
+.auth0-input-error {
+  border-color: #d03c38;
+}
+
+.auth0-error-message {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #d03c38;
+}
+
+.auth0-input-label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-body-text, #1e212a);
+}
+
+.auth0-input-with-icon {
+  padding-left: 2.5rem;
+}
+
+.auth0-input-with-toggle {
+  padding-right: 2.5rem;
+}
+
+.auth0-input-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b7280;
+  pointer-events: none;
+}
+
+.auth0-password-toggle {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth0-password-toggle:focus {
+  outline: none;
+}
+
+.auth0-password-toggle svg {
+  height: 1.25rem;
+  width: 1.25rem;
+}
+
+/* Floating Label Styles */
+.auth0-floating-label-container {
+  position: relative;
+  width: 100%;
+}
+
+.auth0-floating-label {
+  position: absolute;
+  transition: all 0.2s ease;
+  pointer-events: none;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: transparent;
+  padding: 0;
+  color: #65676e;
+  font-size: 14px;
+}
+
+.auth0-input-container.is-focused .auth0-floating-label,
+.auth0-input-container.has-value .auth0-floating-label {
+  top: 0;
+  left: 8px;
+  transform: translateY(-50%) scale(0.85);
+  padding: 0 4px;
+  background-color: #ffffff;
+  color: #635dff;
+  font-size: 12px;
+}
+
+.auth0-input-container.is-focused .auth0-input {
+  border-color: #635dff;
+  box-shadow: 0 0 0 1px #635dff;
+}
+
+/* Password Toggle Button - Active State */
+.auth0-password-toggle.is-active {
+  color: #635dff;
+}

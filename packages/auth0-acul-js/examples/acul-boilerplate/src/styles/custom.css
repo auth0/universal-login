@@ -84,7 +84,7 @@ html, body {
 .auth0-form {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 8px;
 }
 
 /* Input group */

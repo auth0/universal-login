@@ -1,14 +1,13 @@
 import React, { useMemo } from "react";
 import { useLoginIdManager } from './hooks/useLoginIdManager';
 import { useLoginIdForm } from './hooks/useLoginIdForm';
-import ThemeProvider from '../../components/common/ThemeProvider';
-import Logo from '../../components/common/Logo';
-import SignupLink from '../../components/common/SignupLink';
+import ThemeProvider from '../../components/ThemeProvider';
+import Logo from '../../components/Logo';
+import SignupLink from '../../components/Link/SignupLink';
 import LoginIdForm, { LoginIdFormProps } from './components/LoginIdForm';
-// import Links from './components/Links';
-import ErrorMessages from './components/ErrorMessages';
-import AuthScreenTemplate from '../../components/templates/AuthScreen';
-import SocialButton from "../../components/common/SocialButton";
+import ErrorMessages from '../../components/Alert/ErrorMessages';
+import AuthScreenTemplate from '../../components/Layout/AuthScreen';
+import SocialButton from "../../components/SocialButton";
 import { navigateWithCurrentOrigin } from '../../utils/url';
 
 // Define the type for connection objects
@@ -143,7 +142,7 @@ const LoginIdScreen: React.FC = () => {
           {alternateConnections.map((connection: Connection) => (
             <SocialButton
               key={connection.name}
-              name={connection.name}
+              provider={connection.name}
               displayName={connection.display_name || connection.name}
               iconUrl={connection.logo_url}
               onClick={() => handleSocialLogin(connection.name)}

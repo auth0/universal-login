@@ -11,10 +11,8 @@
 @import './styles/auth-common.css';
 
 /* Import component-specific styles */
-@import './components/templates/AuthScreen/AuthScreen.css';
-@import './components/organisms/LoginForm/LoginForm.css';
-@import './components/molecules/FormField/FormField.css';
-@import './components/common/Input/Input.css';
-@import './components/common/Button/Button.css';
+@import './components/Layout/AuthScreen.css';
+@import './components/Input/Input.css';
+@import './components/Button/Button.css';
 @import './screens/login-id/components/login-id.css';
-@import './components/common/SignupLink/SignupLink.css';
+@import './components/Link/SignupLink.css';

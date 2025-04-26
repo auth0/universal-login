@@ -27,9 +27,10 @@ const __dirname = path.dirname(__filename);
  * @param {string} screenName - The screen name to run
  */
 const runAdvancedMode = async (screenName) => {
-  logger.startupBanner('advanced', screenName || 'unknown');
-
+  let exitCode = 0; // Default to success
   try {
+    logger.startupBanner('advanced', screenName || 'unknown');
+
     // 1. Validate the screen name
     validateScreenName(screenName, 'advanced');
     
@@ -39,33 +40,49 @@ const runAdvancedMode = async (screenName) => {
     // 3. Check Auth0 CLI requirements
     const isCliInstalled = await checkAuth0CliInstalled();
     if (!isCliInstalled) {
-      throw new Error('Auth0 CLI is required but not installed');
+      // Error logged in checkAuth0CliInstalled
+      throw new Error('Auth0 CLI not installed'); // Throw to exit via catch
     }
     
     const isLoggedIn = await checkAuth0CliLoggedIn();
     if (!isLoggedIn) {
-      throw new Error('Please login to Auth0 CLI using: auth0 login');
+      // Error logged in checkAuth0CliLoggedIn
+      throw new Error('Auth0 CLI login required'); // Throw to exit via catch
     }
     
     // 4. Configure using Auth0 CLI
     const configSuccess = await configureWithAuth0Cli(screenName);
     if (!configSuccess) {
       logger.info('Exiting due to configuration failure.');
-      process.exit(1);
+      throw new Error('Configuration failed'); // Throw to exit via catch
     }
 
-    // === Call centralized function to start environment ===
+    // 5. Start the development environment (concurrently)
     await startAdvancedEnv(screenName);
-    // === End ===
 
   } catch (error) {
-    // Catch errors from configure steps or startAdvancedEnv
-    // Check if it's just a Ctrl+C / clean exit from concurrently
-    if (!(error?.exitCode === 0 || error?.signal === 'SIGINT' || error?.isCanceled || error?.exitCode === null)) {
-      handleFatalError(error, 'Error running advanced mode');
+    // Check if the error indicates graceful shutdown (Ctrl+C)
+    const isGracefulExit = 
+        error?.signal === 'SIGINT' || 
+        error?.signal === 'SIGTERM' || 
+        (Array.isArray(error) && error.every(e => e.killed || e.exitCode === null || e.exitCode === 0)); // Check concurrently's error array
+
+    if (isGracefulExit) {
+      logger.info('\nAdvanced mode process terminated.');
+      // Exit code remains 0 for graceful termination
+    } else {
+      logger.error('An error occurred during advanced mode execution:');
+       if(Array.isArray(error)) {
+            // Error likely from concurrently library
+            error.forEach(e => logger.error(`  [${e.command?.name || 'Process'}]: ${e.message?.split('\n')[0]}`)); // Log first line
+       } else {
+            // Log other errors (e.g., from build, config steps)
+            logger.error(`  ${error.message}`);
+       }
+      exitCode = 1; // Set exit code to 1 for errors
     }
-    // If it was Ctrl+C or clean exit, exit gracefully
-    process.exit(0);
+  } finally {
+      process.exit(exitCode);
   }
 };
 
@@ -151,7 +168,7 @@ async function cleanDist() {
 const runCommand = (command, args) => {
   return new Promise((resolve, reject) => {
     const proc = spawn(command, args, {
-      stdio: 'inherit',
+      stdio: 'pipe',
       shell: true,
       env: { ...process.env, FORCE_COLOR: "true" }
     });
@@ -169,6 +186,10 @@ const runCommand = (command, args) => {
     });
   });
 };
+
+// Reinstate the simple top-level SIGINT handler
+process.on('SIGINT', () => {
+});
 
 // Get screen name from command line arguments
 const screenName = process.argv[2]?.toLowerCase();

@@ -381,72 +381,45 @@ export async function configureAdvancedMode(screenName, config, isHmr = false) {
     // Save the configuration to a settings file
     const settingsFilePath = await saveAdvancedModeConfig(screenName, config);
     
-    // Now run the Auth0 CLI command to apply the settings
-    const cliSpinner = ora({
-      text: `🔧 ${isHmr ? 'Updating' : 'Applying advanced mode to'} '${screenName}' screen using tenant: ${formatTenantName(tenantToUse)}...`,
-      color: 'cyan'
-    }).start();
-    
+    // Log start message instead of starting spinner
+    logger.info(`🔧 ${isHmr ? 'Updating' : 'Applying advanced mode to'} '${screenName}' screen using tenant: ${formatTenantName(tenantToUse)}...`);
+
     try {
-      // Run Auth0 CLI command to configure screen in advanced mode with tenant specified
-      const { stdout, stderr } = await execa('auth0', [
-        'ul',
-        'customize',
-        '--tenant', tenantToUse,
-        '--rendering-mode', 'advanced',
-        '--prompt', screenName,
-        '--screen', screenName,
-        '--settings-file', settingsFilePath
-      ]);
+      // Use execSync to run the command synchronously and allow interaction
+      execSync(`auth0 ul customize --tenant "${tenantToUse}" --rendering-mode advanced --prompt "${screenName}" --screen "${screenName}" --settings-file "${settingsFilePath}"`, {
+        stdio: 'inherit', // Inherit stdio for direct interaction
+        encoding: 'utf8'  // Ensure proper encoding
+      });
       
-      // Log verbose output if available for debugging purposes
-      if (stdout && !isHmr) {
-        logger.data('Command output', stdout);
-      }
-      
-      cliSpinner.succeed(`✅ Successfully ${isHmr ? 'updated' : 'configured'} '${screenName}' screen in advanced mode on tenant ${formatTenantName(tenantToUse)}`);
+      // If execSync completes without throwing, the command succeeded
+      logger.success(`✅ Successfully ${isHmr ? 'updated' : 'configured'} '${screenName}' screen in advanced mode on tenant ${formatTenantName(tenantToUse)}`);
       return true;
     } catch (error) {
-      cliSpinner.fail(`❌ Auth0 CLI command failed`);
+      // execSync throws error on non-zero exit code
+      logger.error(`❌ Auth0 CLI command failed during configuration`);
       
-      // Enhanced error reporting with structured information
-      logger.error(`Error ${isHmr ? 'updating' : 'configuring'} screen '${screenName}' in advanced mode`);
+      // The error from execSync doesn't directly contain stderr/stdout easily,
+      // but the output should have already appeared via stdio: 'inherit'.
+      // We primarily need to guide the user.
+      logger.error(`Error ${isHmr ? 'updating' : 'configuring'} screen '${screenName}' in advanced mode.`);
+      logger.info('Check the output above for specific errors from the Auth0 CLI.');
       
-      // Provide more detailed error information for troubleshooting
-      if (error.stderr) {
-        // Log the raw stderr using logger.error for better visibility
-        logger.error(error.stderr); 
-      } else if (error.message) {
-        // Keep logging other error messages using logger.data
-        logger.data('Error details', error.message);
-      }
-      
-      // In HMR mode, keep error messages concise
+      // Provide generic guidance as specific error parsing is harder with execSync
+      logger.info('Common issues include:');
+      logger.info(`  - Expired Auth0 session (run ${colors.cyan}auth0 login${colors.reset})`);
+      logger.info('  - Incorrect tenant, screen name, or prompt name.');
+      logger.info('  - Issues with the generated settings file.');
+
       if (!isHmr) {
-        // Include the exact command that failed for easier troubleshooting
-        logger.info('Failed command:');
-        logger.info(`auth0 ul customize --tenant "${tenantToUse}" --rendering-mode advanced --prompt "${screenName}" --screen "${screenName}" --settings-file "${settingsFilePath}"`);
-        
-        // Add helpful guidance based on the error
-        if (error.stderr && error.stderr.includes('Not logged in')) {
-          logger.info('');
-          logger.info('Your Auth0 session appears to have expired. You can:');
-          logger.info('1. Run the command again to trigger a new login');
-          logger.info('2. Manually run: auth0 login');
-          logger.info('');
-        } else if (error.stderr && error.stderr.includes('not found')) {
-          logger.info('');
-          logger.info('The screen or prompt may not exist in your tenant. You can:');
-          logger.info('1. Check that the screen name is correct');
-          logger.info('2. Verify that you have the correct tenant selected');
-          logger.info('');
-        }
+          logger.info('Failed command attempt:');
+          logger.info(`  auth0 ul customize --tenant "${tenantToUse}" --rendering-mode advanced --prompt "${screenName}" --screen "${screenName}" --settings-file "${settingsFilePath}"`);
       }
       
       return false;
     }
   } catch (error) {
-    logger.error(`❌ Failed to configure advanced mode: ${error.message}`);
+    // Keep this outer catch block for errors like saving the settings file
+    logger.error(`❌ Failed to configure advanced mode (setup stage): ${error.message}`);
     return false;
   }
 } 

@@ -1,18 +1,17 @@
 import React from "react";
 import { useLoginManager } from "./hooks/useLoginManager";
 import { useLoginForm } from "./hooks/useLoginForm";
-import ThemeProvider from "../../components/common/ThemeProvider";
-import Logo from "../../components/common/Logo";
-import SignupLink from "../../components/common/SignupLink";
+import ThemeProvider from "../../components/ThemeProvider";
+import Logo from "../../components/Logo";
+import SignupLink from "../../components/Link/SignupLink";
 import LoginForm from "./components/LoginForm";
 import SocialLoginGroup, {
   Connection,
-} from "../../components/organisms/SocialLoginGroup";
-import ErrorMessages from "./components/ErrorMessages";
-import AuthScreenTemplate from "../../components/templates/AuthScreen";
+} from "../../components/SocialLogin/SocialLoginGroup";
+import ErrorMessages from "../../components/Alert/ErrorMessages";
+import AuthScreenTemplate from "../../components/Layout/AuthScreen";
 import { navigateWithCurrentOrigin } from "../../utils/url";
 
-// Define the type for the connections from loginInstance
 interface LoginConnection {
   name: string;
   display_name?: string;
@@ -31,7 +30,6 @@ const LoginScreen: React.FC = () => {
     handleLogin(username, password, captcha);
   };
 
-  // Handle link click (works for both reset password and signup links)
   const handleLinkClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
     path: string
@@ -40,18 +38,16 @@ const LoginScreen: React.FC = () => {
     navigateWithCurrentOrigin(path);
   };
 
-  // Extract texts from loginInstance
   const texts = loginInstance.screen?.texts || {};
   const isCaptchaAvailable = !!loginInstance.screen?.captcha;
   const captchaImage = loginInstance.screen?.captcha?.image || "";
   const connections = (loginInstance.transaction?.alternateConnections ||
     []) as LoginConnection[];
   const signupLink = loginInstance.screen?.links?.signup || "";
-  const resetPasswordLink = loginInstance.screen?.links?.reset_password || "";
+  const resetPasswordLink = loginInstance.screen?.links?.reset_password || "123";
   const errors = loginInstance.transaction?.errors || [];
   const hasErrors = !!loginInstance.transaction?.hasErrors;
 
-  // Prepare props for LoginForm
   const formProps = {
     usernameRef,
     passwordRef,
@@ -65,7 +61,7 @@ const LoginScreen: React.FC = () => {
       texts.usernameOrEmailPlaceholder ||
       texts.phoneOrUsernameOrEmailPlaceholder ||
       "Username or Email",
-    passwordPlaceholder: texts.passwordPlaceholder.concat("test-acul") || "Password",
+    passwordPlaceholder: texts.passwordPlaceholder || "Password",
     captchaPlaceholder:
       texts.captchaCodePlaceholder || "Enter the code shown above",
     resetPasswordLink,
@@ -92,7 +88,6 @@ const LoginScreen: React.FC = () => {
     <ErrorMessages errors={errors} />
   ) : undefined;
 
-  // Render form content with social login options if available
   const formContent = (
     <>
       <LoginForm {...formProps} />
