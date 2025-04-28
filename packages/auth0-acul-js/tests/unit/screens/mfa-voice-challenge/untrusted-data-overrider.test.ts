@@ -4,7 +4,7 @@ import type { UntrustedDataContext } from '../../../../interfaces/models/untrust
 describe('MFA Voice Challenge - UntrustedDataOverride', () => {
   describe('getSubmittedFormData', () => {
     it('should return null if untrusted data is undefined', () => {
-      const result = UntrustedDataOverride.getSubmittedFormData(undefined);
+      const result = UntrustedDataOverride.getSubmittedFormData({});
       expect(result).toBeNull();
     });
 

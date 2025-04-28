@@ -14,7 +14,7 @@ export class UntrustedDataOverride extends UntrustedData implements OverrideOpti
    * Creates an instance of UntrustedDataOverride
    * @param untrustedDataContext The untrusted data context from Universal Login
    */
-  constructor(untrustedDataContext: UntrustedDataContext | undefined) {
+  constructor(untrustedDataContext: UntrustedDataContext) {
     super(untrustedDataContext);
     this.submittedFormData = UntrustedDataOverride.getSubmittedFormData(untrustedDataContext);
   }
@@ -26,14 +26,11 @@ export class UntrustedDataOverride extends UntrustedData implements OverrideOpti
    * @param {UntrustedDataContext | undefined} untrustedData - The untrusted data context
    * @returns Form data with rememberDevice or null if unavailable
    */
-  static getSubmittedFormData(untrustedData: UntrustedDataContext | undefined): OverrideOptions['submittedFormData'] {
+  static getSubmittedFormData(untrustedData: UntrustedDataContext): OverrideOptions['submittedFormData'] {
     if (!untrustedData?.submitted_form_data) return null;
-    const { remember_device, ...rest } = untrustedData?.submitted_form_data || {};
-    const submittedFormData: Record<string, string | number | boolean | undefined> = { ...rest };
+    const { remember_device, ...submittedFormData } = untrustedData?.submitted_form_data || {};
 
-    if (typeof remember_device === 'boolean') {
-      submittedFormData.rememberDevice = remember_device;
-    }
+    submittedFormData.rememberDevice = remember_device ?? null;
     return submittedFormData;
   }
 }

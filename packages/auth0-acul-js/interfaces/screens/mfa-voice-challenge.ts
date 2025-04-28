@@ -139,6 +139,5 @@ export interface MfaVoiceChallengeMembers extends BaseMembers {
 export interface UntrustedDataMembersOnMfaVoiceChallenge extends UntrustedDataMembers {
   submittedFormData: {
     rememberDevice?: boolean;
-    [key: string]: string | number | boolean | undefined;
   } | null;
 }

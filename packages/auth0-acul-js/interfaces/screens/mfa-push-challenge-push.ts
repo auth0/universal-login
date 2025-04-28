@@ -21,7 +21,6 @@ export interface ScreenMembersOnMfaPushChallengePush extends ScreenMembers {
 export interface UntrustedDataMembersOnMfaPushChallengePush extends UntrustedDataMembers {
   submittedFormData: {
     rememberDevice?: boolean;
-    [key: string]: string | number | boolean | undefined;
   } | null;
 }
 

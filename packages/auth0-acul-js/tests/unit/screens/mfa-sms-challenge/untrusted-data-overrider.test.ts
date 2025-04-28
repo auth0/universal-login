@@ -4,7 +4,7 @@ import type { UntrustedDataContext } from '../../../../interfaces/models/untrust
 describe('MFA SMS Challenge - UntrustedDataOverride', () => {
   describe('getSubmittedFormData', () => {
     it('should return null if untrusted data is undefined', () => {
-      const result = UntrustedDataOverride.getSubmittedFormData(undefined);
+      const result = UntrustedDataOverride.getSubmittedFormData({});
       expect(result).toBeNull();
     });
 
@@ -46,7 +46,7 @@ describe('MFA SMS Challenge - UntrustedDataOverride', () => {
       });
     });
 
-    it('should parse remember_device as false when undefined', () => {
+    it('should parse remember_device as null when undefined', () => {
       const untrustedData: UntrustedDataContext = {
         submitted_form_data: {
           otp: '123456',
@@ -56,7 +56,8 @@ describe('MFA SMS Challenge - UntrustedDataOverride', () => {
       const result = UntrustedDataOverride.getSubmittedFormData(untrustedData);
       
       expect(result).toEqual({
-         otp: '123456'
+         otp: '123456',
+         rememberDevice: null
       });
     });
   });
