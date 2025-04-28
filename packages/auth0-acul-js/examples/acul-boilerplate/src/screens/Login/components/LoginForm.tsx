@@ -88,7 +88,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
           <a
             href={resetPasswordLink}
             onClick={(e) => onResetPasswordClick ? onResetPasswordClick(e, resetPasswordLink) : undefined}
-            className="text-sm font-bold text-[color:var(--color-links)] no-underline hover:underline"
+            className="text-sm text-[color:var(--color-links)] no-underline"
           >
             {resetPasswordText}
           </a>

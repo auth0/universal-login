@@ -25,11 +25,11 @@ const SignupLink: React.FC<SignupLinkProps> = ({
   };
 
   return (
-    <div className="mt-4 text-center">
+    <div className="mt-4 text-left">
       <span className="text-sm text-[color:var(--color-body-text)]">{footerText}</span>{" "}
-      <a 
-        href={signupLink} 
-        className="text-sm font-semibold text-[color:var(--color-links)] no-underline hover:underline"
+      <a
+        href={signupLink}
+        className="text-sm text-[color:var(--color-links)] no-underline"
         onClick={handleClick}
       >
         {signupText}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useLoginManager } from "./hooks/useLoginManager";
 import { useLoginForm } from "./hooks/useLoginForm";
 import ThemeProvider from "@/common/ThemeProvider";
@@ -37,14 +37,31 @@ const LoginScreen: React.FC = () => {
   };
 
   const texts = loginInstance.screen?.texts || {};
+  const transactionData = loginInstance.transaction || {};
   const isCaptchaAvailable = !!loginInstance.screen?.captcha;
   const captchaImage = loginInstance.screen?.captcha?.image || "";
-  const connections = (loginInstance.transaction?.alternateConnections ||
+  const connections = (transactionData.alternateConnections ||
     []) as LoginConnection[];
   const signupLink = loginInstance.screen?.links?.signup || "";
-  const resetPasswordLink = loginInstance.screen?.links?.reset_password || "123";
-  const errors = loginInstance.transaction?.errors || [];
-  const hasErrors = !!loginInstance.transaction?.hasErrors;
+  const resetPasswordLink = loginInstance.screen?.links?.reset_password || "";
+  const errors = transactionData.errors || [];
+  const hasErrors = !!transactionData.hasErrors;
+
+  const usernamePlaceholder = useMemo(() => {
+    const allowedIdentifiers = transactionData.allowedIdentifiers || [];
+    const placeholderMap = {
+      'email,phone,username': texts.phoneOrUsernameOrEmailPlaceholder || 'Phone or Username or Email',
+      'email,phone': texts.phoneOrEmailPlaceholder || 'Phone number or Email address',
+      'phone,username': texts.phoneOrUsernamePlaceholder || 'Phone Number or Username',
+      'email,username': texts.usernameOrEmailPlaceholder || 'Username or Email address',
+      'email': texts.emailPlaceholder || 'Email address',
+      'phone': texts.phonePlaceholder || 'Phone number',
+      'username': texts.usernameOnlyPlaceholder || 'Username',
+      'default': 'Username or Email'
+    };
+    const key = [...allowedIdentifiers].sort().join(',');
+    return (placeholderMap[key as keyof typeof placeholderMap] || placeholderMap.default) + '*';
+  }, [transactionData.allowedIdentifiers, texts]);
 
   const formProps = {
     usernameRef,
@@ -55,13 +72,10 @@ const LoginScreen: React.FC = () => {
     isCaptchaAvailable,
     captchaImage,
     buttonText: texts.buttonText || "Continue",
-    usernamePlaceholder:
-      texts.usernameOrEmailPlaceholder ||
-      texts.phoneOrUsernameOrEmailPlaceholder ||
-      "Username or Email",
-    passwordPlaceholder: texts.passwordPlaceholder || "Password",
+    usernamePlaceholder: usernamePlaceholder,
+    passwordPlaceholder: (texts.passwordPlaceholder || "Password") + '*',
     captchaPlaceholder:
-      texts.captchaCodePlaceholder || "Enter the code shown above",
+      (texts.captchaCodePlaceholder || "Enter the code shown above") + '*',
     resetPasswordLink,
     resetPasswordText: texts.forgotPasswordText || "Forgot password?",
     onResetPasswordClick: handleLinkClick,

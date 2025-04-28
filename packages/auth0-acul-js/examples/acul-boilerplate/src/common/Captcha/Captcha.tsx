@@ -13,13 +13,15 @@ const Captcha: React.FC<CaptchaProps> = ({
   placeholder = 'Enter the code shown above'
 }) => {
   return (
-    <div className="mb-4 w-full">
-      <div className="mb-2 mt-2 flex items-center justify-center border border-gray-300 rounded-md p-1 min-h-[60px]">
-        <img 
-          src={captchaImage} 
-          alt="Captcha" 
-          className="h-auto block"
-        />
+    <div className="w-full">
+      <div className="flex items-center justify-center w-full h-20 mb-2 border border-gray-200 rounded-md">
+        <div className="">
+          <img
+            src={captchaImage}
+            alt="Captcha"
+            className="block h-auto max-w-full max-h-[52px]"
+          />
+        </div>
       </div>
       <div className="w-full">
         <Input

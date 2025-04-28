@@ -30,20 +30,20 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
 
   // --- Tailwind Classes --- 
   const baseInputClasses = 
-    'peer block w-full p-2.5 border rounded-md text-sm h-10 box-border transition-colors duration-150'; // Standardized padding
+    'peer block w-full border rounded-md text-sm h-12 box-border transition-colors duration-150'; // Increased height to h-12
   const borderClasses = error 
     ? 'border-red-500 focus:border-red-500 focus:ring-red-500' 
     : 'border-gray-300 focus:border-blue-600 focus:ring-1 focus:ring-blue-600';
-  const paddingClasses = icon ? 'py-2.5 pl-10 pr-3' : showPasswordToggle ? 'py-2.5 pl-3 pr-10' : 'p-2.5'; 
+  const paddingClasses = icon ? 'py-3.5 pl-11 pr-4' : showPasswordToggle ? 'py-3.5 pl-4 pr-11' : 'p-3.5';
   
   const finalInputClasses = `${baseInputClasses} ${borderClasses} ${paddingClasses} ${className}`.trim();
   
   const finalLabelClasses = `
-    absolute text-sm text-gray-500 duration-150 transform 
-    scale-100 -translate-y-1/2 top-1/2 start-3 z-10 origin-[0] /* Base: Centered Inside */
+    absolute text-sm text-gray-500 duration-150 transform -translate-y-1/2 top-1/2 start-3 z-10 origin-[0] 
     
-    peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:top-2 peer-focus:bg-white peer-focus:px-2 ${error ? 'peer-focus:text-red-500' : 'peer-focus:text-blue-600'} /* Focus: Floats up */
-    peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:-translate-y-4 peer-[:not(:placeholder-shown)]:top-2 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 ${error ? 'text-red-500' : ''}/* Value Entered: Floats up */
+    /* Adjust float-up position based on new padding/height */
+    peer-focus:scale-75 peer-focus:-translate-y-[1.15rem] peer-focus:top-3.5 peer-focus:bg-white peer-focus:px-2 ${error ? 'peer-focus:text-red-500' : 'peer-focus:text-blue-600'} 
+    peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:-translate-y-[1.15rem] peer-[:not(:placeholder-shown)]:top-3.5 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 ${error ? 'text-red-500' : ''}
   `.trim();
 
   const containerClasses = `relative w-full`; // Main container class
@@ -107,17 +107,16 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
             className={`absolute top-1/2 right-3 -translate-y-1/2 text-gray-500 hover:text-gray-700 ${showPassword ? 'text-blue-600' : ''}`}
             onClick={togglePasswordVisibility}
             aria-label={showPassword ? "Hide password" : "Show password"}
+            title={showPassword ? "Hide password" : "Show password"}
           >
-            {/* SVGs remain the same */} 
             {showPassword ? (
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
               </svg>
             ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z" clipRule="evenodd" />
-                <path d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.065 7 9.542 7 .847 0 1.669-.105 2.454-.303z" />
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
               </svg>
             )}
           </button>
