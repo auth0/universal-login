@@ -20,7 +20,7 @@ export interface ScreenMembersOnMfaPushChallengePush extends ScreenMembers {
  */
 export interface UntrustedDataMembersOnMfaPushChallengePush extends UntrustedDataMembers {
   submittedFormData: {
-    rememberDevice?: boolean;
+    rememberDevice: boolean;
   } | null;
 }
 

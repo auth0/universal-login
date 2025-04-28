@@ -44,6 +44,6 @@ export interface MfaSmsChallengeMembers extends BaseMembers {
  */
 export interface UntrustedDataMembersOnMfaSmsChallenge extends UntrustedDataMembers {
   submittedFormData: {
-    rememberDevice?: boolean;
+    rememberDevice: boolean;
   } | null;
 }

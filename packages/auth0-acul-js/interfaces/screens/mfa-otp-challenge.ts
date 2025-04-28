@@ -16,7 +16,7 @@ export interface ScreenMembersOnMfaOtpChallenge extends ScreenMembers {
  */
 export interface UntrustedDataMembersOnMfaOtpChallenge extends UntrustedDataMembers {
   submittedFormData: {
-    rememberDevice?: boolean;
+    rememberDevice: boolean;
   } | null;
 }
 

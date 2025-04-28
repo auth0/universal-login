@@ -57,7 +57,7 @@ describe('MFA OTP Challenge - UntrustedDataOverride', () => {
       
       expect(result).toEqual({
         code: '123456',
-        rememberDevice: null
+        rememberDevice: false
       });
     });
   });

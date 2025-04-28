@@ -26,11 +26,13 @@ export class UntrustedDataOverride extends UntrustedData implements OverrideOpti
    * @param {UntrustedDataContext | undefined} untrustedData - The untrusted data context
    * @returns Form data with rememberDevice or null if unavailable
    */
-  static getSubmittedFormData(untrustedData: UntrustedDataContext): OverrideOptions['submittedFormData'] {
-    if (!untrustedData?.submitted_form_data) return null;
-    const { remember_device, ...submittedFormData } = untrustedData?.submitted_form_data || {};
-
-    submittedFormData.rememberDevice = remember_device ?? null;
-    return submittedFormData;
+  static getSubmittedFormData(untrustedDataContext: UntrustedDataContext): OverrideOptions['submittedFormData'] {
+    const submittedFormData = UntrustedData.getSubmittedFormData(untrustedDataContext);
+    if (!submittedFormData) return null;
+    const { remember_device, ...rest } = submittedFormData;
+    return {
+      ...rest,
+      rememberDevice: (remember_device ?? false) as boolean,
+    };
   }
 }

@@ -41,7 +41,7 @@ describe('MFA Email Challenge - UntrustedDataOverride', () => {
       
       expect(result).toEqual({
         code: '123456',
-        rememberDevice: null
+        rememberDevice: false
       });
     });
   });

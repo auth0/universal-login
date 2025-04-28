@@ -138,6 +138,6 @@ export interface MfaVoiceChallengeMembers extends BaseMembers {
  */
 export interface UntrustedDataMembersOnMfaVoiceChallenge extends UntrustedDataMembers {
   submittedFormData: {
-    rememberDevice?: boolean;
+    rememberDevice: boolean;
   } | null;
 }

@@ -57,7 +57,7 @@ describe('MFA SMS Challenge - UntrustedDataOverride', () => {
       
       expect(result).toEqual({
          otp: '123456',
-         rememberDevice: null
+         rememberDevice: false
       });
     });
   });
