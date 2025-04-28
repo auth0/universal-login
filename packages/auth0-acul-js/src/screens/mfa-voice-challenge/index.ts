@@ -59,15 +59,14 @@ export default class MfaVoiceChallenge extends BaseContext implements MfaVoiceCh
       state: this.transaction.state,
       telemetry: [MfaVoiceChallenge.screenIdentifier, 'default'],
     };
-    const { rememberDevice = false, ...restPayload } = payload || {};
 
-    const formPayload = {
-      ...restPayload,
-      action: FormActions.DEFAULT,
-      rememberBrowser: rememberDevice ? 'true' : undefined,
-    };
+    const { rememberDevice, ...restPayload } = payload || {};
+    const submitPayload: Record<string, string | number | boolean> = { ...restPayload, action: FormActions.DEFAULT };
 
-    await new FormHandler(options).submitData(formPayload);
+    if (rememberDevice) {
+      submitPayload.rememberBrowser = true;
+    }
+    await new FormHandler(options).submitData(submitPayload);
   }
 
   /**

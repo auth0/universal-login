@@ -50,12 +50,14 @@ export default class MfaPushChallengePush extends BaseContext implements MfaPush
       state: this.transaction.state,
       telemetry: [MfaPushChallengePush.screenIdentifier, 'continue'],
     };
-    const { rememberDevice = false, ...restPayload } = payload || {};
-    await new FormHandler(options).submitData<WithRememberOptions>({
-      rememberBrowser: rememberDevice ? 'true' : undefined,
-      ...restPayload,
-      action: FormActions.CONTINUE,
-    });
+
+    const { rememberDevice, ...restPayload } = payload || {};
+    const submitPayload: Record<string, string | number | boolean> = { ...restPayload, action: FormActions.CONTINUE };
+
+    if (rememberDevice) {
+      submitPayload.rememberBrowser = true;
+    }
+    await new FormHandler(options).submitData(submitPayload);
   }
 
   /**

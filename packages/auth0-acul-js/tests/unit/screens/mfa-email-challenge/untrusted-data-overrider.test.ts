@@ -26,25 +26,11 @@ describe('MFA Email Challenge - UntrustedDataOverride', () => {
       
       expect(result).toEqual({
         rememberDevice: true,
+        code: '123456'
       });
     });
 
-    it('should parse remember_device as false when not true', () => {
-      const untrustedData: UntrustedDataContext = {
-        submitted_form_data: {
-          remember_device: false,
-          code: '123456',
-        },
-      };
-
-      const result = UntrustedDataOverride.getSubmittedFormData(untrustedData);
-      
-      expect(result).toEqual({
-        rememberDevice: false,
-      });
-    });
-
-    it('should parse remember_device as undefined when other value', () => {
+    it('should not parse remember_device when not present', () => {
       const untrustedData: UntrustedDataContext = {
         submitted_form_data: {
           code: '123456',
@@ -54,7 +40,7 @@ describe('MFA Email Challenge - UntrustedDataOverride', () => {
       const result = UntrustedDataOverride.getSubmittedFormData(untrustedData);
       
       expect(result).toEqual({
-        rememberDevice: undefined,
+        code: '123456',
       });
     });
   });

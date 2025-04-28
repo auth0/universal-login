@@ -26,6 +26,7 @@ describe('MFA OTP Challenge - UntrustedDataOverride', () => {
       
       expect(result).toEqual({
         rememberDevice: true,
+        code: '123456'
       });
     });
 
@@ -40,6 +41,7 @@ describe('MFA OTP Challenge - UntrustedDataOverride', () => {
       const result = UntrustedDataOverride.getSubmittedFormData(untrustedData);
       
       expect(result).toEqual({
+        code: '123456',
         rememberDevice: false,
       });
     });
@@ -54,7 +56,7 @@ describe('MFA OTP Challenge - UntrustedDataOverride', () => {
       const result = UntrustedDataOverride.getSubmittedFormData(untrustedData);
       
       expect(result).toEqual({
-        rememberDevice: undefined,
+        code: '123456',
       });
     });
   });

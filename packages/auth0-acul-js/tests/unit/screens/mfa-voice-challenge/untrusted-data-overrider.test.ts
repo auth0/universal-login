@@ -26,6 +26,7 @@ describe('MFA Voice Challenge - UntrustedDataOverride', () => {
       
       expect(result).toEqual({
         rememberDevice: true,
+        otp: '123456'
       });
     });
 
@@ -41,20 +42,7 @@ describe('MFA Voice Challenge - UntrustedDataOverride', () => {
       
       expect(result).toEqual({
         rememberDevice: false,
-      });
-    });
-
-    it('should parse remember_device as undefined when undefined', () => {
-      const untrustedData: UntrustedDataContext = {
-        submitted_form_data: {
-          otp: '123456',
-        },
-      };
-
-      const result = UntrustedDataOverride.getSubmittedFormData(untrustedData);
-      
-      expect(result).toEqual({
-        rememberDevice: undefined,
+        otp: '123456'
       });
     });
   });

@@ -26,6 +26,7 @@ describe('MFA SMS Challenge - UntrustedDataOverride', () => {
       
       expect(result).toEqual({
         rememberDevice: true,
+        otp: '123456'
       });
     });
 
@@ -41,6 +42,7 @@ describe('MFA SMS Challenge - UntrustedDataOverride', () => {
       
       expect(result).toEqual({
         rememberDevice: false,
+         otp: '123456'
       });
     });
 
@@ -54,7 +56,7 @@ describe('MFA SMS Challenge - UntrustedDataOverride', () => {
       const result = UntrustedDataOverride.getSubmittedFormData(untrustedData);
       
       expect(result).toEqual({
-        rememberDevice: undefined,
+         otp: '123456'
       });
     });
   });

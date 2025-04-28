@@ -28,9 +28,12 @@ export class UntrustedDataOverride extends UntrustedData implements OverrideOpti
    */
   static getSubmittedFormData(untrustedData: UntrustedDataContext | undefined): OverrideOptions['submittedFormData'] {
     if (!untrustedData?.submitted_form_data) return null;
+    const { remember_device, ...rest } = untrustedData?.submitted_form_data || {};
+    const submittedFormData: Record<string, string | number | boolean | undefined> = { ...rest };
 
-    return {
-      rememberDevice: untrustedData?.submitted_form_data?.remember_device as boolean,
-    };
+    if (typeof remember_device === 'boolean') {
+      submittedFormData.rememberDevice = remember_device;
+    }
+    return submittedFormData;
   }
 }

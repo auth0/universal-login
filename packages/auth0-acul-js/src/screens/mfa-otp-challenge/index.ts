@@ -57,10 +57,11 @@ export default class MfaOtpChallenge extends BaseContext implements MfaOtpChalle
       telemetry: [MfaOtpChallenge.screenIdentifier, 'continue'],
     };
 
-    const submitPayload: Record<string, string | number | boolean> = { ...payload, action: 'default' };
+    const { rememberDevice, ...restPayload } = payload || {};
+    const submitPayload: Record<string, string | number | boolean> = { ...restPayload, action: FormActions.DEFAULT };
 
-    if (payload.rememberDevice) {
-      submitPayload.rememberBrowser = 'true';
+    if (rememberDevice) {
+      submitPayload.rememberBrowser = true;
     }
 
     await new FormHandler(options).submitData(submitPayload);

@@ -64,7 +64,7 @@ describe('MfaVoiceChallenge', () => {
         expect.objectContaining({
           code: '123456',
           action: FormActions.DEFAULT,
-          rememberBrowser: 'true',
+          rememberBrowser: true,
         })
       );
     });

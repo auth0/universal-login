@@ -58,9 +58,9 @@ export default class MfaEmailChallenge extends BaseContext implements MfaEmailCh
       telemetry: [MfaEmailChallenge.screenIdentifier, 'continue'],
     };
     const { rememberDevice = false, ...restPayload } = payload || {};
-    const submitPayload: Record<string, string | number | boolean> = { ...restPayload, action: 'default' };
+    const submitPayload: Record<string, string | number | boolean> = { ...restPayload, action: FormActions.DEFAULT };
     if (rememberDevice) {
-      submitPayload.rememberBrowser = 'true';
+      submitPayload.rememberBrowser = true;
     }
     await new FormHandler(options).submitData(submitPayload);
   }
