@@ -1,5 +1,5 @@
 
-## continueWithPasskeyEnrollmentLocal
+## continuePasskeyEnrollment
 
 ```typescript
 
@@ -10,7 +10,7 @@ const passkeyEnrollment = new PasskeyEnrollment();
 
 // Begin the passkey enrollment process for local authentication
 // This will trigger the necessary flow for the user to enroll their passkey
-passkeyEnrollment.continueWithPasskeyEnrollmentLocal();
+passkeyEnrollment.continuePasskeyEnrollment();
 
 ```
 
@@ -22,7 +22,7 @@ passkeyEnrollment.continueWithPasskeyEnrollmentLocal();
 import PasskeyEnrollment from '@auth0/auth0-acul-js/passkey-enrollment-local';
 
 const passkeyEnrollment = new PasskeyEnrollmentLocal();
-passkeyEnrollment.abortPasskeyEnrollmentLocal({
+passkeyEnrollment.abortPasskeyEnrollment({
     doNotShowAgain: <boolean>
 });
 

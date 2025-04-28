@@ -1,3 +1,4 @@
+import { FormActions } from '../../../src/constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
@@ -45,7 +46,7 @@ export default class OrganizationSelection extends BaseContext implements Organi
     };
     await new FormHandler(options).submitData<ContinueWithOrganizationNameOptions>({
       ...payload,
-      action: 'default',
+      action: FormActions.DEFAULT,
     });
   }
 }

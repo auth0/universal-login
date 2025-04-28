@@ -3,7 +3,8 @@ import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { CustomOptions } from '../../../../interfaces/common';
 import { SelectCountryCodeOptions } from '../../../../interfaces/screens/mfa-country-codes';
-import { ScreenIds } from '../../../../src/utils/enums';
+import { ScreenIds } from '../../../../src//constants';
+import { FormActions } from '../../../../src/constants';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -57,7 +58,7 @@ describe('MfaCountryCodes', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'back-action',
+          action: FormActions.BACK,
         })
       );
     });
@@ -67,7 +68,7 @@ describe('MfaCountryCodes', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'back-action',
+          action: FormActions.BACK,
         })
       );
     });

@@ -1,5 +1,5 @@
+import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
-import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -67,7 +67,7 @@ export default class ResetPasswordMfaSmsChallenge extends BaseContext implements
       state: this.transaction.state,
       telemetry: [ResetPasswordMfaSmsChallenge.screenIdentifier, 'resendCode'],
     };
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'resend-code' });
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.RESEND_CODE });
   }
 
   /**
@@ -87,7 +87,7 @@ export default class ResetPasswordMfaSmsChallenge extends BaseContext implements
       state: this.transaction.state,
       telemetry: [ResetPasswordMfaSmsChallenge.screenIdentifier, 'tryAnotherMethod'],
     };
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'pick-authenticator' });
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.PICK_AUTHENTICATOR });
   }
 
   /**
@@ -107,7 +107,7 @@ export default class ResetPasswordMfaSmsChallenge extends BaseContext implements
       state: this.transaction.state,
       telemetry: [ResetPasswordMfaSmsChallenge.screenIdentifier, 'getACall'],
     };
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'switch-to-voice' });
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.SWITCH_TO_VOICE });
   }
 }
 

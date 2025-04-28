@@ -1,6 +1,6 @@
 import MfaEnrollResult from '../../../../src/screens/mfa-enroll-result';
 import { BaseContext } from '../../../../src/models/base-context';
-import { ScreenIds } from '../../../../src/utils/enums';
+import { ScreenIds } from '../../../../src//constants';
 
 describe('MfaEnrollResult', () => {
   let mfaEnrollResult: MfaEnrollResult;

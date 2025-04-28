@@ -163,7 +163,20 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 | 41     | reset-password-mfa-push-challenge-push          | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaPushChallengePush.html)   |
 | 42     | reset-password-mfa-sms-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaSmsChallenge.html)   |
 | 43     | reset-password-mfa-otp-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.OrganizationSelection.html)   |
-
+| 44     | mfa-phone-enrollment          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaPhoneEnrollment.html)   |
+| 45     | mfa-voice-enrollment          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaVoiceEnrollment.html)   |
+| 46     | mfa-recovery-code-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaRecoveryCodeChallenge.html)   |
+| 47     | device-code-activation-allowed          | [Link](https://auth0.github.io/universal-login/classes/Classes.DeviceCodeActivationAllowed.html)   |
+| 48     | device-code-activation-denied          | [Link](https://auth0.github.io/universal-login/classes/Classes.DeviceCodeActivationDenied.html)   |
+| 49     | device-code-activation          | [Link](https://auth0.github.io/universal-login/classes/Classes.DeviceCodeActivation.html)   |
+| 50     | reset-password-mfa-recovery-code-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaRecoveryCodeChallenge.html)   |
+| 51     | reset-password-mfa-voice          | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaVoiceChallenge.html)   |
+| 52     | redeem-ticket          | [Link](https://auth0.github.io/universal-login/classes/Classes.RedeemTicket.html)   |
+| 53     | device-code-confirmation          | [Link](https://auth0.github.io/universal-login/classes/Classes.DeviceCodeConfirmation.html)   |
+| 54     | mfa-phone-challenge | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaPhoneChallenge.html) |
+| 55     | mfa-voice-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaVoiceChallenge.html)   |
+| 56     | mfa-recovery-code-enrollment          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaRecoveryCodeEnrollment.html)   |
+| 57     | reset-password-mfa-phone-challenge        | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaPhoneChallenge.html)                        |
 
 </details>
 

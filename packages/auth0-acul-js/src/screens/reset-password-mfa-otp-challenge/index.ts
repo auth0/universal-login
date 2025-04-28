@@ -1,3 +1,4 @@
+import { FormActions } from '../../../src/constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
@@ -6,7 +7,6 @@ import type {
   ResetPasswordMfaOtpChallengeMembers,
   ContinueOptions,
   TryAnotherMethodOptions,
-  ScreenMembersOnResetPasswordMfaOtpChallenge as ScreenOptions,
 } from '../../../interfaces/screens/reset-password-mfa-otp-challenge';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
@@ -41,7 +41,7 @@ export default class ResetPasswordMfaOtpChallenge extends BaseContext implements
     };
     await new FormHandler(options).submitData<ContinueOptions>({
       ...payload,
-      action: 'default',
+      action: FormActions.DEFAULT,
     });
   }
 
@@ -63,16 +63,11 @@ export default class ResetPasswordMfaOtpChallenge extends BaseContext implements
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'pick-authenticator',
+      action: FormActions.PICK_AUTHENTICATOR,
     });
   }
 }
 
-export {
-  ResetPasswordMfaOtpChallengeMembers,
-  ContinueOptions,
-  TryAnotherMethodOptions,
-  ScreenOptions as ScreenMembersOnResetPasswordMfaOtpChallenge,
-};
+export { ResetPasswordMfaOtpChallengeMembers, ContinueOptions, TryAnotherMethodOptions };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';

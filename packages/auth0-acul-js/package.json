@@ -1,6 +1,6 @@
 {
   "name": "@auth0/auth0-acul-js",
-  "version": "0.1.0-beta.3",
+  "version": "0.1.0-beta.4",
   "type": "module",
   "module": "dist/index.js",
   "exports": {
@@ -183,7 +183,63 @@
     "./customized-consent": {
       "import": "./dist/screens/customized-consent/index.js",
       "types": "./dist/types/src/screens/customized-consent/index.d.ts"
-    }
+    },
+    "./mfa-phone-enrollment": {
+      "import": "./dist/screens/mfa-phone-enrollment/index.js",
+      "types": "./dist/types/src/screens/mfa-phone-enrollment/index.d.ts"
+    },
+    "./mfa-voice-enrollment": {
+      "import": "./dist/screens/mfa-voice-enrollment/index.js",
+      "types": "./dist/types/src/screens/mfa-voice-enrollment/index.d.ts"
+    },
+    "./mfa-recovery-code-challenge": {
+      "import": "./dist/screens/mfa-recovery-code-challenge/index.js",
+      "types": "./dist/types/src/screens/mfa-recovery-code-challenge/index.d.ts"
+    },
+    "./device-code-activation-allowed": {
+      "import": "./dist/screens/device-code-activation-allowed/index.js",
+      "types": "./dist/types/src/screens/device-code-activation-allowed/index.d.ts"
+    },
+    "./device-code-activation-denied": {
+      "import": "./dist/screens/device-code-activation-denied/index.js",
+      "types": "./dist/types/src/screens/device-code-activation-denied/index.d.ts"
+    },
+    "./device-code-activation": {
+      "import": "./dist/screens/device-code-activation/index.js",
+      "types": "./dist/types/src/screens/device-code-activation/index.d.ts"
+    },
+    "./device-code-confirmation": {
+      "import": "./dist/screens/device-code-confirmation/index.js",
+      "types": "./dist/types/src/screens/device-code-confirmation/index.d.ts"
+    },
+    "./reset-password-mfa-recovery-code-challenge": {
+      "import": "./dist/screens/reset-password-mfa-recovery-code-challenge/index.js",
+      "types": "./dist/types/src/screens/reset-password-mfa-recovery-code-challenge/index.d.ts"
+    },
+    "./reset-password-mfa-voice-challenge": {
+      "import": "./dist/screens/reset-password-mfa-voice-challenge/index.js",
+      "types": "./dist/types/src/screens/reset-password-mfa-voice-challenge/index.d.ts"
+    },
+    "./redeem-ticket": {
+      "import": "./dist/screens/redeem-ticket/index.js",
+      "types": "./dist/types/src/screens/redeem-ticket/index.d.ts"
+    },
+    "./mfa-phone-challenge": {
+      "import": "./dist/screens/mfa-phone-challenge/index.js",
+      "types": "./dist/types/src/screens/mfa-phone-challenge/index.d.ts"
+     },
+    "./mfa-voice-challenge": {
+      "import": "./dist/screens/mfa-voice-challenge/index.js",
+      "types": "./dist/types/src/screens/mfa-voice-challenge/index.d.ts"
+     },
+    "./mfa-recovery-code-enrollment": {
+       "import": "./dist/screens/mfa-recovery-code-enrollment/index.js",
+       "types": "./dist/types/src/screens/mfa-recovery-code-enrollment/index.d.ts"
+     },
+    "./reset-password-mfa-phone-challenge": {
+        "import": "./dist/screens/reset-password-mfa-phone-challenge/index.js",
+        "types": "./dist/types/src/screens/reset-password-mfa-phone-challenge/index.d.ts"
+     }
   },
   "scripts": {
     "clean": "rimraf dist",

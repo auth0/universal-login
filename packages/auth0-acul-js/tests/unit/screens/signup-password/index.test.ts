@@ -1,7 +1,7 @@
 import SignupPassword from '../../../../src/screens/signup-password';
 import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
-import { ScreenIds } from '../../../../src/utils/enums';
+import { ScreenIds } from '../../../../src//constants';
 import { SignupPasswordOptions } from 'interfaces/screens/signup-password';
 
 jest.mock('../../../../src/utils/form-handler');

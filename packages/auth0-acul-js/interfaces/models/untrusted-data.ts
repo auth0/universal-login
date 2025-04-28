@@ -1,6 +1,6 @@
 export interface UntrustedDataContext {
   submitted_form_data?: {
-    [key: string]: string | undefined;
+    [key: string]: string | undefined | boolean | null;
     [key: `ulp_${string}`]: string | undefined;
   };
   authorization_params?: {
@@ -12,7 +12,7 @@ export interface UntrustedDataContext {
 }
 
 export interface UntrustedDataMembers {
-  submittedFormData: { [key: string]: string | number | boolean | undefined } | null;
+  submittedFormData: { [key: string]: string | number | boolean | undefined | null } | null;
   authorizationParams: {
     login_hint?: string;
     screen_hint?: string;

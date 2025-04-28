@@ -3,7 +3,8 @@ import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { CustomOptions } from '../../../../interfaces/common';
 import { isJsAvailable, isBrave, isWebAuthAvailable, isWebAuthPlatformAvailable } from '../../../../src/utils/browser-capabilities';
-import { ScreenIds } from '../../../../src/utils/enums';
+import { ScreenIds } from '../../../../src//constants';
+import { FormActions } from '../../../../src/constants';
 
 jest.mock('../../../../src/utils/form-handler');
 jest.mock('../../../../src/utils/browser-capabilities', () => ({
@@ -55,7 +56,7 @@ describe('MfaDetectBrowserCapabilities', () => {
           'is-brave': false,
           'webauthn-available': true,
           'webauthn-platform-available': true,
-          action: 'pick-authenticator',
+          action: FormActions.PICK_AUTHENTICATOR,
         })
       );
     });

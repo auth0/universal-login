@@ -1,5 +1,5 @@
+import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
-import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -42,7 +42,7 @@ export default class AcceptInvitation extends BaseContext implements AcceptInvit
       state: this.transaction.state,
       telemetry: [AcceptInvitation.screenIdentifier, 'acceptInvitation'],
     };
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'default' });
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.DEFAULT });
   }
 }
 

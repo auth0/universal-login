@@ -3,7 +3,8 @@ import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { SubmitOTPOptions } from 'interfaces/screens/login-passwordless-sms-otp';
 import { CustomOptions } from 'interfaces/common';
-import { ScreenIds } from '../../../../src/utils/enums';
+import { ScreenIds } from '../../../../src//constants';
+import { FormActions } from '../../../../src/constants';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -111,7 +112,7 @@ describe('LoginPasswordlessSmsOtp', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'resend',
+          action: FormActions.RESEND,
         })
       );
     });
@@ -122,7 +123,7 @@ describe('LoginPasswordlessSmsOtp', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'resend',
+          action: FormActions.RESEND,
         })
       );
     });

@@ -28,36 +28,6 @@ describe('ScreenOverride', () => {
     expect(screenOverride.data).toBeNull();
   });
 
-  it('should handle remember_device as undefined', () => {
-    const screenContext: ScreenContext = {
-      name: 'reset-password-mfa-sms-challenge',
-      data: {
-        phone_number: '+15551234567'
-      },
-    } as ScreenContext;
-
-    const screenOverride = new ScreenOverride(screenContext);
-
-    expect(screenOverride.data).toEqual({
-      phoneNumber: '+15551234567'
-    });
-  });
-
-  it('should handle remember_device as false', () => {
-    const screenContext: ScreenContext = {
-      name: 'reset-password-mfa-sms-challenge',
-      data: {
-        phone_number: '+15551234567'
-      },
-    } as ScreenContext;
-
-    const screenOverride = new ScreenOverride(screenContext);
-
-    expect(screenOverride.data).toEqual({
-      phoneNumber: '+15551234567'
-    });
-  });
-
   it('should extend Screen class', () => {
     const screenContext: ScreenContext = {
       name: 'reset-password-mfa-sms-challenge',
@@ -68,5 +38,55 @@ describe('ScreenOverride', () => {
 
     const screenOverride = new ScreenOverride(screenContext);
     expect(screenOverride).toBeInstanceOf(Screen);
+  });
+
+  it('should initialize data correctly with show_link_voice true', () => {
+    const screenContext: ScreenContext = {
+      name: 'reset-password-mfa-sms-challenge',
+      data: {
+        phone_number: '+15551234567',
+        show_link_voice: true
+      },
+    } as ScreenContext;
+
+    const screenOverride = new ScreenOverride(screenContext);
+
+    expect(screenOverride.data).toEqual({
+      phoneNumber: '+15551234567',
+      showLinkVoice: true
+    });
+  });
+
+  it('should initialize data correctly with show_link_voice false', () => {
+    const screenContext: ScreenContext = {
+      name: 'reset-password-mfa-sms-challenge',
+      data: {
+        phone_number: '+15551234567',
+        show_link_voice: false
+      },
+    } as ScreenContext;
+
+    const screenOverride = new ScreenOverride(screenContext);
+
+    expect(screenOverride.data).toEqual({
+      phoneNumber: '+15551234567',
+      showLinkVoice: false
+    });
+  });
+
+  it('should handle missing show_link_voice correctly', () => {
+    const screenContext: ScreenContext = {
+      name: 'reset-password-mfa-sms-challenge',
+      data: {
+        phone_number: '+15551234567'
+      },
+    } as ScreenContext;
+
+    const screenOverride = new ScreenOverride(screenContext);
+
+    expect(screenOverride.data).toEqual({
+      phoneNumber: '+15551234567',
+      showLinkVoice: undefined
+    });
   });
 });

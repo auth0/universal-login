@@ -1,6 +1,7 @@
 import ResetPasswordMfaEmailChallenge from '../../../../src/screens/reset-password-mfa-email-challenge';
 import type { ScreenMembersOnResetPasswordMfaEmailChallenge } from '../../../../interfaces/screens/reset-password-mfa-email-challenge';
-import { ScreenIds } from '../../../../src/utils/enums';
+import { ScreenIds } from '../../../../src//constants';
+import { FormActions } from '../../../../src/constants';
 
 describe('ResetPasswordMfaEmailChallenge', () => {
   let resetPasswordMfaEmailChallenge: ResetPasswordMfaEmailChallenge;
@@ -52,7 +53,7 @@ describe('ResetPasswordMfaEmailChallenge', () => {
 
       expect(mockFormHandler.submitData).toHaveBeenCalledWith({
         code: '123456',
-        action: 'default'
+        action: FormActions.DEFAULT
       });
     });
   });
@@ -67,7 +68,7 @@ describe('ResetPasswordMfaEmailChallenge', () => {
       await resetPasswordMfaEmailChallenge.resendCode();
 
       expect(mockFormHandler.submitData).toHaveBeenCalledWith({
-        action: 'resend-code',
+        action: FormActions.RESEND_CODE,
       });
     });
   });
@@ -82,7 +83,7 @@ describe('ResetPasswordMfaEmailChallenge', () => {
       await resetPasswordMfaEmailChallenge.tryAnotherMethod();
 
       expect(mockFormHandler.submitData).toHaveBeenCalledWith({
-        action: 'pick-authenticator',
+        action: FormActions.PICK_AUTHENTICATOR,
       });
     });
   });

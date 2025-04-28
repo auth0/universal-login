@@ -1,5 +1,5 @@
+import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
-import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -57,7 +57,7 @@ export default class ResetPasswordRequest extends BaseContext implements ResetPa
       state: this.transaction.state,
       telemetry: [ResetPasswordRequest.screenIdentifier, 'backToLogin'],
     };
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'back-to-login' });
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.BACK_TO_LOGIN });
   }
 }
 

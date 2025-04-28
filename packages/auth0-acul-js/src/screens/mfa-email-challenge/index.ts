@@ -1,17 +1,20 @@
+import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
-import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
+import { UntrustedDataOverride } from './untrusted-data-overrider';
 
 import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
+import type { UntrustedDataContext } from '../../../interfaces/models/untrusted-data';
 import type {
   MfaEmailChallengeMembers,
   ContinueOptions,
   ResendCodeOptions,
   TryAnotherMethodOptions,
   ScreenMembersOnMfaEmailChallenge as ScreenOptions,
+  UntrustedDataMembersOnMfaEmailChallenge as UntrustedDataOptions,
 } from '../../../interfaces/screens/mfa-email-challenge';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
@@ -22,6 +25,7 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
 export default class MfaEmailChallenge extends BaseContext implements MfaEmailChallengeMembers {
   static screenIdentifier: string = ScreenIds.MFA_EMAIL_CHALLENGE;
   screen: ScreenOptions;
+  untrustedData: UntrustedDataOptions;
 
   /**
    * Creates an instance of MfaEmailChallenge screen manager
@@ -29,7 +33,9 @@ export default class MfaEmailChallenge extends BaseContext implements MfaEmailCh
   constructor() {
     super();
     const screenContext = this.getContext('screen') as ScreenContext;
+    const untrustedDataContext = this.getContext('untrusted_data') as UntrustedDataContext;
     this.screen = new ScreenOverride(screenContext);
+    this.untrustedData = new UntrustedDataOverride(untrustedDataContext);
   }
 
   /**
@@ -51,9 +57,10 @@ export default class MfaEmailChallenge extends BaseContext implements MfaEmailCh
       state: this.transaction.state,
       telemetry: [MfaEmailChallenge.screenIdentifier, 'continue'],
     };
-    const submitPayload: Record<string, string | number | boolean> = { ...payload, action: 'default' };
-    if (payload.rememberDevice) {
-      submitPayload.rememberDevice = 'true';
+    const { rememberDevice = false, ...restPayload } = payload || {};
+    const submitPayload: Record<string, string | number | boolean> = { ...restPayload, action: FormActions.DEFAULT };
+    if (rememberDevice) {
+      submitPayload.rememberBrowser = true;
     }
     await new FormHandler(options).submitData(submitPayload);
   }
@@ -76,7 +83,7 @@ export default class MfaEmailChallenge extends BaseContext implements MfaEmailCh
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'resend-code',
+      action: FormActions.RESEND_CODE,
     });
   }
 
@@ -98,7 +105,7 @@ export default class MfaEmailChallenge extends BaseContext implements MfaEmailCh
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'pick-authenticator',
+      action: FormActions.PICK_AUTHENTICATOR,
     });
   }
 
@@ -119,10 +126,17 @@ export default class MfaEmailChallenge extends BaseContext implements MfaEmailCh
       state: this.transaction.state,
       telemetry: [MfaEmailChallenge.screenIdentifier, 'pickEmail'],
     };
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'pick-email' });
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.PICK_EMAIL });
   }
 }
 
-export { MfaEmailChallengeMembers, ContinueOptions, ResendCodeOptions, TryAnotherMethodOptions, ScreenOptions as ScreenMembersOnMfaEmailChallenge };
+export {
+  MfaEmailChallengeMembers,
+  ContinueOptions,
+  ResendCodeOptions,
+  TryAnotherMethodOptions,
+  ScreenOptions as ScreenMembersOnMfaEmailChallenge,
+  UntrustedDataOptions as UntrustedDataMembersOnMfaEmailChallenge,
+};
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';

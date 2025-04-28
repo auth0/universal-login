@@ -8,13 +8,13 @@ describe('ScreenOverride', () => {
       name: 'mfa-email-challenge',
       data: {
         email: 'test@example.com',
-        remember_device: true,
+        show_remember_device: true,
       },
     } as ScreenContext;
     const screenOverride = new ScreenOverride(screenContext);
     expect(screenOverride.data).toEqual({
       email: 'test@example.com',
-      remember_device: true,
+      showRememberDevice: true,
     });
   });
 
@@ -26,33 +26,33 @@ describe('ScreenOverride', () => {
     expect(screenOverride.data).toBeNull();
   });
 
-  it('should handle remember_device as undefined', () => {
+  it('should handle show_remember_device as undefined', () => {
     const screenContext: ScreenContext = {
       name: 'mfa-email-challenge',
       data: {
         email: 'test@example.com',
-        remember_device: undefined,
+        show_remember_device: undefined,
       },
     } as ScreenContext;
     const screenOverride = new ScreenOverride(screenContext);
     expect(screenOverride.data).toEqual({
       email: 'test@example.com',
-      remember_device: undefined,
+      showRememberDevice: undefined,
     });
   });
 
-  it('should handle remember_device as false', () => {
+  it('should handle show_remember_device as false', () => {
     const screenContext: ScreenContext = {
       name: 'mfa-email-challenge',
       data: {
         email: 'test@example.com',
-        remember_device: false,
+        show_remember_device: false,
       },
     } as ScreenContext;
     const screenOverride = new ScreenOverride(screenContext);
     expect(screenOverride.data).toEqual({
       email: 'test@example.com',
-      remember_device: false,
+      showRememberDevice: false,
     });
   });
 
@@ -61,7 +61,7 @@ describe('ScreenOverride', () => {
       name: 'mfa-email-challenge',
       data: {
         email: 'test@example.com',
-        remember_device: true,
+        show_remember_device: true,
       },
     } as ScreenContext;
     const screenOverride = new ScreenOverride(screenContext);

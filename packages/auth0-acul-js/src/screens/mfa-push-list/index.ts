@@ -1,5 +1,5 @@
+import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
-import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import type { CustomOptions } from '../../../interfaces/common';
@@ -61,7 +61,7 @@ export default class MfaPushList extends BaseContext implements MfaPushListMembe
 
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'back-action',
+      action: FormActions.BACK,
     });
   }
 }
