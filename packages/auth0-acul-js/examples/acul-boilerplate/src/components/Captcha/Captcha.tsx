@@ -1,6 +1,5 @@
 import React from 'react';
-import Input from '../Input/Input';
-import './Captcha.css';
+import Input from '@/components/Input';
 
 interface CaptchaProps {
   captchaImage: string;
@@ -14,15 +13,15 @@ const Captcha: React.FC<CaptchaProps> = ({
   placeholder = 'Enter the code shown above'
 }) => {
   return (
-    <div className="auth0-captcha">
-      <div className="auth0-captcha-image">
+    <div className="mb-4 w-full">
+      <div className="mb-2 mt-2 overflow-hidden border border-gray-300 rounded-md">
         <img 
           src={captchaImage} 
           alt="Captcha" 
-          style={{ maxWidth: '100%', height: 'auto' }} 
+          className="max-w-full h-auto block mx-auto"
         />
       </div>
-      <div className="auth0-input-wrapper">
+      <div className="w-full">
         <Input
           id="captcha"
           placeholder={placeholder}

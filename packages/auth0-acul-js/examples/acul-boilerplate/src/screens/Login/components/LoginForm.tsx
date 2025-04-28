@@ -1,6 +1,6 @@
 import React from 'react';
-import Button from '../../../components/Button/Button';
-import Input from '../../../components/Input/Input';
+import Button from '@/components/Button';
+import Input from '@/components/Input';
 import Captcha from '../../../components/Captcha/Captcha';
 import './login.css';
 
@@ -99,7 +99,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
       )}
 
       {/* Submit Button */}
-      <div className="auth0-button-container">
+      <div className="auth0-button-container w-full">
         <Button 
           type="submit"
           variant="primary"

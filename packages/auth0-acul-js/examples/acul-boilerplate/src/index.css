@@ -1,18 +1,20 @@
+@import "tailwindcss";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Import variables first */
 @import './styles/variables.css';
 
-/* Import common styles */
-@import './styles/common.css';
-@import './styles/custom.css';
-@import './styles/auth-common.css';
-
-/* Import component-specific styles */
-@import './components/Layout/AuthScreen.css';
-@import './components/Input/Input.css';
-@import './components/Button/Button.css';
-@import './screens/login-id/components/login-id.css';
-@import './components/Link/SignupLink.css';
+@layer base {
+  html {
+    height: 100%;
+    overflow-y: auto;
+  }
+  body {
+    background-color: var(--color-page-background);
+    min-height: 100%;
+    height: 100%;
+    font-family: var(--font-family);
+  }
+}
