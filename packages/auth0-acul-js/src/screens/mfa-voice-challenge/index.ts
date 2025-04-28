@@ -50,7 +50,7 @@ export default class MfaVoiceChallenge extends BaseContext implements MfaVoiceCh
    * const mfaVoiceChallenge = new MfaVoiceChallenge();
    * mfaVoiceChallenge.continue({
    *   code: '123456',
-   *   rememberBrowser: true
+   *   rememberDevice: true
    * });
    * ```
    */
@@ -59,11 +59,12 @@ export default class MfaVoiceChallenge extends BaseContext implements MfaVoiceCh
       state: this.transaction.state,
       telemetry: [MfaVoiceChallenge.screenIdentifier, 'default'],
     };
+    const { rememberDevice = false, ...restPayload } = payload || {};
 
     const formPayload = {
-      ...payload,
+      ...restPayload,
       action: FormActions.DEFAULT,
-      rememberBrowser: payload.rememberBrowser ? 'true' : undefined,
+      rememberBrowser: rememberDevice ? 'true' : undefined,
     };
 
     await new FormHandler(options).submitData(formPayload);

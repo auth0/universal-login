@@ -28,7 +28,7 @@ export interface ContinueOptions {
   /** The code entered by the user */
   code: string;
   /** Indicates whether to remember the browser */
-  rememberBrowser?: boolean;
+  rememberDevice?: boolean;
   /** Any additional custom options */
   [key: string]: string | number | boolean | undefined;
 }
@@ -50,7 +50,7 @@ export interface MfaOtpChallengeMembers extends BaseMembers {
 
   /**
    * Continues with the OTP challenge using the provided code
-   * @param payload The options containing the code and rememberBrowser flag
+   * @param payload The options containing the code and rememberDevice flag
    */
   continue(payload: ContinueOptions): Promise<void>;
 

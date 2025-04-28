@@ -47,7 +47,7 @@ export default class MfaOtpChallenge extends BaseContext implements MfaOtpChalle
    * const mfaOtpChallenge = new MfaOtpChallenge();
    * await mfaOtpChallenge.continue({
    *   code: '123456',
-   *   rememberBrowser: true
+   *   rememberDevice: true
    * });
    * ```
    */
@@ -59,7 +59,7 @@ export default class MfaOtpChallenge extends BaseContext implements MfaOtpChalle
 
     const submitPayload: Record<string, string | number | boolean> = { ...payload, action: 'default' };
 
-    if (payload.rememberBrowser) {
+    if (payload.rememberDevice) {
       submitPayload.rememberBrowser = 'true';
     }
 

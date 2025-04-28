@@ -50,10 +50,10 @@ export default class MfaPushChallengePush extends BaseContext implements MfaPush
       state: this.transaction.state,
       telemetry: [MfaPushChallengePush.screenIdentifier, 'continue'],
     };
-
+    const { rememberDevice = false, ...restPayload } = payload || {};
     await new FormHandler(options).submitData<WithRememberOptions>({
-      rememberDevice: payload?.rememberDevice ?? false,
-      ...payload,
+      rememberBrowser: rememberDevice ? 'true' : undefined,
+      ...restPayload,
       action: FormActions.CONTINUE,
     });
   }
@@ -72,9 +72,10 @@ export default class MfaPushChallengePush extends BaseContext implements MfaPush
       state: this.transaction.state,
       telemetry: [MfaPushChallengePush.screenIdentifier, 'resendPushNotification'],
     };
+    const { rememberDevice = false, ...restPayload } = payload || {};
     await new FormHandler(options).submitData<WithRememberOptions>({
-      rememberDevice: payload?.rememberDevice ?? false,
-      ...payload,
+      rememberBrowser: rememberDevice ? 'true' : undefined,
+      ...restPayload,
       action: FormActions.RESEND,
     });
   }

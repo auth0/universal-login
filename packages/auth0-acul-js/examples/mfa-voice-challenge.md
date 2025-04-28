@@ -12,7 +12,7 @@ const mfaVoiceChallenge = new MfaVoiceChallenge();
 // Submit the verification code the user received via voice call
 mfaVoiceChallenge.continue({
   code: '123456',
-  rememberBrowser: true // Optional: to remember this device for 30 days
+  rememberDevice: true // Optional: to remember this device for 30 days
 });
 ```
 ## Pick a Different Phone Number
@@ -71,7 +71,7 @@ import MfaVoiceChallenge from '@auth0/auth0-acul-js/mfa-voice-challenge';
 const MfaVoiceChallengeScreen: React.FC = () => {
   // State for form inputs
   const [code, setCode] = useState<string>('');
-  const [rememberBrowser, setRememberBrowser] = useState<boolean>(false);
+  const [rememberDevice, setRememberDevice] = useState<boolean>(false);
 
   // UI state
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -100,7 +100,7 @@ const MfaVoiceChallengeScreen: React.FC = () => {
     // Use untrustedData to prepopulate form fields if available
     const savedFormData = mfaVoiceChallenge.untrustedData.submittedFormData;
     if (savedFormData?.rememberDevice !== undefined) {
-      setRememberBrowser(savedFormData.rememberDevice);
+      setRememberDevice(savedFormData.rememberDevice);
     }
   }, []);
 
@@ -115,7 +115,7 @@ const MfaVoiceChallengeScreen: React.FC = () => {
     try {
       await mfaVoiceChallenge.continue({
         code,
-        rememberBrowser,
+        rememberDevice,
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to verify code');
@@ -151,10 +151,10 @@ const MfaVoiceChallengeScreen: React.FC = () => {
   /**
    * Handles the change event for the remember browser checkbox
    */
-  const handleRememberBrowserChange = (
+  const handleRememberDeviceChange = (
     e: ChangeEvent<HTMLInputElement>
   ): void => {
-    setRememberBrowser(e.target.checked);
+    setRememberDevice(e.target.checked);
   };
 
   /**
@@ -251,15 +251,15 @@ const MfaVoiceChallengeScreen: React.FC = () => {
             {showRememberDevice && (
               <div className="flex items-center">
                 <input
-                  id="remember-browser"
-                  name="remember-browser"
+                  id="remember-device"
+                  name="remember-device"
                   type="checkbox"
-                  checked={rememberBrowser}
-                  onChange={handleRememberBrowserChange}
+                  checked={rememberDevice}
+                  onChange={handleRememberDeviceChange}
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
                 <label
-                  htmlFor="remember-browser"
+                  htmlFor="remember-device"
                   className="ml-2 block text-sm text-gray-900"
                 >
                   Remember this device for 30 days

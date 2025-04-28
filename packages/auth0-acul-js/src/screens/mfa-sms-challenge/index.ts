@@ -37,8 +37,8 @@ export default class MfaSmsChallenge extends BaseContext implements MfaSmsChalle
   }
 
   /**
-   * Submits the MFA SMS challenge with the provided code and rememberBrowser option.
-   * @param {MfaSmsChallengeOptions} payload - The payload containing the code and rememberBrowser option.
+   * Submits the MFA SMS challenge with the provided code and rememberDevice option.
+   * @param {MfaSmsChallengeOptions} payload - The payload containing the code and rememberDevice option.
    * @returns {Promise<void>}
    * @example
    * ```typescript
@@ -47,7 +47,7 @@ export default class MfaSmsChallenge extends BaseContext implements MfaSmsChalle
    * const mfaSmsChallenge = new MfaSmsChallenge();
    * await mfaSmsChallenge.continueMfaSmsChallenge({
    *   code: '123456',
-   *   rememberBrowser: true,
+   *   rememberDevice: true,
    * });
    * ```
    */
@@ -59,7 +59,7 @@ export default class MfaSmsChallenge extends BaseContext implements MfaSmsChalle
 
     const submitPayload: Record<string, string | number | boolean> = { ...payload, action: 'default' };
 
-    if (payload.rememberBrowser) {
+    if (payload.rememberDevice) {
       submitPayload.rememberBrowser = 'true';
     }
 

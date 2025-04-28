@@ -14,7 +14,7 @@ const { rememberDevice } = mfaSmsChallenge.untrustedData.submittedFormData || {}
 // Example of submitting the MFA SMS challenge with values from untrustedData
 mfaSmsChallenge.continueMfaSmsChallenge({
   code: '123456',
-  rememberBrowser: rememberDevice || false,
+  rememberDevice: rememberDevice || false,
 });
 
 // Example of picking a different SMS configuration
@@ -55,7 +55,7 @@ const MfaSmsChallengeScreen = () => {
     try {
       await mfaSmsChallenge.continueMfaSmsChallenge({
         code,
-        rememberBrowser: rememberDevice,
+        rememberDevice,
       });
     } catch (error) {
       console.error('MFA SMS Challenge failed:', error);

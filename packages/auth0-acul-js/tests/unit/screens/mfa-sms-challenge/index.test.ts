@@ -27,7 +27,7 @@ describe('MfaSmsChallenge', () => {
     it('should handle continueMfaSmsChallenge with valid payload correctly', async () => {
       const payload: MfaSmsChallengeOptions = {
         code: '123456',
-        rememberBrowser: true,
+        rememberDevice: true,
       };
 
       await mfaSmsChallenge.continueMfaSmsChallenge(payload);
@@ -42,10 +42,10 @@ describe('MfaSmsChallenge', () => {
       );
     });
 
-    it('should handle continueMfaSmsChallenge with rememberBrowser as false', async () => {
+    it('should handle continueMfaSmsChallenge with rememberDevice as false', async () => {
       const payload: MfaSmsChallengeOptions = {
         code: '123456',
-        rememberBrowser: false,
+        rememberDevice: false,
       };
 
       await mfaSmsChallenge.continueMfaSmsChallenge(payload);
@@ -59,7 +59,7 @@ describe('MfaSmsChallenge', () => {
       );
     });
 
-    it('should handle continueMfaSmsChallenge without rememberBrowser', async () => {
+    it('should handle continueMfaSmsChallenge without rememberDevice', async () => {
       const payload: MfaSmsChallengeOptions = {
         code: '123456',
       };
@@ -79,7 +79,7 @@ describe('MfaSmsChallenge', () => {
       mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
       const payload: MfaSmsChallengeOptions = {
         code: '123456',
-        rememberBrowser: true,
+        rememberDevice: true,
       };
 
       await expect(mfaSmsChallenge.continueMfaSmsChallenge(payload)).rejects.toThrow('Mocked reject');

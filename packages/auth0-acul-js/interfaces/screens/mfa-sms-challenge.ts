@@ -5,7 +5,7 @@ import type { UntrustedDataMembers } from '../models/untrusted-data';
 
 export interface MfaSmsChallengeOptions {
   code: string;
-  rememberBrowser?: boolean;
+  rememberDevice?: boolean;
   [key: string]: string | number | boolean | undefined;
 }
 

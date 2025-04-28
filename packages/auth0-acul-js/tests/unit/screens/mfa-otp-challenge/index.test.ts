@@ -27,7 +27,7 @@ describe('MfaOtpChallenge', () => {
     it('should handle continue with valid payload correctly', async () => {
       const payload: ContinueOptions = {
         code: '123456',
-        rememberBrowser: true,
+        rememberDevice: true,
       };
 
       await mfaOtpChallenge.continue(payload);
@@ -42,7 +42,7 @@ describe('MfaOtpChallenge', () => {
       );
     });
 
-    it('should handle continue without rememberBrowser correctly', async () => {
+    it('should handle continue without rememberDevice correctly', async () => {
       const payload: ContinueOptions = {
         code: '123456',
       };
@@ -63,7 +63,7 @@ describe('MfaOtpChallenge', () => {
 
       const payload: ContinueOptions = {
         code: '123456',
-        rememberBrowser: true,
+        rememberDevice: true,
       };
 
       await expect(mfaOtpChallenge.continue(payload)).rejects.toThrow('Mocked reject');

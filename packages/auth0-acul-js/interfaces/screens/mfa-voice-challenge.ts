@@ -15,7 +15,7 @@ export interface ContinueOptions {
   /**
    * Optional flag to remember the device for 30 days, skipping future MFA challenges.
    */
-  rememberBrowser?: boolean;
+  rememberDevice?: boolean;
 
   /**
    * Additional custom options to pass with the request.
@@ -70,7 +70,7 @@ export interface MfaVoiceChallengeMembers extends BaseMembers {
    * const mfaVoiceChallenge = new MfaVoiceChallenge();
    * mfaVoiceChallenge.continue({
    *   code: '123456',
-   *   rememberBrowser: true
+   *   rememberDevice: true
    * });
    * ```
    */
