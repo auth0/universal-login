@@ -29,7 +29,7 @@ describe('MfaPushChallengePush', () => {
       await mfaPushChallengePush.continue(payload);
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
-        expect.objectContaining({ ...payload, rememberDevice: false })
+        expect.objectContaining({ ...payload })
       );
     });
 
@@ -37,8 +37,7 @@ describe('MfaPushChallengePush', () => {
       await mfaPushChallengePush.continue();
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith({
-        action: FormActions.CONTINUE,
-        rememberDevice: false,
+        action: FormActions.CONTINUE
       });
     });
   });
@@ -55,7 +54,8 @@ describe('MfaPushChallengePush', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenLastCalledWith(
         expect.objectContaining({
-          ...payload,
+          someOption: 'value',
+          rememberBrowser: true,
           action: FormActions.CONTINUE,
         })
       );
@@ -66,8 +66,7 @@ describe('MfaPushChallengePush', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: FormActions.CONTINUE,
-          rememberDevice: false,
+          action: FormActions.CONTINUE
         })
       );
     });
@@ -83,8 +82,7 @@ describe('MfaPushChallengePush', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: FormActions.RESEND,
-          rememberDevice: false,
+          action: FormActions.RESEND
         })
       );
     });

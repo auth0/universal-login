@@ -3,23 +3,27 @@ import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
+import { UntrustedDataOverride } from './untrusted-data-overrider';
 
 import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
+import type { UntrustedDataContext } from '../../../interfaces/models/untrusted-data';
 import type {
   MfaPushChallengePushMembers,
-  ScreenMembersOnMfaPushChallengePush as ScreenOptions,
   WithRememberOptions,
+  ScreenMembersOnMfaPushChallengePush as ScreenOptions,
+  UntrustedDataMembersOnMfaPushChallengePush as UntrustedDataOptions,
 } from '../../../interfaces/screens/mfa-push-challenge-push';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 /**
  * Class implementing the mfa-push-challenge-push screen functionality
- * This screen is shown when a push notification has been sent to the user's device
+ * This screen is shown when a user needs to confirm a push notification during MFA
  */
 export default class MfaPushChallengePush extends BaseContext implements MfaPushChallengePushMembers {
   static screenIdentifier: string = ScreenIds.MFA_PUSH_CHALLENGE_PUSH;
   screen: ScreenOptions;
+  untrustedData: UntrustedDataOptions;
 
   /**
    * Creates an instance of MfaPushChallengePush screen manager
@@ -27,7 +31,9 @@ export default class MfaPushChallengePush extends BaseContext implements MfaPush
   constructor() {
     super();
     const screenContext = this.getContext('screen') as ScreenContext;
+    const untrustedDataContext = this.getContext('untrusted_data') as UntrustedDataContext;
     this.screen = new ScreenOverride(screenContext);
+    this.untrustedData = new UntrustedDataOverride(untrustedDataContext);
   }
 
   /**
@@ -45,11 +51,13 @@ export default class MfaPushChallengePush extends BaseContext implements MfaPush
       telemetry: [MfaPushChallengePush.screenIdentifier, 'continue'],
     };
 
-    await new FormHandler(options).submitData<WithRememberOptions>({
-      rememberDevice: payload?.rememberDevice ?? false,
-      ...payload,
-      action: FormActions.CONTINUE,
-    });
+    const { rememberDevice, ...restPayload } = payload || {};
+    const submitPayload: Record<string, string | number | boolean> = { ...restPayload, action: FormActions.CONTINUE };
+
+    if (rememberDevice) {
+      submitPayload.rememberBrowser = true;
+    }
+    await new FormHandler(options).submitData(submitPayload);
   }
 
   /**
@@ -66,9 +74,10 @@ export default class MfaPushChallengePush extends BaseContext implements MfaPush
       state: this.transaction.state,
       telemetry: [MfaPushChallengePush.screenIdentifier, 'resendPushNotification'],
     };
+    const { rememberDevice = false, ...restPayload } = payload || {};
     await new FormHandler(options).submitData<WithRememberOptions>({
-      rememberDevice: payload?.rememberDevice ?? false,
-      ...payload,
+      rememberBrowser: rememberDevice ? 'true' : undefined,
+      ...restPayload,
       action: FormActions.RESEND,
     });
   }
@@ -114,6 +123,11 @@ export default class MfaPushChallengePush extends BaseContext implements MfaPush
   }
 }
 
-export { MfaPushChallengePushMembers, WithRememberOptions, ScreenOptions as ScreenMembersOnMfaPushChallengePush };
+export {
+  MfaPushChallengePushMembers,
+  WithRememberOptions,
+  ScreenOptions as ScreenMembersOnMfaPushChallengePush,
+  UntrustedDataOptions as UntrustedDataMembersOnMfaPushChallengePush,
+};
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';

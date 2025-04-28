@@ -54,7 +54,7 @@ describe('MfaVoiceChallenge', () => {
     it('should handle continue with remember browser option correctly', async () => {
       const payload: ContinueOptions = {
         code: '123456',
-        rememberBrowser: true,
+        rememberDevice: true,
       };
 
       await mfaVoiceChallenge.continue(payload);
@@ -64,7 +64,7 @@ describe('MfaVoiceChallenge', () => {
         expect.objectContaining({
           code: '123456',
           action: FormActions.DEFAULT,
-          rememberBrowser: 'true',
+          rememberBrowser: true,
         })
       );
     });

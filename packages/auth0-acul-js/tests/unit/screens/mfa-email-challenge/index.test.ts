@@ -33,9 +33,9 @@ describe('MfaEmailChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          ...payload,
+          code: '123456',
           action: FormActions.DEFAULT,
-          rememberDevice: 'true',
+          rememberBrowser: true,
         })
       );
     });

@@ -1,6 +1,7 @@
 import type { CustomOptions } from '../common';
 import type { BaseMembers } from '../models/base-context';
 import type { ScreenMembers } from '../models/screen';
+import type { UntrustedDataMembers } from '../models/untrusted-data';
 
 /**
  * Options for submitting the voice challenge code.
@@ -14,7 +15,7 @@ export interface ContinueOptions {
   /**
    * Optional flag to remember the device for 30 days, skipping future MFA challenges.
    */
-  rememberBrowser?: boolean;
+  rememberDevice?: boolean;
 
   /**
    * Additional custom options to pass with the request.
@@ -56,6 +57,8 @@ export interface MfaVoiceChallengeMembers extends BaseMembers {
    */
   screen: ScreenMembersOnMfaVoiceChallenge;
 
+  untrustedData: UntrustedDataMembersOnMfaVoiceChallenge;
+
   /**
    * Submits the voice verification code to validate the MFA challenge.
    *
@@ -67,7 +70,7 @@ export interface MfaVoiceChallengeMembers extends BaseMembers {
    * const mfaVoiceChallenge = new MfaVoiceChallenge();
    * mfaVoiceChallenge.continue({
    *   code: '123456',
-   *   rememberBrowser: true
+   *   rememberDevice: true
    * });
    * ```
    */
@@ -128,4 +131,13 @@ export interface MfaVoiceChallengeMembers extends BaseMembers {
    * ```
    */
   tryAnotherMethod(payload?: CustomOptions): Promise<void>;
+}
+
+/**
+ * Interface for untrusted data specific to mfa-voice-challenge screen
+ */
+export interface UntrustedDataMembersOnMfaVoiceChallenge extends UntrustedDataMembers {
+  submittedFormData: {
+    rememberDevice?: boolean;
+  } | null;
 }

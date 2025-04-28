@@ -1,6 +1,7 @@
 import type { CustomOptions } from '../common';
 import type { BaseMembers } from '../models/base-context';
 import type { ScreenMembers } from '../models/screen';
+import type { UntrustedDataMembers } from '../models/untrusted-data';
 
 /**
  * Interface for the screen data specific to mfa-push-challenge-push screen
@@ -14,6 +15,15 @@ export interface ScreenMembersOnMfaPushChallengePush extends ScreenMembers {
   } | null;
 }
 
+/**
+ * Interface for untrusted data specific to mfa-push-challenge-push screen
+ */
+export interface UntrustedDataMembersOnMfaPushChallengePush extends UntrustedDataMembers {
+  submittedFormData: {
+    rememberDevice?: boolean;
+  } | null;
+}
+
 export interface WithRememberOptions extends CustomOptions {
   rememberDevice?: boolean;
 }
@@ -23,6 +33,7 @@ export interface WithRememberOptions extends CustomOptions {
  */
 export interface MfaPushChallengePushMembers extends BaseMembers {
   screen: ScreenMembersOnMfaPushChallengePush;
+  untrustedData: UntrustedDataMembersOnMfaPushChallengePush;
 
   /**
    * Continues with the push notification challenge
