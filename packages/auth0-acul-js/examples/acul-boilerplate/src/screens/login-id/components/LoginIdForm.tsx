@@ -1,8 +1,8 @@
 import React from 'react';
-import Button from '@/components/Button';
-import Input from '@/components/Input';
-import { navigateWithCurrentOrigin } from '../../../utils/url';
-import './login-id.css';
+import Button from '@/common/Button';
+import Input from '@/common/Input';
+import { navigateWithCurrentOrigin } from '@/utils/url';
+import Captcha from '@/common/Captcha';
 
 export interface LoginIdFormProps {
   loginIdRef: React.RefObject<HTMLInputElement>;
@@ -15,7 +15,6 @@ export interface LoginIdFormProps {
   loginIdPlaceholder?: string;
   captchaPlaceholder?: string;
   loginIdError?: string;
-  captchaError?: string;
   className?: string;
   showPasskeyButton?: boolean;
   onPasskeyClick?: () => void;
@@ -35,7 +34,6 @@ const LoginIdForm: React.FC<LoginIdFormProps> = ({
   loginIdPlaceholder = 'Email address',
   captchaPlaceholder = 'Enter the code shown above',
   loginIdError,
-  captchaError,
   className = '',
   forgotPasswordLink = '#',
   forgotPasswordText = "Can't log in to your account?"
@@ -46,53 +44,40 @@ const LoginIdForm: React.FC<LoginIdFormProps> = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className={`auth0-form ${className}`}>
-      {/* Login ID Input */}
-      <div className="auth0-input-wrapper">
-        <Input
-          id="login-id"
-          placeholder={loginIdPlaceholder}
-          type="text"
-          autoComplete="username email"
-          required
-          error={loginIdError}
-          ref={loginIdRef}
-        />
-      </div>
+    <form onSubmit={handleSubmit} className={`w-full space-y-4 ${className}`}> 
+      <Input
+        id="login-id"
+        placeholder={loginIdPlaceholder}
+        type="text"
+        autoComplete="username email"
+        required
+        error={loginIdError}
+        ref={loginIdRef}
+      />
 
-      {/* Captcha */}
       {isCaptchaAvailable && (
-        <div className="auth0-captcha">
-          <div className="auth0-captcha-image">
-            <img src={captchaImage} alt="Captcha" style={{ maxWidth: '100%', height: 'auto' }} />
-          </div>
-          <div className="auth0-input-wrapper">
-            <Input
-              id="captcha"
-              placeholder={captchaPlaceholder}
-              type="text"
-              required
-              error={captchaError}
-              ref={captchaRef}
-            />
-          </div>
-        </div>
+        <Captcha
+          captchaImage={captchaImage}
+          captchaRef={captchaRef!} 
+          placeholder={captchaPlaceholder}
+        />
       )}
 
-      {/* Forgot Password link */}
       {forgotPasswordLink && forgotPasswordText && (
-        <div className="auth0-forgot-password auth0-forgot-password-left">
+        <div className="pt-2 text-left text-sm">
           <a href={forgotPasswordLink} onClick={(e) => {
             e.preventDefault();
-            // Use the utility function to navigate
             navigateWithCurrentOrigin(forgotPasswordLink);
-          }}><strong>{forgotPasswordText}</strong></a>
+          }}
+             className="font-semibold text-[color:var(--color-links)] no-underline hover:underline"
+          >
+            {forgotPasswordText}
+          </a>
         </div>
       )}
 
-      {/* Submit Button */}
-      <div className="auth0-button-container">
-        <Button 
+      <div className="pt-2">
+        <Button
           type="submit"
           variant="primary"
           fullWidth

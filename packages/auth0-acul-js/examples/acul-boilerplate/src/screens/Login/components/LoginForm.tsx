@@ -1,10 +1,10 @@
 import React from 'react';
-import Button from '@/components/Button';
-import Input from '@/components/Input';
-import Captcha from '../../../components/Captcha/Captcha';
-import './login.css';
+import Button from '@/common/Button';
+import Input from '@/common/Input';
+import Captcha from '@/common/Captcha';
 
-interface LoginFormProps {
+
+export interface LoginFormProps {
   usernameRef: React.RefObject<HTMLInputElement>;
   passwordRef: React.RefObject<HTMLInputElement>;
   captchaRef: React.RefObject<HTMLInputElement>;
@@ -30,7 +30,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
   onSubmit,
   isLoading,
   isCaptchaAvailable = false,
-  captchaImage = "https://via.placeholder.com/150",
+  captchaImage = "",
   countryCode,
   countryPrefix,
   buttonText = "Continue",
@@ -51,9 +51,8 @@ const LoginForm: React.FC<LoginFormProps> = ({
   }, [countryCode, countryPrefix]);
 
   return (
-    <form onSubmit={onSubmit} className="auth0-form">
-      {/* Username/Email Input */}
-      <div className="auth0-input-wrapper">
+    <form onSubmit={onSubmit} className="w-full space-y-4">
+      <div>
         <Input
           id="username"
           placeholder={usernamePlaceholder}
@@ -64,8 +63,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
         />
       </div>
 
-      {/* Password Input */}
-      <div className="auth0-input-wrapper">
+      <div>
         <Input
           id="password"
           placeholder={passwordPlaceholder}
@@ -77,8 +75,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
         />
       </div>
 
-      {/* Captcha */}
-      {isCaptchaAvailable && (
+      {isCaptchaAvailable && captchaImage && (
         <Captcha
           captchaImage={captchaImage}
           captchaRef={captchaRef}
@@ -86,21 +83,20 @@ const LoginForm: React.FC<LoginFormProps> = ({
         />
       )}
 
-      {/* Reset Password Link */}
       {resetPasswordLink && resetPasswordText && (
-        <div className="auth0-forgot-password">
-          <a 
+        <div className="text-left my-2">
+          <a
             href={resetPasswordLink}
             onClick={(e) => onResetPasswordClick ? onResetPasswordClick(e, resetPasswordLink) : undefined}
+            className="text-sm font-bold text-[color:var(--color-links)] no-underline hover:underline"
           >
-            <strong>{resetPasswordText}</strong>
+            {resetPasswordText}
           </a>
         </div>
       )}
 
-      {/* Submit Button */}
-      <div className="auth0-button-container w-full">
-        <Button 
+      <div className="pt-2 w-full">
+        <Button
           type="submit"
           variant="primary"
           fullWidth

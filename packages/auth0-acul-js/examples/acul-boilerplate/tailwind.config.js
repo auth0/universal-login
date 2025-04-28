@@ -166,7 +166,7 @@ export default {
         'auth0': 'background-color, border-color, color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter',
       },
       transitionDuration: {
-        'auth0': 'var(--transition-duration, 200ms)',
+        'auth0': 'var(--transition-duration, 100ms)',
       },
        // Keep simple width/height helpers if needed
       width: {

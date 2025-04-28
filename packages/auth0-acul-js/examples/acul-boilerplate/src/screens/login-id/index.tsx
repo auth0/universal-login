@@ -1,22 +1,14 @@
 import React, { useMemo } from "react";
 import { useLoginIdManager } from './hooks/useLoginIdManager';
 import { useLoginIdForm } from './hooks/useLoginIdForm';
-import ThemeProvider from '../../components/ThemeProvider';
-import Logo from '../../components/Logo';
-import SignupLink from '../../components/Link/SignupLink';
+import ThemeProvider from '@/common/ThemeProvider';
+import Logo from '@/common/Logo';
+import SignupLink from '@/common/Link';
 import LoginIdForm, { LoginIdFormProps } from './components/LoginIdForm';
-import ErrorMessages from '../../components/Alert/ErrorMessages';
-import AuthScreenTemplate from '../../components/Layout/AuthScreen';
-import SocialButton from "../../components/SocialButton";
-import { navigateWithCurrentOrigin } from '../../utils/url';
-
-// Define the type for connection objects
-interface Connection {
-  name: string;
-  display_name?: string;
-  logo_url?: string;
-  strategy?: string;
-}
+import ErrorMessages from '@/common/Alert';
+import AuthScreenTemplate from '@/common/Layout';
+import SocialLoginGroup from '@/common/AuthenticationAlternatives';
+import { navigateWithCurrentOrigin } from '@/utils/url';
 
 const LoginIdScreen: React.FC = () => {
   const { loginIdInstance, handleLoginId, handlePasskeyLogin, handleSocialLogin } = useLoginIdManager();
@@ -60,14 +52,6 @@ const LoginIdScreen: React.FC = () => {
     
   const showPasskeyButton = isPasskeyEnabled && hasPublicKey;
 
-  // Get alternative connections (social logins)
-  const alternateConnections = transactionData.alternateConnections || [];
-  const showSocialLogins = alternateConnections.length > 0;
-  
-  // Show the separator if passkey or social logins are available
-  const showSeparator = showPasskeyButton || showSocialLogins;
-  
-  // Determine the login ID placeholder based on allowed identifiers
   const loginIdPlaceholder = useMemo(() => {
     const allowedIdentifiers = transactionData.allowedIdentifiers || [];
     
@@ -86,7 +70,7 @@ const LoginIdScreen: React.FC = () => {
     // Sort identifiers to create a consistent key
     const key = [...allowedIdentifiers].sort().join(',');
     
-    return placeholderMap[key as keyof typeof placeholderMap].concat('*') || placeholderMap.default.concat('*');
+    return placeholderMap[key as keyof typeof placeholderMap]?.concat('*') || placeholderMap.default.concat('*');
   }, [transactionData.allowedIdentifiers, texts]);
 
   // Prepare props for LoginIdForm using explicit type
@@ -100,59 +84,17 @@ const LoginIdScreen: React.FC = () => {
     buttonText: texts.buttonText || 'Continue',
     loginIdPlaceholder,
     captchaPlaceholder: texts.captchaCodePlaceholder || 'Enter the code shown above',
-    showPasskeyButton: false, // Rendering passkey button separately outside the form
+    showPasskeyButton: false, 
     forgotPasswordLink: resetPasswordLink,
     forgotPasswordText: texts.forgotPasswordText || "Can't log in to your account?"
   };
   
-  // Handler for signup link click
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
     e.preventDefault();
     navigateWithCurrentOrigin(path);
   };
 
   const errorMessages = hasErrors ? <ErrorMessages errors={errors} /> : undefined;
-
-  // Alternative authentication options (passkey and social logins)
-  const alternativeOptions = (
-    <>
-      {showSeparator && (
-        <div className="auth0-separator" data-testid="auth0-separator">
-          <div className="auth0-separator-line"></div>
-          <span className="auth0-separator-text">{texts.separatorText || 'OR'}</span>
-          <div className="auth0-separator-line"></div>
-        </div>
-      )}
-      
-      {showPasskeyButton && (
-        <div className="auth0-alternate-button-container" data-testid="passkey-button-container">
-          <button 
-            type="button"
-            className="auth0-button auth0-button-secondary auth0-button-fullwidth"
-            onClick={handlePasskeyLogin}
-            data-testid="passkey-button"
-          >
-            {texts.passkeyButtonText || 'Continue with a passkey'}
-          </button>
-        </div>
-      )}
-      
-      {showSocialLogins && (
-        <div className="auth0-social-buttons" data-testid="social-buttons-container">
-          {alternateConnections.map((connection: Connection) => (
-            <SocialButton
-              key={connection.name}
-              provider={connection.name}
-              displayName={connection.display_name || connection.name}
-              iconUrl={connection.logo_url}
-              onClick={() => handleSocialLogin(connection.name)}
-              data-testid={`social-button-${connection.name}`}
-            />
-          ))}
-        </div>
-      )}
-    </>
-  );
 
   return (
     <ThemeProvider instance={loginIdInstance}>
@@ -172,7 +114,14 @@ const LoginIdScreen: React.FC = () => {
                 onLinkClick={handleLinkClick}
               />
             )}
-            {alternativeOptions}
+            <SocialLoginGroup
+              connections={transactionData.alternateConnections || []}
+              onSocialLogin={(conn) => handleSocialLogin(conn.name)}
+              separatorText={texts.separatorText}
+              showPasskeyButton={showPasskeyButton}
+              onPasskeyClick={handlePasskeyLogin}
+              passkeyButtonText={texts.passkeyButtonText}
+            />
           </>
         }
         footerLinks={null}

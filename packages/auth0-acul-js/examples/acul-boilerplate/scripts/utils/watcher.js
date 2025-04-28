@@ -128,7 +128,7 @@ export const watchAndUpload = async (screenName) => {
   // Set up directories to watch
   const watchDirs = [
     screenPath,                           // Screen-specific directory
-    path.join(srcPath, 'components'),     // Shared components
+    path.join(srcPath, 'common'),     // Shared components
     path.join(srcPath, 'styles'),         // Styles
     path.join(srcPath, 'utils')           // Utilities
   ];

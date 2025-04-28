@@ -1,16 +1,14 @@
 import React from "react";
 import { useLoginManager } from "./hooks/useLoginManager";
 import { useLoginForm } from "./hooks/useLoginForm";
-import ThemeProvider from "../../components/ThemeProvider";
-import Logo from "../../components/Logo";
-import SignupLink from "../../components/Link/SignupLink";
+import ThemeProvider from "@/common/ThemeProvider";
+import Logo from "@/common/Logo";
+import SignupLink from "@/common/Link";
 import LoginForm from "./components/LoginForm";
-import SocialLoginGroup, {
-  Connection,
-} from "../../components/SocialLogin/SocialLoginGroup";
-import ErrorMessages from "../../components/Alert/ErrorMessages";
-import AuthScreenTemplate from "../../components/Layout/AuthScreen";
-import { navigateWithCurrentOrigin } from "../../utils/url";
+import SocialLoginGroup, { type Connection } from "@/common/AuthenticationAlternatives";
+import ErrorMessages from "@/common/Alert";
+import AuthScreenTemplate from "@/common/Layout";
+import { navigateWithCurrentOrigin } from "@/utils/url";
 
 interface LoginConnection {
   name: string;
@@ -69,21 +67,6 @@ const LoginScreen: React.FC = () => {
     onResetPasswordClick: handleLinkClick,
   };
 
-  const socialLoginProps =
-    connections.length > 0
-      ? {
-          connections: connections.map((conn) => ({
-            name: conn.name,
-            display_name: conn.display_name || conn.name,
-            icon_url: conn.logo_url,
-          })) as Connection[],
-          onSocialLogin: (connection: Connection) =>
-            handleSocialLogin(connection.name),
-          separatorText: texts.separatorText,
-          labelTemplate: (name: string) => `Continue with ${name}`,
-        }
-      : undefined;
-
   const errorMessages = hasErrors ? (
     <ErrorMessages errors={errors} />
   ) : undefined;
@@ -99,7 +82,20 @@ const LoginScreen: React.FC = () => {
           onLinkClick={handleLinkClick}
         />
       )}
-      {socialLoginProps && <SocialLoginGroup {...socialLoginProps} />}
+      {connections.length > 0 && (
+         <SocialLoginGroup
+          connections={connections.map((conn) => ({
+            name: conn.name,
+            display_name: conn.display_name,
+            icon_url: conn.logo_url,
+          })) as Connection[]}
+          onSocialLogin={(connection: Connection) => handleSocialLogin(connection.name)}
+          separatorText={texts.separatorText}
+          showPasskeyButton={false}
+          onPasskeyClick={undefined}
+          passkeyButtonText={undefined}
+        />
+      )}
     </>
   );
 

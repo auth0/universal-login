@@ -153,7 +153,7 @@ acul-boilerplate/
 ├── dist/                # Production build output
 ├── screen-tester/       # React SPA for initiating auth flows
 ├── src/                 # Source files
-│   ├── components/      # Shared, reusable UI components (grouped by function)
+│   ├── common/          # Shared, reusable UI components (grouped by function)
 │   │   ├── Button/      # e.g., Button components
 │   │   ├── Input/       # e.g., Input components
 │   │   ├── Layout/      # e.g., Layout templates like AuthScreen
@@ -166,7 +166,7 @@ acul-boilerplate/
 │   │       │   └── ...
 │   │       ├── hooks/      # Hooks specific ONLY to this screen
 │   │       └── index.tsx   # Main screen component
-│   ├── styles/          # Global styles & CSS variables
+│   ├── styles/          # Contains variables.css for dynamic theming via CSS variables
 │   └── utils/           # Shared utility functions
 ├── scripts/             # Build and development scripts
 │   ├── utils/           # Utility functions and helpers
