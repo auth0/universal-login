@@ -6,11 +6,11 @@
 - **Changed** `code` field to `text_code` in `device-code-confirmation` screen.
   - The field `code` is deprecated; use `text_code` instead.
 - **Changed** `remember_device` to `showRememberDevice` under `SCREEN_INSTANCE.screen.data` for the following screens.
-  - mfa-email-challenge
-  - mfa-voice-challenge
-  - mfa-sms-challenge
-  - mfa-push-challenge-push
-  - mfa-otp-challenge
+  - `mfa-email-challenge`
+  - `mfa-voice-challenge`
+  - `mfa-sms-challenge`
+  - `mfa-push-challenge-push`
+  - `mfa-otp-challenge`
 
 ### ✨ What’s new ?
 
@@ -19,8 +19,8 @@
   - `mfa-voice-challenge`
   - `reset-password-mfa-voice-challenge`
 - **Added** `showLinkVoice` under `SCREEN_INSTANCE.screen.data` on the following screens :
-  - mfa-sms-challenge
-  - reset-password-mfa-sms-challenge
+  - `mfa-sms-challenge`
+  - `reset-password-mfa-sms-challenge`
 
 ### 🚀 Added support for new screens
 
