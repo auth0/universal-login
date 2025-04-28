@@ -11,6 +11,10 @@
   - `mfa-sms-challenge`
   - `mfa-push-challenge-push`
   - `mfa-otp-challenge`
+- **Changed** the payload to replace `rememberBrowser` with `rememberDevice` in the following screens:
+  - `mfa-voice-challenge`
+  - `mfa-sms-challenge`
+  - `mfa-otp-challenge`
 
 ### ✨ What’s new ?
 
