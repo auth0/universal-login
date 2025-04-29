@@ -13,7 +13,8 @@ This approach provides several benefits:
 - Supports various authentication methods (password, passwordless, social, etc.)
 - Reduces cognitive load by presenting only relevant information at each step
 
-<img width="1728" alt="Screenshot 2025-03-20 at 3 12 30 PM" src="https://github.com/user-attachments/assets/f018f1fb-5097-42e6-85af-699ba4607548" />
+<img width="1728" alt="image" src="https://github.com/user-attachments/assets/7d89da12-b614-4651-86cb-4419783035df" />
+
 
 ## Prerequisites
 
