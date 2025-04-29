@@ -1,5 +1,5 @@
+import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
-import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -65,7 +65,7 @@ export default class LoginPasswordlessEmailCode extends BaseContext implements L
       telemetry: [LoginPasswordlessEmailCode.screenIdentifier, 'resendCode'],
     };
 
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'resend' });
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.RESEND });
   }
 }
 

@@ -2,7 +2,8 @@ import ResetPasswordMfaPushChallengePush from '../../../../src/screens/reset-pas
 import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { CustomOptions } from '../../../../interfaces/common';
-import { ScreenIds } from '../../../../src/utils/enums';
+import { ScreenIds } from '../../../../src//constants';
+import { FormActions } from '../../../../src/constants';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -50,7 +51,7 @@ describe('ResetPasswordMfaPushChallengePush', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'resend'
+          action: FormActions.RESEND
         })
       );
     });
@@ -60,7 +61,7 @@ describe('ResetPasswordMfaPushChallengePush', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'resend'
+          action: FormActions.RESEND
         })
       );
     });
@@ -76,7 +77,7 @@ describe('ResetPasswordMfaPushChallengePush', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'enter-otp-code'
+          action: FormActions.ENTER_OTP_CODE
         })
       );
     });
@@ -86,7 +87,7 @@ describe('ResetPasswordMfaPushChallengePush', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'enter-otp-code'
+          action: FormActions.ENTER_OTP_CODE
         })
       );
     });
@@ -102,7 +103,7 @@ describe('ResetPasswordMfaPushChallengePush', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'pick-authenticator'
+          action: FormActions.PICK_AUTHENTICATOR
         })
       );
     });
@@ -112,7 +113,7 @@ describe('ResetPasswordMfaPushChallengePush', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'pick-authenticator'
+          action: FormActions.PICK_AUTHENTICATOR
         })
       );
     });

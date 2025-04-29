@@ -12,41 +12,30 @@ import ResetPasswordMfaOtpChallenge from '@auth0/auth0-acul-js/reset-password-mf
 
 const ResetPasswordMfaOtpChallengeScreen: React.FC = () => {
   const [code, setCode] = useState('');
-  const [error, setError] = useState('');
-  const [rememberDevice, setRememberDevice] = useState(false);
+  // const [rememberDevice, setRememberDevice] = useState(false);
 
   const resetPasswordMfaOtpChallenge = new ResetPasswordMfaOtpChallenge();
-  const { screen } = resetPasswordMfaOtpChallenge;
+  const { screen, transaction } = resetPasswordMfaOtpChallenge;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-
-    try {
-      await resetPasswordMfaOtpChallenge.continue({
-        code,
-      });
-    } catch (err) {
-      setError('Failed to verify code. Please try again.');
-    }
+    await resetPasswordMfaOtpChallenge.continue({
+      code,
+    });
   };
 
   const handleTryAnotherMethod = async () => {
-    try {
-      await resetPasswordMfaOtpChallenge.tryAnotherMethod();
-    } catch (err) {
-      setError('Failed to try another method. Please try again.');
-    }
+    await resetPasswordMfaOtpChallenge.tryAnotherMethod();
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-100 flex flex-col py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Verify Your Code
+          { screen?.texts?.title ?? 'Verify Your Identity' }
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
-          Enter the code sent to your device
+          { screen?.texts?.description ?? 'Check your preferred one-time password authenticator app for the code.' }
         </p>
       </div>
 
@@ -55,13 +44,14 @@ const ResetPasswordMfaOtpChallengeScreen: React.FC = () => {
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="code" className="block text-sm font-medium text-gray-700">
-                Code
+                {screen?.texts?.placeholder ?? 'Enter your one-time code'}
               </label>
               <div className="mt-1">
                 <input
                   id="code"
                   name="code"
                   type="text"
+                  placeholder={screen?.texts?.placeholder ?? 'Enter your one-time code'}
                   required
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
@@ -70,9 +60,13 @@ const ResetPasswordMfaOtpChallengeScreen: React.FC = () => {
               </div>
             </div>
 
-            {error && (
-              <div className="text-red-600 text-sm">
-                {error}
+            {transaction?.errors?.length && (
+              <div className="mt-2 mb-4">
+                {transaction?.errors.map((err, index) => (
+                  <p key={index} className="text-red-500">
+                    {err.message}
+                  </p>
+                ))}
               </div>
             )}
 
@@ -92,7 +86,7 @@ const ResetPasswordMfaOtpChallengeScreen: React.FC = () => {
                 onClick={handleTryAnotherMethod}
                 className="text-sm text-blue-600 hover:text-blue-500"
               >
-                Try Another Method
+                { screen?.texts?.tryAnotherMethod ?? 'Try another method' }
               </button>
             </div>
           </div>

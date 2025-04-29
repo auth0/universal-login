@@ -13,7 +13,7 @@ The **Auth0 ACUL JS SDK** enables you to work with Advanced Customization for Un
 
 It simplifies integrating authentication screens (login, signup, passwordless, passkey enrollment, etc.) into your web applications, providing the necessary tools for seamless implementation.
 
-⚠ This feature is still in **Limited EA**. Please contact your Account Manager to get this feature enabled on your Auth0 tenant. [read more...](#legal)
+⚠ This feature is still in **Early Access**. Please contact your Account Manager to get this feature enabled on your Auth0 tenant. [read more...](#legal)
 
 ##  Documentation
 
@@ -153,15 +153,30 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 | 31     | mfa-sms-list                  |   [Link](https://auth0.github.io/universal-login/classes/Classes.MfaSmsList.html)                                 |
 | 32     | mfa-email-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaEmailChallenge.html)   |
 | 33     | mfa-email-list          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaEmailList.html)   |
-| 34     | mfa-otp-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaOtpChallenge.html)   |
-| 35     | mfa-otp-enrollment-qr          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaOtpEnrollmentQr.html)   |
-| 36     | reset-password-mfa-email-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaEmailChallenge.html)   |
-| 37     | reset-password-mfa-push-challenge-push          | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaPushChallengePush.html)   |
-| 38     | reset-password-mfa-sms-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaSmsChallenge.html)   |
-| 39     | mfa-otp-enrollment-code          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaOtpEnrollmentCode.html)   |
-| 40     | reset-password-mfa-otp-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaOtpChallenge.html)   |
-| 41     | reset-password-mfa-otp-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.OrganizationSelection.html)   |
-| 42     | organization-picker   | [Link](https://auth0.github.io/universal-login/classes/Classes.OrganizationPicker.html)        |
+| 34     | accept-invitation          | [Link](https://auth0.github.io/universal-login/classes/Classes.AcceptInvitation.html)   |
+| 35     | organization-picker   | [Link](https://auth0.github.io/universal-login/classes/Classes.OrganizationPicker.html)        |
+| 36     | organization-selection   | [Link](https://auth0.github.io/universal-login/classes/Classes.OrganizationSelection.html)        |
+| 37     | mfa-otp-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaOtpChallenge.html)   |
+| 38     | mfa-otp-enrollment-code          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaOtpEnrollmentCode.html)   |
+| 39     | mfa-otp-enrollment-qr          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaOtpEnrollmentQr.html)   |
+| 40     | reset-password-mfa-email-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaEmailChallenge.html)   |
+| 41     | reset-password-mfa-push-challenge-push          | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaPushChallengePush.html)   |
+| 42     | reset-password-mfa-sms-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaSmsChallenge.html)   |
+| 43     | reset-password-mfa-otp-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.OrganizationSelection.html)   |
+| 44     | mfa-phone-enrollment          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaPhoneEnrollment.html)   |
+| 45     | mfa-voice-enrollment          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaVoiceEnrollment.html)   |
+| 46     | mfa-recovery-code-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaRecoveryCodeChallenge.html)   |
+| 47     | device-code-activation-allowed          | [Link](https://auth0.github.io/universal-login/classes/Classes.DeviceCodeActivationAllowed.html)   |
+| 48     | device-code-activation-denied          | [Link](https://auth0.github.io/universal-login/classes/Classes.DeviceCodeActivationDenied.html)   |
+| 49     | device-code-activation          | [Link](https://auth0.github.io/universal-login/classes/Classes.DeviceCodeActivation.html)   |
+| 50     | reset-password-mfa-recovery-code-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaRecoveryCodeChallenge.html)   |
+| 51     | reset-password-mfa-voice          | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaVoiceChallenge.html)   |
+| 52     | redeem-ticket          | [Link](https://auth0.github.io/universal-login/classes/Classes.RedeemTicket.html)   |
+| 53     | device-code-confirmation          | [Link](https://auth0.github.io/universal-login/classes/Classes.DeviceCodeConfirmation.html)   |
+| 54     | mfa-phone-challenge | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaPhoneChallenge.html) |
+| 55     | mfa-voice-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaVoiceChallenge.html)   |
+| 56     | mfa-recovery-code-enrollment          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaRecoveryCodeEnrollment.html)   |
+| 57     | reset-password-mfa-phone-challenge        | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaPhoneChallenge.html)                        |
 
 </details>
 

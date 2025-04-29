@@ -1,5 +1,5 @@
+import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
-import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -46,7 +46,7 @@ export default class ResetPasswordMfaPushChallengePush extends BaseContext imple
   }
 
   /**
-   * Resends the push notification
+   * Re-sends the push notification
    * @param payload Optional custom options to include with the request
    * @example
    * ```typescript
@@ -63,7 +63,7 @@ export default class ResetPasswordMfaPushChallengePush extends BaseContext imple
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'resend',
+      action: FormActions.RESEND,
     });
   }
 
@@ -85,7 +85,7 @@ export default class ResetPasswordMfaPushChallengePush extends BaseContext imple
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'enter-otp-code',
+      action: FormActions.ENTER_OTP_CODE,
     });
   }
 
@@ -107,7 +107,7 @@ export default class ResetPasswordMfaPushChallengePush extends BaseContext imple
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'pick-authenticator',
+      action: FormActions.PICK_AUTHENTICATOR,
     });
   }
 }

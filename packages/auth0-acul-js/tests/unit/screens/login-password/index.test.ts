@@ -2,7 +2,7 @@ import LoginPassword from '../../../../src/screens/login-password';
 import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import type { LoginPasswordOptions } from '../../../../interfaces/screens/login-password';
-import { ScreenIds } from '../../../../src/utils/enums';
+import { ScreenIds } from '../../../../src//constants';
 
 jest.mock('../../../../src/utils/form-handler');
 

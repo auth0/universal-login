@@ -6,7 +6,7 @@
 import PasskeyEnrollment from '@auth0/auth0-acul-js/passkey-enrollment';
 
 const passkeyEnrollment = new PasskeyEnrollment();
-passkeyEnrollment.continueWithPasskeyEnrollment();
+passkeyEnrollment.continuePasskeyEnrollment();
 
 ```
 

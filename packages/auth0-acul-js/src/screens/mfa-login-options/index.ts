@@ -1,8 +1,8 @@
+import { type MfaLoginFactorType, ScreenIds } from '../../constants';
 import { BaseContext } from '../../models/base-context';
-import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
-import type { MfaLoginOptionsMembers, LoginEnrollOptions, LoginFactorType } from '../../../interfaces/screens/mfa-login-options';
+import type { MfaLoginOptionsMembers, LoginEnrollOptions } from '../../../interfaces/screens/mfa-login-options';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 /**
@@ -38,6 +38,6 @@ export default class MfaLoginOptions extends BaseContext implements MfaLoginOpti
   }
 }
 
-export { MfaLoginOptionsMembers, LoginEnrollOptions, LoginFactorType };
+export { MfaLoginOptionsMembers, LoginEnrollOptions, MfaLoginFactorType };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';

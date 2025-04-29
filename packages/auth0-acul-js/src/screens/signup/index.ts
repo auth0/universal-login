@@ -1,5 +1,5 @@
+import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
-import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -93,7 +93,7 @@ export default class Signup extends BaseContext implements SignupMembers {
     };
 
     await new FormHandler(options).submitData({
-      action: 'pick-country-code',
+      action: FormActions.PICK_COUNTRY_CODE,
     });
   }
 }

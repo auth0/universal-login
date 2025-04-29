@@ -3,7 +3,8 @@ import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import type { ContinueOptions } from '../../../../interfaces/screens/mfa-otp-challenge';
 import type { CustomOptions } from '../../../../interfaces/common';
-import { ScreenIds } from '../../../../src/utils/enums';
+import { ScreenIds } from '../../../../src//constants';
+import { FormActions } from '../../../../src/constants';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -26,7 +27,7 @@ describe('MfaOtpChallenge', () => {
     it('should handle continue with valid payload correctly', async () => {
       const payload: ContinueOptions = {
         code: '123456',
-        rememberBrowser: true,
+        rememberDevice: true,
       };
 
       await mfaOtpChallenge.continue(payload);
@@ -34,14 +35,14 @@ describe('MfaOtpChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          ...payload,
-          action: 'default',
-          rememberBrowser: 'true',
+          code: '123456',
+          action: FormActions.DEFAULT,
+          rememberBrowser: true,
         })
       );
     });
 
-    it('should handle continue without rememberBrowser correctly', async () => {
+    it('should handle continue without rememberDevice correctly', async () => {
       const payload: ContinueOptions = {
         code: '123456',
       };
@@ -52,7 +53,7 @@ describe('MfaOtpChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'default',
+          action: FormActions.DEFAULT,
         })
       );
     });
@@ -62,7 +63,7 @@ describe('MfaOtpChallenge', () => {
 
       const payload: ContinueOptions = {
         code: '123456',
-        rememberBrowser: true,
+        rememberDevice: true,
       };
 
       await expect(mfaOtpChallenge.continue(payload)).rejects.toThrow('Mocked reject');
@@ -81,7 +82,7 @@ describe('MfaOtpChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'pick-authenticator',
+          action: FormActions.PICK_AUTHENTICATOR,
         })
       );
     });
@@ -92,7 +93,7 @@ describe('MfaOtpChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'pick-authenticator',
+          action: FormActions.PICK_AUTHENTICATOR,
         })
       );
     });

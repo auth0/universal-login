@@ -5,63 +5,71 @@ This screen is displayed when a push notification has been sent to the user's de
 ## React Component Example with TailwindCSS
 
 ```tsx
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from 'react';
 import MfaPushChallengePush from '@auth0/auth0-acul-js/mfa-push-challenge-push';
 
 const MfaPushChallengePushScreen: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [rememberDevice, setRememberDevice] = useState(false);
-  const [pollingError, setPollingError] = useState<string | null>(null);
-
-  const mfaPushChallengePush = new MfaPushChallengePush();
-  const { screen } = mfaPushChallengePush;
-  const { deviceName } = mfaPushChallengePush.screen.data || {};
+  const pollInterval: React.MutableRefObject<number> = useRef(0);
+  const mfaPushChallengePush = useMemo(() => new MfaPushChallengePush(), []);
+  const { screen, transaction } = mfaPushChallengePush;
+  const { deviceName, showRememberDevice } =
+    mfaPushChallengePush.screen.data || {};
+    
+  // Initialize form values from untrustedData
+  useEffect(() => {
+    // Use untrustedData to prepopulate form fields if available
+    const savedFormData = mfaPushChallengePush.untrustedData.submittedFormData;
+    if (savedFormData?.rememberDevice !== undefined) {
+      setRememberDevice(savedFormData.rememberDevice);
+    }
+  }, []);
 
   const screenText = {
     title: screen.texts?.title ?? 'Push Notification Sent',
-    description: screen.texts?.description ?? 'We\'ve sent a push notification to your device',
-    rememberMe: screen.texts?.rememberMeText ?? 'Remember this device for 30 days',
+    description:
+      screen.texts?.description ??
+      "We've sent a push notification to your device",
+    rememberMe:
+      screen.texts?.rememberMeText ?? 'Remember this device for 30 days',
     resend: screen.texts?.resendActionText ?? 'Resend Push Notification',
     enterCode: screen.texts?.enterOtpCode ?? 'Enter Code Manually',
     tryAnother: screen.texts?.pickAuthenticatorText ?? 'Try Another Method',
-    waiting: screen.texts?.spinner_push_notification_label ?? 'Waiting for you to accept the push notification...',
+    waiting:
+      screen.texts?.spinner_push_notification_label ??
+      'Waiting for you to accept the push notification...',
     errorResend: 'Failed to resend push notification. Please try again.',
     errorManualCode: 'Failed to switch to manual code entry. Please try again.',
-    errorAnotherMethod: 'Failed to switch authentication method. Please try again.',
+    errorAnotherMethod:
+      'Failed to switch authentication method. Please try again.',
   };
 
+  const startPolling = useCallback(async () => {
+    mfaPushChallengePush.continue({ rememberDevice });
+  }, [mfaPushChallengePush, rememberDevice]);
+
   useEffect(() => {
-    let pollInterval: ReturnType<typeof setTimeout> | null = null;
-
-    const startPolling = async () => {
-      try {
-        await mfaPushChallengePush.continue({ rememberDevice });
-        setPollingError(null);
-      } catch (error) {
-        console.error('Polling error:', error);
-        setPollingError('Error contacting server. Please try again later.');
-      }
-    };
-
-    pollInterval = setInterval(startPolling, 5000);
-    startPolling();
+    clearInterval(pollInterval.current);
+    pollInterval.current = setInterval(startPolling, 5000);
 
     return () => {
-      if (pollInterval) {
-        clearInterval(pollInterval);
-      }
+      clearInterval(pollInterval.current);
     };
-  }, [rememberDevice]);
+  }, [startPolling]);
 
   const handleResend = async () => {
     setIsLoading(true);
-    setError(null);
     try {
       await mfaPushChallengePush.resendPushNotification({ rememberDevice });
     } catch (err) {
       console.log(err);
-      setError(screenText.errorResend);
     } finally {
       setIsLoading(false);
     }
@@ -69,12 +77,10 @@ const MfaPushChallengePushScreen: React.FC = () => {
 
   const handleEnterCodeManually = async () => {
     setIsLoading(true);
-    setError(null);
     try {
       await mfaPushChallengePush.enterCodeManually({ rememberDevice });
     } catch (err) {
       console.log(err);
-      setError(screenText.errorManualCode);
     } finally {
       setIsLoading(false);
     }
@@ -82,12 +88,10 @@ const MfaPushChallengePushScreen: React.FC = () => {
 
   const handleTryAnotherMethod = async () => {
     setIsLoading(true);
-    setError(null);
     try {
       await mfaPushChallengePush.tryAnotherMethod({ rememberDevice });
     } catch (err) {
       console.log(err);
-      setError(screenText.errorAnotherMethod);
     } finally {
       setIsLoading(false);
     }
@@ -107,9 +111,6 @@ const MfaPushChallengePushScreen: React.FC = () => {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          {error && <div className="mb-4 text-sm text-red-600" role="alert">{error}</div>}
-          {pollingError && <div className="mb-4 text-sm text-red-600" role="alert">{pollingError}</div>}
-
           <div className="space-y-4">
             <div className="flex items-center justify-center">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500" />
@@ -119,18 +120,33 @@ const MfaPushChallengePushScreen: React.FC = () => {
               {screenText.waiting}
             </p>
 
-            <div className="flex items-center flex-start">
-              <input
-                id="rememberDevice"
-                type="checkbox"
-                checked={rememberDevice}
-                onChange={(e) => setRememberDevice(e.target.checked)}
-                className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-              />
-              <label htmlFor="rememberDevice" className="ml-2 block text-sm text-left text-gray-700">
-                {screenText.rememberMe}
-              </label>
-            </div>
+            {showRememberDevice && (
+              <div className="flex items-center flex-start">
+                <input
+                  id="rememberDevice"
+                  type="checkbox"
+                  checked={rememberDevice}
+                  onChange={(e) => setRememberDevice(e.target.checked)}
+                  className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                />
+                <label
+                  htmlFor="rememberDevice"
+                  className="ml-2 block text-sm text-left text-gray-700"
+                >
+                  {screenText.rememberMe}
+                </label>
+              </div>
+            )}
+
+            {transaction?.errors?.length && (
+              <div className="mb-4 space-y-1">
+                {transaction.errors.map((err, index) => (
+                  <p key={index} className="text-red-600 text-sm text-center">
+                    {err.message}
+                  </p>
+                ))}
+              </div>
+            )}
 
             <button
               onClick={handleResend}
@@ -163,6 +179,7 @@ const MfaPushChallengePushScreen: React.FC = () => {
 };
 
 export default MfaPushChallengePushScreen;
+
 ```
 
 ## Individual Method Examples

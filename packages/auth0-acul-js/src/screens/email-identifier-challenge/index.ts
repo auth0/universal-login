@@ -1,5 +1,5 @@
+import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
-import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -52,7 +52,7 @@ export default class EmailIdentifierChallenge extends BaseContext implements Ema
       state: this.transaction.state,
       telemetry: [EmailIdentifierChallenge.screenIdentifier, 'resendCode'],
     };
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'resend-code' });
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.RESEND_CODE });
   }
 
   /**
@@ -67,7 +67,7 @@ export default class EmailIdentifierChallenge extends BaseContext implements Ema
       state: this.transaction.state,
       telemetry: [EmailIdentifierChallenge.screenIdentifier, 'returnToPrevious'],
     };
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'back-action' });
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.BACK });
   }
 }
 

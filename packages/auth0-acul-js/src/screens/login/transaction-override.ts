@@ -1,3 +1,4 @@
+import { ConnectionStrategy, Identifiers } from '../../../src/constants';
 import { Transaction } from '../../models/transaction';
 import { isSignupEnabled, isForgotPasswordEnabled, isPasskeyEnabled, getPasswordPolicy, getAllowedIdentifiers } from '../../shared/transaction';
 
@@ -24,8 +25,8 @@ export class TransactionOverride extends Transaction implements OverrideOptions 
   }
 
   static getAllowedIdentifiers(transactionContext: TransactionContext, connectionStrategy: string | null): OverrideOptions['allowedIdentifiers'] {
-    if (connectionStrategy === 'sms') return ['phone'];
-    if (connectionStrategy === 'email') return ['email'];
+    if (connectionStrategy === ConnectionStrategy.SMS) return [Identifiers.PHONE];
+    if (connectionStrategy === ConnectionStrategy.EMAIL) return [Identifiers.EMAIL];
     return getAllowedIdentifiers(transactionContext);
   }
 }

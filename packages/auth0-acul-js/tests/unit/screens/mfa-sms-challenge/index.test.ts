@@ -3,7 +3,8 @@ import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import type { MfaSmsChallengeOptions } from 'interfaces/screens/mfa-sms-challenge';
 import type { CustomOptions } from 'interfaces/common';
-import { ScreenIds } from '../../../../src/utils/enums';
+import { ScreenIds } from '../../../../src//constants';
+import { FormActions } from '../../../../src/constants';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -26,7 +27,7 @@ describe('MfaSmsChallenge', () => {
     it('should handle continueMfaSmsChallenge with valid payload correctly', async () => {
       const payload: MfaSmsChallengeOptions = {
         code: '123456',
-        rememberBrowser: true,
+        rememberDevice: true,
       };
 
       await mfaSmsChallenge.continueMfaSmsChallenge(payload);
@@ -34,17 +35,17 @@ describe('MfaSmsChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          ...payload,
-          action: 'default',
-          rememberBrowser: 'true',
+          code: '123456',
+          action: FormActions.DEFAULT,
+          rememberBrowser: true,
         })
       );
     });
 
-    it('should handle continueMfaSmsChallenge with rememberBrowser as false', async () => {
+    it('should handle continueMfaSmsChallenge with rememberDevice as false', async () => {
       const payload: MfaSmsChallengeOptions = {
         code: '123456',
-        rememberBrowser: false,
+        rememberDevice: false,
       };
 
       await mfaSmsChallenge.continueMfaSmsChallenge(payload);
@@ -52,13 +53,13 @@ describe('MfaSmsChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          ...payload,
-          action: 'default',
+          code: '123456',
+          action: FormActions.DEFAULT,
         })
       );
     });
 
-    it('should handle continueMfaSmsChallenge without rememberBrowser', async () => {
+    it('should handle continueMfaSmsChallenge without rememberDevice', async () => {
       const payload: MfaSmsChallengeOptions = {
         code: '123456',
       };
@@ -69,7 +70,7 @@ describe('MfaSmsChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'default',
+          action: FormActions.DEFAULT,
         })
       );
     });
@@ -78,7 +79,7 @@ describe('MfaSmsChallenge', () => {
       mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
       const payload: MfaSmsChallengeOptions = {
         code: '123456',
-        rememberBrowser: true,
+        rememberDevice: true,
       };
 
       await expect(mfaSmsChallenge.continueMfaSmsChallenge(payload)).rejects.toThrow('Mocked reject');
@@ -97,7 +98,7 @@ describe('MfaSmsChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'pick-sms',
+          action: FormActions.PICK_SMS,
         })
       );
     });
@@ -108,7 +109,7 @@ describe('MfaSmsChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'pick-sms',
+          action: FormActions.PICK_SMS,
         })
       );
     });
@@ -135,7 +136,7 @@ describe('MfaSmsChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'resend-code',
+          action: FormActions.RESEND_CODE,
         })
       );
     });
@@ -146,7 +147,7 @@ describe('MfaSmsChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'resend-code',
+          action: FormActions.RESEND_CODE,
         })
       );
     });
@@ -173,7 +174,7 @@ describe('MfaSmsChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'pick-authenticator',
+          action: FormActions.PICK_AUTHENTICATOR,
         })
       );
     });
@@ -184,7 +185,7 @@ describe('MfaSmsChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'pick-authenticator',
+          action: FormActions.PICK_AUTHENTICATOR,
         })
       );
     });
@@ -211,7 +212,7 @@ describe('MfaSmsChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           ...payload,
-          action: 'switch-to-voice',
+          action: FormActions.SWITCH_TO_VOICE,
         })
       );
     });
@@ -222,7 +223,7 @@ describe('MfaSmsChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'switch-to-voice',
+          action: FormActions.SWITCH_TO_VOICE,
         })
       );
     });

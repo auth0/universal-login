@@ -1,5 +1,5 @@
+import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
-import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 
 import type { CustomOptions } from '../../../interfaces/common';
@@ -44,7 +44,7 @@ export default class MfaSmsEnrollment extends BaseContext implements MfaSmsEnrol
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'pick-country-code',
+      action: FormActions.PICK_COUNTRY_CODE,
     });
   }
 
@@ -72,7 +72,7 @@ export default class MfaSmsEnrollment extends BaseContext implements MfaSmsEnrol
     };
     await new FormHandler(options).submitData<MfaSmsEnrollmentOptions>({
       ...payload,
-      action: 'default',
+      action: FormActions.DEFAULT,
     });
   }
 
@@ -95,7 +95,7 @@ export default class MfaSmsEnrollment extends BaseContext implements MfaSmsEnrol
     };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      action: 'pick-authenticator',
+      action: FormActions.PICK_AUTHENTICATOR,
     });
   }
 }

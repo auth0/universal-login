@@ -1,5 +1,5 @@
+import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
-import { ScreenIds } from '../../utils/enums';
 import { FormHandler } from '../../utils/form-handler';
 import { createPasskeyCredentials } from '../../utils/passkeys';
 
@@ -36,7 +36,7 @@ export default class PasskeyEnrollment extends BaseContext implements PasskeyEnr
     };
 
     const publicKey = this.screen.publicKey;
-    const encoded = publicKey && createPasskeyCredentials(publicKey);
+    const encoded = publicKey && (await createPasskeyCredentials(publicKey));
 
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, passkey: JSON.stringify(encoded) });
   }
@@ -54,7 +54,7 @@ export default class PasskeyEnrollment extends BaseContext implements PasskeyEnr
       telemetry: [PasskeyEnrollment.screenIdentifier, 'abortPasskeyEnrollment'],
     };
 
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: 'abort-passkey-enrollment' });
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.ABORT_PASSKEY_ENROLLMENT });
   }
 }
 
