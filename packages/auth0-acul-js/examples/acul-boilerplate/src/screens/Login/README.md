@@ -10,7 +10,8 @@ The Login screen is the initial screen in the authentication journey that users 
 
 As the first touchpoint in your authentication flow, this screen is critical for creating a positive user experience and setting the tone for your brand identity.
 
-<img width="1728" alt="image" src="https://github.com/user-attachments/assets/6a009ebb-71cc-410c-85a2-660b14848561" />
+<img width="1728" alt="image" src="https://github.com/user-attachments/assets/39787b5c-4b93-4ab3-affd-43bd3233ff25" />
+
 
 ## Prerequisites
 
