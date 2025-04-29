@@ -1,6 +1,6 @@
-import React from 'react';
-import Button from '@/common/Button';
-import SocialIcon, { SocialProvider } from '@/common/SocialIcon';
+import React from "react";
+import Button from "@/common/Button";
+import SocialIcon, { SocialProvider } from "@/common/SocialIcon";
 
 export interface SocialLoginButtonProps {
   provider: SocialProvider;
@@ -13,13 +13,15 @@ export interface SocialLoginButtonProps {
 }
 
 const PROVIDER_DISPLAY_NAMES: { [key: string]: string } = {
-  'google-oauth2': 'Google',
-  'facebook': 'Facebook',
-  'apple': 'Apple',
-  'github': 'GitHub',
-  'linkedin': 'LinkedIn',
-  'microsoft': 'Microsoft',
-  'twitter': 'Twitter'
+  "google-oauth2": "Google",
+  facebook: "Facebook",
+  apple: "Apple",
+  github: "GitHub",
+  linkedin: "LinkedIn",
+  microsoft: "Microsoft",
+  twitter: "Twitter",
+  "hugging-face": "Hugging Face",
+  discord: "Discord",
 };
 
 const SocialButton: React.FC<SocialLoginButtonProps> = ({
@@ -28,11 +30,11 @@ const SocialButton: React.FC<SocialLoginButtonProps> = ({
   iconUrl,
   onClick,
   fullWidth = false,
-  className = '',
+  className = "",
   labelTemplate = (name) => `Continue with ${name}`,
 }) => {
-
-  const finalDisplayName = PROVIDER_DISPLAY_NAMES[provider] || displayName || provider;
+  const finalDisplayName =
+    PROVIDER_DISPLAY_NAMES[provider] || displayName || provider;
 
   return (
     <Button
@@ -40,13 +42,11 @@ const SocialButton: React.FC<SocialLoginButtonProps> = ({
       onClick={onClick}
       fullWidth={fullWidth}
       className={className}
-      leftIcon={
-        <SocialIcon provider={provider} iconUrl={iconUrl} />
-      }
+      leftIcon={<SocialIcon provider={provider} iconUrl={iconUrl} />}
     >
       {labelTemplate(finalDisplayName)}
     </Button>
   );
 };
 
-export default SocialButton; 
+export default SocialButton;
