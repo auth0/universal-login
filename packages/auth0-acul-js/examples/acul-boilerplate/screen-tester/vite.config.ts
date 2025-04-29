@@ -24,6 +24,7 @@ export default defineConfig(({ mode }) => {
       // Ensure server options match package.json scripts if needed
       port: 4040,
       strictPort: true,
+      host: 'localhost', // Restrict to localhost only for security
     },
     define: {
       // Make all environment variables available to the app
