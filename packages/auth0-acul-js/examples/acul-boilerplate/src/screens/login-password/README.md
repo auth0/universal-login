@@ -2,9 +2,10 @@
 
 ## Overview
 
-The Login Password screen is the second step in a two-step authentication flow. It is displayed after a user has entered their identifier (email, username, or phone) on the login-id screen. This screen allows users to enter their password to complete the login process, displaying the user's identifier from the previous step with an option to edit it.
+The Login Password screen is the second step in a two-step authentication flow. It is displayed after a user has entered their identifier (email, username, or phone) on the login-id screen. This screen allows users to enter their password to complete the login process, displaying the user's identifier from the previous step 
+with an option to edit it.
 
-<img width="1728" alt="Login Password Screen" src="https://github.com/user-attachments/assets/dadfc369-8b41-448e-b187-99d2bb4e9dd9" />
+<img width="1728" alt="Screenshot 2025-04-29 at 9 26 33 PM" src="https://github.com/user-attachments/assets/17fd951d-1c46-40ec-a2c3-e217526003f8" /> 
 
 ## Prerequisites
 
