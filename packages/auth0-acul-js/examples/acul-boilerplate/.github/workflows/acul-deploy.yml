@@ -6,21 +6,20 @@ on:
     # Only trigger if files within the boilerplate example change.
     paths:
       - '**/*'
-      # Exclude changes *only* to this workflow file itself or docs from triggering a deployment
       - '!.github/workflows/acul-deploy.yml'
       - '!DEPLOYMENT.md'
       - '!README.md'
-  workflow_dispatch: # Allow manual triggering from the GitHub Actions UI
+  workflow_dispatch:
 
 env:
   NODE_VERSION: "20"
-  # When running in the context of the standalone boilerplate, the working directory is just '.'
   WORKING_DIR: "."
 
 jobs:
   build-and-deploy:
     name: Build & Deploy ACUL Screens
     runs-on: ubuntu-latest
+    if: false  # Always skip this job
     permissions:
       id-token: write
       contents: read
