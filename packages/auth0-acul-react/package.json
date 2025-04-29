@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc",
     "test": "jest",
-    "generate-sdk": "tsx scripts/generate-react-sdk.ts",
+    "generate:sdk": "tsx scripts/generate-react-sdk.ts",
     "docs": "tsx ./scripts/generate-docs.ts",
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --ext .ts,.tsx --fix"
@@ -195,6 +195,62 @@
     "./customized-consent": {
       "import": "./dist/hooks/customized-consent.js",
       "types": "./dist/hooks/customized-consent.d.ts"
+    },
+    "./mfa-phone-enrollment": {
+      "import": "./dist/hooks/mfa-phone-enrollment.js",
+      "types": "./dist/hooks/mfa-phone-enrollment.d.ts"
+    },
+    "./mfa-voice-enrollment": {
+      "import": "./dist/hooks/mfa-voice-enrollment.js",
+      "types": "./dist/hooks/mfa-voice-enrollment.d.ts"
+    },
+    "./mfa-recovery-code-challenge": {
+      "import": "./dist/hooks/mfa-recovery-code-challenge.js",
+      "types": "./dist/hooks/mfa-recovery-code-challenge.d.ts"
+    },
+    "./device-code-activation-allowed": {
+      "import": "./dist/hooks/device-code-activation-allowed.js",
+      "types": "./dist/hooks/device-code-activation-allowed.d.ts"
+    },
+    "./device-code-activation-denied": {
+      "import": "./dist/hooks/device-code-activation-denied.js",
+      "types": "./dist/hooks/device-code-activation-denied.d.ts"
+    },
+    "./device-code-activation": {
+      "import": "./dist/hooks/device-code-activation.js",
+      "types": "./dist/hooks/device-code-activation.d.ts"
+    },
+    "./mfa-voice-challenge": {
+      "import": "./dist/hooks/mfa-voice-challenge.js",
+      "types": "./dist/hooks/mfa-voice-challenge.d.ts"
+    },
+    "./reset-password-mfa-recovery-code-challenge": {
+      "import": "./dist/hooks/reset-password-mfa-recovery-code-challenge.js",
+      "types": "./dist/hooks/reset-password-mfa-recovery-code-challenge.d.ts"
+    },
+    "./reset-password-mfa-voice-challenge": {
+      "import": "./dist/hooks/reset-password-mfa-voice-challenge.js",
+      "types": "./dist/hooks/reset-password-mfa-voice-challenge.d.ts"
+    },
+    "./redeem-ticket": {
+      "import": "./dist/hooks/redeem-ticket.js",
+      "types": "./dist/hooks/redeem-ticket.d.ts"
+    },
+    "./device-code-confirmation": {
+      "import": "./dist/hooks/device-code-confirmation.js",
+      "types": "./dist/hooks/device-code-confirmation.d.ts"
+    },
+    "./mfa-phone-challenge": {
+      "import": "./dist/hooks/mfa-phone-challenge.js",
+      "types": "./dist/hooks/mfa-phone-challenge.d.ts"
+    },
+    "./mfa-recovery-code-enrollment": {
+      "import": "./dist/hooks/mfa-recovery-code-enrollment.js",
+      "types": "./dist/hooks/mfa-recovery-code-enrollment.d.ts"
+    },
+    "./reset-password-mfa-phone-challenge": {
+      "import": "./dist/hooks/reset-password-mfa-phone-challenge.js",
+      "types": "./dist/hooks/reset-password-mfa-phone-challenge.d.ts"
     }
   },
   "devDependencies": {
