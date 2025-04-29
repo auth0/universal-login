@@ -48,13 +48,13 @@ export const startServers = async (mode, screenName) => {
     const servers = {
       serve: spawn('npm', ['run', 'serve'], { 
         stdio: 'inherit', 
-        shell: true,
+        shell: false,
         env: { ...process.env, FORCE_COLOR: true }
       }),
       next: spawn('npm', ['run', 'dev'], {
         cwd: path.resolve(process.cwd(), 'nextjs-quickstart'),
         stdio: 'inherit',
-        shell: true,
+        shell: false,
         env: { ...process.env, FORCE_COLOR: true }
       })
     };

@@ -169,7 +169,7 @@ const runCommand = (command, args) => {
   return new Promise((resolve, reject) => {
     const proc = spawn(command, args, {
       stdio: 'pipe',
-      shell: true,
+      shell: false,
       env: { ...process.env, FORCE_COLOR: "true" }
     });
     

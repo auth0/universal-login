@@ -41,7 +41,7 @@ export const watchAndUpload = async (screenName) => {
       
       const buildProcess = spawn('npm', ['run', 'build'], { 
         stdio: 'pipe',
-        shell: true,
+        shell: false,
         env: { ...process.env, FORCE_COLOR: "true" }
       });
       
