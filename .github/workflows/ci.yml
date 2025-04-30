@@ -3,9 +3,7 @@ name: CI
 
 on:
   push:
-    branches: ['**']
   pull_request:
-    branches: ['**']
 
 jobs:
   build:
@@ -19,9 +17,6 @@ jobs:
           - auth0-acul-angular
           - auth0-acul-vue
           - auth0-acul-svelte
-    defaults:
-      run:
-        working-directory: packages/${{ matrix.package }}
     steps:
       - uses: actions/checkout@v4
 
@@ -31,17 +26,21 @@ jobs:
           node-version: 22
           cache: 'npm'
 
-      - name: Install dependencies
+      - name: Install dependencies at root
         run: npm install
 
       - name: Lint
         run: npm run lint --if-present
+        working-directory: packages/${{ matrix.package }}
 
       - name: Run tests
         run: npm run test --if-present
+        working-directory: packages/${{ matrix.package }}
 
       - name: Build
         run: npm run build:local --if-present
+        working-directory: packages/${{ matrix.package }}
 
       - name: Generate docs
         run: npm run docs --if-present
+        working-directory: packages/${{ matrix.package }}
