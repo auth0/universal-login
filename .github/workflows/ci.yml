@@ -13,10 +13,6 @@ jobs:
       matrix:
         package:
           - auth0-acul-js
-          - auth0-acul-react
-          - auth0-acul-angular
-          - auth0-acul-vue
-          - auth0-acul-svelte
     steps:
       - uses: actions/checkout@v4
 
