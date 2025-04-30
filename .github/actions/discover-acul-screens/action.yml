@@ -18,7 +18,7 @@ runs:
       run: |
         echo "Searching for screen entry points in dist/assets..."
         # Find directories directly under dist/assets, excluding hidden (.name) and 'shared'
-        # Using the original command but ensuring it outputs a compact JSON array
+        # Outputs a compact JSON array
         SCREENS_JSON=$(find dist/assets -maxdepth 1 -mindepth 1 -type d ! -name '.*' ! -name 'shared' -exec basename {} \; | jq -R -s -c 'split("\n") | map(select(length > 0))')
 
         if [ -z "$SCREENS_JSON" ] || [ "$SCREENS_JSON" == "[]" ]; then
@@ -28,7 +28,7 @@ runs:
 
         echo "Discovered screens: $SCREENS_JSON"
         
-        # Use the correct delimiter syntax for GitHub Actions outputs
+        # Delimiter syntax for GitHub Actions outputs
         echo "screens<<EOF" >> $GITHUB_OUTPUT
         echo "$SCREENS_JSON" >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT

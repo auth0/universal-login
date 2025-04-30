@@ -30,7 +30,7 @@ runs:
         AUTH0_CLIENT_SECRET: ${{ inputs.auth0-client-secret }}
       run: |
         echo "Attempting to log in to Auth0 CLI for domain: $AUTH0_DOMAIN"
-        # Log in with necessary scopes for Universal Login customization
+        # Log in Universal Login customization
         auth0 login \
             --domain ${{ inputs.auth0-domain }} \
             --client-id ${{ inputs.auth0-client-id }} \

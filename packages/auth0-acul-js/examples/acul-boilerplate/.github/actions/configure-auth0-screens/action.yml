@@ -28,60 +28,51 @@ runs:
         CDN_URL: ${{ inputs.cdn-url }}
         SCREENS_JSON: ${{ inputs.screens-json }}
       run: |
-        set -eo pipefail # Exit immediately if a command exits with non-zero status
+        set -euo pipefail # Exit immediately if a command exits with non-zero status or unset variables are used
 
-        echo "Starting Auth0 screen configuration..."
+        #############################################
+        # INITIAL SETUP & VALIDATION
+        #############################################
+        
+        echo "### Starting Auth0 screen configuration..."
+        
+        # Validate and normalize CDN URL
         CDN_BASE_URL="${CDN_URL}"
         if [ -z "$CDN_BASE_URL" ]; then
           echo "::error::CDN_URL input is not set."
           exit 1
         fi
-        # Ensure CDN_URL does not have a trailing slash
+        
+        # Remove trailing slash if present
         if [[ "$CDN_BASE_URL" == */ ]]; then
            echo "::warning::CDN_URL ends with a slash. Removing it: $CDN_BASE_URL"
            CDN_BASE_URL=${CDN_BASE_URL%/}
         fi
-
-        echo "CDN Base URL: $CDN_BASE_URL"
-        echo "Screens to configure (JSON): $SCREENS_JSON"
-
-        # Debug: Verify the working directory
-        echo "Working directory: $(pwd)"
-        echo "Contents of working directory:"
-        ls -la
         
-        # Debug: Check for the dist directory
-        if [ -d "dist" ]; then
-          echo "✅ Dist directory exists"
-          echo "Contents of dist directory:"
-          ls -la dist
-          
-          if [ -d "dist/assets" ]; then
-            echo "✅ Dist/assets directory exists"
-            echo "Contents of dist/assets directory:"
-            ls -la dist/assets
-          else
-            echo "❌ ERROR: dist/assets directory does not exist"
-            exit 1
-          fi
-        else
-          echo "❌ ERROR: dist directory does not exist"
+        # Check for required dist directory
+        if [ ! -d "dist" ] || [ ! -d "dist/assets" ]; then
+          echo "::error::Required dist/assets directory does not exist!"
           exit 1
         fi
 
         SUCCESS_SCREENS=()
         FAILED_SCREENS=()
 
+        #############################################
+        # PROCESS SCREENS
+        #############################################
+        
         # Iterate over the JSON array of screen names
         while IFS= read -r screen; do
-          echo "--------------------------------------------------"
-          echo "Processing screen: $screen"
+          echo "----------------------------------------------"
+          echo "⚙️ Processing screen: $screen"
 
-          # --- Asset Discovery for the screen ---
+          # Set up paths for asset discovery
           SCREEN_ASSETS_DIR="dist/assets/$screen"
           SHARED_ASSETS_DIR="dist/assets/shared"
+          ROOT_ASSETS_DIR="dist/assets"
           
-          # Check if screen directory exists
+          # Verify screen directory exists
           if [ ! -d "$SCREEN_ASSETS_DIR" ]; then
             echo "::error::Screen directory not found: $SCREEN_ASSETS_DIR"
             echo "Available screens in assets directory:"
@@ -90,19 +81,48 @@ runs:
             continue
           fi
           
-          echo "🔍 Asset discovery for screen: $screen"
+          echo "🔍 Finding assets for screen: $screen"
           echo "  - Screen directory: $SCREEN_ASSETS_DIR"
           echo "  - Shared directory: $SHARED_ASSETS_DIR"
           
-          # Temp file for settings
+          # Create temporary settings file with proper cleanup handling
           SETTINGS_FILE=$(mktemp settings_XXXXXX.json)
-          trap 'echo "Cleaning up temporary settings file: $SETTINGS_FILE"; rm -f "$SETTINGS_FILE"' EXIT
           
-          # Find JS and CSS files for the screen
-          SCREEN_JS_FILES=($(find "$SCREEN_ASSETS_DIR" -type f -name "*.js" ! -name "*.map.js" | sort))
-          SHARED_JS_FILES=($(find "$SHARED_ASSETS_DIR" -type f -name "*.js" ! -name "*.map.js" 2>/dev/null | sort))
-          SCREEN_CSS_FILES=($(find "$SCREEN_ASSETS_DIR" -type f -name "*.css" | sort))
-          SHARED_CSS_FILES=($(find "$SHARED_ASSETS_DIR" -type f -name "*.css" 2>/dev/null | sort))
+          # Use a single find command to gather all assets and process them in memory
+          ALL_ASSETS=$(find "dist/assets" -type f \( -name "*.js" -o -name "*.css" \) ! -name "*.map.js" 2>/dev/null | sort)
+          
+          # Initialize arrays for different asset types
+          SCREEN_JS_FILES=()
+          SHARED_JS_FILES=()
+          ROOT_JS_FILES=()
+          SCREEN_CSS_FILES=()
+          SHARED_CSS_FILES=()
+          
+          # Process the results to categorize files
+          while IFS= read -r file; do
+            if [[ -z "$file" ]]; then
+              continue
+            fi
+            
+            # Determine file type and location - use exact directory path with trailing slash to prevent partial matches
+            if [[ "$file" == *".js" ]]; then
+              # JavaScript files
+              if [[ "$file" == "$SCREEN_ASSETS_DIR/"* ]]; then  # Add trailing slash to prevent partial matches
+                SCREEN_JS_FILES+=("$file")
+              elif [[ "$file" == "$SHARED_ASSETS_DIR/"* ]]; then
+                SHARED_JS_FILES+=("$file")
+              elif [[ "$file" == "$ROOT_ASSETS_DIR/main."*".js" ]]; then
+                ROOT_JS_FILES+=("$file")
+              fi
+            elif [[ "$file" == *".css" ]]; then
+              # CSS files
+              if [[ "$file" == "$SCREEN_ASSETS_DIR/"* ]]; then  # Add trailing slash to prevent partial matches
+                SCREEN_CSS_FILES+=("$file")
+              elif [[ "$file" == "$SHARED_ASSETS_DIR/"* ]]; then
+                SHARED_CSS_FILES+=("$file")
+              fi
+            fi
+          done <<< "$ALL_ASSETS"
           
           # Check if we have at least one JS file for the screen
           if [ ${#SCREEN_JS_FILES[@]} -eq 0 ]; then
@@ -131,16 +151,78 @@ runs:
             echo "✅ Found entry point: $(basename "$SCREEN_ENTRY_FILE")"
           fi
           
-          # Asset Summary
-          echo "📋 Asset Summary for $screen:"
-          echo "- Screen JS Files: ${#SCREEN_JS_FILES[@]}"
-          echo "- Shared JS Files: ${#SHARED_JS_FILES[@]}"
-          echo "- Screen CSS Files: ${#SCREEN_CSS_FILES[@]}"
-          echo "- Shared CSS Files: ${#SHARED_CSS_FILES[@]}"
-          echo "- Entry Point: $(basename "$SCREEN_ENTRY_FILE")"
-
-          # --- Generate settings.json --- 
-          echo "🔧 Generating settings.json for $screen..."
+          #############################################
+          # PRINT ASSET TABLE
+          #############################################
+          
+          echo "📊 Assets being uploaded for screen: $screen"
+          echo "------------------------------------------------------------"
+          
+          # Print Screen JS files with paths
+          echo "📄 Screen JS Files:"
+          if [ ${#SCREEN_JS_FILES[@]} -eq 0 ]; then
+            echo "   (None)"
+          else
+            for file in "${SCREEN_JS_FILES[@]}"; do
+              # Get relative path from dist
+              rel_path="${file#dist/}"
+              echo "   - $rel_path"
+            done
+          fi
+          
+          # Print Shared JS files with paths
+          echo "📄 Shared JS Files:"
+          if [ ${#SHARED_JS_FILES[@]} -eq 0 ]; then
+            echo "   (None)"
+          else
+            for file in "${SHARED_JS_FILES[@]}"; do
+              rel_path="${file#dist/}"
+              echo "   - $rel_path"
+            done
+          fi
+          
+          # Print Root JS files with paths
+          echo "📄 Root JS Files:"
+          if [ ${#ROOT_JS_FILES[@]} -eq 0 ]; then
+            echo "   (None)"
+          else
+            for file in "${ROOT_JS_FILES[@]}"; do
+              rel_path="${file#dist/}"
+              echo "   - $rel_path"
+            done
+          fi
+          
+          # Print Screen CSS files with paths
+          echo "📄 Screen CSS Files:"
+          if [ ${#SCREEN_CSS_FILES[@]} -eq 0 ]; then
+            echo "   (None)"
+          else
+            for file in "${SCREEN_CSS_FILES[@]}"; do
+              rel_path="${file#dist/}"
+              echo "   - $rel_path"
+            done
+          fi
+          
+          # Print Shared CSS files with paths
+          echo "📄 Shared CSS Files:"
+          if [ ${#SHARED_CSS_FILES[@]} -eq 0 ]; then
+            echo "   (None)"
+          else
+            for file in "${SHARED_CSS_FILES[@]}"; do
+              rel_path="${file#dist/}"
+              echo "   - $rel_path"
+            done
+          fi
+          
+          echo "------------------------------------------------------------"
+          echo "🚀 Main entry point: $(basename "$SCREEN_ENTRY_FILE") (${SCREEN_ENTRY_FILE#dist/})"
+          echo "📦 Total Files: $((${#SCREEN_JS_FILES[@]} + ${#SHARED_JS_FILES[@]} + ${#ROOT_JS_FILES[@]} + ${#SCREEN_CSS_FILES[@]} + ${#SHARED_CSS_FILES[@]}))"
+          
+          #############################################
+          # GENERATE SETTINGS.JSON
+          #############################################
+          
+          echo "📝 Building configuration for $screen"
           
           # Create context configuration array
           CONTEXT_CONFIG='["branding.settings", "branding.themes.default", "client.logo_uri", "client.description", "organization.display_name", "organization.branding", "screen.texts", "tenant.name", "tenant.friendly_name", "tenant.enabled_locales", "untrusted_data.submitted_form_data", "untrusted_data.authorization_params.ui_locales", "untrusted_data.authorization_params.login_hint", "untrusted_data.authorization_params.screen_hint"]'
@@ -194,8 +276,21 @@ runs:
             fi
           done
 
-          # Add JS files in proper order: Shared files first, then screen-specific entry
+          # Add JS files in proper order: Root files -> Shared files -> Screen JS (except entry) -> Entry point last
           echo "Adding JavaScript files to configuration..."
+          
+          # Root JS files (main.js)
+          for js_file in "${ROOT_JS_FILES[@]}"; do
+            js_basename=$(basename "$js_file")
+            if [[ ! "$js_basename" =~ ^[^a-zA-Z0-9] ]]; then
+              relative_path="${js_file#dist/}"
+              echo "  - Adding root JS: $js_basename"
+              JSON_CONTENT=$(echo "$JSON_CONTENT" | jq --arg url "${CDN_BASE_URL}/${relative_path}" '.head_tags += [{ tag: "script", attributes: { src: $url, type: "module" } }]')
+              if [ $? -ne 0 ]; then
+                echo "::warning::Failed to add JS file to JSON: $js_basename"
+              fi
+            fi
+          done
           
           # Shared JS files (framework, libraries, etc.)
           for js_file in "${SHARED_JS_FILES[@]}"; do
@@ -231,91 +326,110 @@ runs:
           echo "  - Adding screen entry point: $js_basename"
           JSON_CONTENT=$(echo "$JSON_CONTENT" | jq --arg url "${CDN_BASE_URL}/${relative_path}" '.head_tags += [{ tag: "script", attributes: { src: $url, type: "module" } }]')
           if [ $? -ne 0 ]; then
-            echo "::warning::Failed to add entry point to JSON: $js_basename"
+            echo "::error::Failed to add critical entry point file to JSON: $js_basename"
+            FAILED_SCREENS+=("$screen")
+            continue
           fi
-
-          # Write the final JSON to the temp file
-          echo "$JSON_CONTENT" > "$SETTINGS_FILE"
-          if [ $? -ne 0 ]; then
+          
+          # Write JSON to temp file
+          echo "$JSON_CONTENT" > "$SETTINGS_FILE" || {
             echo "::error::Failed to write settings file"
             FAILED_SCREENS+=("$screen")
             continue
-          fi
+          }
 
-          echo "Generated settings.json content:"
-          jq . "$SETTINGS_FILE" || echo "Failed to display settings file"
-
-          # --- Configure Auth0 Screen ---
-          echo "🔄 Attempting to configure Auth0 prompt: $screen"
+          #############################################
+          # CONFIGURE AUTH0 SCREEN
+          #############################################
+          
+          echo "🔄 Configuring Auth0 prompt: $screen"
           
           # Verify auth0 CLI is available
           if ! command -v auth0 &> /dev/null; then
-            echo "::error::auth0 CLI not found. Make sure it is installed and in PATH."
+            echo "::error::auth0 CLI not found"
             FAILED_SCREENS+=("$screen")
             continue
           fi
           
-          # Run the command and capture output and exit code separately
+          # Run the auth0 command to configure the screen
           if OUTPUT=$(auth0 ul customize \
             --rendering-mode advanced \
             --prompt "$screen" \
             --screen "$screen" \
             --settings-file "$SETTINGS_FILE" 2>&1); then
-            echo "✅ Successfully configured prompt: $screen"
+            echo "✅ Successfully configured: $screen"
             SUCCESS_SCREENS+=("$screen")
           else
             exit_code=$?
-            echo "::error::Failed to configure prompt: $screen (Exit Code: $exit_code). Output below:"
+            echo "::error::Failed to configure prompt: $screen (Exit Code: $exit_code)"
             echo "$OUTPUT" # Print the captured output on error
             
-            # Check if the error is about custom domain (which is a tenant configuration issue, not a script issue)
+            # Special handling for custom domain errors
             if [[ "$OUTPUT" == *"requires at least one custom domain"* ]]; then
-              echo "⚠️ NOTE: This is a tenant configuration issue. The Auth0 tenant needs a custom domain."
+              echo "⚠️ Auth0 tenant requires a custom domain (tenant configuration issue)"
               echo "⚠️ To fix this, use 'auth0 domains create' to create a custom domain and 'auth0 domains verify' to verify it."
             fi
             
             FAILED_SCREENS+=("$screen")
-            # Continue to next screen
           fi
           
-          # Clean up the settings file for this screen
+          # Clean up temp file
+          echo "Cleaning up temp file for screen: $screen"
           rm -f "$SETTINGS_FILE"
           
-        done < <(echo "$SCREENS_JSON" | jq -r '.[]' || echo "Failed to parse screens JSON") # End of screen loop
+        done < <(echo "$SCREENS_JSON" | jq -r '.[]' || echo "Failed to parse screens JSON")
 
-        # --- Final Reporting ---
-        echo "--------------------------------------------------"
-        echo "Configuration Summary:"
-        # Join arrays with commas for output, handle empty arrays gracefully
-        printf -v deployed_screens_output '%s,' "${SUCCESS_SCREENS[@]}"
-        printf -v failed_screens_output '%s,' "${FAILED_SCREENS[@]}"
-        # Remove trailing comma if list is not empty
-        deployed_screens_output=${deployed_screens_output%,}
-        failed_screens_output=${failed_screens_output%,}
+        #############################################
+        # FINAL REPORTING
+        #############################################
+        
+        echo "----------------------------------------------"
+        echo "### Configuration Summary"
+        
+        # Create comma-separated lists using IFS (more standard approach)
+        # Handle empty arrays to display "None" when no screens were processed
+        if [ ${#SUCCESS_SCREENS[@]} -eq 0 ]; then
+          deployed_screens_output="None"
+        else
+          deployed_screens_output=$(IFS=,; echo "${SUCCESS_SCREENS[*]}")
+        fi
+        
+        if [ ${#FAILED_SCREENS[@]} -eq 0 ]; then
+          failed_screens_output="None"
+        else
+          failed_screens_output=$(IFS=,; echo "${FAILED_SCREENS[*]}")
+        fi
 
-        echo "Successfully configured: ${deployed_screens_output:-None}"
-        echo "Failed to configure: ${failed_screens_output:-None}"
+        # Simple deployment summary without showing sensitive CDN URL
+        echo "📈 Auth0 ACUL Screens Deployment Summary"
+        echo "┌────────────────┬─────────┐"
+        echo "│ Screen         │ Status  │"
+        echo "├────────────────┼─────────┤"
+        
+        for screen in $(echo "$SCREENS_JSON" | jq -r '.[]'); do
+          if [[ " ${SUCCESS_SCREENS[*]} " =~ " ${screen} " ]]; then
+            status="✅ Success"
+          else
+            status="❌ Failed"
+          fi
+          printf "│ %-14s │ %-7s │\n" "$screen" "$status"
+        done
+        
+        echo "└────────────────┴─────────┘"
+        
+        echo "- Successfully configured: $deployed_screens_output"
+        echo "- Failed to configure: $failed_screens_output"
 
         # Set job outputs
         echo "deployed_screens=${deployed_screens_output}" >> $GITHUB_OUTPUT
         echo "failed_screens=${failed_screens_output}" >> $GITHUB_OUTPUT
 
-        # Check if all screens failed
+        # Final status check
         if [ ${#SUCCESS_SCREENS[@]} -eq 0 ] && [ ${#FAILED_SCREENS[@]} -gt 0 ]; then
           echo "::error::All screens failed to configure. Aborting with error status."
           exit 1
-        fi
-
-        # Check if some screens failed
-        if [ ${#FAILED_SCREENS[@]} -ne 0 ]; then
-          echo "::warning::Some screens failed to configure: ${failed_screens_output}"
-          echo "But at least one screen was successful. Continuing with success status."
-          
-          # Special handling for custom domain errors
-          if [[ "$OUTPUT" == *"requires at least one custom domain"* ]]; then
-            echo "::warning::Auth0 tenant requires a custom domain. This is not a script issue."
-            echo "Successfully validated screen assets. Skipping actual configuration due to tenant limitations."
-          fi
+        elif [ ${#FAILED_SCREENS[@]} -ne 0 ]; then
+          echo "::warning::Some screens failed to configure but at least one was successful."
         else
           echo "✅ All discovered screens configured successfully."
-        fi 
+        fi

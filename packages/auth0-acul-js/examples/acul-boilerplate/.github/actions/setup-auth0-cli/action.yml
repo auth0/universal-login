@@ -30,9 +30,11 @@ runs:
         AUTH0_CLIENT_SECRET: ${{ inputs.auth0-client-secret }}
       run: |
         echo "Attempting to log in to Auth0 CLI for domain: $AUTH0_DOMAIN"
-        # The CLI automatically picks up the env vars for non-interactive login
-        # Explicitly specify scopes needed for UL customization
-        auth0 login --scopes "read:branding_settings update:branding_settings read:prompts update:prompts"
+        # Log in Universal Login customization
+        auth0 login \
+            --domain "$AUTH0_DOMAIN" \
+            --client-id "$AUTH0_CLIENT_ID" \
+            --client-secret "$AUTH0_CLIENT_SECRET"
         echo "✅ Auth0 CLI authorized."
         # Verify connection by listing prompts
-        auth0 prompts list 
+        auth0 prompts list
