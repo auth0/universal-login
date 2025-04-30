@@ -53,9 +53,9 @@ jobs:
           NPM_CONFIG_REGISTRY: 'https://registry.npmjs.org'
         run: |
           npm config set registry https://registry.npmjs.org/
-          npm ci
-          # Install the missing platform-specific optional dependency
-          npm install @rollup/rollup-linux-x64-gnu --no-save
+          # Remove package-lock.json to avoid issues with npm ci especially rollup binary 
+          rm -rf node_modules package-lock.json
+          npm install
 
       - name: Build application
         shell: bash
