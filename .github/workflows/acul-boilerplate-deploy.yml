@@ -54,6 +54,8 @@ jobs:
         run: |
           npm config set registry https://registry.npmjs.org/
           npm ci
+          # Install the missing platform-specific optional dependency
+          npm install @rollup/rollup-linux-x64-gnu --no-save
 
       - name: Build application
         shell: bash
