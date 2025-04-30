@@ -112,7 +112,12 @@ runs:
           SETTINGS_FILE=$(mktemp settings_XXXXXX.json)
           # Reset trap for this iteration to ensure proper cleanup
           trap - EXIT
-          trap 'rm -f "$SETTINGS_FILE"; echo "Cleaning up temp file for $screen"' EXIT
+          cleanup_function() {
+            local screen_name="$1"
+            rm -f "$SETTINGS_FILE" 
+            echo "Cleaning up temp file for screen: $screen_name"
+          }
+          trap "cleanup_function '$screen'" EXIT
           
           #############################################
           # ASSET DISCOVERY
@@ -177,6 +182,26 @@ runs:
           if [ -z "$SCREEN_ENTRY_FILE" ]; then
             SCREEN_ENTRY_FILE="${SCREEN_JS_FILES[0]}"
           fi
+          
+          #############################################
+          # PRINT ASSET TABLE
+          #############################################
+          
+          echo "📊 Assets being uploaded for screen: $screen"
+          echo "┌─────────────────┬─────────────────────────────────┐"
+          echo "│ Asset Type      │ Count                           │"
+          echo "├─────────────────┼─────────────────────────────────┤"
+          printf "│ %-15s │ %-33s │\n" "Screen JS" "${#SCREEN_JS_FILES[@]}"
+          printf "│ %-15s │ %-33s │\n" "Shared JS" "${#SHARED_JS_FILES[@]}"
+          printf "│ %-15s │ %-33s │\n" "Root JS" "${#ROOT_JS_FILES[@]}"
+          printf "│ %-15s │ %-33s │\n" "Screen CSS" "${#SCREEN_CSS_FILES[@]}"
+          printf "│ %-15s │ %-33s │\n" "Shared CSS" "${#SHARED_CSS_FILES[@]}"
+          echo "├─────────────────┼─────────────────────────────────┤"
+          printf "│ %-15s │ %-33s │\n" "Total Files" "$((${#SCREEN_JS_FILES[@]} + ${#SHARED_JS_FILES[@]} + ${#ROOT_JS_FILES[@]} + ${#SCREEN_CSS_FILES[@]} + ${#SHARED_CSS_FILES[@]}))"
+          echo "└─────────────────┴─────────────────────────────────┘"
+          
+          # Print entry point file being used
+          echo "🚀 Main entry point: $(basename "$SCREEN_ENTRY_FILE")"
           
           #############################################
           # GENERATE SETTINGS.JSON
@@ -302,6 +327,33 @@ runs:
           failed_screens_output=$(IFS=,; echo "${FAILED_SCREENS[*]}")
         fi
 
+        # Print comprehensive deployment summary table
+        echo "📈 Auth0 ACUL Screens Deployment Summary"
+        echo "┌────────────────┬─────────┬──────────────────────────────┐"
+        echo "│ Screen         │ Status  │ CDN URL                      │"
+        echo "├────────────────┼─────────┼──────────────────────────────┤"
+        
+        for screen in $(echo "$SCREENS_JSON" | jq -r '.[]'); do
+          if [[ " ${SUCCESS_SCREENS[*]} " =~ " ${screen} " ]]; then
+            status="✅ Success"
+            cdn_path="${CDN_BASE_URL}/assets/${screen}"
+          else
+            status="❌ Failed"
+            cdn_path="N/A"
+          fi
+          
+          # Truncate long CDN URLs to fit in the table
+          if [ ${#cdn_path} -gt 30 ]; then
+            displayed_path="${cdn_path:0:27}..."
+          else
+            displayed_path="$cdn_path"
+          fi
+          
+          printf "│ %-14s │ %-7s │ %-30s │\n" "$screen" "$status" "$displayed_path"
+        done
+        
+        echo "└────────────────┴─────────┴──────────────────────────────┘"
+        
         echo "- Successfully configured: $deployed_screens_output"
         echo "- Failed to configure: $failed_screens_output"
 
