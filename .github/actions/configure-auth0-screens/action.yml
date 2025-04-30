@@ -133,21 +133,21 @@ runs:
               continue
             fi
             
-            # Determine file type and location
+            # Determine file type and location - use exact directory path with trailing slash to prevent partial matches
             if [[ "$file" == *".js" ]]; then
               # JavaScript files
-              if [[ "$file" == "$SCREEN_ASSETS_DIR"* ]]; then
+              if [[ "$file" == "$SCREEN_ASSETS_DIR/"* ]]; then  # Add trailing slash to prevent partial matches
                 SCREEN_JS_FILES+=("$file")
-              elif [[ "$file" == "$SHARED_ASSETS_DIR"* ]]; then
+              elif [[ "$file" == "$SHARED_ASSETS_DIR/"* ]]; then
                 SHARED_JS_FILES+=("$file")
               elif [[ "$file" == "$ROOT_ASSETS_DIR/main."*".js" ]]; then
                 ROOT_JS_FILES+=("$file")
               fi
             elif [[ "$file" == *".css" ]]; then
               # CSS files
-              if [[ "$file" == "$SCREEN_ASSETS_DIR"* ]]; then
+              if [[ "$file" == "$SCREEN_ASSETS_DIR/"* ]]; then  # Add trailing slash to prevent partial matches
                 SCREEN_CSS_FILES+=("$file")
-              elif [[ "$file" == "$SHARED_ASSETS_DIR"* ]]; then
+              elif [[ "$file" == "$SHARED_ASSETS_DIR/"* ]]; then
                 SHARED_CSS_FILES+=("$file")
               fi
             fi
