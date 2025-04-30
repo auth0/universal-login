@@ -1,5 +1,16 @@
 name: ACUL Screens - Build and Deploy
 
+# This workflow file is provided as an example template for Auth0 ACUL deployments.
+# It is intentionally included in the boilerplate example to demonstrate how to set up
+# CI/CD for your own Auth0 ACUL implementation.
+# 
+# When implementing in your own project:
+# 1. Update paths and settings as needed
+# 2. Configure the required GitHub secrets
+#
+# Note: This workflow is intentionally disabled with 'if: false' to prevent accidental runs.
+# Remove this condition when deploying in your own environment.
+
 on:
   push:
     branches: [main, master]
@@ -45,7 +56,6 @@ jobs:
         working-directory: ${{ env.WORKING_DIR }}
         env:
           NPM_CONFIG_REGISTRY: 'https://registry.npmjs.org'
-          NODE_AUTH_TOKEN: ''  # Explicitly unset any auth token to force public registry
         run: |
           npm config set registry https://registry.npmjs.org/
           npm ci
@@ -98,4 +108,4 @@ jobs:
           deployed-screens: ${{ steps.configure-auth0.outputs.deployed_screens }}
           failed-screens: ${{ steps.configure-auth0.outputs.failed_screens }}
           s3-bucket-name: ${{ secrets.S3_BUCKET_NAME }}
-          cdn-url: ${{ secrets.S3_CDN_URL }} 
+          cdn-url: ${{ secrets.S3_CDN_URL }}

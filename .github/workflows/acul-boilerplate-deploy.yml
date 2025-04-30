@@ -6,9 +6,16 @@ on:
     paths:
       - "packages/auth0-acul-js/examples/acul-boilerplate/**"
       # Exclude changes only to workflow files or docs
-      - "!.github/workflows/acul-boilerplate-deploy.yml"
-      - "!packages/auth0-acul-js/examples/acul-boilerplate/DEPLOYMENT.md"
-      - "!packages/auth0-acul-js/examples/acul-boilerplate/README.md"
+      - "!.github/workflows/**"
+      - "!**/*.md"
+  pull_request:
+    branches: [main, master]
+    paths:
+      - "packages/auth0-acul-js/examples/acul-boilerplate/**"
+      # Exclude changes only to workflow files or docs
+      - "!.github/workflows/**"
+      - "!**/*.md"
+  # Remove this condition when deploying in your own environment.
   workflow_dispatch:
 
 env:
@@ -19,7 +26,6 @@ jobs:
   build-and-deploy:
     name: Build & Deploy ACUL Screens
     runs-on: ubuntu-latest
-    if: false  # Always skip this temporarily
     permissions:
       id-token: write
       contents: read
@@ -45,7 +51,6 @@ jobs:
         working-directory: ${{ env.WORKING_DIR }}
         env:
           NPM_CONFIG_REGISTRY: 'https://registry.npmjs.org'
-          NODE_AUTH_TOKEN: ''  # Explicitly unset any auth token to force public registry
         run: |
           npm config set registry https://registry.npmjs.org/
           npm ci

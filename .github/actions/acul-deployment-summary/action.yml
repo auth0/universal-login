@@ -37,6 +37,8 @@ runs:
         echo "- **Assets Location:** \`s3://${S3_BUCKET_NAME}/\`" >> $GITHUB_STEP_SUMMARY
         # Add trailing slash back for display URL consistency if needed
         CDN_DISPLAY_URL="${CDN_URL}"
-        [[ "$CDN_DISPLAY_URL" != */ ]] && [ -n "$CDN_DISPLAY_URL" ] && CDN_DISPLAY_URL="$CDN_DISPLAY_URL/" || :
+        if [[ -n "$CDN_DISPLAY_URL" && "$CDN_DISPLAY_URL" != */ ]]; then
+          CDN_DISPLAY_URL="$CDN_DISPLAY_URL/"
+        fi
         echo "- **CDN Base URL:** \`${CDN_DISPLAY_URL:-Not Set}\`" >> $GITHUB_STEP_SUMMARY
         echo "- **Workflow Run:** [Link](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY

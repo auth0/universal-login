@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 // Node.js built-in modules
 import { spawn } from 'child_process';
 import fs from 'fs-extra';
@@ -195,4 +197,4 @@ process.on('SIGINT', () => {
 const screenName = process.argv[2]?.toLowerCase();
 
 // Start the process
-runAdvancedMode(screenName); 
+runAdvancedMode(screenName);

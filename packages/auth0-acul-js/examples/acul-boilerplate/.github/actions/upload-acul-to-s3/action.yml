@@ -22,4 +22,4 @@ runs:
           --delete \
           --cache-control "max-age=31536000,public,immutable" # Cache forever, rely on hash
 
-        echo "✅ Assets successfully uploaded to S3 bucket: ${{ inputs.s3-bucket-name }}" 
+        echo "✅ Assets successfully uploaded to S3 bucket: ${{ inputs.s3-bucket-name }}"

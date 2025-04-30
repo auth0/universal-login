@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 // Core imports
 import { validateScreenName } from './utils/screen-validator.js';
 import { logger } from './utils/logger.js';
@@ -37,4 +39,4 @@ const runStandardMode = async (screenName) => {
 };
 
 const screenName = process.argv[2]?.toLowerCase();
-runStandardMode(screenName); 
+runStandardMode(screenName);
