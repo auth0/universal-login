@@ -110,14 +110,6 @@ runs:
           
           # Create temporary settings file with proper cleanup handling
           SETTINGS_FILE=$(mktemp settings_XXXXXX.json)
-          # Reset trap for this iteration to ensure proper cleanup
-          trap - EXIT
-          cleanup_function() {
-            local screen_name="$1"
-            rm -f "$SETTINGS_FILE" 
-            echo "Cleaning up temp file for screen: $screen_name"
-          }
-          trap "cleanup_function '$screen'" EXIT
           
           #############################################
           # ASSET DISCOVERY
@@ -188,20 +180,67 @@ runs:
           #############################################
           
           echo "📊 Assets being uploaded for screen: $screen"
-          echo "┌─────────────────┬─────────────────────────────────┐"
-          echo "│ Asset Type      │ Count                           │"
-          echo "├─────────────────┼─────────────────────────────────┤"
-          printf "│ %-15s │ %-33s │\n" "Screen JS" "${#SCREEN_JS_FILES[@]}"
-          printf "│ %-15s │ %-33s │\n" "Shared JS" "${#SHARED_JS_FILES[@]}"
-          printf "│ %-15s │ %-33s │\n" "Root JS" "${#ROOT_JS_FILES[@]}"
-          printf "│ %-15s │ %-33s │\n" "Screen CSS" "${#SCREEN_CSS_FILES[@]}"
-          printf "│ %-15s │ %-33s │\n" "Shared CSS" "${#SHARED_CSS_FILES[@]}"
-          echo "├─────────────────┼─────────────────────────────────┤"
-          printf "│ %-15s │ %-33s │\n" "Total Files" "$((${#SCREEN_JS_FILES[@]} + ${#SHARED_JS_FILES[@]} + ${#ROOT_JS_FILES[@]} + ${#SCREEN_CSS_FILES[@]} + ${#SHARED_CSS_FILES[@]}))"
-          echo "└─────────────────┴─────────────────────────────────┘"
+          echo "------------------------------------------------------------"
           
-          # Print entry point file being used
-          echo "🚀 Main entry point: $(basename "$SCREEN_ENTRY_FILE")"
+          # Print Screen JS files with paths
+          echo "📄 Screen JS Files:"
+          if [ ${#SCREEN_JS_FILES[@]} -eq 0 ]; then
+            echo "   (None)"
+          else
+            for file in "${SCREEN_JS_FILES[@]}"; do
+              # Get relative path from dist
+              rel_path="${file#dist/}"
+              echo "   - $rel_path"
+            done
+          fi
+          
+          # Print Shared JS files with paths
+          echo "📄 Shared JS Files:"
+          if [ ${#SHARED_JS_FILES[@]} -eq 0 ]; then
+            echo "   (None)"
+          else
+            for file in "${SHARED_JS_FILES[@]}"; do
+              rel_path="${file#dist/}"
+              echo "   - $rel_path"
+            done
+          fi
+          
+          # Print Root JS files with paths
+          echo "📄 Root JS Files:"
+          if [ ${#ROOT_JS_FILES[@]} -eq 0 ]; then
+            echo "   (None)"
+          else
+            for file in "${ROOT_JS_FILES[@]}"; do
+              rel_path="${file#dist/}"
+              echo "   - $rel_path"
+            done
+          fi
+          
+          # Print Screen CSS files with paths
+          echo "📄 Screen CSS Files:"
+          if [ ${#SCREEN_CSS_FILES[@]} -eq 0 ]; then
+            echo "   (None)"
+          else
+            for file in "${SCREEN_CSS_FILES[@]}"; do
+              rel_path="${file#dist/}"
+              echo "   - $rel_path"
+            done
+          fi
+          
+          # Print Shared CSS files with paths
+          echo "📄 Shared CSS Files:"
+          if [ ${#SHARED_CSS_FILES[@]} -eq 0 ]; then
+            echo "   (None)"
+          else
+            for file in "${SHARED_CSS_FILES[@]}"; do
+              rel_path="${file#dist/}"
+              echo "   - $rel_path"
+            done
+          fi
+          
+          echo "------------------------------------------------------------"
+          echo "🚀 Main entry point: $(basename "$SCREEN_ENTRY_FILE") (${SCREEN_ENTRY_FILE#dist/})"
+          echo "📦 Total Files: $((${#SCREEN_JS_FILES[@]} + ${#SHARED_JS_FILES[@]} + ${#ROOT_JS_FILES[@]} + ${#SCREEN_CSS_FILES[@]} + ${#SHARED_CSS_FILES[@]}))"
           
           #############################################
           # GENERATE SETTINGS.JSON
@@ -302,6 +341,7 @@ runs:
           fi
           
           # Clean up temp file
+          echo "Cleaning up temp file for screen: $screen"
           rm -f "$SETTINGS_FILE"
           
         done < <(echo "$SCREENS_JSON" | jq -r '.[]' || echo "Failed to parse screens JSON")
@@ -327,32 +367,22 @@ runs:
           failed_screens_output=$(IFS=,; echo "${FAILED_SCREENS[*]}")
         fi
 
-        # Print comprehensive deployment summary table
+        # Simple deployment summary without showing sensitive CDN URL
         echo "📈 Auth0 ACUL Screens Deployment Summary"
-        echo "┌────────────────┬─────────┬──────────────────────────────┐"
-        echo "│ Screen         │ Status  │ CDN URL                      │"
-        echo "├────────────────┼─────────┼──────────────────────────────┤"
+        echo "┌────────────────┬─────────┐"
+        echo "│ Screen         │ Status  │"
+        echo "├────────────────┼─────────┤"
         
         for screen in $(echo "$SCREENS_JSON" | jq -r '.[]'); do
           if [[ " ${SUCCESS_SCREENS[*]} " =~ " ${screen} " ]]; then
             status="✅ Success"
-            cdn_path="${CDN_BASE_URL}/assets/${screen}"
           else
             status="❌ Failed"
-            cdn_path="N/A"
           fi
-          
-          # Truncate long CDN URLs to fit in the table
-          if [ ${#cdn_path} -gt 30 ]; then
-            displayed_path="${cdn_path:0:27}..."
-          else
-            displayed_path="$cdn_path"
-          fi
-          
-          printf "│ %-14s │ %-7s │ %-30s │\n" "$screen" "$status" "$displayed_path"
+          printf "│ %-14s │ %-7s │\n" "$screen" "$status"
         done
         
-        echo "└────────────────┴─────────┴──────────────────────────────┘"
+        echo "└────────────────┴─────────┘"
         
         echo "- Successfully configured: $deployed_screens_output"
         echo "- Failed to configure: $failed_screens_output"
