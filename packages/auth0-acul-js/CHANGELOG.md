@@ -3,16 +3,12 @@
 ### ⚠️ Breaking Changes
 
 - **Removed** `editIdentifierLink` under `SCREEN_INSTANCE.screen.links` on all `reset-password-mfa-*` screens as they are irrelevant.
-- **Changed** `code` field to `text_code` in `device-code-confirmation` screen.
-  - The field `code` is deprecated; use `text_code` instead.
 - **Changed** `remember_device` to `showRememberDevice` under `SCREEN_INSTANCE.screen.data` for the following screens.
   - `mfa-email-challenge`
-  - `mfa-voice-challenge`
   - `mfa-sms-challenge`
   - `mfa-push-challenge-push`
   - `mfa-otp-challenge`
 - **Changed** the payload to replace `rememberBrowser` with `rememberDevice` in the following screens:
-  - `mfa-voice-challenge`
   - `mfa-sms-challenge`
   - `mfa-otp-challenge`
 
