@@ -7,10 +7,12 @@
   "scripts": {
     "build": "tsc",
     "test": "jest",
-    "generate:sdk": "tsx scripts/generate-react-sdk.ts",
-    "docs": "tsx ./scripts/generate-docs.ts",
+    "generate:sdk": "tsx ./scripts/generate-sdk.ts",
+    "generate:examples": "tsx ./scripts/generate-examples.ts",
     "lint": "eslint . --ext .ts,.tsx",
-    "lint:fix": "eslint . --ext .ts,.tsx --fix"
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
+    "docs": "typedoc --options typedoc.js",
+    "preinstall": "node ../../scripts/block-local-install.js"
   },
   "peerDependencies": {
     "react": "^18.0.0"
@@ -254,16 +256,12 @@
     }
   },
   "devDependencies": {
-    "@eslint/js": "^9.24.0",
-    "@testing-library/jest-dom": "^6.0.0",
-    "@testing-library/react": "^14.0.0",
     "@types/react": "^18.0.0",
-    "@typescript-eslint/parser": "^8.29.1",
-    "eslint": "^9.24.0",
     "eslint-plugin-react": "^7.37.5",
-    "typescript-eslint": "^8.29.1"
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/jest-dom": "^6.0.0"
   },
   "dependencies": {
-    "@auth0/auth0-acul-js": "0.1.0-beta.3"
+    "@auth0/auth0-acul-js": "0.1.0-beta.4"
   }
 }

@@ -257,7 +257,8 @@
     "lint:watch": "chokidar 'src/**/*.{js,ts}' 'interfaces/**/*.ts' -c 'npm run lint'",
     "format:src": "prettier --write 'src/**/*.{js,ts,tsx,json,css,md}'",
     "format:interfaces": "prettier --write 'src/**/*.{js,ts,tsx,json,css,md}'",
-    "format": "npm run format:src && npm run format:interfaces"
+    "format": "npm run format:src && npm run format:interfaces",
+    "preinstall": "node ../../scripts/block-local-install.js"
   },
   "author": "Auth0",
   "license": "MIT",

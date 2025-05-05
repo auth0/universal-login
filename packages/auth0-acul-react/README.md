@@ -148,10 +148,10 @@ To customize a screen:
 
 ## 📚 Docs
 
-Per-screen usage documentation is available in [`docs/`](./docs/) and is auto-generated.
+Per-screen usage documentation is available in [`examples/`](https://github.com/auth0/universal-login/tree/main/packages/auth0-acul-react/examples) and is auto-generated. <!-- typedoc-disable -->
 
 Example:
-- [`docs/login-id.md`](./docs/login-id.md)
+- [`examples/login-id.md`](./examples/login-id.md)
 
 ---
 
