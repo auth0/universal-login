@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { useLoginManager } from "./hooks/useLoginManager";
 import { useLoginForm } from "./hooks/useLoginForm";
 import ThemeProvider from "@/common/ThemeProvider";
@@ -9,6 +9,7 @@ import SocialLoginGroup, { type Connection } from "@/common/AuthenticationAltern
 import ErrorMessages from "@/common/Alert";
 import AuthScreenTemplate from "@/common/Layout";
 import { navigateWithCurrentOrigin } from "@/utils/url";
+import { getDynamicPlaceholder } from "@/utils/dynamicText";
 
 interface LoginConnection {
   name: string;
@@ -46,22 +47,9 @@ const LoginScreen: React.FC = () => {
   const resetPasswordLink = loginInstance.screen?.links?.reset_password || "";
   const errors = transactionData.errors || [];
   const hasErrors = !!transactionData.hasErrors;
+  const allowedIdentifiers = transactionData.allowedIdentifiers || [];
 
-  const usernamePlaceholder = useMemo(() => {
-    const allowedIdentifiers = transactionData.allowedIdentifiers || [];
-    const placeholderMap = {
-      'email,phone,username': texts.phoneOrUsernameOrEmailPlaceholder || 'Phone or Username or Email',
-      'email,phone': texts.phoneOrEmailPlaceholder || 'Phone number or Email address',
-      'phone,username': texts.phoneOrUsernamePlaceholder || 'Phone Number or Username',
-      'email,username': texts.usernameOrEmailPlaceholder || 'Username or Email address',
-      'email': texts.emailPlaceholder || 'Email address',
-      'phone': texts.phonePlaceholder || 'Phone number',
-      'username': texts.usernameOnlyPlaceholder || 'Username',
-      'default': 'Username or Email'
-    };
-    const key = [...allowedIdentifiers].sort().join(',');
-    return (placeholderMap[key as keyof typeof placeholderMap] || placeholderMap.default) + '*';
-  }, [transactionData.allowedIdentifiers, texts]);
+  const usernamePlaceholder = getDynamicPlaceholder(allowedIdentifiers, texts);
 
   const formProps = {
     usernameRef,
@@ -72,7 +60,7 @@ const LoginScreen: React.FC = () => {
     isCaptchaAvailable,
     captchaImage,
     buttonText: texts.buttonText || "Continue",
-    usernamePlaceholder: usernamePlaceholder,
+    usernamePlaceholder,
     passwordPlaceholder: (texts.passwordPlaceholder || "Password") + '*',
     captchaPlaceholder:
       (texts.captchaCodePlaceholder || "Enter the code shown above") + '*',

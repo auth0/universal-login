@@ -10,6 +10,7 @@ import ora from 'ora';
 import { logger, colors } from './logger.js';
 import { execSync } from 'child_process';
 import { saveAdvancedModeConfig } from './config-generator.js';
+import { getPromptNameForScreen } from './screen-mappings.js';
 
 /**
  * Helper function to get user input from stdin
@@ -307,7 +308,7 @@ export async function configureStandardMode(screenName) {
       'universal-login',
       'switch',
       '--tenant', tenantToUse,
-      '--prompt', screenName,
+      '--prompt', getPromptNameForScreen(screenName),
       '--screen', screenName,
       '--rendering-mode', 'standard'
     ]);
@@ -324,7 +325,7 @@ export async function configureStandardMode(screenName) {
     
     // Show command for troubleshooting
     logger.info('Failed command:');
-    logger.info(`auth0 universal-login switch --tenant "${tenantToUse}" --prompt "${screenName}" --screen "${screenName}" --rendering-mode standard`);
+    logger.info(`auth0 universal-login switch --tenant "${tenantToUse}" --prompt "${getPromptNameForScreen(screenName)}" --screen "${screenName}" --rendering-mode standard`);
     
     return false;
   }
@@ -378,7 +379,7 @@ export async function configureAdvancedMode(screenName, config, isHmr = false) {
     
     try {
       // Use execSync for interactive CLI command
-      execSync(`auth0 ul customize --tenant "${tenantToUse}" --rendering-mode advanced --prompt "${screenName}" --screen "${screenName}" --settings-file "${settingsFilePath}"`, {
+      execSync(`auth0 ul customize --tenant "${tenantToUse}" --rendering-mode advanced --prompt "${getPromptNameForScreen(screenName)}" --screen "${screenName}" --settings-file "${settingsFilePath}"`, {
         stdio: 'inherit',
         encoding: 'utf8'
       });
@@ -398,7 +399,7 @@ export async function configureAdvancedMode(screenName, config, isHmr = false) {
 
       if (!isHmr) {
         logger.info('Failed command:');
-        logger.info(`  auth0 ul customize --tenant "${tenantToUse}" --rendering-mode advanced --prompt "${screenName}" --screen "${screenName}" --settings-file "${settingsFilePath}"`);
+        logger.info(`  auth0 ul customize --tenant "${tenantToUse}" --rendering-mode advanced --prompt "${getPromptNameForScreen(screenName)}" --screen "${screenName}" --settings-file "${settingsFilePath}"`);
       }
       
       return false;

@@ -73,14 +73,18 @@ const runAdvancedMode = async (screenName) => {
       logger.info('\nAdvanced mode process terminated.');
       // Exit code remains 0 for graceful termination
     } else {
-      logger.error('An error occurred during advanced mode execution:');
-       if(Array.isArray(error)) {
-            // Error likely from concurrently library
-            error.forEach(e => logger.error(`  [${e.command?.name || 'Process'}]: ${e.message?.split('\n')[0]}`)); // Log first line
-       } else {
-            // Log other errors (e.g., from build, config steps)
-            logger.error(`  ${error.message}`);
-       }
+      // Skip error reporting for build errors that were already reported in buildApp
+      // We check if the error has a details property which indicates it was processed in buildApp
+      if (!error.details) {
+        logger.error('An error occurred during advanced mode execution:');
+        if(Array.isArray(error)) {
+          // Error likely from concurrently library
+          error.forEach(e => logger.error(`  [${e.command?.name || 'Process'}]: ${e.message?.split('\n')[0]}`)); // Log first line
+        } else {
+          // Log other errors (e.g., from config steps)
+          logger.error(`  ${error.message}`);
+        }
+      }
       exitCode = 1; // Set exit code to 1 for errors
     }
   } finally {
@@ -124,8 +128,19 @@ async function buildApp() {
     await runCommand('npm', ['run', 'build']);
     spinner.succeed('Application built successfully');
   } catch (error) {
-    spinner.fail(`Build failed: ${error.message}`);
-    throw new Error(`Build failed: ${error.message}`);
+    spinner.fail('Build failed');
+    
+    // Display build errors if available
+    if (error.details && error.details.length > 0) {
+      error.details.forEach(detail => {
+        logger.error(`${detail}`);
+      });
+      // Don't rethrow - we've displayed the errors already
+      process.exit(1);
+    } else {
+      // For other errors, throw to be caught by the main try/catch
+      throw error;
+    }
   }
 }
 
@@ -169,17 +184,58 @@ async function cleanDist() {
  */
 const runCommand = (command, args) => {
   return new Promise((resolve, reject) => {
+    let outputText = '';
+    let errorLines = [];
+    
     const proc = spawn(command, args, {
       stdio: 'pipe',
       shell: false,
       env: { ...process.env, FORCE_COLOR: "true" }
     });
     
+    // Collect stdout without displaying
+    proc.stdout.on('data', (data) => {
+      const text = data.toString();
+      outputText += text;
+      
+      // Check for errors in stdout and collect them
+      const lines = text.split('\n');
+      for (const line of lines) {
+        if (line.includes('error TS') || line.includes('Error:')) {
+          errorLines.push(line.trim());
+        }
+      }
+    });
+    
+    // Collect stderr and display only errors
+    proc.stderr.on('data', (data) => {
+      const text = data.toString();
+      outputText += text;
+      
+      // Display stderr content as it's likely to be errors
+      const lines = text.split('\n');
+      for (const line of lines) {
+        if (line.trim()) {
+          errorLines.push(line.trim());
+        }
+      }
+    });
+    
     proc.on('close', code => {
-      if (code === 0) {
-        resolve();
+      // Check output for error indicators
+      const hasErrors = 
+        outputText.includes('error TS') || 
+        outputText.includes('Error:') ||
+        (outputText.includes('Found ') && outputText.includes(' error')) ||
+        errorLines.length > 0;
+      
+      if (code !== 0 || hasErrors) {
+        // Create error object with detailed information
+        const error = new Error('TypeScript compilation failed');
+        error.details = [...new Set(errorLines)]; // Attach unique errors for the caller to use
+        reject(error);
       } else {
-        reject(new Error(`Command failed with exit code ${code}`));
+        resolve();
       }
     });
     

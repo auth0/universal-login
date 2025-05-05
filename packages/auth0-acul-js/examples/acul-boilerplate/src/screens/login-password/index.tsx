@@ -1,6 +1,6 @@
 import React from "react";
-import { useLoginPasswordManager } from './hooks/useLoginPasswordManager';
-import { useLoginPasswordForm } from './hooks/useLoginPasswordForm';
+import { useLoginPasswordManager } from "./hooks/useLoginPasswordManager";
+import { useLoginPasswordForm } from "./hooks/useLoginPasswordForm";
 import ThemeProvider from "@/common/ThemeProvider";
 import Logo from "@/common/Logo";
 import LoginPasswordForm from "./components/LoginPasswordForm";
@@ -9,6 +9,7 @@ import AuthScreenTemplate from "@/common/Layout";
 import { navigateWithCurrentOrigin } from "@/utils/url";
 import Input from "@/common/Input";
 import SignupLink from "@/common/Link";
+import { getDynamicDescription } from "@/utils/dynamicText";
 
 const LoginPasswordScreen: React.FC = () => {
   const {
@@ -45,14 +46,20 @@ const LoginPasswordScreen: React.FC = () => {
 
   // Extract text values with fallbacks
   const texts = loginPasswordInstance.screen?.texts || {};
-  
+  const transactionData = loginPasswordInstance.transaction || {};
+  const allowedIdentifiers = transactionData.getAllowedIdentifiers?.() || [];
+
   // Custom title that includes the username if available
-  const screenTitle = username 
-    ? (texts.title || 'Enter Your Password')
-    : (texts.title || 'Enter Your Password');
-  
-  // Custom description
-  const screenDescription = texts.description || 'Enter your password for React acul to continue to my acul react';
+  const screenTitle = username
+    ? texts.title || "Enter Your Password"
+    : texts.title || "Enter Your Password";
+
+  // Custom description using dynamic utility
+  const screenDescription = getDynamicDescription(
+    allowedIdentifiers,
+    texts,
+    "Enter your password to continue"
+  );
 
   // Prepare the form props
   const formProps = {
@@ -93,7 +100,7 @@ const LoginPasswordScreen: React.FC = () => {
             }
           }}
           className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-medium text-[color:var(--color-links)] no-underline z-10"
-          style={{ color: 'var(--color-links, #635dff)' }}
+          style={{ color: "var(--color-links, #635dff)" }}
         >
           {texts.editEmailText || "Edit"}
         </a>
@@ -108,9 +115,9 @@ const LoginPasswordScreen: React.FC = () => {
       {emailDisplay}
       <LoginPasswordForm {...formProps} />
       {signupLink && (
-        <SignupLink 
+        <SignupLink
           signupLink={signupLink}
-          signupText={texts.signupActionLinkText || 'Sign up'}
+          signupText={texts.signupActionLinkText || "Sign up"}
           footerText={texts.footerText || "Don't have an account?"}
           onLinkClick={handleLinkClick}
         />

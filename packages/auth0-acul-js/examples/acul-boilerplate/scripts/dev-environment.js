@@ -75,8 +75,7 @@ export async function startStandardEnv(screenName) {
     const viteProcess = execa("npm", ["run", "start"], {
       cwd: screenTesterDir,
       env,
-      // Use pipe instead of inherit to control output formatting
-      stdio: ["inherit", "pipe", "pipe"],
+      stdio: ["inherit", "pipe"],
     });
 
     // Log Vite output with custom formatting that won't overwrite previous logs
