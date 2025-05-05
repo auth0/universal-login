@@ -7,12 +7,8 @@ on:
 
 jobs:
   build:
-    name: Lint + Test + Build + Docs (${{ matrix.package }})
+    name: Lint + Test + Build + Docs (Monorepo Root)
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        package:
-          - auth0-acul-js
     steps:
       - uses: actions/checkout@v4
 
@@ -25,18 +21,14 @@ jobs:
       - name: Install dependencies at root
         run: npm install
 
-      - name: Lint
-        run: npm run lint --if-present
-        working-directory: packages/${{ matrix.package }}
+      - name: Lint all workspaces
+        run: npm run lint
 
-      - name: Run tests
-        run: npm run test --if-present
-        working-directory: packages/${{ matrix.package }}
+      - name: Run tests for all workspaces
+        run: npm run test
 
-      - name: Build
-        run: npm run build:local --if-present
-        working-directory: packages/${{ matrix.package }}
+      - name: Build all workspaces
+        run: npm run build
 
       - name: Generate docs
-        run: npm run docs --if-present
-        working-directory: packages/${{ matrix.package }}
+        run: npm run docs
