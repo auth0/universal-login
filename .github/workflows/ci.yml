@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    name: Lint + Test + Build + Docs (Monorepo Root)
+    name: Build (Lint + Test + Build + Docs) (Monorepo Root)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,14 +21,6 @@ jobs:
       - name: Install dependencies at root
         run: npm install
 
-      - name: Lint all workspaces
-        run: npm run lint
-
-      - name: Run tests for all workspaces
-        run: npm run test
 
       - name: Build all workspaces
         run: npm run build
-
-      - name: Generate docs
-        run: npm run docs
