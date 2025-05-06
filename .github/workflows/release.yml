@@ -1,0 +1,56 @@
+# .github/workflows/release.yml
+name: Monorepo Release
+
+on:
+  push:
+    tags:
+      - 'auth0-acul-*@*'
+
+jobs:
+  release:
+    name: Release from Tag
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js 22.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install deps
+        run: npm install
+
+      - name: Parse version and package
+        id: meta
+        run: |
+          TAG=${GITHUB_REF#refs/tags/}
+          NAME=$(echo $TAG | cut -d@ -f1)
+          VERSION=$(echo $TAG | cut -d@ -f2)
+          echo "name=$NAME" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Check tag exists
+        uses: ./.github/actions/tag-exists
+        with:
+          tag: ${{ github.ref_name }}
+
+      - name: Build
+        uses: ./.github/actions/build
+        with:
+          working-directory: packages/${{ steps.meta.outputs.name }}
+
+      - name: Publish to NPM
+        uses: ./.github/actions/npm-publish
+        with:
+          working-directory: packages/${{ steps.meta.outputs.name }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create GitHub Release
+        uses: ./.github/actions/release-create
+        with:
+          tag: ${{ github.ref_name }}
+          name: ${{ steps.meta.outputs.name }}
+          version: ${{ steps.meta.outputs.version }}
