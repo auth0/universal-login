@@ -44,3 +44,4 @@ export type { ScreenMembersOnDeviceCodeConfirmation } from '../screens/device-co
 export type { ScreenMembersOnMfaPhoneChallenge } from '../screens/mfa-phone-challenge';
 export type { ScreenMembersOnMfaRecoveryCodeEnrollment } from '../screens/mfa-recovery-code-enrollment';
 export type { ScreenMembersOnResetPasswordMfaPhoneChallenge } from '../screens/reset-password-mfa-phone-challenge';
+export type { ScreenMembersOnMfaRecoveryCodeChallengeNewCode } from '../screens/mfa-recovery-code-challenge-new-code';

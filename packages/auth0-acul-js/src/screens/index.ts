@@ -56,3 +56,4 @@ export { default as DeviceCodeConfirmation } from './device-code-confirmation';
 export { default as MfaPhoneChallenge } from './mfa-phone-challenge';
 export { default as MfaRecoveryCodeEnrollment } from './mfa-recovery-code-enrollment';
 export { default as ResetPasswordMfaPhoneChallenge } from './reset-password-mfa-phone-challenge';
+export { default as MfaRecoveryCodeChallengeNewCode } from './mfa-recovery-code-challenge-new-code';

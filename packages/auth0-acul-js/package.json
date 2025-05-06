@@ -239,7 +239,11 @@
     "./reset-password-mfa-phone-challenge": {
         "import": "./dist/screens/reset-password-mfa-phone-challenge/index.js",
         "types": "./dist/types/src/screens/reset-password-mfa-phone-challenge/index.d.ts"
-     }
+     },
+     "./mfa-recovery-code-challenge-new-code": {
+      "import": "./dist/screens/mfa-recovery-code-challenge-new-code/index.js",
+      "types": "./dist/types/src/screens/mfa-recovery-code-challenge-new-code/index.d.ts"
+   }
   },
   "scripts": {
     "clean": "rimraf dist",
