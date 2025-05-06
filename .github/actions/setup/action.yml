@@ -1,0 +1,24 @@
+# .github/actions/setup/action.yml
+name: Setup Monorepo Environment
+description: Reusable action to install dependencies and configure Node.js for Universal Login monorepo
+
+inputs:
+  node-version:
+    description: Node.js version to use
+    default: '22'
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v4
+
+    - name: Use Node.js ${{ inputs.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm install
+      shell: bash
