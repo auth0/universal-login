@@ -56,3 +56,4 @@ export type { DeviceCodeConfirmationMembers } from '../screens/device-code-confi
 export type { MfaPhoneChallengeMembers } from '../screens/mfa-phone-challenge';
 export type { MfaRecoveryCodeEnrollmentMembers } from '../screens/mfa-recovery-code-enrollment';
 export type { ResetPasswordMfaPhoneChallengeMembers } from '../screens/reset-password-mfa-phone-challenge';
+export type { MfaRecoveryCodeChallengeNewCodeMembers } from '../screens/mfa-recovery-code-challenge-new-code';
