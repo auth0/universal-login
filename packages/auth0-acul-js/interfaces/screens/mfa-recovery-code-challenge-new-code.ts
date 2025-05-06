@@ -1,10 +1,6 @@
 import type { CustomOptions } from '../../interfaces/common';
 import type { BaseMembers } from '../models/base-context';
-import type { ClientMembers } from '../models/client';
-import type { OrganizationMembers } from '../models/organization';
-import type { PromptMembers } from '../models/prompt';
 import type { ScreenMembers } from '../models/screen';
-import type { TransactionMembers } from '../models/transaction';
 
 /**
  * @interface ScreenMembersOnMfaRecoveryCodeChallengeNewCode
@@ -47,36 +43,11 @@ export interface ContinueOptions extends CustomOptions {
  */
 export interface MfaRecoveryCodeChallengeNewCodeMembers extends BaseMembers {
   /**
-   * Access to client-specific information (e.g., client ID, name).
-   * @type {ClientMembers}
-   */
-  client: ClientMembers;
-
-  /**
-   * Access to organization-specific information, if applicable.
-   * Null if the transaction is not tied to an organization.
-   * @type {OrganizationMembers}
-   */
-  organization: OrganizationMembers;
-
-  /**
-   * Access to prompt details (e.g., prompt name like 'mfa').
-   * @type {PromptMembers}
-   */
-  prompt: PromptMembers;
-
-  /**
    * Access to the specific properties and data of the 'mfa-recovery-code-challenge-new-code' screen.
    * Includes the `textCode` which is the recovery code to be displayed.
    * @type {ScreenMembersOnMfaRecoveryCodeChallengeNewCode}
    */
   screen: ScreenMembersOnMfaRecoveryCodeChallengeNewCode;
-
-  /**
-   * Access to the current transaction details (e.g., state, errors).
-   * @type {TransactionMembers}
-   */
-  transaction: TransactionMembers;
 
   /**
    * Confirms that the user has saved the new recovery code and continues the authentication flow.
