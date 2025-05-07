@@ -59,4 +59,5 @@ export const ScreenIds = {
   MFA_RECOVERY_CODE_CHALLENGE_NEW_CODE: 'mfa-recovery-code-challenge-new-code',
   LOGOUT: 'logout',
   LOGOUT_ABORTED: 'logout-aborted',
+  LOGOUT_COMPLETE: 'logout-complete',
 };

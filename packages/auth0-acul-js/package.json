@@ -251,6 +251,10 @@
     "./logout-aborted": {
       "import": "./dist/screens/logout-aborted/index.js",
       "types": "./dist/types/src/screens/logout-aborted/index.d.ts"
+    },
+    "./logout-complete": {
+      "import": "./dist/screens/logout-complete/index.js",
+      "types": "./dist/types/src/screens/logout-complete/index.d.ts"
     }
   },
   "scripts": {

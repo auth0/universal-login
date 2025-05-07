@@ -59,3 +59,4 @@ export type { ResetPasswordMfaPhoneChallengeMembers } from '../screens/reset-pas
 export type { MfaRecoveryCodeChallengeNewCodeMembers } from '../screens/mfa-recovery-code-challenge-new-code';
 export type { LogoutMembers } from '../screens/logout';
 export type { LogoutAbortedMembers } from '../screens/logout-aborted';
+export type { LogoutCompleteMembers } from '../screens/logout-complete';
