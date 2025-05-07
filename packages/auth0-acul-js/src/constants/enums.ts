@@ -57,4 +57,5 @@ export const ScreenIds = {
   MFA_RECOVERY_CODE_ENROLLMENT: 'mfa-recovery-code-enrollment',
   RESET_PASSWORD_MFA_PHONE_CHALLENGE: 'reset-password-mfa-phone-challenge',
   MFA_RECOVERY_CODE_CHALLENGE_NEW_CODE: 'mfa-recovery-code-challenge-new-code',
+  LOGOUT: 'logout',
 };
