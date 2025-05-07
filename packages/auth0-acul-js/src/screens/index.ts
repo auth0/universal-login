@@ -58,3 +58,4 @@ export { default as MfaRecoveryCodeEnrollment } from './mfa-recovery-code-enroll
 export { default as ResetPasswordMfaPhoneChallenge } from './reset-password-mfa-phone-challenge';
 export { default as MfaRecoveryCodeChallengeNewCode } from './mfa-recovery-code-challenge-new-code';
 export { default as Logout } from './logout';
+export { default as LogoutAborted } from './logout-aborted';

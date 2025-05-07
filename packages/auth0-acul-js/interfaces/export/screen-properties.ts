@@ -58,3 +58,4 @@ export type { MfaRecoveryCodeEnrollmentMembers } from '../screens/mfa-recovery-c
 export type { ResetPasswordMfaPhoneChallengeMembers } from '../screens/reset-password-mfa-phone-challenge';
 export type { MfaRecoveryCodeChallengeNewCodeMembers } from '../screens/mfa-recovery-code-challenge-new-code';
 export type { LogoutMembers } from '../screens/logout';
+export type { LogoutAbortedMembers } from '../screens/logout-aborted';
