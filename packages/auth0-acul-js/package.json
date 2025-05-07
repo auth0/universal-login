@@ -247,6 +247,10 @@
     "./logout": {
       "import": "./dist/screens/logout/index.js",
       "types": "./dist/types/src/screens/logout/index.d.ts"
+    },
+    "./logout-aborted": {
+      "import": "./dist/screens/logout-aborted/index.js",
+      "types": "./dist/types/src/screens/logout-aborted/index.d.ts"
     }
   },
   "scripts": {

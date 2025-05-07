@@ -46,3 +46,4 @@ export type { ScreenMembersOnMfaRecoveryCodeEnrollment } from '../screens/mfa-re
 export type { ScreenMembersOnResetPasswordMfaPhoneChallenge } from '../screens/reset-password-mfa-phone-challenge';
 export type { ScreenMembersOnMfaRecoveryCodeChallengeNewCode } from '../screens/mfa-recovery-code-challenge-new-code';
 export type { LogoutMembers } from '../screens/logout';
+export type { LogoutAbortedMembers } from '../screens/logout-aborted';
