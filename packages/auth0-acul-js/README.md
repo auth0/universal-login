@@ -180,6 +180,7 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 | 58     | mfa-recovery-code-challenge-new-code | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaRecoveryCodeChallengeNewCode.html) |
 | 59     | logout | [Link](https://auth0.github.io/universal-login/classes/Classes.Logout.html) |
 | 60     | logout-aborted | [Link](https://auth0.github.io/universal-login/classes/Classes.LogoutAborted.html) |
+| 61     | logout-complete | [Link](https://auth0.github.io/universal-login/classes/Classes.LogoutComplete.html) |
 
 </details>
 
