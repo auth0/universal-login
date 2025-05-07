@@ -178,6 +178,7 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 | 56     | mfa-recovery-code-enrollment          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaRecoveryCodeEnrollment.html)   |
 | 57     | reset-password-mfa-phone-challenge        | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaPhoneChallenge.html)                        |
 | 58     | mfa-recovery-code-challenge-new-code | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaRecoveryCodeChallengeNewCode.html) |
+| 59     | consent                                   | [Link](https://auth0.github.io/universal-login/classes/Classes.Consent.html)                        |
 
 </details>
 
