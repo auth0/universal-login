@@ -227,23 +227,27 @@
     "./mfa-phone-challenge": {
       "import": "./dist/screens/mfa-phone-challenge/index.js",
       "types": "./dist/types/src/screens/mfa-phone-challenge/index.d.ts"
-     },
+    },
     "./mfa-voice-challenge": {
       "import": "./dist/screens/mfa-voice-challenge/index.js",
       "types": "./dist/types/src/screens/mfa-voice-challenge/index.d.ts"
-     },
+    },
     "./mfa-recovery-code-enrollment": {
-       "import": "./dist/screens/mfa-recovery-code-enrollment/index.js",
-       "types": "./dist/types/src/screens/mfa-recovery-code-enrollment/index.d.ts"
-     },
+      "import": "./dist/screens/mfa-recovery-code-enrollment/index.js",
+      "types": "./dist/types/src/screens/mfa-recovery-code-enrollment/index.d.ts"
+    },
     "./reset-password-mfa-phone-challenge": {
-        "import": "./dist/screens/reset-password-mfa-phone-challenge/index.js",
-        "types": "./dist/types/src/screens/reset-password-mfa-phone-challenge/index.d.ts"
-     },
-     "./mfa-recovery-code-challenge-new-code": {
+      "import": "./dist/screens/reset-password-mfa-phone-challenge/index.js",
+      "types": "./dist/types/src/screens/reset-password-mfa-phone-challenge/index.d.ts"
+    },
+    "./mfa-recovery-code-challenge-new-code": {
       "import": "./dist/screens/mfa-recovery-code-challenge-new-code/index.js",
       "types": "./dist/types/src/screens/mfa-recovery-code-challenge-new-code/index.d.ts"
-   }
+    },
+    "./logout": {
+      "import": "./dist/screens/logout/index.js",
+      "types": "./dist/types/src/screens/logout/index.d.ts"
+    }
   },
   "scripts": {
     "clean": "rimraf dist",
