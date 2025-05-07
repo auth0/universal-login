@@ -59,3 +59,4 @@ export { default as ResetPasswordMfaPhoneChallenge } from './reset-password-mfa-
 export { default as MfaRecoveryCodeChallengeNewCode } from './mfa-recovery-code-challenge-new-code';
 export { default as Logout } from './logout';
 export { default as LogoutAborted } from './logout-aborted';
+export { default as LogoutComplete } from './logout-complete';
