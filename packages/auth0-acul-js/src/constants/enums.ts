@@ -60,4 +60,5 @@ export const ScreenIds = {
   LOGOUT: 'logout',
   LOGOUT_ABORTED: 'logout-aborted',
   LOGOUT_COMPLETE: 'logout-complete',
+  EMAIL_OTP_CHALLENGE: 'email-otp-challenge',
 };

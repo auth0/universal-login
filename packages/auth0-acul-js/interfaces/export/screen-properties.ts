@@ -60,3 +60,5 @@ export type { MfaRecoveryCodeChallengeNewCodeMembers } from '../screens/mfa-reco
 export type { LogoutMembers } from '../screens/logout';
 export type { LogoutAbortedMembers } from '../screens/logout-aborted';
 export type { LogoutCompleteMembers } from '../screens/logout-complete';
+export type { EmailOTPChallengeMembers } from '../screens/email-otp-challenge';
+

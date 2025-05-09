@@ -60,3 +60,4 @@ export { default as MfaRecoveryCodeChallengeNewCode } from './mfa-recovery-code-
 export { default as Logout } from './logout';
 export { default as LogoutAborted } from './logout-aborted';
 export { default as LogoutComplete } from './logout-complete';
+export { default as EmailOTPChallenge } from './email-otp-challenge'

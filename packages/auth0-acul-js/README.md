@@ -181,6 +181,7 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 | 59     | logout | [Link](https://auth0.github.io/universal-login/classes/Classes.Logout.html) |
 | 60     | logout-aborted | [Link](https://auth0.github.io/universal-login/classes/Classes.LogoutAborted.html) |
 | 61     | logout-complete | [Link](https://auth0.github.io/universal-login/classes/Classes.LogoutComplete.html) |
+| 62     | email-otp-challenge                       | [Link](https://auth0.github.io/universal-login/classes/Classes.EmailOTPChallenge.html)    |
 
 </details>
 
