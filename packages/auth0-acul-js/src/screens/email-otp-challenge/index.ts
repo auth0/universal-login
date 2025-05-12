@@ -3,7 +3,6 @@ import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
 import type { CustomOptions } from '../../../interfaces/common';
-import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { EmailOTPChallengeMembers, ScreenMembersOnEmailOTPChallenge as ScreenOptions } from '../../../interfaces/screens/email-otp-challenge';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
@@ -11,7 +10,6 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * Represents the Email OTP Challenge screen.
  */
 export default class EmailOTPChallenge extends BaseContext implements EmailOTPChallengeMembers {
-  screen: ScreenOptions;
   static screenIdentifier: string = ScreenIds.EMAIL_OTP_CHALLENGE;
 
   /**
@@ -19,8 +17,6 @@ export default class EmailOTPChallenge extends BaseContext implements EmailOTPCh
    */
   constructor() {
     super();
-    const screenContext = this.getContext('screen') as ScreenContext;
-    this.screen = screenContext as ScreenOptions;
   }
 
   /**
@@ -45,7 +41,7 @@ export default class EmailOTPChallenge extends BaseContext implements EmailOTPCh
 
     const payload = {
       code,
-      action: 'default',
+      action: FormActions.DEFAULT,
       ...options,
     };
 

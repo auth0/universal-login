@@ -3,6 +3,7 @@ import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { CustomOptions } from 'interfaces/common';
 import { ScreenIds } from '../../../../src/constants';
+import { FormActions } from '../../../../src/constants';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -30,7 +31,7 @@ describe('EmailOTPChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           code: code,
-          action: 'default',
+          action: FormActions.DEFAULT,
         })
       );
     });
@@ -44,7 +45,7 @@ describe('EmailOTPChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           code: code,
-          action: 'default',
+          action: FormActions.DEFAULT,
           ...options,
         })
       );
@@ -67,7 +68,7 @@ describe('EmailOTPChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'resend-code',
+          action: FormActions.RESEND_CODE,
         })
       );
     });
@@ -79,7 +80,7 @@ describe('EmailOTPChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'resend-code',
+          action: FormActions.RESEND_CODE,
           ...options,
         })
       );
