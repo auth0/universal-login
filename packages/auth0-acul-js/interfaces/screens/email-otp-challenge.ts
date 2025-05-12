@@ -12,7 +12,6 @@ export interface ScreenMembersOnEmailOTPChallenge extends ScreenMembers {
  * Represents the Email OTP Challenge screen interface.
  */
 export interface EmailOTPChallengeMembers {
-  screen: ScreenMembersOnEmailOTPChallenge;
   /**
    * Submits the OTP code entered by the user.
    * @param code The OTP code to submit.

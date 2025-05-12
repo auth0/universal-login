@@ -12,9 +12,6 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
 export default class EmailOTPChallenge extends BaseContext implements EmailOTPChallengeMembers {
   static screenIdentifier: string = ScreenIds.EMAIL_OTP_CHALLENGE;
 
-  /**
-   * Creates an instance of the EmailOTPChallenge screen.
-   */
   constructor() {
     super();
   }
