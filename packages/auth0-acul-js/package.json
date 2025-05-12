@@ -255,6 +255,14 @@
     "./logout-complete": {
       "import": "./dist/screens/logout-complete/index.js",
       "types": "./dist/types/src/screens/logout-complete/index.d.ts"
+    },
+    "./email-verification-result": {
+      "import": "./dist/screens/email-verification-result/index.js",
+      "types": "./dist/types/src/screens/email-verification-result/index.d.ts"
+    },
+    "./login-email-verification": {
+      "import": "./dist/screens/login-email-verification/index.js",
+      "types": "./dist/types/src/screens/login-email-verification/index.d.ts"
     }
   },
   "scripts": {
