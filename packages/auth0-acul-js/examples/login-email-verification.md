@@ -13,7 +13,7 @@ Below is an example of a React component for the Login Email Verification screen
 - Display of error messages from `transaction.errors`.
 
 ```tsx
-import React, { useState, useEffect, FormEvent, ChangeEvent } from 'react';
+import React, { useState, FormEvent, ChangeEvent } from 'react';
 import LoginEmailVerification, { ContinueWithCodeOptions, ResendCodeOptions } from '@auth0/auth0-acul-js/login-email-verification'; // Adjust path as necessary
 
 const LoginEmailVerificationScreen: React.FC = () => {
@@ -25,17 +25,6 @@ const LoginEmailVerificationScreen: React.FC = () => {
   // This should be done once per component instance.
   const [loginEmailVerificationManager] = useState(() => new LoginEmailVerification());
   const { screen, transaction, client } = loginEmailVerificationManager;
-
-  // Effect to update UI messages based on transaction errors
-  useEffect(() => {
-    if (transaction.errors && transaction.errors.length > 0) {
-      setUiMessages(transaction.errors.map(err => ({ type: 'error', text: err.message })));
-    } else {
-      // Clear errors if there are no transaction errors.
-      // You might want to preserve success messages differently.
-      // setUiMessages([]); 
-    }
-  }, [transaction.errors]);
 
   /**
    * Handles the change in the code input field.
@@ -140,6 +129,16 @@ const LoginEmailVerificationScreen: React.FC = () => {
             />
           </div>
 
+          {/* Display errors from the transaction object (e.g., invalid state) */}
+          {transaction.errors && transaction.errors.length > 0 && (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+              {transaction.errors.map((err, index) => (
+                <p key={`tx-error-${index}`}>{err.message}</p>
+              ))}
+            </div>
+          )}
+
+          {/* Display errors/success caught during form submission */}
           {uiMessages.length > 0 && (
             <div className="space-y-2">
               {uiMessages.map((msg, idx) => (
