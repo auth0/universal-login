@@ -60,5 +60,8 @@ export type { MfaRecoveryCodeChallengeNewCodeMembers } from '../screens/mfa-reco
 export type { LogoutMembers } from '../screens/logout';
 export type { LogoutAbortedMembers } from '../screens/logout-aborted';
 export type { LogoutCompleteMembers } from '../screens/logout-complete';
-export type { EmailVerificationResultMembers } from '../screens/email-verification-result'; // Added new export
+export type { EmailVerificationResultMembers } from '../screens/email-verification-result';
 export type { LoginEmailVerificationMembers } from '../screens/login-email-verification'
+export type { MfaWebAuthnPlatformEnrollmentMembers } from '../screens/mfa-webauthn-platform-enrollment';
+export type { MfaWebAuthnErrorMembers } from '../screens/mfa-webauthn-error';
+export type { MfaWebAuthnNotAvailableErrorMembers } from '../screens/mfa-webauthn-not-available-error';

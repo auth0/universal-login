@@ -48,3 +48,6 @@ export * as RedeemTicket from './redeem-ticket';
 export * as ResetPasswordMfaPhoneChallenge from './reset-password-mfa-phone-challenge';
 export * as MfaRecoveryCodeChallengeNewCode from './mfa-recovery-code-challenge-new-code';
 export * as LoginEmailVerification from './login-email-verification'
+export * as MfaWebAuthnPlatformEnrollment from './mfa-webauthn-platform-enrollment';
+export * as MfaWebAuthnError from './mfa-webauthn-error';
+export * as MfaWebAuthnNotAvailableError from './mfa-webauthn-not-available-error';

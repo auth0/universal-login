@@ -62,4 +62,7 @@ export const ScreenIds = {
   LOGOUT_COMPLETE: 'logout-complete',
   EMAIL_VERIFICATION_RESULT: 'email-verification-result',
   LOGIN_EMAIL_VERIFICATION: 'login-email-verification',
+  MFA_WEBAUTHN_PLATFORM_ENROLLMENT: 'mfa-webauthn-platform-enrollment',
+  MFA_WEBAUTHN_ERROR: 'mfa-webauthn-error',
+  MFA_WEBAUTHN_NOT_AVAILABLE_ERROR: 'mfa-webauthn-not-available-error',
 };

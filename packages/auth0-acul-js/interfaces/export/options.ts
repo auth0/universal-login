@@ -59,3 +59,4 @@ export type {
 export type { ContinueOptions as MfaRecoveryCodeChallengeNewCodeContinueOptions } from '../screens/mfa-recovery-code-challenge-new-code';
 export type { ConfirmLogoutOptions } from '../screens/logout';
 export type { ContinueWithCodeOptions as ContinueWithCodeOptionPayload, ResendCodeOptions as ResendCodeOptionsPayload } from '../screens/login-email-verification';
+export type { SubmitPasskeyCredentialOptions, ReportBrowserErrorOptions } from '../screens/mfa-webauthn-platform-enrollment';

@@ -263,6 +263,18 @@
     "./login-email-verification": {
       "import": "./dist/screens/login-email-verification/index.js",
       "types": "./dist/types/src/screens/login-email-verification/index.d.ts"
+    },
+    "./mfa-webauthn-platform-enrollment": {
+      "import": "./dist/screens/mfa-webauthn-platform-enrollment/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-platform-enrollment/index.d.ts"
+    },
+    "./mfa-webauthn-error": {
+      "import": "./dist/screens/mfa-webauthn-error/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-error/index.d.ts"
+    },
+    "./mfa-webauthn-not-available-error": {
+      "import": "./dist/screens/mfa-webauthn-not-available-error/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-not-available-error/index.d.ts"
     }
   },
   "scripts": {

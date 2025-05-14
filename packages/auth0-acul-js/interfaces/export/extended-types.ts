@@ -48,3 +48,5 @@ export type { ScreenMembersOnMfaRecoveryCodeChallengeNewCode } from '../screens/
 export type { LogoutMembers } from '../screens/logout';
 export type { LogoutAbortedMembers } from '../screens/logout-aborted';
 export type { ScreenMembersOnEmailVerificationResult } from '../screens/email-verification-result';
+export type { ScreenMembersOnMfaWebAuthnPlatformEnrollment } from '../screens/mfa-webauthn-platform-enrollment';
+export type { ScreenMembersOnMfaWebAuthnError, WebAuthnType } from '../screens/mfa-webauthn-error';

@@ -183,6 +183,9 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 | 61     | logout-complete | [Link](https://auth0.github.io/universal-login/classes/Classes.LogoutComplete.html) |
 | 62     | Email Verification Result   | [Link](https://auth0.github.io/universal-login/classes/Classes.EmailVerificationResult.html)                     |
 | 63     | login-email-verification    | [Link](https://auth0.github.io/universal-login/classes/Classes.LoginEmailVerification.html)                     |
+| 64     | mfa-webauthn-platform-enrollment        | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnPlatformEnrollment.html)                        |
+| 65     | mfa-webauthn-error        | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnError.html)                        |
+| 60     | mfa-webauthn-not-available-error        | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnNotAvailableError.html)                        |
 
 </details>
 

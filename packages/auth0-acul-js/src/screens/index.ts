@@ -62,3 +62,6 @@ export { default as LogoutAborted } from './logout-aborted';
 export { default as LogoutComplete } from './logout-complete';
 export { default as EmailVerificationResult } from './email-verification-result';
 export { default as LoginEmailVerification } from './login-email-verification';
+export { default as MfaWebAuthnPlatformEnrollment } from './mfa-webauthn-platform-enrollment';
+export { default as MfaWebAuthnError } from './mfa-webauthn-error';
+export { default as MfaWebAuthnNotAvailableError } from './mfa-webauthn-not-available-error';
