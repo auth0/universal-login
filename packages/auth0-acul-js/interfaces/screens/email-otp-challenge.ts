@@ -1,4 +1,5 @@
 import type { ScreenMembers } from '../../interfaces/models/screen';
+import type { CustomOptions } from '../common';
 
 /**
  * Represents the members of the Email OTP Challenge screen.
@@ -17,10 +18,10 @@ export interface EmailOTPChallengeMembers {
    * @param code The OTP code to submit.
    * @param options Optional parameters to include in the submission.
    */
-  submitCode(code: string, options?: { [key: string]: string | number | boolean }): Promise<void>;
+  submitCode(code: string, options?: CustomOptions): Promise<void>;
   /**
    * Requests a new OTP code to be sent to the user's email.
    * @param options Optional parameters to include in the resend request.
    */
-  resendCode(options?: { [key: string]: string | number | boolean }): Promise<void>;
+  resendCode(options?: CustomOptions): Promise<void>;
 }
