@@ -60,4 +60,6 @@ export const ScreenIds = {
   LOGOUT: 'logout',
   LOGOUT_ABORTED: 'logout-aborted',
   LOGOUT_COMPLETE: 'logout-complete',
+  EMAIL_VERIFICATION_RESULT: 'email-verification-result',
+  LOGIN_EMAIL_VERIFICATION: 'login-email-verification',
 };
