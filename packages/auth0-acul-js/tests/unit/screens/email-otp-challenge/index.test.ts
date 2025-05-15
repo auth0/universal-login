@@ -24,7 +24,6 @@ describe('EmailOTPChallenge', () => {
 
   describe('submitCode method', () => {
     it('should handle submitCode with valid code correctly', async () => {
-      const code = '123456';
       const options = { code: '123456' }; 
       await emailOTPChallenge.submitCode(options);
 

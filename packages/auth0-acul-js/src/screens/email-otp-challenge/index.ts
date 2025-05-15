@@ -3,7 +3,7 @@ import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
 import type { CustomOptions } from '../../../interfaces/common';
-import type { EmailOTPChallengeMembers, OTPCodeOptions, ScreenMembersOnEmailOTPChallenge as ScreenOptions } from '../../../interfaces/screens/email-otp-challenge';
+import type { EmailOTPChallengeMembers, OtpCodeOptions, ScreenMembersOnEmailOTPChallenge as ScreenOptions } from '../../../interfaces/screens/email-otp-challenge';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 /**
@@ -29,16 +29,14 @@ export default class EmailOTPChallenge extends BaseContext implements EmailOTPCh
    * });
    * ```
    */
-  async submitCode(options: OTPCodeOptions): Promise<void> {
+  async submitCode(options: OtpCodeOptions): Promise<void> {
     const formOptions: FormOptions = {
       state: this.transaction.state,
-      telemetry: [EmailOTPChallenge.screenIdentifier, 'continue'],
+      telemetry: [EmailOTPChallenge.screenIdentifier, 'submitCode'],
     };
-    const { code, ...restOptions } = options;
     const payload = {
-      code,
+      ...options,
       action: FormActions.DEFAULT,
-      ...restOptions,
     };
 
     await new FormHandler(formOptions).submitData(payload);
@@ -62,8 +60,8 @@ export default class EmailOTPChallenge extends BaseContext implements EmailOTPCh
     };
 
     const payload = {
-      action: FormActions.RESEND_CODE,
       ...options,
+      action: FormActions.RESEND_CODE,
     };
 
     await new FormHandler(formOptions).submitData(payload);
