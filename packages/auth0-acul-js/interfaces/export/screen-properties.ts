@@ -61,4 +61,5 @@ export type { LogoutMembers } from '../screens/logout';
 export type { LogoutAbortedMembers } from '../screens/logout-aborted';
 export type { LogoutCompleteMembers } from '../screens/logout-complete';
 export type { EmailOTPChallengeMembers } from '../screens/email-otp-challenge';
-
+export type { EmailVerificationResultMembers } from '../screens/email-verification-result'; // Added new export
+export type { LoginEmailVerificationMembers } from '../screens/login-email-verification'

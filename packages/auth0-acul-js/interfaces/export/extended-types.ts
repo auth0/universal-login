@@ -48,3 +48,4 @@ export type { ScreenMembersOnMfaRecoveryCodeChallengeNewCode } from '../screens/
 export type { LogoutMembers } from '../screens/logout';
 export type { LogoutAbortedMembers } from '../screens/logout-aborted';
 export type { ScreenMembersOnEmailOTPChallenge } from '../screens/email-otp-challenge'
+export type { ScreenMembersOnEmailVerificationResult } from '../screens/email-verification-result';

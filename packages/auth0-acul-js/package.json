@@ -259,7 +259,15 @@
      "./email-otp-challenge": {
         "import": "./dist/screens/email-otp-challenge/index.js",
         "types": "./dist/types/src/screens/email-otp-challenge/index.d.ts"
-     }
+     },
+    "./email-verification-result": {
+      "import": "./dist/screens/email-verification-result/index.js",
+      "types": "./dist/types/src/screens/email-verification-result/index.d.ts"
+    },
+    "./login-email-verification": {
+      "import": "./dist/screens/login-email-verification/index.js",
+      "types": "./dist/types/src/screens/login-email-verification/index.d.ts"
+    }
   },
   "scripts": {
     "clean": "rimraf dist",
