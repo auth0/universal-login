@@ -44,7 +44,7 @@ const EmailOTPChallengeScreen: React.FC = () => {
     setSuccess(false);
 
     try {
-      await emailOTPChallengeManager.submitCode(code);
+      await emailOTPChallengeManager.submitCode({ code });
       setSuccess(true);
     } catch (err: any) {
       setError(err.message || 'Failed to submit code. Please try again.');

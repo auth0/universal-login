@@ -47,5 +47,5 @@ export type { ScreenMembersOnResetPasswordMfaPhoneChallenge } from '../screens/r
 export type { ScreenMembersOnMfaRecoveryCodeChallengeNewCode } from '../screens/mfa-recovery-code-challenge-new-code';
 export type { LogoutMembers } from '../screens/logout';
 export type { LogoutAbortedMembers } from '../screens/logout-aborted';
-export type { ScreenMembersOnEmailOTPChallenge } from '../screens/email-otp-challenge'
+export type { ScreenMembersOnEmailOTPChallenge, OTPCodeOptions } from '../screens/email-otp-challenge'
 export type { ScreenMembersOnEmailVerificationResult } from '../screens/email-verification-result';

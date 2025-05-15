@@ -3,7 +3,7 @@ import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
 import type { CustomOptions } from '../../../interfaces/common';
-import type { EmailOTPChallengeMembers, ScreenMembersOnEmailOTPChallenge as ScreenOptions } from '../../../interfaces/screens/email-otp-challenge';
+import type { EmailOTPChallengeMembers, OTPCodeOptions, ScreenMembersOnEmailOTPChallenge as ScreenOptions } from '../../../interfaces/screens/email-otp-challenge';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 /**
@@ -18,7 +18,6 @@ export default class EmailOTPChallenge extends BaseContext implements EmailOTPCh
 
   /**
    * Submits the OTP code entered by the user.
-   * @param code The OTP code to submit.
    * @param options Optional parameters to include in the submission.
    * @example
    * ```typescript
@@ -30,16 +29,16 @@ export default class EmailOTPChallenge extends BaseContext implements EmailOTPCh
    * });
    * ```
    */
-  async submitCode(code: string, options?: CustomOptions): Promise<void> {
+  async submitCode(options: OTPCodeOptions): Promise<void> {
     const formOptions: FormOptions = {
       state: this.transaction.state,
       telemetry: [EmailOTPChallenge.screenIdentifier, 'continue'],
     };
-
+    const { code, ...restOptions } = options;
     const payload = {
       code,
       action: FormActions.DEFAULT,
-      ...options,
+      ...restOptions,
     };
 
     await new FormHandler(formOptions).submitData(payload);

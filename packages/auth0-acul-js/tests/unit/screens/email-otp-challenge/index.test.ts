@@ -25,37 +25,36 @@ describe('EmailOTPChallenge', () => {
   describe('submitCode method', () => {
     it('should handle submitCode with valid code correctly', async () => {
       const code = '123456';
-      await emailOTPChallenge.submitCode(code);
+      const options = { code: '123456' }; 
+      await emailOTPChallenge.submitCode(options);
 
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          code: code,
+          code: options.code,
           action: FormActions.DEFAULT,
         })
       );
     });
 
     it('should handle submitCode with valid code and options correctly', async () => {
-      const code = '123456';
-      const options: CustomOptions = { customParam: 'customValue' };
-      await emailOTPChallenge.submitCode(code, options);
+      const options = { code: '123456', customParam: 'customValue' };
+      await emailOTPChallenge.submitCode(options);
 
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
-          code: code,
+          code: options.code,
           action: FormActions.DEFAULT,
-          ...options,
+          customParam: options.customParam,
         })
       );
     });
 
     it('should throw error when promise is rejected', async () => {
       mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
-      const code = '123456';
-
-      await expect(emailOTPChallenge.submitCode(code)).rejects.toThrow(
+      const options = { code: '123456' };
+      await expect(emailOTPChallenge.submitCode(options)).rejects.toThrow(
         'Mocked reject'
       );
     });
