@@ -279,6 +279,10 @@
     "./mfa-webauthn-roaming-enrollment": {
       "import": "./dist/screens/mfa-webauthn-roaming-enrollment/index.js",
       "types": "./dist/types/src/screens/mfa-webauthn-roaming-enrollment/index.d.ts"
+    },
+    "./mfa-webauthn-roaming-challenge": {
+      "import": "./dist/screens/mfa-webauthn-roaming-challenge/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-roaming-challenge/index.d.ts"
     }
   },
   "scripts": {

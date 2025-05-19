@@ -5,8 +5,8 @@ import { FormHandler } from '../../../../src/utils/form-handler';
 import { createPasskeyCredentials } from '../../../../src/utils/passkeys';
 import { baseContextData } from '../../../data/test-data';
 
-import type { CustomOptions } from '../../../../interfaces/common';
-import type { ShowErrorOptions, TryAnotherMethodOptions, WebAuthnErrorDetails } from '../../../../interfaces/screens/mfa-webauthn-roaming-enrollment';
+import type { CustomOptions, WebAuthnErrorDetails } from '../../../../interfaces/common';
+import type { ShowErrorOptions, TryAnotherMethodOptions } from '../../../../interfaces/screens/mfa-webauthn-roaming-enrollment';
 
 jest.mock('../../../../src/utils/form-handler');
 jest.mock('../../../../src/screens/mfa-webauthn-roaming-enrollment/screen-override');

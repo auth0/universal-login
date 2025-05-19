@@ -66,3 +66,4 @@ export { default as MfaWebAuthnPlatformEnrollment } from './mfa-webauthn-platfor
 export { default as MfaWebAuthnError } from './mfa-webauthn-error';
 export { default as MfaWebAuthnNotAvailableError } from './mfa-webauthn-not-available-error';
 export { default as MfaWebAuthnRoamingEnrollment } from './mfa-webauthn-roaming-enrollment';
+export { default as MfaWebAuthnRoamingChallenge } from './mfa-webauthn-roaming-challenge'; 

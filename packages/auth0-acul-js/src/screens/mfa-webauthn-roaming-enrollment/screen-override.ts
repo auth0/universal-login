@@ -32,8 +32,4 @@ export class ScreenOverride extends Screen implements OverrideOptions {
   static getWebAuthnType = (screenContext: ScreenContext): string | null => {
     return getWebAuthnType(screenContext);
   };
-
-  static getWebauthnType = (screenContext: ScreenContext): string | null => {
-    return getWebAuthnType(screenContext)
-  }
 }

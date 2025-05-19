@@ -187,6 +187,7 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 | 65     | mfa-webauthn-error        | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnError.html)                        |
 | 60     | mfa-webauthn-not-available-error        | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnNotAvailableError.html)                        |
 | 61     | mfa-webauthn-roaming-enrollment          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnRoamingEnrollment.html)   |
+| 62     | mfa-webauthn-roaming-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnRoamingChallenge.html)   |
 
 </details>
 

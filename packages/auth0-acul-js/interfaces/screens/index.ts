@@ -51,3 +51,4 @@ export * as LoginEmailVerification from './login-email-verification'
 export * as MfaWebAuthnPlatformEnrollment from './mfa-webauthn-platform-enrollment';
 export * as MfaWebAuthnError from './mfa-webauthn-error';
 export * as MfaWebAuthnNotAvailableError from './mfa-webauthn-not-available-error';
+export * as MfaWebAuthnRoamingChallenge from './mfa-webauthn-roaming-challenge';

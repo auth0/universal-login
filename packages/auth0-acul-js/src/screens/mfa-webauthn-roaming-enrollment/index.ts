@@ -5,14 +5,13 @@ import { createPasskeyCredentials } from '../../utils/passkeys';
 
 import { ScreenOverride } from './screen-override';
 
-import type { CustomOptions } from '../../../interfaces/common';
+import type { CustomOptions, WebAuthnErrorDetails } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type {
   MfaWebAuthnRoamingEnrollmentMembers,
   ShowErrorOptions,
   TryAnotherMethodOptions,
-  ScreenMembersOnMfaWebAuthnRoamingEnrollment as ScreenOptions,
-  WebAuthnErrorDetails,
+  ScreenMembersOnMfaWebAuthnRoamingEnrollment as ScreenOptions
 } from '../../../interfaces/screens/mfa-webauthn-roaming-enrollment';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 /**

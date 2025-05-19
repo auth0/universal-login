@@ -60,4 +60,5 @@ export type { ContinueOptions as MfaRecoveryCodeChallengeNewCodeContinueOptions 
 export type { ConfirmLogoutOptions } from '../screens/logout';
 export type { ContinueWithCodeOptions as ContinueWithCodeOptionPayload, ResendCodeOptions as ResendCodeOptionsPayload } from '../screens/login-email-verification';
 export type { SubmitPasskeyCredentialOptions, ReportBrowserErrorOptions } from '../screens/mfa-webauthn-platform-enrollment';
-export type { ShowErrorOptions, TryAnotherMethodOptions as MfaWebAuthnRoamingEnrollmentTryAnotherMethodOptions, WebAuthnErrorDetails } from '../screens/mfa-webauthn-roaming-enrollment';
+export type { ShowErrorOptions, TryAnotherMethodOptions as MfaWebAuthnRoamingEnrollmentTryAnotherMethodOptions } from '../screens/mfa-webauthn-roaming-enrollment';
+export type { VerifySecurityKeyOptions, ReportWebAuthnErrorOptions as MfaWebAuthnRoamingChallengeReportErrorOptions, TryAnotherMethodOptions as MfaWebAuthnRoamingChallengeTryAnotherMethodOptions } from '../screens/mfa-webauthn-roaming-challenge';

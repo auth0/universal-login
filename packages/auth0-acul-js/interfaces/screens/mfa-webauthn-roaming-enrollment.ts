@@ -1,4 +1,4 @@
-import type { CustomOptions } from '../common';
+import type { CustomOptions, WebAuthnErrorDetails } from '../common';
 import type { BaseMembers } from '../models/base-context';
 import type { ScreenMembers, PasskeyCreate } from '../models/screen';
 /**
@@ -7,23 +7,6 @@ import type { ScreenMembers, PasskeyCreate } from '../models/screen';
 export interface ScreenMembersOnMfaWebAuthnRoamingEnrollment extends ScreenMembers {
   webauthnType: string | null;
   publicKey: PasskeyCreate['public_key'] | null;
-}
-/**
- * Details of a WebAuthn browser error.
- */
-export interface WebAuthnErrorDetails {
-  /**
-   * The name of the error (e.g., "NotAllowedError").
-   */
-  name: string;
-  /**
-   * The error message.
-   */
-  message: string;
-  /**
-   * Any additional error properties.
-   */
-  [key: string]: string | number | boolean | undefined;
 }
 /**
  * Options for submitting a WebAuthn browser error.
