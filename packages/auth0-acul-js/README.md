@@ -2,12 +2,20 @@
 
 ![ACUL JS SDK](https://cdn.auth0.com/website/sdks/banners/auth0-acul-js-banner.png)
 
+<div align="center">
+
 [![NPM Version](https://img.shields.io/npm/v/@auth0/auth0-acul-js)](https://www.npmjs.com/package/@auth0/auth0-acul-js)
 [![Downloads](https://img.shields.io/npm/dw/@auth0/auth0-acul-js)](https://www.npmjs.com/package/@auth0/auth0-acul-js)
 [![codecov](https://codecov.io/gh/auth0/auth0-acul-js/branch/main/graph/badge.svg)](https://codecov.io/gh/auth0/auth0-acul-js)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat)](https://opensource.org/licenses/MIT)
 
-📚 [Documentation](#documentation) - 🚀 [Getting Started](#getting-started) - 💻 [API Reference](#api-reference) - 💬 [Feedback](#feedback)
+</div>
+
+<div align='center'>
+
+📚 [Documentation](#-documentation) - 🚀 [Getting Started](#-getting-started) - 💻 [API Reference](#-api-reference) - 💬 [Feedback](#-feedback)
+
+</div>
 
 The **Auth0 ACUL JS SDK** enables you to work with Advanced Customization for Universal Login.
 
