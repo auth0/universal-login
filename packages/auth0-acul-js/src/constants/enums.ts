@@ -68,4 +68,5 @@ export const ScreenIds = {
   MFA_WEBAUTHN_ROAMING_ENROLLMENT: 'mfa-webauthn-roaming-enrollment',
   MFA_WEBAUTHN_ROAMING_CHALLENGE: 'mfa-webauthn-roaming-challenge',
   MFA_WEBAUTHN_PLATFORM_CHALLENGE: 'mfa-webauthn-platform-challenge',
+  MFA_WEBAUTHN_ENROLLMENT_SUCCESS: 'mfa-webauthn-enrollment-success',
 };

@@ -68,3 +68,4 @@ export type { MfaWebAuthnNotAvailableErrorMembers } from '../screens/mfa-webauth
 export type { MfaWebAuthnRoamingEnrollmentMembers } from '../screens/mfa-webauthn-roaming-enrollment';
 export type { MfaWebAuthnRoamingChallengeMembers } from '../screens/mfa-webauthn-roaming-challenge';
 export type { MfaWebAuthnPlatformChallengeMembers } from '../screens/mfa-webauthn-platform-challenge';
+export type { MfaWebAuthnEnrollmentSuccessMembers } from '../screens/mfa-webauthn-enrollment-success';

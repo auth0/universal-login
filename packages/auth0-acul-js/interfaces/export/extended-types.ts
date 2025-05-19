@@ -53,3 +53,4 @@ export type { ScreenMembersOnMfaWebAuthnError, WebAuthnType } from '../screens/m
 export type { ScreenMembersOnMfaWebAuthnRoamingEnrollment } from '../screens/mfa-webauthn-roaming-enrollment';
 export type { ScreenMembersOnMfaWebAuthnRoamingChallenge } from '../screens/mfa-webauthn-roaming-challenge';
 export type { ScreenMembersOnMfaWebAuthnPlatformChallenge } from '../screens/mfa-webauthn-platform-challenge';
+export type { ScreenMembersOnMfaWebAuthnEnrollmentSuccess } from '../screens/mfa-webauthn-enrollment-success';

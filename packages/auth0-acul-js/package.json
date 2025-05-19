@@ -287,6 +287,10 @@
     "./mfa-webauthn-platform-challenge": {
       "import": "./dist/screens/mfa-webauthn-platform-challenge/index.js",
       "types": "./dist/types/src/screens/mfa-webauthn-platform-challenge/index.d.ts"
+    },
+    "./mfa-webauthn-enrollment-success": {
+      "import": "./dist/screens/mfa-webauthn-enrollment-success/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-enrollment-success/index.d.ts"
     }
   },
   "scripts": {
