@@ -65,3 +65,4 @@ export type { LoginEmailVerificationMembers } from '../screens/login-email-verif
 export type { MfaWebAuthnPlatformEnrollmentMembers } from '../screens/mfa-webauthn-platform-enrollment';
 export type { MfaWebAuthnErrorMembers } from '../screens/mfa-webauthn-error';
 export type { MfaWebAuthnNotAvailableErrorMembers } from '../screens/mfa-webauthn-not-available-error';
+export type { MfaWebAuthnRoamingEnrollmentMembers } from '../screens/mfa-webauthn-roaming-enrollment';

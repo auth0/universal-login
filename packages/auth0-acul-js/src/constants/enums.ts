@@ -65,4 +65,5 @@ export const ScreenIds = {
   MFA_WEBAUTHN_PLATFORM_ENROLLMENT: 'mfa-webauthn-platform-enrollment',
   MFA_WEBAUTHN_ERROR: 'mfa-webauthn-error',
   MFA_WEBAUTHN_NOT_AVAILABLE_ERROR: 'mfa-webauthn-not-available-error',
+  MFA_WEBAUTHN_ROAMING_ENROLLMENT: 'mfa-webauthn-roaming-enrollment',
 };

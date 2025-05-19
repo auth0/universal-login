@@ -8,9 +8,13 @@ export const baseContextData = {
   },
   screen: {
     data: {
+      webauthnType: 'roaming',
       passkey: {
         public_key: {
           challenge: "randomChallengeString1234567890",
+          user: { id: 'mockUserId', name: 'mockUser', displayName: 'Mock User' },
+          rp: { id: 'mockRpId', name: 'Mock RP' }, pubKeyCredParams: [{ type: 'public-key', alg: -7 }], 
+          authenticatorSelection: { residentKey: 'preferred', userVerification: 'preferred' }
         },
       },
     },

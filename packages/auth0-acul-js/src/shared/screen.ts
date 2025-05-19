@@ -76,3 +76,13 @@ export function getPublicKey(screen: ScreenContext): PasskeyRead['public_key'] |
   const passkey = screen.data?.passkey as PasskeyRead | PasskeyCreate;
   return passkey?.public_key ?? null;
 }
+
+/**
+ * Retrieves the WebAuthn type from the screen context.
+ *
+ * @param {ScreenContext} screen - The screen context object from Universal Login.
+ * @returns {string | null} - The WebAuthn type (e.g., 'roaming', 'platform') or null if not available.
+ */
+export function getWebAuthnType(screen: ScreenContext): string | null {
+  return screen.data?.webauthnType as string ?? null;
+}
