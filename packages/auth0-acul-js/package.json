@@ -283,6 +283,10 @@
     "./mfa-webauthn-roaming-challenge": {
       "import": "./dist/screens/mfa-webauthn-roaming-challenge/index.js",
       "types": "./dist/types/src/screens/mfa-webauthn-roaming-challenge/index.d.ts"
+    },
+    "./mfa-webauthn-platform-challenge": {
+      "import": "./dist/screens/mfa-webauthn-platform-challenge/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-platform-challenge/index.d.ts"
     }
   },
   "scripts": {

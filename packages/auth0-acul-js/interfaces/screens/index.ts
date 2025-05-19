@@ -52,3 +52,4 @@ export * as MfaWebAuthnPlatformEnrollment from './mfa-webauthn-platform-enrollme
 export * as MfaWebAuthnError from './mfa-webauthn-error';
 export * as MfaWebAuthnNotAvailableError from './mfa-webauthn-not-available-error';
 export * as MfaWebAuthnRoamingChallenge from './mfa-webauthn-roaming-challenge';
+export * as MfaWebAuthnPlatformChallenge from './mfa-webauthn-platform-challenge';
