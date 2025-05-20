@@ -1,10 +1,10 @@
 
 ![ACUL JS SDK](https://cdn.auth0.com/website/sdks/banners/auth0-acul-sdk-banner.png)
 
-![Release](https://img.shields.io/npm/v/auth0-acul-js)
-[![Codecov](https://img.shields.io/codecov/c/github/auth0/auth0-acul-js)](https://codecov.io/gh/auth0/auth0-acul-js)
-![Downloads](https://img.shields.io/npm/dw/auth0-acul-js)
-[![License](https://img.shields.io/:license-mit-blue.svg?style=flat)](https://opensource.org/licenses/MIT)
+[![NPM Version](https://img.shields.io/npm/v/@auth0/auth0-acul-js)](https://www.npmjs.com/package/@auth0/auth0-acul-js)
+[![Downloads](https://img.shields.io/npm/dw/@auth0/auth0-acul-js)](https://www.npmjs.com/package/@auth0/auth0-acul-js)
+[![codecov](https://codecov.io/gh/auth0/auth0-acul-js/branch/main/graph/badge.svg)](https://codecov.io/gh/auth0/auth0-acul-js)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat)](https://opensource.org/licenses/MIT)
 
  📚 [Documentation](#documentation) - 🚀 [Getting Started](#getting-started) - 💻 [API Reference](#api-reference) - 💬 [Feedback](#feedback)
 
@@ -12,7 +12,10 @@ The **Auth0 ACUL JS SDK** enables you to work with Advanced Customization for Un
 
 It simplifies integrating authentication screens (login, signup, passwordless, passkey enrollment, etc.) into your web applications, providing the necessary tools for seamless implementation.
 
-⚠ This feature is still in **Limited EA**. Please contact your Account Manager to get this feature enabled on your Auth0 tenant. [read more...](#legal)
+> [!CAUTION]
+>
+> This feature is still in **Early Access**. Please contact your Account Manager to get this feature enabled on your Auth0 tenant. [read more...](#legal)
+
 
 ### SDKs
 - [auth0-acul-js](packages/auth0-acul-js/)
