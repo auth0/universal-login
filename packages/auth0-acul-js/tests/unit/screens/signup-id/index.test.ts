@@ -1,7 +1,7 @@
 import SignupId from '../../../../src/screens/signup-id';
 import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
-import { ScreenIds } from '../../../../src//constants';
+import { ScreenIds } from '../../../../src/constants';
 import {
   SignupOptions,
   SocialSignupOptions,

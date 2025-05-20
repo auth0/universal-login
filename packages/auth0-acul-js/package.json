@@ -227,23 +227,79 @@
     "./mfa-phone-challenge": {
       "import": "./dist/screens/mfa-phone-challenge/index.js",
       "types": "./dist/types/src/screens/mfa-phone-challenge/index.d.ts"
-     },
+    },
     "./mfa-voice-challenge": {
       "import": "./dist/screens/mfa-voice-challenge/index.js",
       "types": "./dist/types/src/screens/mfa-voice-challenge/index.d.ts"
-     },
+    },
     "./mfa-recovery-code-enrollment": {
-       "import": "./dist/screens/mfa-recovery-code-enrollment/index.js",
-       "types": "./dist/types/src/screens/mfa-recovery-code-enrollment/index.d.ts"
-     },
+      "import": "./dist/screens/mfa-recovery-code-enrollment/index.js",
+      "types": "./dist/types/src/screens/mfa-recovery-code-enrollment/index.d.ts"
+    },
     "./reset-password-mfa-phone-challenge": {
-        "import": "./dist/screens/reset-password-mfa-phone-challenge/index.js",
-        "types": "./dist/types/src/screens/reset-password-mfa-phone-challenge/index.d.ts"
-     },
+      "import": "./dist/screens/reset-password-mfa-phone-challenge/index.js",
+      "types": "./dist/types/src/screens/reset-password-mfa-phone-challenge/index.d.ts"
+    },
     "./mfa-recovery-code-challenge-new-code": {
       "import": "./dist/screens/mfa-recovery-code-challenge-new-code/index.js",
       "types": "./dist/types/src/screens/mfa-recovery-code-challenge-new-code/index.d.ts"
+    },
+    "./logout": {
+      "import": "./dist/screens/logout/index.js",
+      "types": "./dist/types/src/screens/logout/index.d.ts"
+    },
+    "./logout-aborted": {
+      "import": "./dist/screens/logout-aborted/index.js",
+      "types": "./dist/types/src/screens/logout-aborted/index.d.ts"
+    },
+    "./logout-complete": {
+      "import": "./dist/screens/logout-complete/index.js",
+      "types": "./dist/types/src/screens/logout-complete/index.d.ts"
+    },
+     "./email-otp-challenge": {
+        "import": "./dist/screens/email-otp-challenge/index.js",
+        "types": "./dist/types/src/screens/email-otp-challenge/index.d.ts"
      },
+    "./email-verification-result": {
+      "import": "./dist/screens/email-verification-result/index.js",
+      "types": "./dist/types/src/screens/email-verification-result/index.d.ts"
+    },
+    "./login-email-verification": {
+      "import": "./dist/screens/login-email-verification/index.js",
+      "types": "./dist/types/src/screens/login-email-verification/index.d.ts"
+    },
+    "./mfa-webauthn-platform-enrollment": {
+      "import": "./dist/screens/mfa-webauthn-platform-enrollment/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-platform-enrollment/index.d.ts"
+    },
+    "./mfa-webauthn-error": {
+      "import": "./dist/screens/mfa-webauthn-error/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-error/index.d.ts"
+    },
+    "./mfa-webauthn-not-available-error": {
+      "import": "./dist/screens/mfa-webauthn-not-available-error/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-not-available-error/index.d.ts"
+    },
+    "./mfa-webauthn-roaming-enrollment": {
+      "import": "./dist/screens/mfa-webauthn-roaming-enrollment/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-roaming-enrollment/index.d.ts"
+    },
+    "./mfa-webauthn-roaming-challenge": {
+      "import": "./dist/screens/mfa-webauthn-roaming-challenge/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-roaming-challenge/index.d.ts"
+    },
+    "./mfa-webauthn-platform-challenge": {
+      "import": "./dist/screens/mfa-webauthn-platform-challenge/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-platform-challenge/index.d.ts"
+    },
+    "./mfa-webauthn-enrollment-success": {
+      "import": "./dist/screens/mfa-webauthn-enrollment-success/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-enrollment-success/index.d.ts"
+    },
+    "./mfa-webauthn-change-key-nickname": {
+      "import": "./dist/screens/mfa-webauthn-change-key-nickname/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-change-key-nickname/index.d.ts"
+    },
     "./consent": {
          "import": "./dist/screens/consent/index.js",
          "types": "./dist/types/src/screens/consent/index.d.ts"

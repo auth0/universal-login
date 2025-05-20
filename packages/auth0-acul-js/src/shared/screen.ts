@@ -76,3 +76,26 @@ export function getPublicKey(screen: ScreenContext): PasskeyRead['public_key'] |
   const passkey = screen.data?.passkey as PasskeyRead | PasskeyCreate;
   return passkey?.public_key ?? null;
 }
+
+/**
+ * Retrieves the remember device option from the screen context.
+ * This is used in MFA flows where users can choose to remember their device for future logins.
+ *
+ * @param {ScreenContext} screen - The screen context object from Universal Login.
+ * @returns {boolean} - Whether the remember device option is available and enabled.
+ */
+export function getShowRememberDevice(screen: ScreenContext): boolean {
+  return screen.data?.show_remember_device as boolean || false;
+}
+
+/**
+ * Retrieves the WebAuthn type from the screen context.
+ *
+ * @param {ScreenContext} screen - The screen context object from Universal Login.
+ * @returns {string | null} - The WebAuthn type (e.g., 'roaming', 'platform') or null if not available.
+ */
+export function getWebAuthnType(screen: ScreenContext): string | null {
+  return screen.data?.webauthnType as string ?? null;
+}
+
+
