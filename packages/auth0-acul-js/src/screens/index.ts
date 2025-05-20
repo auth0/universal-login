@@ -69,3 +69,4 @@ export { default as MfaWebAuthnRoamingEnrollment } from './mfa-webauthn-roaming-
 export { default as MfaWebAuthnRoamingChallenge } from './mfa-webauthn-roaming-challenge'; 
 export { default as MfaWebAuthnPlatformChallenge } from './mfa-webauthn-platform-challenge';
 export { default as MfaWebAuthnEnrollmentSuccess } from './mfa-webauthn-enrollment-success';
+export { default as MfaWebAuthnChangeKeyNickname } from './mfa-webauthn-change-key-nickname';

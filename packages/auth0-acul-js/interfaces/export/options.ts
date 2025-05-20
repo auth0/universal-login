@@ -63,4 +63,5 @@ export type { SubmitPasskeyCredentialOptions, ReportBrowserErrorOptions } from '
 export type { ShowErrorOptions, TryAnotherMethodOptions as MfaWebAuthnRoamingEnrollmentTryAnotherMethodOptions } from '../screens/mfa-webauthn-roaming-enrollment';
 export type { VerifySecurityKeyOptions, ReportWebAuthnErrorOptions as MfaWebAuthnRoamingChallengeReportErrorOptions, TryAnotherMethodOptions as MfaWebAuthnRoamingChallengeTryAnotherMethodOptions } from '../screens/mfa-webauthn-roaming-challenge';
 export type { VerifyPlatformAuthenticatorOptions, ReportBrowserErrorOptions as MfaWebAuthnPlatformChallengeReportErrorOptions, TryAnotherMethodOptions as MfaWebAuthnPlatformChallengeTryAnotherMethodOptions } from '../screens/mfa-webauthn-platform-challenge';
-export type { ContinueOptions as WebAuthnEnrollSuccessContinueOptions } from '../screens/mfa-webauthn-enrollment-success'
+export type { ContinueOptions as WebAuthnEnrollSuccessContinueOptions } from '../screens/mfa-webauthn-enrollment-success';
+export type { ContinueOptions as MfaWebAuthnChangeKeyNicknameContinueOptions } from '../screens/mfa-webauthn-change-key-nickname';

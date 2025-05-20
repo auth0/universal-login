@@ -54,3 +54,4 @@ export * as MfaWebAuthnNotAvailableError from './mfa-webauthn-not-available-erro
 export * as MfaWebAuthnRoamingChallenge from './mfa-webauthn-roaming-challenge';
 export * as MfaWebAuthnPlatformChallenge from './mfa-webauthn-platform-challenge';
 export * as MfaWebAuthnEnrollmentSuccess from './mfa-webauthn-enrollment-success';
+export * as MfaWebAuthnChangeKeyNickname from './mfa-webauthn-change-key-nickname';

@@ -54,3 +54,4 @@ export type { ScreenMembersOnMfaWebAuthnRoamingEnrollment } from '../screens/mfa
 export type { ScreenMembersOnMfaWebAuthnRoamingChallenge } from '../screens/mfa-webauthn-roaming-challenge';
 export type { ScreenMembersOnMfaWebAuthnPlatformChallenge } from '../screens/mfa-webauthn-platform-challenge';
 export type { ScreenMembersOnMfaWebAuthnEnrollmentSuccess } from '../screens/mfa-webauthn-enrollment-success';
+export type { ScreenMembersOnMfaWebAuthnChangeKeyNickname } from '../screens/mfa-webauthn-change-key-nickname';
