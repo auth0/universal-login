@@ -1,150 +1,147 @@
 import Consent from '@auth0/auth0-acul-js/consent';
-import type { Scope } from '@auth0/auth0-acul-js/consent'; // Import Scope type
 
 # Consent Screen
 
-This screen is displayed when a user needs to grant or deny permissions (scopes) requested by a client application for accessing a specific API (resource server).
+The Consent screen is displayed when an application requests permission to access certain parts of a user's account or data. The user can review the requested permissions (scopes) and decide whether to grant or deny access.
 
 ## React Component Example with TailwindCSS
 
+This example demonstrates how to build a UI for the Consent screen using React and TailwindCSS. It displays information about the requesting application, the user, the organization (if applicable), and the specific permissions being requested.
+
 ```tsx
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import Consent from '@auth0/auth0-acul-js/consent';
-// Import the Scope type directly from the consent screen export
-import type { Scope, ResourceServerMembers } from '@auth0/auth0-acul-js/consent';
+import type { Scope } from '@auth0/auth0-acul-js/consent'; // Import Scope type
 
 const ConsentScreen: React.FC = () => {
-  // Instantiate the Consent screen manager
-  const consentManager = new Consent();
-  // Destructure properties for easier access
-  const { screen, transaction, resourceServers, user, client, organization } = consentManager;
-  // Safely access scopes from screen.data
-  const scopes = screen.data?.scopes ?? [];
+  // Instantiate the SDK class for the Consent screen.
+  // useMemo ensures it's only created once per component instance.
+  const consentManager = useMemo(() => new Consent(), []);
 
-  // Handler for the Accept button
+  const { client, organization, screen, transaction, user } = consentManager;
+  const texts = screen.texts ?? {}; // UI texts from Auth0 dashboard
+
+  const [isLoading, setIsLoading] = useState(false);
+  // For UI-specific errors not covered by transaction.errors
+  const [uiError, setUiError] = useState<string | null>(null);
+
   const handleAccept = async () => {
+    setIsLoading(true);
+    setUiError(null);
     try {
       await consentManager.accept();
-      // On success, Auth0 handles redirection automatically.
-    } catch (error) {
-      console.error('Failed to accept consent:', error);
-      // TODO: Display an user-friendly error message
+      // On successful acceptance, Auth0 typically handles redirection.
+      // setIsLoading(false) might not be reached if redirection occurs immediately.
+    } catch (error: any) {
+      setIsLoading(false);
+      // Handle unexpected errors during the SDK call (e.g., network issues)
+      setUiError(error.message || 'An unexpected error occurred. Please try again.');
     }
   };
 
-  // Handler for the Deny button
-  const handleDeny = async () => {
+  const handleDecline = async () => {
+    setIsLoading(true);
+    setUiError(null);
     try {
       await consentManager.deny();
-      // On success, Auth0 handles redirection automatically (usually back to app with error).
-    } catch (error) {
-      console.error('Failed to deny consent:', error);
-      // TODO: Display an user-friendly error message
+      // On successful denial, Auth0 typically handles redirection.
+    } catch (error: any) {
+      setIsLoading(false);
+      setUiError(error.message || 'An unexpected error occurred. Please try again.');
     }
   };
 
-  // Get the primary resource server (API) information, if available
-  const primaryResourceServer = resourceServers && resourceServers.length > 0 ? resourceServers[0] : null;
+  const pageTitle = texts.title ?? 'Authorize Application';
+  const description = texts.description ?? `${client.name || 'The application'} is requesting access to your account.`;
+  const acceptButtonText = texts.acceptButtonText ?? 'Allow';
+  const declineButtonText = texts.declineButtonText ?? 'Deny';
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4 font-sans">
-      <div className="bg-white shadow-xl rounded-lg px-8 pt-6 pb-8 mb-4 w-full max-w-lg">
-        {/* Client Information Header */}
-        <div className="flex items-center mb-6 border-b border-gray-200 pb-4">
-          {client?.logoUrl && (
-            <img
-              src={client.logoUrl}
-              alt={`${client.name || 'Application'} logo`}
-              className="h-12 w-12 mr-4 rounded-full object-cover flex-shrink-0"
-            />
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4 antialiased">
+      <div className="w-full max-w-lg bg-white rounded-xl shadow-2xl p-8 space-y-6">
+        {/* Client Logo and Name */}
+        <div className="flex flex-col items-center space-y-3">
+          {client.logoUrl && (
+            <img src={client.logoUrl} alt={`${client.name || 'Application'} logo`} className="h-16 w-16 rounded-full object-contain" />
           )}
-          <div>
-            <h1 className="text-xl md:text-2xl font-semibold text-gray-800">
-              {client?.name || 'This Application'} wants access to your account
-            </h1>
-            {client?.description && (
-              <p className="text-sm text-gray-600 mt-1">{client.description}</p>
-            )}
-          </div>
+          <h1 className="text-2xl font-bold text-gray-800">{pageTitle}</h1>
         </div>
 
-        {/* User Information */}
-        <div className="mb-6 text-sm text-gray-600 flex items-center">
-          <img
-            src={user?.picture || 'https://cdn.auth0.com/avatars/default.png'} // Provide a default avatar
-            alt="User avatar"
-            className="h-8 w-8 rounded-full mr-3"
-          />
-          <span>
-            Logged in as <strong className="text-gray-800">{user?.email || user?.username || 'user'}</strong>
-          </span>
+        {/* User and Organization Info */}
+        <div className="text-center text-gray-600">
+          <p>{description}</p>
+          {user.email && <p className="mt-1 text-sm">You are logged in as <span className="font-semibold">{user.email}</span>.</p>}
+          {organization?.name && (
+            <p className="mt-1 text-sm">
+              This access is being requested on behalf of the organization: <span className="font-semibold">{organization.displayName || organization.name}</span>.
+            </p>
+          )}
         </div>
 
-        {/* Organization Information (Optional) */}
-        {organization?.id && (
-          <div className="mb-6 text-sm text-gray-600">
-            <span>
-              Using organization: <strong className="text-gray-800">{organization.displayName || organization.name}</strong>
-            </span>
-          </div>
-        )}
-
-        {/* Resource Server Information */}
-        {primaryResourceServer && (
-          <div className="mb-6 p-4 bg-gray-50 rounded border border-gray-200">
-            <h2 className="text-base font-semibold text-gray-700 mb-1">To access the following API:</h2>
-            <p className="text-gray-900 font-medium">{primaryResourceServer.name}</p>
-            <p className="text-xs text-gray-500 mt-1">Identifier: {primaryResourceServer.audience}</p>
-          </div>
-        )}
-
-        {/* Requested Permissions (Scopes) List */}
-        <div className="mb-6">
-          <h2 className="text-lg font-semibold text-gray-700 mb-3">This will allow the application to:</h2>
-          {scopes.length > 0 ? (
-            <ul className="list-none space-y-3">
-              {scopes.map((scope: Scope) => (
+        {/* Scopes (Permissions) Section */}
+        {!screen?.hideScopes && screen.scopes.length > 0 && (
+          <div className="border-t border-b border-gray-200 py-6">
+            <h2 className="text-lg font-semibold text-gray-700 mb-3">
+              {texts.scopesTitle ?? 'This application will be ableto:'}
+            </h2>
+            <ul className="space-y-3 max-h-60 overflow-y-auto pr-2">
+              {screen.scopes.map((scope: Scope) => (
                 <li key={scope.name} className="flex items-start">
-                  <svg className="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  <svg className="flex-shrink-0 h-5 w-5 text-green-500 mt-0.5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                   <div>
-                    <strong className="block text-gray-800">{scope.description || scope.name}</strong>
-                    <span className="text-xs text-gray-500">({scope.name})</span>
+                    <p className="text-sm font-medium text-gray-700">{scope.description || scope.name}</p>
+                    {scope.values && scope.values.length > 0 && (
+                      <p className="text-xs text-gray-500 pl-1">Details: {scope.values.join(', ')}</p>
+                    )}
                   </div>
                 </li>
               ))}
             </ul>
-          ) : (
-            <p className="text-gray-500 italic">Review the requested permissions.</p> // Placeholder if scopes are empty
-          )}
-        </div>
+          </div>
+        )}
+        {screen?.hideScopes && (
+           <p className="text-sm text-gray-500 text-center italic">
+             {texts.scopesHiddenMessage ?? 'This application is requesting standard permissions.'}
+           </p>
+        )}
 
-        {/* Transaction Error Display */}
-        {transaction?.errors && transaction.errors.length > 0 && (
-          <div className="bg-red-100 border-l-4 border-red-500 text-red-700 px-4 py-3 rounded relative mb-6" role="alert">
-            <strong className="font-bold block sm:inline">Error:</strong>
-            {transaction.errors.map((err, index) => (
-              <span key={index} className="block sm:inline ml-1">{err.message}</span>
-            ))}
+
+        {/* Display transaction errors (e.g., from server validation) */}
+        {transaction.errors && transaction.errors.length > 0 && (
+          <div className="bg-red-50 border-l-4 border-red-400 text-red-700 p-4 rounded-md" role="alert">
+            <p className="font-bold">{texts.alertListTitle ?? 'Errors:'}</p>
+            <ul className="list-disc list-inside ml-4">
+              {transaction.errors.map((err, index) => (
+                <li key={`tx-err-${index}`}>{err.message}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* Display UI-specific errors */}
+        {uiError && (
+          <div className="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <span className="block sm:inline">{uiError}</span>
           </div>
         )}
 
         {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-4 mt-8">
+        <div className="flex flex-col sm:flex-row gap-4 pt-4">
           <button
-            onClick={handleDeny}
-            className="w-full sm:w-auto px-6 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
-            type="button"
+            onClick={handleDecline}
+            disabled={isLoading}
+            className="w-full sm:w-auto flex-1 px-6 py-3 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-60 disabled:cursor-not-allowed transition-colors duration-150"
           >
-            Deny Access
+            {isLoading ? (texts.submittingText ?? 'Processing...') : declineButtonText}
           </button>
           <button
             onClick={handleAccept}
-            className="w-full sm:w-auto px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
-            type="button"
+            disabled={isLoading}
+            className="w-full sm:w-auto flex-1 px-6 py-3 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-60 disabled:cursor-not-allowed transition-colors duration-150"
           >
-            Allow Access
+            {isLoading ? (texts.submittingText ?? 'Processing...') : acceptButtonText}
           </button>
         </div>
       </div>
@@ -154,56 +151,99 @@ const ConsentScreen: React.FC = () => {
 
 export default ConsentScreen;
 ```
+
 ## Usage Examples
 
-### Accept Consent
+### Initialize the SDK Class
 
-This action signals that the user grants the permissions requested by the application. The SDK automatically determines the required scope and audience values from the context.
+First, import and instantiate the class for the Consent screen:
 
-```jsx
+```typescript
 import Consent from '@auth0/auth0-acul-js/consent';
 
 const consentManager = new Consent();
 
-// Accept the requested permissions
-try {
-  // No need to pass scope/audience manually, the SDK handles it.
-  await consentManager.accept();
-  // User will be redirected
-} catch (error) {
-  console.error('Error accepting consent:', error);
-  // Handle error appropriately, e.g., show a message
+// You can now access screen, client information, user details, etc.
+const clientName = consentManager.client.name;
+const userEmail = consentManager.user.email;
+const requestedScopes = consentManager.screen?.scopes;
+const shouldHideScopes = consentManager.screen?.hideScopes;
+
+console.log(`${clientName} is requesting consent from ${userEmail}.`);
+if (shouldHideScopes) {
+  console.log("Scope details are hidden.");
+} else if (requestedScopes) {
+  console.log("Requested permissions:");
+  requestedScopes.forEach(scope => {
+    console.log(`- ${scope.description} (${scope.name})`);
+  });
 }
+
+// Check for errors from a previous submission attempt:
+const errors = consentManager.transaction.errors;
+if (errors && errors.length > 0) {
+  errors.forEach(err => console.error(`Error: ${err.message}`));
+}
+```
+
+### Accept Consent
+
+This action is used when the user agrees to grant the requested permissions.
+It sends `action: "accept"` to the `/u/consent` endpoint.
+
+```typescript
+import Consent from '@auth0/auth0-acul-js/consent';
+import type { CustomOptions } from '@auth0/auth0-acul-js'; // For payload type
+
+const consentManager = new Consent();
+
+async function grantConsent() {
+  // Optionally, provide custom parameters if your flow requires them
+  const payload: CustomOptions = {
+    // custom_param: "value"
+  };
+
+  try {
+    await consentManager.accept(payload);
+    // If successful, Auth0 will typically redirect the user.
+  } catch (error: any) {
+    // This catch block handles unexpected errors during the submission itself (e.g., network issues).
+    // Specific validation errors from Auth0 will be available in
+    // `consentManager.transaction.errors` after the promise resolves or the page reloads.
+    console.error('Failed to accept consent:', error.message);
+  }
+}
+
+// Call this function, for example, when the user clicks an "Allow" or "Accept" button.
+// grantConsent();
 ```
 
 ### Deny Consent
 
-This action signals that the user denies the permissions requested by the application. The SDK automatically determines the required scope and audience values from the context to include in the denial request.
+This action is used when the user decides not to grant the requested permissions.
+It sends `action: "deny"` to the `/u/consent` endpoint.
 
-```jsx
+```typescript
 import Consent from '@auth0/auth0-acul-js/consent';
+import type { CustomOptions } from '@auth0/auth0-acul-js'; // For payload type
 
 const consentManager = new Consent();
 
-// Deny the requested permissions
-try {
-  // No need to pass scope/audience manually, the SDK handles it.
-  await consentManager.deny();
-  // User will be redirected (likely back to the app with an error)
-} catch (error) {
-  console.error('Error denying consent:', error);
-  // Handle error appropriately, e.g., show a message
+async function denyConsent() {
+  // Optionally, provide custom parameters
+  const payload: CustomOptions = {
+    // denial_reason_code: "user_rejected"
+  };
+
+  try {
+    await consentManager.deny(payload);
+    // If successful, Auth0 will typically redirect the user,
+    // possibly to an error page or back to the application with an access_denied error.
+  } catch (error: any) {
+    console.error('Failed to deny consent:', error.message);
+  }
 }
-```
 
-#### Passing Custom Data (Optional):
-
-If you need to send extra data along with the accept/deny action (e.g., for custom rules or logging), you can pass it in the optional payload:
-
-```jsx
-// Example for accept
-await consentManager.accept({ custom_reason: "User approved specific feature" });
-
-// Example for deny
-await consentManager.deny({ denial_feedback: "Too many permissions requested" });
+// Call this function, for example, when the user clicks a "Deny" or "Cancel" button.
+// denyConsent();
 ```
