@@ -7,4 +7,3 @@ export type { ScreenMembers } from '../models/screen';
 export type { TenantMembers } from '../models/tenant';
 export type { TransactionMembers } from '../models/transaction';
 export type { UntrustedDataMembers } from '../models/untrusted-data';
-export type { ResourceServerMembers } from '../models/resource-server';

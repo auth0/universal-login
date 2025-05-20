@@ -2,7 +2,6 @@ import type { BrandingContext, BrandingMembers } from './branding';
 import type { ClientContext, ClientMembers } from './client';
 import type { OrganizationContext, OrganizationMembers } from './organization';
 import type { PromptContext, PromptMembers } from './prompt';
-import type { ResourceServerContext, ResourceServerMembers } from './resource-server';
 import type { ScreenContext, ScreenMembers } from './screen';
 import type { TenantContext, TenantMembers } from './tenant';
 import type { TransactionContext, TransactionMembers } from './transaction';
@@ -19,7 +18,6 @@ export interface BaseContext {
   transaction: TransactionContext;
   user: UserContext;
   untrusted_data?: UntrustedDataContext;
-  resource_servers?: ResourceServerContext[];
 }
 
 export interface BaseMembers {
@@ -32,5 +30,4 @@ export interface BaseMembers {
   transaction: TransactionMembers;
   user: UserMembers;
   untrustedData: UntrustedDataMembers;
-  resourceServers: ResourceServerMembers[];
 }

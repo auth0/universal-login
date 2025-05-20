@@ -8,4 +8,3 @@ export { BrandingMembers } from './branding';
 export { TenantMembers } from './tenant';
 export { TransactionMembers } from './transaction';
 export { UntrustedDataMembers } from './untrusted-data';
-export type { ResourceServerMembers } from './resource-server'

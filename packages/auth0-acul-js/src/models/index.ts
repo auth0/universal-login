@@ -2,11 +2,10 @@ import { Branding } from './branding';
 import { Client } from './client';
 import { Organization } from './organization';
 import { Prompt } from './prompt';
-import { ResourceServer } from './resource-server';
 import { Screen } from './screen';
 import { Tenant } from './tenant';
 import { Transaction } from './transaction';
 import { UntrustedData } from './untrusted-data';
 import { User } from './user';
 
-export { Branding, Client, Prompt, Screen, Organization, User, Transaction, Tenant, UntrustedData, ResourceServer };
+export { Branding, Client, Prompt, Screen, Organization, User, Transaction, Tenant, UntrustedData };

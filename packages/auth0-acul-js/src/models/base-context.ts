@@ -1,7 +1,5 @@
 import { Branding, Client, Prompt, Screen, Organization, User, Transaction, Tenant, UntrustedData } from '../models';
 
-import { ResourceServerList } from './resource-server';
-
 import type {
   ClientMembers,
   PromptMembers,
@@ -11,8 +9,7 @@ import type {
   TransactionMembers,
   TenantMembers,
   UntrustedDataMembers,
-  BrandingMembers,
-  ResourceServerMembers,
+  BrandingMembers
 } from '../../interfaces/models';
 import type { BaseContext as UniversalLoginContext, BaseMembers } from '../../interfaces/models/base-context';
 
@@ -31,7 +28,6 @@ export class BaseContext implements BaseMembers {
   transaction: TransactionMembers;
   user: UserMembers;
   untrustedData: UntrustedDataMembers;
-  resourceServers: ResourceServerMembers[];
 
   private static context: UniversalLoginContext | null = null;
 
@@ -73,7 +69,6 @@ export class BaseContext implements BaseMembers {
     this.transaction = new Transaction(context.transaction);
     this.user = new User(context.user);
     this.untrustedData = new UntrustedData(context.untrusted_data);
-    this.resourceServers = new ResourceServerList(context.resource_servers ?? null);
   }
 
   /**

@@ -1,5 +1,5 @@
 export interface CustomOptions {
-  [key: string]: string | number | boolean | string[] | undefined;
+  [key: string]: string | number | boolean | undefined;
 }
 
 /**

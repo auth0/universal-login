@@ -44,26 +44,8 @@ export interface PhonePrefix {
   phone_prefix: string;
 }
 
-/**
- * Represents a Scope requested by the client application during the consent flow.
- * Scopes define the specific permissions the application is requesting.
- *
- * @interface Scope
- * @property {string} name - The technical name of the scope (e.g., 'read:messages').
- * @property {string} description - A user-friendly description of what the scope allows.
- * @property {string[]} values - The specific scope values being requested (often the same as `name`, but can be more granular).
- */
-export interface Scope {
-  /** The technical name of the scope (e.g., 'read:messages'). */
-  name: string;
-  /** A user-friendly description of what the scope allows. */
-  description: string;
-  /** The specific scope values being requested (often the same as `name`, but can be more granular). */
-  values: string[];
-}
-
 export interface ScreenData {
-  [key: string]: string | boolean | PasskeyRead | PasskeyCreate | string[] | Array<PhonePrefix | Scope> | undefined;
+  [key: string]: string | boolean | PasskeyRead | PasskeyCreate | string[] | Array<PhonePrefix> | undefined;
 }
 
 export interface ScreenContext {
@@ -80,7 +62,7 @@ export interface ScreenMembers {
   captchaSiteKey: string | null;
   captchaProvider: string | null;
   isCaptchaAvailable: boolean;
-  data: Record<string, string | boolean | string[] | Record<string, string[]> | Array<PhonePrefix> | PasskeyCreate | Scope> | null;
+  data: Record<string, string | boolean | string[] | Record<string, string[]> | Array<PhonePrefix> | PasskeyCreate> | null;
   links: Record<string, string> | null;
   texts: Record<string, string> | null;
   captcha: CaptchaContext | null;
