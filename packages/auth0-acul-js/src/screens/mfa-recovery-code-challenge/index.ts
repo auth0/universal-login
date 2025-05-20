@@ -24,6 +24,18 @@ export default class MfaRecoveryCodeChallenge extends BaseContext implements Mfa
    * @param {string} code - The recovery code entered by the user.
    * @param {CustomOptions} [payload] - Optional payload.
    * @returns {Promise<void>}
+   * @example
+   * ```typescript
+   * import React, { useState } from 'react';
+   * import MfaVoiceEnrollment from '@auth0/auth0-acul-js/mfa-voice-enrollment';
+   * 
+   * const [phone, setPhone] = useState('');
+   * const mfaVoiceEnrollment = new MfaVoiceEnrollment();
+   * 
+   * const handleContinueEnrollment = async () => {
+   *  await mfaVoiceEnrollment.continue({ phone });
+   * };
+   * ```
    */
   async continue(code: string, payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
@@ -42,6 +54,17 @@ export default class MfaRecoveryCodeChallenge extends BaseContext implements Mfa
    * Navigates to the screen where the user can pick another MFA method.
    * @param {CustomOptions} [payload] - Optional payload.
    * @returns {Promise<void>}
+   * @example
+   * ```typescript
+   * import React, { useState } from 'react';
+   * import MfaVoiceEnrollment from '@auth0/auth0-acul-js/mfa-voice-enrollment';
+   * 
+   * const mfaVoiceEnrollment = new MfaVoiceEnrollment();
+   * 
+   * const handleTryAnotherMethod = async () => {
+   *  await mfaVoiceEnrollment.tryAnotherMethod();
+   * };
+   * ```
    */
   async tryAnotherMethod(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {

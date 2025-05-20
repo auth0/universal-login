@@ -23,6 +23,18 @@ export default class MfaVoiceEnrollment extends BaseContext implements MfaVoiceE
    * Continues with the default action.
    * @param {CustomOptions} [payload] - Optional payload.
    * @returns {Promise<void>}
+   * @example
+   * ```typescript
+   * import React, { useState } from 'react';
+   * import MfaVoiceEnrollment from '@auth0/auth0-acul-js/mfa-voice-enrollment';
+   * 
+   * const [phone, setPhone] = useState('');
+   * const mfaVoiceEnrollment = new MfaVoiceEnrollment();
+   * 
+   * const handleContinueEnrollment = async () => {
+   *  await mfaVoiceEnrollment.continue({ phone });
+   * };
+   * ```
    */
   async continue(payload: { phone: string } & CustomOptions): Promise<void> {
     const options: FormOptions = {
@@ -39,6 +51,17 @@ export default class MfaVoiceEnrollment extends BaseContext implements MfaVoiceE
   /**
    * Allows trying another authentication method
    * @param {CustomOptions} [payload] - Optional payload.
+   * @example
+   * ```typescript
+   * import React, { useState } from 'react';
+   * import MfaVoiceEnrollment from '@auth0/auth0-acul-js/mfa-voice-enrollment';
+   * 
+   * const mfaVoiceEnrollment = new MfaVoiceEnrollment();
+   * 
+   * const handleTryAnotherMethod = async () => {
+   *  await mfaVoiceEnrollment.tryAnotherMethod();
+   * };
+   * ```
    */
   async tryAnotherMethod(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
@@ -55,6 +78,17 @@ export default class MfaVoiceEnrollment extends BaseContext implements MfaVoiceE
   /**
    * Allows picking a country code for the phone number
    * @param {CustomOptions} [payload] - Optional payload.
+   * @example
+   * ```typescript
+   * import React, { useState } from 'react';
+   * import MfaVoiceEnrollment from '@auth0/auth0-acul-js/mfa-voice-enrollment';
+   * 
+   * const mfaVoiceEnrollment = new MfaVoiceEnrollment();
+   * 
+   * const handlePickCountryCode = async () => {
+   *  await mfaVoiceEnrollment.selectPhoneCountryCode();
+   * };
+   * ```
    */
   async selectPhoneCountryCode(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {

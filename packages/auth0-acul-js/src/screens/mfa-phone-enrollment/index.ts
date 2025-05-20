@@ -22,6 +22,18 @@ export default class MfaPhoneEnrollment extends BaseContext implements MfaPhoneE
   /**
    * Navigates to the country code selection screen.
    * @param payload Optional custom options to include with the request.
+   * @example
+   * ```typescript
+   * import React, { useState } from 'react';
+   * import MfaPhoneEnrollment from '@auth0/auth0-acul-js/mfa-phone-enrollment';
+   * 
+   * const [phone, setPhone] = useState('');
+   * const [type, setType] = useState<'sms' | 'voice'>('sms');
+   * const mfaPhoneEnrollment = new MfaPhoneEnrollment();
+   * 
+   * const handlePickCountryCode = async () => {
+   *    await mfaPhoneEnrollment.pickCountryCode();
+   * };
    */
   async pickCountryCode(payload?: CustomOptions): Promise<void> {
     const options = {
@@ -37,6 +49,19 @@ export default class MfaPhoneEnrollment extends BaseContext implements MfaPhoneE
   /**
    * Continues the enrollment process with the provided phone number and type (SMS or voice).
    * @param payload The phone number and type (SMS or voice).
+   * @example
+   * ```typescript
+   * import React, { useState } from 'react';
+   * import MfaPhoneEnrollment from '@auth0/auth0-acul-js/mfa-phone-enrollment';
+   * 
+   * const [phone, setPhone] = useState('');
+   * const [type, setType] = useState<'sms' | 'voice'>('sms');
+   * const mfaPhoneEnrollment = new MfaPhoneEnrollment();
+   * 
+   * const handleContinueEnrollment = async () => {
+   *    await mfaPhoneEnrollment.continueEnrollment({ phone, type });
+   * };
+   * ```
    */
   async continueEnrollment(payload: { phone: string; type: 'sms' | 'voice' }): Promise<void> {
     const options = {
@@ -52,6 +77,19 @@ export default class MfaPhoneEnrollment extends BaseContext implements MfaPhoneE
   /**
    * Allows the user to try another MFA method.
    * @param payload Optional custom options to include with the request.
+   * @example
+   * ```typescript
+   * import React, { useState } from 'react';
+   * import MfaPhoneEnrollment from '@auth0/auth0-acul-js/mfa-phone-enrollment';
+   * 
+   * const [phone, setPhone] = useState('');
+   * const [type, setType] = useState<'sms' | 'voice'>('sms');
+   * const mfaPhoneEnrollment = new MfaPhoneEnrollment();
+   * 
+   * const handleTryAnotherMethod = async () => {
+   *  await mfaPhoneEnrollment.tryAnotherMethod();
+   * };
+   * ```
    */
   async tryAnotherMethod(payload?: CustomOptions): Promise<void> {
     const options = {

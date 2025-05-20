@@ -22,6 +22,17 @@ export default class MfaSmsList extends BaseContext implements MfaSmsListMembers
    * @param {MfaSmsListOptions} [payload] - Optional payload for the action.
    * @returns {Promise<void>}
    * @throws {Error} If the index is out of bounds.
+   * @example
+   * ```typescript
+   * import MfaSmsList from '@auth0/auth0-acul-js/mfa-sms-list';
+   * 
+   * const mfaSmsList = new MfaSmsList();
+   * 
+   * const getEnrolledPhoneNumbers = mfaSmsList.user.enrolledPhoneNumbers;
+   * const selectedNumber = getEnrolledPhoneNumbers[0]
+   * 
+   * mfaSmsList.selectPhoneNumber({index: selectedNumber});
+   * ```
    */
   public async selectPhoneNumber(payload?: MfaSmsListOptions): Promise<void> {
     const index = payload?.index;
@@ -44,6 +55,20 @@ export default class MfaSmsList extends BaseContext implements MfaSmsListMembers
    * Navigates back to the previous screen.
    * @param {MfaSmsListOptions} [payload] - Optional payload for the action.
    * @returns {Promise<void>}
+   * @example
+   * ```typescript
+   * import MfaSmsList from '@auth0/auth0-acul-js/mfa-sms-list';
+   * 
+   * const mfaSmsList = new MfaSmsList();
+   * 
+   * const handleBackAction = async () => {
+   * try {
+   * await mfaSmsList.backAction();
+   * } catch (error) {
+   * console.error('Failed to go back:', error);
+   * }
+   * };
+   * ```
    */
   public async backAction(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
