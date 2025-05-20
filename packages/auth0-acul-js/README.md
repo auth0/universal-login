@@ -181,16 +181,17 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 | 59     | logout | [Link](https://auth0.github.io/universal-login/classes/Classes.Logout.html) |
 | 60     | logout-aborted | [Link](https://auth0.github.io/universal-login/classes/Classes.LogoutAborted.html) |
 | 61     | logout-complete | [Link](https://auth0.github.io/universal-login/classes/Classes.LogoutComplete.html) |
-| 62     | Email Verification Result   | [Link](https://auth0.github.io/universal-login/classes/Classes.EmailVerificationResult.html)                     |
-| 63     | login-email-verification    | [Link](https://auth0.github.io/universal-login/classes/Classes.LoginEmailVerification.html)                     |
-| 64     | mfa-webauthn-platform-enrollment        | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnPlatformEnrollment.html)                        |
-| 65     | mfa-webauthn-error        | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnError.html)                        |
-| 60     | mfa-webauthn-not-available-error        | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnNotAvailableError.html)                        |
-| 61     | mfa-webauthn-roaming-enrollment          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnRoamingEnrollment.html)   |
-| 62     | mfa-webauthn-roaming-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnRoamingChallenge.html)   |
-| 63     | mfa-webauthn-platform-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnPlatformChallenge.html)   |
-| 64     | mfa-webauthn-enrollment-success          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnEnrollmentSuccess.html)   |
-| 65     | mfa-webauthn-change-key-nickname          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnChangeKeyNickname.html)   |
+| 62     | email-otp-challenge | [Link](https://auth0.github.io/universal-login/classes/Classes.EmailOTPChallenge.html) |
+| 63     | Email Verification Result   | [Link](https://auth0.github.io/universal-login/classes/Classes.EmailVerificationResult.html)                     |
+| 64     | login-email-verification    | [Link](https://auth0.github.io/universal-login/classes/Classes.LoginEmailVerification.html)                     |
+| 65     | mfa-webauthn-platform-enrollment        | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnPlatformEnrollment.html)                        |
+| 66     | mfa-webauthn-error        | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnError.html)                        |
+| 67     | mfa-webauthn-not-available-error        | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnNotAvailableError.html)                        |
+| 68     | mfa-webauthn-roaming-enrollment          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnRoamingEnrollment.html)   |
+| 69     | mfa-webauthn-roaming-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnRoamingChallenge.html)   |
+| 70     | mfa-webauthn-platform-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnPlatformChallenge.html)   |
+| 71     | mfa-webauthn-enrollment-success          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnEnrollmentSuccess.html)   |
+| 72     | mfa-webauthn-change-key-nickname          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnChangeKeyNickname.html)   |
 
 </details>
 

@@ -256,6 +256,10 @@
       "import": "./dist/screens/logout-complete/index.js",
       "types": "./dist/types/src/screens/logout-complete/index.d.ts"
     },
+     "./email-otp-challenge": {
+        "import": "./dist/screens/email-otp-challenge/index.js",
+        "types": "./dist/types/src/screens/email-otp-challenge/index.d.ts"
+     },
     "./email-verification-result": {
       "import": "./dist/screens/email-verification-result/index.js",
       "types": "./dist/types/src/screens/email-verification-result/index.d.ts"

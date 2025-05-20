@@ -60,6 +60,7 @@ export const ScreenIds = {
   LOGOUT: 'logout',
   LOGOUT_ABORTED: 'logout-aborted',
   LOGOUT_COMPLETE: 'logout-complete',
+  EMAIL_OTP_CHALLENGE: 'email-otp-challenge',
   EMAIL_VERIFICATION_RESULT: 'email-verification-result',
   LOGIN_EMAIL_VERIFICATION: 'login-email-verification',
   MFA_WEBAUTHN_PLATFORM_ENROLLMENT: 'mfa-webauthn-platform-enrollment',
