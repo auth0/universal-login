@@ -1,6 +1,7 @@
 import { Screen } from '../../models/screen';
+import { getPublicKey } from '../../shared/screen';
 
-import type { ScreenContext, PasskeyCreate } from '../../../interfaces/models/screen';
+import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { ScreenMembersOnMfaWebAuthnPlatformEnrollment as OverrideOptions } from '../../../interfaces/screens/mfa-webauthn-platform-enrollment';
 
 /**
@@ -38,6 +39,6 @@ export class ScreenOverride extends Screen implements OverrideOptions {
    * @returns {PasskeyCreate['public_key'] | null} The `PublicKeyCredentialCreationOptions` or `null` if not found.
    */
   static getPublicKey = (screenContext: ScreenContext): OverrideOptions['publicKey'] => {
-    return (screenContext.data?.passkeys as PasskeyCreate)?.public_key ?? null;
+    return getPublicKey(screenContext) as OverrideOptions['publicKey'];
   };
 }

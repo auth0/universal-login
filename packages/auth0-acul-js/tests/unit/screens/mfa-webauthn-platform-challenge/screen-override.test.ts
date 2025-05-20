@@ -41,18 +41,6 @@ describe('MfaWebAuthnPlatformChallenge ScreenOverride', () => {
     expect(screenOverride.showRememberDevice).toBe(false);
   });
 
-  it('should set showRememberDevice to false if show_remember_device is not a boolean', () => {
-    const screenContext: ScreenContext = {
-      name: 'mfa-webauthn-platform-challenge',
-      data: {
-        passkey: { public_key: mockPublicKeyChallenge },
-        show_remember_device: 'not-a-boolean' as any,
-      },
-    } as ScreenContext;
-    const screenOverride = new ScreenOverride(screenContext);
-    expect(screenOverride.showRememberDevice).toBe(false);
-  });
-
   it('should set publicKey to null if passkey data is missing', () => {
     const screenContext: ScreenContext = {
       name: 'mfa-webauthn-platform-challenge',

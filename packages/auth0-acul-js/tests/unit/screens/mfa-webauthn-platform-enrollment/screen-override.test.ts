@@ -12,11 +12,11 @@ describe('MfaWebAuthnPlatformEnrollment ScreenOverride', () => {
     authenticatorSelection: { residentKey: 'preferred', userVerification: 'required' },
   };
 
-  it('should correctly set publicKey property from screenContext.data.passkeys.public_key', () => {
+  it('should correctly set publicKey property from screenContext.data.passkey.public_key', () => {
     const screenContext: ScreenContext = {
       name: 'mfa-webauthn-platform-enrollment',
       data: {
-        passkeys: { // Server provides data nested under 'passkeys'
+        passkey: { // Server provides data nested under 'passkey'
           public_key: mockPublicKeyOptions,
         },
       },
@@ -37,21 +37,21 @@ describe('MfaWebAuthnPlatformEnrollment ScreenOverride', () => {
     expect(screenOverride.publicKey).toBeNull();
   });
 
-  it('should set publicKey to null if screenContext.data.passkeys is undefined', () => {
+  it('should set publicKey to null if screenContext.data.passkey is undefined', () => {
     const screenContext: ScreenContext = {
       name: 'mfa-webauthn-platform-enrollment',
-      data: {}, // passkeys property is missing within data
+      data: {}, // passkey property is missing within data
     } as ScreenContext;
 
     const screenOverride = new ScreenOverride(screenContext);
     expect(screenOverride.publicKey).toBeNull();
   });
 
-  it('should set publicKey to null if screenContext.data.passkeys.public_key is undefined', () => {
+  it('should set publicKey to null if screenContext.data.passkey.public_key is undefined', () => {
     const screenContext: ScreenContext = {
       name: 'mfa-webauthn-platform-enrollment',
       data: {
-        passkeys: {} as PasskeyCreate, // public_key is missing within passkeys
+        passkey: {} as PasskeyCreate, // public_key is missing within passkey
       },
     } as ScreenContext;
     const screenOverride = new ScreenOverride(screenContext);
@@ -61,17 +61,17 @@ describe('MfaWebAuthnPlatformEnrollment ScreenOverride', () => {
   it('should inherit from Screen model', () => {
     const screenContext: ScreenContext = {
       name: 'mfa-webauthn-platform-enrollment',
-      data: { passkeys: { public_key: mockPublicKeyOptions } },
+      data: { passkey: { public_key: mockPublicKeyOptions } },
     } as ScreenContext;
     const screenOverride = new ScreenOverride(screenContext);
     expect(screenOverride).toBeInstanceOf(Screen);
   });
 
   describe('static getPublicKey', () => {
-    it('should extract public_key correctly from screenContext.data.passkeys.public_key', () => {
+    it('should extract public_key correctly from screenContext.data.passkey.public_key', () => {
       const screenContext: ScreenContext = {
         name: 'mfa-webauthn-platform-enrollment',
-        data: { passkeys: { public_key: mockPublicKeyOptions } },
+        data: { passkey: { public_key: mockPublicKeyOptions } },
       } as ScreenContext;
       const result = ScreenOverride.getPublicKey(screenContext);
       expect(result).toEqual(mockPublicKeyOptions);
@@ -82,7 +82,7 @@ describe('MfaWebAuthnPlatformEnrollment ScreenOverride', () => {
       expect(ScreenOverride.getPublicKey(screenContext)).toBeNull();
     });
 
-    it('should return null if data.passkeys is missing', () => {
+    it('should return null if data.passkey is missing', () => {
       const screenContext: ScreenContext = {
         name: 'mfa-webauthn-platform-enrollment',
         data: { other_prop: 'value' },
@@ -90,10 +90,10 @@ describe('MfaWebAuthnPlatformEnrollment ScreenOverride', () => {
       expect(ScreenOverride.getPublicKey(screenContext)).toBeNull();
     });
 
-    it('should return null if data.passkeys.public_key is missing', () => {
+    it('should return null if data.passkey.public_key is missing', () => {
       const screenContext: ScreenContext = {
         name: 'mfa-webauthn-platform-enrollment',
-        data: { passkeys: {} as PasskeyCreate }, // public_key is not present on the PasskeyCreate object
+        data: { passkey: {} as PasskeyCreate }, // public_key is not present on the PasskeyCreate object
       } as ScreenContext;
       expect(ScreenOverride.getPublicKey(screenContext)).toBeNull();
     });

@@ -1,3 +1,4 @@
+import { FormActions } from '../../constants';
 import { ScreenIds } from '../../constants/enums';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
@@ -53,7 +54,7 @@ export default class MfaWebAuthnRoamingEnrollment extends BaseContext implements
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
       response: JSON.stringify(encoded),
-      action: 'default',
+      action: FormActions.DEFAULT,
     });
   }
   /**
@@ -104,7 +105,7 @@ export default class MfaWebAuthnRoamingEnrollment extends BaseContext implements
     };
     await new FormHandler(options).submitData<TryAnotherMethodOptions>({
       ...payload,
-      action: 'pick-authenticator',
+      action: FormActions.PICK_AUTHENTICATOR,
     });
   }
 }

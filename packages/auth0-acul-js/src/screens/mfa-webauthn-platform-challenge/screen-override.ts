@@ -1,6 +1,8 @@
 import { Screen } from '../../models/screen';
+import { getPublicKey, getShowRememberDevice } from '../../shared/screen';
 
-import type { ScreenContext, PasskeyRead } from '../../../interfaces/models/screen';
+
+import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { ScreenMembersOnMfaWebAuthnPlatformChallenge as OverrideOptions } from '../../../interfaces/screens/mfa-webauthn-platform-challenge';
 
 /**
@@ -45,10 +47,7 @@ export class ScreenOverride extends Screen implements OverrideOptions {
    * @returns {PasskeyRead['public_key'] | null} The `public_key` object or `null` if not found or invalid.
    */
   static getPublicKey = (screenContext: ScreenContext): OverrideOptions['publicKey'] => {
-    // The server provides the challenge under screen.data.passkey.public_key
-    // PasskeyRead interface defines `passkey: { public_key: { challenge: string, ... } }`
-    const passkeyData = screenContext.data?.passkey as PasskeyRead | undefined;
-    return passkeyData?.public_key ?? null;
+    return getPublicKey(screenContext) as OverrideOptions['publicKey'];
   };
 
   /**
@@ -59,8 +58,6 @@ export class ScreenOverride extends Screen implements OverrideOptions {
    * @returns {boolean} The value of `show_remember_device`, or `false` if not present or not a boolean.
    */
   static getShowRememberDevice = (screenContext: ScreenContext): OverrideOptions['showRememberDevice'] => {
-    return typeof screenContext.data?.show_remember_device === 'boolean'
-      ? screenContext.data.show_remember_device
-      : false;
+    return getShowRememberDevice(screenContext)
   };
 }

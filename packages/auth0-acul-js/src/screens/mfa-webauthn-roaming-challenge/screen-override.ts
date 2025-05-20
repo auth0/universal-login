@@ -1,7 +1,7 @@
 import { Screen } from '../../models/screen';
 import { getPublicKey, getShowRememberDevice, getWebAuthnType } from '../../shared/screen';
 
-import type { ScreenContext } from '../../../interfaces/models/screen';
+import type { PasskeyRead, ScreenContext } from '../../../interfaces/models/screen';
 import type { ScreenMembersOnMfaWebAuthnRoamingChallenge as OverrideOptions } from '../../../interfaces/screens/mfa-webauthn-roaming-challenge';
 
 /**
@@ -15,7 +15,7 @@ import type { ScreenMembersOnMfaWebAuthnRoamingChallenge as OverrideOptions } fr
 export class ScreenOverride extends Screen implements OverrideOptions {
   showRememberDevice?: boolean | undefined;
   webauthnType: string | null;
-  publicKey: { challenge: string; } | null;
+  publicKey: PasskeyRead['public_key'] | null;
 
   /**
    * Initializes a new instance of the `ScreenOverride` class for the 'mfa-webauthn-roaming-challenge' screen.
