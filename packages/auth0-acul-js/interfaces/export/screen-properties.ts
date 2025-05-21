@@ -72,3 +72,4 @@ export type { MfaWebAuthnPlatformChallengeMembers } from '../screens/mfa-webauth
 export type { MfaWebAuthnEnrollmentSuccessMembers } from '../screens/mfa-webauthn-enrollment-success';
 export type { MfaWebAuthnChangeKeyNicknameMembers } from '../screens/mfa-webauthn-change-key-nickname';
 export type { ConsentMembers } from '../screens/consent';
+export type { ResetPasswordMfaWebAuthnPlatformChallengeMembers } from '../screens/reset-password-mfa-webauthn-platform-challenge';

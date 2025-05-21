@@ -301,9 +301,13 @@
       "types": "./dist/types/src/screens/mfa-webauthn-change-key-nickname/index.d.ts"
     },
     "./consent": {
-         "import": "./dist/screens/consent/index.js",
-         "types": "./dist/types/src/screens/consent/index.d.ts"
-     }
+      "import": "./dist/screens/consent/index.js",
+      "types": "./dist/types/src/screens/consent/index.d.ts"
+    },
+    "./reset-password-mfa-webauthn-platform-challenge": {
+      "import": "./dist/screens/reset-password-mfa-webauthn-platform-challenge/index.js",
+      "types": "./dist/types/src/screens/reset-password-mfa-webauthn-platform-challenge/index.d.ts"
+    }
   },
   "scripts": {
     "clean": "rimraf dist",

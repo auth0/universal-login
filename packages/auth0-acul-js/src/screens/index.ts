@@ -72,3 +72,4 @@ export { default as MfaWebAuthnPlatformChallenge } from './mfa-webauthn-platform
 export { default as MfaWebAuthnEnrollmentSuccess } from './mfa-webauthn-enrollment-success';
 export { default as MfaWebAuthnChangeKeyNickname } from './mfa-webauthn-change-key-nickname';
 export { default as Consent } from './consent';
+export { default as ResetPasswordMfaWebAuthnPlatformChallenge } from './reset-password-mfa-webauthn-platform-challenge';

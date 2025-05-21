@@ -194,6 +194,7 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 | 72     | mfa-webauthn-change-key-nickname          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnChangeKeyNickname.html)   |
 | 73     | consent                   | [Link](https://auth0.github.io/universal-login/classes/Classes.Consent.html)                        |
 | 74     | customized-consent        | [Link](https://auth0.github.io/universal-login/classes/Classes.CustomizedConsent.html)             |
+| 75     | reset-password-mfa-webauthn-platform-challenge | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaWebAuthnPlatformChallenge.html)                |
 
 </details>
 
