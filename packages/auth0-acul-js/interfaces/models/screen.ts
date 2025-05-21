@@ -50,8 +50,13 @@ export interface Scope {
   values: string[];
 }
 
+export interface AuthorizationDetail {
+  type: string;
+  [key: string]: string;
+}
+
 export interface ScreenData {
-  [key: string]: string | boolean | PasskeyRead | PasskeyCreate | string[] | Array<PhonePrefix | Scope> | undefined;
+  [key: string]: string | boolean | PasskeyRead | PasskeyCreate | string[] | Array<PhonePrefix | Scope | AuthorizationDetail> | undefined;
 }
 
 export interface ScreenContext {
