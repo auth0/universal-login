@@ -56,3 +56,10 @@ export { default as DeviceCodeConfirmation } from './device-code-confirmation';
 export { default as MfaPhoneChallenge } from './mfa-phone-challenge';
 export { default as MfaRecoveryCodeEnrollment } from './mfa-recovery-code-enrollment';
 export { default as ResetPasswordMfaPhoneChallenge } from './reset-password-mfa-phone-challenge';
+export { default as MfaRecoveryCodeChallengeNewCode } from './mfa-recovery-code-challenge-new-code';
+export { default as Logout } from './logout';
+export { default as LogoutAborted } from './logout-aborted';
+export { default as LogoutComplete } from './logout-complete';
+export { default as EmailOTPChallenge } from './email-otp-challenge'
+export { default as EmailVerificationResult } from './email-verification-result';
+export { default as LoginEmailVerification } from './login-email-verification';

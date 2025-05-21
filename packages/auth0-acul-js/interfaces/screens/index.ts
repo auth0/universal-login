@@ -46,3 +46,6 @@ export * as MfaVoiceEnrollment from './mfa-voice-enrollment';
 export * as MfaRecoveryCodeChallenge from './mfa-recovery-code-challenge';
 export * as RedeemTicket from './redeem-ticket';
 export * as ResetPasswordMfaPhoneChallenge from './reset-password-mfa-phone-challenge';
+export * as MfaRecoveryCodeChallengeNewCode from './mfa-recovery-code-challenge-new-code';
+export * as EmailOTPChallenge from './email-otp-challenge';
+export * as LoginEmailVerification from './login-email-verification'

@@ -56,3 +56,10 @@ export type { DeviceCodeConfirmationMembers } from '../screens/device-code-confi
 export type { MfaPhoneChallengeMembers } from '../screens/mfa-phone-challenge';
 export type { MfaRecoveryCodeEnrollmentMembers } from '../screens/mfa-recovery-code-enrollment';
 export type { ResetPasswordMfaPhoneChallengeMembers } from '../screens/reset-password-mfa-phone-challenge';
+export type { MfaRecoveryCodeChallengeNewCodeMembers } from '../screens/mfa-recovery-code-challenge-new-code';
+export type { LogoutMembers } from '../screens/logout';
+export type { LogoutAbortedMembers } from '../screens/logout-aborted';
+export type { LogoutCompleteMembers } from '../screens/logout-complete';
+export type { EmailOTPChallengeMembers } from '../screens/email-otp-challenge';
+export type { EmailVerificationResultMembers } from '../screens/email-verification-result'; // Added new export
+export type { LoginEmailVerificationMembers } from '../screens/login-email-verification'

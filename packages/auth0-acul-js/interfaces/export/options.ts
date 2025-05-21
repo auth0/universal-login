@@ -56,3 +56,6 @@ export type {
   ContinueOptions as ResetPasswordMfaPhoneChallengeContinueOptions,
   TryAnotherMethodOptions as ResetPasswordMfaPhoneChallengeTryAnotherMethodOptions,
 } from '../screens/reset-password-mfa-phone-challenge';
+export type { ContinueOptions as MfaRecoveryCodeChallengeNewCodeContinueOptions } from '../screens/mfa-recovery-code-challenge-new-code';
+export type { ConfirmLogoutOptions } from '../screens/logout';
+export type { ContinueWithCodeOptions as ContinueWithCodeOptionPayload, ResendCodeOptions as ResendCodeOptionsPayload } from '../screens/login-email-verification';

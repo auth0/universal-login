@@ -56,4 +56,11 @@ export const ScreenIds = {
   MFA_PHONE_CHALLENGE: 'mfa-phone-challenge',
   MFA_RECOVERY_CODE_ENROLLMENT: 'mfa-recovery-code-enrollment',
   RESET_PASSWORD_MFA_PHONE_CHALLENGE: 'reset-password-mfa-phone-challenge',
+  MFA_RECOVERY_CODE_CHALLENGE_NEW_CODE: 'mfa-recovery-code-challenge-new-code',
+  LOGOUT: 'logout',
+  LOGOUT_ABORTED: 'logout-aborted',
+  LOGOUT_COMPLETE: 'logout-complete',
+  EMAIL_OTP_CHALLENGE: 'email-otp-challenge',
+  EMAIL_VERIFICATION_RESULT: 'email-verification-result',
+  LOGIN_EMAIL_VERIFICATION: 'login-email-verification',
 };

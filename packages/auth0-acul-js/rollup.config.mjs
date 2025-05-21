@@ -2,11 +2,12 @@ import typescript from '@rollup/plugin-typescript';
 import terser from '@rollup/plugin-terser';
 import replace from '@rollup/plugin-replace';
 import json from '@rollup/plugin-json';
-import pkg from './package.json' assert { type: 'json' };
+import fs from 'fs';
+import path from 'path';
 
-const commonPlugins = [
-  terser(),
-];
+const pkg = JSON.parse(fs.readFileSync(path.resolve('./package.json'), 'utf-8'));
+
+const commonPlugins = [terser()];
 
 export default {
   input: 'src/index.ts',
@@ -22,7 +23,7 @@ export default {
   plugins: [
     json(),
     typescript({
-      tsconfig: './tsconfig.json'
+      tsconfig: './tsconfig.json',
     }),
     replace({
       preventAssignment: true,
