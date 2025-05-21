@@ -56,6 +56,7 @@ export interface SocialLoginOptions {
 
 export interface LoginIdMembers extends BaseMembers {
   screen: ScreenMembersOnLoginId;
+  transaction: TransactionMembersOnLoginId;
   login(payload: LoginOptions): Promise<void>;
   socialLogin(payload: SocialLoginOptions): Promise<void>;
   passkeyLogin(payload?: CustomOptions): Promise<void>;
