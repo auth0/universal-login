@@ -187,6 +187,14 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 | 55     | mfa-voice                      | mfa-voice-challenge                       | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaVoiceChallenge.html)   |
 | 56     | mfa-recovery-code              | mfa-recovery-code-enrollment              | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaRecoveryCodeEnrollment.html)   |
 | 57     | reset-password                 | reset-password-mfa-phone-challenge        | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaPhoneChallenge.html)   |
+| 58     | mfa-recovery-code              | mfa-recovery-code-challenge-new-code      | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaRecoveryCodeChallengeNewCode.html) |
+| 59     | logout                         | logout                                    | [Link](https://auth0.github.io/universal-login/classes/Classes.Logout.html) |
+| 60     | logout                         | logout-aborted                            | [Link](https://auth0.github.io/universal-login/classes/Classes.LogoutAborted.html) |
+| 61     | logout                         | logout-complete                           | [Link](https://auth0.github.io/universal-login/classes/Classes.LogoutComplete.html) |
+| 62     | email-otp-challenge            | email-otp-challenge                       | [Link](https://auth0.github.io/universal-login/classes/Classes.EmailOTPChallenge.html) |
+| 63     | email-verification             | email-verification-result                 | [Link](https://auth0.github.io/universal-login/classes/Classes.EmailVerificationResult.html) |
+| 64     | login-email-verification       | login-email-verification                  | [Link](https://auth0.github.io/universal-login/classes/Classes.LoginEmailVerification.html) |
+
 
 </details>
 
