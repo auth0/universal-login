@@ -11,8 +11,7 @@
     "generate:examples": "tsx ./scripts/generate-examples.ts",
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
-    "docs": "typedoc --options typedoc.js",
-    "preinstall": "node ../../scripts/block-local-install.js"
+    "docs": "typedoc --options typedoc.js"
   },
   "peerDependencies": {
     "react": "^18.0.0"

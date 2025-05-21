@@ -12,7 +12,7 @@
     "build": "npm run build --workspaces",
     "docs": "npm run docs --workspaces",
     "format": "npm run format --workspaces",
-    "preinstall": "node ./scripts/check-node-version.js"
+    "preinstall": "node ./scripts/check-node-version.js && node ./scripts/block-local-install.js"
   },
   "engines": {
     "node": "^22.0.0"
