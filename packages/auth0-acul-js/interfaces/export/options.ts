@@ -70,3 +70,8 @@ export type {
   ReportBrowserErrorOptions as ResetPasswordMfaWebAuthnPlatformChallengeReportErrorOptions,
   TryAnotherMethodOptions as ResetPasswordMfaWebAuthnPlatformChallengeTryAnotherMethodOptions,
 } from '../screens/reset-password-mfa-webauthn-platform-challenge';
+export type {
+  UseSecurityKeyOptions as ResetPasswordMfaWebAuthnRoamingChallengeUseSecurityKeyOptions,
+  ShowErrorOptions as ResetPasswordMfaWebAuthnRoamingChallengeShowErrorOptions,
+  TryAnotherMethodOptions as ResetPasswordMfaWebAuthnRoamingChallengeTryAnotherMethodOptions
+} from '../screens/reset-password-mfa-webauthn-roaming-challenge';
