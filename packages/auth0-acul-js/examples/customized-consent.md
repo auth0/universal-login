@@ -10,7 +10,7 @@ The Customized Consent screen is displayed when an application requests permissi
 This example demonstrates how to build a comprehensive UI for the Customized Consent screen using React and TailwindCSS. It displays information about the requesting application, the user, the organization (if applicable), the standard OAuth scopes, and any detailed authorization requests (like Rich Authorization Requests - RAR).
 
 ```tsx
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import CustomizedConsent from '@auth0/auth0-acul-js/customized-consent';
 import type { Scope, AuthorizationDetail } from '@auth0/auth0-acul-js/customized-consent';
 
@@ -23,32 +23,12 @@ const CustomizedConsentScreen: React.FC = () => {
   const texts = screen.texts ?? {}; // UI texts from Auth0 dashboard
   const screenData = screen; // Access parsed scopes and authorizationDetails
 
-  const [isLoading, setIsLoading] = useState(false);
-  // For UI-specific errors not covered by transaction.errors
-  const [uiError, setUiError] = useState<string | null>(null);
-
-  const handleAccept = async () => {
-    setIsLoading(true);
-    setUiError(null);
-    try {
-      await consentManager.accept();
-      // On successful acceptance, Auth0 typically handles redirection.
-    } catch (error: any) {
-      setIsLoading(false);
-      setUiError(error.message || 'An unexpected error occurred. Please try again.');
-    }
+  const handleAccept = () => {
+    consentManager.accept();
   };
 
-  const handleDecline = async () => {
-    setIsLoading(true);
-    setUiError(null);
-    try {
-      await consentManager.deny();
-      // On successful denial, Auth0 typically handles redirection.
-    } catch (error: any) {
-      setIsLoading(false);
-      setUiError(error.message || 'An unexpected error occurred. Please try again.');
-    }
+  const handleDecline = () => {
+    consentManager.deny();
   };
 
   const pageTitle = texts.title ?? 'Authorize Application';
@@ -142,28 +122,19 @@ const CustomizedConsentScreen: React.FC = () => {
           </div>
         )}
 
-        {/* Display UI-specific errors */}
-        {uiError && (
-          <div className="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded relative mt-6" role="alert">
-            <span className="block sm:inline">{uiError}</span>
-          </div>
-        )}
-
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 pt-6">
           <button
             onClick={handleDecline}
-            disabled={isLoading}
             className="w-full sm:w-auto flex-1 px-6 py-3 border border-gray-300 rounded-lg shadow-sm text-md font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-60 disabled:cursor-not-allowed transition-colors duration-150"
           >
-            {isLoading ? (texts.submittingText ?? 'Processing...') : declineButtonText}
+            {declineButtonText}
           </button>
           <button
             onClick={handleAccept}
-            disabled={isLoading}
             className="w-full sm:w-auto flex-1 px-6 py-3 border border-transparent rounded-lg shadow-sm text-md font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-60 disabled:cursor-not-allowed transition-colors duration-150"
           >
-            {isLoading ? (texts.submittingText ?? 'Processing...') : acceptButtonText}
+            {acceptButtonText}
           </button>
         </div>
       </div>
