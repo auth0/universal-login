@@ -187,7 +187,8 @@ fs.writeFileSync(
 // 4. Root docs index
 const docsRootIndex =
   `export * as Screens from './screens';\n` +
-  `export * as Interfaces from './interfaces';
+  `export * as Interfaces from './interfaces';\n` +
+  `export { getCurrentScreen } from '../'
 `;
 fs.writeFileSync(
   path.join(EXPORTS_DIR, 'index.ts'),
