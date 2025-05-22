@@ -26,11 +26,9 @@ export default class MfaPhoneEnrollment extends BaseContext implements MfaPhoneE
    * ```typescript
    * import React, { useState } from 'react';
    * import MfaPhoneEnrollment from '@auth0/auth0-acul-js/mfa-phone-enrollment';
-   * 
    * const [phone, setPhone] = useState('');
    * const [type, setType] = useState<'sms' | 'voice'>('sms');
    * const mfaPhoneEnrollment = new MfaPhoneEnrollment();
-   * 
    * const handlePickCountryCode = async () => {
    *    await mfaPhoneEnrollment.pickCountryCode();
    * };
@@ -53,11 +51,9 @@ export default class MfaPhoneEnrollment extends BaseContext implements MfaPhoneE
    * ```typescript
    * import React, { useState } from 'react';
    * import MfaPhoneEnrollment from '@auth0/auth0-acul-js/mfa-phone-enrollment';
-   * 
    * const [phone, setPhone] = useState('');
    * const [type, setType] = useState<'sms' | 'voice'>('sms');
    * const mfaPhoneEnrollment = new MfaPhoneEnrollment();
-   * 
    * const handleContinueEnrollment = async () => {
    *    await mfaPhoneEnrollment.continueEnrollment({ phone, type });
    * };
@@ -81,11 +77,9 @@ export default class MfaPhoneEnrollment extends BaseContext implements MfaPhoneE
    * ```typescript
    * import React, { useState } from 'react';
    * import MfaPhoneEnrollment from '@auth0/auth0-acul-js/mfa-phone-enrollment';
-   * 
    * const [phone, setPhone] = useState('');
    * const [type, setType] = useState<'sms' | 'voice'>('sms');
    * const mfaPhoneEnrollment = new MfaPhoneEnrollment();
-   * 
    * const handleTryAnotherMethod = async () => {
    *  await mfaPhoneEnrollment.tryAnotherMethod();
    * };

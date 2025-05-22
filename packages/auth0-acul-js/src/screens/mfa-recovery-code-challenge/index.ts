@@ -28,10 +28,8 @@ export default class MfaRecoveryCodeChallenge extends BaseContext implements Mfa
    * ```typescript
    * import React, { useState } from 'react';
    * import MfaVoiceEnrollment from '@auth0/auth0-acul-js/mfa-voice-enrollment';
-   * 
    * const [phone, setPhone] = useState('');
    * const mfaVoiceEnrollment = new MfaVoiceEnrollment();
-   * 
    * const handleContinueEnrollment = async () => {
    *  await mfaVoiceEnrollment.continue({ phone });
    * };
@@ -58,9 +56,7 @@ export default class MfaRecoveryCodeChallenge extends BaseContext implements Mfa
    * ```typescript
    * import React, { useState } from 'react';
    * import MfaVoiceEnrollment from '@auth0/auth0-acul-js/mfa-voice-enrollment';
-   * 
    * const mfaVoiceEnrollment = new MfaVoiceEnrollment();
-   * 
    * const handleTryAnotherMethod = async () => {
    *  await mfaVoiceEnrollment.tryAnotherMethod();
    * };

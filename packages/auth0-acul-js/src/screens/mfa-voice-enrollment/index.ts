@@ -27,10 +27,8 @@ export default class MfaVoiceEnrollment extends BaseContext implements MfaVoiceE
    * ```typescript
    * import React, { useState } from 'react';
    * import MfaVoiceEnrollment from '@auth0/auth0-acul-js/mfa-voice-enrollment';
-   * 
    * const [phone, setPhone] = useState('');
    * const mfaVoiceEnrollment = new MfaVoiceEnrollment();
-   * 
    * const handleContinueEnrollment = async () => {
    *  await mfaVoiceEnrollment.continue({ phone });
    * };
@@ -55,9 +53,7 @@ export default class MfaVoiceEnrollment extends BaseContext implements MfaVoiceE
    * ```typescript
    * import React, { useState } from 'react';
    * import MfaVoiceEnrollment from '@auth0/auth0-acul-js/mfa-voice-enrollment';
-   * 
    * const mfaVoiceEnrollment = new MfaVoiceEnrollment();
-   * 
    * const handleTryAnotherMethod = async () => {
    *  await mfaVoiceEnrollment.tryAnotherMethod();
    * };
@@ -82,9 +78,7 @@ export default class MfaVoiceEnrollment extends BaseContext implements MfaVoiceE
    * ```typescript
    * import React, { useState } from 'react';
    * import MfaVoiceEnrollment from '@auth0/auth0-acul-js/mfa-voice-enrollment';
-   * 
    * const mfaVoiceEnrollment = new MfaVoiceEnrollment();
-   * 
    * const handlePickCountryCode = async () => {
    *  await mfaVoiceEnrollment.selectPhoneCountryCode();
    * };

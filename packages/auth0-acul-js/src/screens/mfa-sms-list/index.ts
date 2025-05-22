@@ -25,12 +25,9 @@ export default class MfaSmsList extends BaseContext implements MfaSmsListMembers
    * @example
    * ```typescript
    * import MfaSmsList from '@auth0/auth0-acul-js/mfa-sms-list';
-   * 
    * const mfaSmsList = new MfaSmsList();
-   * 
    * const getEnrolledPhoneNumbers = mfaSmsList.user.enrolledPhoneNumbers;
-   * const selectedNumber = getEnrolledPhoneNumbers[0]
-   * 
+   * const selectedNumber = getEnrolledPhoneNumbers[0];
    * mfaSmsList.selectPhoneNumber({index: selectedNumber});
    * ```
    */
@@ -58,9 +55,7 @@ export default class MfaSmsList extends BaseContext implements MfaSmsListMembers
    * @example
    * ```typescript
    * import MfaSmsList from '@auth0/auth0-acul-js/mfa-sms-list';
-   * 
    * const mfaSmsList = new MfaSmsList();
-   * 
    * const handleBackAction = async () => {
    * try {
    * await mfaSmsList.backAction();

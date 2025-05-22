@@ -28,10 +28,8 @@ export default class ResetPasswordMfaRecoveryCodeChallenge extends BaseContext i
    * ```typescript
    * import React, { useState } from 'react';
    * import ResetPasswordMfaRecoveryCodeChallenge from '@auth0/auth0-acul-js/reset-password-mfa-recovery-code-challenge';
-   * 
    * const [code, setCode] = useState('');
    * const resetPasswordMfaRecoveryCodeChallengeManager = new ResetPasswordMfaRecoveryCodeChallenge();
-   * 
    * const handleSubmit = async () => {
    *  try {
    *    await resetPasswordMfaRecoveryCodeChallengeManager.continue(code);
@@ -62,10 +60,8 @@ export default class ResetPasswordMfaRecoveryCodeChallenge extends BaseContext i
    * ```typescript
    * import React, { useState } from 'react';
    * import ResetPasswordMfaRecoveryCodeChallenge from '@auth0/auth0-acul-js/reset-password-mfa-recovery-code-challenge';
-   * 
    * const [code, setCode] = useState('');
    * const resetPasswordMfaRecoveryCodeChallengeManager = new ResetPasswordMfaRecoveryCodeChallenge();
-   * 
    * const handleTryAnotherMethod = async () => {
    *  try {
    *    await resetPasswordMfaRecoveryCodeChallengeManager.tryAnotherMethod();

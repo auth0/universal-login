@@ -41,7 +41,6 @@ export default class Login extends BaseContext implements LoginMembers {
    * @example
    * ```typescript
    * import Login from "@auth0/auth0-acul-js/login";
-   *
    * const loginManager = new Login();
    * loginManager.login({
    *   username: "testUser",
@@ -60,7 +59,6 @@ export default class Login extends BaseContext implements LoginMembers {
    * @example
    * ```typescript
    * import Login from "@auth0/auth0-acul-js/login";
-   *
    * const loginManager = new Login();
    * loginManager.socialLogin({
    *   connection: "google-oauth2"
