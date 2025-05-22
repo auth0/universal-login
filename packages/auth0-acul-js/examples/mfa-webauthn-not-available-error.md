@@ -23,19 +23,8 @@ const MfaWebAuthnNotAvailableErrorScreen: React.FC = () => {
   const { screen, transaction } = sdk;
   const texts = screen.texts ?? {};
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [uiError, setUiError] = useState<string | null>(null);
-
-  const handleTryAnotherMethod = async () => {
-    setIsLoading(true);
-    setUiError(null);
-    try {
-      await sdk.tryAnotherMethod();
-      // On success, Auth0 will typically redirect to the MFA factor selection screen.
-    } catch (err: any) {
-      setIsLoading(false);
-      setUiError(`Failed to switch methods: ${err.message}`);
-    }
+  const handleTryAnotherMethod = () => {
+   sdk.tryAnotherMethod();
   };
   
   return (
@@ -51,14 +40,6 @@ const MfaWebAuthnNotAvailableErrorScreen: React.FC = () => {
         <p className="mt-2 text-gray-600">
           {texts.description ?? 'Your browser or device doesn’t support security keys or built-in biometrics for this site, or no compatible authenticator was found. Please try a different way to sign in.'}
         </p>
-
-        {uiError && (
-          <div className="mt-4 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-md text-left" role="alert">
-            <p className="font-bold">Error</p>
-            <p>{uiError}</p>
-          </div>
-        )}
-        
         {transaction.errors && transaction.errors.length > 0 && (
            <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-md mt-4" role="alert">
              <p className="font-bold">{texts.alertListTitle ?? 'Alerts'}</p>
@@ -70,15 +51,9 @@ const MfaWebAuthnNotAvailableErrorScreen: React.FC = () => {
 
         <button
           onClick={handleTryAnotherMethod}
-          disabled={isLoading}
           className="w-full mt-6 flex justify-center items-center px-4 py-2.5 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
         >
-          {isLoading ? (
-            <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-          ) : (texts.pickAuthenticatorText ?? 'Try Another Method')}
+          {(texts.pickAuthenticatorText ?? 'Try Another Method')}
         </button>
       </div>
     </div>

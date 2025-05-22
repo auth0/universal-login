@@ -17,10 +17,9 @@ The SDK provides:
 This example demonstrates a React component for the "MFA WebAuthn Change Key Nickname" screen, styled with TailwindCSS. It allows users to view the current nickname and input a new one.
 
 ```tsx
-import React, { useState, useMemo, useCallback, FormEvent, ChangeEvent } from 'react';
+import React, { useState, useMemo, useCallback, ChangeEvent } from 'react';
 import MfaWebAuthnChangeKeyNickname, {
   type ContinueOptions,
-  type ScreenMembersOnMfaWebAuthnChangeKeyNickname
 } from '@auth0/auth0-acul-js/mfa-webauthn-change-key-nickname'; // Adjust path as necessary
 
 const MfaWebAuthnChangeKeyNicknameComponent: React.FC = () => {
@@ -32,46 +31,16 @@ const MfaWebAuthnChangeKeyNicknameComponent: React.FC = () => {
   const texts = screen.texts ?? {};
 
   const [newNickname, setNewNickname] = useState<string>(screen.data?.nickname ?? '');
-  const [isLoading, setIsLoading] = useState(false);
-  // Use transaction.errors directly for server-side errors.
-  // Local UI errors can be handled separately if needed (e.g., before submission).
-  const [uiError, setUiError] = useState<string | null>(null);
 
 
   const handleNicknameChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setNewNickname(event.target.value);
-    // Clear UI error when user types
-    if (uiError) setUiError(null);
   };
 
-  const handleSubmit = useCallback(async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setIsLoading(true);
-    setUiError(null); // Clear previous UI errors
-
-    if (!newNickname.trim()) {
-        setUiError(texts.noNicknameError ?? 'Nickname cannot be empty.');
-        setIsLoading(false);
-        return;
-    }
-
-    try {
+  const handleSubmit = useCallback(() => {
       const opts: ContinueOptions = { nickname: newNickname };
-      await sdk.continueWithNewNickname(opts);
-      // On successful submission, Auth0 typically handles redirection.
-      // If the page reloads due to an error (e.g. validation error from server),
-      // the `transaction.errors` object will be populated.
-    } catch (err: any) {
-      // This catch block is for unexpected errors during the SDK call itself (e.g. network error)
-      // not for server-side validation errors which are in `transaction.errors`.
-      setUiError(`Failed to update nickname: ${err.message || 'Please try again.'}`);
-    } finally {
-      // Only set isLoading to false if no redirect is expected or on error.
-      // If a redirect happens, this component might unmount.
-      // If the page re-renders with errors, transaction.errors will be updated.
-      setIsLoading(false);
-    }
-  }, [sdk, newNickname, texts]);
+      sdk.continueWithNewNickname(opts);
+  }, [sdk, newNickname]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4 antialiased">
@@ -119,7 +88,7 @@ const MfaWebAuthnChangeKeyNicknameComponent: React.FC = () => {
               className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm 
                          placeholder-gray-400 focus:outline-none focus:ring-indigo-500 
                          focus:border-indigo-500 sm:text-sm 
-                         ${(transaction.errors?.some(e => e.field === 'nickname') || uiError) ? 'border-red-500' : 'border-gray-300'}`}
+                         ${(transaction.errors?.some(e => e.field === 'nickname')) ? 'border-red-500' : 'border-gray-300'}`}
               placeholder={texts.newNicknamePlaceholder ?? 'Enter new nickname'}
               aria-describedby="nickname-error"
             />
@@ -137,27 +106,14 @@ const MfaWebAuthnChangeKeyNicknameComponent: React.FC = () => {
             </div>
           )}
 
-          {/* Display UI-specific errors (e.g., client-side validation, unexpected SDK errors) */}
-          {uiError && (
-            <div className="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded relative text-left" role="alert">
-              <span className="block sm:inline">{uiError}</span>
-            </div>
-          )}
-
           <button
             type="submit"
-            disabled={isLoading || newNickname === currentNickname}
             className="w-full flex justify-center items-center px-4 py-2.5 border border-transparent 
                        rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 
                        focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 
                        disabled:opacity-60 disabled:cursor-not-allowed transition-colors duration-150"
           >
-            {isLoading ? (
-              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-            ) : (texts.buttonText ?? 'Save Nickname')}
+            Save Nickname
           </button>
         </form>
       </div>

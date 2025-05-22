@@ -17,7 +17,7 @@ Available actions:
 This example demonstrates building a UI for the MFA WebAuthn Error screen using React and TailwindCSS, utilizing the `MfaWebAuthnError` SDK class.
 
 ```tsx
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import MfaWebAuthnError from '@auth0/auth0-acul-js/mfa-webauthn-error';
 
 const MfaWebAuthnErrorScreen: React.FC = () => {
@@ -26,19 +26,8 @@ const MfaWebAuthnErrorScreen: React.FC = () => {
   const texts = screen.texts ?? {};
   const screenData = screen.data;
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [uiError, setUiError] = useState<string | null>(null);
-
-  const handleAction = async (action: () => Promise<void>) => {
-    setIsLoading(true);
-    setUiError(null);
-    try {
-      await action();
-      // On success, Auth0 will typically redirect.
-    } catch (err: any) {
-      setIsLoading(false);
-      setUiError(`Operation failed: ${err.message}`);
-    }
+  const handleAction = (action: () => Promise<void>) => {
+    action();
   };
 
   return (
@@ -62,14 +51,6 @@ const MfaWebAuthnErrorScreen: React.FC = () => {
             <p><strong>Authenticator Type:</strong> {screenData.webauthnType}</p>
           </div>
         )}
-        
-        {uiError && (
-          <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-md" role="alert">
-            <p className="font-bold">Error</p>
-            <p>{uiError}</p>
-          </div>
-        )}
-
          {transaction.errors && transaction.errors.length > 0 && (
            <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-md mt-4" role="alert">
              <p className="font-bold">{texts.alertListTitle ?? 'Alerts'}</p>
@@ -82,16 +63,14 @@ const MfaWebAuthnErrorScreen: React.FC = () => {
         <div className="space-y-3">
           <button
             onClick={() => handleAction(() => sdk.tryAgain())}
-            disabled={isLoading}
             className="w-full flex justify-center items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
           >
-            {isLoading ? 'Processing...' : (texts.tryAgainButtonText ?? 'Try Again')}
+            {texts.tryAgainButtonText ?? 'Try Again'}
           </button>
 
           {/* Conditionally render other options based on flow, or always show if applicable */}
           <button
             onClick={() => handleAction(() => sdk.usePassword())}
-            disabled={isLoading}
             className="w-full flex justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
           >
             {texts.usePasswordButtonText ?? 'Use Password Instead'}
@@ -99,7 +78,6 @@ const MfaWebAuthnErrorScreen: React.FC = () => {
 
           <button
             onClick={() => handleAction(() => sdk.tryAnotherMethod())}
-            disabled={isLoading}
             className="w-full flex justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
           >
             {texts.tryAnotherMethodButtonText ?? 'Try Another Method'}
@@ -107,7 +85,6 @@ const MfaWebAuthnErrorScreen: React.FC = () => {
           
           <button
             onClick={() => handleAction(() => sdk.noThanks())}
-            disabled={isLoading}
             className="w-full flex justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
           >
             {texts.noThanksButtonText ?? 'No Thanks / Decline'}
