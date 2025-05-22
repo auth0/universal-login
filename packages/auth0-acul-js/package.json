@@ -267,6 +267,38 @@
     "./login-email-verification": {
       "import": "./dist/screens/login-email-verification/index.js",
       "types": "./dist/types/src/screens/login-email-verification/index.d.ts"
+    },
+    "./mfa-webauthn-platform-enrollment": {
+      "import": "./dist/screens/mfa-webauthn-platform-enrollment/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-platform-enrollment/index.d.ts"
+    },
+    "./mfa-webauthn-error": {
+      "import": "./dist/screens/mfa-webauthn-error/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-error/index.d.ts"
+    },
+    "./mfa-webauthn-not-available-error": {
+      "import": "./dist/screens/mfa-webauthn-not-available-error/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-not-available-error/index.d.ts"
+    },
+    "./mfa-webauthn-roaming-enrollment": {
+      "import": "./dist/screens/mfa-webauthn-roaming-enrollment/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-roaming-enrollment/index.d.ts"
+    },
+    "./mfa-webauthn-roaming-challenge": {
+      "import": "./dist/screens/mfa-webauthn-roaming-challenge/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-roaming-challenge/index.d.ts"
+    },
+    "./mfa-webauthn-platform-challenge": {
+      "import": "./dist/screens/mfa-webauthn-platform-challenge/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-platform-challenge/index.d.ts"
+    },
+    "./mfa-webauthn-enrollment-success": {
+      "import": "./dist/screens/mfa-webauthn-enrollment-success/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-enrollment-success/index.d.ts"
+    },
+    "./mfa-webauthn-change-key-nickname": {
+      "import": "./dist/screens/mfa-webauthn-change-key-nickname/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-change-key-nickname/index.d.ts"
     }
   },
   "scripts": {

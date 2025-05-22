@@ -49,3 +49,10 @@ export type { LogoutMembers } from '../screens/logout';
 export type { LogoutAbortedMembers } from '../screens/logout-aborted';
 export type { ScreenMembersOnEmailOTPChallenge, OtpCodeOptions } from '../screens/email-otp-challenge'
 export type { ScreenMembersOnEmailVerificationResult } from '../screens/email-verification-result';
+export type { ScreenMembersOnMfaWebAuthnPlatformEnrollment } from '../screens/mfa-webauthn-platform-enrollment';
+export type { ScreenMembersOnMfaWebAuthnError, WebAuthnType } from '../screens/mfa-webauthn-error';
+export type { ScreenMembersOnMfaWebAuthnRoamingEnrollment } from '../screens/mfa-webauthn-roaming-enrollment';
+export type { ScreenMembersOnMfaWebAuthnRoamingChallenge } from '../screens/mfa-webauthn-roaming-challenge';
+export type { ScreenMembersOnMfaWebAuthnPlatformChallenge } from '../screens/mfa-webauthn-platform-challenge';
+export type { ScreenMembersOnMfaWebAuthnEnrollmentSuccess } from '../screens/mfa-webauthn-enrollment-success';
+export type { ScreenMembersOnMfaWebAuthnChangeKeyNickname } from '../screens/mfa-webauthn-change-key-nickname';

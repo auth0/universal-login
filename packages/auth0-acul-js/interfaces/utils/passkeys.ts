@@ -12,7 +12,7 @@ export interface PasskeyCredentialResponse {
   isUserVerifyingPlatformAuthenticatorAvailable: boolean;
 }
 
-interface CredentialResponse {
+export interface CredentialResponse {
   clientDataJSON: string | null;
   attestationObject: string | null;
   transports?: string[];

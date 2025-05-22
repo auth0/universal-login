@@ -63,4 +63,12 @@ export const ScreenIds = {
   EMAIL_OTP_CHALLENGE: 'email-otp-challenge',
   EMAIL_VERIFICATION_RESULT: 'email-verification-result',
   LOGIN_EMAIL_VERIFICATION: 'login-email-verification',
+  MFA_WEBAUTHN_PLATFORM_ENROLLMENT: 'mfa-webauthn-platform-enrollment',
+  MFA_WEBAUTHN_ERROR: 'mfa-webauthn-error',
+  MFA_WEBAUTHN_NOT_AVAILABLE_ERROR: 'mfa-webauthn-not-available-error',
+  MFA_WEBAUTHN_ROAMING_ENROLLMENT: 'mfa-webauthn-roaming-enrollment',
+  MFA_WEBAUTHN_ROAMING_CHALLENGE: 'mfa-webauthn-roaming-challenge',
+  MFA_WEBAUTHN_PLATFORM_CHALLENGE: 'mfa-webauthn-platform-challenge',
+  MFA_WEBAUTHN_ENROLLMENT_SUCCESS: 'mfa-webauthn-enrollment-success',
+  MFA_WEBAUTHN_CHANGE_KEY_NICKNAME: 'mfa-webauthn-change-key-nickname'
 };
