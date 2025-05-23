@@ -62,8 +62,7 @@ export default class MfaWebAuthnChangeKeyNickname extends BaseContext implements
 
     const formOptions: SDKFormOptions = {
       state: this.transaction.state,
-      telemetry: [MfaWebAuthnChangeKeyNickname.screenIdentifier, 'continueWithNewNickname'],
-      route: '/u/mfa-webauthn-change-key-nickname',
+      telemetry: [MfaWebAuthnChangeKeyNickname.screenIdentifier, 'continueWithNewNickname']
     };
 
     // Prepare the data to be submitted.

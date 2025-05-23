@@ -82,8 +82,7 @@ export default class MfaWebAuthnEnrollmentSuccess extends BaseContext implements
   async continue(payload?: ContinueOptions): Promise<void> {
     const formOptions: SDKFormOptions = {
       state: this.transaction.state,
-      telemetry: [MfaWebAuthnEnrollmentSuccess.screenIdentifier, 'continue'],
-      route: '/u/mfa-webauthn-enrollment-success', // Endpoint for this screen
+      telemetry: [MfaWebAuthnEnrollmentSuccess.screenIdentifier, 'continue']
     };
 
     // The payload for this action is simple, primarily just the action itself.

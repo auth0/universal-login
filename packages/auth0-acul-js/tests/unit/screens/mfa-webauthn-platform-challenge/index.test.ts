@@ -119,8 +119,7 @@ describe('MfaWebAuthnPlatformChallenge SDK', () => {
       });
       expect(FormHandler).toHaveBeenCalledWith({
         state: mockTransactionState,
-        telemetry: [ScreenIds.MFA_WEBAUTHN_PLATFORM_CHALLENGE, 'verify'],
-        route: '/u/mfa-webauthn-platform-challenge',
+        telemetry: [ScreenIds.MFA_WEBAUTHN_PLATFORM_CHALLENGE, 'verify']
       });
     });
 
@@ -177,8 +176,7 @@ describe('MfaWebAuthnPlatformChallenge SDK', () => {
       });
       expect(FormHandler).toHaveBeenCalledWith({
         state: mockTransactionState,
-        telemetry: [ScreenIds.MFA_WEBAUTHN_PLATFORM_CHALLENGE, 'reportBrowserError'],
-        route: '/u/mfa-webauthn-platform-challenge',
+        telemetry: [ScreenIds.MFA_WEBAUTHN_PLATFORM_CHALLENGE, 'reportBrowserError']
       });
     });
   });
@@ -193,8 +191,7 @@ describe('MfaWebAuthnPlatformChallenge SDK', () => {
       });
       expect(FormHandler).toHaveBeenCalledWith({
         state: mockTransactionState,
-        telemetry: [ScreenIds.MFA_WEBAUTHN_PLATFORM_CHALLENGE, 'tryAnotherMethod'],
-        route: '/u/mfa-webauthn-platform-challenge',
+        telemetry: [ScreenIds.MFA_WEBAUTHN_PLATFORM_CHALLENGE, 'tryAnotherMethod']
       });
     });
 

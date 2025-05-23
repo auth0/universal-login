@@ -13,13 +13,25 @@ import MfaPushEnrollmentQr from '@auth0/auth0-acul-js/mfa-push-enrollment-qr';
 const MfaPushEnrollmentQrScreen: React.FC = () => {
   const mfaPushEnrollmentQr = new MfaPushEnrollmentQr();
   const { screen } = mfaPushEnrollmentQr;
-  const { qr_code } = screen.data || {};
+  const { qr_code, qr_uri, show_code_copy } = screen.data || {};
 
   const handlePickAuthenticator = async () => {
     try {
       await mfaPushEnrollmentQr.pickAuthenticator();
     } catch (error) {
       console.error('Failed to pick authenticator:', error);
+    }
+  };
+
+  const handleCopyCode = () => {
+    if (qr_uri) {
+      navigator.clipboard.writeText(qr_uri)
+        .then(() => {
+          alert('Code copied to clipboard');
+        })
+        .catch((error) => {
+          console.error('Failed to copy code:', error);
+        });
     }
   };
 
@@ -32,6 +44,24 @@ const MfaPushEnrollmentQrScreen: React.FC = () => {
           qr_code ? (
             <div className="mb-4">
               <img src={qr_code} alt="QR Code" className="mb-4 mx-auto" />
+              
+              {show_code_copy && qr_uri && (
+                <div className="text-center mb-4">
+                  <p className="text-sm text-gray-600 mb-2">Or copy this code to your authenticator app:</p>
+                  <div className="flex items-center justify-center">
+                    <code className="bg-gray-100 p-2 rounded mr-2 text-xs overflow-hidden text-ellipsis max-w-xs">
+                      {qr_uri}
+                    </code>
+                    <button
+                      onClick={handleCopyCode}
+                      className="bg-gray-200 hover:bg-gray-300 text-gray-800 text-sm py-1 px-2 rounded"
+                      aria-label="Copy code"
+                    >
+                      Copy
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           ) : (
             <p>Loading QR Code...</p>

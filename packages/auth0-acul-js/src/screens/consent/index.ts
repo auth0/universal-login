@@ -52,11 +52,9 @@ export default class Consent extends BaseContext implements ConsentMembers {
    *                 but are made available in `this.transaction.errors` after the operation.
    */
   async accept(payload?: CustomOptions): Promise<void> {
-    const route = `/u/consent?state=${this.transaction.state}`;
     const formOptions: SDKFormOptions = {
       state: this.transaction.state, // For form body
-      telemetry: [Consent.screenIdentifier, 'accept'],
-      route: route, // For form action URL
+      telemetry: [Consent.screenIdentifier, 'accept']
     };
 
     const submitPayload = {
@@ -82,11 +80,9 @@ export default class Consent extends BaseContext implements ConsentMembers {
    *                 Server-side validation errors are reflected in `this.transaction.errors`.
    */
   async deny(payload?: CustomOptions): Promise<void> {
-    const route = `/u/consent?state=${this.transaction.state}`;
     const formOptions: SDKFormOptions = {
       state: this.transaction.state, // For form body
-      telemetry: [Consent.screenIdentifier, 'deny'],
-      route: route, // For form action URL
+      telemetry: [Consent.screenIdentifier, 'deny']
     };
 
     const submitPayload = {

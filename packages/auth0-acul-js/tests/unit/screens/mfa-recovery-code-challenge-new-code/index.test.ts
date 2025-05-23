@@ -61,8 +61,7 @@ describe('MfaRecoveryCodeChallengeNewCode', () => {
       // Verify FormHandler constructor options
       expect(FormHandler).toHaveBeenCalledWith({
         state: testState,
-        telemetry: [screenName, 'continue'],
-        route: '/u/mfa-recovery-code-challenge-new-code',
+        telemetry: [screenName, 'continue']
       });
 
       // Verify submitData payload
@@ -80,8 +79,7 @@ describe('MfaRecoveryCodeChallengeNewCode', () => {
       // Verify FormHandler constructor options
       expect(FormHandler).toHaveBeenCalledWith({
         state: testState,
-        telemetry: [screenName, 'continue'],
-        route: '/u/mfa-recovery-code-challenge-new-code',
+        telemetry: [screenName, 'continue']
       });
 
       // Verify submitData payload

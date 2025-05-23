@@ -76,8 +76,7 @@ describe('LoginEmailVerification Screen SDK', () => {
 
       expect(FormHandler).toHaveBeenCalledWith({
         state: testTransactionState,
-        telemetry: [screenName, 'continueWithCode'],
-        route: endpoint,
+        telemetry: [screenName, 'continueWithCode']
       });
       expect(mockFormHandlerInstance.submitData).toHaveBeenCalledWith({
         code: '123456',
@@ -131,8 +130,7 @@ describe('LoginEmailVerification Screen SDK', () => {
 
       expect(FormHandler).toHaveBeenCalledWith({
         state: testTransactionState,
-        telemetry: [screenName, 'resendCode'],
-        route: endpoint,
+        telemetry: [screenName, 'resendCode']
       });
       expect(mockFormHandlerInstance.submitData).toHaveBeenCalledWith({
         action: FormActions.RESEND_CODE,

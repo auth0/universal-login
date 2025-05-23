@@ -79,15 +79,12 @@ describe('Consent Screen SDK', () => {
   });
 
   describe('accept method', () => {
-    const route = `/u/consent?state=${mockTransactionState}`;
-
     it('should call FormHandler with "accept" action, correct route, and transaction state', async () => {
       await consentInstance.accept();
 
       expect(FormHandler).toHaveBeenCalledWith({
         state: mockTransactionState,
-        telemetry: [ScreenIds.CONSENT, 'accept'],
-        route: route,
+        telemetry: [ScreenIds.CONSENT, 'accept']
       });
       expect(mockFormHandlerInstance.submitData).toHaveBeenCalledWith({
         action: FormActions.ACCEPT,
@@ -113,15 +110,12 @@ describe('Consent Screen SDK', () => {
   });
 
   describe('deny method', () => {
-    const route = `/u/consent?state=${mockTransactionState}`;
-
     it('should call FormHandler with "deny" action, correct route, and transaction state', async () => {
       await consentInstance.deny();
 
       expect(FormHandler).toHaveBeenCalledWith({
         state: mockTransactionState,
-        telemetry: [ScreenIds.CONSENT, 'deny'],
-        route: route,
+        telemetry: [ScreenIds.CONSENT, 'deny']
       });
       expect(mockFormHandlerInstance.submitData).toHaveBeenCalledWith({
         action: FormActions.DENY,

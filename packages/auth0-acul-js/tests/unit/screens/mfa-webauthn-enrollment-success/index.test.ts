@@ -76,8 +76,7 @@ describe('MfaWebAuthnEnrollmentSuccess SDK', () => {
 
       expect(FormHandler).toHaveBeenCalledWith({
         state: mockTransactionState,
-        telemetry: [ScreenIds.MFA_WEBAUTHN_ENROLLMENT_SUCCESS, 'continue'],
-        route: '/u/mfa-webauthn-enrollment-success',
+        telemetry: [ScreenIds.MFA_WEBAUTHN_ENROLLMENT_SUCCESS, 'continue']
       });
       expect(mockFormHandlerInstance.submitData).toHaveBeenCalledWith({
         action: FormActions.DEFAULT,

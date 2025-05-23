@@ -127,8 +127,7 @@ export default class LoginEmailVerification extends BaseContext implements Login
 
     const formOptions: InternalFormOptions = {
       state: this.transaction.state,
-      telemetry: [LoginEmailVerification.screenIdentifier, 'continueWithCode'],
-      route: '/u/login-email-verification', // As per OpenAPI specification
+      telemetry: [LoginEmailVerification.screenIdentifier, 'continueWithCode']
     };
 
     // Prepare the data to be submitted.
@@ -176,8 +175,7 @@ export default class LoginEmailVerification extends BaseContext implements Login
   async resendCode(payload?: ResendCodeOptions): Promise<void> {
     const formOptions: InternalFormOptions = {
       state: this.transaction.state,
-      telemetry: [LoginEmailVerification.screenIdentifier, 'resendCode'],
-      route: '/u/login-email-verification', // As per OpenAPI specification
+      telemetry: [LoginEmailVerification.screenIdentifier, 'resendCode']
     };
 
     // Prepare the data for resending the code.
