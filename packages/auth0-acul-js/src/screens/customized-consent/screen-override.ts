@@ -82,15 +82,5 @@ export class ScreenOverride extends Screen implements ScreenMembersOnCustomizedC
           typeof detail.type === 'string'
         );
       })
-      .map((detail) => {
-        // Ensure all properties are strings, as per AuthorizationDetail definition
-        const sanitizedDetail: AuthorizationDetail = { type: detail.type };
-        Object.keys(detail).forEach((key) => {
-          if (typeof detail[key as keyof typeof detail] === 'string') {
-            sanitizedDetail[key as keyof AuthorizationDetail] = detail[key as keyof typeof detail];
-          }
-        });
-        return sanitizedDetail;
-      });
   };
 }
