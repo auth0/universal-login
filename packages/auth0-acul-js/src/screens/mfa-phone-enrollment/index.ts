@@ -24,7 +24,6 @@ export default class MfaPhoneEnrollment extends BaseContext implements MfaPhoneE
    * @param payload Optional custom options to include with the request.
    * @example
    * ```typescript
-   * import React, { useState } from 'react';
    * import MfaPhoneEnrollment from '@auth0/auth0-acul-js/mfa-phone-enrollment';
    * const [phone, setPhone] = useState('');
    * const [type, setType] = useState<'sms' | 'voice'>('sms');
@@ -49,7 +48,6 @@ export default class MfaPhoneEnrollment extends BaseContext implements MfaPhoneE
    * @param payload The phone number and type (SMS or voice).
    * @example
    * ```typescript
-   * import React, { useState } from 'react';
    * import MfaPhoneEnrollment from '@auth0/auth0-acul-js/mfa-phone-enrollment';
    * const [phone, setPhone] = useState('');
    * const [type, setType] = useState<'sms' | 'voice'>('sms');
@@ -75,7 +73,6 @@ export default class MfaPhoneEnrollment extends BaseContext implements MfaPhoneE
    * @param payload Optional custom options to include with the request.
    * @example
    * ```typescript
-   * import React, { useState } from 'react';
    * import MfaPhoneEnrollment from '@auth0/auth0-acul-js/mfa-phone-enrollment';
    * const [phone, setPhone] = useState('');
    * const [type, setType] = useState<'sms' | 'voice'>('sms');

@@ -26,7 +26,6 @@ export default class MfaRecoveryCodeChallenge extends BaseContext implements Mfa
    * @returns {Promise<void>}
    * @example
    * ```typescript
-   * import React, { useState } from 'react';
    * import MfaVoiceEnrollment from '@auth0/auth0-acul-js/mfa-voice-enrollment';
    * const [phone, setPhone] = useState('');
    * const mfaVoiceEnrollment = new MfaVoiceEnrollment();
@@ -54,7 +53,6 @@ export default class MfaRecoveryCodeChallenge extends BaseContext implements Mfa
    * @returns {Promise<void>}
    * @example
    * ```typescript
-   * import React, { useState } from 'react';
    * import MfaVoiceEnrollment from '@auth0/auth0-acul-js/mfa-voice-enrollment';
    * const mfaVoiceEnrollment = new MfaVoiceEnrollment();
    * const handleTryAnotherMethod = async () => {

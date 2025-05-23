@@ -26,7 +26,6 @@ export default class ResetPasswordMfaRecoveryCodeChallenge extends BaseContext i
    * @returns {Promise<void>}
    * @example
    * ```typescript
-   * import React, { useState } from 'react';
    * import ResetPasswordMfaRecoveryCodeChallenge from '@auth0/auth0-acul-js/reset-password-mfa-recovery-code-challenge';
    * const [code, setCode] = useState('');
    * const resetPasswordMfaRecoveryCodeChallengeManager = new ResetPasswordMfaRecoveryCodeChallenge();
@@ -58,7 +57,6 @@ export default class ResetPasswordMfaRecoveryCodeChallenge extends BaseContext i
    * @returns {Promise<void>}
    * @example
    * ```typescript
-   * import React, { useState } from 'react';
    * import ResetPasswordMfaRecoveryCodeChallenge from '@auth0/auth0-acul-js/reset-password-mfa-recovery-code-challenge';
    * const [code, setCode] = useState('');
    * const resetPasswordMfaRecoveryCodeChallengeManager = new ResetPasswordMfaRecoveryCodeChallenge();

@@ -31,7 +31,6 @@ export default class DeviceCodeActivation extends BaseContext implements DeviceC
    * @returns {Promise<void>} A promise that resolves when the code is successfully submitted.
    * @example
    * ```typescript
-   * import React, { useState } from 'react';
    * import DeviceCodeActivation from '@auth0/auth0-acul-js/device-code-activation';
    * const [code, setCode] = useState('');
    * const deviceCodeActivationManager = new DeviceCodeActivation();
