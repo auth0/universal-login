@@ -9,7 +9,7 @@ import type {CustomOptions, WebAuthnErrorDetails } from '../../../interfaces/com
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type {
   ResetPasswordMfaWebAuthnRoamingChallengeMembers,
-  ScreenMembersOnResetPasswordMfaWebAuthnRoamingChallenge as ScreenContextScreenOptions,
+  ScreenMembersOnResetPasswordMfaWebAuthnRoamingChallenge as ScreenOptions,
   UseSecurityKeyOptions,
   ShowErrorOptions,
   TryAnotherMethodOptions,
@@ -44,10 +44,10 @@ export default class ResetPasswordMfaWebAuthnRoamingChallenge
    * Holds the specific screen data and properties for this screen,
    
    * (for the WebAuthn challenge) and `showRememberDevice`.
-   * @type {ScreenContextScreenOptions}
+   * @type {ScreenOptions}
    * @public
    */
-  public screen: ScreenContextScreenOptions;
+  public screen: ScreenOptions;
 
   /**
    * Initializes a new instance of the `ResetPasswordMfaWebAuthnRoamingChallenge` class.
@@ -238,7 +238,7 @@ export default class ResetPasswordMfaWebAuthnRoamingChallenge
 // Export all necessary types and members for this screen
 export {
   ResetPasswordMfaWebAuthnRoamingChallengeMembers,
-  ScreenContextScreenOptions as ScreenMembersOnResetPasswordMfaWebAuthnRoamingChallenge,
+  ScreenOptions as ScreenMembersOnResetPasswordMfaWebAuthnRoamingChallenge,
   UseSecurityKeyOptions,
   ShowErrorOptions,
   TryAnotherMethodOptions,

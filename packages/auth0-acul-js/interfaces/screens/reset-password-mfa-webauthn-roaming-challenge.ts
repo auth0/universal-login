@@ -1,10 +1,6 @@
 import type { CustomOptions, WebAuthnErrorDetails } from '../common';
 import type { BaseMembers } from '../models/base-context';
-import type { ClientMembers } from '../models/client';
-import type { OrganizationMembers } from '../models/organization';
-import type { PromptMembers } from '../models/prompt';
 import type { ScreenMembers, PasskeyRead } from '../models/screen';
-import type { TransactionMembers } from '../models/transaction';
 
 /**
  * @interface ScreenDataOnResetPasswordMfaWebAuthnRoamingChallenge
@@ -147,37 +143,13 @@ export interface TryAnotherMethodOptions extends CustomOptions {
  * 3. Opt to use a different authentication method (`tryAnotherMethod`).
  */
 export interface ResetPasswordMfaWebAuthnRoamingChallengeMembers extends BaseMembers {
-  /**
-   * Provides access to client-specific information (e.g., client ID, name).
-   * @type {ClientMembers}
-   */
-  client: ClientMembers;
 
   /**
-   * Provides access to organization-specific information, if applicable to the current transaction.
-   * Will be `null` or have default values if no organization context is active.
-   * @type {OrganizationMembers}
-   */
-  organization: OrganizationMembers;
-
-  /**
-   * Provides access to prompt details (e.g., prompt name, settings).
-   * @type {PromptMembers}
-   */
-  prompt: PromptMembers;
-
-  /**
-   * Access to the specific properties and data of the `reset-password-mfa-webauthn-roaming-challenge` screen,
-   * including WebAuthn `publicKey` challenge options and the `showRememberDevice` flag.
-   * @type {ScreenMembersOnResetPasswordMfaWebAuthnRoamingChallenge}
-   */
+ * Access to the specific properties and data of the `reset-password-mfa-webauthn-roaming-challenge` screen,
+ * including WebAuthn `publicKey` challenge options and the `showRememberDevice` flag.
+ * @type {ScreenMembersOnResetPasswordMfaWebAuthnRoamingChallenge}
+ */
   screen: ScreenMembersOnResetPasswordMfaWebAuthnRoamingChallenge;
-
-  /**
-   * Provides access to the current transaction details (e.g., state, errors, locale).
-   * @type {TransactionMembers}
-   */
-  transaction: TransactionMembers;
 
   /**
    * Initiates the WebAuthn assertion process (security key challenge).
