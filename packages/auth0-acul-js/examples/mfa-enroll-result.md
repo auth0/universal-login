@@ -14,7 +14,7 @@ const MfaEnrollResultScreen: React.FC = () => {
   
   // Determine message and styling based on enrollment status
   let title = screen.texts?.title ?? 'MFA Enrollment';
-  console.log(screen)
+
   let description = screen.texts?.description ?? 'Your multi-factor authentication status.';
   let iconComponent = null;
   let textColorClass = 'text-gray-900';
