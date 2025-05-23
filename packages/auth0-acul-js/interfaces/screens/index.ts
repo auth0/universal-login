@@ -46,3 +46,17 @@ export * as MfaVoiceEnrollment from './mfa-voice-enrollment';
 export * as MfaRecoveryCodeChallenge from './mfa-recovery-code-challenge';
 export * as RedeemTicket from './redeem-ticket';
 export * as ResetPasswordMfaPhoneChallenge from './reset-password-mfa-phone-challenge';
+export * as MfaRecoveryCodeChallengeNewCode from './mfa-recovery-code-challenge-new-code';
+export * as EmailOTPChallenge from './email-otp-challenge';
+export * as LoginEmailVerification from './login-email-verification'
+export * as MfaWebAuthnPlatformEnrollment from './mfa-webauthn-platform-enrollment';
+export * as MfaWebAuthnRoamingEnrollment from './mfa-webauthn-roaming-enrollment'
+export * as MfaWebAuthnError from './mfa-webauthn-error';
+export * as MfaWebAuthnNotAvailableError from './mfa-webauthn-not-available-error';
+export * as MfaWebAuthnRoamingChallenge from './mfa-webauthn-roaming-challenge';
+export * as MfaWebAuthnPlatformChallenge from './mfa-webauthn-platform-challenge';
+export * as MfaWebAuthnEnrollmentSuccess from './mfa-webauthn-enrollment-success';
+export * as MfaWebAuthnChangeKeyNickname from './mfa-webauthn-change-key-nickname';
+export * as Consent from './consent';
+export * as ResetPasswordMfaWebAuthnPlatformChallenge from './reset-password-mfa-webauthn-platform-challenge';
+export * as ResetPasswordMfaWebAuthnRoamingChallenge from './reset-password-mfa-webauthn-roaming-challenge';

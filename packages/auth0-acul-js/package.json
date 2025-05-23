@@ -1,6 +1,6 @@
 {
   "name": "@auth0/auth0-acul-js",
-  "version": "0.1.0-beta.4",
+  "version": "0.1.0-beta.5",
   "type": "module",
   "module": "dist/index.js",
   "exports": {
@@ -180,10 +180,6 @@
       "import": "./dist/screens/accept-invitation/index.js",
       "types": "./dist/types/src/screens/accept-invitation/index.d.ts"
     },
-    "./customized-consent": {
-      "import": "./dist/screens/customized-consent/index.js",
-      "types": "./dist/types/src/screens/customized-consent/index.d.ts"
-    },
     "./mfa-phone-enrollment": {
       "import": "./dist/screens/mfa-phone-enrollment/index.js",
       "types": "./dist/types/src/screens/mfa-phone-enrollment/index.d.ts"
@@ -227,19 +223,79 @@
     "./mfa-phone-challenge": {
       "import": "./dist/screens/mfa-phone-challenge/index.js",
       "types": "./dist/types/src/screens/mfa-phone-challenge/index.d.ts"
-     },
+    },
     "./mfa-voice-challenge": {
       "import": "./dist/screens/mfa-voice-challenge/index.js",
       "types": "./dist/types/src/screens/mfa-voice-challenge/index.d.ts"
-     },
+    },
     "./mfa-recovery-code-enrollment": {
-       "import": "./dist/screens/mfa-recovery-code-enrollment/index.js",
-       "types": "./dist/types/src/screens/mfa-recovery-code-enrollment/index.d.ts"
-     },
+      "import": "./dist/screens/mfa-recovery-code-enrollment/index.js",
+      "types": "./dist/types/src/screens/mfa-recovery-code-enrollment/index.d.ts"
+    },
     "./reset-password-mfa-phone-challenge": {
-        "import": "./dist/screens/reset-password-mfa-phone-challenge/index.js",
-        "types": "./dist/types/src/screens/reset-password-mfa-phone-challenge/index.d.ts"
-     }
+      "import": "./dist/screens/reset-password-mfa-phone-challenge/index.js",
+      "types": "./dist/types/src/screens/reset-password-mfa-phone-challenge/index.d.ts"
+    },
+    "./mfa-recovery-code-challenge-new-code": {
+      "import": "./dist/screens/mfa-recovery-code-challenge-new-code/index.js",
+      "types": "./dist/types/src/screens/mfa-recovery-code-challenge-new-code/index.d.ts"
+    },
+    "./logout": {
+      "import": "./dist/screens/logout/index.js",
+      "types": "./dist/types/src/screens/logout/index.d.ts"
+    },
+    "./logout-aborted": {
+      "import": "./dist/screens/logout-aborted/index.js",
+      "types": "./dist/types/src/screens/logout-aborted/index.d.ts"
+    },
+    "./logout-complete": {
+      "import": "./dist/screens/logout-complete/index.js",
+      "types": "./dist/types/src/screens/logout-complete/index.d.ts"
+    },
+    "./email-verification-result": {
+      "import": "./dist/screens/email-verification-result/index.js",
+      "types": "./dist/types/src/screens/email-verification-result/index.d.ts"
+    },
+    "./login-email-verification": {
+      "import": "./dist/screens/login-email-verification/index.js",
+      "types": "./dist/types/src/screens/login-email-verification/index.d.ts"
+    },
+    "./mfa-webauthn-platform-enrollment": {
+      "import": "./dist/screens/mfa-webauthn-platform-enrollment/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-platform-enrollment/index.d.ts"
+    },
+    "./mfa-webauthn-error": {
+      "import": "./dist/screens/mfa-webauthn-error/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-error/index.d.ts"
+    },
+    "./mfa-webauthn-roaming-enrollment": {
+      "import": "./dist/screens/mfa-webauthn-roaming-enrollment/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-roaming-enrollment/index.d.ts"
+    },
+    "./mfa-webauthn-roaming-challenge": {
+      "import": "./dist/screens/mfa-webauthn-roaming-challenge/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-roaming-challenge/index.d.ts"
+    },
+    "./mfa-webauthn-platform-challenge": {
+      "import": "./dist/screens/mfa-webauthn-platform-challenge/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-platform-challenge/index.d.ts"
+    },
+    "./mfa-webauthn-enrollment-success": {
+      "import": "./dist/screens/mfa-webauthn-enrollment-success/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-enrollment-success/index.d.ts"
+    },
+    "./mfa-webauthn-change-key-nickname": {
+      "import": "./dist/screens/mfa-webauthn-change-key-nickname/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-change-key-nickname/index.d.ts"
+    },
+    "./reset-password-mfa-webauthn-platform-challenge": {
+      "import": "./dist/screens/reset-password-mfa-webauthn-platform-challenge/index.js",
+      "types": "./dist/types/src/screens/reset-password-mfa-webauthn-platform-challenge/index.d.ts"
+    },
+    "./reset-password-mfa-webauthn-roaming-challenge": {
+      "import": "./dist/screens/reset-password-mfa-webauthn-roaming-challenge/index.js",
+      "types": "./dist/types/src/screens/reset-password-mfa-webauthn-roaming-challenge/index.d.ts"
+    }
   },
   "scripts": {
     "clean": "rimraf dist",
@@ -247,13 +303,13 @@
     "build:local": "rollup -c rollup.config.mjs",
     "test": "jest --verbose tests/unit/**/* --coverage",
     "test:e2e": "cypress open",
-    "docs": "typedoc --options typedoc.json",
+    "docs": "typedoc --options typedoc.js",
     "lint": "npm run lint:interfaces && npm run lint:src",
     "lint:fix": "npm run lint:src:fix && npm run lint:interfaces:fix",
-    "lint:src": "eslint 'src/**/*.{js,ts}' --config .eslintrc.json",
-    "lint:interfaces": "eslint 'interfaces/**/*.ts' --config .eslintrc.json",
-    "lint:src:fix": "eslint 'src/**/*.{js,ts}' --config .eslintrc.json --fix",
-    "lint:interfaces:fix": "eslint 'interfaces/**/*.ts' --config .eslintrc.json --fix",
+    "lint:src": "eslint 'src/**/*.{js,ts}' --no-ignore",
+    "lint:interfaces": "eslint 'interfaces/**/*.ts' --no-ignore",
+    "lint:src:fix": "eslint 'src/**/*.{js,ts}' --no-ignore --fix",
+    "lint:interfaces:fix": "eslint 'interfaces/**/*.ts' --no-ignore --fix",
     "lint:watch": "chokidar 'src/**/*.{js,ts}' 'interfaces/**/*.ts' -c 'npm run lint'",
     "format:src": "prettier --write 'src/**/*.{js,ts,tsx,json,css,md}'",
     "format:interfaces": "prettier --write 'src/**/*.{js,ts,tsx,json,css,md}'",
@@ -280,36 +336,6 @@
     "README.md",
     "LICENSE"
   ],
-  "devDependencies": {
-    "@rollup/plugin-alias": "^5.1.1",
-    "@rollup/plugin-json": "^6.1.0",
-    "@rollup/plugin-node-resolve": "^15.3.0",
-    "@rollup/plugin-replace": "^6.0.2",
-    "@rollup/plugin-terser": "^0.4.4",
-    "@rollup/plugin-typescript": "^12.1.0",
-    "@shikijs/core": "^1.24.0",
-    "@shikijs/engine-javascript": "^1.24.0",
-    "@shikijs/engine-oniguruma": "^1.24.0",
-    "@tsconfig/node18": "^18.2.4",
-    "@types/jest": "^29.5.12",
-    "@typescript-eslint/eslint-plugin": "^7.18.0",
-    "@typescript-eslint/parser": "^7.18.0",
-    "chokidar-cli": "^3.0.0",
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-import-resolver-typescript": "^3.6.3",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-prettier": "^5.2.1",
-    "jest": "^29.7.0",
-    "jest-environment-jsdom": "^29.7.0",
-    "markdown-it": "^14.1.0",
-    "prettier": "^3.3.3",
-    "rollup": "^4.24.0",
-    "ts-jest": "^29.2.5",
-    "typedoc": "^0.26.8",
-    "typescript": "^5.5.4",
-    "yaml": "^2.6.1"
-  },
   "publishConfig": {
     "access": "public"
   }

@@ -11,6 +11,8 @@ describe('ScreenOverride', () => {
       name: 'mfa-push-enrollment-qr',
       data: {
         qr_code: 'base64-encoded-qr-code',
+        qr_uri: 'qr-uri',
+        show_code_copy: true
       },
     } as ScreenContext;
 
@@ -20,6 +22,8 @@ describe('ScreenOverride', () => {
   it('should initialize data correctly', () => {
     expect(screenOverride.data).toEqual({
       qr_code: 'base64-encoded-qr-code',
+      qr_uri: 'qr-uri',
+      show_code_copy: true
     });
   });
 
@@ -33,6 +37,8 @@ describe('ScreenOverride', () => {
     const result = ScreenOverride.getScreenData(screenContext);
     expect(result).toEqual({
       qr_code: 'base64-encoded-qr-code',
+      qr_uri: 'qr-uri',
+      show_code_copy: true
     });
   });
 

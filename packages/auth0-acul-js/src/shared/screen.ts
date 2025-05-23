@@ -1,4 +1,4 @@
-import type { PasskeyCreate, PasskeyRead, ScreenContext } from '../../interfaces/models/screen';
+import type { PasskeyCreate, PasskeyRead, Scope, ScreenContext } from '../../interfaces/models/screen';
 
 /**
  * Retrieves the signup link from the screen context.
@@ -75,4 +75,53 @@ export function getEditIdentifierLink(screen: ScreenContext): string | null {
 export function getPublicKey(screen: ScreenContext): PasskeyRead['public_key'] | PasskeyCreate['public_key'] | null {
   const passkey = screen.data?.passkey as PasskeyRead | PasskeyCreate;
   return passkey?.public_key ?? null;
+}
+
+/**
+ * Retrieves the remember device option from the screen context.
+ * This is used in MFA flows where users can choose to remember their device for future logins.
+ *
+ * @param {ScreenContext} screen - The screen context object from Universal Login.
+ * @returns {boolean} - Whether the remember device option is available and enabled.
+ */
+export function getShowRememberDevice(screen: ScreenContext): boolean {
+  return screen.data?.show_remember_device as boolean || false;
+}
+
+/**
+ * Retrieves the WebAuthn type from the screen context.
+ *
+ * @param {ScreenContext} screen - The screen context object from Universal Login.
+ * @returns {string | null} - The WebAuthn type (e.g., 'roaming', 'platform') or null if not available.
+ */
+export function getWebAuthnType(screen: ScreenContext): string | null {
+  return screen.data?.webauthnType as string ?? null;
+}
+
+/**
+ * Retrieves and processes the scopes from the provided screen context.
+ *
+ * This function ensures that the scopes are properly formatted and validated.
+ * It provides default values for optional fields and ensures that the `values`
+ * property is always an array of strings. Invalid entries are filtered out.
+ *
+ * @param screen - The screen context containing the data with scopes.
+ * @returns An array of processed `Scope` objects.
+ */
+export function getScopes(screen: ScreenContext): Scope[] {
+  return Array.isArray(screen.data?.scopes)
+        ? (screen.data?.scopes as Scope[])
+            .map((scope: Scope): Scope | null => {
+              return {
+                name: scope.name,
+                // Provide defaults for optional fields
+                description: typeof scope.description === 'string' ? scope.description : '',
+                // Ensure values is always an array of strings
+                values: Array.isArray(scope.values)
+                  ? scope.values.filter((v): v is string => typeof v === 'string')
+                  : typeof scope.name === 'string' ? [scope.name] : [], // Default values to name if valid
+              };
+            })
+            .filter((scope): scope is Scope => scope !== null) // Remove nulls from invalid entries
+        : [];
 }

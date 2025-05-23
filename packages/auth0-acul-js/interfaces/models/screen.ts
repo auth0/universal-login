@@ -44,8 +44,19 @@ export interface PhonePrefix {
   phone_prefix: string;
 }
 
+export interface Scope {
+  name: string;
+  description: string;
+  values: string[];
+}
+
+export interface AuthorizationDetail {
+  type: string;
+  [key: string]: string;
+}
+
 export interface ScreenData {
-  [key: string]: string | boolean | PasskeyRead | PasskeyCreate | string[] | Array<PhonePrefix> | undefined;
+  [key: string]: string | boolean | PasskeyRead | PasskeyCreate | string[] | Array<PhonePrefix | Scope | AuthorizationDetail> | undefined;
 }
 
 export interface ScreenContext {
@@ -62,7 +73,7 @@ export interface ScreenMembers {
   captchaSiteKey: string | null;
   captchaProvider: string | null;
   isCaptchaAvailable: boolean;
-  data: Record<string, string | boolean | string[] | Record<string, string[]> | Array<PhonePrefix>> | null;
+  data: Record<string, string | boolean | string[] | Record<string, string[]> | Array<PhonePrefix> | PasskeyCreate> | null;
   links: Record<string, string> | null;
   texts: Record<string, string> | null;
   captcha: CaptchaContext | null;

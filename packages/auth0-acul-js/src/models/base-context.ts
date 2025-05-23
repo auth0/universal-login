@@ -9,7 +9,7 @@ import type {
   TransactionMembers,
   TenantMembers,
   UntrustedDataMembers,
-  BrandingMembers,
+  BrandingMembers
 } from '../../interfaces/models';
 import type { BaseContext as UniversalLoginContext, BaseMembers } from '../../interfaces/models/base-context';
 
