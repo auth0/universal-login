@@ -199,9 +199,9 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 | 67     |mfa-webauthn                    | mfa-webauthn-roaming-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnRoamingChallenge.html)   |
 | 68     |mfa-webauthn                    | mfa-webauthn-platform-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnPlatformChallenge.html)   |
 | 69     |mfa-webauthn                    | mfa-webauthn-enrollment-success          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnEnrollmentSuccess.html)   |
-| 71     |mfa-webauthn                    | mfa-webauthn-change-key-nickname          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnChangeKeyNickname.html)   |
-| 72     |reset-password                    | reset-password-mfa-webauthn-platform-challenge | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaWebAuthnPlatformChallenge.html)                |
-| 73     |reset-password                    | Reset Password MFA WebAuthn Roaming Challenge | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaWebAuthnRoamingChallenge.html)   |
+| 70     |mfa-webauthn                    | mfa-webauthn-change-key-nickname          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnChangeKeyNickname.html)   |
+| 71     |reset-password                    | reset-password-mfa-webauthn-platform-challenge | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaWebAuthnPlatformChallenge.html)                |
+| 72     |reset-password                    | Reset Password MFA WebAuthn Roaming Challenge | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaWebAuthnRoamingChallenge.html)   |
 </details>
 
 
