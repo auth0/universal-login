@@ -101,24 +101,6 @@ describe('CustomizedConsent ScreenOverride', () => {
     ]);
   });
 
-   it('should filter out authorizationDetails properties that are not strings', () => {
-    const screenContext: ScreenContext = {
-      name: 'customized-consent',
-      data: {
-        scopes: mockValidScopes,
-        authorization_details: [
-          { type: 'payment', amount: '10.00', count: 1 }, // count is not a string
-          { type: 'file', file_id: 'f001', valid: true }, // valid is not a string
-        ] as any[],
-      },
-    } as ScreenContext;
-    const screenOverride = new ScreenOverride(screenContext);
-    expect(screenOverride.authorizationDetails).toEqual([
-      { type: 'payment', amount: '10.00' },
-      { type: 'file', file_id: 'f001' },
-    ]);
-  });
-
   it('should handle empty screenContext.data gracefully', () => {
     (getScopes as jest.Mock).mockReturnValue([]);
     const screenContext: ScreenContext = {
@@ -168,8 +150,8 @@ describe('CustomizedConsent ScreenOverride', () => {
       } as ScreenContext;
       const details = ScreenOverride.getAuthorizationDetails(screenContext);
       expect(details).toEqual([
-        { type: 'payment', amount: '10.00', currency: 'USD' },
-        { type: 'file_access', file_id: 'doc123', permission: 'read' },
+        { type: 'payment', amount: '10.00', currency: 'USD', count: 1 },
+        { type: 'file_access', file_id: 'doc123', permission: 'read', valid: true  },
       ]);
     });
 

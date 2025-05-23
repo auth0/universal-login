@@ -3,6 +3,7 @@ import CustomizedConsent from '../../../../src/screens/customized-consent';
 import { ScreenOverride } from '../../../../src/screens/customized-consent/screen-override';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { baseContextData } from '../../../data/test-data';
+
 import type { CustomOptions } from '../../../../interfaces/common';
 import type { Scope, AuthorizationDetail } from '../../../../interfaces/models/screen';
 
@@ -71,15 +72,13 @@ describe('CustomizedConsent Screen SDK', () => {
   });
 
   describe('accept method', () => {
-    const expectedRoute = `/u/customized-consent?state=${mockTransactionState}`;
 
     it('should call FormHandler with "accept" action, correct route, and transaction state', async () => {
       await consentInstance.accept();
 
       expect(FormHandler).toHaveBeenCalledWith({
         state: mockTransactionState,
-        telemetry: [ScreenIds.CUSTOMIZED_CONSENT, 'accept'],
-        route: expectedRoute,
+        telemetry: [ScreenIds.CUSTOMIZED_CONSENT, 'accept']
       });
       expect(mockFormHandlerInstance.submitData).toHaveBeenCalledWith({
         action: FormActions.ACCEPT,
@@ -105,7 +104,6 @@ describe('CustomizedConsent Screen SDK', () => {
   });
 
   describe('deny method', () => {
-    const expectedRoute = `/u/customized-consent?state=${mockTransactionState}`;
 
     it('should call FormHandler with "deny" action, correct route, and transaction state', async () => {
       await consentInstance.deny();
@@ -113,7 +111,6 @@ describe('CustomizedConsent Screen SDK', () => {
       expect(FormHandler).toHaveBeenCalledWith({
         state: mockTransactionState,
         telemetry: [ScreenIds.CUSTOMIZED_CONSENT, 'deny'],
-        route: expectedRoute,
       });
       expect(mockFormHandlerInstance.submitData).toHaveBeenCalledWith({
         action: FormActions.DENY,

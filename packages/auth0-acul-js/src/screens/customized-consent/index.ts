@@ -116,11 +116,9 @@ export default class CustomizedConsent extends BaseContext implements Customized
    *                 but are made available in `this.transaction.errors` after the operation.
    */
   async accept(payload?: CustomOptions): Promise<void> {
-    const route = `/u/customized-consent?state=${this.transaction.state}`;
     const formOptions: SDKFormOptions = {
       state: this.transaction.state, // For form body
       telemetry: [CustomizedConsent.screenIdentifier, 'accept'],
-      route: route, // For form action URL
     };
     const submitPayload = {
       ...payload,
@@ -144,11 +142,9 @@ export default class CustomizedConsent extends BaseContext implements Customized
    *                 Server-side validation errors are reflected in `this.transaction.errors`.
    */
   async deny(payload?: CustomOptions): Promise<void> {
-    const route = `/u/customized-consent?state=${this.transaction.state}`;
     const formOptions: SDKFormOptions = {
       state: this.transaction.state, // For form body
       telemetry: [CustomizedConsent.screenIdentifier, 'deny'],
-      route: route, // For form action URL
     };
     const submitPayload = {
       ...payload,
