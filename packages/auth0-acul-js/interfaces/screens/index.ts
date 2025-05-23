@@ -59,3 +59,4 @@ export * as MfaWebAuthnEnrollmentSuccess from './mfa-webauthn-enrollment-success
 export * as MfaWebAuthnChangeKeyNickname from './mfa-webauthn-change-key-nickname';
 export * as Consent from './consent';
 export * as ResetPasswordMfaWebAuthnPlatformChallenge from './reset-password-mfa-webauthn-platform-challenge';
+export * as ResetPasswordMfaWebAuthnRoamingChallenge from './reset-password-mfa-webauthn-roaming-challenge';

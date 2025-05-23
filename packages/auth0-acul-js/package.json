@@ -291,6 +291,10 @@
     "./reset-password-mfa-webauthn-platform-challenge": {
       "import": "./dist/screens/reset-password-mfa-webauthn-platform-challenge/index.js",
       "types": "./dist/types/src/screens/reset-password-mfa-webauthn-platform-challenge/index.d.ts"
+    },
+    "./reset-password-mfa-webauthn-roaming-challenge": {
+      "import": "./dist/screens/reset-password-mfa-webauthn-roaming-challenge/index.js",
+      "types": "./dist/types/src/screens/reset-password-mfa-webauthn-roaming-challenge/index.d.ts"
     }
   },
   "scripts": {
