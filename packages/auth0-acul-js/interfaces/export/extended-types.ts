@@ -57,5 +57,6 @@ export type { ScreenMembersOnMfaWebAuthnRoamingChallenge } from '../screens/mfa-
 export type { ScreenMembersOnMfaWebAuthnPlatformChallenge } from '../screens/mfa-webauthn-platform-challenge';
 export type { ScreenMembersOnMfaWebAuthnEnrollmentSuccess } from '../screens/mfa-webauthn-enrollment-success';
 export type { ScreenMembersOnMfaWebAuthnChangeKeyNickname } from '../screens/mfa-webauthn-change-key-nickname';
-export type { ScreenMembersOnConsent } from '../screens/consent'; 
+export type { ScreenMembersOnConsent } from '../screens/consent';
 export type { ScreenMembersOnResetPasswordMfaWebAuthnPlatformChallenge } from '../screens/reset-password-mfa-webauthn-platform-challenge';
+export type { ScreenMembersOnResetPasswordMfaWebAuthnRoamingChallenge } from '../screens/reset-password-mfa-webauthn-roaming-challenge';
