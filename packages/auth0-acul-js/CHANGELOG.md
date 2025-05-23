@@ -1,3 +1,33 @@
+## [auth0-acul-js@0.1.0-beta.5](https://github.com/auth0/universal-login/tree/auth0-acul-js%400.1.0-beta.5) (2025-05-23)
+
+### ✨ What’s new ?
+
+- **Added** `screen.data.qr_uri` to `mfa-push-enrollment-qr` screen
+- **Added** `screen.data.show_code_copy` to `mfa-push-enrollment-qr` screen
+
+### 🚀 Added support for new screens
+
+Added support for the following screens:
+
+| No.    | Prompt                         | Screen Name                                      | Documentation Link                                                                                                                        |
+|--------|--------------------------------|-------------------------------------------|-------------------------------------------------------------------------------------------------------|
+| 1     | mfa-recovery-code              | mfa-recovery-code-challenge-new-code      | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaRecoveryCodeChallengeNewCode.html) |
+| 2     | logout                         | logout                                    | [Link](https://auth0.github.io/universal-login/classes/Classes.Logout.html) |
+| 3     | logout                         | logout-aborted                            | [Link](https://auth0.github.io/universal-login/classes/Classes.LogoutAborted.html) |
+| 4     | logout                         | logout-complete                           | [Link](https://auth0.github.io/universal-login/classes/Classes.LogoutComplete.html) |
+| 5     | email-verification             | email-verification-result                 | [Link](https://auth0.github.io/universal-login/classes/Classes.EmailVerificationResult.html) |
+| 6     | login-email-verification       | login-email-verification                  | [Link](https://auth0.github.io/universal-login/classes/Classes.LoginEmailVerification.html) |
+| 7     |mfa-webauthn                    | mfa-webauthn-platform-enrollment        | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnPlatformEnrollment.html)                        |
+| 8     |mfa-webauthn                    | mfa-webauthn-error        | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnError.html)                        |
+| 9     |mfa-webauthn                    | mfa-webauthn-roaming-enrollment          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnRoamingEnrollment.html)   |
+| 10     |mfa-webauthn                    | mfa-webauthn-roaming-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnRoamingChallenge.html)   |
+| 11     |mfa-webauthn                    | mfa-webauthn-platform-challenge          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnPlatformChallenge.html)   |
+| 12     |mfa-webauthn                    | mfa-webauthn-enrollment-success          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnEnrollmentSuccess.html)   |
+| 13     |mfa-webauthn                    | mfa-webauthn-change-key-nickname          | [Link](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnChangeKeyNickname.html)   |
+| 14     |reset-password                    | reset-password-mfa-webauthn-platform-challenge | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaWebAuthnPlatformChallenge.html)                |
+| 15     |reset-password                    | Reset Password MFA WebAuthn Roaming Challenge | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaWebAuthnRoamingChallenge.html)   |
+---
+
 ## [auth0-acul-js@0.1.0-beta.4](https://github.com/auth0/universal-login/tree/auth0-acul-js%400.1.0-beta.4) (2025-04-28)
 
 ### ⚠️ Breaking Changes
