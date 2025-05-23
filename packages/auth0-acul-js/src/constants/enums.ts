@@ -70,5 +70,7 @@ export const ScreenIds = {
   MFA_WEBAUTHN_ROAMING_CHALLENGE: 'mfa-webauthn-roaming-challenge',
   MFA_WEBAUTHN_PLATFORM_CHALLENGE: 'mfa-webauthn-platform-challenge',
   MFA_WEBAUTHN_ENROLLMENT_SUCCESS: 'mfa-webauthn-enrollment-success',
-  MFA_WEBAUTHN_CHANGE_KEY_NICKNAME: 'mfa-webauthn-change-key-nickname'
+  MFA_WEBAUTHN_CHANGE_KEY_NICKNAME: 'mfa-webauthn-change-key-nickname',
+  CONSENT: 'consent',
+  RESET_PASSWORD_MFA_WEBAUTHN_PLATFORM_CHALLENGE: 'reset-password-mfa-webauthn-platform-challenge',
 };

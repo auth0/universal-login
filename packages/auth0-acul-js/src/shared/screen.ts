@@ -1,4 +1,4 @@
-import type { PasskeyCreate, PasskeyRead, ScreenContext } from '../../interfaces/models/screen';
+import type { PasskeyCreate, PasskeyRead, Scope, ScreenContext } from '../../interfaces/models/screen';
 
 /**
  * Retrieves the signup link from the screen context.
@@ -98,4 +98,30 @@ export function getWebAuthnType(screen: ScreenContext): string | null {
   return screen.data?.webauthnType as string ?? null;
 }
 
-
+/**
+ * Retrieves and processes the scopes from the provided screen context.
+ *
+ * This function ensures that the scopes are properly formatted and validated.
+ * It provides default values for optional fields and ensures that the `values`
+ * property is always an array of strings. Invalid entries are filtered out.
+ *
+ * @param screen - The screen context containing the data with scopes.
+ * @returns An array of processed `Scope` objects.
+ */
+export function getScopes(screen: ScreenContext): Scope[] {
+  return Array.isArray(screen.data?.scopes)
+        ? (screen.data?.scopes as Scope[])
+            .map((scope: Scope): Scope | null => {
+              return {
+                name: scope.name,
+                // Provide defaults for optional fields
+                description: typeof scope.description === 'string' ? scope.description : '',
+                // Ensure values is always an array of strings
+                values: Array.isArray(scope.values)
+                  ? scope.values.filter((v): v is string => typeof v === 'string')
+                  : typeof scope.name === 'string' ? [scope.name] : [], // Default values to name if valid
+              };
+            })
+            .filter((scope): scope is Scope => scope !== null) // Remove nulls from invalid entries
+        : [];
+}

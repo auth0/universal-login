@@ -44,8 +44,19 @@ export interface PhonePrefix {
   phone_prefix: string;
 }
 
+export interface Scope {
+  name: string;
+  description: string;
+  values: string[];
+}
+
+export interface AuthorizationDetail {
+  type: string;
+  [key: string]: string;
+}
+
 export interface ScreenData {
-  [key: string]: string | boolean | PasskeyRead | PasskeyCreate | string[] | Array<PhonePrefix> | undefined;
+  [key: string]: string | boolean | PasskeyRead | PasskeyCreate | string[] | Array<PhonePrefix | Scope | AuthorizationDetail> | undefined;
 }
 
 export interface ScreenContext {

@@ -180,10 +180,6 @@
       "import": "./dist/screens/accept-invitation/index.js",
       "types": "./dist/types/src/screens/accept-invitation/index.d.ts"
     },
-    "./customized-consent": {
-      "import": "./dist/screens/customized-consent/index.js",
-      "types": "./dist/types/src/screens/customized-consent/index.d.ts"
-    },
     "./mfa-phone-enrollment": {
       "import": "./dist/screens/mfa-phone-enrollment/index.js",
       "types": "./dist/types/src/screens/mfa-phone-enrollment/index.d.ts"
@@ -256,10 +252,6 @@
       "import": "./dist/screens/logout-complete/index.js",
       "types": "./dist/types/src/screens/logout-complete/index.d.ts"
     },
-     "./email-otp-challenge": {
-        "import": "./dist/screens/email-otp-challenge/index.js",
-        "types": "./dist/types/src/screens/email-otp-challenge/index.d.ts"
-     },
     "./email-verification-result": {
       "import": "./dist/screens/email-verification-result/index.js",
       "types": "./dist/types/src/screens/email-verification-result/index.d.ts"
@@ -275,10 +267,6 @@
     "./mfa-webauthn-error": {
       "import": "./dist/screens/mfa-webauthn-error/index.js",
       "types": "./dist/types/src/screens/mfa-webauthn-error/index.d.ts"
-    },
-    "./mfa-webauthn-not-available-error": {
-      "import": "./dist/screens/mfa-webauthn-not-available-error/index.js",
-      "types": "./dist/types/src/screens/mfa-webauthn-not-available-error/index.d.ts"
     },
     "./mfa-webauthn-roaming-enrollment": {
       "import": "./dist/screens/mfa-webauthn-roaming-enrollment/index.js",
@@ -299,6 +287,10 @@
     "./mfa-webauthn-change-key-nickname": {
       "import": "./dist/screens/mfa-webauthn-change-key-nickname/index.js",
       "types": "./dist/types/src/screens/mfa-webauthn-change-key-nickname/index.d.ts"
+    },
+    "./reset-password-mfa-webauthn-platform-challenge": {
+      "import": "./dist/screens/reset-password-mfa-webauthn-platform-challenge/index.js",
+      "types": "./dist/types/src/screens/reset-password-mfa-webauthn-platform-challenge/index.d.ts"
     }
   },
   "scripts": {
