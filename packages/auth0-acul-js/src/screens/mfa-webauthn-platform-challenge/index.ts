@@ -89,8 +89,7 @@ export default class MfaWebAuthnPlatformChallenge extends BaseContext implements
 
     const formOptions: SDKFormOptions = {
       state: this.transaction.state,
-      telemetry: [MfaWebAuthnPlatformChallenge.screenIdentifier, 'verify'],
-      route: '/u/mfa-webauthn-platform-challenge', // Endpoint for this screen
+      telemetry: [MfaWebAuthnPlatformChallenge.screenIdentifier, 'verify']
     };
 
     const { rememberDevice, ...customSubmissionOptions } = options || {};
@@ -123,8 +122,7 @@ export default class MfaWebAuthnPlatformChallenge extends BaseContext implements
 
     const formOptions: SDKFormOptions = {
       state: this.transaction.state,
-      telemetry: [MfaWebAuthnPlatformChallenge.screenIdentifier, 'reportBrowserError'],
-      route: '/u/mfa-webauthn-platform-challenge',
+      telemetry: [MfaWebAuthnPlatformChallenge.screenIdentifier, 'reportBrowserError']
     };
 
     // Sanitize errorDetails to include only known and safe properties if necessary,
@@ -150,8 +148,7 @@ export default class MfaWebAuthnPlatformChallenge extends BaseContext implements
   async tryAnotherMethod(options?: TryAnotherMethodOptions): Promise<void> {
     const formOptions: SDKFormOptions = {
       state: this.transaction.state,
-      telemetry: [MfaWebAuthnPlatformChallenge.screenIdentifier, 'tryAnotherMethod'],
-      route: '/u/mfa-webauthn-platform-challenge',
+      telemetry: [MfaWebAuthnPlatformChallenge.screenIdentifier, 'tryAnotherMethod']
     };
 
     await new FormHandler(formOptions).submitData({

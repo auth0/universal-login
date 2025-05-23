@@ -59,12 +59,6 @@ export default class MfaWebAuthnNotAvailableError extends BaseContext implements
     const formOptions: SDKFormOptions = {
       state: this.transaction.state,
       telemetry: [MfaWebAuthnNotAvailableError.screenIdentifier, 'tryAnotherMethod'],
-      // The OpenAPI spec path is /u/mfa-webauthn-enrollment.
-      // If this is a common endpoint for multiple WebAuthn related POSTs, we set it.
-      // Otherwise, FormHandler's default behavior of using window.location.pathname is usually correct for UL.
-      // Given the title "Mfa-webauthn-not-available-error screen API", if the path is specific for this screen,
-      // it should ideally be /u/mfa-webauthn-not-available-error.
-      // For now, we'll assume the provided OpenAPI path is correct for this action.
       route: '/u/mfa-webauthn-enrollment', // As per provided OpenAPI spec
     };
     await new FormHandler(formOptions).submitData<CustomOptions>({

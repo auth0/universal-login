@@ -22,6 +22,7 @@ export type { ScreenMembersOnLogin, TransactionMembersOnLogin } from '../screens
 export type { ScreenMembersOnMfaPushEnrollmentQr } from '../screens/mfa-push-enrollment-qr';
 export type { SelectMfaPushDeviceOptions } from '../screens/mfa-push-list';
 export type { ScreenMembersOnMfaPushWelcome } from '../screens/mfa-push-welcome';
+export type { ScreenMembersOnMfaEnrollResult } from '../screens/mfa-enroll-result';
 export type { ScreenMembersOnMfaSmsEnrollment } from '../screens/mfa-sms-enrollment';
 export type { ScreenMembersOnMfaSmsChallenge, UntrustedDataMembersOnMfaSmsChallenge } from '../screens/mfa-sms-challenge';
 export type { ScreenMembersOnMfaCountryCodes } from '../screens/mfa-country-codes';

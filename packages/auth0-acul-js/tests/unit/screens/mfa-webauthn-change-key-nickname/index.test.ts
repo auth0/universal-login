@@ -72,8 +72,7 @@ describe('MfaWebAuthnChangeKeyNickname SDK', () => {
 
       expect(FormHandler).toHaveBeenCalledWith({
         state: mockTransactionState,
-        telemetry: [ScreenIds.MFA_WEBAUTHN_CHANGE_KEY_NICKNAME, 'continueWithNewNickname'],
-        route: '/u/mfa-webauthn-change-key-nickname',
+        telemetry: [ScreenIds.MFA_WEBAUTHN_CHANGE_KEY_NICKNAME, 'continueWithNewNickname']
       });
       expect(mockFormHandlerInstance.submitData).toHaveBeenCalledWith({
         nickname: validNewNickname,

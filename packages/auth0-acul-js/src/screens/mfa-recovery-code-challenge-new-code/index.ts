@@ -73,8 +73,7 @@ export default class MfaRecoveryCodeChallengeNewCode extends BaseContext impleme
     // Prepare options for the FormHandler, including state and telemetry
     const formHandlerOptions: FormOptions = {
       state: this.transaction.state,
-      telemetry: [MfaRecoveryCodeChallengeNewCode.screenIdentifier, 'continue'],
-      route: '/u/mfa-recovery-code-challenge-new-code', // Explicitly set the route
+      telemetry: [MfaRecoveryCodeChallengeNewCode.screenIdentifier, 'continue']
     };
 
     // Construct the data payload for the form submission
