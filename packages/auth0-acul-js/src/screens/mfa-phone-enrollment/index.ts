@@ -25,12 +25,15 @@ export default class MfaPhoneEnrollment extends BaseContext implements MfaPhoneE
    * @example
    * ```typescript
    * import MfaPhoneEnrollment from '@auth0/auth0-acul-js/mfa-phone-enrollment';
-   * const [phone, setPhone] = useState('');
-   * const [type, setType] = useState<'sms' | 'voice'>('sms');
-   * const mfaPhoneEnrollment = new MfaPhoneEnrollment();
-   * const handlePickCountryCode = async () => {
-   *    await mfaPhoneEnrollment.pickCountryCode();
-   * };
+   * async function handlePickCountryCode() {
+   *  const mfaPhoneEnrollmentManager = new MfaPhoneEnrollment();
+   *  try {
+   *    await mfaPhoneEnrollmentManager.pickCountryCode();
+   *    console.log('Country code selection successful.');
+   *  } catch (error) {
+   *    console.error('Error selecting country code:', error);
+   *  }
+   * }
    */
   async pickCountryCode(payload?: CustomOptions): Promise<void> {
     const options = {
@@ -49,12 +52,18 @@ export default class MfaPhoneEnrollment extends BaseContext implements MfaPhoneE
    * @example
    * ```typescript
    * import MfaPhoneEnrollment from '@auth0/auth0-acul-js/mfa-phone-enrollment';
-   * const [phone, setPhone] = useState('');
-   * const [type, setType] = useState<'sms' | 'voice'>('sms');
-   * const mfaPhoneEnrollment = new MfaPhoneEnrollment();
-   * const handleContinueEnrollment = async () => {
-   *    await mfaPhoneEnrollment.continueEnrollment({ phone, type });
-   * };
+   * async function handleContinueEnrollment() {
+   *  const mfaPhoneEnrollmentManager = new MfaPhoneEnrollment();
+   *  try {
+   *    await mfaPhoneEnrollmentManager.continueEnrollment({
+   *      phone: '+1234567890',
+   *      type: 'sms', // or 'voice'
+   *    });
+   *    console.log('Phone enrollment continued successfully.');
+   *  } catch (error) {
+   *    console.error('Error continuing phone enrollment:', error);
+   *  }
+   * }
    * ```
    */
   async continueEnrollment(payload: { phone: string; type: 'sms' | 'voice' }): Promise<void> {
@@ -74,12 +83,15 @@ export default class MfaPhoneEnrollment extends BaseContext implements MfaPhoneE
    * @example
    * ```typescript
    * import MfaPhoneEnrollment from '@auth0/auth0-acul-js/mfa-phone-enrollment';
-   * const [phone, setPhone] = useState('');
-   * const [type, setType] = useState<'sms' | 'voice'>('sms');
-   * const mfaPhoneEnrollment = new MfaPhoneEnrollment();
-   * const handleTryAnotherMethod = async () => {
-   *  await mfaPhoneEnrollment.tryAnotherMethod();
-   * };
+   * async function handleTryAnotherMethod() {
+   *  const mfaPhoneEnrollmentManager = new MfaPhoneEnrollment();
+   *  try {
+   *    await mfaPhoneEnrollmentManager.tryAnotherMethod(); 
+   *    console.log('Switched to another authentication method.');
+   *   } catch (error) { 
+   *  console.error('Error switching authenticator method:', error);
+   *  }
+   * }
    * ```
    */
   async tryAnotherMethod(payload?: CustomOptions): Promise<void> {

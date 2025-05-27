@@ -26,10 +26,17 @@ export default class MfaVoiceEnrollment extends BaseContext implements MfaVoiceE
    * @example
    * ```typescript
    * import MfaVoiceEnrollment from '@auth0/auth0-acul-js/mfa-voice-enrollment';
-   * const [phone, setPhone] = useState('');
-   * const mfaVoiceEnrollment = new MfaVoiceEnrollment();
    * const handleContinueEnrollment = async () => {
-   *  await mfaVoiceEnrollment.continue({ phone });
+   *  const mfaVoiceEnrollmentManager = new MfaVoiceEnrollment();
+   *  try {
+   *    await mfaVoiceEnrollmentManager.continue({
+   *      phone: '+1234567890',
+   *      // Add any optional CustomOptions here if needed 
+   *    });
+   *    console.log('Voice enrollment continued successfully.');
+   *  } catch (error) {
+   *    console.error('Error continuing voice enrollment:', error);
+   *  }
    * };
    * ```
    */

@@ -39,12 +39,13 @@ export default class MfaRecoveryCodeEnrollment extends BaseContext implements Mf
    * @example
    * ```typescript
    * import MfaRecoveryCodeEnrollment from '@auth0/auth0-acul-js/mfa-recovery-code-enrollment';
-   * const mfaRecoveryCodeEnrollment = new MfaRecoveryCodeEnrollment();
-   * const handleContinue = async () => {
+   * const continueEnrollment = async (payload) => {
+   *  const mfaRecoveryCodeEnrollmentManager = new MfaRecoveryCodeEnrollment();
    *  try {
-   *    await mfaRecoveryCodeEnrollment.continue();
+   *    await mfaRecoveryCodeEnrollmentManager.continue(payload);
+   *    console.log('Enrollment continued successfully.');
    *  } catch (error) {
-   *    console.error('Failed to continue:', error);
+   *    console.error('Error continuing enrollment:', error);
    *  }
    * };
    * ```

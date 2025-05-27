@@ -26,12 +26,15 @@ export default class MfaRecoveryCodeChallenge extends BaseContext implements Mfa
    * @returns {Promise<void>}
    * @example
    * ```typescript
-   * import MfaVoiceEnrollment from '@auth0/auth0-acul-js/mfa-voice-enrollment';
-   * const [phone, setPhone] = useState('');
-   * const mfaVoiceEnrollment = new MfaVoiceEnrollment();
+   * import MfaRecoveryCodeChallenge from '@auth0/auth0-acul-js/mfa-recovery-code-challenge';
    * const handleContinueEnrollment = async () => {
-   *  await mfaVoiceEnrollment.continue({ phone });
-   * };
+   *  const mfaRecoveryCodeChallengeManager = new MfaRecoveryCodeChallenge();
+   *  try {
+   *    await mfaRecoveryCodeChallengeManager.continue('YOUR_RECOVERY_CODE');
+   *  } catch (error) {
+   *    console.error('Error continuing with recovery code:', error);
+   *  }
+   * }
    * ```
    */
   async continue(code: string, payload?: CustomOptions): Promise<void> {
@@ -53,10 +56,15 @@ export default class MfaRecoveryCodeChallenge extends BaseContext implements Mfa
    * @returns {Promise<void>}
    * @example
    * ```typescript
-   * import MfaVoiceEnrollment from '@auth0/auth0-acul-js/mfa-voice-enrollment';
-   * const mfaVoiceEnrollment = new MfaVoiceEnrollment();
-   * const handleTryAnotherMethod = async () => {
-   *  await mfaVoiceEnrollment.tryAnotherMethod();
+   * import MfaRecoveryCodeChallenge from '@auth0/auth0-acul-js/mfa-recovery-code-challenge';
+   * const switchAuthenticator = async () => {
+   *  const mfaRecoveryCodeChallengeManager = new MfaRecoveryCodeChallenge();
+   *  try {
+   *    await mfaRecoveryCodeChallengeManager.tryAnotherMethod();
+   *    console.log('Switched to another authentication method.');
+   *  } catch (error) {
+   *    console.error('Error switching authenticator:', error);
+   *  }
    * };
    * ```
    */
