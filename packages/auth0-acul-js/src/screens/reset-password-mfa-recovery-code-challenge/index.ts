@@ -27,13 +27,13 @@ export default class ResetPasswordMfaRecoveryCodeChallenge extends BaseContext i
    * @example
    * ```typescript
    * import ResetPasswordMfaRecoveryCodeChallenge from '@auth0/auth0-acul-js/reset-password-mfa-recovery-code-challenge';
-   * const [code, setCode] = useState('');
-   * const resetPasswordMfaRecoveryCodeChallengeManager = new ResetPasswordMfaRecoveryCodeChallenge();
-   * const handleSubmit = async () => {
+   * const continueWithRecoveryCode = async () => {
+   *  const resetPasswordMfaManager = new ResetPasswordMfaRecoveryCodeChallenge();
    *  try {
-   *    await resetPasswordMfaRecoveryCodeChallengeManager.continue(code);
+   *    await resetPasswordMfaManager.continue('RECOVERY_CODE');
+   *     console.log('Recovery code submitted successfully.');
    *  } catch (error) {
-   *    console.error('Failed to submit recovery code:', error);
+   *    console.error('Error submitting recovery code:', error);
    *  }
    * };
    * ```
