@@ -41,7 +41,7 @@ export type { ResetPasswordMfaOtpChallengeMembers } from '../screens/reset-passw
 export type { OrganizationSelectionMembers } from '../screens/organization-selection';
 export type { OrganizationPickerMembers } from '../screens/organization-picker';
 export type { AcceptInvitationMembers } from '../screens/accept-invitation';
-// export type { CustomizedConsentMembers } from '../screens/customized-consent';
+export type { CustomizedConsentMembers } from '../screens/customized-consent';
 export type { MfaPhoneEnrollmentMembers } from '../screens/mfa-phone-enrollment';
 export type { MfaVoiceEnrollmentMembers } from '../screens/mfa-voice-enrollment';
 export type { MfaRecoveryCodeChallengeMembers } from '../screens/mfa-recovery-code-challenge';
@@ -71,6 +71,6 @@ export type { MfaWebAuthnRoamingChallengeMembers } from '../screens/mfa-webauthn
 export type { MfaWebAuthnPlatformChallengeMembers } from '../screens/mfa-webauthn-platform-challenge';
 export type { MfaWebAuthnEnrollmentSuccessMembers } from '../screens/mfa-webauthn-enrollment-success';
 export type { MfaWebAuthnChangeKeyNicknameMembers } from '../screens/mfa-webauthn-change-key-nickname';
-// export type { ConsentMembers } from '../screens/consent';
+export type { ConsentMembers } from '../screens/consent';
 export type { ResetPasswordMfaWebAuthnPlatformChallengeMembers } from '../screens/reset-password-mfa-webauthn-platform-challenge';
 export type { ResetPasswordMfaWebAuthnRoamingChallengeMembers } from '../screens/reset-password-mfa-webauthn-roaming-challenge';

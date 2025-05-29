@@ -71,6 +71,6 @@ export { default as MfaWebAuthnRoamingChallenge } from './mfa-webauthn-roaming-c
 export { default as MfaWebAuthnPlatformChallenge } from './mfa-webauthn-platform-challenge';
 export { default as MfaWebAuthnEnrollmentSuccess } from './mfa-webauthn-enrollment-success';
 export { default as MfaWebAuthnChangeKeyNickname } from './mfa-webauthn-change-key-nickname';
-// export { default as Consent } from './consent';
+export { default as Consent } from './consent';
 export { default as ResetPasswordMfaWebAuthnPlatformChallenge } from './reset-password-mfa-webauthn-platform-challenge';
 export { default as ResetPasswordMfaWebAuthnRoamingChallenge } from './reset-password-mfa-webauthn-roaming-challenge';
