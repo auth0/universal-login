@@ -32,8 +32,8 @@ export default class DeviceCodeActivation extends BaseContext implements DeviceC
    * @example
    * ```typescript
    * import DeviceCodeActivation from '@auth0/auth0-acul-js/device-code-activation';
+   * const deviceCodeActivationManager = new DeviceCodeActivation();
    * async function activateDeviceCode(code) {
-   *   const deviceCodeActivationManager = new DeviceCodeActivation();
    *   try {
    *    await deviceCodeActivationManager.continue({ code });
    *    console.log('Device code activation successful.');

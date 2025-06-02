@@ -27,8 +27,8 @@ export default class MfaRecoveryCodeChallenge extends BaseContext implements Mfa
    * @example
    * ```typescript
    * import MfaRecoveryCodeChallenge from '@auth0/auth0-acul-js/mfa-recovery-code-challenge';
+   * const mfaRecoveryCodeChallengeManager = new MfaRecoveryCodeChallenge();
    * const handleContinueEnrollment = async () => {
-   *  const mfaRecoveryCodeChallengeManager = new MfaRecoveryCodeChallenge();
    *  try {
    *    await mfaRecoveryCodeChallengeManager.continue('YOUR_RECOVERY_CODE');
    *  } catch (error) {
@@ -57,8 +57,8 @@ export default class MfaRecoveryCodeChallenge extends BaseContext implements Mfa
    * @example
    * ```typescript
    * import MfaRecoveryCodeChallenge from '@auth0/auth0-acul-js/mfa-recovery-code-challenge';
+   * const mfaRecoveryCodeChallengeManager = new MfaRecoveryCodeChallenge();
    * const switchAuthenticator = async () => {
-   *  const mfaRecoveryCodeChallengeManager = new MfaRecoveryCodeChallenge();
    *  try {
    *    await mfaRecoveryCodeChallengeManager.tryAnotherMethod();
    *    console.log('Switched to another authentication method.');

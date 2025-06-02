@@ -25,8 +25,8 @@ export default class MfaPhoneEnrollment extends BaseContext implements MfaPhoneE
    * @example
    * ```typescript
    * import MfaPhoneEnrollment from '@auth0/auth0-acul-js/mfa-phone-enrollment';
+   * const mfaPhoneEnrollmentManager = new MfaPhoneEnrollment();
    * async function handlePickCountryCode() {
-   *  const mfaPhoneEnrollmentManager = new MfaPhoneEnrollment();
    *  try {
    *    await mfaPhoneEnrollmentManager.pickCountryCode();
    *    console.log('Country code selection successful.');
@@ -52,8 +52,8 @@ export default class MfaPhoneEnrollment extends BaseContext implements MfaPhoneE
    * @example
    * ```typescript
    * import MfaPhoneEnrollment from '@auth0/auth0-acul-js/mfa-phone-enrollment';
+   * const mfaPhoneEnrollmentManager = new MfaPhoneEnrollment();
    * async function handleContinueEnrollment() {
-   *  const mfaPhoneEnrollmentManager = new MfaPhoneEnrollment();
    *  try {
    *    await mfaPhoneEnrollmentManager.continueEnrollment({
    *      phone: '+1234567890',
@@ -83,8 +83,8 @@ export default class MfaPhoneEnrollment extends BaseContext implements MfaPhoneE
    * @example
    * ```typescript
    * import MfaPhoneEnrollment from '@auth0/auth0-acul-js/mfa-phone-enrollment';
+   * const mfaPhoneEnrollmentManager = new MfaPhoneEnrollment();
    * async function handleTryAnotherMethod() {
-   *  const mfaPhoneEnrollmentManager = new MfaPhoneEnrollment();
    *  try {
    *    await mfaPhoneEnrollmentManager.tryAnotherMethod(); 
    *    console.log('Switched to another authentication method.');

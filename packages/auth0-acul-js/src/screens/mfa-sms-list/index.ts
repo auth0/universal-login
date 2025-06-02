@@ -25,8 +25,8 @@ export default class MfaSmsList extends BaseContext implements MfaSmsListMembers
    * @example
    * ```typescript
    * import MfaSmsList from '@auth0/auth0-acul-js/mfa-sms-list';
+   * const mfaSmsList = new MfaSmsList();
    * const selectPhoneNumber = async () => {
-   *  const mfaSmsList = new MfaSmsList();
    *  const getEnrolledPhoneNumbers = mfaSmsList.user.enrolledPhoneNumbers;
    *  const selectedNumber = getEnrolledPhoneNumbers[0];
    *  await mfaSmsList.selectPhoneNumber({index: selectedNumber});
