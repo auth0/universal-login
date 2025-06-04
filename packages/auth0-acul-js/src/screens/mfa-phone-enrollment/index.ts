@@ -22,6 +22,18 @@ export default class MfaPhoneEnrollment extends BaseContext implements MfaPhoneE
   /**
    * Navigates to the country code selection screen.
    * @param payload Optional custom options to include with the request.
+   * @example
+   * ```typescript
+   * import MfaPhoneEnrollment from '@auth0/auth0-acul-js/mfa-phone-enrollment';
+   * const mfaPhoneEnrollmentManager = new MfaPhoneEnrollment();
+   * async function handlePickCountryCode() {
+   *  try {
+   *    await mfaPhoneEnrollmentManager.pickCountryCode();
+   *    console.log('Country code selection successful.');
+   *  } catch (error) {
+   *    console.error('Error selecting country code:', error);
+   *  }
+   * }
    */
   async pickCountryCode(payload?: CustomOptions): Promise<void> {
     const options = {
@@ -37,6 +49,22 @@ export default class MfaPhoneEnrollment extends BaseContext implements MfaPhoneE
   /**
    * Continues the enrollment process with the provided phone number and type (SMS or voice).
    * @param payload The phone number and type (SMS or voice).
+   * @example
+   * ```typescript
+   * import MfaPhoneEnrollment from '@auth0/auth0-acul-js/mfa-phone-enrollment';
+   * const mfaPhoneEnrollmentManager = new MfaPhoneEnrollment();
+   * async function handleContinueEnrollment() {
+   *  try {
+   *    await mfaPhoneEnrollmentManager.continueEnrollment({
+   *      phone: '+1234567890',
+   *      type: 'sms', // or 'voice'
+   *    });
+   *    console.log('Phone enrollment continued successfully.');
+   *  } catch (error) {
+   *    console.error('Error continuing phone enrollment:', error);
+   *  }
+   * }
+   * ```
    */
   async continueEnrollment(payload: { phone: string; type: 'sms' | 'voice' }): Promise<void> {
     const options = {
@@ -52,6 +80,19 @@ export default class MfaPhoneEnrollment extends BaseContext implements MfaPhoneE
   /**
    * Allows the user to try another MFA method.
    * @param payload Optional custom options to include with the request.
+   * @example
+   * ```typescript
+   * import MfaPhoneEnrollment from '@auth0/auth0-acul-js/mfa-phone-enrollment';
+   * const mfaPhoneEnrollmentManager = new MfaPhoneEnrollment();
+   * async function handleTryAnotherMethod() {
+   *  try {
+   *    await mfaPhoneEnrollmentManager.tryAnotherMethod(); 
+   *    console.log('Switched to another authentication method.');
+   *   } catch (error) { 
+   *  console.error('Error switching authenticator method:', error);
+   *  }
+   * }
+   * ```
    */
   async tryAnotherMethod(payload?: CustomOptions): Promise<void> {
     const options = {
