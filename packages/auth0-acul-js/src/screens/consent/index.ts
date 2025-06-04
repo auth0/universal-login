@@ -50,6 +50,19 @@ export default class Consent extends BaseContext implements ConsentMembers {
    *                 during submission (e.g., network error). Server-side validation errors
    *                 from Auth0 (like "invalid_request") are not thrown as JavaScript errors
    *                 but are made available in `this.transaction.errors` after the operation.
+   * @example
+   * ```typescript
+   * import Consent from '@auth0/auth0-acul-js/consent';
+   * const consentManager = new Consent();
+   * const handleAccept = async () => {
+   *  try {
+   *    await consentManager.accept();
+   *    console.log('Consent accepted successfully.');
+   *  } catch (err) {
+   *    console.error('Error accepting consent:', err);
+   *  }
+   * };
+   * ```
    */
   async accept(payload?: CustomOptions): Promise<void> {
     const formOptions: SDKFormOptions = {
@@ -78,6 +91,18 @@ export default class Consent extends BaseContext implements ConsentMembers {
    *                          A successful submission usually results in a server-side redirect.
    * @throws {Error} Throws an error if `FormHandler` encounters an issue (e.g., network error).
    *                 Server-side validation errors are reflected in `this.transaction.errors`.
+   * @example
+   * ```typescript
+   * import Consent from '@auth0/auth0-acul-js/consent';
+   * const consentManager = new Consent();
+   * const handleDeny = async () => {
+   *  try {
+   *    await consentManager.deny();
+   *    console.log('Form denied successfully.');
+   *  } catch (err) {
+   *    console.error('Failed to deny form:', error);
+   *  }
+   * };
    */
   async deny(payload?: CustomOptions): Promise<void> {
     const formOptions: SDKFormOptions = {

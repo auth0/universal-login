@@ -176,6 +176,10 @@
       "import": "./dist/screens/organization-picker/index.js",
       "types": "./dist/types/src/screens/organization-picker/index.d.ts"
     },
+    "./consent": {
+      "import": "./dist/screens/consent/index.js",
+      "types": "./dist/types/src/screens/consent/index.d.ts"
+    },
     "./accept-invitation": {
       "import": "./dist/screens/accept-invitation/index.js",
       "types": "./dist/types/src/screens/accept-invitation/index.d.ts"
