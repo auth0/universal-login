@@ -90,4 +90,37 @@ export class BaseContext implements BaseMembers {
 
     return BaseContext.context[model];
   }
+
+  updateTransactionState(error: { code?: string; message: string; field?: string } & Record<string, unknown>): void {
+    this.transaction.errors = [];
+    try {
+      // Try to parse Zod-style field error messages
+      const fieldErrors = JSON.parse(error.message) as Record<string, string[]>;
+      // If we got here, we have valid JSON - handle field errors
+      for (const field in fieldErrors) {
+        const messages: string[] = fieldErrors[field];
+        messages.forEach(message => {
+          this.transaction.errors?.push({
+            code: error.code || 'validation_error',
+            field,
+            message
+          });
+        });
+      }
+    } catch {
+      // If not JSON (likely a regular error message), add it directly
+      // Make sure we have the correct error object structure
+      const errorObj = {
+        code: error.code || 'unknown_error',
+        message: error.message || 'An unknown error occurred',
+        field: 'field' in error ? error.field : undefined
+      };
+
+      this.transaction.errors.push(errorObj);
+    }
+
+    // Update the hasErrors flag
+    this.transaction.hasErrors = this.transaction.errors.length > 0;
+  }
+
 }

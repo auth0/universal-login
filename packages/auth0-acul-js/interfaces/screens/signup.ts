@@ -4,10 +4,10 @@ import type { ScreenMembers } from '../models/screen';
 import type { TransactionMembers, UsernamePolicy, PasswordPolicy } from '../models/transaction';
 
 export interface SignupOptions {
-  email?: string;
-  username?: string;
+  email: string;
+  username: string;
   phone_number?: string;
-  password?: string;
+  password: string;
   captcha?: string;
   [key: string]: string | number | boolean | undefined;
 }

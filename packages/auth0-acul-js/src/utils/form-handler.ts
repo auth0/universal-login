@@ -1,4 +1,8 @@
 import type { FormOptions, PostPayloadOptions } from '../../interfaces/utils/form-handler';
+import type { z } from 'zod';
+
+// Define a generic schema type that can handle any Zod schema
+type ZodSchema = z.ZodType<unknown>;
 
 export class FormHandler {
   options: FormOptions;
@@ -7,7 +11,18 @@ export class FormHandler {
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await
-  async submitData<T>(payload: T): Promise<void> {
+  async submitData<T>(payload: T, schema?: ZodSchema): Promise<void> {
+
+    // Validate with schema if provided
+    if (schema !== undefined) {
+      const result = schema.safeParse(payload);
+
+      if (!result.success) {
+        const fieldErrors = result.error.errors[0]
+        throw new Error(fieldErrors.message);
+      }
+    }
+
     const extendedPayload: PostPayloadOptions = {
       ...payload,
       state: this.options.state,

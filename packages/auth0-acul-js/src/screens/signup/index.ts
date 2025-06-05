@@ -1,3 +1,4 @@
+import { SignupOptionsSchema } from '../../../interfaces/schema/signup.zod';
 import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
@@ -15,6 +16,8 @@ import type {
   TransactionMembersOnSignup as TransactionOptions,
 } from '../../../interfaces/screens/signup';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+
+
 export default class Signup extends BaseContext implements SignupMembers {
   static screenIdentifier: string = ScreenIds.SIGNUP;
   screen: ScreenOptions;
@@ -49,7 +52,21 @@ export default class Signup extends BaseContext implements SignupMembers {
       state: this.transaction.state,
       telemetry: [Signup.screenIdentifier, 'signup'],
     };
-    await new FormHandler(options).submitData<SignupOptions>(payload);
+
+    try {
+      await new FormHandler(options).submitData<SignupOptions>(payload, SignupOptionsSchema);
+    } catch (error) {
+      if (error instanceof Error) {
+        // Create a proper error object structure expected by updateTransactionState
+        const formattedError = {
+          ...error, // Spread any additional properties from the original error
+          code: 'validation_error',
+          message: error.message,
+        };
+
+        this.updateTransactionState(formattedError);
+      }
+    }
   }
 
   /**
@@ -98,6 +115,6 @@ export default class Signup extends BaseContext implements SignupMembers {
   }
 }
 
-export { SignupMembers, SignupOptions, ScreenOptions as ScreenMembersOnSignup, TransactionOptions as TransactionMembersOnSignup };
+export { SignupMembers, SignupOptions, ScreenOptions as ScreenMembersOnSignup, TransactionOptions as TransactionMembersOnSignup, SignupOptionsSchema };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';
