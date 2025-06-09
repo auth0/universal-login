@@ -66,7 +66,7 @@ export default class Login extends BaseContext implements LoginMembers {
    * ```
    */
   async federatedLogin(payload: FederatedLoginOptions): Promise<void> {
-    const options: FormOptions = { state: this.transaction.state, telemetry: [Login.screenIdentifier, 'login'] };
+    const options: FormOptions = { state: this.transaction.state, telemetry: [Login.screenIdentifier, 'federatedLogin'] };
     await new FormHandler(options).submitData<FederatedLoginOptions>(payload);
   }
 }
