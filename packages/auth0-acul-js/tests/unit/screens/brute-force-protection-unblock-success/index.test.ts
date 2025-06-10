@@ -20,7 +20,7 @@ describe('BruteForceProtectionUnblockSuccess', () => {
     (FormHandler as jest.Mock).mockImplementation(() => mockFormHandler);
   });
 
-  xdescribe('submitOTPCode method', () => {
+  describe('submitOTPCode method', () => {
     it('should handle submitOTPCode with valid payload correctly', async () => {
       const payload: SubmitOTPCodeOptions = {
         otp: '123456',
