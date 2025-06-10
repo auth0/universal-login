@@ -1,3 +1,27 @@
+##  API reference
+### Screens
+
+1. [login-id](https://auth0.github.io/universal-login/classes/Classes.LoginId.html)
+2. [login-Password](https://auth0.github.io/universal-login/classes/Classes.LoginPassword.html)
+3. [signup-id](https://auth0.github.io/universal-login/classes/Classes.SignupId.html)
+4. [signup-password](https://auth0.github.io/universal-login/classes/Classes.SignupPassword.html)
+<details>
+  <summary>Explore more screens...</summary>
+
+  5. [login-passwordless-email-code](https://auth0.github.io/universal-login/classes/Classes.LoginPasswordlessEmailCode.html)
+  6. [login-passwordless-sms-otp](https://auth0.github.io/universal-login/classes/Classes.LoginPasswordlessSmsOtp.html)
+  7. [passkey-enrollment](https://auth0.github.io/universal-login/classes/Classes.PasskeyEnrollment.html)
+  8. [passkey-enrollment-local](https://auth0.github.io/universal-login/classes/Classes.PasskeyEnrollmentLocal.html)
+  9. [phone-identifier-enrollment](https://auth0.github.io/universal-login/classes/Classes.PhoneIdentifierEnrollment.html)
+  10. [phone-identifier-challenge](https://auth0.github.io/universal-login/classes/Classes.PhoneIdentifierChallenge.html)
+  11. [email-identifier-challenge](https://auth0.github.io/universal-login/classes/Classes.EmailIdentifierChallenge.html)
+  12. [interstitial-captcha](https://auth0.github.io/universal-login/classes/Classes.InterstitialCaptcha.html)
+  13. [login](https://auth0.github.io/universal-login/classes/Classes.Login.html)
+  14. [signup](https://auth0.github.io/universal-login/classes/Classes.Signup.html)
+  15. [reset-password-email](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordEmail.html)
+  16. [reset-password-request](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordRequest.html)
+  17. [reset-password](https://auth0.github.io/universal-login/classes/Classes.ResetPassword.html)
+  18. [reset-password-error](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordError.html)
 # Auth0 ACUL JS SDK
 
 ![ACUL JS SDK](https://cdn.auth0.com/website/sdks/banners/auth0-acul-js-banner.png)
@@ -203,6 +227,9 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 | 71     |reset-password                    | reset-password-mfa-webauthn-platform-challenge | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaWebAuthnPlatformChallenge.html)                |
 | 72     |reset-password                    | reset-password-mfa-webauthn-roaming-challenge | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaWebAuthnRoamingChallenge.html)   |
 | 73     |consent                   | consent | [Link](https://auth0.github.io/universal-login/classes/Classes.consent.html)   |
+| 74     |brute-force-protection-unblock                   | brute-force-protection-unblock | [Link](https://auth0.github.io/universal-login/classes/Classes.BruteForceProtectionUnblock.html)   |
+| 73     |brute-force-protection-unblock-success                     | brute-force-protection-unblock-success   | [Link](https://auth0.github.io/universal-login/classes/Classes.BruteForceProtectionUnblockSuccess.html)   |
+| 73     |brute-force-protection-unblock-failure                     | brute-force-protection-unblock-failure   | [Link](https://auth0.github.io/universal-login/classes/Classes.BruteForceProtectionUnblockFailure.html)   |
 </details>
 
 
@@ -241,3 +268,5 @@ Please do not report security vulnerabilities on the public GitHub issue tracker
 <p align="center">Auth0 is an easy to implement, adaptable authentication and authorization platform. To learn more checkout <a href="https://auth0.com/why-auth0">Why Auth0?</a></p>
 <p align="center">
 This project is licensed under the MIT license. See the <a href="https://github.com/auth0/auth0.js/blob/master/LICENSE"> LICENSE</a> file for more info.</p>
+  19. [reset-password-success](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordSuccess.html)
+</details>

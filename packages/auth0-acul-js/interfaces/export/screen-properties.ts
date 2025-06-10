@@ -74,3 +74,6 @@ export type { MfaWebAuthnChangeKeyNicknameMembers } from '../screens/mfa-webauth
 export type { ConsentMembers } from '../screens/consent';
 export type { ResetPasswordMfaWebAuthnPlatformChallengeMembers } from '../screens/reset-password-mfa-webauthn-platform-challenge';
 export type { ResetPasswordMfaWebAuthnRoamingChallengeMembers } from '../screens/reset-password-mfa-webauthn-roaming-challenge';
+export type { BruteForceProtectionUnblockMembers } from '../screens/brute-force-protection-unblock';
+export type { BruteForceProtectionUnblockFailureMembers } from '../screens/brute-force-protection-unblock-failure';
+export type { BruteForceProtectionUnblockSuccessMembers } from '../screens/brute-force-protection-unblock-success';
