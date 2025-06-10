@@ -60,7 +60,7 @@ export default class Login extends BaseContext implements LoginMembers {
    * ```typescript
    * import Login from "@auth0/auth0-acul-js/login";
    * const loginManager = new Login();
-   * loginManager.socialLogin({
+   * loginManager.federatedLogin({
    *   connection: "google-oauth2"
    * });
    * ```
