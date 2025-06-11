@@ -76,4 +76,3 @@ export type { ResetPasswordMfaWebAuthnPlatformChallengeMembers } from '../screen
 export type { ResetPasswordMfaWebAuthnRoamingChallengeMembers } from '../screens/reset-password-mfa-webauthn-roaming-challenge';
 export type { BruteForceProtectionUnblockMembers } from '../screens/brute-force-protection-unblock';
 export type { BruteForceProtectionUnblockFailureMembers } from '../screens/brute-force-protection-unblock-failure';
-export type { BruteForceProtectionUnblockSuccessMembers } from '../screens/brute-force-protection-unblock-success';
