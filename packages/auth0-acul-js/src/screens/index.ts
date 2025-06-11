@@ -76,3 +76,4 @@ export { default as ResetPasswordMfaWebAuthnPlatformChallenge } from './reset-pa
 export { default as ResetPasswordMfaWebAuthnRoamingChallenge } from './reset-password-mfa-webauthn-roaming-challenge';
 export { default as BruteForceProtectionUnblock } from './brute-force-protection-unblock';
 export { default as BruteForceProtectionUnblockFailure } from './brute-force-protection-unblock-failure';
+export { default as BruteForceProtectionUnblockSuccess } from './brute-force-protection-unblock-success';
