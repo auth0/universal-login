@@ -12,7 +12,7 @@ import type {
   ScreenMembersOnSignupId as ScreenOptions,
   TransactionMembersOnSignupId as TransactionOptions,
   SignupOptions,
-  SocialSignupOptions,
+  FederatedSignupOptions,
 } from '../../../interfaces/screens/signup-id';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
@@ -91,21 +91,21 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
    *  connection : socialConnection[0].name, // "google-oauth2"
    * };
    *
-   * signupIdManager.socialSignup(signupParams);
+   * signupIdManager.federatedSignup(signupParams);
    */
-  async socialSignup(payload: SocialSignupOptions): Promise<void> {
+  async federatedSignup(payload: FederatedSignupOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
       telemetry: [SignupId.screenIdentifier, 'socialSignup'],
     };
-    await new FormHandler(options).submitData<SocialSignupOptions>(payload);
+    await new FormHandler(options).submitData<FederatedSignupOptions>(payload);
   }
 }
 
 export {
   SignupIdMembers,
   SignupOptions,
-  SocialSignupOptions,
+  FederatedSignupOptions,
   ScreenOptions as ScreenMembersOnSignupId,
   TransactionOptions as TransactionMembersOnSignupId,
 };

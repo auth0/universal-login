@@ -35,7 +35,7 @@ export interface SignupId extends BaseContext {
   untrusted_data?: ExtendedUntrustedDataContext;
 }
 
-export interface SocialSignupOptions {
+export interface FederatedSignupOptions {
   connection: string;
   [key: string]: string | number | boolean;
 }
@@ -52,5 +52,5 @@ export interface SignupIdMembers {
   screen: ScreenMembersOnSignupId;
   transaction: TransactionMembersOnSignupId;
   signup(payload: SignupOptions): Promise<void>;
-  socialSignup(payload: SocialSignupOptions): Promise<void>;
+  federatedSignup(payload: FederatedSignupOptions): Promise<void>;
 }
