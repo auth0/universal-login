@@ -81,7 +81,7 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
   async federatedLogin(payload: FederatedLoginOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
-      telemetry: [LoginId.screenIdentifier, 'socialLogin'],
+      telemetry: [LoginId.screenIdentifier, 'federatedLogin'],
     };
 
     await new FormHandler(options).submitData<FederatedLoginOptions>(payload);

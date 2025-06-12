@@ -96,7 +96,7 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
   async federatedSignup(payload: FederatedSignupOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
-      telemetry: [SignupId.screenIdentifier, 'socialSignup'],
+      telemetry: [SignupId.screenIdentifier, 'federatedSignup'],
     };
     await new FormHandler(options).submitData<FederatedSignupOptions>(payload);
   }
