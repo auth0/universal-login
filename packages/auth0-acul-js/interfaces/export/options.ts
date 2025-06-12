@@ -1,4 +1,4 @@
-export type { LoginOptions, SocialLoginOptions } from '../screens/login-id';
+export type { LoginOptions, FederatedLoginOptions } from '../screens/login-id';
 export type { LoginPasswordOptions } from '../screens/login-password';
 export type { SubmitCodeOptions } from '../screens/login-passwordless-email-code';
 export type { SubmitOTPOptions } from '../screens/login-passwordless-sms-otp';
@@ -7,10 +7,10 @@ export type { AbortEnrollmentOptions } from '../screens/passkey-enrollment-local
 export type { EmailChallengeOptions } from '../screens/email-identifier-challenge';
 export type { PhoneChallengeOptions } from '../screens/phone-identifier-challenge';
 export type { PhoneEnrollmentOptions } from '../screens/phone-identifier-enrollment';
-export type { SignupOptions, SocialSignupOptions } from '../screens/signup-id';
+export type { SignupOptions, FederatedSignupOptions } from '../screens/signup-id';
 export type { SignupPasswordOptions } from '../screens/signup-password';
 export type { LoginOptions as LoginPayloadOptions, SocialLoginOptions as SocialLoginPayloadOptions } from '../screens/login';
-export type { SignupOptions as SignupPayloadOptions, SocialSignupOptions as SocialSignupPayloadOptions } from '../screens/signup';
+export type { SignupOptions as SignupPayloadOptions, FederatedSignupOptions as FederatedSignupPayloadOptions } from '../screens/signup';
 export type { ResetPasswordEmailOptions } from '../screens/reset-password-email';
 export type { ResetPasswordRequestOptions } from '../screens/reset-password-request';
 export type { ResetPasswordOptions } from '../screens/reset-password';

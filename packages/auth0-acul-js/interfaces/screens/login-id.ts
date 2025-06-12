@@ -49,7 +49,7 @@ export interface LoginOptions {
   [key: string]: string | number | boolean | undefined;
 }
 
-export interface SocialLoginOptions {
+export interface FederatedLoginOptions {
   connection: string;
   [key: string]: string | number | boolean;
 }
@@ -57,7 +57,7 @@ export interface SocialLoginOptions {
 export interface LoginIdMembers extends BaseMembers {
   screen: ScreenMembersOnLoginId;
   login(payload: LoginOptions): Promise<void>;
-  socialLogin(payload: SocialLoginOptions): Promise<void>;
+  federatedLogin(payload: FederatedLoginOptions): Promise<void>;
   passkeyLogin(payload?: CustomOptions): Promise<void>;
   pickCountryCode(payload?: CustomOptions): Promise<void>;
 }

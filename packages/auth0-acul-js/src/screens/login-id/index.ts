@@ -15,7 +15,7 @@ import type {
   TransactionMembersOnLoginId as TransactionOptions,
   LoginIdMembers,
   LoginOptions,
-  SocialLoginOptions,
+  FederatedLoginOptions,
 } from '../../../interfaces/screens/login-id';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
@@ -81,17 +81,17 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
    * console.log(`Selected connection: ${selectedConnection.name}`);
    *
    * // Proceed with federated login using the selected connection
-   * loginIdManager.socialLogin({
+   * loginIdManager.federatedLogin({
    *   connection: selectedConnection.name,
    * });
    */
-  async socialLogin(payload: SocialLoginOptions): Promise<void> {
+  async federatedLogin(payload: FederatedLoginOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
       telemetry: [LoginId.screenIdentifier, 'socialLogin'],
     };
 
-    await new FormHandler(options).submitData<SocialLoginOptions>(payload);
+    await new FormHandler(options).submitData<FederatedLoginOptions>(payload);
   }
 
   /**
@@ -141,7 +141,7 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
 export {
   LoginIdMembers,
   LoginOptions,
-  SocialLoginOptions,
+  FederatedLoginOptions,
   ScreenOptions as ScreenMembersOnLoginId,
   TransactionOptions as TransactionMembersOnLoginId,
 };
