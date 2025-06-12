@@ -1,4 +1,4 @@
-export type { LoginOptions, SocialLoginOptions } from '../screens/login-id';
+export type { LoginOptions, FederatedLoginOptions } from '../screens/login-id';
 export type { LoginPasswordOptions } from '../screens/login-password';
 export type { SubmitCodeOptions } from '../screens/login-passwordless-email-code';
 export type { SubmitOTPOptions } from '../screens/login-passwordless-sms-otp';
