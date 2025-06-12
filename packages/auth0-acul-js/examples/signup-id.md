@@ -37,7 +37,7 @@ It allows to signup new users via different identifiers
      connection : socialConnection[0].name, // "google-oauth2"
     };
     
-    signupIdManager.socialSignup(signupParams);
+    signupIdManager.federatedSignup(signupParams);
    
 ```
 

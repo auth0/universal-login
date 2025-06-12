@@ -7,7 +7,7 @@ export type { AbortEnrollmentOptions } from '../screens/passkey-enrollment-local
 export type { EmailChallengeOptions } from '../screens/email-identifier-challenge';
 export type { PhoneChallengeOptions } from '../screens/phone-identifier-challenge';
 export type { PhoneEnrollmentOptions } from '../screens/phone-identifier-enrollment';
-export type { SignupOptions, SocialSignupOptions } from '../screens/signup-id';
+export type { SignupOptions, FederatedSignupOptions } from '../screens/signup-id';
 export type { SignupPasswordOptions } from '../screens/signup-password';
 export type { LoginOptions as LoginPayloadOptions, SocialLoginOptions as SocialLoginPayloadOptions } from '../screens/login';
 export type { SignupOptions as SignupPayloadOptions, FederatedSignupOptions as FederatedSignupPayloadOptions } from '../screens/signup';
