@@ -1,5 +1,6 @@
 import { ScreenIds, FormActions, Errors } from '../../constants';
 import { BaseContext } from '../../models/base-context';
+import { isJsAvailable, isBrave, isWebAuthAvailable, isWebAuthPlatformAvailable } from '../../utils/browser-capabilities';
 import { FormHandler } from '../../utils/form-handler';
 import { getPasskeyCredentials } from '../../utils/passkeys';
 
@@ -54,7 +55,13 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
       telemetry: [LoginId.screenIdentifier, 'login'],
     };
 
-    await new FormHandler(options).submitData<LoginOptions>(payload);
+    await new FormHandler(options).submitData<LoginOptions>({
+      ...payload,
+      'js-available': isJsAvailable(),
+      'is-brave': await isBrave(),
+      'webauthn-available': isWebAuthAvailable(),
+      'webauthn-platform-available': await isWebAuthPlatformAvailable(),
+    });
   }
 
   /**
