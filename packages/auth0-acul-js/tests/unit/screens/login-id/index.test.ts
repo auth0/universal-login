@@ -7,7 +7,7 @@ import { Errors } from '../../../../src/constants';
 import { BaseContext } from '../../../../src/models/base-context';
 import type { ScreenContext } from '../../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../../interfaces/models/transaction';
-import type { LoginOptions, SocialLoginOptions } from '../../../../interfaces/screens/login-id';
+import type { LoginOptions, FederatedLoginOptions } from '../../../../interfaces/screens/login-id';
 import { ScreenIds } from '../../../../src//constants';
 import { FormActions } from '../../../../src/constants';
 
@@ -57,10 +57,10 @@ describe('LoginId', () => {
     });
   });
 
-  describe('socialLogin', () => {
+  describe('federatedLogin', () => {
     it('should submit social login form data correctly', async () => {
-      const payload: SocialLoginOptions = { connection: 'google' };
-      await loginId.socialLogin(payload);
+      const payload: FederatedLoginOptions = { connection: 'google' };
+      await loginId.federatedLogin(payload);
       expect(FormHandler).toHaveBeenCalledWith(expect.objectContaining({ state: 'mockState' }));
       expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(payload);
     });
