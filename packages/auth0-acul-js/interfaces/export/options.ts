@@ -9,8 +9,8 @@ export type { PhoneChallengeOptions } from '../screens/phone-identifier-challeng
 export type { PhoneEnrollmentOptions } from '../screens/phone-identifier-enrollment';
 export type { SignupOptions, SocialSignupOptions } from '../screens/signup-id';
 export type { SignupPasswordOptions } from '../screens/signup-password';
-export type { LoginOptions as LoginPayloadOptions, FederatedLoginOptions as FederatedLoginPayloadOptions } from '../screens/login';
-export type { SignupOptions as SignupPayloadOptions, SocialSignupOptions as SocialSignupPayloadOptions } from '../screens/signup';
+export type { LoginOptions as LoginPayloadOptions, SocialLoginOptions as SocialLoginPayloadOptions } from '../screens/login';
+export type { SignupOptions as SignupPayloadOptions, FederatedSignupOptions as FederatedSignupPayloadOptions } from '../screens/signup';
 export type { ResetPasswordEmailOptions } from '../screens/reset-password-email';
 export type { ResetPasswordRequestOptions } from '../screens/reset-password-request';
 export type { ResetPasswordOptions } from '../screens/reset-password';

@@ -12,7 +12,7 @@ import type {
   LoginOptions,
   LoginMembers,
   TransactionMembersOnLogin as TransactionOptions,
-  FederatedLoginOptions,
+  SocialLoginOptions,
 } from '../../../interfaces/screens/login';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
@@ -60,17 +60,17 @@ export default class Login extends BaseContext implements LoginMembers {
    * ```typescript
    * import Login from "@auth0/auth0-acul-js/login";
    * const loginManager = new Login();
-   * loginManager.federatedLogin({
+   * loginManager.socialLogin({
    *   connection: "google-oauth2"
    * });
    * ```
    */
-  async federatedLogin(payload: FederatedLoginOptions): Promise<void> {
-    const options: FormOptions = { state: this.transaction.state, telemetry: [Login.screenIdentifier, 'federatedLogin'] };
-    await new FormHandler(options).submitData<FederatedLoginOptions>(payload);
+  async socialLogin(payload: SocialLoginOptions): Promise<void> {
+    const options: FormOptions = { state: this.transaction.state, telemetry: [Login.screenIdentifier, 'login'] };
+    await new FormHandler(options).submitData<SocialLoginOptions>(payload);
   }
 }
 
-export { LoginMembers, LoginOptions, FederatedLoginOptions, ScreenOptions as ScreenMembersOnLogin, TransactionOptions as TransactionMembersOnLogin };
+export { LoginMembers, LoginOptions, SocialLoginOptions, ScreenOptions as ScreenMembersOnLogin, TransactionOptions as TransactionMembersOnLogin };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';
