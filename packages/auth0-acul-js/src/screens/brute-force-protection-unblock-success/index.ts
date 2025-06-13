@@ -8,7 +8,7 @@ import type { BruteForceProtectionUnblockSuccessMembers, ScreenMembersOnBruteFor
  * This screen is displayed when a user successfully unblocks their account after brute force protection measures were triggered.
  */
 export default class BruteForceProtectionUnblockSuccess extends BaseContext implements BruteForceProtectionUnblockSuccessMembers {
-  screen: ScreenOptions;
+  
 
   /**
    * Creates an instance of the BruteForceProtectionUnblockSuccess screen.
@@ -16,8 +16,6 @@ export default class BruteForceProtectionUnblockSuccess extends BaseContext impl
    */
   constructor() {
     super();
-    const screenContext = this.getContext('screen') as ScreenContext;
-    this.screen = screenContext as ScreenOptions;
   }
 }
 

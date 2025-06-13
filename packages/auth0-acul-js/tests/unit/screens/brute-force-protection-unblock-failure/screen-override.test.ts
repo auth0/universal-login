@@ -1,8 +1,6 @@
-import { baseContextData } from '../../../data/test-data';
 import { ScreenOverride } from '../../../../src/screens/brute-force-protection-unblock-failure/screen-override';
+import { Screen } from '../../../../src/models/screen';
 import type { ScreenContext } from '../../../../interfaces/models/screen';
-
-jest.mock('../../../../src/models/screen');
 
 describe('ScreenOverride', () => {
   let screenContext: ScreenContext;
@@ -11,9 +9,7 @@ describe('ScreenOverride', () => {
   beforeEach(() => {
     screenContext = {
       name: 'brute-force-protection-unblock-failure',
-      data: {
-        errorType: 'too_many_attempts',
-      },
+      data: { errorType: 'testError' },
     } as ScreenContext;
 
     screenOverride = new ScreenOverride(screenContext);
@@ -21,7 +17,7 @@ describe('ScreenOverride', () => {
 
   it('should initialize data correctly', () => {
     expect(screenOverride.data).toEqual({
-      errorType: 'too_many_attempts',
+      errorType: 'testError',
     });
   });
 
@@ -34,7 +30,11 @@ describe('ScreenOverride', () => {
   it('should return a copy of screenContext.data when available', () => {
     const result = ScreenOverride.getScreenData(screenContext);
     expect(result).toEqual({
-      errorType: 'too_many_attempts',
+      errorType: 'testError',
     });
+  });
+
+  it('should create an instance of Screen', () => {
+    expect(screenOverride).toBeInstanceOf(Screen);
   });
 });
