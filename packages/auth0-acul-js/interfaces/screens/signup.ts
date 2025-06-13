@@ -12,7 +12,7 @@ export interface SignupOptions {
   [key: string]: string | number | boolean | undefined;
 }
 
-export interface SocialSignupOptions {
+export interface FederatedSignupOptions {
   connection: string;
   [key: string]: string | number | boolean;
 }

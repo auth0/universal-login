@@ -29,7 +29,7 @@ const SignupScreen: React.FC = () => {
   
   const handleSocialLogin = async (connection: string) => {
     try {
-      await signupManager.socialSignup({ connection });
+      await signupManager.federatedSignup({ connection });
     } catch (error) {
       setError('Social login failed. Please try again.');
     }
