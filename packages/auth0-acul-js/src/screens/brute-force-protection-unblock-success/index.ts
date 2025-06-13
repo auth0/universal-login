@@ -1,6 +1,5 @@
 import { BaseContext } from '../../models/base-context';
 
-import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { BruteForceProtectionUnblockSuccessMembers, ScreenMembersOnBruteForceProtectionUnblockSuccess as ScreenOptions } from '../../../interfaces/screens/brute-force-protection-unblock-success';
 
 /**
@@ -8,7 +7,6 @@ import type { BruteForceProtectionUnblockSuccessMembers, ScreenMembersOnBruteFor
  * This screen is displayed when a user successfully unblocks their account after brute force protection measures were triggered.
  */
 export default class BruteForceProtectionUnblockSuccess extends BaseContext implements BruteForceProtectionUnblockSuccessMembers {
-  
 
   /**
    * Creates an instance of the BruteForceProtectionUnblockSuccess screen.
