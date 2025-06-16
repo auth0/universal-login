@@ -1,14 +1,3 @@
-```typescript
-import BruteForceProtectionUnblockFailure from '@auth0/auth0-acul-js/brute-force-protection-unblock-failure';
-
-const bruteForceProtectionUnblockFailure = new BruteForceProtectionUnblockFailure();
-
-const { screen } = bruteForceProtectionUnblockFailure;
-const errorType = screen.data?.errorType;
-
-console.log(errorType);
-```
-
 ## React Component Example with TailwindCSS
 
 ```tsx
