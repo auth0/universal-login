@@ -28,7 +28,12 @@ export class ScreenOverride extends Screen implements OverrideOptions {
    * @returns The screen data.
    */
   static getScreenData(screenContext: ScreenContext): OverrideOptions['data'] {
-    return (screenContext.data ?? null) as OverrideOptions['data'];
+    const data = screenContext.data;
+    if (!data) return null;
+
+    return {
+      errorType: data?.errorType
+    } as OverrideOptions['data'];
   }
 
 }
