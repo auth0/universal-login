@@ -1,7 +1,6 @@
 import { ScreenIds } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
-import { getError as internalGetError } from '../../utils/get-error';
 
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
@@ -22,26 +21,6 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  */
 export default class Login extends BaseContext implements LoginMembers {
   static screenIdentifier: string = ScreenIds.LOGIN;
-
-  /**
-   * Static method to retrieve transaction errors from the login context.
-   *
-   * ```ts
-   * import Login from "@auth0/auth0-acul-js/login";
-   * const errors = Login.getError();
-   * ```
-   *
-   * Or as:
-   *
-   * ```ts
-   * import { getError } from "@auth0/auth0-acul-js/login";
-   * const errors = getError();
-   * ```
-   *
-   * @returns {Error[]} An array of error objects, or an empty array if none exist.
-   */
-  static getError = internalGetError;
-
   screen: ScreenOptions;
   transaction: TransactionOptions;
 
@@ -95,4 +74,3 @@ export default class Login extends BaseContext implements LoginMembers {
 export { LoginMembers, LoginOptions, FederatedLoginOptions, ScreenOptions as ScreenMembersOnLogin, TransactionOptions as TransactionMembersOnLogin };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';
-export { internalGetError as getError };
