@@ -34,20 +34,20 @@ import ResetPasswordSuccess from '@auth0/auth0-acul-js/reset-password-success';
 import ResetPasswordError from '@auth0/auth0-acul-js/reset-password-error';
 
 // MFA related screens
-import  MfaDetectBrowserCapabilities from '@auth0/auth0-acul-js/mfa-detect-browser-capabilities';
-import  MfaEnrollResult from '@auth0/auth0-acul-js/mfa-enroll-result';
-import  MfaBeginEnrollOptions from '@auth0/auth0-acul-js/mfa-begin-enroll-options';
-import  MfaLoginOptions from '@auth0/auth0-acul-js/mfa-login-options';
-import  MfaPushEnrollmentQr from '@auth0/auth0-acul-js/mfa-push-enrollment-qr';
-import  MfaPushWelcome from '@auth0/auth0-acul-js/mfa-push-welcome';
-import  MfaPushChallengePush from '@auth0/auth0-acul-js/mfa-push-challenge-push';
-import  MfaPushList from '@auth0/auth0-acul-js/mfa-push-list';
-import  MfaCountryCodes from '@auth0/auth0-acul-js/mfa-country-codes';
-import  MfaSmsChallenge from '@auth0/auth0-acul-js/mfa-sms-challenge';
-import  MfaSmsEnrollment from '@auth0/auth0-acul-js/mfa-sms-enrollment';
-import  MfaSmsList from '@auth0/auth0-acul-js/mfa-sms-list';
-import  MfaEmailChallenge from '@auth0/auth0-acul-js/mfa-email-challenge';
-import  MfaEmailList from '@auth0/auth0-acul-js/mfa-email-list';
+import MfaDetectBrowserCapabilities from '@auth0/auth0-acul-js/mfa-detect-browser-capabilities';
+import MfaEnrollResult from '@auth0/auth0-acul-js/mfa-enroll-result';
+import MfaBeginEnrollOptions from '@auth0/auth0-acul-js/mfa-begin-enroll-options';
+import MfaLoginOptions from '@auth0/auth0-acul-js/mfa-login-options';
+import MfaPushEnrollmentQr from '@auth0/auth0-acul-js/mfa-push-enrollment-qr';
+import MfaPushWelcome from '@auth0/auth0-acul-js/mfa-push-welcome';
+import MfaPushChallengePush from '@auth0/auth0-acul-js/mfa-push-challenge-push';
+import MfaPushList from '@auth0/auth0-acul-js/mfa-push-list';
+import MfaCountryCodes from '@auth0/auth0-acul-js/mfa-country-codes';
+import MfaSmsChallenge from '@auth0/auth0-acul-js/mfa-sms-challenge';
+import MfaSmsEnrollment from '@auth0/auth0-acul-js/mfa-sms-enrollment';
+import MfaSmsList from '@auth0/auth0-acul-js/mfa-sms-list';
+import MfaEmailChallenge from '@auth0/auth0-acul-js/mfa-email-challenge';
+import MfaEmailList from '@auth0/auth0-acul-js/mfa-email-list';
 
 // brute-force related screens
 import BruteForceProtectionUnblock from '@auth0/auth0-acul-js/brute-force-protection-unblock';
