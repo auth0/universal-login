@@ -4,6 +4,7 @@ import replace from '@rollup/plugin-replace';
 import json from '@rollup/plugin-json';
 import fs from 'fs';
 import path from 'path';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 
 const pkg = JSON.parse(fs.readFileSync(path.resolve('./package.json'), 'utf-8'));
 
@@ -18,12 +19,23 @@ export default {
       sourcemap: true,
       preserveModules: true,
       exports: 'named',
+      entryFileNames: chunk =>
+        chunk.name.includes('interfaces/schema') || chunk.name.includes('interfaces/screens')
+          ? '[name].js'
+          : '[name].js',
+      preserveModulesRoot: 'src'
     },
   ],
   plugins: [
     json(),
+    nodeResolve({
+      extensions: ['.ts', '.js', '.json'],
+      modulesOnly: true
+    }),
     typescript({
       tsconfig: './tsconfig.json',
+      include: ['src/**/*', 'interfaces/**/*'],
+      outputToFilesystem: true
     }),
     replace({
       preventAssignment: true,
@@ -32,4 +44,5 @@ export default {
     }),
     ...commonPlugins,
   ],
+  external: ['zod']
 };
