@@ -60,7 +60,7 @@ export { default as MfaRecoveryCodeChallengeNewCode } from './mfa-recovery-code-
 export { default as Logout } from './logout';
 export { default as LogoutAborted } from './logout-aborted';
 export { default as LogoutComplete } from './logout-complete';
-// export { default as EmailOTPChallenge } from './email-otp-challenge'
+export { default as EmailOTPChallenge } from './email-otp-challenge'
 export { default as EmailVerificationResult } from './email-verification-result';
 export { default as LoginEmailVerification } from './login-email-verification';
 export { default as MfaWebAuthnPlatformEnrollment } from './mfa-webauthn-platform-enrollment';
