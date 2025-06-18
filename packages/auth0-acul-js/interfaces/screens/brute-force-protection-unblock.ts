@@ -1,6 +1,5 @@
 import type { CustomOptions } from '../common';
 import type { BaseMembers } from '../models/base-context';
-// import type { ScreenMembers } from '../models/screen';
 
 /**
  * Represents the members of the BruteForceProtectionUnblock screen.

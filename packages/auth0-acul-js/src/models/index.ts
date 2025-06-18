@@ -8,14 +8,4 @@ import { Transaction } from './transaction';
 import { UntrustedData } from './untrusted-data';
 import { User } from './user';
 
-export {
-  Branding,
-  Client,
-  Prompt,
-  Screen,
-  Organization,
-  User,
-  Transaction,
-  Tenant,
-  UntrustedData
-};
+export { Branding, Client, Prompt, Screen, Organization, User, Transaction, Tenant, UntrustedData };
