@@ -1,12 +1,11 @@
 name: Monorepo Release
 
 on:
-  # PR-based release
   pull_request:
     branches:
       - 'release/*/v*'
     types:
-      - [closed]
+      - [closed, opened]
   workflow_dispatch:
 
 permissions:
@@ -15,7 +14,6 @@ permissions:
 
 jobs:
   release:
-    # For PR-based: only run if PR was merged
     if: |
       github.event_name == 'push' ||
       (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
