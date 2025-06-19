@@ -50,7 +50,7 @@ runs:
         else
           TAG="latest"
         fi
-        npm publish --provenance --access public --tag $TAG 
+        npm whoami
       env:
         NODE_AUTH_TOKEN: ${{ inputs.npm-token }}
         VERSION: ${{ inputs.version }}
