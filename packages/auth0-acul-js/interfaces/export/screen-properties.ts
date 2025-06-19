@@ -65,7 +65,7 @@ export type { EmailVerificationResultMembers } from '../screens/email-verificati
 export type { LoginEmailVerificationMembers } from '../screens/login-email-verification'
 export type { MfaWebAuthnPlatformEnrollmentMembers } from '../screens/mfa-webauthn-platform-enrollment';
 export type { MfaWebAuthnErrorMembers } from '../screens/mfa-webauthn-error';
-// export type { MfaWebAuthnNotAvailableErrorMembers } from '../screens/mfa-webauthn-not-available-error';
+export type { MfaWebAuthnNotAvailableErrorMembers } from '../screens/mfa-webauthn-not-available-error';
 export type { MfaWebAuthnRoamingEnrollmentMembers } from '../screens/mfa-webauthn-roaming-enrollment';
 export type { MfaWebAuthnRoamingChallengeMembers } from '../screens/mfa-webauthn-roaming-challenge';
 export type { MfaWebAuthnPlatformChallengeMembers } from '../screens/mfa-webauthn-platform-challenge';
