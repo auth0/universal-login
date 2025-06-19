@@ -1,5 +1,5 @@
 export type { LoginOptions, FederatedLoginOptions } from '../screens/login-id';
-export type { LoginPasswordOptions } from '../screens/login-password';
+export type { LoginPasswordOptions, FederatedLoginOptions as FederatedLoginPasswordOptions } from '../screens/login-password';
 export type { SubmitCodeOptions } from '../screens/login-passwordless-email-code';
 export type { SubmitOTPOptions } from '../screens/login-passwordless-sms-otp';
 export type { SubmitCaptchaOptions } from '../screens/interstitial-captcha';
