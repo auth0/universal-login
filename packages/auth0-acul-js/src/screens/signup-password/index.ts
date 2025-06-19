@@ -12,6 +12,7 @@ import type {
   ScreenMembersOnSignupPassword as ScreenOptions,
   TransactionMembersOnSignupPassword as TransactionOptions,
   SignupPasswordOptions,
+  FederatedSignupOptions
 } from '../../../interfaces/screens/signup-password';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
@@ -69,11 +70,41 @@ export default class SignupPassword extends BaseContext implements SignupPasswor
 
     await new FormHandler(options).submitData<SignupPasswordOptions>(payload);
   }
+
+  /**
+     * @remarks
+     * This methods handles allows signup via different social identifiers.
+     * Eg: Google, Facebook etc.
+     *
+     * @example
+     * import SignupPassword from "@auth0/auth0-acul-js/signup-id";
+     *
+     * const signupIdManager = new SignupPassword();
+     * const { transaction } = signupIdManager;
+     *
+     * //get social connections
+     * const socialConnection = transaction.getAlternateConnections(); //eg: "google-oauth2"
+     *
+     * const signupParams = {
+     *  connection : socialConnection[0].name, // "google-oauth2"
+     * };
+     *
+     * signupIdManager.federatedSignup(signupParams);
+     */
+  async federatedSignup(payload: FederatedSignupOptions): Promise<void> {
+    const options: FormOptions = {
+      state: this.transaction.state,
+      telemetry: [SignupPassword.screenIdentifier, 'federatedSignup'],
+    };
+
+    await new FormHandler(options).submitData<FederatedSignupOptions>(payload);
+  }
 }
 
 export {
   SignupPasswordMembers,
   SignupPasswordOptions,
+  FederatedSignupOptions,
   ScreenOptions as ScreenMembersOnSignupPassword,
   TransactionOptions as TransactionMembersOnSignupPassword,
 };
