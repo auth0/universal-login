@@ -1,7 +1,7 @@
 name: Monorepo Release
 
 on:
-  # PR-based release
+  # PR-based release 
   pull_request:
     branches:
       - 'release/*/v*'
