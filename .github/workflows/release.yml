@@ -6,7 +6,7 @@ on:
     branches:
       - 'release/*/v*'
     types:
-      - closed
+      - [closed, opened]
   workflow_dispatch:
 
 permissions:
