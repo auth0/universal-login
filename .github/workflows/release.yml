@@ -1,12 +1,7 @@
 name: Monorepo Release
 
 on:
-  # Tag-based release (for direct tag pushes, e.g. auth0-acul-js@1.2.3)
-  push:
-    tags:
-      - 'auth0-acul-*@*'
-
-  # PR-based release (for merging release branches, e.g. release/auth0-acul-js/v1.2.3)
+  # PR-based release
   pull_request:
     branches:
       - 'release/*/v*'
@@ -38,22 +33,6 @@ jobs:
 
       - name: Install deps
         run: npm install
-
-      # Parse package name and version from tag or branch
-      - name: Parse version and package
-        id: meta
-        run: |
-          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
-            TAG=${GITHUB_REF#refs/tags/}
-            NAME=$(echo $TAG | cut -d@ -f1)
-            VERSION=$(echo $TAG | cut -d@ -f2)
-          else
-            BRANCH="${{ github.event.pull_request.base.ref }}"
-            NAME=$(echo $BRANCH | cut -d'/' -f2)
-            VERSION=$(echo $BRANCH | cut -d'/' -f3 | sed 's/^v//')
-          fi
-          echo "name=$NAME" >> $GITHUB_OUTPUT
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Check tag exists (tag-based only)
         if: startsWith(github.ref, 'refs/tags/')
