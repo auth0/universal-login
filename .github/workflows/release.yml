@@ -5,7 +5,8 @@ on:
     branches:
       - 'release/*/v*'
     types:
-      - [closed, opened]
+      - closed
+      - opened
   workflow_dispatch:
 
 permissions:
@@ -14,9 +15,7 @@ permissions:
 
 jobs:
   release:
-    if: |
-      github.event_name == 'push' ||
-      (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
+    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
@@ -31,11 +30,15 @@ jobs:
       - name: Install deps
         run: npm install
 
-      - name: Check tag exists (tag-based only)
-        if: startsWith(github.ref, 'refs/tags/')
-        uses: ./.github/actions/tag-exists
-        with:
-          tag: ${{ github.ref_name }}
+      # Parse package name and version from branch
+      - name: Parse version and package
+        id: meta
+        run: |
+          BRANCH="${{ github.event.pull_request.base.ref }}"
+          NAME=$(echo $BRANCH | cut -d'/' -f2)
+          VERSION=$(echo $BRANCH | cut -d'/' -f3 | sed 's/^v//')
+          echo "name=$NAME" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Build
         uses: ./.github/actions/build
@@ -52,6 +55,6 @@ jobs:
       - name: Create GitHub Release
         uses: ./.github/actions/release-create
         with:
-          tag: ${{ github.ref_name }}
+          tag: ${{ steps.meta.outputs.name }}@${{ steps.meta.outputs.version }}
           name: ${{ steps.meta.outputs.name }}
           version: ${{ steps.meta.outputs.version }}
