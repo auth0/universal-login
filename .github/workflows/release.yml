@@ -47,6 +47,7 @@ jobs:
       - name: Publish to NPM
         uses: ./.github/actions/npm-publish
         with:
+          node-version: 22
           working-directory: packages/${{ steps.meta.outputs.name }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
