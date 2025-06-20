@@ -5,7 +5,8 @@ on:
     branches:
       - '*'
     types:
-      - [opened, closed]
+      - opened
+      - closed
   workflow_dispatch:
 permissions:
   contents: write
