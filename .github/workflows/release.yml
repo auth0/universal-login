@@ -3,7 +3,7 @@ name: Monorepo Release
 on:
   pull_request:
     branches:
-      - 'release/*/v*'
+      - 'release/auth0-acul-js/v*'
     types:
       - [opened, closed]
   workflow_dispatch:
