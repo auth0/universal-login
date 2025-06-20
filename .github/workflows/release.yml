@@ -3,9 +3,6 @@ name: Monorepo Release
 on:
   pull_request:
     types: [opened, reopened]
-  push:
-    branches:
-      - 'release-config'
   workflow_dispatch:
 permissions:
   contents: write
