@@ -8,9 +8,9 @@ inputs:
   version:
     required: true
   require-build:
-    default: true
+    required: true
   package:
-    default: true
+    required: true
   release-directory:
     default: './'
 
@@ -27,6 +27,13 @@ runs:
         node-version: ${{ inputs.node-version }}
         cache: 'npm'
         registry-url: 'https://registry.npmjs.org'
+
+    - name: Debug working directory
+      shell: bash
+      working-directory: packages/${{ inputs.package }}
+      run: |
+        pwd
+        ls -la
 
     - name: Install dependencies
       shell: bash
@@ -50,7 +57,7 @@ runs:
         else
           TAG="latest"
         fi
-        npm publish --provenance --access public --tag $TAG 
+        npm whoami
       env:
         NODE_AUTH_TOKEN: ${{ inputs.npm-token }}
         VERSION: ${{ inputs.version }}

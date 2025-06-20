@@ -1,15 +1,20 @@
-# .github/workflows/release.yml
 name: Monorepo Release
 
 on:
+  pull_request:
+    types: [opened, reopened]
   push:
-    tags:
-      - 'auth0-acul-*@*'
+    branches:
+      - '*'
+  workflow_dispatch:
+permissions:
+  contents: write
+  id-token: write
 
 jobs:
   release:
-    name: Release from Tag
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
@@ -19,23 +24,32 @@ jobs:
           node-version: 22
           cache: 'npm'
 
+      - name: Check Node.js version
+        run: node --version
       - name: Install deps
         run: npm install
 
+      # Parse package name and version from branch
       - name: Parse version and package
         id: meta
         run: |
-          TAG=${GITHUB_REF#refs/tags/}
-          NAME=$(echo $TAG | cut -d@ -f1)
-          VERSION=$(echo $TAG | cut -d@ -f2)
+          BRANCH="${{ github.event.pull_request.base.ref }}"
+          echo "BRANCH=$BRANCH"
+          NAME=$(echo $BRANCH | cut -d'/' -f2)
+          VERSION=$(echo $BRANCH | cut -d'/' -f3 | sed 's/^v//')
+          echo "NAME=$NAME"
+          echo "VERSION=$VERSION"
+          if [ -z "$NAME" ]; then
+            echo "ERROR: Package name could not be parsed from branch '$BRANCH'"
+            exit 1
+          fi
           echo "name=$NAME" >> $GITHUB_OUTPUT
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-
-      - name: Check tag exists
-        uses: ./.github/actions/tag-exists
-        with:
-          tag: ${{ github.ref_name }}
-
+      
+      - name: Debug meta outputs
+        run: |
+          echo "Parsed package name: ${{ steps.meta.outputs.name }}"
+          echo "Parsed version: ${{ steps.meta.outputs.version }}"
       - name: Build
         uses: ./.github/actions/build
         with:
@@ -44,13 +58,17 @@ jobs:
       - name: Publish to NPM
         uses: ./.github/actions/npm-publish
         with:
-          working-directory: packages/${{ steps.meta.outputs.name }}
+           node-version: 22
+           npm-token: ${{ secrets.NPM_TOKEN }}
+           version: ${{ steps.meta.outputs.version }}
+           require-build: true
+           package: ${{ steps.meta.outputs.name }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Create GitHub Release
         uses: ./.github/actions/release-create
         with:
-          tag: ${{ github.ref_name }}
+          tag: ${{ steps.meta.outputs.name }}@${{ steps.meta.outputs.version }}
           name: ${{ steps.meta.outputs.name }}
           version: ${{ steps.meta.outputs.version }}
