@@ -8,9 +8,9 @@ inputs:
   version:
     required: true
   require-build:
-    default: true
+    required: true
   package:
-    default: true
+    required: true
   release-directory:
     default: './'
 
