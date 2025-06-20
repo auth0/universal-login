@@ -38,6 +38,9 @@ jobs:
           VERSION=$(echo $BRANCH | cut -d'/' -f3 | sed 's/^v//')
           echo "name=$NAME" >> $GITHUB_OUTPUT
           echo "version=$VERSION" >> $GITHUB_OUTPUT
+      
+      - name: Show parsed package name
+        run: echo "Parsed package name: ${{ steps.meta.outputs.name }}"
 
       - name: Build
         uses: ./.github/actions/build
