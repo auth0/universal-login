@@ -204,6 +204,9 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 | 72     |reset-password                    | reset-password-mfa-webauthn-roaming-challenge | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaWebAuthnRoamingChallenge.html)   |
 | 73     |consent                   | consent | [Link](https://auth0.github.io/universal-login/classes/Classes.consent.html)   |
 | 74     |email-otp-challenge                   | email-otp-challenge | [Link](https://auth0.github.io/universal-login/classes/Classes.EmailOTPChallenge.html)   |
+| 75     |brute-force-protection                   | brute-force-protection-unblock | [Link](https://auth0.github.io/universal-login/classes/Classes.BruteForceProtectionUnblock.html)   |
+| 76     |brute-force-protection                   | brute-force-protection-unblock-failure   | [Link](https://auth0.github.io/universal-login/classes/Classes.BruteForceProtectionUnblockFailure.html)   |
+| 77     |brute-force-protection                   | brute-force-protection-unblock-success   | [Link](https://auth0.github.io/universal-login/classes/Classes.BruteForceProtectionUnblockSuccess.html)   |
 </details>
 
 
