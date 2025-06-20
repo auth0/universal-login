@@ -180,6 +180,18 @@
       "import": "./dist/screens/consent/index.js",
       "types": "./dist/types/src/screens/consent/index.d.ts"
     },
+    "./brute-force-protection-unblock": {
+      "import": "./dist/screens/brute-force-protection-unblock/index.js",
+      "types": "./dist/types/src/screens/brute-force-protection-unblock/index.d.ts"
+    },
+    "./brute-force-protection-unblock-success": {
+      "import": "./dist/screens/brute-force-protection-unblock-success/index.js",
+      "types": "./dist/types/src/screens/brute-force-protection-unblock-success/index.d.ts"
+    },
+    "./brute-force-protection-unblock-failure": {
+      "import": "./dist/screens/brute-force-protection-unblock-failure/index.js",
+      "types": "./dist/types/src/screens/brute-force-protection-unblock-failure/index.d.ts"
+    },
     "./accept-invitation": {
       "import": "./dist/screens/accept-invitation/index.js",
       "types": "./dist/types/src/screens/accept-invitation/index.d.ts"
