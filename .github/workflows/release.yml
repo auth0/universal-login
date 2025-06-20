@@ -2,7 +2,7 @@ name: Monorepo Release
 
 on:
   pull_request:
-    types: [opened, reopened, synchronize]
+    types: [opened, reopened]
   push:
     branches:
       - '*'
