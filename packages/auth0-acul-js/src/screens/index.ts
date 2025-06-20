@@ -65,7 +65,7 @@ export { default as EmailVerificationResult } from './email-verification-result'
 export { default as LoginEmailVerification } from './login-email-verification';
 export { default as MfaWebAuthnPlatformEnrollment } from './mfa-webauthn-platform-enrollment';
 export { default as MfaWebAuthnError } from './mfa-webauthn-error';
-// export { default as MfaWebAuthnNotAvailableError } from './mfa-webauthn-not-available-error';
+export { default as MfaWebAuthnNotAvailableError } from './mfa-webauthn-not-available-error';
 export { default as MfaWebAuthnRoamingEnrollment } from './mfa-webauthn-roaming-enrollment';
 export { default as MfaWebAuthnRoamingChallenge } from './mfa-webauthn-roaming-challenge'; 
 export { default as MfaWebAuthnPlatformChallenge } from './mfa-webauthn-platform-challenge';

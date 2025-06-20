@@ -288,6 +288,10 @@
       "import": "./dist/screens/mfa-webauthn-error/index.js",
       "types": "./dist/types/src/screens/mfa-webauthn-error/index.d.ts"
     },
+    "./mfa-webauthn-not-available-error": {
+      "import": "./dist/screens/mfa-webauthn-not-available-error/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-not-available-error/index.d.ts"
+    },
     "./mfa-webauthn-roaming-enrollment": {
       "import": "./dist/screens/mfa-webauthn-roaming-enrollment/index.js",
       "types": "./dist/types/src/screens/mfa-webauthn-roaming-enrollment/index.d.ts"
