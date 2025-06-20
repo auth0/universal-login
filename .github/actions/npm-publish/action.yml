@@ -28,6 +28,13 @@ runs:
         cache: 'npm'
         registry-url: 'https://registry.npmjs.org'
 
+    - name: Debug working directory
+      shell: bash
+      working-directory: packages/${{ inputs.package }}
+      run: |
+        pwd
+        ls -la
+
     - name: Install dependencies
       shell: bash
       working-directory: packages/${{ inputs.package }}
