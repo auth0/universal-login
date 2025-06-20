@@ -21,16 +21,12 @@ runs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Setup Node.js 22.x
+    - name: Setup Node
       uses: actions/setup-node@v4
       with:
-        node-version: 22
+        node-version: ${{ inputs.node-version }}
         cache: 'npm'
         registry-url: 'https://registry.npmjs.org'
-
-    - name: Debug Node.js version
-      shell: bash
-      run: node --version
 
     - name: Install dependencies
       shell: bash
