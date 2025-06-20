@@ -40,7 +40,7 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
       
       - name: Show parsed package name
-        run: echo "Parsed package name: ${{ steps.meta.outputs.name }}"
+        run: echo "Parsed package name ${{ steps.meta.outputs.name }}"
 
       - name: Build
         uses: ./.github/actions/build
