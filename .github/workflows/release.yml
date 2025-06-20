@@ -7,7 +7,6 @@ on:
     types:
       - [opened, closed]
   workflow_dispatch:
-
 permissions:
   contents: write
   id-token: write
