@@ -20,6 +20,10 @@ runs:
   steps:
     - name: Checkout code
       uses: actions/checkout@v4
+    
+    - name: Node version before setup
+      shell: bash
+      run: node --version || echo "Node not installed"
 
     - name: Setup Node
       uses: actions/setup-node@v4
