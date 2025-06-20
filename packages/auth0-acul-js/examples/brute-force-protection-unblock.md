@@ -1,4 +1,4 @@
-## unblockAccount
+## unblock Account
 
 This methods handles unblocking the account.
 
