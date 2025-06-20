@@ -2,8 +2,6 @@ name: Monorepo Release
 
 on:
   pull_request:
-    branches:
-      - '*'
     types:
       - [opened, closed]
   workflow_dispatch:
