@@ -24,6 +24,8 @@ jobs:
           node-version: 22
           cache: 'npm'
 
+      - name: Check Node.js version
+        run: node --version
       - name: Install deps
         run: npm install
 
