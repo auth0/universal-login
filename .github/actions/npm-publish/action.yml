@@ -20,15 +20,11 @@ runs:
   steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    
-    - name: Node version before setup
-      shell: bash
-      run: node --version || echo "Node not installed"
 
-    - name: Setup Node
+    - name: Setup Node.js 22.x
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ inputs.node-version }}
+        node-version: 22
         cache: 'npm'
         registry-url: 'https://registry.npmjs.org'
 
