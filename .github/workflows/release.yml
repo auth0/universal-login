@@ -52,7 +52,6 @@ jobs:
           version: ${{ steps.meta.outputs.version }}
           require-build: true
           package: ${{ steps.meta.outputs.name }}
-          working-directory: packages/${{ steps.meta.outputs.name }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
