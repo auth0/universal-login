@@ -28,6 +28,10 @@ runs:
         cache: 'npm'
         registry-url: 'https://registry.npmjs.org'
 
+    - name: Debug Node.js version
+      shell: bash
+      run: node --version
+
     - name: Install dependencies
       shell: bash
       working-directory: packages/${{ inputs.package }}
