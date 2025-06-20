@@ -61,7 +61,7 @@ export type { LogoutMembers } from '../screens/logout';
 export type { LogoutAbortedMembers } from '../screens/logout-aborted';
 export type { LogoutCompleteMembers } from '../screens/logout-complete';
 export type { EmailVerificationResultMembers } from '../screens/email-verification-result';
-// export type { EmailOTPChallengeMembers } from '../screens/email-otp-challenge';
+export type { EmailOTPChallengeMembers } from '../screens/email-otp-challenge';
 export type { LoginEmailVerificationMembers } from '../screens/login-email-verification'
 export type { MfaWebAuthnPlatformEnrollmentMembers } from '../screens/mfa-webauthn-platform-enrollment';
 export type { MfaWebAuthnErrorMembers } from '../screens/mfa-webauthn-error';
@@ -74,3 +74,6 @@ export type { MfaWebAuthnChangeKeyNicknameMembers } from '../screens/mfa-webauth
 export type { ConsentMembers } from '../screens/consent';
 export type { ResetPasswordMfaWebAuthnPlatformChallengeMembers } from '../screens/reset-password-mfa-webauthn-platform-challenge';
 export type { ResetPasswordMfaWebAuthnRoamingChallengeMembers } from '../screens/reset-password-mfa-webauthn-roaming-challenge';
+export type { BruteForceProtectionUnblockMembers } from '../screens/brute-force-protection-unblock';
+export type { BruteForceProtectionUnblockFailureMembers } from '../screens/brute-force-protection-unblock-failure';
+export type { BruteForceProtectionUnblockSuccessMembers } from '../screens/brute-force-protection-unblock-success';
