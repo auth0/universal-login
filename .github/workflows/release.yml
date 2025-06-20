@@ -5,7 +5,7 @@ on:
     types: [opened, reopened]
   push:
     branches:
-      - '*'
+      - 'release-config'
   workflow_dispatch:
 permissions:
   contents: write
