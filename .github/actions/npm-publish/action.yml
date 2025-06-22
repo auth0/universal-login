@@ -35,10 +35,6 @@ runs:
         pwd
         ls -la
 
-    - name: Install dependencies
-      shell: bash
-      working-directory: packages/${{ inputs.package }}
-
     - name: Build package
       if: inputs.require-build == 'true'
       shell: bash
