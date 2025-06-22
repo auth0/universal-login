@@ -56,8 +56,13 @@ jobs:
           echo "Parsed package name: ${{ steps.meta.outputs.name }}"
           echo "Parsed version: ${{ steps.meta.outputs.version }}"
 
-      - name: Build package
-        run: npm run build --workspace=packages/${{ steps.meta.outputs.name }}
+      - name: Install rimraf globally
+        run: npm install -g rimraf
+
+      - name: Build
+        uses: ./.github/actions/build
+        with:
+          working-directory: packages/${{ steps.meta.outputs.name }}
 
       - name: Publish to NPM
         uses: ./.github/actions/npm-publish
