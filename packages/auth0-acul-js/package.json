@@ -338,8 +338,5 @@
   ],
   "publishConfig": {
     "access": "public"
-  },
-  "devDependencies": {
-    "eslint": "^9.29.0"
   }
 }
