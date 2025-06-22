@@ -59,10 +59,8 @@ jobs:
       - name: Install rimraf globally
         run: npm install -g rimraf
 
-      - name: Build
-        uses: ./.github/actions/build
-        with:
-          working-directory: packages/${{ steps.meta.outputs.name }}
+      - name: Build package using workspace
+        run: npm run build --workspace=packages/${{ steps.meta.outputs.name }}
 
       - name: Publish to NPM
         uses: ./.github/actions/npm-publish
