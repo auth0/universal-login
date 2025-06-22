@@ -30,6 +30,11 @@ jobs:
       - name: Install deps
         run: npm install
 
+      - name: Set up .npmrc for publishing
+        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
       # Parse package name and version from branch
       - name: Parse version and package
         id: meta
