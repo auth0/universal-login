@@ -38,7 +38,7 @@ runs:
     - name: Install dependencies
       shell: bash
       working-directory: packages/${{ inputs.package }}
-      run: npm ci --include=dev
+      run: npm install
 
     - name: Build package
       if: inputs.require-build == 'true'
