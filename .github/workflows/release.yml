@@ -66,10 +66,10 @@ jobs:
         run: npm install -g rimraf
 
       - name: Lint package
-        run: npm run lint --workspace=@${{ steps.meta.outputs.name }}
+        run: npm run lint --workspace=${{ steps.meta.outputs.name }}
 
       - name: Build package using workspace
-        run: npm run build --workspace=@${{ steps.meta.outputs.name }}
+        run: npm run build --workspace=${{ steps.meta.outputs.name }}
 
       - name: Publish to NPM
         uses: ./.github/actions/npm-publish
