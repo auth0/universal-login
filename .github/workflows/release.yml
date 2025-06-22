@@ -26,6 +26,7 @@ jobs:
 
       - name: Check Node.js version
         run: node --version
+
       - name: Install deps
         run: npm install
 
@@ -54,10 +55,9 @@ jobs:
         run: |
           echo "Parsed package name: ${{ steps.meta.outputs.name }}"
           echo "Parsed version: ${{ steps.meta.outputs.version }}"
-      - name: Build
-        uses: ./.github/actions/build
-        with:
-          working-directory: packages/${{ steps.meta.outputs.name }}
+
+      - name: Build package
+        run: npm run build --workspace=${{ steps.meta.outputs.name }}
 
       - name: Publish to NPM
         uses: ./.github/actions/npm-publish
