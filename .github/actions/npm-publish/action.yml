@@ -12,7 +12,7 @@ inputs:
   package:
     required: true
   release-directory:
-    default: './'
+    required: true
 
 runs:
   using: composite
@@ -30,7 +30,7 @@ runs:
 
     - name: Debug working directory
       shell: bash
-      working-directory: packages/${{ inputs.package }}
+      working-directory: packages/${{ inputs.release-directory }}
       run: |
         pwd
         ls -la
@@ -38,12 +38,12 @@ runs:
     - name: Build package
       if: inputs.require-build == 'true'
       shell: bash
-      working-directory: packages/${{ inputs.package }}
+      working-directory: packages/${{ inputs.release-directory }}
       run: npm run build
 
     - name: Publish release to NPM
       shell: bash
-      working-directory: packages/${{ inputs.package }}
+      working-directory: packages/${{ inputs.release-directory }}
       run: |
         if [[ "${VERSION}" == *"beta"* ]]; then
           TAG="beta"
