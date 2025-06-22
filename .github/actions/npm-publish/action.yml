@@ -18,14 +18,6 @@ runs:
   using: composite
 
   steps:
-    - name: Set up .npmrc for publishing
-      shell: bash
-      run: echo "//registry.npmjs.org/:_authToken=${{ inputs.npm-token }}" > ~/.npmrc
-
-    - name: Debug .npmrc
-      shell: bash
-      run: cat ~/.npmrc | grep _authToken || echo ".npmrc not found"
-
     - name: Checkout code
       uses: actions/checkout@v4
 
@@ -54,6 +46,8 @@ runs:
         else
           TAG="latest"
         fi
+
+        echo "Publishing version ${VERSION} with tag ${TAG}..."
         npm whoami
       env:
         NODE_AUTH_TOKEN: ${{ inputs.npm-token }}
