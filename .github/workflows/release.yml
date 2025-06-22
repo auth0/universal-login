@@ -67,7 +67,7 @@ jobs:
 
       - name: List interfaces files
         run: ls -la interfaces
-        working-directory: packages/${{ steps.meta.outputs.name }}
+        working-directory: ${{ steps.meta.outputs.name }}
 
       - name: Lint package
         run: npx eslint "interfaces/**/*.ts" --no-ignore
