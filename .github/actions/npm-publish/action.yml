@@ -22,6 +22,10 @@ runs:
       shell: bash
       run: echo "//registry.npmjs.org/:_authToken=${{ inputs.npm-token }}" > ~/.npmrc
 
+    - name: Debug .npmrc
+      shell: bash
+      run: cat ~/.npmrc | grep _authToken || echo ".npmrc not found"
+
     - name: Checkout code
       uses: actions/checkout@v4
 
