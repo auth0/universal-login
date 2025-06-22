@@ -18,6 +18,10 @@ runs:
   using: composite
 
   steps:
+    - name: Set up .npmrc for publishing
+      shell: bash
+      run: echo "//registry.npmjs.org/:_authToken=${{ inputs.npm-token }}" > ~/.npmrc
+
     - name: Checkout code
       uses: actions/checkout@v4
 
