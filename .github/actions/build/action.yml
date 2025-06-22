@@ -19,7 +19,6 @@ runs:
 
     - name: Install dependencies
       shell: bash
-      run: npm ci --include=dev
 
     - name: Build package
       shell: bash
