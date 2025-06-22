@@ -37,19 +37,23 @@ jobs:
           REF="${{ github.head_ref || github.ref_name }}"
           echo "REF=$REF"
 
-          NAME=$(echo "$REF" | cut -d'/' -f2)
+          DIR_NAME=$(echo "$REF" | cut -d'/' -f2)
           VERSION=$(echo "$REF" | cut -d'/' -f3 | sed 's/^v//')
 
-          echo "Parsed NAME=$NAME"
-          echo "Parsed VERSION=$VERSION"
+          PACKAGE_JSON_PATH="packages/$DIR_NAME/package.json"
+          PACKAGE_NAME=$(jq -r .name "$PACKAGE_JSON_PATH")
 
-          if [ -z "$NAME" ] || [ -z "$VERSION" ]; then
-            echo "ERROR: Could not parse package name or version from branch '$REF'"
+          echo "Parsed package: $PACKAGE_NAME"
+          echo "Parsed version: $VERSION"
+
+          if [ -z "$PACKAGE_NAME" ] || [ -z "$VERSION" ]; then
+            echo "ERROR: Could not parse package name or version."
             exit 1
           fi
 
-          echo "name=$NAME" >> $GITHUB_OUTPUT
+          echo "name=$PACKAGE_NAME" >> $GITHUB_OUTPUT
           echo "version=$VERSION" >> $GITHUB_OUTPUT
+
             
       - name: Debug meta outputs
         run: |
@@ -60,10 +64,10 @@ jobs:
         run: npm install -g rimraf
 
       - name: Lint package
-        run: npm run lint --workspace=packages/${{ steps.meta.outputs.name }}
+        run: npm run lint --workspace=${{ steps.meta.outputs.name }}
 
       - name: Build package using workspace
-        run: npm run build --workspace=packages/${{ steps.meta.outputs.name }}
+        run: npm run build --workspace=${{ steps.meta.outputs.name }}
 
       - name: Publish to NPM
         uses: ./.github/actions/npm-publish
