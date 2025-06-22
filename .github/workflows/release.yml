@@ -33,20 +33,20 @@ jobs:
       - name: Parse version and package
         id: meta
         run: |
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            BRANCH="${{ github.base_ref }}"
-          else
-            BRANCH="${{ github.ref }}"
-          fi
-          echo "BRANCH=$BRANCH"
-          NAME=$(echo $BRANCH | cut -d'/' -f2)
-          VERSION=$(echo $BRANCH | cut -d'/' -f3 | sed 's/^v//')
-          echo "NAME=$NAME"
-          echo "VERSION=$VERSION"
-          if [ -z "$NAME" ]; then
-            echo "ERROR: Package name could not be parsed from branch '$BRANCH'"
+          REF="${{ github.head_ref || github.ref_name }}"
+          echo "REF=$REF"
+
+          NAME=$(echo "$REF" | cut -d'/' -f2)
+          VERSION=$(echo "$REF" | cut -d'/' -f3 | sed 's/^v//')
+
+          echo "Parsed NAME=$NAME"
+          echo "Parsed VERSION=$VERSION"
+
+          if [ -z "$NAME" ] || [ -z "$VERSION" ]; then
+            echo "ERROR: Could not parse package name or version from branch '$REF'"
             exit 1
           fi
+
           echo "name=$NAME" >> $GITHUB_OUTPUT
           echo "version=$VERSION" >> $GITHUB_OUTPUT
             
