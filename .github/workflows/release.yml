@@ -65,6 +65,10 @@ jobs:
       - name: Install rimraf globally
         run: npm install -g rimraf
 
+      - name: List interfaces files
+        run: ls -la interfaces
+        working-directory: packages/@auth0/auth0-acul-js
+
       - name: Lint package
         run: npx eslint "interfaces/**/*.ts" --no-ignore
         working-directory: "packages/${{ steps.meta.outputs.scope }}/${{ steps.meta.outputs.package }}"
