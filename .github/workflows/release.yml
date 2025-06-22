@@ -43,8 +43,9 @@ jobs:
           PACKAGE_JSON_PATH="packages/$DIR_NAME/package.json"
           PACKAGE_NAME=$(jq -r .name "$PACKAGE_JSON_PATH")
 
-          echo "Parsed package: $PACKAGE_NAME"
-          echo "Parsed version: $VERSION"
+          echo "Parsed DIR_NAME=$DIR_NAME"
+          echo "Parsed PACKAGE_NAME=$PACKAGE_NAME"
+          echo "Parsed VERSION=$VERSION"
 
           if [ -z "$PACKAGE_NAME" ] || [ -z "$VERSION" ]; then
             echo "ERROR: Could not parse package name or version."
@@ -52,6 +53,7 @@ jobs:
           fi
 
           echo "name=$PACKAGE_NAME" >> $GITHUB_OUTPUT
+          echo "dir=$DIR_NAME" >> $GITHUB_OUTPUT
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
             
@@ -77,6 +79,7 @@ jobs:
            version: ${{ steps.meta.outputs.version }}
            require-build: true
            package: ${{ steps.meta.outputs.name }}
+           working-directory: packages/${{ steps.meta.outputs.dir }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
