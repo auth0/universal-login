@@ -57,7 +57,7 @@ jobs:
           echo "Parsed version: ${{ steps.meta.outputs.version }}"
 
       - name: Build package
-        run: npm run build --workspace=${{ steps.meta.outputs.name }}
+        run: npm run build --workspace=packages/${{ steps.meta.outputs.name }}
 
       - name: Publish to NPM
         uses: ./.github/actions/npm-publish
