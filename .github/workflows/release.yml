@@ -67,7 +67,7 @@ jobs:
 
       - name: Lint package
         run: npx eslint "interfaces/**/*.ts" --no-ignore
-        working-directory: "packages/${{ steps.meta.outputs.name }}"
+        working-directory: "packages/${{ steps.meta.outputs.scope }}/${{ steps.meta.outputs.package }}"
 
       - name: Build package using workspace
         run: npm run build --workspace=${{ steps.meta.outputs.name }}
