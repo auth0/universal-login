@@ -35,12 +35,6 @@ runs:
         pwd
         ls -la
 
-    - name: Build package
-      if: inputs.require-build == 'true'
-      shell: bash
-      working-directory: packages/${{ inputs.release-directory }}
-      run: npm run build
-
     - name: Publish release to NPM
       shell: bash
       working-directory: packages/${{ inputs.release-directory }}
