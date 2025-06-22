@@ -39,7 +39,7 @@ jobs:
           VERSION=$(echo $BRANCH | cut -d'/' -f3 | sed 's/^v//')
           echo "NAME=$NAME"
           echo "VERSION=$VERSION"
-          if [ -z "$NAME" ]; then
+          if [ -z "$NAME" ] || [ "$NAME" = "master" ] || [ "$NAME" = "main" ]; then
             echo "ERROR: Package name could not be parsed from branch '$BRANCH'"
             exit 1
           fi
