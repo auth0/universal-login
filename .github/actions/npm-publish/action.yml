@@ -50,5 +50,5 @@ runs:
         echo "Publishing version ${VERSION} with tag ${TAG}..."
         npm whoami
       env:
-        NODE_AUTH_TOKEN: ${{ inputs.npm-token }}
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         VERSION: ${{ inputs.version }}
