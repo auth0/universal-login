@@ -27,6 +27,7 @@ runs:
         node-version: ${{ inputs.node-version }}
         cache: 'npm'
         registry-url: 'https://registry.npmjs.org'
+        node-auth-token: ${{ inputs.npm-token }}
 
     - name: Debug working directory
       shell: bash
