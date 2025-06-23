@@ -35,20 +35,20 @@ runs:
         pwd
         ls -la
 
-    # - name: Publish release to NPM
-    #   shell: bash
-    #   working-directory: packages/${{ inputs.release-directory }}
-    #   run: |
-    #     if [[ "${VERSION}" == *"beta"* ]]; then
-    #       TAG="beta"
-    #     elif [[ "${VERSION}" == *"alpha"* ]]; then
-    #       TAG="alpha"
-    #     else
-    #       TAG="latest"
-    #     fi
+    - name: Publish release to NPM
+      shell: bash
+      working-directory: packages/${{ inputs.release-directory }}
+      run: |
+        if [[ "${VERSION}" == *"beta"* ]]; then
+          TAG="beta"
+        elif [[ "${VERSION}" == *"alpha"* ]]; then
+          TAG="alpha"
+        else
+          TAG="latest"
+        fi
 
-    #     echo "Publishing version ${VERSION} with tag ${TAG}..."
-    #     npm whoami
-    #   env:
-    #     NODE_AUTH_TOKEN: ${{ inputs.npm-token }}
-    #     VERSION: ${{ inputs.version }}
+        echo "Publishing version ${VERSION} with tag ${TAG}..."
+        npm whoami
+      env:
+        NODE_AUTH_TOKEN: ${{ inputs.npm-token }}
+        VERSION: ${{ inputs.version }}
