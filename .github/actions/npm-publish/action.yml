@@ -24,7 +24,7 @@ runs:
     - name: Setup Node
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ inputs.node-version }}
+        node-version: 22
         cache: 'npm'
         registry-url: 'https://registry.npmjs.org'
         node-auth-token: ${{ inputs.npm-token }}
