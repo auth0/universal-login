@@ -35,6 +35,10 @@ runs:
         pwd
         ls -la
 
+    - name: Set up .npmrc for publishing
+      shell: bash
+      run: echo "//registry.npmjs.org/:_authToken=${{ inputs.npm-token }}" > ~/.npmrc
+
     - name: Publish release to NPM
       shell: bash
       working-directory: packages/${{ inputs.release-directory }}

@@ -71,10 +71,6 @@ jobs:
       - name: Build package using workspace
         run: npm run build --workspace=${{ steps.meta.outputs.name }}
 
-      - name: Set up .npmrc for publishing
-        shell: bash
-        run: echo "//registry.npmjs.org/:_authToken=${{ inputs.npm-token }}" > ~/.npmrc
-
       - name: Publish to NPM
         uses: ./.github/actions/npm-publish
         with:
