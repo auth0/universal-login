@@ -68,7 +68,7 @@ jobs:
         uses: ./.github/actions/npm-publish
         with:
            node-version: 22
-           npm-token: ${{ secrets.npm-token }}
+           npm-token: ${{ secrets.NPM_TOKEN }}
            version: ${{ steps.meta.outputs.version }}
            require-build: true
            package: ${{ steps.meta.outputs.name }}
