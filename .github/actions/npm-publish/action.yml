@@ -29,17 +29,10 @@ runs:
         registry-url: 'https://registry.npmjs.org'
         node-auth-token: ${{ inputs.npm-token }}
 
-    - name: Debug working directory
-      shell: bash
-      working-directory: packages/${{ inputs.release-directory }}
-      run: |
-        pwd
-        ls -la
-
     - name: Publish release to NPM
       working-directory: packages/${{ inputs.release-directory }}
       env:
-        NODE_AUTH_TOKEN: ${{ inputs.npm-token }}
+        NODE_TOKEN: ${{ inputs.npm-token }}
         VERSION: ${{ inputs.version }}
       run: |
         if [[ "${VERSION}" == *"beta"* ]]; then
@@ -49,7 +42,6 @@ runs:
         else
           TAG="latest"
         fi
-
-        echo "Publishing version ${VERSION} with tag ${TAG}..."
+        npm whoami
       shell: bash
 

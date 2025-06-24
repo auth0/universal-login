@@ -56,12 +56,6 @@ jobs:
           echo "dir=$DIR_NAME" >> $GITHUB_OUTPUT
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
-            
-      - name: Debug meta outputs
-        run: |
-          echo "Parsed package name: ${{ steps.meta.outputs.name }}"
-          echo "Parsed version: ${{ steps.meta.outputs.version }}"
-
       - name: Install rimraf globally
         run: npm install -g rimraf
 
