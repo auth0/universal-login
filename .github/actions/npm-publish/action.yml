@@ -42,6 +42,6 @@ runs:
         else
           TAG="latest"
         fi
-        npm access ls-packages
+        npm access list packages
       shell: bash
 
