@@ -29,10 +29,6 @@ runs:
         registry-url: 'https://registry.npmjs.org'
         token: ${{ inputs.npm-token }}
 
-    - name: Set up .npmrc for publishing
-      shell: bash
-      working-directory: packages/${{ inputs.release-directory }}
-
     - name: Publish release to NPM
       working-directory: packages/${{ inputs.release-directory }}
       env:
