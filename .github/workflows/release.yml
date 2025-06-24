@@ -2,10 +2,10 @@ name: Monorepo Release
 
 on:
   pull_request:
-    types: [closed,opened, reopened, synchronize, ready_for_review]
-  push:
+    types:
+      - closed
     branches:
-      - '*'
+      - 'release/*/v*'
   workflow_dispatch:
 permissions:
   contents: write
@@ -13,8 +13,9 @@ permissions:
 
 jobs:
   release:
+    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-
+    
     steps:
       - uses: actions/checkout@v4
 
