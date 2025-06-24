@@ -27,12 +27,12 @@ runs:
         node-version: 22
         cache: 'npm'
         registry-url: 'https://registry.npmjs.org'
-        node-auth-token: ${{ inputs.npm-token }}
+        token: ${{ inputs.npm-token }}
 
     - name: Publish release to NPM
       working-directory: packages/${{ inputs.release-directory }}
       env:
-        NODE_TOKEN: ${{ inputs.npm-token }}
+        NODE_AUTH_TOKEN: ${{ inputs.npm-token }}
         VERSION: ${{ inputs.version }}
       run: |
         if [[ "${VERSION}" == *"beta"* ]]; then
