@@ -39,7 +39,7 @@ runs:
     - name: Publish release to NPM
       working-directory: packages/${{ inputs.release-directory }}
       env:
-        NPM_CONFIG_USERCONFIG: ${{ github.workspace }}/packages/${{ inputs.release-directory }}/.npmrc
+        NODE_AUTH_TOKEN: ${{ inputs.npm-token }}
         VERSION: ${{ inputs.version }}
       run: |
         if [[ "${VERSION}" == *"beta"* ]]; then
@@ -51,6 +51,5 @@ runs:
         fi
 
         echo "Publishing version ${VERSION} with tag ${TAG}..."
-        npm whoami
       shell: bash
 
