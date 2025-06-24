@@ -45,7 +45,13 @@ export interface LoginPasswordOptions {
   [key: string]: string | number | boolean | undefined;
 }
 
+export interface FederatedLoginOptions {
+  connection: string;
+  [key: string]: string | number | boolean;
+}
+
 export interface LoginPasswordMembers extends BaseMembers {
   screen: ScreenMembersOnLoginPassword;
   login(payload: LoginPasswordOptions): Promise<void>;
+  federatedLogin(payload: FederatedLoginOptions): Promise<void>;
 }
