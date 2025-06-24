@@ -66,15 +66,13 @@ const CustomizedConsentScreen: React.FC = () => {
             </h2>
             <ul className="space-y-3 max-h-48 overflow-y-auto pr-2">
               {screenData.scopes.map((scope: Scope) => (
-                <li key={scope.name} className="flex items-start p-3 bg-gray-50 rounded-lg shadow-sm">
+                <li key={scope.value} className="flex items-start p-3 bg-gray-50 rounded-lg shadow-sm">
                   <svg className="flex-shrink-0 h-6 w-6 text-blue-500 mt-0.5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   <div>
-                    <p className="text-md font-medium text-gray-800">{scope.description || scope.name}</p>
-                    {scope.values && scope.values.length > 0 && (
-                      <p className="text-xs text-gray-500 pl-1">Details: {scope.values.join(', ')}</p>
-                    )}
+                    <p className="text-sm font-medium text-gray-700">{scope.value}</p>
+                    <p className="text-sm font-small text-gray-700">{scope.description}</p>
                   </div>
                 </li>
               ))}

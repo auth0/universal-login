@@ -64,15 +64,13 @@ const ConsentScreen: React.FC = () => {
             </h2>
             <ul className="space-y-3 max-h-60 overflow-y-auto pr-2">
               {screen.scopes.map((scope: Scope) => (
-                <li key={scope.name} className="flex items-start">
+                <li key={scope.value} className="flex items-start">
                   <svg className="flex-shrink-0 h-5 w-5 text-green-500 mt-0.5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                   <div>
-                    <p className="text-sm font-medium text-gray-700">{scope.description || scope.name}</p>
-                    {scope.values && scope.values.length > 0 && (
-                      <p className="text-xs text-gray-500 pl-1">Details: {scope.values.join(', ')}</p>
-                    )}
+                    <p className="text-sm font-medium text-gray-700">{scope.value}</p>
+                    <p className="text-sm font-small text-gray-700">{scope.description}</p>
                   </div>
                 </li>
               ))}
@@ -144,7 +142,7 @@ if (shouldHideScopes) {
 } else if (requestedScopes) {
   console.log("Requested permissions:");
   requestedScopes.forEach(scope => {
-    console.log(`- ${scope.description} (${scope.name})`);
+    console.log(`- ${scope.description} (${scope.value})`);
   });
 }
 
