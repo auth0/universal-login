@@ -145,7 +145,7 @@ export default CustomizedConsentScreen;
 
 ## Usage Examples
 
-### Initialize the SDK Class
+### Initialize the SDK Class and get screen related properties
 
 First, import and instantiate the class for the Customized Consent screen:
 
