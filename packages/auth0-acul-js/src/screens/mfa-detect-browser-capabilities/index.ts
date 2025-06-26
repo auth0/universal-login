@@ -1,4 +1,4 @@
-import { isJsAvailable, isBrave, isWebAuthAvailable, isWebAuthPlatformAvailable } from '../../../src/utils/browser-capabilities';
+import { getBrowserCapabilities } from '../../../src/utils/browser-capabilities';
 import { ScreenIds } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
@@ -35,12 +35,10 @@ export default class MfaDetectBrowserCapabilities extends BaseContext implements
       state: this.transaction.state,
       telemetry: [MfaDetectBrowserCapabilities.screenIdentifier, 'detectCapabilities'],
     };
+    const browserCapabilities = await getBrowserCapabilities()
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
-      'js-available': isJsAvailable(),
-      'is-brave': await isBrave(),
-      'webauthn-available': isWebAuthAvailable(),
-      'webauthn-platform-available': await isWebAuthPlatformAvailable(),
+      ...browserCapabilities,
       action: 'pick-authenticator',
     });
   }
