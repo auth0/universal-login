@@ -22,9 +22,9 @@ describe('Consent Screen SDK', () => {
 
   const mockTransactionState = 'consent-tx-state-123';
   const mockScopes: Scope[] = [
-    { name: 'openid', description: 'Sign in', values: [] },
-    { name: 'profile', description: 'View your profile information', values: [] },
-    { name: 'email', description: 'View your email address', values: [] },
+    { value: 'openid', description: 'Sign in' },
+    { value: 'profile', description: 'View your profile information' },
+    { value: 'email', description: 'View your email address' },
   ];
 
   beforeEach(() => {

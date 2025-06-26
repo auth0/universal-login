@@ -18,7 +18,7 @@ describe('CustomizedConsent Screen SDK', () => {
 
   const mockTransactionState = 'customized-consent-tx-state-456';
   const mockScopes: Scope[] = [
-    { name: 'read:data', description: 'Read your data', values: [] },
+    { value: 'read:data', description: 'Read your data' },
   ];
   const mockAuthDetails: AuthorizationDetail[] = [
     { type: 'transaction', amount: '100', currency: 'USD' },

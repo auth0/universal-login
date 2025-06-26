@@ -13,9 +13,9 @@ jest.mock('../../../../src/shared/screen');
  */
 describe('Consent ScreenOverride', () => {
   const validScopes: Scope[] = [
-    { name: 'openid', description: 'Sign in', values: [] },
-    { name: 'profile', description: 'View your profile information', values: ['name', 'picture'] },
-    { name: 'email', description: 'View your email address', values: [] },
+    { value: 'openid', description: 'Sign in' },
+    { value: 'profile', description: 'View your profile information' },
+    { value: 'email', description: 'View your email address' },
   ];
 
   beforeEach(() => {

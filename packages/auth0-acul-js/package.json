@@ -184,6 +184,10 @@
       "import": "./dist/screens/consent/index.js",
       "types": "./dist/types/src/screens/consent/index.d.ts"
     },
+    "./customized-consent": {
+      "import": "./dist/screens/customized-consent/index.js",
+      "types": "./dist/types/src/screens/customized-consent/index.d.ts"
+    },
     "./brute-force-protection-unblock": {
       "import": "./dist/screens/brute-force-protection-unblock/index.js",
       "types": "./dist/types/src/screens/brute-force-protection-unblock/index.d.ts"
