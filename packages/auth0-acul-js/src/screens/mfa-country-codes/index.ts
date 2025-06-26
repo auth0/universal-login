@@ -45,7 +45,7 @@ export default class MfaCountryCodes extends BaseContext implements MfaCountryCo
    * const {countryCode,phonePrefix } = phonePrefixes[0];
    *
    * await mfaCountryCodes.selectCountryCode({
-   *   countryCode: 'US,
+   *   countryCode: 'US',
    *   phonePrefix: '+1',
    * });
    * ```
