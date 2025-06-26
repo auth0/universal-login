@@ -83,11 +83,11 @@ export default MfaCountryCodesScreen;
   // Get the available country codes and phone prefixes
   const { screen } = mfaCountryCodes;
   const { phonePrefixes } = screen.data;
-  const prefix = phonePrefixes[0];
+  const { countryCode, phonePrefix } = phonePrefixes[0];
   
   await mfaCountryCodes.selectCountryCode({
-    countryCode: prefix.countryCode,
-    phonePrefix: prefix.phonePrefix,
+    countryCode: 'US',
+    phonePrefix: '+1'
   });
 ```
 
