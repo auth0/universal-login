@@ -39,9 +39,9 @@ export interface PhonePrefix {
   /** The country name */
   country: string;
   /** The country code (e.g. 'US', 'GB') */
-  country_code: string;
+  countryCode: string;
   /** The phone prefix (e.g. '+1', '+44') */
-  phone_prefix: string;
+  phonePrefix: string;
 }
 
 export interface Scope {

@@ -8,7 +8,7 @@ import type { ScreenMembers, PhonePrefix } from '../models/screen';
 export interface ScreenMembersOnMfaCountryCodes extends ScreenMembers {
   data: {
     /** List of available phone prefixes */
-    phone_prefixes: PhonePrefix[];
+    phonePrefixes: PhonePrefix[];
   } | null;
 }
 
@@ -17,9 +17,9 @@ export interface ScreenMembersOnMfaCountryCodes extends ScreenMembers {
  */
 export interface SelectCountryCodeOptions {
   /** The country code (e.g. 'US', 'GB') */
-  country_code: string;
+  countryCode: string;
   /** The phone prefix (e.g. '+1', '+44') */
-  phone_prefix: string;
+  phonePrefix: string;
   /** Any additional custom options */
   [key: string]: string | number | boolean | undefined;
 }
