@@ -220,7 +220,7 @@ We appreciate feedback and contribution to this repo! Before you get started, pl
 
 ### Raise an issue
 
-To provide feedback or report a bug, please [raise an issue on our issue tracker](https://github.com/auth0/universal-login/issues).
+To provide feedback or report bug, please [raise an issue on our issue tracker](https://github.com/auth0/universal-login/issues).
 
 ### Vulnerability Reporting
 
