@@ -1,4 +1,4 @@
-## [auth0-acul-js-1.0.0-beta.0](https://github.com/auth0/universal-login/tree/auth0-acul-js-1.0.0-beta.0) (2025-06-30)
+## [auth0-acul-js-0.1.0-beta.6](https://github.com/auth0/universal-login/tree/auth0-acul-js-1.0.0-beta.0) (2025-06-30)
 
 **Added**
 - Chore: Support for new screens, enhancement and breaking changes for release-7 [\#125](https://github.com/auth0/universal-login/pull/125) ([ankita10119](https://github.com/ankita10119))
