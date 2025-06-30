@@ -16,9 +16,9 @@
 
 - **Added** `getError` method to the SDK, allowing developers to retrieve detailed authentication errors in the sample app.
 ```javascript
-  import LoginInstance from "@auth0/auth0-acul-js/login";
+  import Login from "@auth0/auth0-acul-js/login";
 
-  const loginIdManager = new LoginInstance();
+  const loginIdManager = new Login();
 
   const errors = loginIdManager.getError();
   if (errors) {
