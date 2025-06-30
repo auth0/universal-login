@@ -13,7 +13,7 @@ import MfaOtpEnrollmentQr from '@auth0/auth0-acul-js/mfa-otp-enrollment-qr';
 const MfaOtpEnrollmentQrScreen: React.FC = () => {
   const mfaOtpEnrollmentQr = new MfaOtpEnrollmentQr();
   const { screen, transaction } = mfaOtpEnrollmentQr;
-  const { qr_code } = screen.data || {};
+  const { qrCode } = screen.data || {};
   
   const [otpCode, setOtpCode] = useState('');
 
@@ -43,9 +43,9 @@ const MfaOtpEnrollmentQrScreen: React.FC = () => {
         <h2 className="text-2xl font-bold">{screen.texts?.title ?? 'Secure Your Account'}</h2>
         <p className="mb-4">{screen.texts?.description ?? 'Scan the QR Code below using your preferred authenticator app and then enter the provided one-time code below.'}</p>
 
-        {qr_code ? (
+        {qrCode ? (
           <div className="">
-            <img src={qr_code} alt="QR Code" className="mx-auto" />
+            <img src={qrCode} alt="QR Code" className="mx-auto" />
           </div>
         ) : (
           <p>Loading QR Code...</p>

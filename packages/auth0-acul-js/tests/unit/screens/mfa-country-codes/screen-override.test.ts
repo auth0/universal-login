@@ -1,5 +1,6 @@
-import { ScreenOverride } from '../../../../src/screens/mfa-country-codes/screen-override';
 import { Screen } from '../../../../src/models/screen';
+import { ScreenOverride } from '../../../../src/screens/mfa-country-codes/screen-override';
+
 import type { ScreenContext } from '../../../../interfaces/models/screen';
 
 jest.mock('../../../../src/models/screen');
@@ -31,7 +32,7 @@ describe('ScreenOverride', () => {
 
   it('should initialize data correctly', () => {
     expect(screenOverride.data).toEqual({
-      phone_prefixes: [
+      phonePrefixes: [
         {
           country: 'United States',
           country_code: 'US',
@@ -52,7 +53,7 @@ describe('ScreenOverride', () => {
     expect(result).toBeNull();
   });
 
-  it.skip('should return empty array for phone_prefixes when data.phone_prefixes is not an array', () => {
+  it.skip('should return empty array for phonePrefixes when data.phone_prefixes is not an array', () => {
     const invalidContext = {
       name: 'mfa-country-codes',
       data: {
@@ -61,7 +62,7 @@ describe('ScreenOverride', () => {
     } as ScreenContext;
     const result = ScreenOverride.getScreenData(invalidContext);
     expect(result).toEqual({
-      phone_prefixes: []
+      phonePrefixes: []
     });
   });
 

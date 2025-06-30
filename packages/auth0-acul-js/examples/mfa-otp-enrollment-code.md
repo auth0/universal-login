@@ -51,7 +51,7 @@ const MfaOtpEnrollmentCodeScreen: React.FC = () => {
           { screen?.texts?.description ?? 'Manually enter the following code into your preferred authenticator app and then enter the provided one-time code below.' }
         </p>
         <p className="mt-2 text-center text-sm text-gray-600">
-          Code: {screen.data?.text_code}
+          Code: {screen.data?.textCode}
         </p>
       </div>
 

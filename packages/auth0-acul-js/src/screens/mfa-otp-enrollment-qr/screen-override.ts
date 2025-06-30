@@ -26,7 +26,7 @@ export class ScreenOverride extends Screen implements OverrideOptions {
     }
 
     return {
-      qr_code: typeof data.qr_code === 'string' ? data.qr_code : '',
+      qrCode: typeof data.qr_code === 'string' ? data.qr_code : '',
     };
   };
 }

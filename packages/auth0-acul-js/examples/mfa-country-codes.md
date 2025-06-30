@@ -11,12 +11,12 @@ import MfaCountryCodes from '@auth0/auth0-acul-js/mfa-country-codes';
 const MfaCountryCodesScreen: React.FC = () => {
   const mfaCountryCodes = new MfaCountryCodes();
   const { screen } = mfaCountryCodes;
-  const { phone_prefixes } = screen.data || {};
+  const { phonePrefixes } = screen.data || {};
   const handleCountrySelect = async (countryCode: string, phonePrefix: string) => {
     try {
       await mfaCountryCodes.selectCountryCode({
-       country_code: countryCode,
-       phone_prefix: phonePrefix
+       countryCode: countryCode,
+       phonePrefix: phonePrefix
       });
     } catch (error) {
       console.error('Failed to select country code:', error);
@@ -42,14 +42,14 @@ const MfaCountryCodesScreen: React.FC = () => {
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <div className="space-y-4">
-            {phone_prefixes?.map((prefix, index) => (
+            {phonePrefixes?.map((prefix, index) => (
               <button
-                key={`${prefix.country_code}${index}`}
-                onClick={() => handleCountrySelect(prefix.country_code, prefix.phone_prefix)}
+                key={`${prefix.countryCode}${index}`}
+                onClick={() => handleCountrySelect(prefix.countryCode, prefix.phonePrefix)}
                 className="w-full flex justify-between items-center py-3 px-4 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-50 text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
                 <span>{prefix.country}</span>
-                <span className="text-gray-500">{prefix.phone_prefix}</span>
+                <span className="text-gray-500">{prefix.phonePrefix}</span>
               </button>
             ))}
           </div>
@@ -82,12 +82,12 @@ export default MfaCountryCodesScreen;
   
   // Get the available country codes and phone prefixes
   const { screen } = mfaCountryCodes;
-  const { phone_prefixes } = screen.data
-  const {country_code, phone_prefix} = phone_prefixes[0]
+  const { phonePrefixes } = screen.data
+  const {countryCode, phonePrefix} = phonePrefixes[0]
   
   await mfaCountryCodes.selectCountryCode({
-    country_code: 'US',
-    phone_prefix: '+1',
+    countryCode: 'US',
+    phonePrefix: '+1',
   });
 ```
 

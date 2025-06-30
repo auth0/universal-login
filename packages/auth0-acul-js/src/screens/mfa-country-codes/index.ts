@@ -41,12 +41,12 @@ export default class MfaCountryCodes extends BaseContext implements MfaCountryCo
    *
    * // Get the available country codes and phone prefixes
    * const { screen } = mfaCountryCodes;
-   * const { phone_prefixes } = screen.data
-   * const {country_code, phone_prefix} = phone_prefixes[0]
+   * const { phonePrefixes } = screen.data
+   * const {countryCode, phonePrefix} = phonePrefixes[0]
    *
    * await mfaCountryCodes.selectCountryCode({
-   *   country_code: 'US',
-   *   phone_prefix: '+1',
+   *   countryCode: 'US',
+   *   phonePrefix: '+1',
    * });
    * ```
    */
@@ -55,8 +55,8 @@ export default class MfaCountryCodes extends BaseContext implements MfaCountryCo
       state: this.transaction.state,
       telemetry: [MfaCountryCodes.screenIdentifier, 'selectCountryCode'],
     };
-    const { country_code, phone_prefix } = payload;
-    const action = `selection-action::${country_code}${phone_prefix}`;
+    const { countryCode, phonePrefix } = payload;
+    const action = `selection-action::${countryCode}${phonePrefix}`;
     await new FormHandler(options).submitData<SelectCountryCodeOptions>({
       ...payload,
       action,

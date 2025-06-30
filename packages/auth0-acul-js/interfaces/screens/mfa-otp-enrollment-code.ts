@@ -34,7 +34,7 @@ export interface ScreenMembersOnMfaOtpEnrollmentCode extends ScreenMembers {
     /**
      * The text code to display to the user.
      */
-    text_code: string;
+    textCode: string;
   } | null;
 }
 

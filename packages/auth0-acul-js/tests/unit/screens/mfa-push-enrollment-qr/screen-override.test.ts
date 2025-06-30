@@ -1,5 +1,6 @@
-import { ScreenOverride } from '../../../../src/screens/mfa-push-enrollment-qr/screen-override';
 import { Screen } from '../../../../src/models/screen';
+import { ScreenOverride } from '../../../../src/screens/mfa-push-enrollment-qr/screen-override';
+
 import type { ScreenContext } from '../../../../interfaces/models/screen';
 
 describe('ScreenOverride', () => {
@@ -21,9 +22,9 @@ describe('ScreenOverride', () => {
 
   it('should initialize data correctly', () => {
     expect(screenOverride.data).toEqual({
-      qr_code: 'base64-encoded-qr-code',
-      qr_uri: 'qr-uri',
-      show_code_copy: true
+      qrCode: 'base64-encoded-qr-code',
+      qrUri: 'qr-uri',
+      showCodeCopy: true
     });
   });
 
@@ -36,9 +37,9 @@ describe('ScreenOverride', () => {
   it('should return a copy of screenContext.data when available', () => {
     const result = ScreenOverride.getScreenData(screenContext);
     expect(result).toEqual({
-      qr_code: 'base64-encoded-qr-code',
-      qr_uri: 'qr-uri',
-      show_code_copy: true
+      qrCode: 'base64-encoded-qr-code',
+      qrUri: 'qr-uri',
+      showCodeCopy: true
     });
   });
 

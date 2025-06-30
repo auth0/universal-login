@@ -1,5 +1,6 @@
-import { ScreenOverride } from '../../../../src/screens/mfa-otp-enrollment-qr/screen-override';
 import { Screen } from '../../../../src/models/screen';
+import { ScreenOverride } from '../../../../src/screens/mfa-otp-enrollment-qr/screen-override';
+
 import type { ScreenContext } from '../../../../interfaces/models/screen';
 
 describe('ScreenOverride', () => {
@@ -13,7 +14,7 @@ describe('ScreenOverride', () => {
 
     const screenOverride = new ScreenOverride(screenContext);
     expect(screenOverride.data).toEqual({
-      qr_code: 'base64-encoded-qr-code',
+      qrCode: 'base64-encoded-qr-code',
     });
   });
 
@@ -33,7 +34,7 @@ describe('ScreenOverride', () => {
 
     const result = ScreenOverride.getScreenData(screenContext);
     expect(result).toEqual({
-      qr_code: 'base64-encoded-qr-code',
+      qrCode: 'base64-encoded-qr-code',
     });
   });
 

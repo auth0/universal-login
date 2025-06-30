@@ -25,7 +25,7 @@ export class ScreenOverride extends Screen implements OverrideOptions {
       return null;
     }
     return {
-      phone_prefixes: Array.isArray(data.phone_prefixes) ? (data.phone_prefixes as PhonePrefix[]) : [],
+      phonePrefixes: Array.isArray(data.phone_prefixes) ? (data.phone_prefixes as PhonePrefix[]) : [],
     };
   };
 }

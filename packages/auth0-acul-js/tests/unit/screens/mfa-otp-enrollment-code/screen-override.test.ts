@@ -1,5 +1,6 @@
-import { ScreenOverride } from '../../../../src/screens/mfa-otp-enrollment-code/screen-override';
 import { Screen } from '../../../../src/models/screen';
+import { ScreenOverride } from '../../../../src/screens/mfa-otp-enrollment-code/screen-override';
+
 import type { ScreenContext } from '../../../../interfaces/models/screen';
 
 describe('ScreenOverride', () => {
@@ -13,7 +14,7 @@ describe('ScreenOverride', () => {
 
     const screenOverride = new ScreenOverride(screenContext);
     expect(screenOverride.data).toEqual({
-      text_code: '12345',
+      textCode: '12345',
     });
   });
 
@@ -33,7 +34,7 @@ describe('ScreenOverride', () => {
 
     const result = ScreenOverride.getScreenData(screenContext);
     expect(result).toEqual({
-      text_code: '12345',
+      textCode: '12345',
     });
   });
 
