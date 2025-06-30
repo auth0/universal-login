@@ -48,11 +48,6 @@ import MfaSmsEnrollment from '@auth0/auth0-acul-js/mfa-sms-enrollment';
 import MfaSmsList from '@auth0/auth0-acul-js/mfa-sms-list';
 import MfaEmailChallenge from '@auth0/auth0-acul-js/mfa-email-challenge';
 import MfaEmailList from '@auth0/auth0-acul-js/mfa-email-list';
-
-// brute-force related screens
-// import BruteForceProtectionUnblock from '@auth0/auth0-acul-js/brute-force-protection-unblock';
-// import BruteForceProtectionUnblockSuccess from '@auth0/auth0-acul-js/brute-force-protection-unblock-success';
-// import BruteForceProtectionUnblockFailure from '@auth0/auth0-acul-js/brute-force-protection-unblock-failure';
 ```
 
 </details>
