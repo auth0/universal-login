@@ -3,9 +3,9 @@ name: Monorepo Release
 on:
   pull_request:
     types:
-      - closed
+      - [opened, closed]
     branches:
-      - 'master'
+      - '*'
   workflow_dispatch:
 permissions:
   contents: write
@@ -13,7 +13,6 @@ permissions:
 
 jobs:
   release:
-    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.merged && startsWith(github.event.pull_request.head.ref, 'release/'))
     runs-on: ubuntu-latest
     
     steps:
@@ -71,8 +70,6 @@ jobs:
            require-build: true
            package: ${{ steps.meta.outputs.name }}
            release-directory: ${{ steps.meta.outputs.dir }}
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Create GitHub Release
         uses: ./.github/actions/release-create
