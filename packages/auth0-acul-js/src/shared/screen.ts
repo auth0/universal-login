@@ -111,17 +111,12 @@ export function getWebAuthnType(screen: ScreenContext): string | null {
 export function getScopes(screen: ScreenContext): Scope[] {
   return Array.isArray(screen.data?.scopes)
         ? (screen.data?.scopes as Scope[])
-            .map((scope: Scope): Scope | null => {
+            .map((scope: Scope): Scope => {
               return {
-                name: scope.name,
+                value: scope.value,
                 // Provide defaults for optional fields
-                description: typeof scope.description === 'string' ? scope.description : '',
-                // Ensure values is always an array of strings
-                values: Array.isArray(scope.values)
-                  ? scope.values.filter((v): v is string => typeof v === 'string')
-                  : typeof scope.name === 'string' ? [scope.name] : [], // Default values to name if valid
+                description: typeof scope.description === 'string' ? scope.description : ''
               };
             })
-            .filter((scope): scope is Scope => scope !== null) // Remove nulls from invalid entries
         : [];
 }

@@ -4,7 +4,7 @@ import { FormHandler } from '../../../../src/utils/form-handler';
 import { ScreenIds } from '../../../../src/constants';
 import {
   SignupOptions,
-  SocialSignupOptions,
+  FederatedSignupOptions,
 } from 'interfaces/screens/signup-id';
 
 jest.mock('../../../../src/utils/form-handler');
@@ -98,10 +98,10 @@ describe('SignupId', () => {
 
   describe('Social Signup method', () => {
     it('should handle social signup with valid credentials correctly', async () => {
-      const payload: SocialSignupOptions = {
+      const payload: FederatedSignupOptions = {
         connection: 'testConnection',
       };
-      await signupId.socialSignup(payload);
+      await signupId.federatedSignup(payload);
 
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
@@ -111,10 +111,10 @@ describe('SignupId', () => {
 
     it('should throw error when promise is rejected', async () => {
       mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
-      const payload: SocialSignupOptions = {
+      const payload: FederatedSignupOptions = {
         connection: 'testConnection',
       };
-      await expect(signupId.socialSignup(payload)).rejects.toThrow(
+      await expect(signupId.federatedSignup(payload)).rejects.toThrow(
         'Mocked reject'
       );
     });

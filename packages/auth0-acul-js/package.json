@@ -168,6 +168,10 @@
       "import": "./dist/screens/mfa-otp-enrollment-code/index.js",
       "types": "./dist/types/src/screens/mfa-otp-enrollment-code/index.d.ts"
     },
+    "./email-otp-challenge": {
+      "import": "./dist/screens/email-otp-challenge/index.js",
+      "types": "./dist/types/src/screens/email-otp-challenge/index.d.ts"
+    },
     "./organization-selection": {
       "import": "./dist/screens/organization-selection/index.js",
       "types": "./dist/types/src/screens/organization-selection/index.d.ts"
@@ -175,6 +179,26 @@
     "./organization-picker": {
       "import": "./dist/screens/organization-picker/index.js",
       "types": "./dist/types/src/screens/organization-picker/index.d.ts"
+    },
+    "./consent": {
+      "import": "./dist/screens/consent/index.js",
+      "types": "./dist/types/src/screens/consent/index.d.ts"
+    },
+    "./customized-consent": {
+      "import": "./dist/screens/customized-consent/index.js",
+      "types": "./dist/types/src/screens/customized-consent/index.d.ts"
+    },
+    "./brute-force-protection-unblock": {
+      "import": "./dist/screens/brute-force-protection-unblock/index.js",
+      "types": "./dist/types/src/screens/brute-force-protection-unblock/index.d.ts"
+    },
+    "./brute-force-protection-unblock-success": {
+      "import": "./dist/screens/brute-force-protection-unblock-success/index.js",
+      "types": "./dist/types/src/screens/brute-force-protection-unblock-success/index.d.ts"
+    },
+    "./brute-force-protection-unblock-failure": {
+      "import": "./dist/screens/brute-force-protection-unblock-failure/index.js",
+      "types": "./dist/types/src/screens/brute-force-protection-unblock-failure/index.d.ts"
     },
     "./accept-invitation": {
       "import": "./dist/screens/accept-invitation/index.js",
@@ -267,6 +291,10 @@
     "./mfa-webauthn-error": {
       "import": "./dist/screens/mfa-webauthn-error/index.js",
       "types": "./dist/types/src/screens/mfa-webauthn-error/index.d.ts"
+    },
+    "./mfa-webauthn-not-available-error": {
+      "import": "./dist/screens/mfa-webauthn-not-available-error/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-not-available-error/index.d.ts"
     },
     "./mfa-webauthn-roaming-enrollment": {
       "import": "./dist/screens/mfa-webauthn-roaming-enrollment/index.js",

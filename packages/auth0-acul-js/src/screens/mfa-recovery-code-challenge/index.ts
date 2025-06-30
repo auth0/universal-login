@@ -24,6 +24,18 @@ export default class MfaRecoveryCodeChallenge extends BaseContext implements Mfa
    * @param {string} code - The recovery code entered by the user.
    * @param {CustomOptions} [payload] - Optional payload.
    * @returns {Promise<void>}
+   * @example
+   * ```typescript
+   * import MfaRecoveryCodeChallenge from '@auth0/auth0-acul-js/mfa-recovery-code-challenge';
+   * const mfaRecoveryCodeChallengeManager = new MfaRecoveryCodeChallenge();
+   * const handleContinueEnrollment = async () => {
+   *  try {
+   *    await mfaRecoveryCodeChallengeManager.continue('YOUR_RECOVERY_CODE');
+   *  } catch (error) {
+   *    console.error('Error continuing with recovery code:', error);
+   *  }
+   * }
+   * ```
    */
   async continue(code: string, payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
@@ -42,6 +54,19 @@ export default class MfaRecoveryCodeChallenge extends BaseContext implements Mfa
    * Navigates to the screen where the user can pick another MFA method.
    * @param {CustomOptions} [payload] - Optional payload.
    * @returns {Promise<void>}
+   * @example
+   * ```typescript
+   * import MfaRecoveryCodeChallenge from '@auth0/auth0-acul-js/mfa-recovery-code-challenge';
+   * const mfaRecoveryCodeChallengeManager = new MfaRecoveryCodeChallenge();
+   * const switchAuthenticator = async () => {
+   *  try {
+   *    await mfaRecoveryCodeChallengeManager.tryAnotherMethod();
+   *    console.log('Switched to another authentication method.');
+   *  } catch (error) {
+   *    console.error('Error switching authenticator:', error);
+   *  }
+   * };
+   * ```
    */
   async tryAnotherMethod(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {

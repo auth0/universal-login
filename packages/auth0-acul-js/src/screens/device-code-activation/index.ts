@@ -29,6 +29,19 @@ export default class DeviceCodeActivation extends BaseContext implements DeviceC
    * @param {CustomOptions} [options.customOptions] - Optional custom options to include with the request.
    *
    * @returns {Promise<void>} A promise that resolves when the code is successfully submitted.
+   * @example
+   * ```typescript
+   * import DeviceCodeActivation from '@auth0/auth0-acul-js/device-code-activation';
+   * const deviceCodeActivationManager = new DeviceCodeActivation();
+   * async function activateDeviceCode(code) {
+   *   try {
+   *    await deviceCodeActivationManager.continue({ code });
+   *    console.log('Device code activation successful.');
+   *   } catch (error) {
+   *    console.error('Error during device code activation:', error);
+   *   }
+   * }
+   * ```
    * Rejects with an error if the submission fails.
    */
   async continue(options: { code: string; customOptions?: CustomOptions }): Promise<void> {

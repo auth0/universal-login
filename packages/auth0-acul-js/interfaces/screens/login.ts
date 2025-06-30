@@ -67,7 +67,7 @@ export interface LoginOptions {
 /**
  * Options for performing social login operations
  */
-export interface SocialLoginOptions {
+export interface FederatedLoginOptions {
   /** The social connection name to use */
   connection: string;
   /** Any additional custom options */
@@ -89,5 +89,5 @@ export interface LoginMembers extends BaseMembers {
    * Performs login with social provider
    * @param payload The social login options
    */
-  socialLogin(payload: SocialLoginOptions): Promise<void>;
+  federatedLogin(payload: FederatedLoginOptions): Promise<void>;
 }

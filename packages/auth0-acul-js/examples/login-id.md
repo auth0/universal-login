@@ -14,7 +14,7 @@ loginIdManager.login({
 ```
 
 
-## socialLogin
+## federatedLogin
 If there is an associated social connection, below snippet can help login with selected social connection
 
 ```typescript
@@ -33,7 +33,7 @@ const selectedConnection = alternateConnections[0];
 console.log(`Selected connection: ${selectedConnection.name}`);
 
 // Proceed with federated login using the selected connection
-loginIdManager.socialLogin({
+loginIdManager.federatedLogin({
   connection: selectedConnection.name,
 })
 

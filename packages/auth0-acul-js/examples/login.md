@@ -32,7 +32,7 @@ const loginManager = new Login();
 // Handle social login
 const handleSocialLogin = async (connection: string) => {
   try {
-    await loginManager.socialLogin({
+    await loginManager.federatedLogin({
       connection: connection // e.g. 'google-oauth2'
     });
   } catch (error) {
@@ -71,7 +71,7 @@ const LoginScreen: React.FC = () => {
   
   const handleSocialLogin = async (connection: string) => {
     try {
-      await loginManager.socialLogin({ connection });
+      await loginManager.federatedLogin({ connection });
     } catch (error) {
       setError('Social login failed. Please try again.');
     }
