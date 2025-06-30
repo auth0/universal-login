@@ -1,4 +1,4 @@
-## [auth0-acul-js-0.1.0-beta.6](https://github.com/auth0/universal-login/tree/auth0-acul-js-0.1.0-beta.6) (2025-06-30)
+## [auth0-acul-js@0.1.0-beta.6](https://github.com/auth0/universal-login/tree/auth0-acul-js-0.1.0-beta.6) (2025-06-30)
 
 ### ⚠️ Breaking Changes
 
@@ -17,6 +17,8 @@
 - **Added** `getError` method to the SDK, allowing developers to retrieve detailed authentication errors in the sample app.
 ```javascript
   import LoginInstance from "@auth0/auth0-acul-js/login";
+
+  const loginIdManager = new LoginInstance();
 
   const errors = loginIdManager.getError();
   if (errors) {
