@@ -45,9 +45,8 @@ export interface PhonePrefix {
 }
 
 export interface Scope {
-  name: string;
-  description: string;
-  values: string[];
+  value: string;
+  description?: string;
 }
 
 export interface AuthorizationDetail {

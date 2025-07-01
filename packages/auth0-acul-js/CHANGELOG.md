@@ -1,3 +1,43 @@
+## [auth0-acul-js@0.1.0-beta.6](https://github.com/auth0/universal-login/tree/auth0-acul-js%400.1.0-beta.6) (2025-06-30)
+
+### ⚠️ Breaking Changes
+
+**Screen - Login, Login-Id**
+- **Renamed** 
+  1. `socialLogin` method to `federatedLogin`.
+  2. `SocialLoginOptions` interface to `FederatedLoginOptions`.
+
+**Screen - SignUp, Signup-ID**
+- **Renamed** 
+  1. `socialSignup` method to `federatedSignup`.
+  2. `SocialSignupOptions` interface to `FederatedSignupOptions`.
+
+### ✨ What’s new ?
+
+- **Added** `getError` method to the SDK, allowing developers to retrieve detailed authentication errors in the sample app.
+```javascript
+  import Login from "@auth0/auth0-acul-js/login";
+
+  const loginIdManager = new Login();
+
+  const errors = loginIdManager.getError();
+  if (errors) {
+    console.error("Login failed:", errors);
+  }
+```
+
+### 🚀 Added support for new screens
+
+Added support for the following screens:
+
+| #   | Screen Name                                | Documentation                                                                                              |
+| --- | ------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
+| 1   | consent                                    | [View](https://auth0.github.io/universal-login/classes/Classes.Consent.html)                               |
+| 2   | customized-consent                         | [View](https://auth0.github.io/universal-login/classes/Classes.CustomizedConsent.html)                     |
+| 3   | mfa-webauthn-not-available-error           | [View](https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnNotAvailableError.html)          |
+| 4   | email-otp-challenge                        | [View](https://auth0.github.io/universal-login/classes/Classes.EmailOTPChallenge.html)                     |
+---
+
 ## [auth0-acul-js@0.1.0-beta.5](https://github.com/auth0/universal-login/tree/auth0-acul-js%400.1.0-beta.5) (2025-05-23)
 
 ### ✨ What’s new ?

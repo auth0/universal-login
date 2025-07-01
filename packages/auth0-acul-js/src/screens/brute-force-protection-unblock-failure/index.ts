@@ -16,14 +16,12 @@ export default class BruteForceProtectionUnblockFailure extends BaseContext impl
    * @ignore
    */
   screen: ScreenOptions;
-  
+
   /**
    * Creates an instance of the BruteForceProtectionUnblockFailure screen.
-   * @constructor
    */
   constructor() {
     super();
-
     const screenContext = this.getContext('screen') as ScreenContext;
     this.screen = new ScreenOverride(screenContext);
   }
