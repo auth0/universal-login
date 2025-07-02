@@ -204,13 +204,9 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 | 72     |reset-password                    | reset-password-mfa-webauthn-platform-challenge | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaWebAuthnPlatformChallenge.html)                |
 | 73     |reset-password                    | reset-password-mfa-webauthn-roaming-challenge | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaWebAuthnRoamingChallenge.html)   |
 | 74     |consent                   | consent | [Link](https://auth0.github.io/universal-login/classes/Classes.consent.html)   |
-| 75     |email-otp-challenge                   | email-otp-challenge | [Link](https://auth0.github.io/universal-login/classes/Classes.EmailOTPChallenge.html)   |
-| 76     |brute-force-protection                   | brute-force-protection-unblock | [Link](https://auth0.github.io/universal-login/classes/Classes.BruteForceProtectionUnblock.html)   |
-| 77     |brute-force-protection                   | brute-force-protection-unblock-failure   | [Link](https://auth0.github.io/universal-login/classes/Classes.BruteForceProtectionUnblockFailure.html)   |
-| 78     |brute-force-protection                   | brute-force-protection-unblock-success   | [Link](https://auth0.github.io/universal-login/classes/Classes.BruteForceProtectionUnblockSuccess.html)   |
+| 75     |customized-consent        | customized-consent | [Link](https://auth0.github.io/universal-login/classes/Classes.CustomizedConsent.html)   |
+| 76     |email-otp-challenge                   | email-otp-challenge | [Link](https://auth0.github.io/universal-login/classes/Classes.EmailOTPChallenge.html)   |
 </details>
-
-
 
 
 ## 💬 Feedback

@@ -12,8 +12,8 @@ jest.mock('../../../../src/shared/screen', () => ({
 
 describe('CustomizedConsent ScreenOverride', () => {
   const mockValidScopes: Scope[] = [
-    { name: 'openid', description: 'Sign in', values: [] },
-    { name: 'profile', description: 'View your profile information', values: ['name', 'picture'] },
+    { value: 'openid', description: 'Sign in' },
+    { value: 'profile', description: 'View your profile information' },
   ];
 
   const mockValidAuthorizationDetails: AuthorizationDetail[] = [

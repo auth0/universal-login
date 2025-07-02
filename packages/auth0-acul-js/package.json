@@ -1,6 +1,6 @@
 {
   "name": "@auth0/auth0-acul-js",
-  "version": "0.1.0-beta.5",
+  "version": "0.1.0-beta.7",
   "type": "module",
   "module": "dist/index.js",
   "exports": {
@@ -183,6 +183,10 @@
     "./consent": {
       "import": "./dist/screens/consent/index.js",
       "types": "./dist/types/src/screens/consent/index.d.ts"
+    },
+    "./customized-consent": {
+      "import": "./dist/screens/customized-consent/index.js",
+      "types": "./dist/types/src/screens/customized-consent/index.d.ts"
     },
     "./brute-force-protection-unblock": {
       "import": "./dist/screens/brute-force-protection-unblock/index.js",

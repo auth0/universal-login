@@ -19,7 +19,6 @@ export default class BruteForceProtectionUnblockFailure extends BaseContext impl
   
   /**
    * Creates an instance of the BruteForceProtectionUnblockFailure screen.
-   * @constructor
    */
   constructor() {
     super();
