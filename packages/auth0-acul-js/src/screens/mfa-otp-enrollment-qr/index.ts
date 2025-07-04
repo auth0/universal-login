@@ -9,6 +9,7 @@ import type { ScreenContext } from '../../../interfaces/models/screen';
 import type {
   MfaOtpEnrollmentQrMembers,
   ScreenMembersOnMfaOtpEnrollmentQr as ScreenOptions,
+  ContinueOptions,
 } from '../../../interfaces/screens/mfa-otp-enrollment-qr';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
@@ -29,7 +30,10 @@ export default class MfaOtpEnrollmentQr extends BaseContext implements MfaOtpEnr
 
   /**
    * Navigates to the authenticator selection screen.
-   * @param payload Optional custom options to include with the request
+   * @param {object} payload - An object containing any custom options.
+   * @returns {Promise<void>} A promise that resolves when the action is successfully submitted.
+   * 
+   * 
    * @example
    * ```typescript
    * import MfaOtpEnrollmentQr from '@auth0/auth0-acul-js/mfa-otp-enrollment-qr';
@@ -50,17 +54,19 @@ export default class MfaOtpEnrollmentQr extends BaseContext implements MfaOtpEnr
   }
 
   /**
-   * Continues with the default action.
-   * @param payload Optional custom options to include with the request
-   * @example
-   * ```typescript
-   * import MfaOtpEnrollmentQr from '@auth0/auth0-acul-js/mfa-otp-enrollment-qr';
-   *
-   * const mfaOtpEnrollmentQr = new MfaOtpEnrollmentQr();
-   * await mfaOtpEnrollmentQr.continue({ code: '123456' });
-   * ```
-   */
-  async continue(payload: { code: string } & CustomOptions): Promise<void> {
+  * Continues with the default action.
+  *
+  * @param {ContinueOptions} payload - Payload including the OTP code and optional custom options.
+  * @returns {Promise<void>}
+  * @example
+  * ```typescript
+  * import MfaOtpEnrollmentQr from '@auth0/auth0-acul-js/mfa-otp-enrollment-qr';
+  *
+  * const mfaOtpEnrollmentQr = new MfaOtpEnrollmentQr();
+  * await mfaOtpEnrollmentQr.continue({ code: '123456' });
+  * ```
+  */
+  async continue(payload: ContinueOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
       telemetry: [MfaOtpEnrollmentQr.screenIdentifier, 'continue'],
@@ -94,6 +100,6 @@ export default class MfaOtpEnrollmentQr extends BaseContext implements MfaOtpEnr
   }
 }
 
-export { MfaOtpEnrollmentQrMembers, ScreenOptions as ScreenMembersOnMfaOtpEnrollmentQr };
+export { MfaOtpEnrollmentQrMembers, ScreenOptions as ScreenMembersOnMfaOtpEnrollmentQr, ContinueOptions };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';

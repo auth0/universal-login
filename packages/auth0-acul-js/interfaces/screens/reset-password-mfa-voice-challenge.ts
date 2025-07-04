@@ -20,6 +20,16 @@ export interface ScreenMembersOnResetPasswordMfaVoiceChallenge extends ScreenMem
 }
 
 /**
+ * Payload for the `continue()` method on ResetPasswordMfaVoiceChallengeMembers.
+ */
+export interface ContinueOptions extends CustomOptions {
+  /**
+   * The OTP code entered by the user.
+   */
+  code: string;
+}
+
+/**
  * Interface defining the available methods and properties for the reset-password-mfa-voice-challenge screen.
  */
 export interface ResetPasswordMfaVoiceChallengeMembers extends BaseMembers {
@@ -37,7 +47,7 @@ export interface ResetPasswordMfaVoiceChallengeMembers extends BaseMembers {
    * await reset.continue({ code: '123456' });
    * ```
    */
-  continue(payload: { code: string } & CustomOptions): Promise<void>;
+  continue(payload: ContinueOptions): Promise<void>;
 
   /**
    * Switches to SMS verification.

@@ -75,3 +75,9 @@ export type {
   ShowErrorOptions as ResetPasswordMfaWebAuthnRoamingChallengeShowErrorOptions,
   TryAnotherMethodOptions as ResetPasswordMfaWebAuthnRoamingChallengeTryAnotherMethodOptions
 } from '../screens/reset-password-mfa-webauthn-roaming-challenge';
+export type { ContinueOptions as MfaOtpEnrollmentQrContinueOptions } from '../screens/mfa-otp-enrollment-qr';
+export type { ContinueOptions as DeviceCodeActivationContinueOptions } from '../screens/device-code-activation';
+export type { ContinueOptions as MfaPhoneEnrollmentContinueOptions } from '../screens/mfa-phone-enrollment';
+export type { ContinueOptions as MfaRecoveryCodeChallengeContinueOptions } from '../screens/mfa-recovery-code-challenge';
+export type { ContinueOptions as MfaVoiceEnrollmentContinueOptions } from '../screens/mfa-voice-enrollment';
+export type { ContinueOptions as ResetPasswordMfaVoiceChallengeContinueOptions } from '../screens/reset-password-mfa-voice-challenge';
