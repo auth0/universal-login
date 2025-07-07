@@ -13,7 +13,7 @@ import MfaPushEnrollmentQr from '@auth0/auth0-acul-js/mfa-push-enrollment-qr';
 const MfaPushEnrollmentQrScreen: React.FC = () => {
   const mfaPushEnrollmentQr = new MfaPushEnrollmentQr();
   const { screen } = mfaPushEnrollmentQr;
-  const { qr_code, qr_uri, show_code_copy } = screen.data || {};
+  const { qrCode, qrUri, showCodeCopy } = screen.data || {};
 
   const handlePickAuthenticator = async () => {
     try {
@@ -24,8 +24,8 @@ const MfaPushEnrollmentQrScreen: React.FC = () => {
   };
 
   const handleCopyCode = () => {
-    if (qr_uri) {
-      navigator.clipboard.writeText(qr_uri)
+    if (qrUri) {
+      navigator.clipboard.writeText(qrUri)
         .then(() => {
           alert('Code copied to clipboard');
         })
@@ -41,16 +41,16 @@ const MfaPushEnrollmentQrScreen: React.FC = () => {
         <h2 className="text-2xl font-bold">{ screen.texts?.title ?? 'Enroll with Push Notification' }</h2>
         <p className="mb-4">{ screen.texts?.description ?? '' }</p>
         {
-          qr_code ? (
+          qrCode ? (
             <div className="mb-4">
-              <img src={qr_code} alt="QR Code" className="mb-4 mx-auto" />
+              <img src={qrCode} alt="QR Code" className="mb-4 mx-auto" />
               
-              {show_code_copy && qr_uri && (
+              {showCodeCopy && qrUri && (
                 <div className="text-center mb-4">
                   <p className="text-sm text-gray-600 mb-2">Or copy this code to your authenticator app:</p>
                   <div className="flex items-center justify-center">
                     <code className="bg-gray-100 p-2 rounded mr-2 text-xs overflow-hidden text-ellipsis max-w-xs">
-                      {qr_uri}
+                      {qrUri}
                     </code>
                     <button
                       onClick={handleCopyCode}
