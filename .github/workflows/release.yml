@@ -28,7 +28,7 @@ jobs:
         run: node --version
 
       - name: Install deps
-        run: npm install --workspaces --include-workspace-root
+        run: npm install
 
       # Parse package name and version from branch
       - name: Parse version and package
@@ -59,8 +59,7 @@ jobs:
         run: npm install -g rimraf
 
       - name: Lint package
-        run: npm run lint
-        working-directory: packages/${{ steps.meta.outputs.dir }}
+        run: npm run lint --workspace=${{ steps.meta.outputs.name }}
 
       - name: Build package using workspace
         run: npm run build --workspace=${{ steps.meta.outputs.name }}
