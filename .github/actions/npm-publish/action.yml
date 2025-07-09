@@ -32,7 +32,7 @@ runs:
     - name: Install dependencies
       shell: bash
       working-directory: packages/${{ inputs.package }}
-      run: workspaces --include-workspace-root
+      run: npm ci workspaces --include-workspace-root
 
     - name: Build package
       if: inputs.require-build == 'true'
