@@ -71,7 +71,7 @@ jobs:
            npm-token: ${{ secrets.NPM_TOKEN }}
            version: ${{ steps.meta.outputs.version }}
            require-build: true
-           package: ${{ steps.meta.outputs.name }}
+           package: ${{ steps.meta.outputs.dir }}
            release-directory: ${{ steps.meta.outputs.dir }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
