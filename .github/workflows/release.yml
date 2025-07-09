@@ -80,5 +80,5 @@ jobs:
         uses: ./.github/actions/release-create
         with:
           tag: ${{ steps.meta.outputs.name_unscoped }}@${{ steps.meta.outputs.version }}
-          name: ${{ steps.meta.outputs.name_unscoped }}
+          name: ${{ steps.meta.outputs.name_unscoped }}@${{ steps.meta.outputs.version }}
           version: ${{ steps.meta.outputs.version }}
