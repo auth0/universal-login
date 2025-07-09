@@ -29,11 +29,11 @@ runs:
         registry-url: 'https://registry.npmjs.org'
         token: ${{ inputs.npm-token }}
 
-    - name: Build package
-      if: inputs.require-build == 'true'
-      shell: bash
-      working-directory: packages/${{ inputs.package }}
-      run: npm run build
+    # - name: Build package
+    #   if: inputs.require-build == 'true'
+    #   shell: bash
+    #   working-directory: packages/${{ inputs.package }}
+    #   run: npm run build
 
     - name: Publish release to NPM
       working-directory: packages/${{ inputs.release-directory }}
