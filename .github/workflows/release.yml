@@ -3,9 +3,9 @@ name: Monorepo Release
 on:
   pull_request:
     types:
-      - closed
+      - [closed, opened, synchronize]
     branches:
-      - 'master'
+      - '*'
   workflow_dispatch:
 permissions:
   contents: write
@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   release:
-    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.merged && startsWith(github.event.pull_request.head.ref, 'release/'))
+    # if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.merged && startsWith(github.event.pull_request.head.ref, 'release/'))
     runs-on: ubuntu-latest
     
     steps:
@@ -42,7 +42,7 @@ jobs:
           VERSION=$(echo "$REF" | cut -d'/' -f3 | sed 's/^v//')
 
           PACKAGE_JSON_PATH="packages/$DIR_NAME/package.json"
-          PACKAGE_NAME=$(jq -r .name "$PACKAGE_JSON_PATH")
+          PACKAGE_NAME=$(jq -r .name "$PACKAGE_JSON_PATH" | sed 's/^@[^/]*\///')
 
           if [ -z "$PACKAGE_NAME" ] || [ -z "$VERSION" ]; then
             echo "ERROR: Could not parse package name or version."

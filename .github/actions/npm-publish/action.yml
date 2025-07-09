@@ -29,6 +29,17 @@ runs:
         registry-url: 'https://registry.npmjs.org'
         token: ${{ inputs.npm-token }}
 
+    - name: Install dependencies
+      shell: bash
+      working-directory: packages/${{ inputs.package }}
+      run: npm ci --include=dev
+
+    - name: Build package
+      if: inputs.require-build == 'true'
+      shell: bash
+      working-directory: packages/${{ inputs.package }}
+      run: npm run build
+
     - name: Publish release to NPM
       working-directory: packages/${{ inputs.release-directory }}
       env:
@@ -42,6 +53,6 @@ runs:
         else
           TAG="latest"
         fi
-        npm publish --provenance --access public --tag $TAG
+        npm view . --json
       shell: bash
 
