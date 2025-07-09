@@ -79,6 +79,6 @@ jobs:
       - name: Create GitHub Release
         uses: ./.github/actions/release-create
         with:
-          tag: ${{ steps.meta.outputs.name }}@${{ steps.meta.outputs.version }}
-          name: ${{ steps.meta.outputs.name }}
+          tag: ${{ steps.meta.outputs.name_unscoped }}@${{ steps.meta.outputs.version }}
+          name: ${{ steps.meta.outputs.name_unscoped }}
           version: ${{ steps.meta.outputs.version }}
