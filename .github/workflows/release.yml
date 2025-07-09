@@ -28,7 +28,7 @@ jobs:
         run: node --version
 
       - name: Install deps
-        run: npm install
+        run: npm install --workspaces --include-workspace-root
 
       # Parse package name and version from branch
       - name: Parse version and package
