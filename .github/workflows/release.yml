@@ -34,11 +34,12 @@ jobs:
       - name: Parse version and package
         id: meta
         run: |
-          REF="${{ github.head_ref || github.ref_name }}"
+          REF="${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
           echo "REF=$REF"
 
-          DIR_NAME=$(echo "$REF" | cut -d'/' -f2)
-          VERSION=$(echo "$REF" | cut -d'/' -f3 | sed 's/^v//')
+          # Extract DIR_NAME and VERSION correctly
+          DIR_NAME=$(echo "$REF" | sed -E 's|^release/([^/]+)-[0-9]+\.[0-9]+\.[0-9]+.*$|\1|')
+          VERSION=$(echo "$REF" | sed -E 's|^release/[^/]+-([0-9]+\.[0-9]+\.[0-9]+.*)$|\1|')
 
           PACKAGE_JSON_PATH="packages/$DIR_NAME/package.json"
           PACKAGE_NAME=$(jq -r .name "$PACKAGE_JSON_PATH" | sed 's/^@[^/]*\///')
