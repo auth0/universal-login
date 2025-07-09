@@ -42,7 +42,8 @@ jobs:
           VERSION=$(echo "$REF" | sed -E 's|^release/[^/]+-([0-9]+\.[0-9]+\.[0-9]+.*)$|\1|')
 
           PACKAGE_JSON_PATH="packages/$DIR_NAME/package.json"
-          PACKAGE_NAME=$(jq -r .name "$PACKAGE_JSON_PATH" | sed 's/^@[^/]*\///')
+          PACKAGE_NAME=$(jq -r .name "$PACKAGE_JSON_PATH")
+          PACKAGE_NAME_UNSCOPED=$(echo "$PACKAGE_NAME" | sed 's/^@[^/]*\///')
 
           if [ -z "$PACKAGE_NAME" ] || [ -z "$VERSION" ]; then
             echo "ERROR: Could not parse package name or version."
@@ -50,6 +51,7 @@ jobs:
           fi
 
           echo "name=$PACKAGE_NAME" >> $GITHUB_OUTPUT
+          echo "name_unscoped=$PACKAGE_NAME_UNSCOPED" >> $GITHUB_OUTPUT
           echo "dir=$DIR_NAME" >> $GITHUB_OUTPUT
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
