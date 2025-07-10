@@ -29,10 +29,6 @@ runs:
         registry-url: 'https://registry.npmjs.org'
         token: ${{ inputs.npm-token }}
 
-    # - name: Install dependencies
-    #   shell: bash
-    #   working-directory: packages/${{ inputs.package }}
-    #   run: npm ci workspaces --include-workspace-root
     - name: Install dependencies
       shell: bash
       run: npm ci --workspaces --include-workspace-root
@@ -56,6 +52,6 @@ runs:
         else
           TAG="latest"
         fi
-        npm view . --json
+        npm publish --provenance --access public --tag $TAG
       shell: bash
 
