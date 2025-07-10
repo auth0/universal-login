@@ -29,6 +29,16 @@ runs:
         registry-url: 'https://registry.npmjs.org'
         token: ${{ inputs.npm-token }}
 
+    - name: Install dependencies
+      shell: bash
+      run: npm ci --workspaces --include-workspace-root
+
+    - name: Build package
+      if: inputs.require-build == 'true'
+      shell: bash
+      working-directory: packages/${{ inputs.package }}
+      run: npm run build
+
     - name: Publish release to NPM
       working-directory: packages/${{ inputs.release-directory }}
       env:
