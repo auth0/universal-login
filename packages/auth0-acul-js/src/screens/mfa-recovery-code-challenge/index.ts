@@ -3,7 +3,9 @@ import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
 import type { CustomOptions } from '../../../interfaces/common';
-import type { MfaRecoveryCodeChallengeMembers } from '../../../interfaces/screens/mfa-recovery-code-challenge';
+import type {
+  MfaRecoveryCodeChallengeMembers, ContinueOptions
+} from '../../../interfaces/screens/mfa-recovery-code-challenge';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 /**
@@ -21,8 +23,7 @@ export default class MfaRecoveryCodeChallenge extends BaseContext implements Mfa
 
   /**
    * Continues with the provided recovery code.
-   * @param {string} code - The recovery code entered by the user.
-   * @param {CustomOptions} [payload] - Optional payload.
+   * @param payload - The payload containing the recovery code and optional custom options.
    * @returns {Promise<void>}
    * @example
    * ```typescript
@@ -37,22 +38,25 @@ export default class MfaRecoveryCodeChallenge extends BaseContext implements Mfa
    * }
    * ```
    */
-  async continue(code: string, payload?: CustomOptions): Promise<void> {
+  async continue(payload: ContinueOptions): Promise<void> {
+    if (!payload || !payload?.code) {
+      return Promise.reject(new Error('The recovery code is required.'));
+    }
+
     const options: FormOptions = {
       state: this.transaction.state,
       telemetry: [MfaRecoveryCodeChallenge.screenIdentifier, 'continue'],
     };
 
-    await new FormHandler(options).submitData<CustomOptions>({
+    await new FormHandler(options).submitData<ContinueOptions>({
       ...payload,
-      code,
       action: FormActions.DEFAULT,
     });
   }
 
   /**
    * Navigates to the screen where the user can pick another MFA method.
-   * @param {CustomOptions} [payload] - Optional payload.
+   * @param payload Optional payload.
    * @returns {Promise<void>}
    * @example
    * ```typescript
@@ -81,6 +85,6 @@ export default class MfaRecoveryCodeChallenge extends BaseContext implements Mfa
   }
 }
 
-export { MfaRecoveryCodeChallengeMembers };
+export { MfaRecoveryCodeChallengeMembers, ContinueOptions };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';

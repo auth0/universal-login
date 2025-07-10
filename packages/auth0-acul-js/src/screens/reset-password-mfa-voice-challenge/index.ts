@@ -9,6 +9,7 @@ import type { ScreenContext } from '../../../interfaces/models/screen';
 import type {
   ResetPasswordMfaVoiceChallengeMembers,
   ScreenMembersOnResetPasswordMfaVoiceChallenge as ScreenOptions,
+  ContinueOptions,
 } from '../../../interfaces/screens/reset-password-mfa-voice-challenge';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
@@ -44,7 +45,7 @@ export default class ResetPasswordMfaVoiceChallenge extends BaseContext implemen
    * await reset.continue({ code: '123456' });
    * ```
    */
-  async continue(payload: { code: string } & CustomOptions): Promise<void> {
+  async continue(payload: ContinueOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
       telemetry: [ResetPasswordMfaVoiceChallenge.screenIdentifier, 'continue'],
@@ -111,6 +112,6 @@ export default class ResetPasswordMfaVoiceChallenge extends BaseContext implemen
   }
 }
 
-export { ResetPasswordMfaVoiceChallengeMembers, ScreenOptions as ScreenMembersOnResetPasswordMfaVoiceChallenge };
+export { ResetPasswordMfaVoiceChallengeMembers, ScreenOptions as ScreenMembersOnResetPasswordMfaVoiceChallenge, ContinueOptions };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';

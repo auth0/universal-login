@@ -6,7 +6,7 @@ import type { TransactionMembers, UsernamePolicy, PasswordPolicy } from '../mode
 export interface SignupOptions {
   email?: string;
   username?: string;
-  phone_number?: string;
+  phoneNumber?: string;
   password?: string;
   captcha?: string;
   [key: string]: string | number | boolean | undefined;

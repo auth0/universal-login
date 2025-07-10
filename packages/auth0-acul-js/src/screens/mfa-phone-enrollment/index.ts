@@ -3,7 +3,7 @@ import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
 import type { CustomOptions } from '../../../interfaces/common';
-import type { MfaPhoneEnrollmentMembers } from '../../../interfaces/screens/mfa-phone-enrollment';
+import type { MfaPhoneEnrollmentMembers, ContinueOptions } from '../../../interfaces/screens/mfa-phone-enrollment';
 
 /**
  * Class implementing the mfa-phone-enrollment screen functionality.
@@ -66,7 +66,7 @@ export default class MfaPhoneEnrollment extends BaseContext implements MfaPhoneE
    * }
    * ```
    */
-  async continueEnrollment(payload: { phone: string; type: 'sms' | 'voice' }): Promise<void> {
+  async continueEnrollment(payload: ContinueOptions): Promise<void> {
     const options = {
       state: this.transaction.state,
       telemetry: [MfaPhoneEnrollment.screenIdentifier, 'continueEnrollment'],
@@ -106,6 +106,6 @@ export default class MfaPhoneEnrollment extends BaseContext implements MfaPhoneE
   }
 }
 
-export { MfaPhoneEnrollmentMembers };
+export { MfaPhoneEnrollmentMembers, ContinueOptions };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';
