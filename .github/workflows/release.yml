@@ -2,10 +2,9 @@ name: Monorepo Release
 
 on:
   pull_request:
-    types:
-      - closed
+    types: [closed, opened, synchronize]
     branches:
-      - 'master'
+      - '*'
   workflow_dispatch:
 permissions:
   contents: write
@@ -13,7 +12,7 @@ permissions:
 
 jobs:
   release:
-    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.merged && startsWith(github.event.pull_request.head.ref, 'release/'))
+    # if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.merged && startsWith(github.event.pull_request.head.ref, 'release/'))
     runs-on: ubuntu-latest
     
     steps:
@@ -35,7 +34,7 @@ jobs:
       - name: Parse version and package
         id: meta
         run: |
-          REF="${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
+          REF="${{ github.head_ref || github.ref_name }}"
           echo "REF=$REF"
 
           # Extract DIR_NAME and VERSION correctly
