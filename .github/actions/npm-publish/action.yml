@@ -35,7 +35,7 @@ runs:
     #   run: npm ci workspaces --include-workspace-root
 
     - name: Lint package
-      run: npm run lint --workspace=${{ steps.meta.outputs.name }}
+      run: npm run lint
 
     - name: Build package
       if: inputs.require-build == 'true'
