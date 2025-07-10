@@ -28,6 +28,7 @@
         "singleQuote": true
       }
     ],
+    "@typescript-eslint/ban-ts-ignore": "off",
     "@typescript-eslint/no-floating-promises": "error",
     "@typescript-eslint/explicit-function-return-type": "error",
     "@typescript-eslint/no-non-null-assertion": "error",
