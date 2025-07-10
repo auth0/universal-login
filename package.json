@@ -10,7 +10,7 @@
   },
   "license": "ISC",
   "scripts": {
-    "lint": "npx eslint 'interfaces/**/*.ts' --no-ignore",
+    "lint": "npm run lint --workspaces",
     "test": "npm test --workspaces",
     "build": "npm run build --workspaces",
     "docs": "npm run docs --workspaces",
