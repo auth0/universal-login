@@ -7,15 +7,19 @@ import Login from '@auth0/auth0-acul-js/login';
 
 const loginManager = new Login();
 
-// Handle form submission
+// Handle form submission and error handling
 const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
   
   try {
-    await loginManager.login({
+    const transaction = await loginManager.login({
       username: 'user@example.com',
       password: 'myPassword123'
     });
+    if (transaction?.context?.errors?.length > 0) {
+      const errorMessages = transaction.context.errors.map(e => e.message).join(' ');
+      return;
+    }
   } catch (error) {
     console.error('Login failed:', error);
   }

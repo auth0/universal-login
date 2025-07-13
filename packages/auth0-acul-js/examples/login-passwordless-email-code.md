@@ -54,7 +54,14 @@ const LoginPasswordlessEmailCodeScreen: React.FC = () => {
     }
 
     try {
-      await loginPasswordlessEmailCode.submitCode({ email, code });
+      const transaction = await loginPasswordlessEmailCode.submitCode({ email, code });
+
+      if (transaction?.context?.errors?.length > 0) {
+        const errorMessages = transaction.context.errors.map(e => e.message).join(' ');
+        setError(errorMessages);
+        return;
+      }
+
       setSuccess(true);
     } catch (err) {
       setError('Invalid code or email. Please try again.');
