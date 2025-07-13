@@ -52,15 +52,25 @@ import MfaEmailList from '@auth0/auth0-acul-js/mfa-email-list';
 
 </details>
 
-## Where can i see errors related to my screen
+## Where can I see errors related to my screen and how to handle them
 
 The SDK provides multiple ways to detect and view errors during the process:
 
+1. **`getErrors` method for screen specofic error**  
+   A top-level getter function, `getError`, can be used to retrieve detailed authentication errors when backend validation fails.
+   ```javascript
+      import Login from "@auth0/auth0-acul-js/login";
+
+      const loginIdManager = new Login();
+
+      const errors = loginIdManager.getError();
+      if (errors) {
+      console.error("Login failed:", errors);
+   }
+   ```
 1. **Screen-Specific Errors**  
    Each screen includes a `transaction.errors` property, which returns a list of errors specific to that screen. These errors are generated after the final validation of the request, helping you identify issues that need attention.
 
-2. **Submit Handler Errors**  
-   The SDK may throw errors if invalid parameters are passed to the submit handler. These errors occur when validation fails and can be caught during the submission process.
 
 By using these methods, you can easily track and resolve errors throughout the SDK flow.
 
