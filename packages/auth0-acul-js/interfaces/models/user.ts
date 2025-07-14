@@ -1,5 +1,4 @@
-import type { OrganizationContext } from './organization';
-
+import type { OrganizationContext, Branding } from './organization';
 export interface EnrolledEmail {
   id: number;
   email: string;
@@ -29,7 +28,6 @@ export interface UserContext {
   user_metadata?: Record<string, string>;
   app_metadata?: Record<string, string>;
 }
-
 export interface UserMembers {
   id: string | null;
   email: string | null;
@@ -41,17 +39,13 @@ export interface UserMembers {
   enrolledPhoneNumbers: Array<EnrolledPhoneNumber> | null;
   enrolledDevices: Array<EnrolledDevice> | null;
   organizations:
-    | {
-        organizationId: string | undefined;
-        organizationName: string | undefined;
-        displayName: string | undefined;
-        branding:
-          | {
-              logoUrl: string | undefined;
-            }
-          | undefined;
-      }[]
-    | null;
+  | {
+    organizationId: string | undefined;
+    organizationName: string | undefined;
+    displayName: string | undefined;
+    branding: Branding | undefined
+  }[]
+  | null;
   userMetadata: { [key: string]: string } | null;
   appMetadata: { [key: string]: string } | null;
 }
