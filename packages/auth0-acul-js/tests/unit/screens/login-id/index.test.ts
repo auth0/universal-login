@@ -58,6 +58,7 @@ describe('LoginId', () => {
         'is-brave': expect.any(Boolean) as unknown,
         'webauthn-available': expect.any(Boolean) as unknown,
         'webauthn-platform-available': expect.any(Boolean) as unknown,
+        "allow-passkeys": expect.any(Boolean) as unknown
       });
     });
   });

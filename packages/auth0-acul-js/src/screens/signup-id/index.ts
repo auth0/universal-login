@@ -1,5 +1,6 @@
 import { ScreenIds } from '../../constants';
 import { BaseContext } from '../../models/base-context';
+import { getBrowserCapabilities } from '../../utils/browser-capabilities';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -70,7 +71,11 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
       payload = { ...rest, phone_number: phone };
     }
 
-    await new FormHandler(options).submitData<SignupOptions>(payload);
+    const browserCapabilities = await getBrowserCapabilities()
+    await new FormHandler(options).submitData<SignupOptions>({
+      ...payload,
+      ...browserCapabilities
+    });
   }
 
   /**
