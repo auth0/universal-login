@@ -29,7 +29,7 @@ jobs:
         run: node --version
 
       - name: Install deps
-        run: npm install
+        run: npm ci --workspaces --include-workspace-root
 
       # Parse package name and version from branch
       - name: Parse version and package
@@ -38,11 +38,13 @@ jobs:
           REF="${{ github.head_ref || github.ref_name }}"
           echo "REF=$REF"
 
-          DIR_NAME=$(echo "$REF" | cut -d'/' -f2)
-          VERSION=$(echo "$REF" | cut -d'/' -f3 | sed 's/^v//')
+          # Extract DIR_NAME and VERSION correctly
+          DIR_NAME=$(echo "$REF" | sed -E 's|^release/([^/]+)-[0-9]+\.[0-9]+\.[0-9]+.*$|\1|')
+          VERSION=$(echo "$REF" | sed -E 's|^release/[^/]+-([0-9]+\.[0-9]+\.[0-9]+.*)$|\1|')
 
           PACKAGE_JSON_PATH="packages/$DIR_NAME/package.json"
           PACKAGE_NAME=$(jq -r .name "$PACKAGE_JSON_PATH")
+          PACKAGE_NAME_UNSCOPED=$(echo "$PACKAGE_NAME" | sed 's/^@[^/]*\///')
 
           if [ -z "$PACKAGE_NAME" ] || [ -z "$VERSION" ]; then
             echo "ERROR: Could not parse package name or version."
@@ -50,6 +52,7 @@ jobs:
           fi
 
           echo "name=$PACKAGE_NAME" >> $GITHUB_OUTPUT
+          echo "name_unscoped=$PACKAGE_NAME_UNSCOPED" >> $GITHUB_OUTPUT
           echo "dir=$DIR_NAME" >> $GITHUB_OUTPUT
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
@@ -69,7 +72,7 @@ jobs:
            npm-token: ${{ secrets.NPM_TOKEN }}
            version: ${{ steps.meta.outputs.version }}
            require-build: true
-           package: ${{ steps.meta.outputs.name }}
+           package: ${{ steps.meta.outputs.dir }}
            release-directory: ${{ steps.meta.outputs.dir }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -77,6 +80,6 @@ jobs:
       - name: Create GitHub Release
         uses: ./.github/actions/release-create
         with:
-          tag: ${{ steps.meta.outputs.name }}@${{ steps.meta.outputs.version }}
-          name: ${{ steps.meta.outputs.name }}
+          tag: ${{ steps.meta.outputs.name_unscoped }}@${{ steps.meta.outputs.version }}
+          name: ${{ steps.meta.outputs.name_unscoped }}@${{ steps.meta.outputs.version }}
           version: ${{ steps.meta.outputs.version }}
