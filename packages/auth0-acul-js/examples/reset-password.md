@@ -22,17 +22,10 @@ const ResetPasswordScreen = () => {
     }
 
     try {
-      const transaction = await resetPasswordManager.resetPassword({
+      await resetPasswordManager.resetPassword({
         'password-reset': password,
         're-enter-password': reEnterPassword,
       });
-
-      if (transaction?.context?.errors?.length > 0) {
-        const errorMessages = transaction.context.errors.map(e => e.message).join(' ');
-        setError(errorMessages);
-        return;
-      }
-      
       setSuccess(true);
     } catch (error) {
       setError('Failed to reset password. Please try again later.');

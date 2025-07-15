@@ -8,22 +8,29 @@ import Login from '@auth0/auth0-acul-js/login';
 const loginManager = new Login();
 
 // Handle form submission and error handling
+const errors = loginManager.getError();
 const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
   
   try {
-    const transaction = await loginManager.login({
+    await loginManager.login({
       username: 'user@example.com',
       password: 'myPassword123'
     });
-    if (transaction?.context?.errors?.length > 0) {
-      const errorMessages = transaction.context.errors.map(e => e.message).join(' ');
-      return;
-    }
   } catch (error) {
     console.error('Login failed:', error);
   }
 };
+
+return (
+    <div>
+      {/* Render the login ID screen content */}
+      <button onclick={handleLogin}>Continue<button>
+      {loginIdManager.transaction.hasErrors && errors && (
+        // A custom React component that renders a <div> with error details
+        <ErrorMessages errors={errors} />
+      )}
+  )
 ```
 
 ## Login with Social Provider
