@@ -114,6 +114,33 @@ loginIdManager.socialLogin({
   connection: selectedConnection.name,
 })
 ```
+
+ #### Error handling for Login
+A top-level getter function, `getError`, can be used to retrieve detailed authentication errors when backend validation fails.
+
+```javascript
+import Login from "@auth0/auth0-acul-js/login";
+
+const loginIdManager = new Login();
+
+const errors = loginIdManager.getError();
+if (errors) {
+  console.error("Login failed:", errors);
+}
+```
+
+Same can also be achieved using the `transaction.errors` available directly on the screen context for each screen.
+```javascript
+import Login from "@auth0/auth0-acul-js/login";
+
+const loginIdManager = new Login();
+
+const errors = loginIdManager.transaction?.errors ?? [];
+if (errors) {
+  console.error("Login failed:", errors);
+}
+```
+
 For more examples, visit our [examples](https://github.com/auth0/universal-login/blob/master/packages/auth0-acul-js/examples/login-id.md)
 
 ## Quick Start with Boilerplate App
