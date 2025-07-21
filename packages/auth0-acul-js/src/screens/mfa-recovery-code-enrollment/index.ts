@@ -36,6 +36,19 @@ export default class MfaRecoveryCodeEnrollment extends BaseContext implements Mf
    * @param {object} payload - An object containing any custom options.
    *
    * @returns {Promise<void>} A promise that resolves when the action is successfully submitted.
+   * @example
+   * ```typescript
+   * import MfaRecoveryCodeEnrollment from '@auth0/auth0-acul-js/mfa-recovery-code-enrollment';
+   * const mfaRecoveryCodeEnrollmentManager = new MfaRecoveryCodeEnrollment();
+   * const continueEnrollment = async (payload) => {
+   *  try {
+   *    await mfaRecoveryCodeEnrollmentManager.continue(payload);
+   *    console.log('Enrollment continued successfully.');
+   *  } catch (error) {
+   *    console.error('Error continuing enrollment:', error);
+   *  }
+   * };
+   * ```
    * Rejects with an error if the submission fails.
    */
   async continue(payload: ContinueOptions): Promise<void> {

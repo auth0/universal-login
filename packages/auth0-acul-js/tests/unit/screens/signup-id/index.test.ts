@@ -1,22 +1,36 @@
+import { ScreenIds } from '../../../../src/constants';
 import SignupId from '../../../../src/screens/signup-id';
-import { baseContextData } from '../../../data/test-data';
+import { getBrowserCapabilities } from '../../../../src/utils/browser-capabilities';
 import { FormHandler } from '../../../../src/utils/form-handler';
-import { ScreenIds } from '../../../../src//constants';
-import {
+import { baseContextData } from '../../../data/test-data';
+
+import type {
   SignupOptions,
-  SocialSignupOptions,
+  FederatedSignupOptions,
 } from 'interfaces/screens/signup-id';
 
 jest.mock('../../../../src/utils/form-handler');
+jest.mock('../../../../src/utils/browser-capabilities');
 
 describe('SignupId', () => {
   let signupId: SignupId;
   let mockFormHandler: { submitData: jest.Mock };
+  let mockBrowserCapabilities: object;
 
   beforeEach(() => {
     global.window = Object.create(window);
     baseContextData.screen.name = ScreenIds.SIGNUP_ID;
     window.universal_login_context = baseContextData; // transaction.getRequiredIdentifiers() => { email, phone, username } from baseContext.
+
+    mockBrowserCapabilities = {
+      'js-available': true,
+      'is-brave': false,
+      'webauthn-available': true,
+      'webauthn-platform-available': false,
+      'allow-passkeys': false,
+    };
+
+    (getBrowserCapabilities as jest.Mock).mockResolvedValue(mockBrowserCapabilities);
 
     signupId = new SignupId();
 
@@ -37,12 +51,14 @@ describe('SignupId', () => {
       };
       await signupId.signup(payload);
 
+      expect(getBrowserCapabilities).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith({
         email: 'testEmail@email.com',
         password: 'testPassword',
         phone_number: '+1234567890',
         username: 'testUser',
+        ...mockBrowserCapabilities,
       });
     });
 
@@ -88,6 +104,7 @@ describe('SignupId', () => {
           username: 'testUser',
           password: 'testPassword',
           phone_number: '+1234567890',
+          ...mockBrowserCapabilities,
         })
       );
       expect(mockFormHandler.submitData).not.toHaveBeenCalledWith(
@@ -98,10 +115,10 @@ describe('SignupId', () => {
 
   describe('Social Signup method', () => {
     it('should handle social signup with valid credentials correctly', async () => {
-      const payload: SocialSignupOptions = {
+      const payload: FederatedSignupOptions = {
         connection: 'testConnection',
       };
-      await signupId.socialSignup(payload);
+      await signupId.federatedSignup(payload);
 
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
@@ -111,10 +128,10 @@ describe('SignupId', () => {
 
     it('should throw error when promise is rejected', async () => {
       mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
-      const payload: SocialSignupOptions = {
+      const payload: FederatedSignupOptions = {
         connection: 'testConnection',
       };
-      await expect(signupId.socialSignup(payload)).rejects.toThrow(
+      await expect(signupId.federatedSignup(payload)).rejects.toThrow(
         'Mocked reject'
       );
     });

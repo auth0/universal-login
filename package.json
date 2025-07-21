@@ -3,8 +3,11 @@
   "version": "1.0.0",
   "type": "module",
   "description": "",
-  "private": true,
-  "workspaces": ["packages/*"],
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
   "license": "ISC",
   "scripts": {
     "lint": "npm run lint --workspaces",
@@ -34,7 +37,6 @@
     "@typescript-eslint/parser": "^8.29.1",
     "chokidar-cli": "^3.0.0",
     "eslint": "^9.24.0",
-    "@eslint/js": "^9.24.0",
     "eslint-config-prettier": "^10.1.2",
     "eslint-import-resolver-typescript": "^4.3.2",
     "eslint-plugin-import": "^2.31.0",

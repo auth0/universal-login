@@ -1,8 +1,8 @@
+import { FormActions } from '../../../../src/constants';
+import { ScreenIds } from '../../../../src/constants';
 import MfaRecoveryCodeChallenge from '../../../../src/screens/mfa-recovery-code-challenge';
 import { FormHandler } from '../../../../src/utils/form-handler';
-import { FormActions } from '../../../../src/constants';
 import { baseContextData } from '../../../data/test-data';
-import { ScreenIds } from '../../../../src//constants';
 
 describe('MfaRecoveryCodeChallenge', () => {
   let mfaRecoveryCodeChallenge: MfaRecoveryCodeChallenge;
@@ -27,7 +27,7 @@ describe('MfaRecoveryCodeChallenge', () => {
       const code = 'test-code';
       const payload = { key: 'value' };
 
-      await mfaRecoveryCodeChallenge.continue(code, payload);
+      await mfaRecoveryCodeChallenge.continue({ code, ...payload });
 
       expect(mockSubmitData).toHaveBeenCalledWith({
         ...payload,
@@ -39,7 +39,7 @@ describe('MfaRecoveryCodeChallenge', () => {
     it('should call FormHandler.submitData with default payload if none is provided', async () => {
       const code = 'test-code';
 
-      await mfaRecoveryCodeChallenge.continue(code);
+      await mfaRecoveryCodeChallenge.continue({ code });
 
       expect(mockSubmitData).toHaveBeenCalledWith({
         code,

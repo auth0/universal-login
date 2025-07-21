@@ -7,7 +7,9 @@ import type { ScreenMembers } from '../models/screen';
  */
 export interface ScreenMembersOnMfaPushEnrollmentQr extends ScreenMembers {
   data: {
-    qr_code: string;
+    qrCode: string;
+    qrUri: string;
+    showCodeCopy: boolean;
   } | null;
 }
 

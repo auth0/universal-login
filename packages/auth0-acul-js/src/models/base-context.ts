@@ -9,9 +9,10 @@ import type {
   TransactionMembers,
   TenantMembers,
   UntrustedDataMembers,
-  BrandingMembers,
+  BrandingMembers
 } from '../../interfaces/models';
 import type { BaseContext as UniversalLoginContext, BaseMembers } from '../../interfaces/models/base-context';
+import type { Error as TransactionError } from '../../interfaces/models/transaction';
 
 /**
  * @class BaseContext
@@ -89,5 +90,13 @@ export class BaseContext implements BaseMembers {
     }
 
     return BaseContext.context[model];
+  }
+
+  /**
+  * Retrieves the array of transaction errors from the context, or an empty array if none exist.
+  * @returns {TransactionError[]} An array of error objects from the transaction context.
+  */
+  getError(): TransactionError[] {
+    return this.transaction?.errors ?? [];
   }
 }

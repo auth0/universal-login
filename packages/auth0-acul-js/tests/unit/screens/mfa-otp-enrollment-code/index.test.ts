@@ -1,9 +1,10 @@
-import { baseContextData } from '../../../data/test-data';
-import { FormHandler } from '../../../../src/utils/form-handler';
-import type { CustomOptions } from 'interfaces/common';
-import type { ContinueOptions } from 'interfaces/screens/mfa-otp-enrollment-code';
-import MfaOtpEnrollmentCode from '../../../../src/screens/mfa-otp-enrollment-code';
 import { FormActions } from '../../../../src/constants';
+import MfaOtpEnrollmentCode from '../../../../src/screens/mfa-otp-enrollment-code';
+import { FormHandler } from '../../../../src/utils/form-handler';
+import { baseContextData } from '../../../data/test-data';
+
+import type { ContinueOptions, TryAnotherMethodOptions } from 'interfaces/screens/mfa-otp-enrollment-code';
+
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -52,7 +53,7 @@ describe('MfaOtpEnrollmentCode', () => {
 
   describe('tryAnotherMethod method', () => {
     it('should call FormHandler.submitData with the correct parameters', async () => {
-      const payload: CustomOptions = {
+      const payload: TryAnotherMethodOptions = {
         customOption: 'customValue',
       };
 
@@ -75,7 +76,7 @@ describe('MfaOtpEnrollmentCode', () => {
     it('should throw an error if FormHandler.submitData rejects', async () => {
       mockFormHandler.submitData.mockRejectedValue(new Error('Form submission failed'));
 
-      const payload: CustomOptions = {
+      const payload: TryAnotherMethodOptions = {
         customOption: 'customValue',
       };
 

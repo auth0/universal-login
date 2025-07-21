@@ -13,8 +13,33 @@ loginIdManager.login({
 
 ```
 
+## error handling
+This methods handles username related configuration for login-flow, it optionally also accepts captcha values if configured in the flow
 
-## socialLogin
+```typescript
+import  LoginId  from "@auth0/auth0-acul-js/login-id"
+
+const loginIdManager = new LoginId();
+const errors = loginIdManager.getError();
+
+loginIdManager.login({
+ username: "testUser"
+})
+
+return (
+    <div>
+      {/* Render the login ID screen content */}
+      <button onclick={handleLogin}>Continue<button>
+      {loginIdManager.transaction.hasErrors && errors && (
+        // A custom React component that renders a <div> with error details
+        <ErrorMessages errors={errors} />
+      )}
+)
+
+```
+
+
+## federatedLogin
 If there is an associated social connection, below snippet can help login with selected social connection
 
 ```typescript
@@ -33,7 +58,7 @@ const selectedConnection = alternateConnections[0];
 console.log(`Selected connection: ${selectedConnection.name}`);
 
 // Proceed with federated login using the selected connection
-loginIdManager.socialLogin({
+loginIdManager.federatedLogin({
   connection: selectedConnection.name,
 })
 

@@ -21,4 +21,11 @@ export const FormActions = {
   SWITCH_TO_SMS: 'switch-to-sms' as const,
   CONFIRM: 'confirm' as const,
   CANCEL: 'cancel' as const,
+  // actions for MFA WebAuthn Platform Enrollment
+  SHOW_ERROR_ACTION_PREFIX: 'showError::' as const,
+  SNOOZE_ENROLLMENT: 'snooze-enrollment' as const,
+  REFUSE_ADD_DEVICE: 'refuse-add-device' as const,
+  // actions for MFA WebAuthn Error
+  TRY_AGAIN: 'tryagain' as const,
+  USE_PASSWORD: 'use-password' as const,
 } as const;

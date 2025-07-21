@@ -1,6 +1,6 @@
 {
   "name": "@auth0/auth0-acul-js",
-  "version": "0.1.0-beta.4",
+  "version": "0.1.0-beta.7",
   "type": "module",
   "module": "dist/index.js",
   "exports": {
@@ -168,6 +168,10 @@
       "import": "./dist/screens/mfa-otp-enrollment-code/index.js",
       "types": "./dist/types/src/screens/mfa-otp-enrollment-code/index.d.ts"
     },
+    "./email-otp-challenge": {
+      "import": "./dist/screens/email-otp-challenge/index.js",
+      "types": "./dist/types/src/screens/email-otp-challenge/index.d.ts"
+    },
     "./organization-selection": {
       "import": "./dist/screens/organization-selection/index.js",
       "types": "./dist/types/src/screens/organization-selection/index.d.ts"
@@ -176,13 +180,29 @@
       "import": "./dist/screens/organization-picker/index.js",
       "types": "./dist/types/src/screens/organization-picker/index.d.ts"
     },
-    "./accept-invitation": {
-      "import": "./dist/screens/accept-invitation/index.js",
-      "types": "./dist/types/src/screens/accept-invitation/index.d.ts"
+    "./consent": {
+      "import": "./dist/screens/consent/index.js",
+      "types": "./dist/types/src/screens/consent/index.d.ts"
     },
     "./customized-consent": {
       "import": "./dist/screens/customized-consent/index.js",
       "types": "./dist/types/src/screens/customized-consent/index.d.ts"
+    },
+    "./brute-force-protection-unblock": {
+      "import": "./dist/screens/brute-force-protection-unblock/index.js",
+      "types": "./dist/types/src/screens/brute-force-protection-unblock/index.d.ts"
+    },
+    "./brute-force-protection-unblock-success": {
+      "import": "./dist/screens/brute-force-protection-unblock-success/index.js",
+      "types": "./dist/types/src/screens/brute-force-protection-unblock-success/index.d.ts"
+    },
+    "./brute-force-protection-unblock-failure": {
+      "import": "./dist/screens/brute-force-protection-unblock-failure/index.js",
+      "types": "./dist/types/src/screens/brute-force-protection-unblock-failure/index.d.ts"
+    },
+    "./accept-invitation": {
+      "import": "./dist/screens/accept-invitation/index.js",
+      "types": "./dist/types/src/screens/accept-invitation/index.d.ts"
     },
     "./mfa-phone-enrollment": {
       "import": "./dist/screens/mfa-phone-enrollment/index.js",
@@ -227,19 +247,83 @@
     "./mfa-phone-challenge": {
       "import": "./dist/screens/mfa-phone-challenge/index.js",
       "types": "./dist/types/src/screens/mfa-phone-challenge/index.d.ts"
-     },
+    },
     "./mfa-voice-challenge": {
       "import": "./dist/screens/mfa-voice-challenge/index.js",
       "types": "./dist/types/src/screens/mfa-voice-challenge/index.d.ts"
-     },
+    },
     "./mfa-recovery-code-enrollment": {
-       "import": "./dist/screens/mfa-recovery-code-enrollment/index.js",
-       "types": "./dist/types/src/screens/mfa-recovery-code-enrollment/index.d.ts"
-     },
+      "import": "./dist/screens/mfa-recovery-code-enrollment/index.js",
+      "types": "./dist/types/src/screens/mfa-recovery-code-enrollment/index.d.ts"
+    },
     "./reset-password-mfa-phone-challenge": {
-        "import": "./dist/screens/reset-password-mfa-phone-challenge/index.js",
-        "types": "./dist/types/src/screens/reset-password-mfa-phone-challenge/index.d.ts"
-     }
+      "import": "./dist/screens/reset-password-mfa-phone-challenge/index.js",
+      "types": "./dist/types/src/screens/reset-password-mfa-phone-challenge/index.d.ts"
+    },
+    "./mfa-recovery-code-challenge-new-code": {
+      "import": "./dist/screens/mfa-recovery-code-challenge-new-code/index.js",
+      "types": "./dist/types/src/screens/mfa-recovery-code-challenge-new-code/index.d.ts"
+    },
+    "./logout": {
+      "import": "./dist/screens/logout/index.js",
+      "types": "./dist/types/src/screens/logout/index.d.ts"
+    },
+    "./logout-aborted": {
+      "import": "./dist/screens/logout-aborted/index.js",
+      "types": "./dist/types/src/screens/logout-aborted/index.d.ts"
+    },
+    "./logout-complete": {
+      "import": "./dist/screens/logout-complete/index.js",
+      "types": "./dist/types/src/screens/logout-complete/index.d.ts"
+    },
+    "./email-verification-result": {
+      "import": "./dist/screens/email-verification-result/index.js",
+      "types": "./dist/types/src/screens/email-verification-result/index.d.ts"
+    },
+    "./login-email-verification": {
+      "import": "./dist/screens/login-email-verification/index.js",
+      "types": "./dist/types/src/screens/login-email-verification/index.d.ts"
+    },
+    "./mfa-webauthn-platform-enrollment": {
+      "import": "./dist/screens/mfa-webauthn-platform-enrollment/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-platform-enrollment/index.d.ts"
+    },
+    "./mfa-webauthn-error": {
+      "import": "./dist/screens/mfa-webauthn-error/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-error/index.d.ts"
+    },
+    "./mfa-webauthn-not-available-error": {
+      "import": "./dist/screens/mfa-webauthn-not-available-error/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-not-available-error/index.d.ts"
+    },
+    "./mfa-webauthn-roaming-enrollment": {
+      "import": "./dist/screens/mfa-webauthn-roaming-enrollment/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-roaming-enrollment/index.d.ts"
+    },
+    "./mfa-webauthn-roaming-challenge": {
+      "import": "./dist/screens/mfa-webauthn-roaming-challenge/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-roaming-challenge/index.d.ts"
+    },
+    "./mfa-webauthn-platform-challenge": {
+      "import": "./dist/screens/mfa-webauthn-platform-challenge/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-platform-challenge/index.d.ts"
+    },
+    "./mfa-webauthn-enrollment-success": {
+      "import": "./dist/screens/mfa-webauthn-enrollment-success/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-enrollment-success/index.d.ts"
+    },
+    "./mfa-webauthn-change-key-nickname": {
+      "import": "./dist/screens/mfa-webauthn-change-key-nickname/index.js",
+      "types": "./dist/types/src/screens/mfa-webauthn-change-key-nickname/index.d.ts"
+    },
+    "./reset-password-mfa-webauthn-platform-challenge": {
+      "import": "./dist/screens/reset-password-mfa-webauthn-platform-challenge/index.js",
+      "types": "./dist/types/src/screens/reset-password-mfa-webauthn-platform-challenge/index.d.ts"
+    },
+    "./reset-password-mfa-webauthn-roaming-challenge": {
+      "import": "./dist/screens/reset-password-mfa-webauthn-roaming-challenge/index.js",
+      "types": "./dist/types/src/screens/reset-password-mfa-webauthn-roaming-challenge/index.d.ts"
+    }
   },
   "scripts": {
     "clean": "rimraf dist",
@@ -250,8 +334,8 @@
     "docs": "typedoc --options typedoc.js",
     "lint": "npm run lint:interfaces && npm run lint:src",
     "lint:fix": "npm run lint:src:fix && npm run lint:interfaces:fix",
-    "lint:src": "eslint 'src/**/*.{js,ts}' --no-ignore",
     "lint:interfaces": "eslint 'interfaces/**/*.ts' --no-ignore",
+    "lint:src": "eslint 'src/**/*.ts' --no-ignore",
     "lint:src:fix": "eslint 'src/**/*.{js,ts}' --no-ignore --fix",
     "lint:interfaces:fix": "eslint 'interfaces/**/*.ts' --no-ignore --fix",
     "lint:watch": "chokidar 'src/**/*.{js,ts}' 'interfaces/**/*.ts' -c 'npm run lint'",

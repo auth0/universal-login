@@ -3,7 +3,7 @@ import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
 import type { CustomOptions } from '../../../interfaces/common';
-import type { MfaVoiceEnrollmentMembers } from '../../../interfaces/screens/mfa-voice-enrollment';
+import type { MfaVoiceEnrollmentMembers, ContinueOptions } from '../../../interfaces/screens/mfa-voice-enrollment';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 /**
@@ -21,10 +21,26 @@ export default class MfaVoiceEnrollment extends BaseContext implements MfaVoiceE
 
   /**
    * Continues with the default action.
-   * @param {CustomOptions} [payload] - Optional payload.
+   * @param  payload - Optional payload.
    * @returns {Promise<void>}
+   * @example
+   * ```typescript
+   * import MfaVoiceEnrollment from '@auth0/auth0-acul-js/mfa-voice-enrollment';
+   * const mfaVoiceEnrollmentManager = new MfaVoiceEnrollment();
+   * const handleContinueEnrollment = async () => {
+   *  try {
+   *    await mfaVoiceEnrollmentManager.continue({
+   *      phone: '+1234567890',
+   *      // Add any optional CustomOptions here if needed 
+   *    });
+   *    console.log('Voice enrollment continued successfully.');
+   *  } catch (error) {
+   *    console.error('Error continuing voice enrollment:', error);
+   *  }
+   * };
+   * ```
    */
-  async continue(payload: { phone: string } & CustomOptions): Promise<void> {
+  async continue(payload: ContinueOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
       telemetry: [MfaVoiceEnrollment.screenIdentifier, 'continue'],
@@ -39,6 +55,14 @@ export default class MfaVoiceEnrollment extends BaseContext implements MfaVoiceE
   /**
    * Allows trying another authentication method
    * @param {CustomOptions} [payload] - Optional payload.
+   * @example
+   * ```typescript
+   * import MfaVoiceEnrollment from '@auth0/auth0-acul-js/mfa-voice-enrollment';
+   * const mfaVoiceEnrollment = new MfaVoiceEnrollment();
+   * const handleTryAnotherMethod = async () => {
+   *  await mfaVoiceEnrollment.tryAnotherMethod();
+   * };
+   * ```
    */
   async tryAnotherMethod(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
@@ -55,6 +79,14 @@ export default class MfaVoiceEnrollment extends BaseContext implements MfaVoiceE
   /**
    * Allows picking a country code for the phone number
    * @param {CustomOptions} [payload] - Optional payload.
+   * @example
+   * ```typescript
+   * import MfaVoiceEnrollment from '@auth0/auth0-acul-js/mfa-voice-enrollment';
+   * const mfaVoiceEnrollment = new MfaVoiceEnrollment();
+   * const handlePickCountryCode = async () => {
+   *  await mfaVoiceEnrollment.selectPhoneCountryCode();
+   * };
+   * ```
    */
   async selectPhoneCountryCode(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
@@ -69,6 +101,6 @@ export default class MfaVoiceEnrollment extends BaseContext implements MfaVoiceE
   }
 }
 
-export { MfaVoiceEnrollmentMembers };
+export { MfaVoiceEnrollmentMembers, ContinueOptions };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';
