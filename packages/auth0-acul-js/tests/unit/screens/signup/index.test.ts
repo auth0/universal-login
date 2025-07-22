@@ -5,7 +5,7 @@ import { FormHandler } from '../../../../src/utils/form-handler';
 import { BaseContext } from '../../../../src/models/base-context';
 import type { ScreenContext } from '../../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../../interfaces/models/transaction';
-import type { SignupOptions, FederatedSignupOptions } from '../../../../interfaces/screens/signup';
+import type { SignupOptions, SocialSignupOptions } from '../../../../interfaces/screens/signup';
 import { ScreenIds } from '../../../../src//constants';
 import { FormActions } from '../../../../src/constants';
 
@@ -54,10 +54,10 @@ describe('Signup', () => {
     });
   });
 
-  describe('federatedSignup', () => {
+  describe('socialSignup', () => {
     it('should submit social signup form data correctly', async () => {
-      const payload: FederatedSignupOptions = { connection: 'google-oauth2' };
-      await signup.federatedSignup(payload);
+      const payload: SocialSignupOptions = { connection: 'google-oauth2' };
+      await signup.socialSignup(payload);
       expect(FormHandler).toHaveBeenCalledWith(expect.objectContaining({ state: 'mockState' }));
       expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(payload);
     });

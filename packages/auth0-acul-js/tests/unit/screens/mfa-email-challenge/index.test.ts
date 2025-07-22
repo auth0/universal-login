@@ -1,10 +1,10 @@
+import MfaEmailChallenge from '../../../../src/screens/mfa-email-challenge';
+import { baseContextData } from '../../../data/test-data';
+import { FormHandler } from '../../../../src/utils/form-handler';
+import type { ContinueOptions } from '../../../../interfaces/screens/mfa-email-challenge';
+import type { CustomOptions } from '../../../../interfaces/common';
 import { ScreenIds } from '../../../../src//constants';
 import { FormActions } from '../../../../src/constants';
-import MfaEmailChallenge from '../../../../src/screens/mfa-email-challenge';
-import { FormHandler } from '../../../../src/utils/form-handler';
-import { baseContextData } from '../../../data/test-data';
-
-import type { ContinueOptions, ResendCodeOptions } from '../../../../interfaces/screens/mfa-email-challenge';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -66,7 +66,7 @@ describe('MfaEmailChallenge', () => {
 
   describe('resendCode method', () => {
     it('should handle resendCode with valid payload correctly', async () => {
-      const payload: ResendCodeOptions = {
+      const payload: CustomOptions = {
         someOption: 'value',
       };
       await mfaEmailChallenge.resendCode(payload);
@@ -91,7 +91,7 @@ describe('MfaEmailChallenge', () => {
 
     it('should throw error when promise is rejected', async () => {
       mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
-      const payload: ResendCodeOptions = {
+      const payload: CustomOptions = {
         someOption: 'value',
       };
       await expect(mfaEmailChallenge.resendCode(payload)).rejects.toThrow('Mocked reject');
@@ -100,7 +100,7 @@ describe('MfaEmailChallenge', () => {
 
   describe('tryAnotherMethod method', () => {
     it('should handle tryAnotherMethod with valid payload correctly', async () => {
-      const payload: ResendCodeOptions = {
+      const payload: CustomOptions = {
         someOption: 'value',
       };
       await mfaEmailChallenge.tryAnotherMethod(payload);
@@ -125,7 +125,7 @@ describe('MfaEmailChallenge', () => {
 
     it('should throw error when promise is rejected', async () => {
       mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
-      const payload: ResendCodeOptions = {
+      const payload: CustomOptions = {
         someOption: 'value',
       };
       await expect(mfaEmailChallenge.tryAnotherMethod(payload)).rejects.toThrow('Mocked reject');

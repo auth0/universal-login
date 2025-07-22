@@ -1,6 +1,5 @@
 import { ScreenIds } from '../../constants';
 import { BaseContext } from '../../models/base-context';
-import { getBrowserCapabilities } from '../../utils/browser-capabilities';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -13,7 +12,7 @@ import type {
   ScreenMembersOnSignupId as ScreenOptions,
   TransactionMembersOnSignupId as TransactionOptions,
   SignupOptions,
-  FederatedSignupOptions,
+  SocialSignupOptions,
 } from '../../../interfaces/screens/signup-id';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
@@ -71,11 +70,7 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
       payload = { ...rest, phone_number: phone };
     }
 
-    const browserCapabilities = await getBrowserCapabilities()
-    await new FormHandler(options).submitData<SignupOptions>({
-      ...payload,
-      ...browserCapabilities
-    });
+    await new FormHandler(options).submitData<SignupOptions>(payload);
   }
 
   /**
@@ -96,21 +91,21 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
    *  connection : socialConnection[0].name, // "google-oauth2"
    * };
    *
-   * signupIdManager.federatedSignup(signupParams);
+   * signupIdManager.socialSignup(signupParams);
    */
-  async federatedSignup(payload: FederatedSignupOptions): Promise<void> {
+  async socialSignup(payload: SocialSignupOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
-      telemetry: [SignupId.screenIdentifier, 'federatedSignup'],
+      telemetry: [SignupId.screenIdentifier, 'socialSignup'],
     };
-    await new FormHandler(options).submitData<FederatedSignupOptions>(payload);
+    await new FormHandler(options).submitData<SocialSignupOptions>(payload);
   }
 }
 
 export {
   SignupIdMembers,
   SignupOptions,
-  FederatedSignupOptions,
+  SocialSignupOptions,
   ScreenOptions as ScreenMembersOnSignupId,
   TransactionOptions as TransactionMembersOnSignupId,
 };

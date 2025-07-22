@@ -12,19 +12,10 @@ export interface ScreenMembersOnMfaOtpEnrollmentQr extends ScreenMembers {
 }
 
 /**
- * Interface for the payload of the continue method
- * @public
- */
-export interface ContinueOptions extends CustomOptions {
-  code: string;
-}
-
-/**
  * Interface defining the available methods and properties for the mfa-otp-enrollment-qr screen
  */
 export interface MfaOtpEnrollmentQrMembers extends BaseMembers {
   screen: ScreenMembersOnMfaOtpEnrollmentQr;
-
   /**
    * Toggles the view.
    * @param payload Optional custom options to include with the request
@@ -33,9 +24,9 @@ export interface MfaOtpEnrollmentQrMembers extends BaseMembers {
 
   /**
    * Continues with the default action.
-   * @param payload Payload containing code and optional custom options
+   * @param payload Optional custom options to include with the request
    */
-  continue(payload: ContinueOptions): Promise<void>;
+  continue(payload: { code: string } & CustomOptions): Promise<void>;
 
   /**
    * Allows trying another authentication method

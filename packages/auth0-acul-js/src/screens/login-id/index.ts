@@ -1,6 +1,5 @@
 import { ScreenIds, FormActions, Errors } from '../../constants';
 import { BaseContext } from '../../models/base-context';
-import { getBrowserCapabilities } from '../../utils/browser-capabilities';
 import { FormHandler } from '../../utils/form-handler';
 import { getPasskeyCredentials } from '../../utils/passkeys';
 
@@ -15,7 +14,7 @@ import type {
   TransactionMembersOnLoginId as TransactionOptions,
   LoginIdMembers,
   LoginOptions,
-  FederatedLoginOptions,
+  SocialLoginOptions,
 } from '../../../interfaces/screens/login-id';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
@@ -54,11 +53,8 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
       state: this.transaction.state,
       telemetry: [LoginId.screenIdentifier, 'login'],
     };
-    const browserCapabilities = await getBrowserCapabilities()
-    await new FormHandler(options).submitData<LoginOptions>({
-      ...payload,
-      ...browserCapabilities
-    });
+
+    await new FormHandler(options).submitData<LoginOptions>(payload);
   }
 
   /**
@@ -78,17 +74,17 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
    * console.log(`Selected connection: ${selectedConnection.name}`);
    *
    * // Proceed with federated login using the selected connection
-   * loginIdManager.federatedLogin({
+   * loginIdManager.socialLogin({
    *   connection: selectedConnection.name,
    * });
    */
-  async federatedLogin(payload: FederatedLoginOptions): Promise<void> {
+  async socialLogin(payload: SocialLoginOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
-      telemetry: [LoginId.screenIdentifier, 'federatedLogin'],
+      telemetry: [LoginId.screenIdentifier, 'socialLogin'],
     };
 
-    await new FormHandler(options).submitData<FederatedLoginOptions>(payload);
+    await new FormHandler(options).submitData<SocialLoginOptions>(payload);
   }
 
   /**
@@ -138,7 +134,7 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
 export {
   LoginIdMembers,
   LoginOptions,
-  FederatedLoginOptions,
+  SocialLoginOptions,
   ScreenOptions as ScreenMembersOnLoginId,
   TransactionOptions as TransactionMembersOnLoginId,
 };

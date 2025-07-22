@@ -20,11 +20,6 @@ export interface SignupPassword extends BaseContext {
   screen: ScreenContextOnSignupPassword;
 }
 
-export interface FederatedSignupOptions {
-  connection: string;
-  [key: string]: string | number | boolean;
-}
-
 export interface ScreenMembersOnSignupPassword extends ScreenMembers {
   loginLink: string | null;
   editLink: string | null;
@@ -55,5 +50,4 @@ export interface SignupPasswordMembers extends BaseMembers {
   screen: ScreenMembersOnSignupPassword;
   transaction: TransactionMembersOnSignupPassword;
   signup(payload: SignupPasswordOptions): Promise<void>;
-  federatedSignup(payload: FederatedSignupOptions): Promise<void>;
 }

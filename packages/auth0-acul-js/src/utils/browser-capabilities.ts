@@ -43,29 +43,3 @@ export async function isWebAuthPlatformAvailable(): Promise<boolean> {
     return false;
   }
 }
-
-export async function isPasskeySupported(): Promise<boolean> {
-  if (!isWebAuthAvailable()) {
-    return false;
-  }
-
-  try {
-    const isPlatformAvailable = await isWebAuthPlatformAvailable();
-    return isPlatformAvailable && Boolean(await window.PublicKeyCredential.isConditionalMediationAvailable());
-  } catch (err) {
-    // eslint-disable-next-line no-console
-    console.warn('isPasskeySupported failed', err);
-    return false;
-  }
-}
-
-
-export async function getBrowserCapabilities(): Promise<object> {
-  return {
-    'js-available': isJsAvailable(),
-    'is-brave': await isBrave(),
-    'webauthn-available': isWebAuthAvailable(),
-    'webauthn-platform-available': await isWebAuthPlatformAvailable(),
-    'allow-passkeys': await isPasskeySupported()
-  }
-}

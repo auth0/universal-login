@@ -1,11 +1,10 @@
+import MfaDetectBrowserCapabilities from '../../../../src/screens/mfa-detect-browser-capabilities';
+import { baseContextData } from '../../../data/test-data';
+import { FormHandler } from '../../../../src/utils/form-handler';
+import { CustomOptions } from '../../../../interfaces/common';
+import { isJsAvailable, isBrave, isWebAuthAvailable, isWebAuthPlatformAvailable } from '../../../../src/utils/browser-capabilities';
 import { ScreenIds } from '../../../../src//constants';
 import { FormActions } from '../../../../src/constants';
-import MfaDetectBrowserCapabilities from '../../../../src/screens/mfa-detect-browser-capabilities';
-import { isJsAvailable, isBrave, isWebAuthAvailable, isWebAuthPlatformAvailable, getBrowserCapabilities } from '../../../../src/utils/browser-capabilities';
-import { FormHandler } from '../../../../src/utils/form-handler';
-import { baseContextData } from '../../../data/test-data';
-
-import type { CustomOptions } from '../../../../interfaces/common';
 
 jest.mock('../../../../src/utils/form-handler');
 jest.mock('../../../../src/utils/browser-capabilities', () => ({
@@ -13,13 +12,6 @@ jest.mock('../../../../src/utils/browser-capabilities', () => ({
   isBrave: jest.fn(),
   isWebAuthAvailable: jest.fn(),
   isWebAuthPlatformAvailable: jest.fn(),
-  getBrowserCapabilities: jest.fn(() =>({
-    'js-available': true,
-    'is-brave': true,
-    'webauthn-available': true,
-    'webauthn-platform-available': true,
-    'allow-passkeys': true
-  }))
 }));
 
 describe('MfaDetectBrowserCapabilities', () => {
@@ -61,10 +53,9 @@ describe('MfaDetectBrowserCapabilities', () => {
         expect.objectContaining({
           ...payload,
           'js-available': true,
-          'is-brave': true,
+          'is-brave': false,
           'webauthn-available': true,
           'webauthn-platform-available': true,
-          'allow-passkeys': true,
           action: FormActions.PICK_AUTHENTICATOR,
         })
       );
@@ -88,7 +79,10 @@ describe('MfaDetectBrowserCapabilities', () => {
       await mfaDetectBrowserCapabilities.detectCapabilities(payload);
 
       // Ensure all capability checks were executed
-      expect(getBrowserCapabilities).toHaveBeenCalled();
+      expect(isJsAvailable).toHaveBeenCalled();
+      expect(isBrave).toHaveBeenCalled();
+      expect(isWebAuthAvailable).toHaveBeenCalled();
+      expect(isWebAuthPlatformAvailable).toHaveBeenCalled();
     });
   });
 });

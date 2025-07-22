@@ -11,10 +11,10 @@ runs:
   using: composite
 
   steps:
-    - name: Setup Node.js 22.x
+    - name: Setup Node
       uses: actions/setup-node@v3
       with:
-        node-version: 22
+        node-version: ${{ inputs.node }}
         cache: 'npm'
 
     - name: Install dependencies

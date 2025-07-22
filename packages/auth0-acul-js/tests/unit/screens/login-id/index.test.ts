@@ -1,14 +1,15 @@
-import { ScreenIds, Errors, FormActions } from '../../../../src/constants';
-import { BaseContext } from '../../../../src/models/base-context';
 import LoginId from '../../../../src/screens/login-id';
 import { ScreenOverride } from '../../../../src/screens/login-id/screen-override';
 import { TransactionOverride } from '../../../../src/screens/login-id/transaction-override';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { getPasskeyCredentials } from '../../../../src/utils/passkeys';
-
+import { Errors } from '../../../../src/constants';
+import { BaseContext } from '../../../../src/models/base-context';
 import type { ScreenContext } from '../../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../../interfaces/models/transaction';
-import type { LoginOptions, FederatedLoginOptions } from '../../../../interfaces/screens/login-id';
+import type { LoginOptions, SocialLoginOptions } from '../../../../interfaces/screens/login-id';
+import { ScreenIds } from '../../../../src//constants';
+import { FormActions } from '../../../../src/constants';
 
 jest.mock('../../../../src/screens/login-id/screen-override');
 jest.mock('../../../../src/screens/login-id/transaction-override');
@@ -52,21 +53,14 @@ describe('LoginId', () => {
       const payload: LoginOptions = { username: 'testuser' };
       await loginId.login(payload);
       expect(FormHandler).toHaveBeenCalledWith(expect.objectContaining({ state: 'mockState' }));
-      expect(FormHandler.prototype.submitData).toHaveBeenCalledWith({
-        ...payload,
-        'js-available': expect.any(Boolean) as unknown,
-        'is-brave': expect.any(Boolean) as unknown,
-        'webauthn-available': expect.any(Boolean) as unknown,
-        'webauthn-platform-available': expect.any(Boolean) as unknown,
-        "allow-passkeys": expect.any(Boolean) as unknown
-      });
+      expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(payload);
     });
   });
 
-  describe('federatedLogin', () => {
+  describe('socialLogin', () => {
     it('should submit social login form data correctly', async () => {
-      const payload: FederatedLoginOptions = { connection: 'google' };
-      await loginId.federatedLogin(payload);
+      const payload: SocialLoginOptions = { connection: 'google' };
+      await loginId.socialLogin(payload);
       expect(FormHandler).toHaveBeenCalledWith(expect.objectContaining({ state: 'mockState' }));
       expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(payload);
     });

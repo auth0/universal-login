@@ -6,13 +6,13 @@ import type { TransactionMembers, UsernamePolicy, PasswordPolicy } from '../mode
 export interface SignupOptions {
   email?: string;
   username?: string;
-  phoneNumber?: string;
+  phone_number?: string;
   password?: string;
   captcha?: string;
   [key: string]: string | number | boolean | undefined;
 }
 
-export interface FederatedSignupOptions {
+export interface SocialSignupOptions {
   connection: string;
   [key: string]: string | number | boolean;
 }

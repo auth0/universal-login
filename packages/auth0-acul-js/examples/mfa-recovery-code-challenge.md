@@ -8,71 +8,79 @@ This screen is displayed when the user needs to enter a recovery code to log in.
 
 ```tsx
 import React, { useState } from 'react';
-import MfaRecoveryCodeChallenge from '@auth0/auth0-acul-js/mfa-recovery-code-challenge';
+import MfaVoiceEnrollment from '@auth0/auth0-acul-js/mfa-voice-enrollment';
 
-const MfaRecoveryCodeChallengeScreen: React.FC = () => {
-  const [code, setCode] = useState('');
-  const mfaRecoveryCodeChallenge = new MfaRecoveryCodeChallenge();
-  const { screen, transaction: { errors } } = mfaRecoveryCodeChallenge;
+const MfaVoiceEnrollmentScreen: React.FC = () => {
+  const [phone, setPhone] = useState('');
+  const mfaVoiceEnrollment = new MfaVoiceEnrollment();
+  const { screen, transaction: { errors } } = mfaVoiceEnrollment;
   const texts = screen.texts ?? {};
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    mfaRecoveryCodeChallenge.continue(code);
+  const handlePickCountryCode = async () => {
+    await mfaVoiceEnrollment.selectPhoneCountryCode();
   };
 
-  const handleTryAnotherMethod = () => {
-    mfaRecoveryCodeChallenge.tryAnotherMethod();
+  const handleContinueEnrollment = async () => {
+    await mfaVoiceEnrollment.continue({ phone });
+  };
+
+  const handleTryAnotherMethod = async () => {
+    await mfaVoiceEnrollment.tryAnotherMethod();
   };
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-100 p-4">
       <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 w-full max-w-md">
         <h2 className="text-2xl font-bold mb-4 text-center">
-          {texts.title ?? 'Verify Your Identity'}
+          {texts.title ?? 'Secure Your Account'}
         </h2>
         <p className="text-sm text-gray-600 mb-6 text-center">
-          {texts.description ?? 'Enter the recovery code you were provided during your initial enrollment.'}
+          {texts.description ?? 'Enter your phone number below. A voice call will be placed on that number with a code to enter on the next screen.'}
         </p>
 
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="code">
-              {texts.placeholder ?? 'Enter your recovery code'}
-            </label>
-            <input
-              id="code"
-              name="code"
-              type="text"
-              placeholder={texts.placeholder ?? 'Enter your recovery code'}
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              required
-            />
-            {errors && errors?.length && (
-              <div className="mt-2 space-y-1">
-                {errors.map((error, idx) => (
-                  <p key={idx} className="text-red-600 text-sm">
-                    {error.message}
-                  </p>
-                ))}
-              </div>
-            )}
-          </div>
+        <button
+          className="w-full mb-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          type="button"
+          onClick={handlePickCountryCode}
+        >
+          {texts.pickCountryCodeButtonText ?? 'Pick Country Code'}
+        </button>
 
-          <button
-            type="submit"
-            className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4"
-          >
-            {texts.buttonText ?? 'Continue'}
-          </button>
-        </form>
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phone">
+            {texts.placeholder ?? 'Enter your phone number'}
+          </label>
+          <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="phone"
+            type="text"
+            placeholder={texts.placeholder ?? 'Enter your phone number'}
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+          {errors?.length && (
+            <div className="mt-2 space-y-1">
+              {errors.map((error, idx) => (
+                <p key={idx} className="text-red-600 text-sm">
+                  {error.message}
+                </p>
+              ))}
+            </div>
+          )}
+        </div>
 
         <button
+          className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4"
+          type="button"
+          onClick={handleContinueEnrollment}
+        >
+          {texts.buttonText ?? 'Continue'}
+        </button>
+
+        <button
+          className="text-sm text-blue-500 hover:underline focus:outline-none"
           type="button"
           onClick={handleTryAnotherMethod}
-          className="text-sm text-blue-500 hover:underline focus:outline-none"
         >
           {texts.pickAuthenticatorText ?? 'Try another method'}
         </button>
@@ -81,8 +89,7 @@ const MfaRecoveryCodeChallengeScreen: React.FC = () => {
   );
 };
 
-export default MfaRecoveryCodeChallengeScreen;
-
+export default MfaVoiceEnrollmentScreen;
 ```
 
 ## Usage Examples

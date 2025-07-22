@@ -1,10 +1,10 @@
+import MfaOtpChallenge from '../../../../src/screens/mfa-otp-challenge';
+import { baseContextData } from '../../../data/test-data';
+import { FormHandler } from '../../../../src/utils/form-handler';
+import type { ContinueOptions } from '../../../../interfaces/screens/mfa-otp-challenge';
+import type { CustomOptions } from '../../../../interfaces/common';
 import { ScreenIds } from '../../../../src//constants';
 import { FormActions } from '../../../../src/constants';
-import MfaOtpChallenge from '../../../../src/screens/mfa-otp-challenge';
-import { FormHandler } from '../../../../src/utils/form-handler';
-import { baseContextData } from '../../../data/test-data';
-
-import type { ContinueOptions, TryAnotherMethodOptions } from '../../../../interfaces/screens/mfa-otp-challenge';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -72,7 +72,7 @@ describe('MfaOtpChallenge', () => {
 
   describe('tryAnotherMethod method', () => {
     it('should handle tryAnotherMethod with valid payload correctly', async () => {
-      const payload: TryAnotherMethodOptions = {
+      const payload: CustomOptions = {
         someOption: 'value',
       };
 
@@ -101,7 +101,7 @@ describe('MfaOtpChallenge', () => {
     it('should throw error when promise is rejected', async () => {
       mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
 
-      const payload: TryAnotherMethodOptions = {
+      const payload: CustomOptions = {
         someOption: 'value',
       };
 

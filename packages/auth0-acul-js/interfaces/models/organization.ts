@@ -15,19 +15,17 @@ export interface OrganizationContext {
   };
 }
 
-export interface Branding {
-  logoUrl?: string;
-  colors?: {
-    primary?: string;
-    pageBackground?: string;
-  };
-}
-
 export interface OrganizationMembers {
   id: string | null;
   name: string | null;
   usage: string | null;
   displayName: string | null;
-  branding: Branding | null;
+  branding: {
+    logoUrl?: string | undefined;
+    colors?: {
+      primary?: string | undefined;
+      pageBackground?: string;
+    };
+  } | null;
   metadata: { [key: string]: string } | null;
 }

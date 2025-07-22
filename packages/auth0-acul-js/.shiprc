@@ -1,0 +1,11 @@
+{
+    "files": {
+        ".version": []
+    },
+    "prefixVersion": false,
+    "packageLabel": "auth0-acul-js",
+    "prFilters": [{
+        "type": "title",
+        "args": ["^auth0-acul-js"]
+    }]
+}

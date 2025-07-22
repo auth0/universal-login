@@ -8,21 +8,13 @@ import type { TransactionMembers } from '../models/transaction';
 
 /**
  * Options for continuing with the MFA phone enrollment.
- *
- * Extends `CustomOptions` to allow passing custom options alongside phone and type.
  */
-export interface ContinueOptions extends CustomOptions {
-  phone: string;
-  type: 'sms' | 'voice';
-}
-
 export interface MfaPhoneEnrollmentMembers extends BaseMembers {
   client: ClientMembers;
   organization: OrganizationMembers;
   prompt: PromptMembers;
   screen: ScreenMembers;
   transaction: TransactionMembers;
-
   /**
    * Selects the country code for the phone number.
    * @param payload Optional custom options to include with the request.
@@ -31,9 +23,9 @@ export interface MfaPhoneEnrollmentMembers extends BaseMembers {
 
   /**
    * Continues the enrollment process with the provided phone number and type (SMS or voice).
-   * @param payload The phone number, type, and optional custom options.
+   * @param payload The phone number and type (SMS or voice).
    */
-  continueEnrollment(payload: ContinueOptions): Promise<void>;
+  continueEnrollment(payload: { phone: string; type: 'sms' | 'voice' }): Promise<void>;
 
   /**
    * Allows the user to try another MFA method.

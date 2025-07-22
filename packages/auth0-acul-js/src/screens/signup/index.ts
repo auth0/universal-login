@@ -11,7 +11,7 @@ import type {
   SignupMembers,
   ScreenMembersOnSignup as ScreenOptions,
   SignupOptions,
-  FederatedSignupOptions,
+  SocialSignupOptions,
   TransactionMembersOnSignup as TransactionOptions,
 } from '../../../interfaces/screens/signup';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
@@ -66,18 +66,17 @@ export default class Signup extends BaseContext implements SignupMembers {
    *
    * const signupManager = new Signup();
    *
-   * signupManager.federatedSignup({
+   * signupManager.socialSignup({
    *  connection: 'google-oauth2'
    * });
    * ```
    */
-
-  async federatedSignup(payload: FederatedSignupOptions): Promise<void> {
+  async socialSignup(payload: SocialSignupOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
-      telemetry: [Signup.screenIdentifier, 'federatedSignup'],
+      telemetry: [Signup.screenIdentifier, 'socialSignup'],
     };
-    await new FormHandler(options).submitData<FederatedSignupOptions>(payload);
+    await new FormHandler(options).submitData<SocialSignupOptions>(payload);
   }
 
   /**

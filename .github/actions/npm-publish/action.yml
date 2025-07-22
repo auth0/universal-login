@@ -8,11 +8,11 @@ inputs:
   version:
     required: true
   require-build:
-    required: true
+    default: true
   package:
-    required: true
+    default: true
   release-directory:
-    required: true
+    default: './'
 
 runs:
   using: composite
@@ -24,14 +24,14 @@ runs:
     - name: Setup Node
       uses: actions/setup-node@v4
       with:
-        node-version: 22
+        node-version: ${{ inputs.node-version }}
         cache: 'npm'
         registry-url: 'https://registry.npmjs.org'
-        token: ${{ inputs.npm-token }}
 
     - name: Install dependencies
       shell: bash
-      run: npm ci --workspaces --include-workspace-root
+      working-directory: packages/${{ inputs.package }}
+      run: npm ci --include=dev
 
     - name: Build package
       if: inputs.require-build == 'true'
@@ -40,10 +40,8 @@ runs:
       run: npm run build
 
     - name: Publish release to NPM
-      working-directory: packages/${{ inputs.release-directory }}
-      env:
-        NODE_AUTH_TOKEN: ${{ inputs.npm-token }}
-        VERSION: ${{ inputs.version }}
+      shell: bash
+      working-directory: packages/${{ inputs.package }}
       run: |
         if [[ "${VERSION}" == *"beta"* ]]; then
           TAG="beta"
@@ -52,6 +50,7 @@ runs:
         else
           TAG="latest"
         fi
-        npm publish --provenance --access public --tag $TAG
-      shell: bash
-
+        npm publish --provenance --access public --tag $TAG 
+      env:
+        NODE_AUTH_TOKEN: ${{ inputs.npm-token }}
+        VERSION: ${{ inputs.version }}
