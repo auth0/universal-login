@@ -1,10 +1,12 @@
-import LoginPasswordlessSmsOtp from '../../../../src/screens/login-passwordless-sms-otp';
-import { baseContextData } from '../../../data/test-data';
-import { FormHandler } from '../../../../src/utils/form-handler';
-import { SubmitOTPOptions } from 'interfaces/screens/login-passwordless-sms-otp';
-import { CustomOptions } from 'interfaces/common';
 import { ScreenIds } from '../../../../src//constants';
 import { FormActions } from '../../../../src/constants';
+import LoginPasswordlessSmsOtp from '../../../../src/screens/login-passwordless-sms-otp';
+import { FormHandler } from '../../../../src/utils/form-handler';
+import { baseContextData } from '../../../data/test-data';
+
+import type { CustomOptions } from 'interfaces/common';
+import type { SubmitOTPOptions } from 'interfaces/screens/login-passwordless-sms-otp';
+
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -29,7 +31,7 @@ describe('LoginPasswordlessSmsOtp', () => {
     it('should handle submitOTP with valid payload correctly', async () => {
       const payload: SubmitOTPOptions = {
         username: 'test@domain.com',
-        otp: '123456',
+        code: '123456',
       };
       await loginPasswordlessSmsOtp.submitOTP(payload);
 
@@ -43,7 +45,7 @@ describe('LoginPasswordlessSmsOtp', () => {
       mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
       const payload: SubmitOTPOptions = {
         username: 'test@domain.com',
-        otp: '123456',
+        code: '123456',
       };
       await expect(loginPasswordlessSmsOtp.submitOTP(payload)).rejects.toThrow(
         'Mocked reject'
@@ -54,7 +56,7 @@ describe('LoginPasswordlessSmsOtp', () => {
       mockFormHandler.submitData.mockRejectedValueOnce(
         new Error('Invalid username')
       );
-      const payload = { username: '', otp: '123456' };
+      const payload = { username: '', code: '123456' };
 
       await expect(loginPasswordlessSmsOtp.submitOTP(payload)).rejects.toThrow(
         'Invalid username'
@@ -63,19 +65,19 @@ describe('LoginPasswordlessSmsOtp', () => {
 
     it('should throw error when otp is empty', async () => {
       mockFormHandler.submitData.mockRejectedValueOnce(
-        new Error('Invalid otp')
+        new Error('Invalid code')
       );
-      const payload = { username: 'test@domain.com', otp: '' };
+      const payload = { username: 'test@domain.com', code: '' };
 
       await expect(loginPasswordlessSmsOtp.submitOTP(payload)).rejects.toThrow(
-        'Invalid otp'
+        'Invalid code'
       );
     });
 
     it('should handle submitOTP with captcha correctly', async () => {
       const payload: SubmitOTPOptions = {
         username: 'test@domain.com',
-        otp: '123456',
+        code: '123456',
         captcha: 'testCaptcha',
       };
       await loginPasswordlessSmsOtp.submitOTP(payload);
@@ -89,7 +91,7 @@ describe('LoginPasswordlessSmsOtp', () => {
     it('should handle submitOTP with additional properties correctly', async () => {
       const payload: SubmitOTPOptions = {
         username: 'test@domain.com',
-        otp: '123456',
+        code: '123456',
         additionalProp: 'additionalValue',
       };
       await loginPasswordlessSmsOtp.submitOTP(payload);
