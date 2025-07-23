@@ -23,7 +23,7 @@ It simplifies integrating authentication screens (login, signup, passwordless, p
 
 > [!CAUTION]
 >
-> This feature is still in **Early Access**. Please contact your Account Manager to get this feature enabled on your Auth0 tenant. [read more...](#legal)
+> This feature is still in **Early Access**.
 
 ## 📚 Documentation
 
