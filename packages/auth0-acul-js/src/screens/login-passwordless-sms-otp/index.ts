@@ -38,7 +38,7 @@ export default class LoginPasswordlessSmsOtp extends BaseContext implements Logi
    *
    * loginPasswordlessSmsOtp.submitOTP({
    *     username: "test@domain.com";
-   *     otp: "<string>";
+   *     code: "<string>";
    * });
    */
   async submitOTP(payload: SubmitOTPOptions): Promise<void> {
