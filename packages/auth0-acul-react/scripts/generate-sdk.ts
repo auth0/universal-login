@@ -24,6 +24,25 @@ function toKebabCase(str: string): string {
     .toLowerCase();
 }
 
+// Define context properties that should have dedicated hooks
+const contextProperties = [
+  'user',
+  'tenant', 
+  'branding',
+  'client',
+  'organization',
+  'prompt',
+  'screen',
+  'transaction',
+  'untrustedData'
+];
+
+// Define common utility hooks
+const commonHooks = [
+  'errors',
+  'texts'
+];
+
 // Ensure directories exist
 fs.mkdirSync(HOOKS_OUTPUT_PATH, { recursive: true });
 fs.mkdirSync(EXPORTS_DIR, { recursive: true });
@@ -52,6 +71,8 @@ const hooksGenerated: {
   contextHook: string;
   screenName: string;
   kebab: string;
+  contextHooks: string[];
+  commonHooks: string[];
 }[] = [];
 
 // === Generate individual hook files ===
@@ -63,6 +84,58 @@ for (const symbol of screenExports) {
   const contextHook = `use${screenName}Context`;
   const contextName = `${screenName}Context`;
   const fileName = `${kebab}.tsx`;
+
+  // Generate context property hooks
+  const contextHooks = contextProperties.map(prop => `use${prop.charAt(0).toUpperCase() + prop.slice(1)}`);
+  const generatedCommonHooks = commonHooks.map(hook => `use${hook.charAt(0).toUpperCase() + hook.slice(1)}`);
+
+  // Generate hook implementations
+  const contextHookImplementations = contextProperties.map(prop => {
+    const hookName = `use${prop.charAt(0).toUpperCase() + prop.slice(1)}`;
+    return `
+/**
+ * Hook to access the ${prop} from the ${screenName} instance.
+ * @returns The ${prop} object from the screen context.
+ */
+export function ${hookName}() {
+  const instance = ${contextHook}();
+  return instance.${prop};
+}`;
+  }).join('\n');
+
+  const commonHookImplementations = commonHooks.map(hook => {
+    const hookName = `use${hook.charAt(0).toUpperCase() + hook.slice(1)}`;
+    if (hook === 'errors') {
+      return `
+/**
+ * Hook to access errors from the ${screenName} transaction.
+ * @returns The errors object from the transaction context.
+ */
+export function ${hookName}() {
+  const instance = ${contextHook}();
+  return instance.transaction.errors;
+}`;
+    } else if (hook === 'texts') {
+      return `
+/**
+ * Hook to access texts from the ${screenName} screen.
+ * @returns The text utilities from the screen context.
+ */
+export function ${hookName}() {
+  const instance = ${contextHook}();
+  return instance.screen.texts;
+}`;
+    }
+    return `
+/**
+ * Hook to access ${hook} from the ${screenName} instance.
+ * @returns The ${hook} utilities.
+ */
+export function ${hookName}() {
+  const instance = ${contextHook}();
+  return instance.${hook};
+}`;
+  }).join('\n');
 
   const content = `// AUTO-GENERATED FILE - DO NOT EDIT
 // Hooks and provider for the ${screenName} screen
@@ -106,11 +179,25 @@ export function ${contextHook}(): ${screenName}Members {
   return ctx;
 }
 
+// Context property hooks${contextHookImplementations}
+
+// Common utility hooks${commonHookImplementations}
+
 export type * from '@auth0/auth0-acul-js/${kebab}';
 `;
 
   fs.writeFileSync(path.join(HOOKS_OUTPUT_PATH, fileName), content, 'utf-8');
-  hooksGenerated.push({ key: `./${kebab}`, file: `hooks/${kebab}`, factoryHook, provider, contextHook, screenName, kebab });
+  hooksGenerated.push({ 
+    key: `./${kebab}`, 
+    file: `hooks/${kebab}`, 
+    factoryHook, 
+    provider, 
+    contextHook, 
+    screenName, 
+    kebab,
+    contextHooks,
+    commonHooks: generatedCommonHooks
+  });
 }
 
 // === Collect core SDK interfaces ===
@@ -125,11 +212,18 @@ for (const [name, decls] of coreIdx.getExportedDeclarations()) {
 }
 
 // === Generate src/index.ts (wrapper exports) ===
-const hookExports = hooksGenerated.map(h => `export { 
-  ${h.factoryHook},
-  ${h.contextHook},
-  ${h.provider}
-} from './${h.file}';`).join('\n');
+const hookExports = hooksGenerated.map(h => {
+  const allHooks = [
+    h.factoryHook,
+    h.contextHook, 
+    h.provider,
+    ...h.contextHooks,
+    ...h.commonHooks
+  ];
+  return `export { 
+  ${allHooks.join(',\n  ')}
+} from './${h.file}';`;
+}).join('\n');
 const interfaceExports = exportedInterfaces.length
   ? `export type {\n  ${exportedInterfaces.join(',\n  ')}\n} from '@auth0/auth0-acul-js';`
   : '';
@@ -153,9 +247,10 @@ const SCREENS_DOC_DIR = path.join(EXPORTS_DIR, 'screens');
 fs.mkdirSync(SCREENS_DOC_DIR, { recursive: true });
 
 // 1. One file per screen under exports/screens
-for (const { factoryHook, provider, contextHook, kebab } of hooksGenerated) {
+for (const { factoryHook, provider, contextHook, kebab, contextHooks, commonHooks } of hooksGenerated) {
+  const allHooks = [factoryHook, provider, contextHook, ...contextHooks, ...commonHooks];
   const screenDoc =
-    `export { ${factoryHook}, ${provider}, ${contextHook} } from '../../hooks/${kebab}';\n`;
+    `export { ${allHooks.join(', ')} } from '../../hooks/${kebab}';\n`;
   fs.writeFileSync(
     path.join(SCREENS_DOC_DIR, `${kebab}.ts`),
     screenDoc + '',
@@ -176,7 +271,7 @@ fs.writeFileSync(
 // 3. Interfaces doc
 const ifaceDoc = exportedInterfaces.length
   ? `export type {
-  ${exportedInterfaces.join(',')}
+  ${exportedInterfaces.join(',\n  ')}
 } from '../index';` : '';
 fs.writeFileSync(
   path.join(EXPORTS_DIR, 'interfaces.ts'),
@@ -188,11 +283,10 @@ fs.writeFileSync(
 const docsRootIndex =
   `export * as Screens from './screens';\n` +
   `export * as Interfaces from './interfaces';\n` +
-  `export { getCurrentScreen } from '../'
-`;
+  `export { getCurrentScreen } from '../';\n`;
 fs.writeFileSync(
   path.join(EXPORTS_DIR, 'index.ts'),
-  docsRootIndex,
+  docsRootIndex + '\n',
   'utf-8'
 );
 
