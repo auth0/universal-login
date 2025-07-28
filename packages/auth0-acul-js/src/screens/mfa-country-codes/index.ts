@@ -86,6 +86,6 @@ export default class MfaCountryCodes extends BaseContext implements MfaCountryCo
   }
 }
 
-export { MfaCountryCodesMembers, ScreenOptions as ScreenMembersOnMfaCountryCodes };
+export { MfaCountryCodesMembers, ScreenOptions as ScreenMembersOnMfaCountryCodes, SelectCountryCodeOptions };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';

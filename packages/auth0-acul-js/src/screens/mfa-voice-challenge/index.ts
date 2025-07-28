@@ -11,7 +11,7 @@ import type { UntrustedDataContext } from '../../../interfaces/models/untrusted-
 import type {
   MfaVoiceChallengeMembers,
   ScreenMembersOnMfaVoiceChallenge as ScreenOptions,
-  ContinueOptions as MfaVoiceChallengeContinueOptions,
+  MfaVoiceChallengeContinueOptions,
   UntrustedDataMembersOnMfaVoiceChallenge as UntrustedDataOptions,
 } from '../../../interfaces/screens/mfa-voice-challenge';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';

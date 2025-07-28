@@ -99,6 +99,6 @@ export default class Signup extends BaseContext implements SignupMembers {
   }
 }
 
-export { SignupMembers, SignupOptions, ScreenOptions as ScreenMembersOnSignup, TransactionOptions as TransactionMembersOnSignup };
+export { SignupMembers, SignupOptions, ScreenOptions as ScreenMembersOnSignup, TransactionOptions as TransactionMembersOnSignup, FederatedSignupOptions };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';

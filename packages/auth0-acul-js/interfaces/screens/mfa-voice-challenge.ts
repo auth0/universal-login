@@ -6,7 +6,7 @@ import type { UntrustedDataMembers } from '../models/untrusted-data';
 /**
  * Options for submitting the voice challenge code.
  */
-export interface ContinueOptions {
+export interface MfaVoiceChallengeContinueOptions {
   /**
    * The verification code received via voice call.
    */
@@ -74,7 +74,7 @@ export interface MfaVoiceChallengeMembers extends BaseMembers {
    * });
    * ```
    */
-  continue(payload: ContinueOptions): Promise<void>;
+  continue(payload: MfaVoiceChallengeContinueOptions): Promise<void>;
 
   /**
    * Navigates to the screen for selecting a different phone number.
