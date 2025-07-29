@@ -1,4 +1,4 @@
-import { ScreenIds } from '../../constants';
+import { FormActions, ScreenIds } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { getBrowserCapabilities } from '../../utils/browser-capabilities';
 import { FormHandler } from '../../utils/form-handler';
@@ -104,6 +104,24 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
       telemetry: [SignupId.screenIdentifier, 'federatedSignup'],
     };
     await new FormHandler(options).submitData<FederatedSignupOptions>(payload);
+  }
+
+  /**
+   * @example
+   * import SignupId from "@auth0/auth0-acul-js/signup-id";
+   * const signupIdManager = new SignupId();
+   *
+   * signupIdManager.pickCountryCode();
+   */
+  async pickCountryCode(): Promise<void> {
+    const options: FormOptions = {
+      state: this.transaction.state,
+      telemetry: [SignupId.screenIdentifier, 'pickCountryCode'],
+    };
+
+    await new FormHandler(options).submitData({
+      action: FormActions.PICK_COUNTRY_CODE,
+    });
   }
 }
 
