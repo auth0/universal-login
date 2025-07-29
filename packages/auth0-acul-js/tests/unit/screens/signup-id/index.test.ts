@@ -136,4 +136,14 @@ describe('SignupId', () => {
       );
     });
   });
+
+  describe('pickCountryCode', () => {
+    it('should submit pick-country-code action', async () => {
+      await signupId.pickCountryCode();
+      expect(mockFormHandler).toHaveBeenCalledWith(expect.objectContaining({ state: 'mockState' }));
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith({
+        action: FormActions.PICK_COUNTRY_CODE,
+      });
+    });
+  });
 });
