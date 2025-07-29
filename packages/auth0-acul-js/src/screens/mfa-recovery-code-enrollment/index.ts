@@ -6,7 +6,7 @@ import { ScreenOverride } from './screen-override';
 
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type {
-  ContinueOptions,
+  MfaRecoveryCodeEnrollmentContinueOptions,
   MfaRecoveryCodeEnrollmentMembers,
   ScreenMembersOnMfaRecoveryCodeEnrollment,
 } from '../../../interfaces/screens/mfa-recovery-code-enrollment';
@@ -51,7 +51,7 @@ export default class MfaRecoveryCodeEnrollment extends BaseContext implements Mf
    * ```
    * Rejects with an error if the submission fails.
    */
-  async continue(payload: ContinueOptions): Promise<void> {
+  async continue(payload: MfaRecoveryCodeEnrollmentContinueOptions): Promise<void> {
     const formOptions = {
       state: this.transaction.state,
       telemetry: [MfaRecoveryCodeEnrollment.screenIdentifier, FormActions.CONTINUE],
@@ -59,15 +59,15 @@ export default class MfaRecoveryCodeEnrollment extends BaseContext implements Mf
 
     const { isCodeCopied, ...rest } = payload;
 
-    const options: Omit<ContinueOptions, 'isCodeCopied'> = {
+    const options: Omit<MfaRecoveryCodeEnrollmentContinueOptions, 'isCodeCopied'> = {
       ...rest,
       ...(isCodeCopied === true ? { saved: 'on' as unknown as boolean } : {}),
     };
 
-    await new FormHandler(formOptions).submitData<Omit<ContinueOptions, 'isCodeCopied'> & { saved?: 'string' }>(options);
+    await new FormHandler(formOptions).submitData<Omit<MfaRecoveryCodeEnrollmentContinueOptions, 'isCodeCopied'> & { saved?: 'string' }>(options);
   }
 }
 
-export { MfaRecoveryCodeEnrollmentMembers, ScreenMembersOnMfaRecoveryCodeEnrollment };
+export { MfaRecoveryCodeEnrollmentMembers, ScreenMembersOnMfaRecoveryCodeEnrollment, MfaRecoveryCodeEnrollmentContinueOptions };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';

@@ -75,6 +75,6 @@ export default class MfaEmailList extends BaseContext implements MfaEmailListMem
   }
 }
 
-export { MfaEmailListMembers, ScreenOptions as ScreenMembersOnMfaEmailList };
+export { MfaEmailListMembers, ScreenOptions as ScreenMembersOnMfaEmailList, SelectMfaEmailOptions };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';
