@@ -68,6 +68,6 @@ export default class MfaRecoveryCodeEnrollment extends BaseContext implements Mf
   }
 }
 
-export { MfaRecoveryCodeEnrollmentMembers, ScreenMembersOnMfaRecoveryCodeEnrollment };
+export { MfaRecoveryCodeEnrollmentMembers, ScreenMembersOnMfaRecoveryCodeEnrollment, ContinueOptions };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';

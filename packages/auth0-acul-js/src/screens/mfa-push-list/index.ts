@@ -66,7 +66,7 @@ export default class MfaPushList extends BaseContext implements MfaPushListMembe
   }
 }
 
-export { MfaPushListMembers };
+export { MfaPushListMembers, SelectMfaPushDeviceOptions };
 
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';

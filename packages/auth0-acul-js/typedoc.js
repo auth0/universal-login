@@ -1,3 +1,4 @@
+
 // typedoc.js
 export default {
   out: 'docs',
@@ -10,5 +11,6 @@ export default {
   excludeProtected: true,
   excludeExternals: true,
   includeVersion: true,
-  categorizeByGroup: true
+  categorizeByGroup: true,
+  json: 'docs/index.json',
 };

@@ -1,9 +1,8 @@
 import type { IdentifierType } from '../../src/constants';
-import type { BaseContext } from '../models/base-context';
+import type { BaseContext, BaseMembers } from '../models/base-context';
 import type { ScreenContext, ScreenMembers } from '../models/screen';
 import type { TransactionMembers, UsernamePolicy } from '../models/transaction';
 import type { UntrustedDataContext } from '../models/untrusted-data';
-
 interface ExtendedScreenContext extends ScreenContext {
   links: {
     login: string;
@@ -48,7 +47,7 @@ export interface SignupOptions {
   [key: string]: string | number | boolean | undefined;
 }
 
-export interface SignupIdMembers {
+export interface SignupIdMembers extends BaseMembers {
   screen: ScreenMembersOnSignupId;
   transaction: TransactionMembersOnSignupId;
   signup(payload: SignupOptions): Promise<void>;

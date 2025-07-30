@@ -26,6 +26,7 @@ export interface LoginEnrollOptions {
  * Interface defining the available methods and properties for the mfa-login-options screen
  */
 export interface MfaLoginOptionsMembers extends BaseMembers {
+  screen: ScreenMembersOnMfaLoginOptions;
   /**
    * Continues the login process with the selected MFA factor
    * @param payload The options containing the selected factor

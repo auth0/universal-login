@@ -1,9 +1,10 @@
-import MfaVoiceChallenge from '../../../../src/screens/mfa-voice-challenge';
-import { baseContextData } from '../../../data/test-data';
-import { FormHandler } from '../../../../src/utils/form-handler';
-import { ContinueOptions } from '../../../../interfaces/screens/mfa-voice-challenge';
-import { CustomOptions } from '../../../../interfaces/common';
 import { FormActions } from '../../../../src/constants';
+import MfaVoiceChallenge from '../../../../src/screens/mfa-voice-challenge';
+import { FormHandler } from '../../../../src/utils/form-handler';
+import { baseContextData } from '../../../data/test-data';
+
+import type { CustomOptions } from '../../../../interfaces/common';
+import type { MfaVoiceChallengeContinueOptions } from '../../../../interfaces/screens/mfa-voice-challenge';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -36,7 +37,7 @@ describe('MfaVoiceChallenge', () => {
 
   describe('continue method', () => {
     it('should handle continue with valid code correctly', async () => {
-      const payload: ContinueOptions = {
+      const payload: MfaVoiceChallengeContinueOptions = {
         code: '123456',
       };
 
@@ -52,7 +53,7 @@ describe('MfaVoiceChallenge', () => {
     });
 
     it('should handle continue with remember browser option correctly', async () => {
-      const payload: ContinueOptions = {
+      const payload: MfaVoiceChallengeContinueOptions = {
         code: '123456',
         rememberDevice: true,
       };
@@ -71,11 +72,11 @@ describe('MfaVoiceChallenge', () => {
 
     it('should throw error when promise is rejected', async () => {
       mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
-      
-      const payload: ContinueOptions = {
+
+      const payload: MfaVoiceChallengeContinueOptions = {
         code: '123456',
       };
-      
+
       await expect(mfaVoiceChallenge.continue(payload)).rejects.toThrow(
         'Mocked reject'
       );
@@ -112,7 +113,7 @@ describe('MfaVoiceChallenge', () => {
 
     it('should throw error when promise is rejected', async () => {
       mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
-      
+
       await expect(mfaVoiceChallenge.pickPhone()).rejects.toThrow(
         'Mocked reject'
       );
@@ -149,7 +150,7 @@ describe('MfaVoiceChallenge', () => {
 
     it('should throw error when promise is rejected', async () => {
       mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
-      
+
       await expect(mfaVoiceChallenge.switchToSms()).rejects.toThrow(
         'Mocked reject'
       );
@@ -186,7 +187,7 @@ describe('MfaVoiceChallenge', () => {
 
     it('should throw error when promise is rejected', async () => {
       mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
-      
+
       await expect(mfaVoiceChallenge.resendCode()).rejects.toThrow(
         'Mocked reject'
       );
@@ -223,7 +224,7 @@ describe('MfaVoiceChallenge', () => {
 
     it('should throw error when promise is rejected', async () => {
       mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
-      
+
       await expect(mfaVoiceChallenge.tryAnotherMethod()).rejects.toThrow(
         'Mocked reject'
       );

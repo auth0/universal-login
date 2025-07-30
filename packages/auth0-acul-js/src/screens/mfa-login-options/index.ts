@@ -2,7 +2,10 @@ import { type MfaLoginFactorType, ScreenIds } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
-import type { MfaLoginOptionsMembers, LoginEnrollOptions } from '../../../interfaces/screens/mfa-login-options';
+import { ScreenOverride } from './screen-override';
+
+import type { ScreenContext } from '../../../interfaces/models/screen';
+import type { MfaLoginOptionsMembers, LoginEnrollOptions, ScreenMembersOnMfaLoginOptions } from '../../../interfaces/screens/mfa-login-options';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
 /**
@@ -11,11 +14,18 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  */
 export default class MfaLoginOptions extends BaseContext implements MfaLoginOptionsMembers {
   static screenIdentifier: string = ScreenIds.MFA_LOGIN_OPTIONS;
+
+  /**
+    * The screen object for the mfa-login-options screen
+    */
+  public screen: ScreenMembersOnMfaLoginOptions;
   /**
    * Creates an instance of MfaLoginOptions screen manager
    */
   constructor() {
-    super();
+    super(); // Calls BaseContext constructor for global context initialization and validation.
+    const screenContext = this.getContext('screen') as ScreenContext;
+    this.screen = new ScreenOverride(screenContext);
   }
 
   /**
@@ -38,6 +48,6 @@ export default class MfaLoginOptions extends BaseContext implements MfaLoginOpti
   }
 }
 
-export { MfaLoginOptionsMembers, LoginEnrollOptions, MfaLoginFactorType };
+export { MfaLoginOptionsMembers, LoginEnrollOptions, MfaLoginFactorType, ScreenMembersOnMfaLoginOptions };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';

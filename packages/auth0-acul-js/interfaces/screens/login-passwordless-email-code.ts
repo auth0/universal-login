@@ -25,6 +25,7 @@ export interface SubmitCodeOptions {
 
 export interface LoginPasswordlessEmailCodeMembers extends BaseMembers {
   screen: ScreenMembersOnLoginPasswordlessEmailCode;
+  transaction: TransactionMembersOnLoginPasswordlessEmailCode;
   submitCode(payload: SubmitCodeOptions): Promise<void>;
   resendCode(payload?: CustomOptions): Promise<void>;
 }

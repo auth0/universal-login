@@ -68,6 +68,6 @@ export default class DeviceCodeConfirmation extends BaseContext implements Devic
   }
 }
 
-export { DeviceCodeConfirmationMembers };
+export { DeviceCodeConfirmationMembers, screenOptions as ScreenMembersOnDeviceCodeConfirmation };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';

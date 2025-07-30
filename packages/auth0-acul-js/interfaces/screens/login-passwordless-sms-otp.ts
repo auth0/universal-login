@@ -1,5 +1,6 @@
 import type { TransactionMembers } from '../../interfaces/models/transaction';
 import type { CustomOptions } from '../common';
+import type { BaseMembers } from '../models/base-context';
 import type { ScreenMembers, ScreenContext } from '../models/screen';
 
 export interface ScreenContextOnLoginPasswordlessSmsOtp extends ScreenContext {
@@ -29,8 +30,9 @@ export interface SubmitOTPOptions {
   [key: string]: string | number | boolean | undefined;
 }
 
-export interface LoginPasswordlessSmsOtpMembers {
+export interface LoginPasswordlessSmsOtpMembers extends BaseMembers {
   screen: ScreenMembersOnLoginPasswordlessSmsOtp;
+  transaction: TransactionMembersOnLoginPasswordlessSmsOtp;
   submitOTP(payload: SubmitOTPOptions): Promise<void>;
   resendOTP(payload?: CustomOptions): Promise<void>;
 }

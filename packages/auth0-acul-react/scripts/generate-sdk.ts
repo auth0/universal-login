@@ -30,6 +30,12 @@ function toPascal(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
+function toPascalFromKebab(str: string): string {
+  return str.split('-')
+    .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+    .join('');
+}
+
 function collectTypedocExports(): Set<string> {
   const valid = new Set<string>();
   if (!fs.existsSync(DOCS_INDEX_PATH)) return valid;
@@ -153,7 +159,16 @@ for (const symbol of screenSymbols) {
 
   // Export all valid interfaces from Typedoc
   if (allExportedInterfaces.size) {
-    screenLines.push(`\nexport type { ${Array.from(allExportedInterfaces).join(', ')} } from '@auth0/auth0-acul-js/${kebab}';`);
+    // convert screenName to PascalCase from kebab-case
+    const pascalScreenName = toPascalFromKebab(screenName);
+    screenLines.push(`\nexport type { ${Array.from(allExportedInterfaces).map(interfaceName => {
+      // check if the interface name endswith the screen name
+      if (interfaceName.endsWith(pascalScreenName)) {
+        return interfaceName;
+      } else {
+        return `${interfaceName} as ${interfaceName}On${pascalScreenName}`;
+      }
+    }).join(', ')} } from '@auth0/auth0-acul-js/${kebab}';`);
   }
 
   fs.writeFileSync(
@@ -170,7 +185,16 @@ for (const symbol of screenSymbols) {
   indexExports.push(`export { ${instanceHook} } from './screens/${kebab}';`);
   if (allExportedInterfaces.size > 0) {
     indexTypes.push(`// ${screenName}`);
-    indexTypes.push(`export type { ${Array.from(allExportedInterfaces).join(', ')} } from './screens/${kebab}';`);
+    // convert screenName to PascalCase from kebab-case
+    const pascalScreenName = toPascalFromKebab(screenName);
+    indexTypes.push(`export type { ${Array.from(allExportedInterfaces).map(interfaceName => {
+      // check if the interface name endswith the screen name
+      if (interfaceName.endsWith(pascalScreenName)) {
+        return interfaceName;
+      } else {
+        return `${interfaceName}On${pascalScreenName}`;
+      }
+    }).join(', ')} } from './screens/${kebab}';`);
   }
 
   console.log(`✅ ${screenName}: clean exports with shared + overridden context hooks`);
