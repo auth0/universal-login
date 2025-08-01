@@ -1,4 +1,4 @@
-## [auth0-acul-js@0.1.1-beta.7](https://github.com/auth0/universal-login/tree/auth0-acul-js%400.1.1-beta.7) (2025-08-01)
+## [auth0-acul-js@0.1.0-beta.8](https://github.com/auth0/universal-login/tree/auth0-acul-js%400.1.0-beta.8) (2025-08-01)
 
 **Added**
 - Fix login passwordless [\#142](https://github.com/auth0/universal-login/pull/142) ([amitsingh05667](https://github.com/amitsingh05667))
