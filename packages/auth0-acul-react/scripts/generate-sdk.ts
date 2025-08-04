@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { Project, SyntaxKind } from 'ts-morph';
+import { Project, SyntaxKind, InterfaceDeclaration } from 'ts-morph';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -110,6 +110,7 @@ for (const symbol of screenSymbols) {
   const ifaceFile = project.getSourceFile(path.join(CORE_SDK_PATH, `interfaces/screens/${kebab}.ts`));
   const typedInterfaces = new Set<string>();
   const allExportedInterfaces = new Set<string>();
+  const exportedMethods = new Set<string>();
 
   if (ifaceFile) {
     for (const [name, decls] of ifaceFile.getExportedDeclarations()) {
@@ -117,6 +118,13 @@ for (const symbol of screenSymbols) {
         if (d.getKind() === SyntaxKind.InterfaceDeclaration && VALID_TYPEDOC_EXPORTS.has(name)) {
           typedInterfaces.add(name);
           allExportedInterfaces.add(name);
+          if (name === `${screenName}Members` && d instanceof InterfaceDeclaration) {
+            d.getMembers()
+              .filter(member => member.getKind() === SyntaxKind.MethodSignature)
+              .forEach(method => {
+                exportedMethods.add(method.getSymbol()?.getName() || '');
+              });
+          }
         }
       }
     }
@@ -154,17 +162,21 @@ for (const symbol of screenSymbols) {
     }
   }
 
+  if (exportedMethods.size) {
+    screenLines.push('\n// Screen methods');
+    for (const method of Array.from(exportedMethods)) {
+      screenLines.push(`export const ${method} = instance.${method}.bind(instance);`);
+    }
+  }
+
   const usedTypeImports = Array.from(usedInterfaces);
   if (usedTypeImports.length) {
     screenLines.splice(3, 0, `import type { ${usedTypeImports.join(', ')} } from '@auth0/auth0-acul-js/${kebab}';`);
   }
 
-  // Export all valid interfaces from Typedoc
   if (allExportedInterfaces.size) {
-    // convert screenName to PascalCase from kebab-case
     const pascalScreenName = toPascalFromKebab(screenName);
     screenLines.push(`\nexport type { ${Array.from(allExportedInterfaces).map(interfaceName => {
-      // check if the interface name endswith the screen name
       if (interfaceName.endsWith(pascalScreenName)) {
         return interfaceName;
       } else {
@@ -186,11 +198,9 @@ for (const symbol of screenSymbols) {
 
   indexExports.push(`export { ${instanceHook} } from './screens/${kebab}';`);
   if (allExportedInterfaces.size > 0) {
-    indexTypes.push(`// ${screenName}`);
-    // convert screenName to PascalCase from kebab-case
     const pascalScreenName = toPascalFromKebab(screenName);
+    indexTypes.push(`// ${screenName}`);
     indexTypes.push(`export type { ${Array.from(allExportedInterfaces).map(interfaceName => {
-      // check if the interface name endswith the screen name
       if (interfaceName.endsWith(pascalScreenName)) {
         return interfaceName;
       } else {
@@ -199,7 +209,7 @@ for (const symbol of screenSymbols) {
     }).join(', ')} } from './screens/${kebab}';`);
   }
 
-  console.log(`✅ ${screenName}: clean exports with shared + overridden context hooks`);
+  console.log(`✅ ${screenName}: Exports with shared + overridden context hooks and methods`);
 }
 
 fs.writeFileSync(PACKAGE_JSON_PATH, JSON.stringify(pkg, null, 2), 'utf8');
