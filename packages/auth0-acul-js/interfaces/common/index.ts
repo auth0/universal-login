@@ -1,3 +1,4 @@
+import type { BrandingSettings } from "../models/branding";
 export interface CustomOptions {
   [key: string]: string | number | boolean | undefined;
 }
@@ -18,4 +19,15 @@ export interface WebAuthnErrorDetails {
    * Any additional error properties.
    */
   [key: string]: string | number | boolean | undefined;
+}
+
+/**
+ * CurrentScreen details.
+ */
+export interface CurrentScreen {
+  screenName: string | null;
+  promptName: string | null;
+  state: string | null;
+  branding: BrandingSettings | null;
+  // Other properties are TBD.
 }

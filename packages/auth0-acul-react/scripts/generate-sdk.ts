@@ -72,8 +72,10 @@ const pkg = JSON.parse(fs.readFileSync(PACKAGE_JSON_PATH, 'utf8'));
 pkg.exports ||= {};
 pkg.exports['.'] = { import: './dist/index.js', types: './dist/index.d.ts' };
 
-const sharedHooks = `// AUTO-GENERATED FILE - DO NOT EDIT
-export class ContextHooks<T> {
+const sharedHooks =  `import { type BaseMembers } from "../../../auth0-acul-js/dist/types/interfaces/models/base-context";
+
+// AUTO-GENERATED FILE - DO NOT EDIT
+export class ContextHooks<T extends BaseMembers> {
   constructor(private instance: T) {}
   ${CONTEXT_MODELS.filter(m => !['screen', 'transaction'].includes(m))
     .map(m => `use${toPascal(m)} = () => this.instance.${m} as T['${m}'];`)
