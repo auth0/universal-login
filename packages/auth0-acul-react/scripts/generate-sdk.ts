@@ -36,6 +36,17 @@ function toPascalFromKebab(str: string): string {
     .join('');
 }
 
+// Handle reserved keywords that can't be used as variable names
+function getSafeMethodName(name: string): string {
+  // Reserved keywords in JavaScript/TypeScript
+  const reservedKeywords = ['continue', 'break', 'case', 'catch', 'const'];
+
+  if (reservedKeywords.includes(name)) {
+    return `${name}Method`;
+  }
+  return name;
+}
+
 function collectTypedocExports(): Set<string> {
   const valid = new Set<string>();
   if (!fs.existsSync(DOCS_INDEX_PATH)) return valid;
@@ -72,7 +83,7 @@ const pkg = JSON.parse(fs.readFileSync(PACKAGE_JSON_PATH, 'utf8'));
 pkg.exports ||= {};
 pkg.exports['.'] = { import: './dist/index.js', types: './dist/index.d.ts' };
 
-const sharedHooks =  `import { type BaseMembers } from "../../../auth0-acul-js/dist/types/interfaces/models/base-context";
+const sharedHooks = `import { type BaseMembers } from "../../../auth0-acul-js/dist/types/interfaces/models/base-context";
 
 // AUTO-GENERATED FILE - DO NOT EDIT
 export class ContextHooks<T extends BaseMembers> {
@@ -165,7 +176,7 @@ for (const symbol of screenSymbols) {
   if (exportedMethods.size) {
     screenLines.push('\n// Screen methods');
     for (const method of Array.from(exportedMethods)) {
-      screenLines.push(`export const ${method} = instance.${method}.bind(instance);`);
+      screenLines.push(`export const ${getSafeMethodName(method)} = instance.${method}.bind(instance);`);
     }
   }
 
