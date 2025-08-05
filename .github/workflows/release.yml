@@ -3,9 +3,9 @@ name: Monorepo Release
 on:
   pull_request:
     types:
-      - closed
+      - opened
     branches:
-      - 'master'
+      - '*'
   workflow_dispatch:
 permissions:
   contents: write
@@ -39,14 +39,15 @@ jobs:
           echo "REF=$REF"
 
           # Extract DIR_NAME and VERSION correctly
-          DIR_NAME=$(echo "$REF" | sed -E 's|^release/([^/]+)-[0-9]+\.[0-9]+\.[0-9]+.*$|\1|')
-          VERSION=$(echo "$REF" | sed -E 's|^release/[^/]+-([0-9]+\.[0-9]+\.[0-9]+.*)$|\1|')
+          DIR_NAME=$(echo "$REF" | sed -E 's|^release/([^/]+)-.*$|\1|')
 
           PACKAGE_JSON_PATH="packages/$DIR_NAME/package.json"
           PACKAGE_NAME=$(jq -r .name "$PACKAGE_JSON_PATH")
           PACKAGE_NAME_UNSCOPED=$(echo "$PACKAGE_NAME" | sed 's/^@[^/]*\///')
+          PACKAGE_VERSION=$(jq -r .version "$PACKAGE_JSON_PATH")
+          TAG_NAME="${PACKAGE_NAME_UNSCOPED}@${PACKAGE_VERSION}"
 
-          if [ -z "$PACKAGE_NAME" ] || [ -z "$VERSION" ]; then
+          if [ -z "$PACKAGE_NAME" ] || [ -z "$PACKAGE_VERSION" ]; then
             echo "ERROR: Could not parse package name or version."
             exit 1
           fi
@@ -80,6 +81,6 @@ jobs:
       - name: Create GitHub Release
         uses: ./.github/actions/release-create
         with:
-          tag: ${{ steps.meta.outputs.name_unscoped }}@${{ steps.meta.outputs.version }}
-          name: ${{ steps.meta.outputs.name_unscoped }}@${{ steps.meta.outputs.version }}
+          tag: ${{ steps.meta.outputs.tag_name }}
+          name: ${{ steps.meta.outputs.tag_name }}
           version: ${{ steps.meta.outputs.version }}
