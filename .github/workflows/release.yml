@@ -84,3 +84,9 @@ jobs:
           tag: ${{ steps.meta.outputs.tag_name }}
           name: ${{ steps.meta.outputs.tag_name }}
           version: ${{ steps.meta.outputs.version }}
+
+      - name: Generate documentation
+        run: npm run docs --workspace=${{ steps.meta.outputs.name }}
+
+      - name: Upload documentation
+        run: gh-pages -d packages/${{ steps.meta.outputs.dir }}
