@@ -38,7 +38,7 @@ export default class LoginPasswordlessSmsOtp extends BaseContext implements Logi
    *
    * loginPasswordlessSmsOtp.submitOTP({
    *     username: "test@domain.com";
-   *     otp: "<string>";
+   *     code: "<string>";
    * });
    */
   async submitOTP(payload: SubmitOTPOptions): Promise<void> {
@@ -46,7 +46,7 @@ export default class LoginPasswordlessSmsOtp extends BaseContext implements Logi
       state: this.transaction.state,
       telemetry: [LoginPasswordlessSmsOtp.screenIdentifier, 'submitOTP'],
     };
-    await new FormHandler(options).submitData<SubmitOTPOptions>(payload);
+    await new FormHandler(options).submitData<SubmitOTPOptions>({ ...payload, action: FormActions.DEFAULT });
   }
 
   /**

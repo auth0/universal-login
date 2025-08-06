@@ -51,7 +51,7 @@ export type {
   PickAuthenticatorOptions as MfaPhoneChallengePickAuthenticatorOptions,
 } from '../screens/mfa-phone-challenge';
 export type { MfaVoiceChallengeContinueOptions } from '../screens/mfa-voice-challenge';
-export type { ContinueOptions as MfaRecoveryCodeEnrollmentContinueOptions } from '../screens/mfa-recovery-code-enrollment';
+export type { MfaRecoveryCodeEnrollmentContinueOptions } from '../screens/mfa-recovery-code-enrollment';
 export type {
   ContinueOptions as ResetPasswordMfaPhoneChallengeContinueOptions,
   TryAnotherMethodOptions as ResetPasswordMfaPhoneChallengeTryAnotherMethodOptions,

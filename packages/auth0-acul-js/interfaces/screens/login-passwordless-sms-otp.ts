@@ -24,8 +24,8 @@ export interface TransactionMembersOnLoginPasswordlessSmsOtp extends Transaction
 }
 
 export interface SubmitOTPOptions {
-  username: string;
-  otp: string;
+  username?: string;
+  code: string;
   captcha?: string;
   [key: string]: string | number | boolean | undefined;
 }

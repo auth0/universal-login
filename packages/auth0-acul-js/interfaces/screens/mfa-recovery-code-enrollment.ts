@@ -14,7 +14,7 @@ export interface ScreenMembersOnMfaRecoveryCodeEnrollment extends ScreenMembers 
   } | null;
 }
 
-export interface ContinueOptions extends CustomOptions {
+export interface MfaRecoveryCodeEnrollmentContinueOptions extends CustomOptions {
   isCodeCopied: boolean;
 }
 
@@ -34,5 +34,5 @@ export interface MfaRecoveryCodeEnrollmentMembers extends BaseMembers {
    * @returns {Promise<void>} A promise that resolves when the action is successfully submitted.
    * Rejects with an error if the submission fails.
    */
-  continue(payload: ContinueOptions): Promise<void>;
+  continue(payload: MfaRecoveryCodeEnrollmentContinueOptions): Promise<void>;
 }
