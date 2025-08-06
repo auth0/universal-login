@@ -100,8 +100,8 @@ export const useCurrentScreen = (): CurrentScreenOptions | null => {
 };
 `;
 
-fs.writeFileSync(UTILITY_HOOKS_PATH, currentScreenHook, 'utf8');
-console.log('✅ useCurrentScreen hook generated in utility-hooks.tsx');
+fs.writeFileSync(COMMON_HOOKS_PATH, currentScreenHook, 'utf8');
+console.log('✅ useCurrentScreen hook generated in common-hooks.tsx');
 
 const sharedHooks = `import { type BaseMembers } from "../../../auth0-acul-js/dist/types/interfaces/models/base-context";
 
@@ -117,7 +117,7 @@ fs.writeFileSync(CONTEXT_HOOKS_PATH, sharedHooks + '\n', 'utf8');
 const indexExports: string[] = [];
 const indexTypes: string[] = [];
 
-indexExports.push(`export { useCurrentScreen } from './hooks/utility-hooks';`);
+indexExports.push(`export { useCurrentScreen } from './hooks/common-hooks';`);
 
 for (const symbol of screenSymbols) {
   const screenName = symbol.getName();
