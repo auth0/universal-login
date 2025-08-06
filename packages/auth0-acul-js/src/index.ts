@@ -1,8 +1,8 @@
-
 import { Branding } from './models';
 import { BaseContext } from './models/base-context';
 
-import type { CurrentScreen } from 'interfaces/common';
+import type  { CurrentScreen } from '../interfaces/common';
+
 export * from './screens';
 export * from '../interfaces/export/base-properties';
 export * from '../interfaces/export/screen-properties';
@@ -11,7 +11,7 @@ export * from '../interfaces/export/extended-types';
 export * from '../interfaces/export/common';
 
 export function getCurrentScreen(): CurrentScreen {
-  const contextDetails = new BaseContext()
+  const contextDetails = new BaseContext();
   return {
     screenName: contextDetails.getContext('screen')?.name || null,
     promptName: contextDetails.getContext('prompt')?.name || null,

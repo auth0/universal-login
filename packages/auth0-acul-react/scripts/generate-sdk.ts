@@ -83,6 +83,26 @@ const pkg = JSON.parse(fs.readFileSync(PACKAGE_JSON_PATH, 'utf8'));
 pkg.exports ||= {};
 pkg.exports['.'] = { import: './dist/index.js', types: './dist/index.d.ts' };
 
+const currentScreenHook = `// AUTO-GENERATED FILE - DO NOT EDIT
+
+import { useState, useEffect } from 'react';
+import { getCurrentScreen, CurrentScreen } from '@auth0/auth0-acul-js';
+
+export const useCurrentScreen = (): CurrentScreen | null => {
+  const [screen, setScreen] = useState<CurrentScreen | null>(null);
+
+  useEffect(() => {
+    const data = getCurrentScreen();
+    setScreen(data);
+  }, []);
+
+  return screen;
+};
+`;
+
+fs.writeFileSync(UTILITY_HOOKS_PATH, currentScreenHook, 'utf8');
+console.log('✅ useCurrentScreen hook generated in utility-hooks.tsx');
+
 const sharedHooks = `import { type BaseMembers } from "../../../auth0-acul-js/dist/types/interfaces/models/base-context";
 
 // AUTO-GENERATED FILE - DO NOT EDIT
@@ -96,6 +116,8 @@ fs.writeFileSync(CONTEXT_HOOKS_PATH, sharedHooks + '\n', 'utf8');
 
 const indexExports: string[] = [];
 const indexTypes: string[] = [];
+
+indexExports.push(`export { useCurrentScreen } from './hooks/utility-hooks';`);
 
 for (const symbol of screenSymbols) {
   const screenName = symbol.getName();
