@@ -22,9 +22,9 @@ export interface WebAuthnErrorDetails {
 }
 
 /**
- * CurrentScreen details.
+ * CurrentScreenOptions details.
  */
-export interface CurrentScreen {
+export interface CurrentScreenOptions {
   screenName: string | null;
   promptName: string | null;
   state: string | null;

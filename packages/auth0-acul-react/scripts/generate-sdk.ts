@@ -86,10 +86,10 @@ pkg.exports['.'] = { import: './dist/index.js', types: './dist/index.d.ts' };
 const currentScreenHook = `// AUTO-GENERATED FILE - DO NOT EDIT
 
 import { useState, useEffect } from 'react';
-import { getCurrentScreen, CurrentScreen } from '@auth0/auth0-acul-js';
+import { getCurrentScreen, CurrentScreenOptions } from '@auth0/auth0-acul-js';
 
-export const useCurrentScreen = (): CurrentScreen | null => {
-  const [screen, setScreen] = useState<CurrentScreen | null>(null);
+export const useCurrentScreen = (): CurrentScreenOptions | null => {
+  const [screen, setScreen] = useState<CurrentScreenOptions | null>(null);
 
   useEffect(() => {
     const data = getCurrentScreen();
