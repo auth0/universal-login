@@ -16,6 +16,7 @@ const UTILITY_HOOKS_PATH = path.resolve(HOOKS_FOLDER, 'utility-hooks.tsx');
 const COMMON_HOOKS_PATH = path.resolve(HOOKS_FOLDER, 'common-hooks.tsx');
 const INDEX_FILE_PATH = path.resolve(__dirname, '../src/index.ts');
 const PACKAGE_JSON_PATH = path.resolve(__dirname, '../package.json');
+const EXAMPLES_PATH = path.resolve(__dirname, '../examples');
 
 const CONTEXT_MODELS = [
   'user', 'tenant', 'branding', 'client', 'organization',
@@ -47,6 +48,103 @@ function getSafeMethodName(name: string): string {
   return name;
 }
 
+function generateExampleContent(
+  screenName: string,
+  kebab: string,
+  contextHooks: string[],
+  screenMethods: string[]
+): string {
+  const mainHook = `use${screenName}`;
+
+  const primaryMethodCandidates = ['login', 'submit', 'continue', 'send', 'verify', 'challenge', 'resend', 'select'];
+  let primaryMethod = screenMethods.find(m => primaryMethodCandidates.includes(m)) || screenMethods[0] || 'submit';
+  primaryMethod = getSafeMethodName(primaryMethod);
+
+  const availableContextHooks = CONTEXT_MODELS
+    .filter(m => !['screen', 'transaction'].includes(m))
+    .map(m => `use${toPascal(m)}`);
+
+  const componentName = `${screenName}`;
+
+  const tsxExample = `import React, { useState } from 'react';
+import {
+  ${mainHook},
+  ${availableContextHooks.join(',\n  ')}
+} from '@auth0/auth0-acul-react/${kebab}';
+
+export const ${componentName}: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Main hook for screen logic
+  const screen = ${mainHook}();
+
+  // Context hooks
+  ${availableContextHooks.map(hook => `const ${hook.replace('use', '').toLowerCase()}Data = ${hook}();`).join('\n  ')}
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      // TODO: Gather data from form inputs
+      const payload = {};
+      await screen.${primaryMethod}(payload);
+      // On success, the core SDK handles redirection.
+    } catch (err: any) {
+      setError(err.message || 'An unexpected error occurred.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <h1>${screenName}</h1>
+
+      {/* TODO: Add form inputs for the '${primaryMethod}' payload */}
+
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+
+      <button type="submit" disabled={isLoading}>
+        {isLoading ? 'Processing...' : 'Continue'}
+      </button>
+    </form>
+  );
+};`;
+
+  return `# \`${kebab}\`
+
+The \`${kebab}\` screen is used to handle [purpose of the screen].
+
+## ⚛️ React Example
+
+This example demonstrates how to build a React component for the \`${kebab}\` screen.
+
+### 1. Create the Component
+
+Create a component file (e.g., \`${componentName}.tsx\`) and add the following code:
+
+\`\`\`tsx
+${tsxExample}
+\`\`\`
+
+### 2. How It Works
+
+1.  **Imports**: We import \`${mainHook}\` and various context hooks from the dedicated \`@auth0/auth0-acul-react/${kebab}\` entry point.
+2.  **Hooks**:
+    *   \`${mainHook}()\`: Provides the core screen object with methods like \`${primaryMethod}()\`.
+    *   Context hooks like \`useUser()\` and \`useTenant()\` provide read-only data about the current state.
+3.  **State Management**: \`useState\` is used to manage form state, such as loading indicators and error messages.
+4.  **Form Submission**:
+    *   The \`handleSubmit\` function calls \`screen.${primaryMethod}(payload)\`.
+    *   You must replace the empty \`payload\` object with the actual data from your form inputs.
+    *   The core SDK will handle the API request and subsequent redirection on success.
+    *   Errors are caught and can be displayed to the user.
+`;
+}
+
 function collectTypedocExports(): Set<string> {
   const valid = new Set<string>();
   if (!fs.existsSync(DOCS_INDEX_PATH)) return valid;
@@ -67,6 +165,7 @@ const VALID_TYPEDOC_EXPORTS = collectTypedocExports();
 
 fs.mkdirSync(SCREENS_OUTPUT_PATH, { recursive: true });
 fs.mkdirSync(HOOKS_FOLDER, { recursive: true });
+fs.mkdirSync(EXAMPLES_PATH, { recursive: true });
 fs.writeFileSync(UTILITY_HOOKS_PATH, '// Manual utility hooks go here\n', 'utf8');
 fs.writeFileSync(COMMON_HOOKS_PATH, '// Manual common hooks go here\n', 'utf8');
 
@@ -114,6 +213,31 @@ indexExports.push(`export { useCurrentScreen } from './hooks/common-hooks';`);
 for (const symbol of screenSymbols) {
   const screenName = symbol.getName();
   const kebab = toKebabCase(screenName);
+
+  const exampleFilePath = path.join(EXAMPLES_PATH, `${kebab}.md`);
+  if (!fs.existsSync(exampleFilePath)) {
+    const screenFile = project.getSourceFile(path.join(CORE_SDK_PATH, `src/screens/${kebab}/index.ts`));
+    const ifaceFile = project.getSourceFile(path.join(CORE_SDK_PATH, `interfaces/screens/${kebab}.ts`));
+    const screenMethods: string[] = [];
+
+    if (ifaceFile) {
+        for (const [name, decls] of ifaceFile.getExportedDeclarations()) {
+            for (const d of decls) {
+                if (name === `${screenName}Members` && d instanceof InterfaceDeclaration) {
+                    d.getMembers()
+                        .filter(member => member.getKind() === SyntaxKind.MethodSignature)
+                        .forEach(method => {
+                            screenMethods.push(method.getSymbol()?.getName() || '');
+                        });
+                }
+            }
+        }
+    }
+
+    const exampleContent = generateExampleContent(screenName, kebab, CONTEXT_MODELS, screenMethods);
+    fs.writeFileSync(exampleFilePath, exampleContent, 'utf8');
+    console.log(`✅ Example file created for ${kebab}`);
+  }
 
   const screenFile = project.getSourceFile(path.join(CORE_SDK_PATH, `src/screens/${kebab}/index.ts`));
   if (!screenFile) continue;
