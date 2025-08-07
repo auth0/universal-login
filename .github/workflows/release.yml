@@ -89,4 +89,4 @@ jobs:
         run: npm run docs --workspace=${{ steps.meta.outputs.name }}
 
       - name: Upload documentation
-        run: gh-pages -d packages/${{ steps.meta.outputs.dir }}
+        run: gh-pages -d packages/${{ steps.meta.outputs.dir }}/docs
