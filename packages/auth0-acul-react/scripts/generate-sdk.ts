@@ -285,14 +285,16 @@ for (const symbol of screenSymbols) {
   const screenLines: string[] = [];
 
   screenLines.push(`// AUTO-GENERATED FILE - DO NOT EDIT`);
-  screenLines.push(`import { useMemo } from 'react';`);
+  // Removed import of useMemo since we no longer use it
   screenLines.push(`import ${screenName} from '@auth0/auth0-acul-js/${kebab}';`);
   screenLines.push(`import { ContextHooks } from '../hooks/context-hooks';\n`);
 
   usedInterfaces.add(baseInterface);
 
-  screenLines.push(`export const ${instanceHook} = (): ${baseInterface} => useMemo(() => new ${screenName}(), []);\n`);
-  screenLines.push(`const instance = ${instanceHook}();`);
+  // Singleton instance instead of useMemo hook
+  screenLines.push(`const instance = new ${screenName}();`);
+  screenLines.push(`export const ${instanceHook} = (): ${baseInterface} => instance;\n`);
+
   screenLines.push(`const factory = new ContextHooks<${baseInterface}>(instance);\n`);
 
   const shared = CONTEXT_MODELS.filter(m => !['screen', 'transaction'].includes(m));
@@ -320,7 +322,7 @@ for (const symbol of screenSymbols) {
 
   const usedTypeImports = Array.from(usedInterfaces);
   if (usedTypeImports.length) {
-    screenLines.splice(3, 0, `import type { ${usedTypeImports.join(', ')} } from '@auth0/auth0-acul-js/${kebab}';`);
+    screenLines.splice(2, 0, `import type { ${usedTypeImports.join(', ')} } from '@auth0/auth0-acul-js/${kebab}';`);
   }
 
   if (allExportedInterfaces.size) {
