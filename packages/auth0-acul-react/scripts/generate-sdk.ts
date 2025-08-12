@@ -198,11 +198,12 @@ const sharedHooks = `import { type BaseMembers } from "../../../auth0-acul-js/di
 
 // AUTO-GENERATED FILE - DO NOT EDIT
 export class ContextHooks<T extends BaseMembers> {
-  constructor(private instance: T) {}
+  constructor(private instance: () => T) {}
   ${CONTEXT_MODELS.filter(m => !['screen', 'transaction'].includes(m))
-    .map(m => `use${toPascal(m)} = () => this.instance.${m} as T['${m}'];`)
+    .map(m => `use${toPascal(m)} = () => this.instance().${m} as T['${m}'];`)
     .join('\n  ')}
 }`;
+
 fs.writeFileSync(CONTEXT_HOOKS_PATH, sharedHooks + '\n', 'utf8');
 
 const indexExports: string[] = [];
@@ -216,22 +217,22 @@ for (const symbol of screenSymbols) {
 
   const exampleFilePath = path.join(EXAMPLES_PATH, `${kebab}.md`);
   if (!fs.existsSync(exampleFilePath)) {
-    const screenFile = project.getSourceFile(path.join(CORE_SDK_PATH, `src/screens/${kebab}/index.ts`));
+    // const screenFile = project.getSourceFile(path.join(CORE_SDK_PATH, `src/screens/${kebab}/index.ts`));
     const ifaceFile = project.getSourceFile(path.join(CORE_SDK_PATH, `interfaces/screens/${kebab}.ts`));
     const screenMethods: string[] = [];
 
     if (ifaceFile) {
-        for (const [name, decls] of ifaceFile.getExportedDeclarations()) {
-            for (const d of decls) {
-                if (name === `${screenName}Members` && d instanceof InterfaceDeclaration) {
-                    d.getMembers()
-                        .filter(member => member.getKind() === SyntaxKind.MethodSignature)
-                        .forEach(method => {
-                            screenMethods.push(method.getSymbol()?.getName() || '');
-                        });
-                }
-            }
+      for (const [name, decls] of ifaceFile.getExportedDeclarations()) {
+        for (const d of decls) {
+          if (name === `${screenName}Members` && d instanceof InterfaceDeclaration) {
+            d.getMembers()
+              .filter(member => member.getKind() === SyntaxKind.MethodSignature)
+              .forEach(method => {
+                screenMethods.push(method.getSymbol()?.getName() || '');
+              });
+          }
         }
+      }
     }
 
     const exampleContent = generateExampleContent(screenName, kebab, CONTEXT_MODELS, screenMethods);
@@ -292,10 +293,13 @@ for (const symbol of screenSymbols) {
   usedInterfaces.add(baseInterface);
 
   // Singleton instance instead of useMemo hook
-  screenLines.push(`const instance = new ${screenName}();`);
-  screenLines.push(`export const ${instanceHook} = (): ${baseInterface} => instance;\n`);
+  screenLines.push(`function getInstance(): ${baseInterface} {
+  return new ${screenName}();
+  }`);
 
-  screenLines.push(`const factory = new ContextHooks<${baseInterface}>(instance);\n`);
+  screenLines.push(`export const ${instanceHook} = (): ${baseInterface} => getInstance();\n`);
+
+  screenLines.push(`const factory = new ContextHooks<${baseInterface}>(getInstance);\n`);
 
   const shared = CONTEXT_MODELS.filter(m => !['screen', 'transaction'].includes(m));
   screenLines.push(`export const {\n  ${shared.map(m => `use${toPascal(m)}`).join(',\n  ')}\n} = factory;\n`);
@@ -306,17 +310,17 @@ for (const symbol of screenSymbols) {
     const specific = `${pascal}MembersOn${screenName}`;
     const hookName = `use${pascal}`;
     if (typedInterfaces.has(specific)) {
-      screenLines.push(`export const ${hookName}: () => ${specific} = () => instance.${model};`);
+      screenLines.push(`export const ${hookName}: () => ${specific} = () => getInstance().${model};`);
       usedInterfaces.add(specific);
     } else {
-      screenLines.push(`export const ${hookName} = () => instance.${model};`);
+      screenLines.push(`export const ${hookName} = () => getInstance().${model};`);
     }
   }
 
   if (exportedMethods.size) {
     screenLines.push('\n// Screen methods');
     for (const method of Array.from(exportedMethods)) {
-      screenLines.push(`export const ${getSafeMethodName(method)} = instance.${method}.bind(instance);`);
+      screenLines.push(`export const ${getSafeMethodName(method)} = (args: any) => getInstance().${method}.call(getInstance(), args);`);
     }
   }
 
