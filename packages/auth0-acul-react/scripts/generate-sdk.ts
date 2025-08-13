@@ -217,7 +217,6 @@ for (const symbol of screenSymbols) {
 
   const exampleFilePath = path.join(EXAMPLES_PATH, `${kebab}.md`);
   if (!fs.existsSync(exampleFilePath)) {
-    // const screenFile = project.getSourceFile(path.join(CORE_SDK_PATH, `src/screens/${kebab}/index.ts`));
     const ifaceFile = project.getSourceFile(path.join(CORE_SDK_PATH, `interfaces/screens/${kebab}.ts`));
     const screenMethods: string[] = [];
 
@@ -295,7 +294,7 @@ for (const symbol of screenSymbols) {
   // Singleton instance instead of useMemo hook
   screenLines.push(`function getInstance(): ${baseInterface} {
   return new ${screenName}();
-  }`);
+}`);
 
   screenLines.push(`export const ${instanceHook} = (): ${baseInterface} => getInstance();\n`);
 
@@ -369,9 +368,23 @@ for (const symbol of screenSymbols) {
 
 fs.writeFileSync(PACKAGE_JSON_PATH, JSON.stringify(pkg, null, 2), 'utf8');
 
+// Dynamically generate base properties export
+const basePropertiesFile = project.getSourceFile(path.join(CORE_SDK_PATH, 'interfaces', 'export', 'base-properties.ts'));
+const basePropertiesInterfaces: string[] = [];
+if (basePropertiesFile) {
+  basePropertiesFile.getExportSymbols().forEach(symbol => {
+    basePropertiesInterfaces.push(symbol.getName());
+  });
+}
+
+const basePropertiesExport = `\n// Base Properties Common Interface
+export type {
+  ${basePropertiesInterfaces.sort().join(',\n  ')}
+} from '@auth0/auth0-acul-js';`;
+
 fs.writeFileSync(
   INDEX_FILE_PATH,
-  `// AUTO-GENERATED INDEX - DO NOT EDIT\n\n${indexExports.join('\n')}\n\n${indexTypes.join('\n')}\n`,
+  `// AUTO-GENERATED INDEX - DO NOT EDIT\n\n${indexExports.join('\n')}\n\n${indexTypes.join('\n')}${basePropertiesExport}\n`,
   'utf8'
 );
 
