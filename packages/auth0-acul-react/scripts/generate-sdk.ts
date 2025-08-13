@@ -388,4 +388,40 @@ fs.writeFileSync(
   'utf8'
 );
 
+const FUNCTIONS_TS_PATH = path.resolve(__dirname, '../src/functions.ts');
+const INTERFACES_TS_PATH = path.resolve(__dirname, '../src/interfaces.ts');
+const EXPORT_TS_PATH = path.resolve(__dirname, '../src/export.ts');
+
+const indexSource = fs.readFileSync(INDEX_FILE_PATH, 'utf8');
+
+const functionLines: string[] = [];
+const interfaceLines: string[] = [];
+
+const functionExportRegex = /^export\s+\{([^\}]+)\}\s+from\s+['"]([^'"]+)['"];$/gm;
+let funcMatch;
+while ((funcMatch = functionExportRegex.exec(indexSource)) !== null) {
+  funcMatch[1].split(',').forEach(fn => {
+    functionLines.push(`export { ${fn.trim()} } from '${funcMatch[2]}';`);
+  });
+}
+
+const interfaceExportRegex = /^export\s+type\s+\{([^\}]+)\}\s+from\s+['"]([^'"]+)['"];$/gm;
+let typeMatch;
+while ((typeMatch = interfaceExportRegex.exec(indexSource)) !== null) {
+  typeMatch[1].split(',').forEach(type => {
+    interfaceLines.push(`export type { ${type.trim()} } from '${typeMatch[2]}';`);
+  });
+}
+
+fs.writeFileSync(FUNCTIONS_TS_PATH, '// AUTO-GENERATED - DO NOT EDIT\n\n' + functionLines.join('\n'), 'utf8');
+fs.writeFileSync(INTERFACES_TS_PATH, '// AUTO-GENERATED - DO NOT EDIT\n\n' + interfaceLines.join('\n'), 'utf8');
+
+// Now update export.ts to use namespace re-exports
+const exportLines: string[] = [];
+exportLines.push('// AUTO-GENERATED EXPORTS - DO NOT EDIT\n');
+exportLines.push(`export * as Functions from './functions';`);
+exportLines.push(`export * as Interfaces from './interfaces';`);
+fs.writeFileSync(EXPORT_TS_PATH, exportLines.join('\n'), 'utf8');
+console.log('✅ src/functions.ts, src/interfaces.ts, and src/export.ts generated for proper TypeDoc grouping');
+
 console.log('\n🏁 Done: Shared + overridden hook exports + root index updated.');
