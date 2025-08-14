@@ -396,13 +396,34 @@ const indexSource = fs.readFileSync(INDEX_FILE_PATH, 'utf8');
 
 const functionLines: string[] = [];
 const interfaceLines: string[] = [];
+const screenFiles = fs.readdirSync(SCREENS_OUTPUT_PATH).filter(f => f.endsWith('.tsx'));
 
-const functionExportRegex = /^export\s+\{([^\}]+)\}\s+from\s+['"]([^'"]+)['"];$/gm;
-let funcMatch;
-while ((funcMatch = functionExportRegex.exec(indexSource)) !== null) {
-  funcMatch[1].split(',').forEach(fn => {
-    functionLines.push(`export { ${fn.trim()} } from '${funcMatch[2]}';`);
-  });
+for (const file of screenFiles) {
+  const kebab = file.replace('.tsx', '');
+  const pascal = toPascalFromKebab(kebab);
+  const screenPath = `./screens/${kebab}`;
+  const source = fs.readFileSync(path.join(SCREENS_OUTPUT_PATH, file), 'utf8');
+
+  // Find all exported hooks and methods
+  const exportRegex = /^export\s+(const|function)\s+([a-zA-Z0-9_]+)\s*[\(:=]/gm;
+  let match;
+  const exports: string[] = [];
+  while ((match = exportRegex.exec(source)) !== null) {
+    exports.push(match[2]);
+  }
+
+  if (exports.length) {
+    // Aliased imports to avoid collisions
+    const aliasedImports = exports.map(identifier => {
+      return `${identifier} as ${identifier}_${pascal}`;
+    });
+    functionLines.push(`import { ${aliasedImports.join(', ')} } from '${screenPath}';`);
+    functionLines.push(`\nexport namespace ${pascal} {`);
+    exports.forEach(identifier => {
+      functionLines.push(`  export const ${identifier} = ${identifier}_${pascal};`);
+    });
+    functionLines.push('}\n');
+  }
 }
 
 const interfaceExportRegex = /^export\s+type\s+\{([^\}]+)\}\s+from\s+['"]([^'"]+)['"];$/gm;
@@ -422,6 +443,5 @@ exportLines.push('// AUTO-GENERATED EXPORTS - DO NOT EDIT\n');
 exportLines.push(`export * as Functions from './functions';`);
 exportLines.push(`export * as Interfaces from './interfaces';`);
 fs.writeFileSync(EXPORT_TS_PATH, exportLines.join('\n'), 'utf8');
-console.log('✅ src/functions.ts, src/interfaces.ts, and src/export.ts generated for proper TypeDoc grouping');
 
 console.log('\n🏁 Done: Shared + overridden hook exports + root index updated.');
