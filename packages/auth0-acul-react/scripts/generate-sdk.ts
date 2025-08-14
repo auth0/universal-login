@@ -285,58 +285,68 @@ for (const symbol of screenSymbols) {
   const screenLines: string[] = [];
 
   screenLines.push(`// AUTO-GENERATED FILE - DO NOT EDIT`);
-  // Removed import of useMemo since we no longer use it
-  screenLines.push(`import ${screenName} from '@auth0/auth0-acul-js/${kebab}';`);
+  const hasDefaultExport = !!screenFile.getDefaultExportSymbol();
+  screenLines.push(`import { useMemo } from 'react';`);
+  screenLines.push(
+    hasDefaultExport
+      ? `import ${screenName} from '@auth0/auth0-acul-js/${kebab}';`
+      : `import { ${screenName} } from '@auth0/auth0-acul-js/${kebab}';`
+  );
   screenLines.push(`import { ContextHooks } from '../hooks/context-hooks';\n`);
 
   usedInterfaces.add(baseInterface);
 
-  // Singleton instance instead of useMemo hook
-  screenLines.push(`function getInstance(): ${baseInterface} {
-  return new ${screenName}();
-}`);
+  // Lazy singleton instance
+  screenLines.push(`let instance: ${baseInterface} | null = null;`);
+  screenLines.push(`const getInstance = (): ${baseInterface} => {`);
+  screenLines.push(`  if (!instance) {`);
+  screenLines.push(`    instance = new ${screenName}();`);
+  screenLines.push(`  }`);
+  screenLines.push(`  return instance;`);
+  screenLines.push(`};\n`);
 
-  screenLines.push(`export const ${instanceHook} = (): ${baseInterface} => getInstance();\n`);
+  // Main hook (memoized)
+  screenLines.push(`export const ${instanceHook} = (): ${baseInterface} => useMemo(() => getInstance(), []);\n`);
 
+  // Context hooks factory (unchanged logic but now uses singleton)
   screenLines.push(`const factory = new ContextHooks<${baseInterface}>(getInstance);\n`);
-
   const shared = CONTEXT_MODELS.filter(m => !['screen', 'transaction'].includes(m));
-  screenLines.push(`export const {\n  ${shared.map(m => `use${toPascal(m)}`).join(',\n  ')}\n} = factory;\n`);
+  screenLines.push(`export const {`);
+  screenLines.push(`  ${shared.map(m => `use${toPascal(m)}`).join(',\n  ')}`);
+  screenLines.push(`} = factory;\n`);
 
+  // screen / transaction hooks with useMemo
   for (const model of ['screen', 'transaction']) {
     if (!allProps.has(model)) continue;
     const pascal = toPascal(model);
     const specific = `${pascal}MembersOn${screenName}`;
     const hookName = `use${pascal}`;
     if (typedInterfaces.has(specific)) {
-      screenLines.push(`export const ${hookName}: () => ${specific} = () => getInstance().${model};`);
+      screenLines.push(`export const ${hookName}: () => ${specific} = () => useMemo(() => getInstance().${model}, []);`);
       usedInterfaces.add(specific);
     } else {
-      screenLines.push(`export const ${hookName} = () => getInstance().${model};`);
+      screenLines.push(`export const ${hookName} = () => useMemo(() => getInstance().${model}, []);`);
     }
   }
 
   if (exportedMethods.size) {
-    screenLines.push('\n// Screen methods');
+    screenLines.push(`\n// Screen methods`);
     for (const method of Array.from(exportedMethods)) {
-      screenLines.push(`export const ${getSafeMethodName(method)} = (args: any) => getInstance().${method}.call(getInstance(), args);`);
+      const safe = getSafeMethodName(method);
+      screenLines.push(`export const ${safe} = (args: any) => getInstance().${method}(args);`);
     }
   }
 
+  // Insert type import after imports
   const usedTypeImports = Array.from(usedInterfaces);
   if (usedTypeImports.length) {
-    screenLines.splice(2, 0, `import type { ${usedTypeImports.join(', ')} } from '@auth0/auth0-acul-js/${kebab}';`);
+    // After comment + useMemo import + class import => index 3
+    screenLines.splice(3, 0, `import type { ${usedTypeImports.join(', ')} } from '@auth0/auth0-acul-js/${kebab}';`);
   }
 
   if (allExportedInterfaces.size) {
     const pascalScreenName = toPascalFromKebab(screenName);
-    screenLines.push(`\nexport type { ${Array.from(allExportedInterfaces).map(interfaceName => {
-      if (interfaceName.endsWith(pascalScreenName)) {
-        return interfaceName;
-      } else {
-        return `${interfaceName} as ${interfaceName}On${pascalScreenName}`;
-      }
-    }).join(', ')} } from '@auth0/auth0-acul-js/${kebab}';`);
+    screenLines.push(`\nexport type { ${Array.from(allExportedInterfaces).map(interfaceName => interfaceName.endsWith(pascalScreenName) ? interfaceName : `${interfaceName} as ${interfaceName}On${pascalScreenName}`).join(', ')} } from '@auth0/auth0-acul-js/${kebab}';`);
   }
 
   fs.writeFileSync(
@@ -368,23 +378,9 @@ for (const symbol of screenSymbols) {
 
 fs.writeFileSync(PACKAGE_JSON_PATH, JSON.stringify(pkg, null, 2), 'utf8');
 
-// Dynamically generate base properties export
-const basePropertiesFile = project.getSourceFile(path.join(CORE_SDK_PATH, 'interfaces', 'export', 'base-properties.ts'));
-const basePropertiesInterfaces: string[] = [];
-if (basePropertiesFile) {
-  basePropertiesFile.getExportSymbols().forEach(symbol => {
-    basePropertiesInterfaces.push(symbol.getName());
-  });
-}
-
-const basePropertiesExport = `\n// Base Properties Common Interface
-export type {
-  ${basePropertiesInterfaces.sort().join(',\n  ')}
-} from '@auth0/auth0-acul-js';`;
-
 fs.writeFileSync(
   INDEX_FILE_PATH,
-  `// AUTO-GENERATED INDEX - DO NOT EDIT\n\n${indexExports.join('\n')}\n\n${indexTypes.join('\n')}${basePropertiesExport}\n`,
+  `// AUTO-GENERATED INDEX - DO NOT EDIT\n\n${indexExports.join('\n')}\n\n${indexTypes.join('\n')}\n`,
   'utf8'
 );
 
