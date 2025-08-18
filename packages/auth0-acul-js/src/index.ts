@@ -10,12 +10,16 @@ export * from '../interfaces/export/options';
 export * from '../interfaces/export/extended-types';
 export * from '../interfaces/export/common';
 
-export function getCurrentScreen(): CurrentScreenOptions {
+export function getCurrentScreen(): string | null {
+  return new BaseContext().getContext('screen')?.name ?? null;
+}
+
+export function getCurrentScreenOptions(): CurrentScreenOptions {
   const contextDetails = new BaseContext();
   return {
     screenName: contextDetails.getContext('screen')?.name || null,
     promptName: contextDetails.getContext('prompt')?.name || null,
     state: contextDetails.getContext('transaction')?.state || null,
     branding: Branding.getSettings(contextDetails.getContext('branding')) || null,
-  }
+  };
 }
