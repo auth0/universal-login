@@ -400,18 +400,15 @@ for (const file of screenFiles) {
   const screenPath = `./screens/${kebab}`;
   const source = fs.readFileSync(path.join(SCREENS_OUTPUT_PATH, file), 'utf8');
 
-  // Find all exported hooks and methods (including re-exports)
   const exportRegex = /^export\s+(const|function)\s+([a-zA-Z0-9_]+)\s*[(:=]/gm;
   const reExportRegex = /^export\s+\{\s*([a-zA-Z0-9_,\s]+)\s*\}\s+from\s+['"][^'"]+['"]/gm;
   let match;
   const exports: string[] = [];
 
-  // Direct exports
   while ((match = exportRegex.exec(source)) !== null) {
     exports.push(match[2]);
   }
 
-  // Re-exports
   while ((match = reExportRegex.exec(source)) !== null) {
     match[1].split(',').map(e => e.trim()).forEach(e => {
       if (e) exports.push(e);
@@ -423,11 +420,9 @@ for (const file of screenFiles) {
       return `${identifier} as ${identifier}_${pascal}`;
     });
     functionLines.push(`import { ${aliasedImports.join(', ')} } from '${screenPath}';`);
-
-    functionLines.push(`/** All hooks and methods for the ${pascal} screen */`);
-    functionLines.push(`export class ${pascal} {`);
+    functionLines.push(`export namespace ${pascal} {`);
     exports.forEach(identifier => {
-      functionLines.push(`  static ${identifier} = ${identifier}_${pascal};`);
+      functionLines.push(`  export const ${identifier} = ${identifier}_${pascal};`);
     });
     functionLines.push('}\n');
   }
@@ -440,8 +435,11 @@ while ((typeMatch = interfaceExportRegex.exec(indexSource)) !== null) {
     interfaceLines.push(`export type { ${type.trim()} } from '${typeMatch[2]}';`);
   });
 }
-
-fs.writeFileSync(FUNCTIONS_TS_PATH, '// AUTO-GENERATED - DO NOT EDIT\n\n' + functionLines.join('\n'), 'utf8');
+fs.writeFileSync(
+  FUNCTIONS_TS_PATH,
+  '/* eslint-disable @typescript-eslint/no-namespace */\n// AUTO-GENERATED - DO NOT EDIT\n\n' + functionLines.join('\n'),
+  'utf8'
+);
 fs.writeFileSync(INTERFACES_TS_PATH, '// AUTO-GENERATED - DO NOT EDIT\n\n' + interfaceLines.join('\n'), 'utf8');
 
 // Now update export.ts to use namespace re-exports
