@@ -24,7 +24,12 @@ const CONTEXT_MODELS = [
 ];
 
 function toKebabCase(str: string): string {
-  return str.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
+  // Handle special cases: WebAuthn and OTP acronyms
+  return str
+    .replace(/WebAuthn/g, 'Webauthn')
+    .replace(/OTP/g, 'Otp')
+    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+    .toLowerCase();
 }
 
 function toPascal(str: string): string {
@@ -211,6 +216,8 @@ const indexTypes: string[] = [];
 
 indexExports.push(`export { useCurrentScreen } from './hooks/common-hooks';`);
 
+let screenCount = 0;
+
 for (const symbol of screenSymbols) {
   const screenName = symbol.getName();
   const kebab = toKebabCase(screenName);
@@ -236,7 +243,6 @@ for (const symbol of screenSymbols) {
 
     const exampleContent = generateExampleContent(screenName, kebab, CONTEXT_MODELS, screenMethods);
     fs.writeFileSync(exampleFilePath, exampleContent, 'utf8');
-    console.log(`✅ Example file created for ${kebab}`);
   }
 
   const screenFile = project.getSourceFile(path.join(CORE_SDK_PATH, `src/screens/${kebab}/index.ts`));
@@ -374,6 +380,7 @@ for (const symbol of screenSymbols) {
   }
 
   console.log(`✅ ${screenName}: Exports with shared + overridden context hooks and methods`);
+  screenCount++; // <- Count increment
 }
 
 fs.writeFileSync(PACKAGE_JSON_PATH, JSON.stringify(pkg, null, 2), 'utf8');
@@ -384,4 +391,4 @@ fs.writeFileSync(
   'utf8'
 );
 
-console.log('\n🏁 Done: Shared + overridden hook exports + root index updated.');
+console.log(`\n🏁 Done: ${screenCount} screen${screenCount === 1 ? '' : 's'} generated with shared + overridden hook exports. Root index updated.`);

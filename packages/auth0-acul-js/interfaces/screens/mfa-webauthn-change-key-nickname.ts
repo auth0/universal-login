@@ -69,6 +69,11 @@ export interface ContinueOptions extends CustomOptions {
  */
 export interface MfaWebAuthnChangeKeyNicknameMembers extends BaseMembers {
   /**
+   * The screen object with MFA WebAuthn Change Key Nickname specific data structure.
+   */
+  screen: ScreenMembersOnMfaWebAuthnChangeKeyNickname;
+  
+  /**
    * Submits the new nickname for the WebAuthn security key.
    * This action corresponds to the user entering a new nickname and clicking a "Save" or "Continue" button.
    * The SDK will POST this new nickname to the Auth0 `/u/mfa-webauthn-change-key-nickname` endpoint.
