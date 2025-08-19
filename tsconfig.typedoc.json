@@ -12,6 +12,7 @@
     "allowSyntheticDefaultImports": true
   },
   "include": [
-    "packages/auth0-acul-js/src"
+    "packages/auth0-acul-js/src",
+    "packages/auth0-acul-react/src"
   ]
 }
