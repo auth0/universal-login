@@ -1,5 +1,6 @@
-import type { ScreenMembers } from '../../interfaces/models/screen';
 import type { CustomOptions } from '../common';
+import type { BaseMembers } from '../models/base-context';
+import type { ScreenMembers } from '../models/screen';
 
 /**
  * Represents the members of the Email OTP Challenge screen.
@@ -15,11 +16,13 @@ export interface OtpCodeOptions extends CustomOptions {
    */
   code: string;
 }
+
 // test data*********
 /**
  * Represents the Email OTP Challenge screen interface.
  */
-export interface EmailOTPChallengeMembers {
+export interface EmailOTPChallengeMembers extends BaseMembers {
+  screen: ScreenMembersOnEmailOTPChallenge;
   /**
    * Submits the OTP code entered by the user.
    * @param options Optional parameters to include in the submission.
