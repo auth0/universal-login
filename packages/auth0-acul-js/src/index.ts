@@ -9,7 +9,7 @@ export * from '../interfaces/export/screen-properties';
 export * from '../interfaces/export/options';
 export * from '../interfaces/export/extended-types';
 export * from '../interfaces/export/common';
-
+export { default as usePasswordValidation } from './utility-hooks/usePasswordValidation';
 export function getCurrentScreen(): string | null {
   return new BaseContext().getContext('screen')?.name ?? null;
 }
