@@ -5,7 +5,7 @@
   "type": "module",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "npm run generate:sdk && tsc",
     "test": "jest",
     "generate:sdk": "tsx ./scripts/generate-sdk.ts",
     "generate:examples": "tsx ./scripts/generate-examples.ts",
