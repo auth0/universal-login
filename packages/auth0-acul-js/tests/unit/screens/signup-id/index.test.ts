@@ -1,4 +1,4 @@
-import { ScreenIds } from '../../../../src/constants';
+import { ScreenIds, FormActions } from '../../../../src/constants';
 import SignupId from '../../../../src/screens/signup-id';
 import { getBrowserCapabilities } from '../../../../src/utils/browser-capabilities';
 import { FormHandler } from '../../../../src/utils/form-handler';
@@ -134,6 +134,23 @@ describe('SignupId', () => {
       await expect(signupId.federatedSignup(payload)).rejects.toThrow(
         'Mocked reject'
       );
+    });
+  });
+
+  describe('pickCountryCode', () => {
+    it('should submit pick-country-code action', async () => {
+      await signupId.pickCountryCode();
+      expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith({
+        action: FormActions.PICK_COUNTRY_CODE,
+      });
+    });
+
+    it('should throw an error if submitData fails', async () => {
+      const expectedError = new Error('Submission failed');
+      mockFormHandler.submitData.mockRejectedValue(expectedError);
+
+      await expect(signupId.pickCountryCode()).rejects.toThrow(expectedError);
     });
   });
 });
