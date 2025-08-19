@@ -384,4 +384,72 @@ fs.writeFileSync(
   'utf8'
 );
 
+const FUNCTIONS_TS_PATH = path.resolve(__dirname, '../src/functions.ts');
+const INTERFACES_TS_PATH = path.resolve(__dirname, '../src/interfaces.ts');
+const EXPORT_TS_PATH = path.resolve(__dirname, '../src/export.ts');
+
+const indexSource = fs.readFileSync(INDEX_FILE_PATH, 'utf8');
+
+const functionLines: string[] = [];
+const interfaceLines: string[] = [];
+const screenFiles = fs.readdirSync(SCREENS_OUTPUT_PATH).filter(f => f.endsWith('.tsx'));
+
+for (const file of screenFiles) {
+  const kebab = file.replace('.tsx', '');
+  const pascal = toPascalFromKebab(kebab);
+  const screenPath = `./screens/${kebab}`;
+  const source = fs.readFileSync(path.join(SCREENS_OUTPUT_PATH, file), 'utf8');
+
+  // Find all exported hooks and methods (including re-exports)
+  const exportRegex = /^export\s+(const|function)\s+([a-zA-Z0-9_]+)\s*[(:=]/gm;
+  const reExportRegex = /^export\s+\{\s*([a-zA-Z0-9_,\s]+)\s*\}\s+from\s+['"][^'"]+['"]/gm;
+  let match;
+  const exports: string[] = [];
+
+  // Direct exports
+  while ((match = exportRegex.exec(source)) !== null) {
+    exports.push(match[2]);
+  }
+
+  // Re-exports
+  while ((match = reExportRegex.exec(source)) !== null) {
+    match[1].split(',').map(e => e.trim()).forEach(e => {
+      if (e) exports.push(e);
+    });
+  }
+
+  if (exports.length) {
+    const aliasedImports = exports.map(identifier => {
+      return `${identifier} as ${identifier}_${pascal}`;
+    });
+    functionLines.push(`import { ${aliasedImports.join(', ')} } from '${screenPath}';`);
+
+    functionLines.push(`/** All hooks and methods for the ${pascal} screen */`);
+    functionLines.push(`export class ${pascal} {`);
+    exports.forEach(identifier => {
+      functionLines.push(`  static ${identifier} = ${identifier}_${pascal};`);
+    });
+    functionLines.push('}\n');
+  }
+}
+
+const interfaceExportRegex = /^export\s+type\s+\{([^}]+)\}\s+from\s+['"]([^'"]+)['"];$/gm;
+let typeMatch;
+while ((typeMatch = interfaceExportRegex.exec(indexSource)) !== null) {
+  typeMatch[1].split(',').forEach(type => {
+    interfaceLines.push(`export type { ${type.trim()} } from '${typeMatch[2]}';`);
+  });
+}
+
+fs.writeFileSync(FUNCTIONS_TS_PATH, '// AUTO-GENERATED - DO NOT EDIT\n\n' + functionLines.join('\n'), 'utf8');
+fs.writeFileSync(INTERFACES_TS_PATH, '// AUTO-GENERATED - DO NOT EDIT\n\n' + interfaceLines.join('\n'), 'utf8');
+
+// Now update export.ts to use namespace re-exports
+const exportLines: string[] = [];
+exportLines.push('// AUTO-GENERATED EXPORTS - DO NOT EDIT\n');
+exportLines.push(`export * as Functions from './functions';`);
+exportLines.push(`export * as Interfaces from './interfaces';`);
+fs.writeFileSync(EXPORT_TS_PATH, exportLines.join('\n'), 'utf8');
+
+
 console.log('\n🏁 Done: Shared + overridden hook exports + root index updated.');
