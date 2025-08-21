@@ -28,3 +28,4 @@ jobs:
 
       - name: Build all workspaces
         run: npm run build
+        working-directory: packages/auth0-acul-react
