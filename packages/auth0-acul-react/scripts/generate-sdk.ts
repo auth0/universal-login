@@ -447,7 +447,7 @@ fs.writeFileSync(
   '/* eslint-disable @typescript-eslint/no-namespace */\n// AUTO-GENERATED - DO NOT EDIT\n\n' + functionLines.join('\n'),
   'utf8'
 );
-fs.writeFileSync(INTERFACES_TS_PATH, '// AUTO-GENERATED - DO NOT EDIT\n\n' + interfaceLines.join('\n'), 'utf8');
+fs.writeFileSync(INTERFACES_TS_PATH, '// AUTO-GENERATED - DO NOT EDIT\n\n' + interfaceLines.join('\n') + '\nexport {}', 'utf8');
 
 // Now update export.ts to use namespace re-exports
 const exportLines: string[] = [];
