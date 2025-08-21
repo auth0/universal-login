@@ -6,10 +6,18 @@ import type { CurrentScreenOptions } from '../../interfaces/common';
 import type { FlattenedTheme } from '../../interfaces/common';
 import type { Error as TransactionError } from '../../interfaces/models/transaction';
 
+/**
+ * Gets the current screen name from the authentication context
+ * @returns The current screen name or null if no screen is active
+ */
 export function getCurrentScreen(): string | null {
   return new BaseContext().getContext('screen')?.name ?? null;
 }
 
+/**
+ * Gets the current screen options including client, organization, prompt, screen, tenant, transaction, and untrusted data
+ * @returns Current screen options object with all available context data
+ */
 export function getCurrentScreenOptions(): CurrentScreenOptions {
   const context = new BaseContext();
 
@@ -40,6 +48,10 @@ export function getCurrentScreenOptions(): CurrentScreenOptions {
   };
 }
 
+/**
+ * Gets the current theme options with flattened configuration from branding context
+ * @returns FlattenedTheme object containing colors, fonts, borders, pageBackground, and widget configurations, or null if no branding is available
+ */
 export const getCurrentThemeOptions = (): FlattenedTheme | null => {
   const context = new BaseContext();
   const branding = context.getContext('branding');
