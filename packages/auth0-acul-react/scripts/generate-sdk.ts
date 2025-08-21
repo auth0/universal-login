@@ -355,6 +355,8 @@ for (const symbol of screenSymbols) {
     screenLines.push(`\nexport type { ${Array.from(allExportedInterfaces).map(interfaceName => interfaceName.endsWith(pascalScreenName) ? interfaceName : `${interfaceName} as ${interfaceName}On${pascalScreenName}`).join(', ')} } from '@auth0/auth0-acul-js/${kebab}';`);
   }
 
+  screenLines.push(`\nexport * from '@auth0/auth0-acul-js/${kebab}'`)
+  
   fs.writeFileSync(
     path.join(SCREENS_OUTPUT_PATH, `${kebab}.tsx`),
     screenLines.join('\n'),
@@ -384,6 +386,46 @@ for (const symbol of screenSymbols) {
 }
 
 fs.writeFileSync(PACKAGE_JSON_PATH, JSON.stringify(pkg, null, 2), 'utf8');
+
+// Add common types from core SDK
+indexTypes.push('\n// Common types from core SDK');
+indexTypes.push(`export type { 
+  // From base-properties.ts
+  ClientMembers,
+  BrandingMembers,
+  PromptMembers,
+  UserMembers,
+  OrganizationMembers,
+  ScreenMembers,
+  TenantMembers,
+  TransactionMembers,
+  UntrustedDataMembers,
+  // From common.ts
+  Error, 
+  Connection, 
+  EnterpriseConnection, 
+  PasswordPolicy, 
+  UsernamePolicy, 
+  PasswordComplexityRule,
+  CaptchaContext, 
+  PhonePrefix, 
+  PasskeyCreate, 
+  Scope, 
+  AuthorizationDetail,
+  BrandingSettings, 
+  BrandingThemes,
+  CustomOptions, 
+  WebAuthnErrorDetails, 
+  CurrentScreenOptions,
+  EnrolledEmail, 
+  EnrolledPhoneNumber, 
+  EnrolledDevice,
+  IdentifierType,
+  PasskeyCreateResponse, 
+  CredentialResponse,
+  Branding,
+  Organizations
+} from '@auth0/auth0-acul-js';`);
 
 fs.writeFileSync(
   INDEX_FILE_PATH,
