@@ -51,3 +51,11 @@ export interface CurrentScreenOptions {
     authorizationParams: Record<string, string> | null;
   } | null;
 }
+
+export interface FlattenedTheme {
+  colors: Record<string, string>;
+  fonts: Record<string, string | number | boolean | object>;
+  borders: Record<string, string | number | boolean>;
+  pageBackground: Record<string, string>;
+  widget: Record<string, string | number>;
+}
