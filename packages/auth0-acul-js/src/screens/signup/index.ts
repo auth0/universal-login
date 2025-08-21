@@ -1,9 +1,12 @@
 import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
+import getIdentifierFn from '../../utility-hooks/getIdentifier';
+import { validatePasswordforSignup } from '../../utility-hooks/signup/validatePassword';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
+
 
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../interfaces/models/transaction';
@@ -15,6 +18,9 @@ import type {
   TransactionMembersOnSignup as TransactionOptions,
 } from '../../../interfaces/screens/signup';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import type {Identifier} from '../../utility-hooks/getIdentifier';
+import type {PasswordValidationResult} from '../../utility-hooks/validatePassword';
+
 export default class Signup extends BaseContext implements SignupMembers {
   static screenIdentifier: string = ScreenIds.SIGNUP;
   screen: ScreenOptions;
@@ -99,6 +105,8 @@ export default class Signup extends BaseContext implements SignupMembers {
   }
 }
 
-export { SignupMembers, SignupOptions, ScreenOptions as ScreenMembersOnSignup, TransactionOptions as TransactionMembersOnSignup, FederatedSignupOptions };
+export { PasswordValidationResult, Identifier, SignupMembers, SignupOptions, ScreenOptions as ScreenMembersOnSignup, TransactionOptions as TransactionMembersOnSignup, FederatedSignupOptions };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';
+export const validatePassword = validatePasswordforSignup;
+export const getIdentifier = getIdentifierFn;

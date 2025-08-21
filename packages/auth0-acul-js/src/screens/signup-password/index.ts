@@ -1,5 +1,6 @@
 import { ScreenIds } from '../../constants';
 import { BaseContext } from '../../models/base-context';
+import { validatePasswordforSignupPassword } from '../../utility-hooks/signup-password/validatePassword';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -110,3 +111,4 @@ export {
 };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';
+export const validatePassword = validatePasswordforSignupPassword;

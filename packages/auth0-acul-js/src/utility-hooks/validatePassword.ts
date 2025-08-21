@@ -1,6 +1,6 @@
 import type { PasswordPolicy, Error, PasswordComplexityRule } from '../../interfaces/models/transaction';
 
-type PasswordValidationResult = {
+export type PasswordValidationResult = {
   isValid: boolean;
   errors: Error[];
 };
@@ -9,6 +9,7 @@ function validatePassword(
   password: string,
   policy?: PasswordPolicy | null
 ): PasswordValidationResult {
+
   const errors: Error[] = [];
 
   if (!policy) {
@@ -35,7 +36,7 @@ function validatePassword(
 
   const passedComplexityChecks = Object.values(complexityMap).filter(Boolean).length;
 
-const securityInfo = (policy.passwordSecurityInfo ?? []) as PasswordComplexityRule[];
+  const securityInfo = (policy.passwordSecurityInfo ?? []) as PasswordComplexityRule[];
 
   for (const rule of securityInfo) {
     switch (rule.code) {
