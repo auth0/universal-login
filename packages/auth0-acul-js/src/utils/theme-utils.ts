@@ -9,15 +9,15 @@ import type { BrandingSettings } from '../../interfaces/models/branding';
  * @returns Merged color configuration
  */
 export function flattenColors(
-  themeColors: Record<string, string>, 
+  themeColors: Record<string, string>,
   settingsColors?: BrandingSettings['colors']
 ): Record<string, string> {
   const result: Record<string, string> = { ...themeColors };
-  
+
   if (settingsColors?.primary) {
     result.primary = settingsColors.primary;
   }
-  
+
   if (settingsColors?.pageBackground) {
     if (typeof settingsColors.pageBackground === 'string') {
       result.pageBackground = settingsColors.pageBackground;
@@ -26,7 +26,7 @@ export function flattenColors(
       result.pageBackground = `linear-gradient(${settingsColors.pageBackground.angleDegree}deg, ${settingsColors.pageBackground.start}, ${settingsColors.pageBackground.end})`;
     }
   }
-  
+
   return result;
 }
 
@@ -40,7 +40,7 @@ export function flattenFonts(
   themeFonts: Record<string, string | boolean | object>
 ): Record<string, string | number | boolean | object> {
   const result: Record<string, string | number | boolean | object> = {};
-  
+
   for (const [key, value] of Object.entries(themeFonts)) {
     if (typeof value === 'string') {
       // Check if the string is actually a JSON object that needs parsing
@@ -60,7 +60,7 @@ export function flattenFonts(
       result[key] = value;
     }
   }
-  
+
   return result;
 }
 
@@ -81,11 +81,11 @@ export function flattenBorders(themeBorders: Record<string, string | boolean | n
  * @returns Merged background configuration
  */
 export function flattenPageBackground(
-  themeBackground: Record<string, string>, 
+  themeBackground: Record<string, string>,
   settingsPageBackground?: string | { type: string; start: string; end: string; angleDegree: number }
 ): Record<string, string> {
   const result: Record<string, string> = { ...themeBackground };
-  
+
   if (settingsPageBackground) {
     if (typeof settingsPageBackground === 'string') {
       result.background_color = settingsPageBackground;
@@ -94,7 +94,7 @@ export function flattenPageBackground(
       result.background_color = `linear-gradient(${settingsPageBackground.angleDegree}deg, ${settingsPageBackground.start}, ${settingsPageBackground.end})`;
     }
   }
-  
+
   return result;
 }
 
