@@ -462,7 +462,7 @@ for (const file of screenFilesForInterfaces) {
 
 fs.writeFileSync(
   INTERFACES_TS_PATH,
-  `${screenInterfaceExports.join('\n')}\n`,
+  `${screenInterfaceExports.join('\n')}\n` + 'export {}',
   'utf8'
 );
 console.log('✅ interfaces.ts generated with grouped screenwise exports');
