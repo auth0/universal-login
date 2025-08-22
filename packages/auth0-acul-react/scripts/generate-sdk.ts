@@ -390,10 +390,7 @@ const FUNCTIONS_TS_PATH = path.resolve(__dirname, '../src/functions.ts');
 const INTERFACES_TS_PATH = path.resolve(__dirname, '../src/interfaces.ts');
 const EXPORT_TS_PATH = path.resolve(__dirname, '../src/export.ts');
 
-const indexSource = fs.readFileSync(INDEX_FILE_PATH, 'utf8');
-
 const functionLines: string[] = [];
-const interfaceLines: string[] = [];
 const screenFiles = fs.readdirSync(SCREENS_OUTPUT_PATH).filter(f => f.endsWith('.tsx'));
 
 for (const file of screenFiles) {
@@ -430,27 +427,54 @@ for (const file of screenFiles) {
   }
 }
 
-// const interfaceExportRegex = /^export\s+type\s+\{([^}]+)\}\s+from\s+['"]([^'"]+)['"];$/gm;
-// let typeMatch;
-// while ((typeMatch = interfaceExportRegex.exec(indexSource)) !== null) {
-//   typeMatch[1].split(',').forEach(type => {
-//     interfaceLines.push(`export type { ${type.trim()} } from '${typeMatch[2]}';`);
-//   });
-// }
+const screenFilesForInterfaces = fs.readdirSync(SCREENS_OUTPUT_PATH).filter(f => f.endsWith('.tsx'));
+const INTERFACES_OUTPUT_PATH = path.resolve(__dirname, '../src/interfaces');
+fs.mkdirSync(INTERFACES_OUTPUT_PATH, { recursive: true });
+
+const screenInterfaceExports: string[] = [];
+
+for (const file of screenFilesForInterfaces) {
+  const kebab = file.replace('.tsx', '');
+  const pascal = toPascalFromKebab(kebab);
+
+  // Find all type exports for this screen in the generated screen file
+  const source = fs.readFileSync(path.join(SCREENS_OUTPUT_PATH, file), 'utf8');
+  const typeExportRegex = /^export\s+type\s+\{\s*([^}]+)\s*\}\s+from\s+['"]([^'"]+)['"]/gm;
+  let match;
+  const types: string[] = [];
+
+  while ((match = typeExportRegex.exec(source)) !== null) {
+    match[1].split(',').map(e => e.trim()).forEach(e => {
+      if (e) types.push(e);
+    });
+  }
+
+  if (types.length) {
+    const interfaceFilePath = path.join(INTERFACES_OUTPUT_PATH, `${kebab}.ts`);
+    const interfaceContent = `// AUTO-GENERATED - DO NOT EDIT
+    export type { ${types.join(', ')} } from '@auth0/auth0-acul-js/${kebab}';
+    `;
+    fs.writeFileSync(interfaceFilePath, interfaceContent, 'utf8');
+    screenInterfaceExports.push(`export * as ${pascal} from './interfaces/${kebab}';`);
+    console.log(`✅ interfaces/${kebab}.ts generated`);
+  }
+}
+
 fs.writeFileSync(
-  FUNCTIONS_TS_PATH,
-  '/* eslint-disable @typescript-eslint/no-namespace */\n// AUTO-GENERATED - DO NOT EDIT\n\n' + functionLines.join('\n'),
+  INTERFACES_TS_PATH,
+  `${screenInterfaceExports.join('\n')}\n`,
   'utf8'
 );
-// fs.writeFileSync(INTERFACES_TS_PATH, '// AUTO-GENERATED - DO NOT EDIT\n\n' + interfaceLines.join('\n') + '\nexport {}', 'utf8');
+console.log('✅ interfaces.ts generated with grouped screenwise exports');
+fs.writeFileSync(
+  FUNCTIONS_TS_PATH,
+  '/* eslint-disable @typescript-eslint/no-namespace */\n' + functionLines.join('\n'),
+  'utf8'
+);
 
-// Now update export.ts to use namespace re-exports
 const exportLines: string[] = [];
-exportLines.push('// AUTO-GENERATED EXPORTS - DO NOT EDIT\n');
 exportLines.push(`export * as Functions from './functions';`);
-// exportLines.push(`export * as Interfaces from './interfaces';`);
+exportLines.push(`export * as Interfaces from './interfaces';`);
 fs.writeFileSync(EXPORT_TS_PATH, exportLines.join('\n'), 'utf8');
 
-
-console.log('\n🏁 Done: Shared + overridden hook exports + root index updated.');
 console.log(`\n🏁 Done: ${screenCount} screen${screenCount === 1 ? '' : 's'} generated with shared + overridden hook exports. Root index updated.`);
