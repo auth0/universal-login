@@ -16,6 +16,7 @@ export interface ScreenMembersOnLoginPasswordlessSmsOtp extends ScreenMembers {
   backLink: string | null;
   data: {
     username: string;
+    phone_number: string;
   };
 }
 
