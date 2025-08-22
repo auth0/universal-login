@@ -354,6 +354,8 @@ for (const symbol of screenSymbols) {
     const pascalScreenName = toPascalFromKebab(screenName);
     screenLines.push(`\nexport type { ${Array.from(allExportedInterfaces).map(interfaceName => interfaceName.endsWith(pascalScreenName) ? interfaceName : `${interfaceName} as ${interfaceName}On${pascalScreenName}`).join(', ')} } from '@auth0/auth0-acul-js/${kebab}';`);
   }
+
+  screenLines.push(`\nexport type * from '@auth0/auth0-acul-js/${kebab}';`)
   
   fs.writeFileSync(
     path.join(SCREENS_OUTPUT_PATH, `${kebab}.tsx`),
@@ -367,17 +369,6 @@ for (const symbol of screenSymbols) {
   };
 
   indexExports.push(`export { ${instanceHook} } from './screens/${kebab}';`);
-  if (allExportedInterfaces.size > 0) {
-    const pascalScreenName = toPascalFromKebab(screenName);
-    indexTypes.push(`// ${screenName}`);
-    indexTypes.push(`export type { ${Array.from(allExportedInterfaces).map(interfaceName => {
-      if (interfaceName.endsWith(pascalScreenName)) {
-        return interfaceName;
-      } else {
-        return `${interfaceName}On${pascalScreenName}`;
-      }
-    }).join(', ')} } from './screens/${kebab}';`);
-  }
 
   console.log(`✅ ${screenName}: Exports with shared + overridden context hooks and methods`);
   screenCount++; // <- Count increment
@@ -387,43 +378,7 @@ fs.writeFileSync(PACKAGE_JSON_PATH, JSON.stringify(pkg, null, 2), 'utf8');
 
 // Add common types from core SDK
 indexTypes.push('\n// Common types from core SDK');
-indexTypes.push(`export type { 
-  // From base-properties.ts
-  ClientMembers,
-  BrandingMembers,
-  PromptMembers,
-  UserMembers,
-  OrganizationMembers,
-  ScreenMembers,
-  TenantMembers,
-  TransactionMembers,
-  UntrustedDataMembers,
-  // From common.ts
-  Error, 
-  Connection, 
-  EnterpriseConnection, 
-  PasswordPolicy, 
-  UsernamePolicy, 
-  PasswordComplexityRule,
-  CaptchaContext, 
-  PhonePrefix, 
-  PasskeyCreate, 
-  Scope, 
-  AuthorizationDetail,
-  BrandingSettings, 
-  BrandingThemes,
-  CustomOptions, 
-  WebAuthnErrorDetails, 
-  CurrentScreenOptions,
-  EnrolledEmail, 
-  EnrolledPhoneNumber, 
-  EnrolledDevice,
-  IdentifierType,
-  PasskeyCreateResponse, 
-  CredentialResponse,
-  Branding,
-  Organizations
-} from '@auth0/auth0-acul-js';`);
+indexTypes.push(`export type * from '@auth0/auth0-acul-js';`);
 
 fs.writeFileSync(
   INDEX_FILE_PATH,
@@ -475,25 +430,25 @@ for (const file of screenFiles) {
   }
 }
 
-const interfaceExportRegex = /^export\s+type\s+\{([^}]+)\}\s+from\s+['"]([^'"]+)['"];$/gm;
-let typeMatch;
-while ((typeMatch = interfaceExportRegex.exec(indexSource)) !== null) {
-  typeMatch[1].split(',').forEach(type => {
-    interfaceLines.push(`export type { ${type.trim()} } from '${typeMatch[2]}';`);
-  });
-}
+// const interfaceExportRegex = /^export\s+type\s+\{([^}]+)\}\s+from\s+['"]([^'"]+)['"];$/gm;
+// let typeMatch;
+// while ((typeMatch = interfaceExportRegex.exec(indexSource)) !== null) {
+//   typeMatch[1].split(',').forEach(type => {
+//     interfaceLines.push(`export type { ${type.trim()} } from '${typeMatch[2]}';`);
+//   });
+// }
 fs.writeFileSync(
   FUNCTIONS_TS_PATH,
   '/* eslint-disable @typescript-eslint/no-namespace */\n// AUTO-GENERATED - DO NOT EDIT\n\n' + functionLines.join('\n'),
   'utf8'
 );
-fs.writeFileSync(INTERFACES_TS_PATH, '// AUTO-GENERATED - DO NOT EDIT\n\n' + interfaceLines.join('\n') + '\nexport {}', 'utf8');
+// fs.writeFileSync(INTERFACES_TS_PATH, '// AUTO-GENERATED - DO NOT EDIT\n\n' + interfaceLines.join('\n') + '\nexport {}', 'utf8');
 
 // Now update export.ts to use namespace re-exports
 const exportLines: string[] = [];
 exportLines.push('// AUTO-GENERATED EXPORTS - DO NOT EDIT\n');
 exportLines.push(`export * as Functions from './functions';`);
-exportLines.push(`export * as Interfaces from './interfaces';`);
+// exportLines.push(`export * as Interfaces from './interfaces';`);
 fs.writeFileSync(EXPORT_TS_PATH, exportLines.join('\n'), 'utf8');
 
 
