@@ -75,3 +75,14 @@ export const getCurrentThemeOptions = (): FlattenedTheme | null => {
     widget: flattenWidget(themes.default.widget),
   };
 };
+
+/**
+ * Gets the current errors from the transaction context
+ * @returns Array of Error objects or null if no errors are present
+ */
+export function getErrors(): TransactionError[] | null {
+  const context = new BaseContext();
+  const transaction = context.getContext('transaction');
+
+  return (transaction?.errors as TransactionError[]) ?? null;
+}
