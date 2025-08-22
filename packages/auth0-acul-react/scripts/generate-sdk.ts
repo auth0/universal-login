@@ -354,8 +354,6 @@ for (const symbol of screenSymbols) {
     const pascalScreenName = toPascalFromKebab(screenName);
     screenLines.push(`\nexport type { ${Array.from(allExportedInterfaces).map(interfaceName => interfaceName.endsWith(pascalScreenName) ? interfaceName : `${interfaceName} as ${interfaceName}On${pascalScreenName}`).join(', ')} } from '@auth0/auth0-acul-js/${kebab}';`);
   }
-
-  screenLines.push(`\nexport * from '@auth0/auth0-acul-js/${kebab}'`)
   
   fs.writeFileSync(
     path.join(SCREENS_OUTPUT_PATH, `${kebab}.tsx`),
