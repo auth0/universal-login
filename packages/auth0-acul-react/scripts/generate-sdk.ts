@@ -187,9 +187,7 @@ const pkg = JSON.parse(fs.readFileSync(PACKAGE_JSON_PATH, 'utf8'));
 pkg.exports ||= {};
 pkg.exports['.'] = { import: './dist/index.js', types: './dist/index.d.ts' };
 
-const currentScreenHook = `// AUTO-GENERATED FILE - DO NOT EDIT
-
-import { getCurrentScreenOptions, getCurrentThemeOptions, CurrentScreenOptions, FlattenedTheme } from '@auth0/auth0-acul-js';
+const currentScreenHook = `import { getCurrentScreenOptions, getCurrentThemeOptions, CurrentScreenOptions, FlattenedTheme } from '@auth0/auth0-acul-js';
 
 export const useCurrentScreen = (): CurrentScreenOptions | null => {
   return getCurrentScreenOptions();
@@ -294,7 +292,6 @@ for (const symbol of screenSymbols) {
   const baseInterface = `${screenName}Members`;
   const screenLines: string[] = [];
 
-  screenLines.push(`// AUTO-GENERATED FILE - DO NOT EDIT`);
   const hasDefaultExport = !!screenFile.getDefaultExportSymbol();
   screenLines.push(`import { useMemo } from 'react';`);
   screenLines.push(
@@ -386,7 +383,7 @@ indexTypes.push(`export type * from '@auth0/auth0-acul-js';`);
 
 fs.writeFileSync(
   INDEX_FILE_PATH,
-  `// AUTO-GENERATED INDEX - DO NOT EDIT\n\n${indexExports.join('\n')}\n\n${indexTypes.join('\n')}\n`,
+  `${indexExports.join('\n')}\n\n${indexTypes.join('\n')}\n`,
   'utf8'
 );
 
