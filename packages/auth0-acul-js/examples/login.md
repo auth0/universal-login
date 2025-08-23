@@ -8,7 +8,7 @@ import Login from '@auth0/auth0-acul-js/login';
 const loginManager = new Login();
 
 // Handle form submission and error handling
-const errors = loginManager.getError();
+const errors = loginManager.getErrors();
 const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
   

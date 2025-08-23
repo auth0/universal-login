@@ -189,10 +189,14 @@ pkg.exports['.'] = { import: './dist/index.js', types: './dist/index.d.ts' };
 
 const currentScreenHook = `// AUTO-GENERATED FILE - DO NOT EDIT
 
-import { getCurrentScreenOptions, CurrentScreenOptions } from '@auth0/auth0-acul-js';
+import { getCurrentScreenOptions, getCurrentThemeOptions, CurrentScreenOptions, FlattenedTheme } from '@auth0/auth0-acul-js';
 
 export const useCurrentScreen = (): CurrentScreenOptions | null => {
   return getCurrentScreenOptions();
+};
+
+export const useAuth0Themes = (): FlattenedTheme | null => {
+  return getCurrentThemeOptions();
 };
 `;
 
@@ -214,7 +218,7 @@ fs.writeFileSync(CONTEXT_HOOKS_PATH, sharedHooks + '\n', 'utf8');
 const indexExports: string[] = [];
 const indexTypes: string[] = [];
 
-indexExports.push(`export { useCurrentScreen } from './hooks/common-hooks';`);
+indexExports.push(`export { useCurrentScreen, useAuth0Themes } from './hooks/common-hooks';`);
 
 let screenCount = 0;
 

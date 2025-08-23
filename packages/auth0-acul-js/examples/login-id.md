@@ -20,7 +20,7 @@ This methods handles username related configuration for login-flow, it optionall
 import  LoginId  from "@auth0/auth0-acul-js/login-id"
 
 const loginIdManager = new LoginId();
-const errors = loginIdManager.getError();
+const errors = loginIdManager.getErrors();
 
 loginIdManager.login({
  username: "testUser"
