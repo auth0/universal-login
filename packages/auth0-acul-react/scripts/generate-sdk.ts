@@ -187,7 +187,14 @@ const pkg = JSON.parse(fs.readFileSync(PACKAGE_JSON_PATH, 'utf8'));
 pkg.exports ||= {};
 pkg.exports['.'] = { import: './dist/index.js', types: './dist/index.d.ts' };
 
-const currentScreenHook = `import { getCurrentScreenOptions, getCurrentThemeOptions, CurrentScreenOptions, FlattenedTheme } from '@auth0/auth0-acul-js';
+const commonHooksContent = `import { 
+  getCurrentScreenOptions, 
+  getCurrentThemeOptions, 
+  getErrors, 
+  CurrentScreenOptions, 
+  FlattenedTheme,
+  type Error as TransactionError
+} from '@auth0/auth0-acul-js';
 
 export const useCurrentScreen = (): CurrentScreenOptions | null => {
   return getCurrentScreenOptions();
@@ -196,10 +203,14 @@ export const useCurrentScreen = (): CurrentScreenOptions | null => {
 export const useAuth0Themes = (): FlattenedTheme | null => {
   return getCurrentThemeOptions();
 };
+
+export const useErrors = (): TransactionError[] | null => {
+  return getErrors();
+};
 `;
 
-fs.writeFileSync(COMMON_HOOKS_PATH, currentScreenHook, 'utf8');
-console.log('✅ useCurrentScreen hook generated in common-hooks.tsx');
+fs.writeFileSync(COMMON_HOOKS_PATH, commonHooksContent , 'utf8');
+console.log('✅ Common hooks generated in common-hooks.tsx');
 
 const sharedHooks = `import { type BaseMembers } from "../../../auth0-acul-js/dist/types/interfaces/models/base-context";
 
@@ -216,7 +227,7 @@ fs.writeFileSync(CONTEXT_HOOKS_PATH, sharedHooks + '\n', 'utf8');
 const indexExports: string[] = [];
 const indexTypes: string[] = [];
 
-indexExports.push(`export { useCurrentScreen, useAuth0Themes } from './hooks/common-hooks';`);
+indexExports.push(`export { useCurrentScreen, useAuth0Themes, useErrors } from './hooks/common-hooks';`);
 
 let screenCount = 0;
 
