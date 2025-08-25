@@ -24,7 +24,12 @@ const CONTEXT_MODELS = [
 ];
 
 function toKebabCase(str: string): string {
-  return str.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
+  // Handle special cases: WebAuthn and OTP acronyms
+  return str
+    .replace(/WebAuthn/g, 'Webauthn')
+    .replace(/OTP/g, 'Otp')
+    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+    .toLowerCase();
 }
 
 function toPascal(str: string): string {
@@ -182,17 +187,30 @@ const pkg = JSON.parse(fs.readFileSync(PACKAGE_JSON_PATH, 'utf8'));
 pkg.exports ||= {};
 pkg.exports['.'] = { import: './dist/index.js', types: './dist/index.d.ts' };
 
-const currentScreenHook = `// AUTO-GENERATED FILE - DO NOT EDIT
-
-import { getCurrentScreenOptions, CurrentScreenOptions } from '@auth0/auth0-acul-js';
+const commonHooksContent = `import { 
+  getCurrentScreenOptions, 
+  getCurrentThemeOptions, 
+  getErrors, 
+  CurrentScreenOptions, 
+  FlattenedTheme,
+  type Error as TransactionError
+} from '@auth0/auth0-acul-js';
 
 export const useCurrentScreen = (): CurrentScreenOptions | null => {
   return getCurrentScreenOptions();
 };
+
+export const useAuth0Themes = (): FlattenedTheme | null => {
+  return getCurrentThemeOptions();
+};
+
+export const useErrors = (): TransactionError[] | null => {
+  return getErrors();
+};
 `;
 
-fs.writeFileSync(COMMON_HOOKS_PATH, currentScreenHook, 'utf8');
-console.log('✅ useCurrentScreen hook generated in common-hooks.tsx');
+fs.writeFileSync(COMMON_HOOKS_PATH, commonHooksContent , 'utf8');
+console.log('✅ Common hooks generated in common-hooks.tsx');
 
 const sharedHooks = `import { type BaseMembers } from "../../../auth0-acul-js/dist/types/interfaces/models/base-context";
 
@@ -209,7 +227,9 @@ fs.writeFileSync(CONTEXT_HOOKS_PATH, sharedHooks + '\n', 'utf8');
 const indexExports: string[] = [];
 const indexTypes: string[] = [];
 
-indexExports.push(`export { useCurrentScreen } from './hooks/common-hooks';`);
+indexExports.push(`export { useCurrentScreen, useAuth0Themes, useErrors } from './hooks/common-hooks';`);
+
+let screenCount = 0;
 
 for (const symbol of screenSymbols) {
   const screenName = symbol.getName();
@@ -236,7 +256,6 @@ for (const symbol of screenSymbols) {
 
     const exampleContent = generateExampleContent(screenName, kebab, CONTEXT_MODELS, screenMethods);
     fs.writeFileSync(exampleFilePath, exampleContent, 'utf8');
-    console.log(`✅ Example file created for ${kebab}`);
   }
 
   const screenFile = project.getSourceFile(path.join(CORE_SDK_PATH, `src/screens/${kebab}/index.ts`));
@@ -284,7 +303,6 @@ for (const symbol of screenSymbols) {
   const baseInterface = `${screenName}Members`;
   const screenLines: string[] = [];
 
-  screenLines.push(`// AUTO-GENERATED FILE - DO NOT EDIT`);
   const hasDefaultExport = !!screenFile.getDefaultExportSymbol();
   screenLines.push(`import { useMemo } from 'react';`);
   screenLines.push(
@@ -349,6 +367,8 @@ for (const symbol of screenSymbols) {
     screenLines.push(`\nexport type { ${Array.from(allExportedInterfaces).map(interfaceName => interfaceName.endsWith(pascalScreenName) ? interfaceName : `${interfaceName} as ${interfaceName}On${pascalScreenName}`).join(', ')} } from '@auth0/auth0-acul-js/${kebab}';`);
   }
 
+  screenLines.push(`\nexport type * from '@auth0/auth0-acul-js/${kebab}';`)
+  
   fs.writeFileSync(
     path.join(SCREENS_OUTPUT_PATH, `${kebab}.tsx`),
     screenLines.join('\n'),
@@ -361,27 +381,112 @@ for (const symbol of screenSymbols) {
   };
 
   indexExports.push(`export { ${instanceHook} } from './screens/${kebab}';`);
-  if (allExportedInterfaces.size > 0) {
-    const pascalScreenName = toPascalFromKebab(screenName);
-    indexTypes.push(`// ${screenName}`);
-    indexTypes.push(`export type { ${Array.from(allExportedInterfaces).map(interfaceName => {
-      if (interfaceName.endsWith(pascalScreenName)) {
-        return interfaceName;
-      } else {
-        return `${interfaceName}On${pascalScreenName}`;
-      }
-    }).join(', ')} } from './screens/${kebab}';`);
-  }
 
   console.log(`✅ ${screenName}: Exports with shared + overridden context hooks and methods`);
+  screenCount++; // <- Count increment
 }
 
 fs.writeFileSync(PACKAGE_JSON_PATH, JSON.stringify(pkg, null, 2), 'utf8');
 
+// Add common types from core SDK
+indexTypes.push('\n// Common types from core SDK');
+indexTypes.push(`export type * from '@auth0/auth0-acul-js';`);
+
 fs.writeFileSync(
   INDEX_FILE_PATH,
-  `// AUTO-GENERATED INDEX - DO NOT EDIT\n\n${indexExports.join('\n')}\n\n${indexTypes.join('\n')}\n`,
+  `${indexExports.join('\n')}\n\n${indexTypes.join('\n')}\n`,
   'utf8'
 );
 
-console.log('\n🏁 Done: Shared + overridden hook exports + root index updated.');
+const FUNCTIONS_TS_PATH = path.resolve(__dirname, '../src/functions.ts');
+const INTERFACES_TS_PATH = path.resolve(__dirname, '../src/interfaces.ts');
+const EXPORT_TS_PATH = path.resolve(__dirname, '../src/export.ts');
+
+const functionLines: string[] = [];
+const screenFiles = fs.readdirSync(SCREENS_OUTPUT_PATH).filter(f => f.endsWith('.tsx'));
+
+for (const file of screenFiles) {
+  const kebab = file.replace('.tsx', '');
+  const pascal = toPascalFromKebab(kebab);
+  const screenPath = `./screens/${kebab}`;
+  const source = fs.readFileSync(path.join(SCREENS_OUTPUT_PATH, file), 'utf8');
+
+  const exportRegex = /^export\s+(const|function)\s+([a-zA-Z0-9_]+)\s*[(:=]/gm;
+  const reExportRegex = /^export\s+\{\s*([a-zA-Z0-9_,\s]+)\s*\}\s+from\s+['"][^'"]+['"]/gm;
+  let match;
+  const exports: string[] = [];
+
+  while ((match = exportRegex.exec(source)) !== null) {
+    exports.push(match[2]);
+  }
+
+  while ((match = reExportRegex.exec(source)) !== null) {
+    match[1].split(',').map(e => e.trim()).forEach(e => {
+      if (e) exports.push(e);
+    });
+  }
+
+  if (exports.length) {
+    const aliasedImports = exports.map(identifier => {
+      return `${identifier} as ${identifier}_${pascal}`;
+    });
+    functionLines.push(`import { ${aliasedImports.join(', ')} } from '${screenPath}';`);
+    functionLines.push(`export namespace ${pascal} {`);
+    exports.forEach(identifier => {
+      functionLines.push(`  export const ${identifier} = ${identifier}_${pascal};`);
+    });
+    functionLines.push('}\n');
+  }
+}
+
+const screenFilesForInterfaces = fs.readdirSync(SCREENS_OUTPUT_PATH).filter(f => f.endsWith('.tsx'));
+const INTERFACES_OUTPUT_PATH = path.resolve(__dirname, '../src/interfaces');
+fs.mkdirSync(INTERFACES_OUTPUT_PATH, { recursive: true });
+
+const screenInterfaceExports: string[] = [];
+
+for (const file of screenFilesForInterfaces) {
+  const kebab = file.replace('.tsx', '');
+  const pascal = toPascalFromKebab(kebab);
+
+  // Find all type exports for this screen in the generated screen file
+  const source = fs.readFileSync(path.join(SCREENS_OUTPUT_PATH, file), 'utf8');
+  const typeExportRegex = /^export\s+type\s+\{\s*([^}]+)\s*\}\s+from\s+['"]([^'"]+)['"]/gm;
+  let match;
+  const types: string[] = [];
+
+  while ((match = typeExportRegex.exec(source)) !== null) {
+    match[1].split(',').map(e => e.trim()).forEach(e => {
+      if (e) types.push(e);
+    });
+  }
+
+  if (types.length) {
+    const interfaceFilePath = path.join(INTERFACES_OUTPUT_PATH, `${kebab}.ts`);
+    const interfaceContent = `// AUTO-GENERATED - DO NOT EDIT
+    export type { ${types.join(', ')} } from '@auth0/auth0-acul-js/${kebab}';
+    `;
+    fs.writeFileSync(interfaceFilePath, interfaceContent, 'utf8');
+    screenInterfaceExports.push(`export * as ${pascal} from './interfaces/${kebab}';`);
+    console.log(`✅ interfaces/${kebab}.ts generated`);
+  }
+}
+
+fs.writeFileSync(
+  INTERFACES_TS_PATH,
+  `${screenInterfaceExports.join('\n')}\n` + 'export {}',
+  'utf8'
+);
+console.log('✅ interfaces.ts generated with grouped screenwise exports');
+fs.writeFileSync(
+  FUNCTIONS_TS_PATH,
+  '/* eslint-disable @typescript-eslint/no-namespace */\n' + functionLines.join('\n'),
+  'utf8'
+);
+
+const exportLines: string[] = [];
+exportLines.push(`export * as Functions from './functions';`);
+exportLines.push(`export * as Interfaces from './interfaces';`);
+fs.writeFileSync(EXPORT_TS_PATH, exportLines.join('\n'), 'utf8');
+
+console.log(`\n🏁 Done: ${screenCount} screen${screenCount === 1 ? '' : 's'} generated with shared + overridden hook exports. Root index updated.`);

@@ -1,7 +1,7 @@
 // typedoc.js
 export default {
   out: 'docs',
-  entryPoints: ['./src/index.ts'],
+  entryPoints: ['./src/export.ts'],
   tsconfig: './tsconfig.json',
   exclude: ['**/*.test.ts', '**/*.spec.ts'],
   hideGenerator: true,
@@ -10,5 +10,6 @@ export default {
   excludeProtected: true,
   excludeExternals: true,
   includeVersion: true,
-  categorizeByGroup: true
+  categorizeByGroup: true,
+  json: 'docs/index.json',
 };

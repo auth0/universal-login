@@ -68,7 +68,7 @@ export default class EmailOTPChallenge extends BaseContext implements EmailOTPCh
   }
 }
 
-export { EmailOTPChallengeMembers, ScreenOptions as ScreenMembersOnEmailOTPChallenge };
+export { EmailOTPChallengeMembers, ScreenOptions as ScreenMembersOnEmailOTPChallenge, OtpCodeOptions };
 
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';

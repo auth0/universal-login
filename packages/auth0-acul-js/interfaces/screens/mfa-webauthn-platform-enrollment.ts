@@ -54,6 +54,11 @@ export interface ReportBrowserErrorOptions {
  */
 export interface MfaWebAuthnPlatformEnrollmentMembers extends BaseMembers {
   /**
+   * The screen object with MFA WebAuthn Platform Enrollment specific data structure.
+   */
+  screen: ScreenMembersOnMfaWebAuthnPlatformEnrollment;
+  
+  /**
    * Initiates the WebAuthn platform credential creation process using the public key options
    * available on `this.screen.publicKey` and submits the resulting credential to the server.
    * This method internally calls `createPasskeyCredentials` (which wraps `navigator.credentials.create()`).

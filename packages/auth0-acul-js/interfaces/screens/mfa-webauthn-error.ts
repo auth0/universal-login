@@ -45,6 +45,11 @@ export interface ScreenMembersOnMfaWebAuthnError extends ScreenMembers {
  */
 export interface MfaWebAuthnErrorMembers extends BaseMembers {
   /**
+   * The screen object with MFA WebAuthn Error specific data structure.
+   */
+  screen: ScreenMembersOnMfaWebAuthnError;
+  
+  /**
    * Allows the user to attempt the previous WebAuthn operation again.
    * This typically redirects the user back to the screen where the WebAuthn operation was initiated.
    *
