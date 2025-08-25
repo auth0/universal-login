@@ -209,7 +209,7 @@ export const useErrors = (): TransactionError[] | null => {
 };
 `;
 
-fs.writeFileSync(COMMON_HOOKS_PATH, commonHooksContent , 'utf8');
+fs.writeFileSync(COMMON_HOOKS_PATH, commonHooksContent, 'utf8');
 console.log('✅ Common hooks generated in common-hooks.tsx');
 
 const sharedHooks = `import { type BaseMembers } from "../../../auth0-acul-js/dist/types/interfaces/models/base-context";
@@ -363,12 +363,11 @@ for (const symbol of screenSymbols) {
   }
 
   if (allExportedInterfaces.size) {
-    const pascalScreenName = toPascalFromKebab(screenName);
-    screenLines.push(`\nexport type { ${Array.from(allExportedInterfaces).map(interfaceName => interfaceName.endsWith(pascalScreenName) ? interfaceName : `${interfaceName} as ${interfaceName}On${pascalScreenName}`).join(', ')} } from '@auth0/auth0-acul-js/${kebab}';`);
+    screenLines.push(`\nexport type { ${Array.from(allExportedInterfaces).join(', ')} } from '@auth0/auth0-acul-js/${kebab}';`);
   }
 
   screenLines.push(`\nexport type * from '@auth0/auth0-acul-js/${kebab}';`)
-  
+
   fs.writeFileSync(
     path.join(SCREENS_OUTPUT_PATH, `${kebab}.tsx`),
     screenLines.join('\n'),
