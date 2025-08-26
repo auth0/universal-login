@@ -278,7 +278,7 @@ for (const symbol of screenSymbols) {
   const ifaceFile = project.getSourceFile(path.join(CORE_SDK_PATH, `interfaces/screens/${kebab}.ts`));
   const typedInterfaces = new Set<string>();
   const allExportedInterfaces = new Set<string>();
-  const exportedMethods = new Set<string>();
+  const exportedMethods: { name: string; params: { name: string; type: string; isOptional: boolean }[] }[] = [];
 
   if (ifaceFile) {
     for (const [name, decls] of ifaceFile.getExportedDeclarations()) {
@@ -290,7 +290,17 @@ for (const symbol of screenSymbols) {
             d.getMembers()
               .filter(member => member.getKind() === SyntaxKind.MethodSignature)
               .forEach(method => {
-                exportedMethods.add(method.getSymbol()?.getName() || '');
+                const methodSignature = method.asKindOrThrow(SyntaxKind.MethodSignature);
+                const methodName = methodSignature.getName();
+                const params = methodSignature.getParameters().map(p => {
+                  const paramType = p.getTypeNode()?.getText() || p.getType().getText(p);
+                  return {
+                    name: p.getName(),
+                    type: paramType,
+                    isOptional: p.isOptional(),
+                  };
+                });
+                exportedMethods.push({ name: methodName, params });
               });
           }
         }
@@ -313,6 +323,15 @@ for (const symbol of screenSymbols) {
   screenLines.push(`import { ContextHooks } from '../hooks/context-hooks';\n`);
 
   usedInterfaces.add(baseInterface);
+  exportedMethods.forEach(m => m.params.forEach(p => {
+    // Clean up the type from array/union markers
+    const cleanType = p.type.replace(/\[\]/g, '').split(/<|>/).join(',').split('|').join(',').split('&').join(',').split(',').map(t => t.trim()).filter(Boolean);
+    cleanType.forEach(t => {
+      if (t !== 'any' && t !== 'string' && t !== 'number' && t !== 'boolean' && t !== 'undefined' && t !== 'void' && !t.startsWith('{')) {
+        usedInterfaces.add(t);
+      }
+    });
+  }));
 
   // Lazy singleton instance
   screenLines.push(`let instance: ${baseInterface} | null = null;`);
@@ -347,11 +366,13 @@ for (const symbol of screenSymbols) {
     }
   }
 
-  if (exportedMethods.size) {
+  if (exportedMethods.length) {
     screenLines.push(`\n// Screen methods`);
-    for (const method of Array.from(exportedMethods)) {
-      const safe = getSafeMethodName(method);
-      screenLines.push(`export const ${safe} = (args: any) => getInstance().${method}(args);`);
+    for (const method of exportedMethods) {
+      const safe = getSafeMethodName(method.name);
+      const args = method.params.map(p => `${p.name}${p.isOptional ? '?' : ''}: ${p.type}`).join(', ');
+      const argNames = method.params.map(p => p.name).join(', ');
+      screenLines.push(`export const ${safe} = (${args}) => getInstance().${method.name}(${argNames});`);
     }
   }
 
