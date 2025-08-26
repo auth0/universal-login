@@ -179,7 +179,7 @@ export default class MfaVoiceChallenge extends BaseContext implements MfaVoiceCh
    * @param options.onStatusChange - Callback to receive state updates (remaining seconds, disabled status)
    * @param options.onTimeout - Callback to execute when timeout countdown reaches zero
    * @returns ResendControl object with startResend method
-   * @category Utility
+   * @utilityFeature
    * 
    * @example
    * ```typescript

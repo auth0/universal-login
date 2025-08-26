@@ -57,7 +57,7 @@ export interface SignupMembers extends BaseMembers {
  *   });
  * }
  * ```
- * @category Utility
+ * @utilityFeature
  * @see Identifier
  */
   getSignupIdentifiers(): Identifier[] | null;

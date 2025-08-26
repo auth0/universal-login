@@ -144,7 +144,7 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
    * const loginIdManager = new LoginId();
    * loginIdManager.getLoginIdentifiers();
    * ```
-   * @category Utility
+   * @utilityFeature
    */
   getLoginIdentifiers(): string[] | null {
     return this.transaction.allowedIdentifiers;

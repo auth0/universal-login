@@ -18,7 +18,7 @@ interface WithValidateUsername {
  * UI components observing the `username` field can automatically display or react
  * to these errors.
  *
- * @SupportedScreens
+ * @supportedScreens
  * - `signup`
  * - `signup-id`
  *

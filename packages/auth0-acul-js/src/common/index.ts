@@ -8,6 +8,7 @@ import type { Error as TransactionError } from '../../interfaces/models/transact
 
 /**
  * Gets the current screen name from the authentication context
+ * @commonFeature
  * @returns The current screen name or null if no screen is active
  */
 export function getCurrentScreen(): string | null {
@@ -16,6 +17,7 @@ export function getCurrentScreen(): string | null {
 
 /**
  * Gets the current screen options including client, organization, prompt, screen, tenant, transaction, and untrusted data
+ * @commonFeature
  * @returns Current screen options object with all available context data
  */
 export function getCurrentScreenOptions(): CurrentScreenOptions {
@@ -50,6 +52,7 @@ export function getCurrentScreenOptions(): CurrentScreenOptions {
 
 /**
  * Gets the current theme options with flattened configuration from branding context
+ * @commonFeature
  * @returns FlattenedTheme object containing colors, fonts, borders, pageBackground, and widget configurations, or null if no branding is available
  */
 export const getCurrentThemeOptions = (): FlattenedTheme | null => {
@@ -78,6 +81,7 @@ export const getCurrentThemeOptions = (): FlattenedTheme | null => {
 
 /**
  * Gets the current errors from the transaction context
+ * @commonFeature
  * @returns Array of Error objects or null if no errors are present
  */
 export function getErrors(): TransactionError[] | null {

@@ -108,7 +108,7 @@ export default class Signup extends BaseContext implements SignupMembers {
   /**
    * @param password 
    * @returns An object of type {@link PasswordValidationResult} indicating whether the password is valid and why.
-   * @category Utility
+   * @utilityFeature
    */
   validatePassword(password: string): PasswordValidationResult {
     const passwordPolicy = this.transaction?.passwordPolicy;
@@ -120,7 +120,7 @@ export default class Signup extends BaseContext implements SignupMembers {
    * marking each as required or optional based on transaction config.
    *
    * @returns Array of identifier objects (e.g., email, phone, username).
-   * @category Utility
+   * @utilityFeature
    * @example
    * const signup = new Signup();
    * const identifiers = signup.getSignupIdentifiers();
@@ -140,7 +140,7 @@ export default class Signup extends BaseContext implements SignupMembers {
    *
    * @param username - The username string to validate.
    * @returns Result object indicating whether the username is valid and why.
-   * @category Utility
+   * @utilityFeature
    *
    * @example
    * const signup = new Signup();

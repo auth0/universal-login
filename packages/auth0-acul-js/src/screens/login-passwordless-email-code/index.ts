@@ -75,7 +75,7 @@ export default class LoginPasswordlessEmailCode extends BaseContext implements L
    * 
    * @param options Configuration options for the resend control
    * @returns A ResendControl object with resend functionality and state management
-   * @category Utility
+   * @utilityFeature
    * 
    * @example
    * ```typescript

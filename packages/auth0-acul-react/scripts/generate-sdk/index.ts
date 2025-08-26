@@ -14,7 +14,6 @@ const UTILITY_MAP_PATH = path.resolve(__dirname, './utility-map.json');
 
 const SCREENS_OUTPUT_PATH = path.resolve(__dirname, '../../src/screens');
 const INDEX_FILE_PATH = path.resolve(__dirname, '../../src/index.ts');
-const PACKAGE_JSON_PATH = path.resolve(__dirname, '../../package.json');
 
 const CONTEXT_MODELS = [
   'user',
@@ -96,10 +95,6 @@ const screenSymbols = entry.getExportSymbols().filter((symbol) => {
   return decl?.getKind() === SyntaxKind.ClassDeclaration;
 });
 
-const pkg = JSON.parse(fs.readFileSync(PACKAGE_JSON_PATH, 'utf8'));
-pkg.exports ||= {};
-pkg.exports['.'] = { import: './dist/index.js', types: './dist/index.d.ts' };
-
 const indexExports: string[] = [];
 const indexTypes: string[] = [];
 
@@ -165,9 +160,8 @@ for (const symbol of screenSymbols) {
                 const docs = method.getJsDocs();
                 const hasUtilityTag = docs.some((doc) =>
                   doc.getTags().some((tag) => {
-                    const hasUtilityString = tag.getComment()?.toString().startsWith('Utility');
-                    const isCategory = tag.getTagName() === 'category';
-                    return isCategory && hasUtilityString;
+                    const isUtility = tag.getTagName() === 'utilityFeature';
+                    return isUtility;
                   })
                 );
                 const match = exportedMethods.find((m) => m.name === methodName);
@@ -188,10 +182,10 @@ for (const symbol of screenSymbols) {
   const hasDefaultExport = !!screenFile.getDefaultExportSymbol();
   screenLines.push(`import { useMemo } from 'react';`);
   screenLines.push(`import ${screenName} from '@auth0/auth0-acul-js/${kebab}';`);
-  screenLines.push(`import { ContextHooks } from '../hooks/context';`);
+  screenLines.push(`import { ContextHooks } from '../hooks';`);
   if (exportedMethods.length) {
     // We need `errorManager` only if there are exported methods
-    screenLines.push(`import { errorManager } from '../hooks/common/errors';`);
+    screenLines.push(`import { errorManager } from '../hooks';`);
   }
   screenLines.push(`import { registerScreen } from '../state/instance-store';`);
   usedInterfaces.add(baseInterface);
@@ -284,7 +278,7 @@ for (const symbol of screenSymbols) {
   }
   screenLines.push(`\n// Common hooks`);
   screenLines.push(
-    `export { useCurrentScreen, useErrors, useAuth0Themes, type UseErrorOptions, type UseErrorsResult, type ErrorsResult, type ErrorKind } from '../hooks/common';`
+    `export { useCurrentScreen, useErrors, useAuth0Themes, type UseErrorOptions, type UseErrorsResult, type ErrorsResult, type ErrorKind } from '../hooks';`
   );
 
   // Main hook (memoized)
@@ -298,24 +292,17 @@ for (const symbol of screenSymbols) {
 
   fs.writeFileSync(path.join(SCREENS_OUTPUT_PATH, `${kebab}.tsx`), screenLines.join('\n'), 'utf8');
 
-  pkg.exports[`./${kebab}`] = {
-    import: `./dist/screens/${kebab}.js`,
-    types: `./dist/screens/${kebab}.d.ts`,
-  };
-
   indexExports.push(`export { ${instanceHook} } from './screens/${kebab}';`);
 
   logger.info(`${screenName}: Exports with shared + overridden context hooks and methods`);
   screenCount++;
 }
 
-fs.writeFileSync(PACKAGE_JSON_PATH, JSON.stringify(pkg, null, 2), 'utf8');
-
 // Add common types from core SDK
 indexTypes.push('\n// Common types from core SDK');
 // indexTypes.push(`export type * from '@auth0/auth0-acul-js';`);
 
-indexExports.push(`export { useCurrentScreen, useErrors, useAuth0Themes } from './hooks/common';`);
+indexExports.push(`export { useCurrentScreen, useErrors, useAuth0Themes } from './hooks';`);
 
 fs.writeFileSync(
   INDEX_FILE_PATH,

@@ -1,12 +1,16 @@
 /**
  * @module Hooks
- * @description
+ * @summary
  * This module provides a guide on various hooks available in the Auth0 SDK.
  */
-export * as useErrors from '../hooks/common/errors';
-export * as usePasswordValidation from '../hooks/utility/validate-password';
-export * as useUsernameValidation from '../hooks/utility/validate-username';
-export * as useResend from '../hooks/utility/resend-manager';
-export * as useMfaPolling from '../hooks/utility/polling-manager';
-export * as useSignupIdentifiers from '../hooks/utility/signup-identifiers';
-export * as useLoginIdentifiers from '../hooks/utility/login-identifiers';
+export {
+  usePasswordValidation,
+  useUsernameValidation,
+  useResend,
+  useMfaPolling,
+  useErrors,
+  useAuth0Themes,
+  useCurrentScreen,
+  useLoginIdentifiers,
+  useSignupIdentifiers,
+} from '../hooks';

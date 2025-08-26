@@ -1,8 +1,8 @@
 import Logout from '@auth0/auth0-acul-js/logout';
 import { useMemo } from 'react';
 
-import { errorManager } from '../hooks/common/errors';
-import { ContextHooks } from '../hooks/context';
+import { ContextHooks } from '../hooks';
+import { errorManager } from '../hooks';
 import { registerScreen } from '../state/instance-store';
 
 import type { LogoutMembers, ConfirmLogoutOptions } from '@auth0/auth0-acul-js/logout';
@@ -40,7 +40,7 @@ export {
   type UseErrorsResult,
   type ErrorsResult,
   type ErrorKind,
-} from '../hooks/common';
+} from '../hooks';
 
 // Main instance hook. Returns singleton instance of Logout
 export const useLogout = (): LogoutMembers => useMemo(() => instance, []);

@@ -1,7 +1,7 @@
 import ResetPasswordSuccess from '@auth0/auth0-acul-js/reset-password-success';
 import { useMemo } from 'react';
 
-import { ContextHooks } from '../hooks/context';
+import { ContextHooks } from '../hooks';
 import { registerScreen } from '../state/instance-store';
 
 import type { ResetPasswordSuccessMembers } from '@auth0/auth0-acul-js/reset-password-success';
@@ -32,7 +32,7 @@ export {
   type UseErrorsResult,
   type ErrorsResult,
   type ErrorKind,
-} from '../hooks/common';
+} from '../hooks';
 
 // Main instance hook. Returns singleton instance of ResetPasswordSuccess
 export const useResetPasswordSuccess = (): ResetPasswordSuccessMembers =>

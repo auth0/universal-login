@@ -160,7 +160,7 @@ export default class MfaPushChallengePush
    * - `stopPolling()` — Cancels polling immediately.
    * - `isRunning()` — Indicates whether polling is currently active.
    * 
-   * @category Utility
+   * @utilityFeature
    *
    * @example
    * ```ts

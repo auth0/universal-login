@@ -74,6 +74,6 @@ export { useMfaWebAuthnChangeKeyNickname } from './screens/mfa-webauthn-change-k
 export { useConsent } from './screens/consent';
 export { useResetPasswordMfaWebAuthnPlatformChallenge } from './screens/reset-password-mfa-webauthn-platform-challenge';
 export { useResetPasswordMfaWebAuthnRoamingChallenge } from './screens/reset-password-mfa-webauthn-roaming-challenge';
-export { useCurrentScreen, useErrors, useAuth0Themes } from './hooks/common';
+export { useCurrentScreen, useErrors, useAuth0Themes } from './hooks';
 
 // Common types from core SDK
