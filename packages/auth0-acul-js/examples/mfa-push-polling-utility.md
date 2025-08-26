@@ -1,6 +1,6 @@
 # MFA Push Polling Utility
 
-This utility provides robust polling for MFA push notifications in React applications. It ensures a push request is sent immediately and then at a specified interval, until the polling is cancelled (e.g., on component unmount or dependency change).
+This utility provides robust polling for MFA push notifications in applications. It ensures a push request is sent immediately and then at a specified interval, until the polling is cancelled (e.g., on component unmount or dependency change).
 
 ## Function
 
