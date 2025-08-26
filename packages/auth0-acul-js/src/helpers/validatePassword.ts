@@ -1,9 +1,5 @@
+import type { PasswordValidationResult } from '../../interfaces/models/screen';
 import type { PasswordPolicy, Error, PasswordComplexityRule } from '../../interfaces/models/transaction';
-
-export type PasswordValidationResult = {
-  isValid: boolean;
-  errors: Error[];
-};
 
 function validatePassword(
   password: string,

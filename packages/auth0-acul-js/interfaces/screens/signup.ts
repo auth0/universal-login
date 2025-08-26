@@ -1,9 +1,9 @@
+import type { PasswordValidationResult } from '../../interfaces/models/screen'
 import type { IdentifierType } from '../../src/constants';
 import type { CustomOptions } from '../common';
 import type { BaseMembers } from '../models/base-context';
 import type { ScreenMembers } from '../models/screen';
 import type { TransactionMembers, UsernamePolicy, PasswordPolicy } from '../models/transaction';
-
 export interface SignupOptions {
   email?: string;
   username?: string;
@@ -36,4 +36,5 @@ export interface SignupMembers extends BaseMembers {
   signup(payload: SignupOptions): Promise<void>;
   federatedSignup(payload: FederatedSignupOptions): Promise<void>;
   pickCountryCode(payload?: CustomOptions): Promise<void>;
+  validatePassword(password: string): PasswordValidationResult;
 }

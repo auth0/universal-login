@@ -77,6 +77,5 @@ export { default as ResetPasswordMfaWebAuthnRoamingChallenge } from './reset-pas
 // export { default as BruteForceProtectionUnblock } from './brute-force-protection-unblock';
 // export { default as BruteForceProtectionUnblockFailure } from './brute-force-protection-unblock-failure';
 // export { default as BruteForceProtectionUnblockSuccess } from './brute-force-protection-unblock-success';
-export { validatePassword as validatePasswordFromSignup } from './signup';
-export { validatePassword as validatePasswordFromSignupPassword } from './signup-password';
-export { getIdentifier as getIdentifierFromUtilityHooks } from './signup';
+export { getIdentifier } from './signup';
+export { getActiveIdentifier } from './login';

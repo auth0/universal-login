@@ -1,7 +1,7 @@
 import { ScreenIds, FormActions } from '../../constants';
+import getIdentifierFn from '../../helpers/getIdentifier';
+import coreValidatePassword from '../../helpers/validatePassword';
 import { BaseContext } from '../../models/base-context';
-import getIdentifierFn from '../../utility-hooks/getIdentifier';
-import { validatePasswordforSignup } from '../../utility-hooks/signup/validatePassword';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -9,6 +9,7 @@ import { TransactionOverride } from './transaction-override';
 
 
 import type { ScreenContext } from '../../../interfaces/models/screen';
+import type { PasswordValidationResult } from '../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type {
   SignupMembers,
@@ -18,8 +19,7 @@ import type {
   TransactionMembersOnSignup as TransactionOptions,
 } from '../../../interfaces/screens/signup';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import type {Identifier} from '../../utility-hooks/getIdentifier';
-import type {PasswordValidationResult} from '../../utility-hooks/validatePassword';
+import type {Identifier} from '../../helpers/getIdentifier';
 
 export default class Signup extends BaseContext implements SignupMembers {
   static screenIdentifier: string = ScreenIds.SIGNUP;
@@ -103,10 +103,14 @@ export default class Signup extends BaseContext implements SignupMembers {
       action: FormActions.PICK_COUNTRY_CODE,
     });
   }
+
+  validatePassword(password: string): PasswordValidationResult {
+    const passwordPolicy = this.transaction?.passwordPolicy;
+    return coreValidatePassword(password, passwordPolicy);
+  }
 }
 
 export { PasswordValidationResult, Identifier, SignupMembers, SignupOptions, ScreenOptions as ScreenMembersOnSignup, TransactionOptions as TransactionMembersOnSignup, FederatedSignupOptions };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';
-export const validatePassword = validatePasswordforSignup;
 export const getIdentifier = getIdentifierFn;

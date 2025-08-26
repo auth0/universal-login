@@ -1,11 +1,12 @@
 import { ScreenIds } from '../../constants';
+import coreValidatePassword from '../../helpers/validatePassword';
 import { BaseContext } from '../../models/base-context';
-import { validatePasswordforSignupPassword } from '../../utility-hooks/signup-password/validatePassword';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
 
+import type { PasswordValidationResult } from '../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type {
   SignupPasswordMembers,
@@ -100,6 +101,11 @@ export default class SignupPassword extends BaseContext implements SignupPasswor
 
     await new FormHandler(options).submitData<FederatedSignupOptions>(payload);
   }
+
+  validatePassword(password: string): PasswordValidationResult {
+    const passwordPolicy = this.transaction?.passwordPolicy;
+    return coreValidatePassword(password, passwordPolicy);
+  }
 }
 
 export {
@@ -111,4 +117,3 @@ export {
 };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';
-export const validatePassword = validatePasswordforSignupPassword;

@@ -1,4 +1,5 @@
 import { ScreenIds } from '../../constants';
+import getActiveIdentifiersfn from '../../helpers/getActiveIdentifiers';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
@@ -74,3 +75,4 @@ export default class Login extends BaseContext implements LoginMembers {
 export { LoginMembers, LoginOptions, FederatedLoginOptions, ScreenOptions as ScreenMembersOnLogin, TransactionOptions as TransactionMembersOnLogin };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';
+export const getActiveIdentifier = getActiveIdentifiersfn;
