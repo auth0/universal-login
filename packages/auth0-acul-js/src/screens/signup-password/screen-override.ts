@@ -12,6 +12,16 @@ export class ScreenOverride extends Screen implements OverrideOptions {
     super(screenContext);
     this.loginLink = getLoginLink(screenContext);
     this.editLink = getEditIdentifierLink(screenContext);
-    this.data = Screen.getScreenData(screenContext);
+    this.data = ScreenOverride.getScreenData(screenContext);
   }
+
+  static getScreenData = (screenContext: ScreenContextOnSignupPassword): OverrideOptions['data'] => {
+    const data = screenContext.data;
+    if (!data) return null;
+    return {
+      email: data.email,
+      phoneNumber: data.phone_number,
+      username: data.username,
+    } as OverrideOptions['data'];
+  };
 }

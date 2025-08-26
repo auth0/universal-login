@@ -66,11 +66,6 @@ export default class SignupPassword extends BaseContext implements SignupPasswor
       telemetry: [this.constructor.name, 'signup'],
     };
 
-    if (payload.phone?.trim() ?? '') {
-      const { phone, ...rest } = payload;
-      payload = { ...rest, phone_number: phone };
-    }
-
     await new FormHandler(options).submitData<SignupPasswordOptions>(payload);
   }
 

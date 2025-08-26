@@ -1,4 +1,4 @@
-import { FormActions } from '../../../src/constants';
+import { FormActions, ScreenIds } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
@@ -17,6 +17,10 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * Class implementing the mfa-otp-enrollment-qr screen functionality
  */
 export default class MfaOtpEnrollmentQr extends BaseContext implements MfaOtpEnrollmentQrMembers {
+  /**
+   * Screen identifier for validation and telemetry
+   */
+  static screenIdentifier: string = ScreenIds.MFA_OTP_ENROLLMENT_QR;
   screen: ScreenOptions;
 
   /**
