@@ -1,3 +1,12 @@
+/**
+ * @class AculError
+ * @extends Error
+ * @param {string} message - The error message.
+ * @param {string} [field] - The optional field associated with the error.
+ * @summary Base class for all Acul-related errors.
+
+ * @throws {Error} Throws an error if the message is empty.
+ */
 export class AculError extends Error {
   public readonly code: string;
   public readonly field?: string;
@@ -12,7 +21,11 @@ export class AculError extends Error {
 }
 
 /**
- * Error caused by invalid end-user input (e.g., bad password format).
+ * @class UserInputError
+ * @extends AculError
+ * @param {string} message - The error message.
+ * @param {string} [field] - The optional field associated with the error.
+ * @summary Error caused by invalid end-user input (e.g., bad password format).
  */
 export class UserInputError extends AculError {
   public readonly code = 'USER_INPUT_ERROR';
@@ -24,8 +37,11 @@ export class UserInputError extends AculError {
 }
 
 /**
- * Error caused by incorrect SDK usage by developers
- * (e.g., missing required parameters).
+ * @class SDKUsageError
+ * @extends AculError
+ * @param {string} message - The error message.
+ * @param {string} [field] - The optional field associated with the error.
+ * @summary Error caused by incorrect SDK usage by developers (e.g., missing required parameters).
  */
 export class SDKUsageError extends AculError {
   public readonly code = 'SDK_USAGE_ERROR';
@@ -37,7 +53,11 @@ export class SDKUsageError extends AculError {
 }
 
 /**
- * Error caused by server-side issues (e.g., network problems, polling errors).
+ * @class Auth0ServerError
+ * @extends AculError
+ * @param {string} message - The error message.
+ * @param {string} [field] - The optional field associated with the error.
+ * @summary Error caused by server-side issues (e.g., network problems, polling errors).
  * These errors are typically not actionable by end-users.
  */
 export class Auth0ServerError extends AculError {

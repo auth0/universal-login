@@ -4,7 +4,7 @@ import type { BaseContext, BaseMembers } from '../models/base-context';
 import type { ScreenContext, ScreenMembers } from '../models/screen';
 import type { TransactionMembers, UsernamePolicy } from '../models/transaction';
 import type { UntrustedDataContext } from '../models/untrusted-data';
-import type { Identifier } from '../utils/get-enabled-identifiers';
+import type { Identifier } from '../utils/signup-identifiers';
 import type { UsernameValidationResult } from '../utils/validate-username';
 interface ExtendedScreenContext extends ScreenContext {
   links: {
@@ -56,7 +56,7 @@ export interface SignupIdMembers extends BaseMembers {
   transaction: TransactionMembersOnSignupId;
   signup(payload: SignupOptions): Promise<void>;
   federatedSignup(payload: FederatedSignupOptions): Promise<void>;
-  getEnabledIdentifiers(): Identifier[] | null;
+  getSignupIdentifiers(): Identifier[] | null;
   pickCountryCode(payload?: CustomOptions): Promise<void>;
   validateUsername(username: string): UsernameValidationResult;
 }

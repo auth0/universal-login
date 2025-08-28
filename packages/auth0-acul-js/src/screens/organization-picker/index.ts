@@ -1,3 +1,4 @@
+import { ScreenIds } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
@@ -10,6 +11,10 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * This screen allows users to select an organization from a list of available organizations.
  */
 export default class OrganizationPicker extends BaseContext implements OrganizationPickerMembers {
+  /**
+   * Screen identifier for validation and telemetry
+   */
+  static screenIdentifier: string = ScreenIds.ORGANIZATION_PICKER;
   /**
    * Creates an instance of OrganizationPicker screen manager.
    */

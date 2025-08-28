@@ -1,8 +1,9 @@
+import { ScreenIds, FormActions } from '../../../../src/constants';
 import Login from '../../../../src/screens/login';
-import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
-import { LoginOptions, FederatedLoginOptions } from '../../../../interfaces/screens/login';
-import { ScreenIds } from '../../../../src//constants';
+import { baseContextData } from '../../../data/test-data';
+
+import type { LoginOptions, FederatedLoginOptions } from '../../../../interfaces/screens/login';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -97,19 +98,43 @@ describe('Login', () => {
     });
   });
 
-  describe('getActiveIdentifiers method', () => {
-      it('should return allowedIdentifiers when set in transaction', () => {
-        login.transaction.allowedIdentifiers = ['email', 'username'];
-        const result = login.getActiveIdentifiers();
-        expect(result).toEqual(['email', 'username']);
-      });
+  describe('getLoginIdentifiers method', () => {
+    it('should return allowedIdentifiers when set in transaction', () => {
+      login.transaction.allowedIdentifiers = ['email', 'username'];
+      const result = login.getLoginIdentifiers();
+      expect(result).toEqual(['email', 'username']);
+    });
 
-      it('should return null when allowedIdentifiers is null or empty', () => {
-        login.transaction.allowedIdentifiers = null;
-        expect(login.getActiveIdentifiers()).toBeNull();
-        login.transaction.allowedIdentifiers = [];
-        expect(login.getActiveIdentifiers()).toEqual([]);
-      });
+    it('should return null when allowedIdentifiers is null or empty', () => {
+      login.transaction.allowedIdentifiers = null;
+      expect(login.getLoginIdentifiers()).toBeNull();
+      login.transaction.allowedIdentifiers = [];
+      expect(login.getLoginIdentifiers()).toEqual([]);
+    });
   });
 
+  describe('pickCountryCode', () => {
+    it('should submit pick-country-code action without payload', async () => {
+      await login.pickCountryCode();
+      expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith({
+        action: FormActions.PICK_COUNTRY_CODE,
+      });
+    });
+
+    it('should submit pick-country-code action with custom payload', async () => {
+      const payload = { customField: 'customValue' };
+      await login.pickCountryCode(payload);
+      expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith({
+        ...payload,
+        action: FormActions.PICK_COUNTRY_CODE,
+      });
+    });
+
+    it('should throw error when promise is rejected', async () => {
+      mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
+      await expect(login.pickCountryCode()).rejects.toThrow('Mocked reject');
+    });
+  });
 });

@@ -1,10 +1,12 @@
+
+import { ScreenIds } from '../../../../src/constants';
 import ResetPassword from '../../../../src/screens/reset-password';
-import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
-import { ResetPasswordOptions } from 'interfaces/screens/reset-password';
-import { ScreenIds } from '../../../../src//constants';
 import { validatePassword as _validatePassword } from '../../../../src/utils/validate-password';
+import { baseContextData } from '../../../data/test-data';
+
 import type { PasswordPolicy } from '../../../../interfaces/models/transaction';
+import type { ResetPasswordOptions } from 'interfaces/screens/reset-password';
 jest.mock('../../../../src/utils/form-handler');
 jest.mock('../../../../src/utils/validate-password', () => ({
   validatePassword: jest.fn(),

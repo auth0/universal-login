@@ -1,7 +1,7 @@
 import DeviceCodeActivationDenied from '@auth0/auth0-acul-js/device-code-activation-denied';
 import { useMemo } from 'react';
 
-import { ContextHooks } from '../hooks/context';
+import { ContextHooks } from '../hooks';
 import { registerScreen } from '../state/instance-store';
 
 import type { DeviceCodeActivationDeniedMembers } from '@auth0/auth0-acul-js/device-code-activation-denied';
@@ -32,7 +32,7 @@ export {
   type UseErrorsResult,
   type ErrorsResult,
   type ErrorKind,
-} from '../hooks/common';
+} from '../hooks';
 
 // Main instance hook. Returns singleton instance of DeviceCodeActivationDenied
 export const useDeviceCodeActivationDenied = (): DeviceCodeActivationDeniedMembers =>

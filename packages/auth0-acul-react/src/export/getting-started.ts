@@ -1,7 +1,7 @@
 /**
  * @module Getting Started
- * @description
- * This module provides an overview of how to get started with the Auth0 ACUL React SDK.
+ * @summary
+ * This module provides an overview of how to get started with the Auth0 SDK.
  *
  * # Auth0 ACUL React SDK
  *

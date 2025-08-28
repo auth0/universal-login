@@ -1,6 +1,6 @@
-import { createResendControl } from '../../../src/utils/resend-utils';
+import { createResendControl } from '../../../src/utils/resend-control';
 
-import type { StartResendOptions } from '../../../interfaces/common';
+import type { StartResendOptions } from '../../../interfaces/utils/resend-control';
 
 // Mock localStorage
 let mockStorage: { [key: string]: string } = {};

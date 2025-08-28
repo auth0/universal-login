@@ -79,7 +79,7 @@ const tag = (kind: ErrorKind, arr: ReadonlyArray<ErrorItem>): ReadonlyArray<Erro
  * - `client` — errors from client-side validation (e.g., invalid form input).
  * - `developer` — errors caused by incorrect integration or SDK misuse.
  *
- * @SupportedScreens
+ * @supportedScreens
  * - The `useErrors` hook is available on every ACUL screen.
  *
  * @param options.includeDevErrors - When `true`, developer errors are included in
@@ -93,7 +93,6 @@ const tag = (kind: ErrorKind, arr: ReadonlyArray<ErrorItem>): ReadonlyArray<Erro
  * - `dismiss(id)` — remove a specific error by its ID.
  * - `dismissAll()` — clear all tracked errors.
  *
- * @usage
  * Typical usage is inside a form or screen component where you need to
  * reactively display errors and provide ways to dismiss them:
  *

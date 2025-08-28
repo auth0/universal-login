@@ -1,11 +1,11 @@
 import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
-import { createResendControl } from '../../utils/resend-utils';
+import { createResendControl } from '../../utils/resend-control';
 
 import { ScreenOverride } from './screen-override';
 
-import type { CustomOptions, StartResendOptions, ResendControl } from '../../../interfaces/common';
+import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type {
   EmailChallengeOptions,
@@ -13,6 +13,7 @@ import type {
   ScreenMembersOnEmailIdentifierChallenge as ScreenOptions,
 } from '../../../interfaces/screens/email-identifier-challenge';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import type { StartResendOptions, ResendControl } from  '../../../interfaces/utils/resend-control';
 
 export default class EmailIdentifierChallenge extends BaseContext implements EmailIdentifierChallengeMembers {
   screen: ScreenOptions;
@@ -77,7 +78,7 @@ export default class EmailIdentifierChallenge extends BaseContext implements Ema
    * @param options.onStatusChange - Callback to receive state updates (remaining seconds, disabled status)
    * @param options.onTimeout - Callback to execute when timeout countdown reaches zero
    * @returns ResendControl object with startResend method
-   * @category Utility
+   * @utilityFeature
    * 
    * @example
    * import EmailIdentifierChallenge from '@auth0/auth0-acul-js/email-identifier-challenge';

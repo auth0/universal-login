@@ -2,7 +2,7 @@ import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { getBrowserCapabilities } from '../../utils/browser-capabilities';
 import { FormHandler } from '../../utils/form-handler';
-import { getEnabledIdentifiers as _getEnabledIdentifiers} from '../../utils/get-enabled-identifiers';
+import { getSignupIdentifiers as _getSignupIdentifiers} from '../../utils/signup-identifiers';
 import { validateUsername as _validateUsername} from '../../utils/validate-username';
 
 import { ScreenOverride } from './screen-override';
@@ -18,7 +18,7 @@ import type {
   FederatedSignupOptions,
 } from '../../../interfaces/screens/signup-id';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import type { Identifier } from '../../../interfaces/utils/get-enabled-identifiers';
+import type { Identifier } from '../../../interfaces/utils/signup-identifiers';
 import type { UsernameValidationResult } from '../../../interfaces/utils/validate-username';
 
 export default class SignupId extends BaseContext implements SignupIdMembers {
@@ -115,18 +115,18 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
    * marking each as required or optional based on transaction config.
    *
    * @returns Array of identifier objects (e.g., email, phone, username).
-   * @category Utility
+   * @utilityFeature
    * @example
    * const signupId = new SignupId();
-   * const identifiers = signupId.getEnabledIdentifiers();
+   * const identifiers = signupId.getSignupIdentifiers();
    * // [{ type: 'email', required: true }, { type: 'username', required: false }]
    */
-  getEnabledIdentifiers(): Identifier[] | null {
+  getSignupIdentifiers(): Identifier[] | null {
     const transaction = {
       ...this.transaction,
       errors: this.transaction.errors ?? undefined, // convert `null` to `undefined`
     };
-    return _getEnabledIdentifiers(transaction.requiredIdentifiers ?? [], transaction.optionalIdentifiers ?? [], transaction.connectionStrategy);
+    return _getSignupIdentifiers(transaction.requiredIdentifiers ?? [], transaction.optionalIdentifiers ?? [], transaction.connectionStrategy);
   }
   
   /**
@@ -153,7 +153,7 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
      *
      * @param username - The username string to validate.
      * @returns Result object indicating whether the username is valid and why.
-     * @category Utility
+     * @utilityFeature
      *
      * @example
      * const signupIdManager = new SignupId();

@@ -16,7 +16,7 @@ interface WithValidatePassword {
  * Optionally, it can send the validation results to the global error manager so that
  * form error components can update automatically.
  *
- * @SupportedScreens
+ * @supportedScreens
  * - `signup`
  * - `signup-password`
  * - `reset-password`
@@ -50,14 +50,16 @@ export function usePasswordValidation(
 
     if (options?.includeInErrors) {
       errorManager.replaceClientErrors(
-        [
-          {
-            code: 'password-policy-error',
-            field: 'password',
-            message: 'The password does not meet the required criteria.',
-            rules: validation.results,
-          },
-        ],
+        validation.isValid
+          ? []
+          : [
+              {
+                code: 'password-policy-error',
+                field: 'password',
+                message: 'The password does not meet the required criteria.',
+                rules: validation.results,
+              },
+            ],
         { byField: 'password' }
       );
     }

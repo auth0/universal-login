@@ -1,7 +1,7 @@
 import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
-import { createPollingControl }  from '../../utils/create-polling-control.js';
 import { FormHandler } from '../../utils/form-handler';
+import { createPollingControl }  from '../../utils/polling-control.js';
 
 import { ScreenOverride } from './screen-override';
 
@@ -135,7 +135,7 @@ export default class ResetPasswordMfaPushChallengePush extends BaseContext imple
    * - `stopPolling()` — Cancels polling immediately.
    * - `isRunning()` — Indicates whether polling is currently active.
    * 
-   * @category Utility
+   * @utilityFeature
    *
    * @example
    * ```ts

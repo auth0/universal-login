@@ -1,11 +1,12 @@
 import { FormActions, ScreenIds } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
-import { createResendControl } from '../../utils/resend-utils';
+import { createResendControl } from '../../utils/resend-control';
 
-import type { CustomOptions, StartResendOptions, ResendControl } from '../../../interfaces/common';
+import type { CustomOptions } from '../../../interfaces/common';
 import type { EmailOTPChallengeMembers, OtpCodeOptions, ScreenMembersOnEmailOTPChallenge as ScreenOptions } from '../../../interfaces/screens/email-otp-challenge';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import type { StartResendOptions, ResendControl } from  '../../../interfaces/utils/resend-control';
 
 /**
  * Represents the Email OTP Challenge screen.
@@ -75,7 +76,7 @@ export default class EmailOTPChallenge extends BaseContext implements EmailOTPCh
    * @param options.onStatusChange - Callback to receive state updates (remaining seconds, disabled status)
    * @param options.onTimeout - Callback to execute when timeout countdown reaches zero
    * @returns ResendControl object with startResend method
-   * @category Utility
+   * @utilityFeature
    * 
    * @example
    * ```typescript

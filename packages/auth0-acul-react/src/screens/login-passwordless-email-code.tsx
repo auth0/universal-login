@@ -1,8 +1,8 @@
 import LoginPasswordlessEmailCode from '@auth0/auth0-acul-js/login-passwordless-email-code';
 import { useMemo } from 'react';
 
-import { errorManager } from '../hooks/common/errors';
-import { ContextHooks } from '../hooks/context';
+import { ContextHooks } from '../hooks';
+import { errorManager } from '../hooks';
 import { registerScreen } from '../state/instance-store';
 
 import type {
@@ -35,6 +35,9 @@ export const {
 export const submitCode = (payload: SubmitCodeOptions) => withError(instance.submitCode(payload));
 export const resendCode = (payload?: CustomOptions) => withError(instance.resendCode(payload));
 
+// Utility Hooks
+export { useResend } from '../hooks/utility/resend-manager';
+
 // Common hooks
 export {
   useCurrentScreen,
@@ -44,7 +47,7 @@ export {
   type UseErrorsResult,
   type ErrorsResult,
   type ErrorKind,
-} from '../hooks/common';
+} from '../hooks';
 
 // Main instance hook. Returns singleton instance of LoginPasswordlessEmailCode
 export const useLoginPasswordlessEmailCode = (): LoginPasswordlessEmailCodeMembers =>

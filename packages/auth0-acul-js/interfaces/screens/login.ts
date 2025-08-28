@@ -1,8 +1,8 @@
 import type { IdentifierType } from '../../src/constants';
+import type { CustomOptions } from '../common';
 import type { BaseContext, BaseMembers } from '../models/base-context';
 import type { ScreenContext, ScreenMembers } from '../models/screen';
 import type { TransactionContext, TransactionMembers, DBConnection, PasswordPolicy } from '../models/transaction';
-
 /**
  * Extended screen context interface for the login screen
  */
@@ -91,9 +91,14 @@ export interface LoginMembers extends BaseMembers {
    */
   federatedLogin(payload: FederatedLoginOptions): Promise<void>;
   /**
+   * Picks country code for phone number input
+   * @param payload Optional custom options
+   */
+  pickCountryCode(payload?: CustomOptions): Promise<void>;
+  /**
    * Gets the active identifier types for the login screen
    * @returns An array of active identifier types or null if none are active
-   * @category Utility
+   * @utilityFeature
    */
-  getActiveIdentifiers(): string[] | null;
+  getLoginIdentifiers(): string[] | null;
 }

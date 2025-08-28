@@ -1,4 +1,4 @@
-import { FormActions } from '../../../src/constants';
+import { FormActions, ScreenIds } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
@@ -15,6 +15,10 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * This screen allows users to select an organization to continue with.
  */
 export default class OrganizationSelection extends BaseContext implements OrganizationSelectionMembers {
+  /**
+   * Screen identifier for validation and telemetry
+   */
+  static screenIdentifier: string = ScreenIds.ORGANIZATION_SELECTION;
   screen: ScreenOptions;
 
   /**

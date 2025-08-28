@@ -1,10 +1,11 @@
-import ResetPasswordRequest from '../../../../src/screens/reset-password-request';
-import { baseContextData } from '../../../data/test-data';
-import { FormHandler } from '../../../../src/utils/form-handler';
-import { ScreenIds } from '../../../../src//constants';
-import { ResetPasswordRequestOptions } from '../../../../interfaces/screens/reset-password-request';
-import { CustomOptions } from '../../../../interfaces/common';
+import { ScreenIds } from '../../../../src/constants';
 import { FormActions } from '../../../../src/constants';
+import ResetPasswordRequest from '../../../../src/screens/reset-password-request';
+import { FormHandler } from '../../../../src/utils/form-handler';
+import { baseContextData } from '../../../data/test-data';
+
+import type { CustomOptions } from '../../../../interfaces/common';
+import type { ResetPasswordRequestOptions } from '../../../../interfaces/screens/reset-password-request';
 
 jest.mock('../../../../src/utils/form-handler');
 

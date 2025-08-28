@@ -2,7 +2,7 @@ import { PasswordValidationResult } from '../../../interfaces/utils/validate-pas
 import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
-import { getEnabledIdentifiers as _getEnabledIdentifiers} from '../../utils/get-enabled-identifiers';
+import { getSignupIdentifiers as _getSignupIdentifiers} from '../../utils/signup-identifiers';
 import { validatePassword as _validatePassword} from '../../utils/validate-password';
 import { validateUsername as _validateUsername} from '../../utils/validate-username';
 
@@ -19,7 +19,7 @@ import type {
   TransactionMembersOnSignup as TransactionOptions,
 } from '../../../interfaces/screens/signup';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import type { Identifier } from '../../../interfaces/utils/get-enabled-identifiers';
+import type { Identifier } from '../../../interfaces/utils/signup-identifiers';
 import type { UsernameValidationResult } from '../../../interfaces/utils/validate-username';
 
 export default class Signup extends BaseContext implements SignupMembers {
@@ -108,7 +108,7 @@ export default class Signup extends BaseContext implements SignupMembers {
   /**
    * @param password 
    * @returns An object of type {@link PasswordValidationResult} indicating whether the password is valid and why.
-   * @category Utility
+   * @utilityFeature
    */
   validatePassword(password: string): PasswordValidationResult {
     const passwordPolicy = this.transaction?.passwordPolicy;
@@ -120,18 +120,18 @@ export default class Signup extends BaseContext implements SignupMembers {
    * marking each as required or optional based on transaction config.
    *
    * @returns Array of identifier objects (e.g., email, phone, username).
-   * @category Utility
+   * @utilityFeature
    * @example
    * const signup = new Signup();
-   * const identifiers = signup.getEnabledIdentifiers();
+   * const identifiers = signup.getSignupIdentifiers();
    * // [{ type: 'email', required: true }, { type: 'username', required: false }]
    */
-  getEnabledIdentifiers(): Identifier[] | null { 
+  getSignupIdentifiers(): Identifier[] | null { 
     const transaction = {
       ...this.transaction,
       errors: this.transaction.errors ?? undefined, // convert `null` to `undefined`
     };
-    return _getEnabledIdentifiers(transaction.requiredIdentifiers ?? [], transaction.optionalIdentifiers ?? [], transaction.connectionStrategy);
+    return _getSignupIdentifiers(transaction.requiredIdentifiers ?? [], transaction.optionalIdentifiers ?? [], transaction.connectionStrategy);
   }
 
   /**
@@ -140,7 +140,7 @@ export default class Signup extends BaseContext implements SignupMembers {
    *
    * @param username - The username string to validate.
    * @returns Result object indicating whether the username is valid and why.
-   * @category Utility
+   * @utilityFeature
    *
    * @example
    * const signup = new Signup();

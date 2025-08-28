@@ -1,9 +1,11 @@
-import { baseContextData } from '../../../data/test-data';
-import { FormHandler } from '../../../../src/utils/form-handler';
-import { CustomOptions } from 'interfaces/common';
-import MfaPushEnrollmentQr from '../../../../src/screens/mfa-push-enrollment-qr';
-import { ScreenIds } from '../../../../src//constants';
+
+import { ScreenIds } from '../../../../src/constants';
 import { FormActions } from '../../../../src/constants';
+import MfaPushEnrollmentQr from '../../../../src/screens/mfa-push-enrollment-qr';
+import { FormHandler } from '../../../../src/utils/form-handler';
+import { baseContextData } from '../../../data/test-data';
+
+import type { CustomOptions } from 'interfaces/common';
 
 jest.mock('../../../../src/utils/form-handler');
 

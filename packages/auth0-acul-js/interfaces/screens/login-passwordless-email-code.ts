@@ -2,6 +2,7 @@ import type { TransactionMembers } from '../../interfaces/models';
 import type { BaseMembers } from '../../interfaces/models/base-context';
 import type { ScreenMembers } from '../../interfaces/models/screen';
 import type { CustomOptions } from '../common';
+import type { StartResendOptions, ResendControl } from '../utils/resend-control';
 
 export interface ScreenMembersOnLoginPasswordlessEmailCode extends ScreenMembers {
   editIdentifierLink: string | null;
@@ -28,4 +29,5 @@ export interface LoginPasswordlessEmailCodeMembers extends BaseMembers {
   transaction: TransactionMembersOnLoginPasswordlessEmailCode;
   submitCode(payload: SubmitCodeOptions): Promise<void>;
   resendCode(payload?: CustomOptions): Promise<void>;
+  resendManager(options?: StartResendOptions): ResendControl;
 }

@@ -1,11 +1,11 @@
 import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
-import { createResendControl } from '../../utils/resend-utils';
+import { createResendControl } from '../../utils/resend-control';
 
 import { ScreenOverride } from './screen-override';
 
-import type { CustomOptions, StartResendOptions, ResendControl } from '../../../interfaces/common';
+import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type {
   ResetPasswordMfaVoiceChallengeMembers,
@@ -13,6 +13,7 @@ import type {
   ContinueOptions,
 } from '../../../interfaces/screens/reset-password-mfa-voice-challenge';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import type { StartResendOptions, ResendControl } from '../../../interfaces/utils/resend-control';
 
 /**
  * @class ResetPasswordMfaVoiceChallenge
@@ -119,7 +120,7 @@ export default class ResetPasswordMfaVoiceChallenge extends BaseContext implemen
    * @param options.onStatusChange - Callback to receive state updates (remaining seconds, disabled status)
    * @param options.onTimeout - Callback to execute when timeout countdown reaches zero
    * @returns ResendControl object with startResend method
-   * @category Utility
+   * @utilityFeature
    * 
    * @example
    * ```typescript

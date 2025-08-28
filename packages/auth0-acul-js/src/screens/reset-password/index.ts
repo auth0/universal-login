@@ -50,7 +50,7 @@ export default class ResetPassword extends BaseContext implements ResetPasswordM
   /**
    * @param password 
    * @returns An object of type {@link PasswordValidationResult} indicating whether the password is valid and why.
-   * @category Utility
+   * @utilityFeature
    */
   validatePassword(password: string): PasswordValidationResult {
     const passwordPolicy = this.transaction?.passwordPolicy;

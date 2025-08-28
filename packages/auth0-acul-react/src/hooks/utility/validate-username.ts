@@ -18,7 +18,7 @@ interface WithValidateUsername {
  * UI components observing the `username` field can automatically display or react
  * to these errors.
  *
- * @SupportedScreens
+ * @supportedScreens
  * - `signup`
  * - `signup-id`
  *
@@ -32,7 +32,7 @@ interface WithValidateUsername {
  *
  * @example
  * ```tsx
- * import { useUsernameValidation } from "@auth0/auth0-acul-react";
+ * import { useUsernameValidation } from "@auth0/auth0-acul-react/signup";
  *
  * export function UsernameField() {
  *   const { isValid, errors } = useUsernameValidation(username, { includeInErrors: true });

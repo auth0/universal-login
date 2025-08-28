@@ -1,7 +1,7 @@
 export default {
   name: '@auth0/auth0-acul-react',
   out: 'docs',
-  entryPoints: ['./src/export/index.ts', './src/export/getting-started.ts'],
+  entryPoints: ['./src/export/index.ts'],
   tsconfig: './tsconfig.json',
   exclude: ['**/*.test.ts', '**/*.spec.ts'],
   hideGenerator: true,

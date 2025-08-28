@@ -34,12 +34,26 @@ interface WithResendManager {
 }
 
 /**
- * React hook to manage “resend” actions (e.g., resending a verification code) on ACUL screens.
+ * This React hook manages "resend" actions (e.g., resending a verification code) on ACUL screens.
  *
  * This hook:
  * - Tracks the remaining cooldown time.
  * - Tells you whether the resend button should be disabled.
  * - Provides a `startResend` function to trigger a resend immediately.
+ *
+ * @supportedScreens
+ * - `email-identifier-challenge`
+ * - `email-otp-challenge`
+ * - `login-email-verification`
+ * - `login-passwordless-email-code`
+ * - `login-passwordless-sms-otp`
+ * - `mfa-email-challenge`
+ * - `mfa-sms-challenge`
+ * - `mfa-voice-challenge`
+ * - `phone-identifier-challenge`
+ * - `reset-password-mfa-email-challenge`
+ * - `reset-password-mfa-sms-challenge`
+ * - `reset-password-mfa-voice-challenge`
  *
  * @param options - Optional configuration such as `timeoutSeconds` and `onTimeout`.
  *

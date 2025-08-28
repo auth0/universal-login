@@ -1,8 +1,8 @@
 import LoginId from '@auth0/auth0-acul-js/login-id';
 import { useMemo } from 'react';
 
-import { errorManager } from '../hooks/common/errors';
-import { ContextHooks } from '../hooks/context';
+import { ContextHooks } from '../hooks';
+import { errorManager } from '../hooks';
 import { registerScreen } from '../state/instance-store';
 
 import type {
@@ -41,7 +41,7 @@ export const pickCountryCode = (payload?: CustomOptions) =>
   withError(instance.pickCountryCode(payload));
 
 // Utility Hooks
-export { useActiveIdentifiers } from '../hooks/utility/active-identifiers';
+export { useLoginIdentifiers } from '../hooks/utility/login-identifiers';
 
 // Common hooks
 export {
@@ -52,7 +52,7 @@ export {
   type UseErrorsResult,
   type ErrorsResult,
   type ErrorKind,
-} from '../hooks/common';
+} from '../hooks';
 
 // Main instance hook. Returns singleton instance of LoginId
 export const useLoginId = (): LoginIdMembers => useMemo(() => instance, []);
