@@ -23,6 +23,10 @@ const CONTEXT_MODELS = [
   'prompt', 'screen', 'transaction', 'untrustedData'
 ];
 
+// Types for exported method discovery
+type ExportedMethodParam = { name: string; type: string; isOptional: boolean };
+type ExportedMethod = { name: string; params: ExportedMethodParam[] };
+
 function toKebabCase(str: string): string {
   // Handle special cases: WebAuthn and OTP acronyms
   return str
@@ -278,7 +282,7 @@ for (const symbol of screenSymbols) {
   const ifaceFile = project.getSourceFile(path.join(CORE_SDK_PATH, `interfaces/screens/${kebab}.ts`));
   const typedInterfaces = new Set<string>();
   const allExportedInterfaces = new Set<string>();
-  const exportedMethods: { name: string; params: { name: string; type: string; isOptional: boolean }[] }[] = [];
+  const exportedMethods: ExportedMethod[] = [];
 
   if (ifaceFile) {
     for (const [name, decls] of ifaceFile.getExportedDeclarations()) {
@@ -298,7 +302,7 @@ for (const symbol of screenSymbols) {
                     name: p.getName(),
                     type: paramType,
                     isOptional: p.isOptional(),
-                  };
+                  } as ExportedMethodParam;
                 });
                 exportedMethods.push({ name: methodName, params });
               });
@@ -324,9 +328,35 @@ for (const symbol of screenSymbols) {
 
   usedInterfaces.add(baseInterface);
   exportedMethods.forEach(m => m.params.forEach(p => {
-    // Clean up the type from array/union markers
-    const cleanType = p.type.replace(/\[\]/g, '').split(/<|>/).join(',').split('|').join(',').split('&').join(',').split(',').map(t => t.trim()).filter(Boolean);
+    // Clean up the type string to extract identifiers that need importing.
+    // We need to break down complex TypeScript types into individual tokens
+    // to find the type names that should be imported from the core SDK.
+    //
+    // Examples of what we're parsing:
+    //   Input: "LoginOptions | undefined"           → Output: ["LoginOptions"]
+    //   Input: "Array<UserData>"                    → Output: ["Array", "UserData"]  
+    //   Input: "Promise<Result<Error | null>>"      → Output: ["Promise", "Result", "Error", "null"]
+    //   Input: "CustomType & { prop: string }[]"   → Output: ["CustomType"]
+    //   Input: "{ inline: object }"                → Output: [] (filtered out)
+    //
+    // Process:
+    // 1. Remove array brackets: "Type[]" → "Type"
+    // 2. Split generics: "Promise<T>" → "Promise,T"  
+    // 3. Split unions: "A | B" → "A,B"
+    // 4. Split intersections: "A & B" → "A,B"
+    // 5. Split on commas and clean whitespace
+    const cleanType = p.type
+      .replace(/\[\]/g, '')           // Remove array markers: Type[] → Type
+      .split(/<|>/).join(',')         // Split generics: Promise<T> → Promise,T
+      .split('|').join(',')           // Split unions: A | B → A,B
+      .split('&').join(',')           // Split intersections: A & B → A,B
+      .split(',')                     // Split on commas
+      .map(t => t.trim())             // Clean whitespace
+      .filter(Boolean);               // Remove empty strings
+
     cleanType.forEach(t => {
+      // Only add non-primitive types that aren't inline object literals
+      // Skip: primitives (string, number, etc.), keywords (any, void), inline objects ({ ... })
       if (t !== 'any' && t !== 'string' && t !== 'number' && t !== 'boolean' && t !== 'undefined' && t !== 'void' && !t.startsWith('{')) {
         usedInterfaces.add(t);
       }
