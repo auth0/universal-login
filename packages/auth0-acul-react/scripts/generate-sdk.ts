@@ -23,6 +23,10 @@ const CONTEXT_MODELS = [
   'prompt', 'screen', 'transaction', 'untrustedData'
 ];
 
+// Types for exported method discovery
+type ExportedMethodParam = { name: string; type: string; isOptional: boolean };
+type ExportedMethod = { name: string; params: ExportedMethodParam[] };
+
 function toKebabCase(str: string): string {
   // Handle special cases: WebAuthn and OTP acronyms
   return str
@@ -278,7 +282,7 @@ for (const symbol of screenSymbols) {
   const ifaceFile = project.getSourceFile(path.join(CORE_SDK_PATH, `interfaces/screens/${kebab}.ts`));
   const typedInterfaces = new Set<string>();
   const allExportedInterfaces = new Set<string>();
-  const exportedMethods = new Set<string>();
+  const exportedMethods: ExportedMethod[] = [];
 
   if (ifaceFile) {
     for (const [name, decls] of ifaceFile.getExportedDeclarations()) {
@@ -290,7 +294,17 @@ for (const symbol of screenSymbols) {
             d.getMembers()
               .filter(member => member.getKind() === SyntaxKind.MethodSignature)
               .forEach(method => {
-                exportedMethods.add(method.getSymbol()?.getName() || '');
+                const methodSignature = method.asKindOrThrow(SyntaxKind.MethodSignature);
+                const methodName = methodSignature.getName();
+                const params = methodSignature.getParameters().map(p => {
+                  const paramType = p.getTypeNode()?.getText() || p.getType().getText(p);
+                  return {
+                    name: p.getName(),
+                    type: paramType,
+                    isOptional: p.isOptional(),
+                  } as ExportedMethodParam;
+                });
+                exportedMethods.push({ name: methodName, params });
               });
           }
         }
@@ -313,6 +327,21 @@ for (const symbol of screenSymbols) {
   screenLines.push(`import { ContextHooks } from '../hooks/context-hooks';\n`);
 
   usedInterfaces.add(baseInterface);
+  
+  // Extract type identifiers from method parameters for imports
+  // Transform "LoginOptions | undefined" → ["LoginOptions"], "Promise<T>" → ["Promise", "T"], etc.
+  const PRIMITIVES = new Set(['any', 'string', 'number', 'boolean', 'undefined', 'void', 'null']);
+  
+  exportedMethods.forEach(m => m.params.forEach(p => {
+    const typeTokens = p.type
+      .replace(/\[\]/g, '')                    // Remove arrays: Type[] → Type
+      .replace(/[<>|&]/g, ',')                 // Split on: generics, unions, intersections
+      .split(',')                              // Split into tokens
+      .map(t => t.trim())                      // Clean whitespace
+      .filter(t => t && !PRIMITIVES.has(t) && !t.startsWith('{')); // Keep only importable types
+    
+    typeTokens.forEach(t => usedInterfaces.add(t));
+  }));
 
   // Lazy singleton instance
   screenLines.push(`let instance: ${baseInterface} | null = null;`);
@@ -347,11 +376,13 @@ for (const symbol of screenSymbols) {
     }
   }
 
-  if (exportedMethods.size) {
+  if (exportedMethods.length) {
     screenLines.push(`\n// Screen methods`);
-    for (const method of Array.from(exportedMethods)) {
-      const safe = getSafeMethodName(method);
-      screenLines.push(`export const ${safe} = (args: any) => getInstance().${method}(args);`);
+    for (const method of exportedMethods) {
+      const safe = getSafeMethodName(method.name);
+      const args = method.params.map(p => `${p.name}${p.isOptional ? '?' : ''}: ${p.type}`).join(', ');
+      const argNames = method.params.map(p => p.name).join(', ');
+      screenLines.push(`export const ${safe} = (${args}) => getInstance().${method.name}(${argNames});`);
     }
   }
 
