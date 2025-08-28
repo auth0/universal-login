@@ -1,6 +1,7 @@
 import { ScreenIds, FormActions, Errors } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { getBrowserCapabilities } from '../../utils/browser-capabilities';
+import { SDKUsageError } from '../../utils/errors';
 import { FormHandler } from '../../utils/form-handler';
 import { getPasskeyCredentials } from '../../utils/passkeys';
 
@@ -54,7 +55,15 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
       state: this.transaction.state,
       telemetry: [LoginId.screenIdentifier, 'login'],
     };
-    const browserCapabilities = await getBrowserCapabilities()
+
+    if (!payload) {
+      throw new SDKUsageError(Errors.LOGIN_MISSING_OPTIONS);
+    }
+    if (!payload.username) {
+      throw new SDKUsageError(Errors.LOGIN_USERNAME_REQUIRED);
+    }
+
+    const browserCapabilities = await getBrowserCapabilities();
     await new FormHandler(options).submitData<LoginOptions>({
       ...payload,
       ...browserCapabilities
@@ -144,3 +153,4 @@ export {
 };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';
+export * from '../../utils/errors'
