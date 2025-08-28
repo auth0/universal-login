@@ -1,14 +1,18 @@
 # MFA Push Polling Utility
 
-This utility provides robust polling for MFA push notifications in applications. It ensures a push request is sent immediately and then at a specified interval, until the polling is cancelled (e.g., on component unmount or dependency change).
+This utility provides robust polling for MFA push notifications in applications. It sends a POST request to your backend endpoint at a specified interval, including the `rememberDevice` value, and continues until the polling is cancelled or the condition is met.
 
 ## Function
 
-### `startMfaPushPolling(intervalMs, transaction, rememberDevice)`
+### `startMfaPushPolling(options)`
 
+**Options:**
 - **intervalMs**: `number` — The polling interval in milliseconds (e.g., `5000` for 5 seconds).
-- **transaction**: `MfaPushChallengePush` — An instance of your MFA push transaction.
-- **rememberDevice**: `boolean` — Whether to set the `rememberDevice` flag on each push.
+- **url**: `string` — The endpoint URL to poll for MFA push status.
+- **rememberDevice**: `boolean` — Whether to include the `rememberDevice` flag in the POST body.
+- **condition**: `(body: Record<string, unknown>) => boolean` — A function to determine if polling should stop (default: checks for `body.completed`).
+- **onResult**: `() => void` — Called when the condition is met.
+- **onError**: `(error: { status: number; responseText: string }) => void` — Called on error responses.
 
 **Returns:**
 - A cancel function. Call this to stop polling (e.g., in a React effect cleanup).
@@ -16,36 +20,38 @@ This utility provides robust polling for MFA push notifications in applications.
 ## Usage in React
 
 ```tsx
-import React, { useEffect, useRef, useState, useMemo } from 'react';
-import MfaPushChallengePush from '@auth0/auth0-acul-js/mfa-push-challenge-push';
+import React, { useEffect, useRef, useState } from 'react';
 import { startMfaPushPolling } from '@auth0/auth0-acul-js';
 
 const MyComponent = () => {
   const [rememberDevice, setRememberDevice] = useState(false);
   const [pollInterval] = useState(5000); // 5 seconds
-  const mfaPushChallengePush = useMemo(() => new MfaPushChallengePush(), []);
   const pollerRef = useRef<null | (() => void)>(null);
 
   useEffect(() => {
     if (pollerRef.current) pollerRef.current(); // Cancel previous poller
-    pollerRef.current = startMfaPushPolling(
-      pollInterval,
-      mfaPushChallengePush,
-      rememberDevice
-    );
+    pollerRef.current = startMfaPushPolling({
+      intervalMs: pollInterval,
+      url: '/your/mfa/push/status/endpoint',
+      rememberDevice,
+      condition: (body) => !!body.completed,
+      onResult: () => { /* handle approval, e.g. submit form */ },
+      onError: (err) => { /* handle error */ }
+    });
     return () => {
       if (pollerRef.current) pollerRef.current();
     };
-  }, [pollInterval, mfaPushChallengePush, rememberDevice]);
+  }, [pollInterval, rememberDevice]);
 
   // ...rest of your component
 };
 ```
 
 ## How It Works
-- Sends the first push immediately.
-- Resends the push after every `intervalMs` milliseconds.
-- Stops polling when the cancel function is called (e.g., on unmount or dependency change).
+- Sends a POST request with `{ action: 'CONTINUE', rememberDevice }` at every interval.
+- Checks the response using the `condition` function.
+- Stops polling when the condition is met or when cancelled.
+- Handles rate limiting (HTTP 429) and errors.
 - Only one poller runs per component instance (using a React ref).
 
 ## Best Practices
@@ -54,4 +60,4 @@ const MyComponent = () => {
 - Pass the latest `rememberDevice` value as a dependency to the effect.
 
 ## Example
-See `src/screens/mfa-push-challenge-push/index.tsx` for a full implementation example.
+See `src/helpers/startMfaPushPolling.ts` for the full implementation.

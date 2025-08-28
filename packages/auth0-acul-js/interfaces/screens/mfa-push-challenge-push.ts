@@ -59,3 +59,12 @@ export interface MfaPushChallengePushMembers extends BaseMembers {
    */
   tryAnotherMethod(payload?: CustomOptions): Promise<void>;
 }
+//Utility types
+export type StartMfaPushPollingOptions = {
+  intervalMs: number;
+  url: string;
+  rememberDevice?: boolean;
+  condition?: (body: Record<string, unknown>) => boolean;
+  onResult?: () => void;
+  onError?: (error: { status: number; responseText: string }) => void;
+};

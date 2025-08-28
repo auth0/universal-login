@@ -131,3 +131,4 @@ export {
 };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';
+export { startMfaPushPolling } from '../../helpers/startMfaPushPolling.js';

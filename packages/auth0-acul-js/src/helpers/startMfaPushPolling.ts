@@ -1,58 +1,75 @@
-import type MfaPushChallengePush from '../screens/mfa-push-challenge-push';
-
-type StartMfaPushPollingOptions = {
-  intervalMs: number;
-  transaction: MfaPushChallengePush;
-  rememberDevice?: boolean;
-  onResult?: (result: unknown) => void;
-  onError?: (error: unknown) => void;
-};
+import type { StartMfaPushPollingOptions } from '../../interfaces/screens/mfa-push-challenge-push';
 
 /**
- * Starts polling for MFA push challenge approval.
- * Sends the initial push, then polls at the given interval using transaction.continue.
- * Calls onResult when approved, onError on error.
+ * Polls the MFA push challenge endpoint using XHR POST.
+ * Sends { action: 'CONTINUE', rememberDevice } as the body.
+ * Calls onResult when the condition is met, onError otherwise.
  * Returns a cancel function.
  */
 export function startMfaPushPolling({
   intervalMs,
-  transaction,
+  url,
   rememberDevice = false,
+  condition = (body: Record<string, unknown>): boolean => Boolean((body as { completed?: boolean }).completed),
   onResult,
   onError,
 }: StartMfaPushPollingOptions): () => void {
   let cancelled = false;
-  let timer: NodeJS.Timeout | null = null;
+  let timer: ReturnType<typeof setTimeout> | null = null;
 
-  transaction.resendPushNotification({ rememberDevice })
-    .catch(err => {
-      if (onError) onError(err);
-    });
-
-  type MfaPushPollingResult = {
-    approved: boolean;
-    [key: string]: unknown;
-  };
-
-  const poll = async (): Promise<void> => {
+  function internalPoll(): void {
     if (cancelled) return;
-    try {
-      const payload = { action: 'CONTINUE', ...(rememberDevice ? { rememberDevice: true } : {}) };
-      const result = await transaction.continue(payload) as unknown as MfaPushPollingResult;
-      if (result.approved) {
-        if (onResult) onResult(result);
-        cancel();
-      }
-    } catch (err) {
-      if (onError) onError(err);
-    }
-  };
 
-  timer = setInterval(poll, intervalMs);
+    // Pause polling if document is hidden
+    if (typeof document !== 'undefined' && document.hidden) {
+      timer = setTimeout(internalPoll, intervalMs);
+      return;
+    }
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', url);
+    xhr.setRequestHeader('Accept', 'application/json');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onload = function (): void {
+      if (cancelled) return;
+      if (xhr.status === 200) {
+        let body: Record<string, unknown> | string;
+        try {
+          body =
+            xhr.getResponseHeader('Content-Type')?.split(';')[0] === 'application/json'
+              ? (JSON.parse(xhr.responseText) as Record<string, unknown>)
+              : xhr.responseText;
+        } catch {
+          body = xhr.responseText;
+        }
+        if (typeof body === 'object' && body !== null && condition(body)) {
+          if (onResult) onResult();
+          return;
+        }
+        timer = setTimeout(internalPoll, intervalMs);
+        return;
+      }
+      if (xhr.status === 429) {
+        const end = Number.parseInt(xhr.getResponseHeader('X-RateLimit-Reset') || '0') * 1000;
+        const wait = end - new Date().getTime();
+        timer = setTimeout(internalPoll, wait > intervalMs ? wait : intervalMs);
+        return;
+      }
+      if (onError) onError({ status: xhr.status, responseText: xhr.responseText });
+    };
+    xhr.onerror = function (): void {
+      if (cancelled) return;
+      if (onError) onError({ status: xhr.status, responseText: xhr.responseText });
+    };
+    // Send the POST body with action and rememberDevice
+    xhr.send(JSON.stringify({ action: 'CONTINUE', rememberDevice }));
+  }
+
+  timer = setTimeout(internalPoll, intervalMs);
 
   function cancel(): void {
     cancelled = true;
-    if (timer) clearInterval(timer);
+    if (timer) clearTimeout(timer);
   }
 
   return cancel;
