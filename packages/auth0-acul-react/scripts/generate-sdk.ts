@@ -216,7 +216,7 @@ export const useErrors = (): TransactionError[] | null => {
 fs.writeFileSync(COMMON_HOOKS_PATH, commonHooksContent, 'utf8');
 console.log('✅ Common hooks generated in common-hooks.tsx');
 
-const sharedHooks = `import { type BaseMembers } from "../../../auth0-acul-js/dist/types/interfaces/models/base-context";
+const sharedHooks = `import { type BaseMembers } from "@auth0/auth0-acul-js";
 
 // AUTO-GENERATED FILE - DO NOT EDIT
 export class ContextHooks<T extends BaseMembers> {
