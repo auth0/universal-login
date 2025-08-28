@@ -468,6 +468,12 @@ for (const file of screenFiles) {
     functionLines.push('}\n');
   }
 }
+  functionLines.push(`import { useCurrentScreen as use_currentScreen, useAuth0Themes as use_Auth0Themes, useErrors as use_Errors } from '../src/hooks/common-hooks';`);
+  functionLines.push(`export namespace CommonHooks {
+    export const useCurrentScreen = use_currentScreen;
+    export const useAuth0Themes = use_Auth0Themes;
+    export const useErrors = use_Errors;
+  }\n`);
 
 const screenFilesForInterfaces = fs.readdirSync(SCREENS_OUTPUT_PATH).filter(f => f.endsWith('.tsx'));
 const INTERFACES_OUTPUT_PATH = path.resolve(__dirname, '../src/interfaces');
