@@ -374,6 +374,6 @@
     "eslint-plugin-react": "^7.37.5"
   },
   "dependencies": {
-    "@auth0/auth0-acul-js": "^0.1.0-beta.7"
+    "@auth0/auth0-acul-js": "^0.1.0-beta.8"
   }
 }
