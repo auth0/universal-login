@@ -1,6 +1,6 @@
 import type { IdentifierType } from '../../src/constants';
 import type { BaseContext, BaseMembers } from '../models/base-context';
-import type { ScreenContext, ScreenMembers } from '../models/screen';
+import type { Identifier, ScreenContext, ScreenMembers } from '../models/screen';
 import type { TransactionMembers, UsernamePolicy } from '../models/transaction';
 import type { UntrustedDataContext } from '../models/untrusted-data';
 interface ExtendedScreenContext extends ScreenContext {
@@ -52,4 +52,5 @@ export interface SignupIdMembers extends BaseMembers {
   transaction: TransactionMembersOnSignupId;
   signup(payload: SignupOptions): Promise<void>;
   federatedSignup(payload: FederatedSignupOptions): Promise<void>;
+  getEnabledIdentifiers(): Identifier[] | null;
 }

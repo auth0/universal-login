@@ -1,6 +1,29 @@
 import type { PasswordValidationResult } from '../../interfaces/models/screen';
 import type { PasswordPolicy, Error, PasswordComplexityRule } from '../../interfaces/models/transaction';
 
+/**
+ * Validates a password string against the given password policy.
+ *
+ * Checks for minimum length, character complexity (lowercase, uppercase,
+ * numbers, special characters), identical consecutive characters, and 
+ * other custom rules defined in the policy.
+ *
+ * @param password - The password string to validate.
+ * @param policy - Optional password policy specifying complexity requirements.
+ * @returns An object with isValid boolean and an array of error details.
+ *
+ * @example
+ * const policy = {
+ *   minLength: 8,
+ *   passwordSecurityInfo: [
+ *     { code: 'password-policy-length-at-least', label: 'Password must be at least 8 characters.', args: { count: 8 } },
+ *     { code: 'password-policy-upper-case', label: 'Password must contain uppercase letters.' },
+ *     { code: 'password-policy-numbers', label: 'Password must contain numbers.' }
+ *   ]
+ * };
+ * const result = validatePassword('P@ssw0rd', policy);
+ * // result.isValid === true
+ */
 function validatePassword(
   password: string,
   policy?: PasswordPolicy | null

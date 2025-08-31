@@ -1,5 +1,5 @@
 import { ScreenIds, FormActions } from '../../constants';
-import getIdentifierFn from '../../helpers/getIdentifier';
+import coreGetIdentifier from '../../helpers/getEnabledIdentifiers';
 import coreValidatePassword from '../../helpers/validatePassword';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
@@ -7,7 +7,7 @@ import { FormHandler } from '../../utils/form-handler';
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
 
-
+import type { Identifier } from '../../../interfaces/models/screen';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { PasswordValidationResult } from '../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../interfaces/models/transaction';
@@ -19,7 +19,6 @@ import type {
   TransactionMembersOnSignup as TransactionOptions,
 } from '../../../interfaces/screens/signup';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import type {Identifier} from '../../helpers/getIdentifier';
 
 export default class Signup extends BaseContext implements SignupMembers {
   static screenIdentifier: string = ScreenIds.SIGNUP;
@@ -104,13 +103,43 @@ export default class Signup extends BaseContext implements SignupMembers {
     });
   }
 
+  /**
+   * Validates a given password against the current password policy
+   * defined in the transaction context.
+   *
+   * @param password - The password string to validate.
+   * @returns Result object indicating whether the password is valid and why.
+   *
+   * @example
+   * const signup = new Signup();
+   * const result = signup.validatePassword('MyP@ssw0rd');
+   * // result => { valid: true, errors: [] }
+   */
   validatePassword(password: string): PasswordValidationResult {
     const passwordPolicy = this.transaction?.passwordPolicy;
     return coreValidatePassword(password, passwordPolicy);
   }
+
+  /**
+   * Returns the list of enabled identifiers for the signup form,
+   * marking each as required or optional based on transaction config.
+   *
+   * @returns Array of identifier objects (e.g., email, phone, username).
+   *
+   * @example
+   * const signup = new Signup();
+   * const identifiers = signup.getEnabledIdentifiers();
+   * // [{ type: 'email', required: true }, { type: 'username', required: false }]
+   */
+  getEnabledIdentifiers(): Identifier[] | null { 
+    const transaction = {
+      ...this.transaction,
+      errors: this.transaction.errors ?? undefined, // convert `null` to `undefined`
+    };
+    return coreGetIdentifier(transaction.requiredIdentifiers ?? [], transaction.optionalIdentifiers ?? [], transaction.connectionStrategy);
+  } 
 }
 
 export { PasswordValidationResult, Identifier, SignupMembers, SignupOptions, ScreenOptions as ScreenMembersOnSignup, TransactionOptions as TransactionMembersOnSignup, FederatedSignupOptions };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';
-export const getIdentifier = getIdentifierFn;
