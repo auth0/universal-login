@@ -2,18 +2,17 @@ import type { StartMfaPushPollingOptions } from '../../interfaces/screens/mfa-pu
 
 /**
  * Polls the MFA push challenge endpoint using XHR POST.
- * Sends { action: 'CONTINUE', rememberDevice } as the body.
+ * Sends { action: 'CONTINUE' } as the body.
  * Calls onResult when the condition is met, onError otherwise.
  * Returns a cancel function.
  */
 export function startMfaPushPolling({
   intervalMs,
   url,
-  rememberDevice = false,
   condition = (body: Record<string, unknown>): boolean => Boolean((body as { completed?: boolean }).completed),
   onResult,
   onError,
-}: StartMfaPushPollingOptions): () => void {
+}: Omit<StartMfaPushPollingOptions, 'rememberDevice'>): () => void {
   let cancelled = false;
   let timer: ReturnType<typeof setTimeout> | null = null;
 
@@ -61,8 +60,8 @@ export function startMfaPushPolling({
       if (cancelled) return;
       if (onError) onError({ status: xhr.status, responseText: xhr.responseText });
     };
-    // Send the POST body with action and rememberDevice
-    xhr.send(JSON.stringify({ action: 'CONTINUE', rememberDevice }));
+    // Send the POST body with only action
+    xhr.send(JSON.stringify({ action: 'CONTINUE' }));
   }
 
   timer = setTimeout(internalPoll, intervalMs);
