@@ -1,3 +1,4 @@
+export type { BaseMembers } from '../models/base-context';
 export type { ClientMembers } from '../models/client';
 export type { BrandingMembers } from '../models/branding';
 export type { PromptMembers } from '../models/prompt';

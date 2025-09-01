@@ -11,9 +11,9 @@ const DOCS_INDEX_PATH = path.join(CORE_SDK_PATH, 'docs', 'index.json');
 
 const SCREENS_OUTPUT_PATH = path.resolve(__dirname, '../src/screens');
 const HOOKS_FOLDER = path.resolve(__dirname, '../src/hooks');
-const CONTEXT_HOOKS_PATH = path.resolve(HOOKS_FOLDER, 'context-hooks.tsx');
-const UTILITY_HOOKS_PATH = path.resolve(HOOKS_FOLDER, 'utility-hooks.tsx');
-const COMMON_HOOKS_PATH = path.resolve(HOOKS_FOLDER, 'common-hooks.tsx');
+const CONTEXT_HOOKS_PATH = path.resolve(HOOKS_FOLDER, 'context-hooks/index.tsx');
+const UTILITY_HOOKS_PATH = path.resolve(HOOKS_FOLDER, 'utility-hooks/index.tsx');
+const COMMON_HOOKS_PATH = path.resolve(HOOKS_FOLDER, 'common-hooks/index.tsx');
 const INDEX_FILE_PATH = path.resolve(__dirname, '../src/index.ts');
 const PACKAGE_JSON_PATH = path.resolve(__dirname, '../package.json');
 const EXAMPLES_PATH = path.resolve(__dirname, '../examples');
@@ -22,6 +22,10 @@ const CONTEXT_MODELS = [
   'user', 'tenant', 'branding', 'client', 'organization',
   'prompt', 'screen', 'transaction', 'untrustedData'
 ];
+
+// Types for exported method discovery
+type ExportedMethodParam = { name: string; type: string; isOptional: boolean };
+type ExportedMethod = { name: string; params: ExportedMethodParam[] };
 
 function toKebabCase(str: string): string {
   // Handle special cases: WebAuthn and OTP acronyms
@@ -170,6 +174,9 @@ const VALID_TYPEDOC_EXPORTS = collectTypedocExports();
 
 fs.mkdirSync(SCREENS_OUTPUT_PATH, { recursive: true });
 fs.mkdirSync(HOOKS_FOLDER, { recursive: true });
+fs.mkdirSync(path.dirname(UTILITY_HOOKS_PATH), { recursive: true });
+fs.mkdirSync(path.dirname(COMMON_HOOKS_PATH), { recursive: true });
+fs.mkdirSync(path.dirname(CONTEXT_HOOKS_PATH), { recursive: true });
 fs.mkdirSync(EXAMPLES_PATH, { recursive: true });
 fs.writeFileSync(UTILITY_HOOKS_PATH, '// Manual utility hooks go here\n', 'utf8');
 fs.writeFileSync(COMMON_HOOKS_PATH, '// Manual common hooks go here\n', 'utf8');
@@ -212,7 +219,7 @@ export const useErrors = (): TransactionError[] | null => {
 fs.writeFileSync(COMMON_HOOKS_PATH, commonHooksContent, 'utf8');
 console.log('✅ Common hooks generated in common-hooks.tsx');
 
-const sharedHooks = `import { type BaseMembers } from "../../../auth0-acul-js/dist/types/interfaces/models/base-context";
+const sharedHooks = `import { type BaseMembers } from "@auth0/auth0-acul-js";
 
 // AUTO-GENERATED FILE - DO NOT EDIT
 export class ContextHooks<T extends BaseMembers> {
@@ -278,7 +285,7 @@ for (const symbol of screenSymbols) {
   const ifaceFile = project.getSourceFile(path.join(CORE_SDK_PATH, `interfaces/screens/${kebab}.ts`));
   const typedInterfaces = new Set<string>();
   const allExportedInterfaces = new Set<string>();
-  const exportedMethods = new Set<string>();
+  const exportedMethods: ExportedMethod[] = [];
 
   if (ifaceFile) {
     for (const [name, decls] of ifaceFile.getExportedDeclarations()) {
@@ -290,7 +297,17 @@ for (const symbol of screenSymbols) {
             d.getMembers()
               .filter(member => member.getKind() === SyntaxKind.MethodSignature)
               .forEach(method => {
-                exportedMethods.add(method.getSymbol()?.getName() || '');
+                const methodSignature = method.asKindOrThrow(SyntaxKind.MethodSignature);
+                const methodName = methodSignature.getName();
+                const params = methodSignature.getParameters().map(p => {
+                  const paramType = p.getTypeNode()?.getText() || p.getType().getText(p);
+                  return {
+                    name: p.getName(),
+                    type: paramType,
+                    isOptional: p.isOptional(),
+                  } as ExportedMethodParam;
+                });
+                exportedMethods.push({ name: methodName, params });
               });
           }
         }
@@ -313,6 +330,21 @@ for (const symbol of screenSymbols) {
   screenLines.push(`import { ContextHooks } from '../hooks/context-hooks';\n`);
 
   usedInterfaces.add(baseInterface);
+  
+  // Extract type identifiers from method parameters for imports
+  // Transform "LoginOptions | undefined" → ["LoginOptions"], "Promise<T>" → ["Promise", "T"], etc.
+  const PRIMITIVES = new Set(['any', 'string', 'number', 'boolean', 'undefined', 'void', 'null']);
+  
+  exportedMethods.forEach(m => m.params.forEach(p => {
+    const typeTokens = p.type
+      .replace(/\[\]/g, '')                    // Remove arrays: Type[] → Type
+      .replace(/[<>|&]/g, ',')                 // Split on: generics, unions, intersections
+      .split(',')                              // Split into tokens
+      .map(t => t.trim())                      // Clean whitespace
+      .filter(t => t && !PRIMITIVES.has(t) && !t.startsWith('{')); // Keep only importable types
+    
+    typeTokens.forEach(t => usedInterfaces.add(t));
+  }));
 
   // Lazy singleton instance
   screenLines.push(`let instance: ${baseInterface} | null = null;`);
@@ -347,11 +379,13 @@ for (const symbol of screenSymbols) {
     }
   }
 
-  if (exportedMethods.size) {
+  if (exportedMethods.length) {
     screenLines.push(`\n// Screen methods`);
-    for (const method of Array.from(exportedMethods)) {
-      const safe = getSafeMethodName(method);
-      screenLines.push(`export const ${safe} = (args: any) => getInstance().${method}(args);`);
+    for (const method of exportedMethods) {
+      const safe = getSafeMethodName(method.name);
+      const args = method.params.map(p => `${p.name}${p.isOptional ? '?' : ''}: ${p.type}`).join(', ');
+      const argNames = method.params.map(p => p.name).join(', ');
+      screenLines.push(`export const ${safe} = (${args}) => getInstance().${method.name}(${argNames});`);
     }
   }
 
@@ -437,6 +471,12 @@ for (const file of screenFiles) {
     functionLines.push('}\n');
   }
 }
+  functionLines.push(`import { useCurrentScreen as use_currentScreen, useAuth0Themes as use_Auth0Themes, useErrors as use_Errors } from '../src/hooks/common-hooks';`);
+  functionLines.push(`export namespace CommonHooks {
+    export const useCurrentScreen = use_currentScreen;
+    export const useAuth0Themes = use_Auth0Themes;
+    export const useErrors = use_Errors;
+  }\n`);
 
 const screenFilesForInterfaces = fs.readdirSync(SCREENS_OUTPUT_PATH).filter(f => f.endsWith('.tsx'));
 const INTERFACES_OUTPUT_PATH = path.resolve(__dirname, '../src/interfaces');
