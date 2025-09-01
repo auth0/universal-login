@@ -11,10 +11,11 @@
     "generate:examples": "tsx ./scripts/generate-examples.ts",
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
-    "docs": "typedoc --options typedoc.js"
+    "docs": "typedoc --options typedoc.js",
+    "prebuild": "npm run build --prefix ../auth0-acul-js"
   },
   "peerDependencies": {
-    "react": "^18.0.0"
+    "react": "^18.3.1"
   },
   "exports": {
     ".": {
@@ -329,10 +330,10 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^6.0.0",
     "@testing-library/react": "^14.0.0",
-    "@types/react": "^18.0.0",
+    "@types/react": "^18.3.24",
     "eslint-plugin-react": "^7.37.5"
   },
   "dependencies": {
-    "@auth0/auth0-acul-js": "^0.1.0-beta.7"
+    "@auth0/auth0-acul-js": "^0.1.0-beta.8"
   }
 }

@@ -1,4 +1,4 @@
-import { ScreenIds } from '../../constants';
+import { ScreenIds, FormActions } from '../../constants';
 import coreGetIdentifier from '../../helpers/getEnabledIdentifiers';
 import { BaseContext } from '../../models/base-context';
 import { getBrowserCapabilities } from '../../utils/browser-capabilities';
@@ -125,6 +125,24 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
       errors: this.transaction.errors ?? undefined, // convert `null` to `undefined`
     };
     return coreGetIdentifier(transaction.requiredIdentifiers ?? [], transaction.optionalIdentifiers ?? [], transaction.connectionStrategy);
+  }
+  
+  /**
+   * @example
+   * import SignupId from "@auth0/auth0-acul-js/signup-id";
+   * const signupIdManager = new SignupId();
+   *
+   * signupIdManager.pickCountryCode();
+   */
+  async pickCountryCode(): Promise<void> {
+    const options: FormOptions = {
+      state: this.transaction.state,
+      telemetry: [SignupId.screenIdentifier, 'pickCountryCode'],
+    };
+
+    await new FormHandler(options).submitData({
+      action: FormActions.PICK_COUNTRY_CODE,
+    });
   }
 }
 
