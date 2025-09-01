@@ -1,4 +1,5 @@
 import { ScreenIds, FormActions } from '../../constants';
+import coreGetIdentifier from '../../helpers/getEnabledIdentifiers';
 import { BaseContext } from '../../models/base-context';
 import { getBrowserCapabilities } from '../../utils/browser-capabilities';
 import { FormHandler } from '../../utils/form-handler';
@@ -6,6 +7,7 @@ import { FormHandler } from '../../utils/form-handler';
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
 
+import type { Identifier } from '../../../interfaces/models/screen';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type {
@@ -107,6 +109,25 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
   }
 
   /**
+   * Returns the list of enabled identifiers for the signup-id form,
+   * marking each as required or optional based on transaction config.
+   *
+   * @returns Array of identifier objects (e.g., email, phone, username).
+   *
+   * @example
+   * const signupId = new SignupId();
+   * const identifiers = signupId.getEnabledIdentifiers();
+   * // [{ type: 'email', required: true }, { type: 'username', required: false }]
+   */
+  getEnabledIdentifiers(): Identifier[] | null {
+    const transaction = {
+      ...this.transaction,
+      errors: this.transaction.errors ?? undefined, // convert `null` to `undefined`
+    };
+    return coreGetIdentifier(transaction.requiredIdentifiers ?? [], transaction.optionalIdentifiers ?? [], transaction.connectionStrategy);
+  }
+  
+  /**
    * @example
    * import SignupId from "@auth0/auth0-acul-js/signup-id";
    * const signupIdManager = new SignupId();
@@ -127,6 +148,7 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
 
 export {
   SignupIdMembers,
+  Identifier,
   SignupOptions,
   FederatedSignupOptions,
   ScreenOptions as ScreenMembersOnSignupId,

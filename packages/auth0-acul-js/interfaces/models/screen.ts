@@ -1,3 +1,4 @@
+import type { Error } from "./transaction";
 export interface CaptchaContext {
   provider: string;
   image?: string;
@@ -77,3 +78,16 @@ export interface ScreenMembers {
   texts: Record<string, string> | null;
   captcha: CaptchaContext | null;
 }
+
+//types and interfaces related to utility hooks
+export type IdentifierType = 'email' | 'phone' | 'username';
+
+export interface Identifier {
+  type: IdentifierType;
+  required: boolean;
+}
+
+export type PasswordValidationResult = {
+  isValid: boolean;
+  errors: Error[];
+};
