@@ -10,11 +10,11 @@ import type { StartMfaPushPollingOptions } from '../../interfaces/screens/mfa-pu
  * - Calls `onError` if a non-200/429 response is received.
  * - Returns a cancel function to stop polling.
  * 
- * @param options.intervalMs - Polling interval in milliseconds.
- * @param options.url - Endpoint URL to poll (defaults to current page URL).
- * @param options.condition - Function to check if polling should stop (default: checks for `body.completed`).
- * @param options.onResult - Callback when the condition is met.
- * @param options.onError - Callback on error response.
+ * @param intervalMs - Polling interval in milliseconds.
+ * @param url - Endpoint URL to poll (defaults to current page URL).
+ * @param condition - Function to check if polling should stop (default: checks for `body.completed`).
+ * @param onResult - Callback when the condition is met.
+ * @param onError - Callback on error response.
  * @returns A cancel function to stop polling.
  */
 export function startMfaPushPolling({
@@ -91,9 +91,9 @@ export function startMfaPushPolling({
  * - Includes `action: 'continue'`, `state`, and the current value of the "Remember Device" checkbox in the payload.
  * - Reads the checkbox value from the DOM using the provided selector.
  * 
- * @param options.url - Endpoint URL to send approval (defaults to current page URL).
- * @param options.state - The MFA transaction/challenge state.
- * @param options.rememberDeviceSelector - CSS selector for the "Remember Device" checkbox.
+ * @param url - Endpoint URL to send approval (defaults to current page URL).
+ * @param state - The MFA transaction/challenge state.
+ * @param rememberDeviceSelector - CSS selector for the "Remember Device" checkbox.
  */
 export function approveMfaPush({
   url,
