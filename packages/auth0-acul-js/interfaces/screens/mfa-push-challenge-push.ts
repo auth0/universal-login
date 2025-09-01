@@ -59,7 +59,10 @@ export interface MfaPushChallengePushMembers extends BaseMembers {
    */
   tryAnotherMethod(payload?: CustomOptions): Promise<void>;
 }
-//Utility types
+
+/**
+ * Options for starting the MFA push polling
+ */
 export type StartMfaPushPollingOptions = {
   intervalMs: number;
   url: string;

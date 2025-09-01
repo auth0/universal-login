@@ -19,30 +19,36 @@ This utility provides robust polling for MFA push notifications in applications.
 ## Usage in React
 
 ```tsx
-import React, { useEffect, useRef, useState } from 'react';
-import { startMfaPushPolling } from '@auth0/auth0-acul-js';
+import { startMfaPushPolling, approveMfaPush } from '@auth0/auth0-acul-js';
 
-const MyComponent = () => {
-  const [pollInterval] = useState(5000); // 5 seconds
-  const pollerRef = useRef<null | (() => void)>(null);
+// Start polling for MFA push status
+const cancelPolling = startMfaPushPolling({
+  intervalMs: 5000,
+  url: '/api/mfa/push/status', // or omit for current page
+  condition: (body) => !!body.completed, // stop when MFA is approved
+  onResult: () => {
+    alert('MFA push approved!');
+    cancelPolling(); // stop polling
+  },
+  onError: (err) => {
+    console.error('Polling error:', err);
+    cancelPolling();
+  }
+});
 
-  useEffect(() => {
-    if (pollerRef.current) pollerRef.current(); // Cancel previous poller
-    pollerRef.current = startMfaPushPolling({
-      intervalMs: pollInterval,
-      url: '/your/mfa/push/status/endpoint',
-      condition: (body) => !!body.completed,
-      onResult: () => { /* handle approval, e.g. submit form */ },
-      onError: (err) => { /* handle error */ }
-    });
-    return () => {
-      if (pollerRef.current) pollerRef.current();
-    };
-  }, [pollInterval]);
-
-  // ...rest of your component
-};
+// When user clicks "Approve" button, send approval
+document.getElementById('approve-btn').addEventListener('click', function() {
+  approveMfaPush({
+    url: '/api/mfa/push/status', // or omit for current page
+    state: 'your-mfa-state-value', // get this from your app context
+    rememberDeviceSelector: '#remember-device-checkbox' // CSS selector for checkbox
+  });
+});
 ```
+
+**Note:**  
+- `startMfaPushPolling` will keep polling until the condition is met or cancelled.
+- `approveMfaPush` sends the user's approval to the backend, including the current state and checkbox value.
 
 ## How It Works
 - Sends a POST request with `{ action: 'CONTINUE' }` at every interval.
