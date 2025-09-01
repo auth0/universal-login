@@ -12,7 +12,7 @@
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "docs": "typedoc --options typedoc.js",
-    "prebuild": "npm run build --prefix ../auth0-acul-js"
+    "postbuild": "npm run docs"
   },
   "peerDependencies": {
     "react": "^18.3.1"
@@ -271,8 +271,8 @@
       "types": "./dist/screens/logout-complete.d.ts"
     },
     "./email-otp-challenge": {
-      "import": "./dist/hooks/email-otp-challenge.js",
-      "types": "./dist/hooks/email-otp-challenge.d.ts"
+      "import": "./dist/screens/email-otp-challenge.js",
+      "types": "./dist/screens/email-otp-challenge.d.ts"
     },
     "./email-verification-result": {
       "import": "./dist/screens/email-verification-result.js",
@@ -325,6 +325,46 @@
     "./reset-password-mfa-web-authn-roaming-challenge": {
       "import": "./dist/hooks/reset-password-mfa-web-authn-roaming-challenge.js",
       "types": "./dist/hooks/reset-password-mfa-web-authn-roaming-challenge.d.ts"
+    },
+    "./mfa-webauthn-platform-enrollment": {
+      "import": "./dist/screens/mfa-webauthn-platform-enrollment.js",
+      "types": "./dist/screens/mfa-webauthn-platform-enrollment.d.ts"
+    },
+    "./mfa-webauthn-error": {
+      "import": "./dist/screens/mfa-webauthn-error.js",
+      "types": "./dist/screens/mfa-webauthn-error.d.ts"
+    },
+    "./mfa-webauthn-not-available-error": {
+      "import": "./dist/screens/mfa-webauthn-not-available-error.js",
+      "types": "./dist/screens/mfa-webauthn-not-available-error.d.ts"
+    },
+    "./mfa-webauthn-roaming-enrollment": {
+      "import": "./dist/screens/mfa-webauthn-roaming-enrollment.js",
+      "types": "./dist/screens/mfa-webauthn-roaming-enrollment.d.ts"
+    },
+    "./mfa-webauthn-roaming-challenge": {
+      "import": "./dist/screens/mfa-webauthn-roaming-challenge.js",
+      "types": "./dist/screens/mfa-webauthn-roaming-challenge.d.ts"
+    },
+    "./mfa-webauthn-platform-challenge": {
+      "import": "./dist/screens/mfa-webauthn-platform-challenge.js",
+      "types": "./dist/screens/mfa-webauthn-platform-challenge.d.ts"
+    },
+    "./mfa-webauthn-enrollment-success": {
+      "import": "./dist/screens/mfa-webauthn-enrollment-success.js",
+      "types": "./dist/screens/mfa-webauthn-enrollment-success.d.ts"
+    },
+    "./mfa-webauthn-change-key-nickname": {
+      "import": "./dist/screens/mfa-webauthn-change-key-nickname.js",
+      "types": "./dist/screens/mfa-webauthn-change-key-nickname.d.ts"
+    },
+    "./reset-password-mfa-webauthn-platform-challenge": {
+      "import": "./dist/screens/reset-password-mfa-webauthn-platform-challenge.js",
+      "types": "./dist/screens/reset-password-mfa-webauthn-platform-challenge.d.ts"
+    },
+    "./reset-password-mfa-webauthn-roaming-challenge": {
+      "import": "./dist/screens/reset-password-mfa-webauthn-roaming-challenge.js",
+      "types": "./dist/screens/reset-password-mfa-webauthn-roaming-challenge.d.ts"
     }
   },
   "devDependencies": {
