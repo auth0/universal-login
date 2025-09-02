@@ -1,10 +1,12 @@
 import { ScreenIds } from '../../constants';
+import coreValidatePassword from '../../helpers/validatePassword';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
 
+import type { PasswordValidationResult } from '../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type {
   SignupPasswordMembers,
@@ -98,6 +100,23 @@ export default class SignupPassword extends BaseContext implements SignupPasswor
     };
 
     await new FormHandler(options).submitData<FederatedSignupOptions>(payload);
+  }
+
+  /**
+   * Validates a given password against the current password policy
+   * defined in the transaction context.
+   *
+   * @param password - The password string to validate.
+   * @returns Result object indicating whether the password is valid and why.
+   *
+   * @example
+   * const signupPassword = new SignupPassword();
+   * const result = signupPassword.validatePassword('MyP@ssw0rd');
+   * // result => { valid: true, errors: [] }
+   */
+  validatePassword(password: string): PasswordValidationResult {
+    const passwordPolicy = this.transaction?.passwordPolicy;
+    return coreValidatePassword(password, passwordPolicy);
   }
 }
 
