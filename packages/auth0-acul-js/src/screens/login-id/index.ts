@@ -133,6 +133,20 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
       action: FormActions.PICK_COUNTRY_CODE,
     });
   }
+
+  /**
+   * Gets the active identifier types for the login screen
+   * @returns An array of active identifier types or null if none are active
+   * @example
+   * ```typescript
+   * import LoginId from "@auth0/auth0-acul-js/login";
+   * const loginIdManager = new LoginId();
+   * loginIdManager.getActiveIdentifiers();
+   * ```
+   */
+  getActiveIdentifiers(): string[] | null {
+    return this.transaction.allowedIdentifiers;
+  }
 }
 
 export {
