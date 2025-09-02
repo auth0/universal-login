@@ -14,7 +14,7 @@ export type { LoginMembers } from '../screens/login';
 export type { SignupMembers } from '../screens/signup';
 export type { ResetPasswordEmailMembers } from '../screens/reset-password-email';
 export type { ResetPasswordRequestMembers } from '../screens/reset-password-request';
-export type { ResetPasswordMembers } from '../screens/reset-password';
+export type { ResetPasswordMembers, TransactionMembersOnResetPassword } from '../screens/reset-password';
 export type { ResetPasswordErrorMembers } from '../screens/reset-password-error';
 export type { ResetPasswordSuccessMembers } from '../screens/reset-password-success';
 export type { ResetPasswordMfaPushChallengePushMembers } from '../screens/reset-password-mfa-push-challenge-push';
