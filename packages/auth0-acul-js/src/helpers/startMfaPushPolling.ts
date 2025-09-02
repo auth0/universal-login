@@ -17,7 +17,7 @@ import type { StartMfaPushPollingOptions } from '../../interfaces/screens/mfa-pu
  * @param onError - Callback on error response.
  * @returns A cancel function to stop polling.
  */
-export function startMfaPushPolling({
+export function mfaPushPolling({
   intervalMs,
   url,
   condition = (body: Record<string, unknown>): boolean => Boolean((body as { completed?: boolean }).completed),
@@ -82,37 +82,4 @@ export function startMfaPushPolling({
   }
 
   return cancel;
-}
-
-/**
- * Sends an approval for the MFA push challenge using XHR POST.
- * 
- * - Sends a POST request to the given URL (or current page URL if not provided).
- * - Includes `action: 'continue'`, `state`, and the current value of the "Remember Device" checkbox in the payload.
- * - Reads the checkbox value from the DOM using the provided selector.
- * 
- * @param url - Endpoint URL to send approval (defaults to current page URL).
- * @param state - The MFA transaction/challenge state.
- * @param rememberDeviceSelector - CSS selector for the "Remember Device" checkbox.
- */
-export function approveMfaPush({
-  url,
-  state,
-  rememberDeviceSelector,
-}: {
-  url?: string;
-  state: string;
-  rememberDeviceSelector?: string;
-}): void {
-  const postUrl = url || (typeof window !== 'undefined' ? window.location.href : '');
-  let rememberDevice = false;
-  if (rememberDeviceSelector && typeof document !== 'undefined') {
-    const el = document.querySelector<HTMLInputElement>(rememberDeviceSelector);
-    rememberDevice = !!el?.checked;
-  }
-  const xhr = new XMLHttpRequest();
-  xhr.open('POST', postUrl);
-  xhr.setRequestHeader('Accept', 'application/json');
-  xhr.setRequestHeader('Content-Type', 'application/json');
-  xhr.send(JSON.stringify({ action: 'continue', state, rememberDevice }));
 }

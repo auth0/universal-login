@@ -1,4 +1,5 @@
 import { ScreenIds, FormActions } from '../../constants';
+import { mfaPushPolling }  from '../../helpers/startMfaPushPolling.js';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
@@ -121,6 +122,18 @@ export default class MfaPushChallengePush extends BaseContext implements MfaPush
       action: FormActions.PICK_AUTHENTICATOR,
     });
   }
+
+  startMfaPushPolling(intervalMs: number, rememberDeviceSelector?: string): void | (() => void) {
+    const condition = (body: Record<string, unknown>): boolean => Boolean((body as { completed?: boolean }).completed);
+    return mfaPushPolling({
+      intervalMs,
+      url: window.location.href,
+      condition,
+      onResult: () => {
+        return this.continue({ rememberDevice: rememberDeviceSelector ? Boolean(document.querySelector<HTMLInputElement>(rememberDeviceSelector)?.checked) : false });
+      },
+    });
+  }
 }
 
 export {
@@ -131,4 +144,3 @@ export {
 };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';
-export { startMfaPushPolling, approveMfaPush } from '../../helpers/startMfaPushPolling.js';

@@ -58,6 +58,13 @@ export interface MfaPushChallengePushMembers extends BaseMembers {
    * @param payload Optional custom options to include with the request
    */
   tryAnotherMethod(payload?: CustomOptions): Promise<void>;
+
+   /**
+   * Allows polling for the push notification challenge to be approved.
+   * @param intervalMs Polling interval in milliseconds
+   * @param rememberDeviceSelector CSS selector for the remember device checkbox
+   */
+  startMfaPushPolling(intervalMs: number, rememberDeviceSelector?: string): void;
 }
 
 /**
