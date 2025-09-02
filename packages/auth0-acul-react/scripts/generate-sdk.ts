@@ -11,9 +11,9 @@ const DOCS_INDEX_PATH = path.join(CORE_SDK_PATH, 'docs', 'index.json');
 
 const SCREENS_OUTPUT_PATH = path.resolve(__dirname, '../src/screens');
 const HOOKS_FOLDER = path.resolve(__dirname, '../src/hooks');
-const CONTEXT_HOOKS_PATH = path.resolve(HOOKS_FOLDER, 'context-hooks.tsx');
-const UTILITY_HOOKS_PATH = path.resolve(HOOKS_FOLDER, 'utility-hooks.tsx');
-const COMMON_HOOKS_PATH = path.resolve(HOOKS_FOLDER, 'common-hooks.tsx');
+const CONTEXT_HOOKS_PATH = path.resolve(HOOKS_FOLDER, 'context-hooks/index.tsx');
+const UTILITY_HOOKS_PATH = path.resolve(HOOKS_FOLDER, 'utility-hooks/index.tsx');
+const COMMON_HOOKS_PATH = path.resolve(HOOKS_FOLDER, 'common-hooks/index.tsx');
 const INDEX_FILE_PATH = path.resolve(__dirname, '../src/index.ts');
 const PACKAGE_JSON_PATH = path.resolve(__dirname, '../package.json');
 const EXAMPLES_PATH = path.resolve(__dirname, '../examples');
@@ -174,6 +174,9 @@ const VALID_TYPEDOC_EXPORTS = collectTypedocExports();
 
 fs.mkdirSync(SCREENS_OUTPUT_PATH, { recursive: true });
 fs.mkdirSync(HOOKS_FOLDER, { recursive: true });
+fs.mkdirSync(path.dirname(UTILITY_HOOKS_PATH), { recursive: true });
+fs.mkdirSync(path.dirname(COMMON_HOOKS_PATH), { recursive: true });
+fs.mkdirSync(path.dirname(CONTEXT_HOOKS_PATH), { recursive: true });
 fs.mkdirSync(EXAMPLES_PATH, { recursive: true });
 fs.writeFileSync(UTILITY_HOOKS_PATH, '// Manual utility hooks go here\n', 'utf8');
 fs.writeFileSync(COMMON_HOOKS_PATH, '// Manual common hooks go here\n', 'utf8');
@@ -216,7 +219,7 @@ export const useErrors = (): TransactionError[] | null => {
 fs.writeFileSync(COMMON_HOOKS_PATH, commonHooksContent, 'utf8');
 console.log('✅ Common hooks generated in common-hooks.tsx');
 
-const sharedHooks = `import { type BaseMembers } from "../../../auth0-acul-js/dist/types/interfaces/models/base-context";
+const sharedHooks = `import { type BaseMembers } from "@auth0/auth0-acul-js";
 
 // AUTO-GENERATED FILE - DO NOT EDIT
 export class ContextHooks<T extends BaseMembers> {
@@ -428,7 +431,7 @@ fs.writeFileSync(
   'utf8'
 );
 
-const FUNCTIONS_TS_PATH = path.resolve(__dirname, '../src/functions.ts');
+const FUNCTIONS_TS_PATH = path.resolve(__dirname, '../src/classes.ts');
 const INTERFACES_TS_PATH = path.resolve(__dirname, '../src/interfaces.ts');
 const EXPORT_TS_PATH = path.resolve(__dirname, '../src/export.ts');
 
@@ -468,6 +471,12 @@ for (const file of screenFiles) {
     functionLines.push('}\n');
   }
 }
+  functionLines.push(`import { useCurrentScreen as use_currentScreen, useAuth0Themes as use_Auth0Themes, useErrors as use_Errors } from '../src/hooks/common-hooks';`);
+  functionLines.push(`export namespace CommonHooks {
+    export const useCurrentScreen = use_currentScreen;
+    export const useAuth0Themes = use_Auth0Themes;
+    export const useErrors = use_Errors;
+  }\n`);
 
 const screenFilesForInterfaces = fs.readdirSync(SCREENS_OUTPUT_PATH).filter(f => f.endsWith('.tsx'));
 const INTERFACES_OUTPUT_PATH = path.resolve(__dirname, '../src/interfaces');
@@ -515,7 +524,7 @@ fs.writeFileSync(
 );
 
 const exportLines: string[] = [];
-exportLines.push(`export * as Functions from './functions';`);
+exportLines.push(`export * as Classes from './classes';`);
 exportLines.push(`export * as Interfaces from './interfaces';`);
 fs.writeFileSync(EXPORT_TS_PATH, exportLines.join('\n'), 'utf8');
 
