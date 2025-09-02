@@ -62,9 +62,9 @@ export interface MfaPushChallengePushMembers extends BaseMembers {
    /**
    * Allows polling for the push notification challenge to be approved.
    * @param intervalMs Polling interval in milliseconds
-   * @param rememberDeviceSelector CSS selector for the remember device checkbox
+   * @param onCompleted Callback function to be called when polling is completed
    */
-  startMfaPushPolling(intervalMs: number, rememberDeviceSelector?: string): void;
+  startMfaPushPolling(intervalMs: number, onCompleted: (rememberDevice: boolean) => void): void;
 }
 
 /**
