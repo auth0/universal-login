@@ -142,4 +142,19 @@ describe('LoginId', () => {
   it('extends BaseContext', () => {
     expect(loginId).toBeInstanceOf(BaseContext);
   });
+
+  describe('getActiveIdentifiers method', () => {
+    it('should return allowedIdentifiers when set in transaction', () => {
+      loginId.transaction.allowedIdentifiers = ['email', 'username'];
+      const result = loginId.getActiveIdentifiers();
+      expect(result).toEqual(['email', 'username']);
+    });
+
+    it('should return null when allowedIdentifiers is null or empty', () => {
+      loginId.transaction.allowedIdentifiers = null;
+      expect(loginId.getActiveIdentifiers()).toBeNull();
+      loginId.transaction.allowedIdentifiers = [];
+      expect(loginId.getActiveIdentifiers()).toEqual([]);
+    });
+  });
 });
