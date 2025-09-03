@@ -17,8 +17,8 @@ import MfaPushChallengePush from '@auth0/auth0-acul-js/mfa-push-challenge-push';
 const MfaPushChallengePushScreen: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [rememberDevice, setRememberDevice] = useState(false);
-  const pollInterval: React.MutableRefObject<number> = useRef(0);
   const mfaPushChallengePush = useMemo(() => new MfaPushChallengePush(), []);
+  const cancelPollingRef = useRef<() => void>();
   const { screen, transaction } = mfaPushChallengePush;
   const { deviceName, showRememberDevice } =
     mfaPushChallengePush.screen.data || {};
@@ -55,14 +55,24 @@ const MfaPushChallengePushScreen: React.FC = () => {
     mfaPushChallengePush.continue({ rememberDevice });
   }, [mfaPushChallengePush, rememberDevice]);
 
+  const startPolling = useCallback(async () => {
+    mfaPushChallengePush.continue({ rememberDevice });
+  }, [mfaPushChallengePush, rememberDevice]);
   useEffect(() => {
-    clearInterval(pollInterval.current);
-    pollInterval.current = setInterval(startPolling, 5000);
-
+    if (cancelPollingRef.current) cancelPollingRef.current();
+\    const cancelFn = mfaPushChallengePush.startMfaPushPolling(
+      5000,
+      startPolling
+    );
+    if (typeof cancelFn === 'function') {
+      cancelPollingRef.current = cancelFn;
+    } else {
+      cancelPollingRef.current = undefined;
+    }
     return () => {
-      clearInterval(pollInterval.current);
+      if (cancelPollingRef.current) cancelPollingRef.current();
     };
-  }, [startPolling]);
+  }, [mfaPushChallengePush, rememberDevice]);
 
   const handleResend = async () => {
     setIsLoading(true);
