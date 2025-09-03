@@ -11,8 +11,6 @@ const getInstance = (): MfaPushChallengePushMembers => {
   return instance;
 };
 
-export const useMfaPushChallengePush = (): MfaPushChallengePushMembers => useMemo(() => getInstance(), []);
-
 const factory = new ContextHooks<MfaPushChallengePushMembers>(getInstance);
 
 export const {
@@ -33,6 +31,7 @@ export const continueMethod = (payload?: WithRememberOptions) => getInstance().c
 export const resendPushNotification = (payload?: WithRememberOptions) => getInstance().resendPushNotification(payload);
 export const enterCodeManually = (payload?: CustomOptions) => getInstance().enterCodeManually(payload);
 export const tryAnotherMethod = (payload?: CustomOptions) => getInstance().tryAnotherMethod(payload);
+export const useMfaPushChallengePush = (intervalMs: number, onCompleted: (rememberDevice: boolean) => void) => getInstance().startMfaPushPolling(intervalMs, onCompleted);
 
 export type { ScreenMembersOnMfaPushChallengePush, UntrustedDataMembersOnMfaPushChallengePush, WithRememberOptions, MfaPushChallengePushMembers } from '@auth0/auth0-acul-js/mfa-push-challenge-push';
 

@@ -74,8 +74,7 @@ export function mfaPushPolling({
     xhr.send();
   }
 
-  timer = setTimeout(internalPoll, intervalMs);
-
+  internalPoll();
   function cancel(): void {
     cancelled = true;
     if (timer) clearTimeout(timer);
