@@ -59,3 +59,20 @@ export interface FlattenedTheme {
   pageBackground: Record<string, string>;
   widget: Record<string, string | number>;
 }
+
+/**
+ * Options for configuring resend functionality
+ */
+export interface StartResendOptions {
+  timeoutSeconds?: number;
+  resendCallback?: () => Promise<void> | void;
+}
+
+/**
+ * Control object returned by startResend method
+ */
+export interface ResendControl {
+  disabled: boolean;
+  remaining: number;
+  callback: () => Promise<void>;
+}
