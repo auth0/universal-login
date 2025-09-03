@@ -96,4 +96,20 @@ describe('Login', () => {
       await expect(login.federatedLogin(payload)).rejects.toThrow('Mocked reject');
     });
   });
+
+  describe('getActiveIdentifiers method', () => {
+      it('should return allowedIdentifiers when set in transaction', () => {
+        login.transaction.allowedIdentifiers = ['email', 'username'];
+        const result = login.getActiveIdentifiers();
+        expect(result).toEqual(['email', 'username']);
+      });
+
+      it('should return null when allowedIdentifiers is null or empty', () => {
+        login.transaction.allowedIdentifiers = null;
+        expect(login.getActiveIdentifiers()).toBeNull();
+        login.transaction.allowedIdentifiers = [];
+        expect(login.getActiveIdentifiers()).toEqual([]);
+      });
+  });
+
 });
