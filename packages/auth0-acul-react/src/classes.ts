@@ -98,7 +98,7 @@ export namespace LoginEmailVerification {
   export const resendCode = resendCode_LoginEmailVerification;
 }
 
-import { useLoginId as useLoginId_LoginId, useScreen as useScreen_LoginId, useTransaction as useTransaction_LoginId, login as login_LoginId, federatedLogin as federatedLogin_LoginId, passkeyLogin as passkeyLogin_LoginId, pickCountryCode as pickCountryCode_LoginId } from './screens/login-id';
+import { useLoginId as useLoginId_LoginId, useScreen as useScreen_LoginId, useTransaction as useTransaction_LoginId, login as login_LoginId, federatedLogin as federatedLogin_LoginId, passkeyLogin as passkeyLogin_LoginId, pickCountryCode as pickCountryCode_LoginId, useActiveIdentifiers as useActiveIdentifiers_LoginId } from './screens/login-id';
 export namespace LoginId {
   export const useLoginId = useLoginId_LoginId;
   export const useScreen = useScreen_LoginId;
@@ -107,6 +107,7 @@ export namespace LoginId {
   export const federatedLogin = federatedLogin_LoginId;
   export const passkeyLogin = passkeyLogin_LoginId;
   export const pickCountryCode = pickCountryCode_LoginId;
+  export const useActiveIdentifiers =  useActiveIdentifiers_Login;
 }
 
 import { useLoginPassword as useLoginPassword_LoginPassword, useScreen as useScreen_LoginPassword, useTransaction as useTransaction_LoginPassword, login as login_LoginPassword, federatedLogin as federatedLogin_LoginPassword } from './screens/login-password';
@@ -136,13 +137,14 @@ export namespace LoginPasswordlessSmsOtp {
   export const resendOTP = resendOTP_LoginPasswordlessSmsOtp;
 }
 
-import { useLogin as useLogin_Login, useScreen as useScreen_Login, useTransaction as useTransaction_Login, login as login_Login, federatedLogin as federatedLogin_Login } from './screens/login';
+import { useLogin as useLogin_Login, useScreen as useScreen_Login, useTransaction as useTransaction_Login, login as login_Login, federatedLogin as federatedLogin_Login, useActiveIdentifiers as useActiveIdentifiers_Login } from './screens/login';
 export namespace Login {
   export const useLogin = useLogin_Login;
   export const useScreen = useScreen_Login;
   export const useTransaction = useTransaction_Login;
   export const login = login_Login;
   export const federatedLogin = federatedLogin_Login;
+  export const useActiveIdentifiers =  useActiveIdentifiers_Login;
 }
 
 import { useLogoutAborted as useLogoutAborted_LogoutAborted, useScreen as useScreen_LogoutAborted, useTransaction as useTransaction_LogoutAborted } from './screens/logout-aborted';
