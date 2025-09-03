@@ -431,7 +431,7 @@ fs.writeFileSync(
   'utf8'
 );
 
-const FUNCTIONS_TS_PATH = path.resolve(__dirname, '../src/functions.ts');
+const FUNCTIONS_TS_PATH = path.resolve(__dirname, '../src/classes.ts');
 const INTERFACES_TS_PATH = path.resolve(__dirname, '../src/interfaces.ts');
 const EXPORT_TS_PATH = path.resolve(__dirname, '../src/export.ts');
 
@@ -524,7 +524,7 @@ fs.writeFileSync(
 );
 
 const exportLines: string[] = [];
-exportLines.push(`export * as Functions from './functions';`);
+exportLines.push(`export * as Classes from './classes';`);
 exportLines.push(`export * as Interfaces from './interfaces';`);
 fs.writeFileSync(EXPORT_TS_PATH, exportLines.join('\n'), 'utf8');
 
