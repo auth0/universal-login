@@ -27,7 +27,7 @@ export const {
 
 export const useScreen: () => ScreenMembersOnResetPassword = () => useMemo(() => getInstance().screen, []);
 export const useTransaction = () => useMemo(() => getInstance().transaction, []);
-
+export const usePasswordValidation = () => useMemo(() => getInstance().validatePassword, []);
 // Screen methods
 export const resetPassword = (payload: ResetPasswordOptions) => getInstance().resetPassword(payload);
 
