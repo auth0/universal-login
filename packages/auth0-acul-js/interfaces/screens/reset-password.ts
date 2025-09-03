@@ -1,5 +1,5 @@
 import type { BaseMembers } from '../models/base-context';
-import type { ScreenMembers, ScreenData } from '../models/screen';
+import type { ScreenMembers, ScreenData, PasswordValidationResult} from '../models/screen';
 import type { TransactionMembers, PasswordPolicy } from '../models/transaction';
 
 export interface ResetPasswordOptions {
@@ -19,6 +19,7 @@ export interface ResetPasswordMembers extends BaseMembers {
   screen: ScreenMembersOnResetPassword;
   transaction: TransactionMembersOnResetPassword;
   resetPassword(payload: ResetPasswordOptions): Promise<void>;
+  validatePassword(password: string): PasswordValidationResult;
 }
 
 export interface TransactionMembersOnResetPassword extends TransactionMembers {

@@ -33,6 +33,7 @@ export const login = (payload: LoginOptions) => getInstance().login(payload);
 export const federatedLogin = (payload: FederatedLoginOptions) => getInstance().federatedLogin(payload);
 export const passkeyLogin = (payload?: CustomOptions) => getInstance().passkeyLogin(payload);
 export const pickCountryCode = (payload?: CustomOptions) => getInstance().pickCountryCode(payload);
+export const useActiveIdentifiers = () => getInstance().getActiveIdentifiers();
 
 export type { ScreenMembersOnLoginId, TransactionMembersOnLoginId, LoginOptions, FederatedLoginOptions, LoginIdMembers } from '@auth0/auth0-acul-js/login-id';
 
