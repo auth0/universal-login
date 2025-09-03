@@ -1,11 +1,10 @@
 import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
-import { createResendControl } from '../../utils/resend-utils';
 
 import { ScreenOverride } from './screen-override';
 
-import type { CustomOptions, StartResendOptions, ResendControl } from '../../../interfaces/common';
+import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type {
   EmailChallengeOptions,
@@ -69,30 +68,6 @@ export default class EmailIdentifierChallenge extends BaseContext implements Ema
       telemetry: [EmailIdentifierChallenge.screenIdentifier, 'returnToPrevious'],
     };
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.BACK });
-  }
-
-  /**
-   * Gets resend functionality with timeout management for this screen
-   * @param options - Configuration options for resend functionality
-   * @param options.timeoutSeconds - Number of seconds to wait before allowing resend (default: 10)
-   * @param options.resendCallback - Optional custom callback function to execute on resend
-   * @returns Object containing disabled state, remaining time, and callback function
-   * 
-   * @example
-   * import EmailIdentifierChallenge from '@auth0/auth0-acul-js/email-identifier-challenge';
-   *
-   * const emailIdentifierChallenge = new EmailIdentifierChallenge();
-   * const resendControl = emailIdentifierChallenge.startResend({ timeoutSeconds: 40 });
-   * if (!resendControl.disabled) {
-   *   await resendControl.callback();
-   * }
-   */
-  startResend(options?: StartResendOptions): ResendControl {
-    return createResendControl(
-      EmailIdentifierChallenge.screenIdentifier,
-      () => this.resendCode(),
-      options || {}
-    );
   }
 }
 

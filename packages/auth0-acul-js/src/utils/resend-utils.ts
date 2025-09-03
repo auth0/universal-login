@@ -14,42 +14,64 @@ export function createResendControl(
 ): ResendControl {
   const { timeoutSeconds = 10, resendCallback } = options || {};
   const storageKey = `auth0_resend_timeout_${screenIdentifier}`;
-  
-  // Get last resend time from storage
-  const lastResendTime = parseInt(localStorage.getItem(storageKey) || '0', 10);
-  const currentTime = Date.now();
-  const timeoutMs = timeoutSeconds * 1000;
-  const timeElapsed = currentTime - lastResendTime;
-  const remaining = Math.max(0, Math.ceil((timeoutMs - timeElapsed) / 1000));
-  const disabled = remaining > 0;
+  let remaining = 0;
+  let disabled = false;
+  let intervalId: NodeJS.Timeout | null = null;
+
+  const calculateState = (): void => {
+    const lastResendTime = parseInt(localStorage.getItem(storageKey) || '0', 10);
+    const currentTime = Date.now();
+    const timeoutMs = timeoutSeconds * 1000;
+    const timeElapsed = currentTime - lastResendTime;
+
+    remaining = Math.max(0, Math.ceil((timeoutMs - timeElapsed) / 1000));
+    disabled = remaining > 0;
+  };
+
+  const startTimer = (): void => {
+    // Save the current time
+    localStorage.setItem(storageKey, Date.now().toString());
+
+    // Recalculate immediately
+    calculateState();
+
+    // Clear old timer
+    if (intervalId) clearInterval(intervalId);
+
+    // Start new countdown
+    intervalId = setInterval(() => {
+      calculateState();
+      if (remaining <= 0 && intervalId) {
+        clearInterval(intervalId);
+        intervalId = null;
+      }
+    }, 1000);
+  };
 
   const callback = async (): Promise<void> => {
-    // Check if resend is currently allowed (recalculate at execution time)
-    const currentLastResendTime = parseInt(localStorage.getItem(storageKey) || '0', 10);
-    const currentTimeNow = Date.now();
-    const currentTimeElapsed = currentTimeNow - currentLastResendTime;
-    const currentRemaining = Math.max(0, Math.ceil((timeoutMs - currentTimeElapsed) / 1000));
-    const currentlyDisabled = currentRemaining > 0;
-      
-    if (currentlyDisabled) {
-      throw new Error(`Please wait ${currentRemaining} seconds before resending`);
+    calculateState();
+    if (disabled) {
+      throw new Error(`Please wait ${remaining}s before resending`);
     }
-    
-    // Store current time as last resend time
-    localStorage.setItem(storageKey, Date.now().toString());
-    
+    startTimer();
+
     if (resendCallback) {
-      // Use provided callback
       await resendCallback();
     } else {
-      // Use the screen's own resend method
       await resendMethod();
     }
   };
 
+  // Calculate state on init
+  calculateState();
+
   return {
-    disabled,
-    remaining,
+    get disabled(): boolean {
+      return disabled; // ✅ always returns the latest value
+    },
+    get remaining(): number {
+      return remaining; // ✅ always returns the latest countdown
+    },
     callback,
   };
 }
