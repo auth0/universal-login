@@ -115,7 +115,7 @@ export default class ResetPasswordMfaPushChallengePush extends BaseContext imple
   /**
    * Allows polling for the push notification challenge to be approved.
    * @param intervalMs Polling interval in milliseconds
-   * @param onCompleted Callback function to be called when polling is completed
+   * @param onComplete Callback function to be called when polling is completed
    * @example
    * ```typescript
    * import ResetPasswordMfaPushChallengePush from '@auth0/auth0-acul-js/reset-password-mfa-push-challenge-push';
@@ -128,7 +128,7 @@ export default class ResetPasswordMfaPushChallengePush extends BaseContext imple
    */
   startMfaPushPolling(
       intervalMs: number,
-      onCompleted: (rememberDevice: boolean) => void
+      onComplete: () => void
     ): () => void {
       const condition = (body: Record<string, unknown>): boolean =>
         Boolean((body as { completed?: boolean }).completed);
@@ -136,9 +136,7 @@ export default class ResetPasswordMfaPushChallengePush extends BaseContext imple
         intervalMs,
         url: window.location.href,
         condition,
-        onResult: () => {
-          onCompleted(false);
-        },
+        onResult: onComplete,
       });
     }
 }

@@ -128,7 +128,7 @@ export default class MfaPushChallengePush extends BaseContext implements MfaPush
    * Calls the provided callback when the polling condition is met.
    * 
    * @param intervalMs Polling interval in milliseconds
-   * @param onCompleted Callback function called when polling condition is met, receives rememberDevice value
+   * @param onComplete Callback function called when polling condition is met, receives rememberDevice value
    * @returns A cancel function to stop polling
    * @example
    * ```typescript
@@ -137,7 +137,7 @@ export default class MfaPushChallengePush extends BaseContext implements MfaPush
    */
   startMfaPushPolling(
     intervalMs: number,
-    onCompleted: (rememberDevice: boolean) => void
+    onComplete: () => void
   ): () => void {
     const condition = (body: Record<string, unknown>): boolean =>
       Boolean((body as { completed?: boolean }).completed);
@@ -145,9 +145,7 @@ export default class MfaPushChallengePush extends BaseContext implements MfaPush
       intervalMs,
       url: window.location.href,
       condition,
-      onResult: () => {
-        onCompleted(false);
-      },
+      onResult: onComplete,
     });
   }
 }

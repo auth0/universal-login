@@ -62,9 +62,9 @@ export interface MfaPushChallengePushMembers extends BaseMembers {
    /**
    * Allows polling for the push notification challenge to be approved.
    * @param intervalMs Polling interval in milliseconds
-   * @param onCompleted Callback function to be called when polling is completed
+   * @param onComplete Callback function to be called when polling is completed
    */
-  startMfaPushPolling(intervalMs: number, onCompleted: (rememberDevice: boolean) => void): void;
+  startMfaPushPolling(intervalMs: number, onComplete: () => void): void;
 }
 
 /**
