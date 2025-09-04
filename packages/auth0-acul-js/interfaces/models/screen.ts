@@ -1,4 +1,3 @@
-import type { Error } from "./transaction";
 export interface CaptchaContext {
   provider: string;
   image?: string;
@@ -87,7 +86,8 @@ export interface Identifier {
   required: boolean;
 }
 
-export type PasswordValidationResult = {
+export type PasswordRuleValidation = {
+  policy: string;
   isValid: boolean;
-  errors: Error[];
+  code: string;
 };
