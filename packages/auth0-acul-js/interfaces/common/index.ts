@@ -63,9 +63,11 @@ export interface FlattenedTheme {
 /**
  * Options for configuring resend functionality
  */
+
 export interface StartResendOptions {
   timeoutSeconds?: number;
-  resendCallback?: () => Promise<void> | void;
+  onResend?: () => Promise<void> | void; 
+  onStateChange?: (remainingSeconds: number, isDisabled: boolean) => void;
 }
 
 /**
