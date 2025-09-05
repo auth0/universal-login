@@ -61,10 +61,6 @@ export function createResendControl(
   const callback = async (): Promise<void> => {
     calculateState();
 
-    if (resendLimitReached) {
-      throw new Error('Resend limit has been reached. Please try again later.');
-    }
-
     if (onResend) {
       await onResend();
     } else {
