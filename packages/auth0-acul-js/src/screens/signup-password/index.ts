@@ -6,7 +6,7 @@ import { FormHandler } from '../../utils/form-handler';
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
 
-import type { PasswordValidationResult } from '../../../interfaces/models/screen';
+import type { PasswordRuleValidation } from '../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type {
   SignupPasswordMembers,
@@ -114,7 +114,7 @@ export default class SignupPassword extends BaseContext implements SignupPasswor
    * const result = signupPassword.validatePassword('MyP@ssw0rd');
    * // result => { valid: true, errors: [] }
    */
-  validatePassword(password: string): PasswordValidationResult {
+  validatePassword(password: string): PasswordRuleValidation[] {  
     const passwordPolicy = this.transaction?.passwordPolicy;
     return coreValidatePassword(password, passwordPolicy);
   }

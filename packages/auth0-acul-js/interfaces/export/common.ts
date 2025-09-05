@@ -1,4 +1,4 @@
-export type { CaptchaContext, PhonePrefix, PasskeyCreate, Scope, AuthorizationDetail, Identifier, PasswordValidationResult, IdentifierType as ScreenIdentifierType } from '../models/screen';
+export type { CaptchaContext, PhonePrefix, PasskeyCreate, Scope, AuthorizationDetail, Identifier, PasswordRuleValidation, IdentifierType as ScreenIdentifierType } from '../models/screen';
 export type { Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule } from '../models/transaction';
 export type { BrandingSettings, BrandingThemes } from '../models/branding';
 export type { CustomOptions, WebAuthnErrorDetails, CurrentScreenOptions, FlattenedTheme } from '../common/index';

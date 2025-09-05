@@ -27,9 +27,9 @@ export const {
 
 export const useScreen: () => ScreenMembersOnResetPassword = () => useMemo(() => getInstance().screen, []);
 export const useTransaction = () => useMemo(() => getInstance().transaction, []);
-export const usePasswordValidation = () => useMemo(() => getInstance().validatePassword, []);
 // Screen methods
 export const resetPassword = (payload: ResetPasswordOptions) => getInstance().resetPassword(payload);
+export const usePasswordValidation = (password: string) => getInstance().validatePassword(password);
 
 export type { ResetPasswordOptions, ScreenMembersOnResetPassword, ResetPasswordMembers } from '@auth0/auth0-acul-js/reset-password';
 
