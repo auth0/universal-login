@@ -35,7 +35,6 @@ export function createResendControl(
     const timeElapsed = currentTime - lastResendTime;
 
     remaining = Math.max(0, Math.ceil((timeoutMs - timeElapsed) / 1000));
-    // Disabled if either there's a timeout remaining OR server-side limit is reached
     disabled = remaining > 0 || !!resendLimitReached;
 
     // Always call onStateChange if it exists
@@ -45,9 +44,7 @@ export function createResendControl(
   };
 
   const startTimer = (): void => {
-
     localStorage.setItem(storageKey, Date.now().toString());
-
     cleanup();
     calculateState();
     intervalId = setInterval(() => {
@@ -60,18 +57,16 @@ export function createResendControl(
 
   const callback = async (): Promise<void> => {
     calculateState();
-
+    if (disabled) return;
     if (onResend) {
       await onResend();
     } else {
       await resendMethod();
     }
-
     startTimer();
   };
 
   calculateState();
-
   if (remaining > 0) {
     intervalId = setInterval(() => {
       calculateState();
@@ -80,6 +75,5 @@ export function createResendControl(
       }
     }, 1000);
   }
-
   return callback;
 }
