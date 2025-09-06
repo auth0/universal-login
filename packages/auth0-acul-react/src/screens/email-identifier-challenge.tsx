@@ -1,8 +1,11 @@
 import { useMemo } from 'react';
 import EmailIdentifierChallenge from '@auth0/auth0-acul-js/email-identifier-challenge';
 import { ContextHooks } from '../hooks/context-hooks';
+import { useResendWithManager } from '../hooks/utility-hooks';
+import type { UseResendParams, UseResendReturn } from '../interfaces/common';
 
 import type { EmailIdentifierChallengeMembers, EmailChallengeOptions, CustomOptions, ScreenMembersOnEmailIdentifierChallenge } from '@auth0/auth0-acul-js/email-identifier-challenge';
+
 let instance: EmailIdentifierChallengeMembers | null = null;
 const getInstance = (): EmailIdentifierChallengeMembers => {
   if (!instance) {
@@ -32,6 +35,11 @@ export const useTransaction = () => useMemo(() => getInstance().transaction, [])
 export const submitEmailChallenge = (payload: EmailChallengeOptions) => getInstance().submitEmailChallenge(payload);
 export const resendCode = (payload?: CustomOptions) => getInstance().resendCode(payload);
 export const returnToPrevious = (payload?: CustomOptions) => getInstance().returnToPrevious(payload);
+
+// Resend hook
+export const useResend = (payload?: UseResendParams): UseResendReturn => {
+  return useResendWithManager(getInstance(), payload);
+};
 
 export type { EmailChallengeOptions, ScreenMembersOnEmailIdentifierChallenge, EmailIdentifierChallengeMembers } from '@auth0/auth0-acul-js/email-identifier-challenge';
 
