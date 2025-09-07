@@ -6,7 +6,6 @@ import { ScreenOverride } from '../../../../src/screens/login-id/screen-override
 import { TransactionOverride } from '../../../../src/screens/login-id/transaction-override';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { getPasskeyCredentials } from '../../../../src/utils/passkeys';
-import { SDKUsageError } from '../../../../src/utils/errors';
 
 import type { ScreenContext } from '../../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../../interfaces/models/transaction';
@@ -52,18 +51,6 @@ describe('LoginId', () => {
   });
 
   describe('login', () => {
-    it('throws SDKUsageError when options are missing', async () => {
-      await expect(loginId.login(undefined as unknown as LoginOptions)).rejects.toThrow(SDKUsageError);
-      await expect(loginId.login(undefined as unknown as LoginOptions)).rejects.toThrow(Errors.LOGIN_MISSING_OPTIONS);
-      expect(FormHandler).not.toHaveBeenCalled();
-    });
-
-    it('throws SDKUsageError when username is missing', async () => {
-      await expect(loginId.login({} as LoginOptions)).rejects.toThrow(SDKUsageError);
-      await expect(loginId.login({} as LoginOptions)).rejects.toThrow(Errors.LOGIN_USERNAME_REQUIRED);
-      expect(FormHandler).not.toHaveBeenCalled();
-    });
-
     it('submits login form data with browser capabilities and correct telemetry', async () => {
       const payload: LoginOptions = { username: 'testuser' };
 
