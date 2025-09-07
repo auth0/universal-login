@@ -56,13 +56,6 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
       telemetry: [LoginId.screenIdentifier, 'login'],
     };
 
-    if (!payload) {
-      throw new SDKUsageError(Errors.LOGIN_MISSING_OPTIONS);
-    }
-    if (!payload.username) {
-      throw new SDKUsageError(Errors.LOGIN_USERNAME_REQUIRED);
-    }
-
     const browserCapabilities = await getBrowserCapabilities();
     await new FormHandler(options).submitData<LoginOptions>({
       ...payload,
