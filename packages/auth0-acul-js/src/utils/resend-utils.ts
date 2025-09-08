@@ -1,4 +1,4 @@
-import type { StartResendOptions } from '../../interfaces/common';
+import type { StartResendOptions, ResendControl } from '../../interfaces/common';
 
 /**
  * Utility function to create resend functionality with timeout management
@@ -6,19 +6,20 @@ import type { StartResendOptions } from '../../interfaces/common';
  * @param resendMethod - The resend method to call when callback is executed
  * @param options - Configuration options for resend functionality
  * @param resendLimitReached - Optional server-side limit indicator (only for phone/email identifier challenge screens)
- * @returns Callback function for resend functionality
+ * @returns ResendControl object with startResend method
  */
 export function createResendControl(
   screenIdentifier: string,
   resendMethod: () => Promise<void>,
   options?: StartResendOptions,
   resendLimitReached?: boolean
-): () => Promise<void> {
-  const { timeoutSeconds = 10, onResend, onStateChange } = options || {};
+): ResendControl {
+  const { timeoutSeconds = 10, onStatusChange, onTimeout } = options || {};
   const storageKey = `acul_resend_timeout_${screenIdentifier}`;
 
   let remaining = 0;
   let disabled = false;
+  let hasCalledOnTimeout = false; // Track if onTimeout has been called
   let intervalId: ReturnType<typeof setInterval> | null = null;
 
   const cleanup = (): void => {
@@ -34,21 +35,27 @@ export function createResendControl(
     const timeoutMs = timeoutSeconds * 1000;
     const timeElapsed = currentTime - lastResendTime;
 
+    const previousRemaining = remaining;
     remaining = Math.max(0, Math.ceil((timeoutMs - timeElapsed) / 1000));
-    // Disabled if either there's a timeout remaining OR server-side limit is reached
     disabled = remaining > 0 || !!resendLimitReached;
 
-    // Always call onStateChange if it exists
-    if (onStateChange) {
-      onStateChange(remaining, disabled);
+    // Call onTimeout when countdown reaches 0 from a positive value
+    if (onTimeout && previousRemaining > 0 && remaining === 0 && !hasCalledOnTimeout) {
+      hasCalledOnTimeout = true;
+      onTimeout();
+    }
+
+    // Always call onStatusChange if it exists
+    if (onStatusChange) {
+      onStatusChange(remaining, disabled);
     }
   };
 
   const startTimer = (): void => {
-
     localStorage.setItem(storageKey, Date.now().toString());
-
+    hasCalledOnTimeout = false; // Reset for new timer
     cleanup();
+    // Immediate update so UI reflects disabled state right away
     calculateState();
     intervalId = setInterval(() => {
       calculateState();
@@ -60,26 +67,31 @@ export function createResendControl(
 
   const callback = async (): Promise<void> => {
     calculateState();
+    if (disabled) return;
 
-    if (onResend) {
-      await onResend();
-    } else {
-      await resendMethod();
-    }
-
+    await resendMethod();
     startTimer();
   };
 
-  calculateState();
 
-  if (remaining > 0) {
-    intervalId = setInterval(() => {
-      calculateState();
-      if (remaining <= 0) {
-        cleanup();
-      }
-    }, 1000);
-  }
+  setTimeout(() => {
+    cleanup();
+    calculateState();
+    if (remaining > 0) {
+      hasCalledOnTimeout = false; // Reset since we're starting an existing timer
+      intervalId = setInterval(() => {
+        calculateState();
+        if (remaining <= 0) {
+          cleanup();
+        }
+      }, 1000);
+    }
+  }, 0);
 
-  return callback;
+
+
+  return {
+    startResend: callback
+  };
 }
+

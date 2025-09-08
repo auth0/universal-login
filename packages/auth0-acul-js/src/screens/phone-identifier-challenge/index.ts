@@ -5,7 +5,7 @@ import { createResendControl } from '../../utils/resend-utils';
 
 import { ScreenOverride } from './screen-override';
 
-import type { CustomOptions, StartResendOptions } from '../../../interfaces/common';
+import type { CustomOptions, StartResendOptions, ResendControl } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type {
   PhoneChallengeOptions,
@@ -73,36 +73,39 @@ export default class PhoneIdentifierChallenge extends BaseContext implements Pho
   }
 
   /**
-     * Gets resend functionality with timeout management for this screen
-     * @param options - Configuration options for resend functionality
-     * @param options.timeoutSeconds - Number of seconds to wait before allowing resend (default: 10)
-     * @param options.onResend - Optional custom callback function to execute on resend
-     * @param options.onStateChange - Callback to receive state updates (remaining seconds, disabled status)
-     * @returns Callback function to execute resend with timeout management
-     * 
-     * @example
-     * import PhoneIdentifierChallenge from '@auth0/auth0-acul-js/phone-identifier-challenge';
-     *
-     * const phoneChallenge = new PhoneIdentifierChallenge();
-     * 
-     *   const handleStateChange = (remainingSeconds, isDisabled) => {
-     *     setDisabled(isDisabled);
-     *     setRemaining(remainingSeconds);
-     *   };
-     * 
-     * const handleResend = async () => {
-     *     const resendCallback = phoneChallenge.resendManager({
-     *       timeoutSeconds: 30,
-     *       onStateChange: handleStateChange
-     *     });
-     *     await resendCallback();
-     *    };
-     */
-  resendManager(options?: StartResendOptions): () => Promise<void> {
+   * Gets resend functionality with timeout management for this screen
+   * @param options - Configuration options for resend functionality
+   * @param options.timeoutSeconds - Number of seconds to wait before allowing resend (default: 10)
+   * @param options.onStatusChange - Callback to receive state updates (remaining seconds, disabled status)
+   * @param options.onTimeout - Callback to execute when timeout countdown reaches zero
+   * @returns ResendControl object with startResend method
+   * 
+   * @example
+   * import PhoneIdentifierChallenge from '@auth0/auth0-acul-js/phone-identifier-challenge';
+   *   const handleStatusChange = (remainingSeconds, isDisabled) => {
+   *     setDisabled(isDisabled);
+   *     setRemaining(remainingSeconds);
+   *   };
+   * 
+   *   const handleTimeout = () => {
+   *     console.log('Timeout completed, resend is now available');
+   *   };
+   * 
+   *   const { startResend } = phoneChallenge.resendManager({
+   *     timeoutSeconds: 30,
+   *     onStatusChange: handleStatusChange,
+   *     onTimeout: handleTimeout
+   *   });
+   *   
+   *   // Call startResend when user clicks resend button
+   *   await startResend();
+   * 
+   */
+  resendManager(options?: StartResendOptions): ResendControl {
     return createResendControl(
       PhoneIdentifierChallenge.screenIdentifier,
       () => this.resendCode(),
-      options || {},
+      options,
       this.screen.data?.resendLimitReached
     );
   }

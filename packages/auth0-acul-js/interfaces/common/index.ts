@@ -66,15 +66,13 @@ export interface FlattenedTheme {
 
 export interface StartResendOptions {
   timeoutSeconds?: number;
-  onResend?: () => Promise<void> | void; 
-  onStateChange?: (remainingSeconds: number, isDisabled: boolean) => void;
+  onStatusChange?: (remainingSeconds: number, isDisabled: boolean) => void;
+  onTimeout?: () => void;
 }
 
 /**
- * Control object returned by startResend method
+ * Control object returned by resendManager method
  */
 export interface ResendControl {
-  disabled: boolean;
-  remaining: number;
-  callback: () => Promise<void>;
+  startResend: () => Promise<void>;
 }
