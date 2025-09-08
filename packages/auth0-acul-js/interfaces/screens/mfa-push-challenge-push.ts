@@ -64,7 +64,7 @@ export interface MfaPushChallengePushMembers extends BaseMembers {
    * @param intervalMs Polling interval in milliseconds
    * @param onComplete Callback function to be called when polling is completed
    */
-  pollingManager(intervalMs: number, onComplete: () => void, onError?: (error: { status: number; responseText: string }) => void): void;
+  pollingManager(intervalMs: number, onComplete: () => void, onError?: (error: MfaPushPollingError) => void): MfaPushPollingControl;
 }
 
 /**
@@ -73,11 +73,19 @@ export interface MfaPushChallengePushMembers extends BaseMembers {
 export type StartMfaPushPollingOptions = {
   intervalMs: number;
   onResult?: () => void;
-  onError?: (error: { status: number; responseText: string }) => void;
+  onError?: (error: MfaPushPollingError) => void;
 };
 
 export interface MfaPushPollingControl {
   stopPolling: () => void;
   startPolling: () => void;
   isRunning: () => boolean;
+}
+
+export interface Error {
+  
+}
+export interface MfaPushPollingError {
+  status: number;
+  responseText: string;
 }

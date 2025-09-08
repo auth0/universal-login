@@ -31,6 +31,9 @@ export function createPollingControl({
     if (cancelled) return;
     running = true;
     if (typeof document !== 'undefined' && document.hidden) {
+      if (timer !== null) {
+       clearTimeout(timer);
+      }
       timer = setTimeout(internalPoll, intervalMs);
       return;
     }
@@ -57,12 +60,18 @@ export function createPollingControl({
             return;
           }
         }
+        if (timer !== null) {
+          clearTimeout(timer);
+        }
         timer = setTimeout(internalPoll, intervalMs);
         return;
       }
       if (xhr.status === 429) {
         const end = Number.parseInt(xhr.getResponseHeader('X-RateLimit-Reset') || '0') * 1000;
         const wait = end - new Date().getTime();
+        if (timer !== null) {
+          clearTimeout(timer);
+        }
         timer = setTimeout(internalPoll, wait > intervalMs ? wait : intervalMs);
         return;
       }

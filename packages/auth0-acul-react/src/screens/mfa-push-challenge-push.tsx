@@ -10,6 +10,10 @@ const getInstance = (): MfaPushChallengePushMembers => {
   }
   return instance;
 };
+export interface MfaPushPollingError {
+  status: number;
+  responseText: string;
+}
 
 const factory = new ContextHooks<MfaPushChallengePushMembers>(getInstance);
 
@@ -31,7 +35,7 @@ export const continueMethod = (payload?: WithRememberOptions) => getInstance().c
 export const resendPushNotification = (payload?: WithRememberOptions) => getInstance().resendPushNotification(payload);
 export const enterCodeManually = (payload?: CustomOptions) => getInstance().enterCodeManually(payload);
 export const tryAnotherMethod = (payload?: CustomOptions) => getInstance().tryAnotherMethod(payload);
-export const usePollingManager = (intervalMs: number, onComplete: () => void, onError?: (error: { status: number; responseText: string }) => void) => getInstance().pollingManager(intervalMs, onComplete, onError);
+export const usePollingManager = (intervalMs: number, onComplete: () => void, onError?: (error: MfaPushPollingError) => void) => getInstance().pollingManager(intervalMs, onComplete, onError);
 
 export type { ScreenMembersOnMfaPushChallengePush, UntrustedDataMembersOnMfaPushChallengePush, WithRememberOptions, MfaPushChallengePushMembers } from '@auth0/auth0-acul-js/mfa-push-challenge-push';
 

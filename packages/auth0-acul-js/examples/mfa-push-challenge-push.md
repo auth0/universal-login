@@ -97,7 +97,7 @@ const MfaPushChallengePushScreen: React.FC = () => {
         5000,
         () => {
           mfaPushChallengePush.continue({ rememberDevice });
-          setIsPolling(false); // Stop spinner when challenge is completed
+          setIsPolling(false);
         }
       );
       pollingControl.current?.startPolling();
@@ -181,7 +181,6 @@ const MfaPushChallengePushScreen: React.FC = () => {
 
             <button
               onClick={handleStartPolling}
-              // disabled={!isPolling}
               className="w-full flex justify-center py-2 px-4 border border-green-500 rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
             >
               Start Polling
@@ -231,18 +230,18 @@ useEffect(() => {
 
   // To stop polling when component unmounts
   return () => {
-    if (pollerRef.current) pollerRef.current.stop();
+    if (pollerRef.current) pollerRef.current.stopPolling();
   };
 }, []);
 
 // To manually stop polling
-// pollerRef.current.stop();
+// pollerRef.current.stopPolling();
 
 // To restart polling:
-// pollerRef.current.start();
+// pollerRef.current.startPolling();
 
 // To check if polling is running:
-// const isPolling = pollerRef.current.running();
+// const isPolling = pollerRef.current.isRunning();
 ```
 
 ---
@@ -262,11 +261,11 @@ const polling = mfaPushChallengePush.pollingManager(5000, async () => {
 });
 
 // Start polling
-polling.start();
+polling.startPolling();
 
-polling.stop();
+polling.stopPolling();
 
-console.log(polling.running()); // true or false
+console.log(polling.isRunning()); // true or false
 ```
 
 ### React Usage Example
