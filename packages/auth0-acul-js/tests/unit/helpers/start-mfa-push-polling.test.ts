@@ -141,4 +141,28 @@ describe('mfaPushPolling', () => {
 
     expect(onResult).not.toHaveBeenCalled();
   });
+
+  it('should stop polling when stop is called', () => {
+    const onResult = jest.fn();
+    const onError = jest.fn();
+    mockXHR.responseText = JSON.stringify({ completed: false });
+
+    const control = mfaPushPolling({
+      intervalMs: 100,
+      url: '/test',
+      condition: (body) => !!body.completed,
+      onResult,
+      onError,
+    });
+
+    control.start();
+    control.stop(); // Stop polling immediately
+
+    jest.runOnlyPendingTimers();
+    if (_onload) _onload();
+    if (_onerror) _onerror();
+
+    expect(onResult).not.toHaveBeenCalled();
+    expect(onError).not.toHaveBeenCalled();
+  });
 });
