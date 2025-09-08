@@ -1,6 +1,6 @@
-import { mfaPushPolling } from '../../../src/helpers/startMfaPushPolling.js';
+import { createPollingControl } from '../../../src/helpers/create-polling-control.js';
 
-describe('mfaPushPolling', () => {
+describe('createPollingControl', () => {
   let originalXMLHttpRequest: typeof XMLHttpRequest;
   let mockXHR: {
     open: jest.Mock;
@@ -46,7 +46,7 @@ describe('mfaPushPolling', () => {
     const onResult = jest.fn();
     const onError = jest.fn();
 
-    const control = mfaPushPolling({
+    const control = createPollingControl({
       intervalMs: 100,
       onResult,
       onError,
@@ -67,7 +67,7 @@ describe('mfaPushPolling', () => {
     const onError = jest.fn();
     mockXHR.responseText = JSON.stringify({ completed: false });
 
-    mfaPushPolling({
+    createPollingControl({
       intervalMs: 100,
       onResult,
       onError,
@@ -86,7 +86,7 @@ describe('mfaPushPolling', () => {
     mockXHR.status = 429;
     mockXHR.getResponseHeader = jest.fn((header) => header === 'X-RateLimit-Reset' ? `${Math.floor(Date.now() / 1000) + 2}` : 'application/json');
 
-    mfaPushPolling({
+    createPollingControl({
       intervalMs: 100,
       onResult,
       onError,
@@ -105,7 +105,7 @@ describe('mfaPushPolling', () => {
     mockXHR.status = 500;
     mockXHR.responseText = 'error';
 
-    mfaPushPolling({
+    createPollingControl({
       intervalMs: 100,
       onResult,
       onError,
@@ -121,7 +121,7 @@ describe('mfaPushPolling', () => {
     const onResult = jest.fn();
     const onError = jest.fn();
 
-    mfaPushPolling({
+    createPollingControl({
       intervalMs: 100,
       onResult,
       onError,
@@ -138,7 +138,7 @@ describe('mfaPushPolling', () => {
     const onError = jest.fn();
     mockXHR.responseText = JSON.stringify({ completed: false });
 
-    const control = mfaPushPolling({
+    const control = createPollingControl({
       intervalMs: 100,
       onResult,
       onError,

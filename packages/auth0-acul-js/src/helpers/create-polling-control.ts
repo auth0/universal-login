@@ -11,13 +11,11 @@ import type { StartMfaPushPollingOptions, MfaPushPollingControl } from '../../in
  * - Returns a cancel function to stop polling.
  * 
  * @param intervalMs - Polling interval in milliseconds.
- * @param url - Endpoint URL to poll (defaults to current page URL).
- * @param condition - Function to check if polling should stop (default: checks for `body.completed`).
  * @param onResult - Callback when the condition is met.
  * @param onError - Callback on error response.
  * @returns A cancel function to stop polling.
  */
-export function mfaPushPolling({
+export function createPollingControl({
   intervalMs,
   onResult,
   onError,
@@ -93,7 +91,6 @@ export function mfaPushPolling({
   function isRunning(): boolean {
     return running && !cancelled;
   }
-
 
   return { stopPolling, startPolling, isRunning };
 }

@@ -21,7 +21,7 @@ const MfaPushChallengePushScreen: React.FC = () => {
   const { screen, transaction } = mfaPushChallengePush;
   const { deviceName, showRememberDevice } =
     mfaPushChallengePush.screen.data || {};
-  const pollingControl = useRef<ReturnType<typeof mfaPushChallengePush.startMfaPushPolling> | null>(null); 
+  const pollingControl = useRef<ReturnType<typeof mfaPushChallengePush.pollingManager> | null>(null); 
 
   useEffect(() => {
     const savedFormData = mfaPushChallengePush.untrustedData.submittedFormData;
@@ -93,7 +93,7 @@ const MfaPushChallengePushScreen: React.FC = () => {
 
   const handleStartPolling = () => {
     if (!isPolling) {
-      pollingControl.current = mfaPushChallengePush.startMfaPushPolling(
+      pollingControl.current = mfaPushChallengePush.pollingManager(
         5000,
         () => {
           mfaPushChallengePush.continue({ rememberDevice });
@@ -225,7 +225,7 @@ const pollerRef = useRef(null);
 
 useEffect(() => {
   // Start polling for push notification acceptance
-  pollerRef.current = mfaPushChallengePush.startMfaPushPolling(5000, () => {
+  pollerRef.current = mfaPushChallengePush.pollingManager(5000, () => {
     mfaPushChallengePush.continue();
   });
 
@@ -257,7 +257,7 @@ import MfaPushChallengePush from '@auth0/auth0-acul-js/mfa-push-challenge-push';
 const mfaPushChallengePush = new MfaPushChallengePush();
 
 // Get polling object
-const polling = mfaPushChallengePush.startMfaPushPolling(5000, async () => {
+const polling = mfaPushChallengePush.pollingManager(5000, async () => {
   await mfaPushChallengePush.continue();
 });
 
@@ -281,7 +281,7 @@ const MfaPushChallengePushScreen: React.FC = () => {
 
   useEffect(() => {
     // Get polling object
-    pollingRef.current = mfaPushChallengePush.startMfaPushPolling(5000, async () => {
+    pollingRef.current = mfaPushChallengePush.pollingManager(5000, async () => {
       await mfaPushChallengePush.continue();
     });
     // Start polling

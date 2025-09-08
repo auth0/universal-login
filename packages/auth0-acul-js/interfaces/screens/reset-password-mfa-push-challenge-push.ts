@@ -48,5 +48,5 @@ export interface ResetPasswordMfaPushChallengePushMembers extends BaseMembers {
    * @param intervalMs Polling interval in milliseconds
    * @param onComplete Callback function to be called when polling is completed
    */
-  startMfaPushPolling(intervalMs: number, onComplete: () => void, onError?: (error: { status: number; responseText: string }) => void): void;
+  pollingManager(intervalMs: number, onComplete: () => void, onError?: (error: { status: number; responseText: string }) => void): void;
 }

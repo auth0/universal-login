@@ -1,5 +1,5 @@
 import { ScreenIds, FormActions } from '../../constants';
-import { mfaPushPolling }  from '../../helpers/startMfaPushPolling.js';
+import { createPollingControl }  from '../../helpers/create-polling-control.js';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
@@ -135,7 +135,7 @@ export default class MfaPushChallengePush extends BaseContext implements MfaPush
    * @returns Polling control object with stop/start/running
    * @example
    * ```typescript
-   * const control = mfaPushChallengePush.startMfaPushPolling(
+   * const control = mfaPushChallengePush.pollingManager(
    *   5000,
    *   () => { mfaPushChallengePush.continue(); },
    *   (error) => { console.error('Polling error:', error); }
@@ -143,12 +143,12 @@ export default class MfaPushChallengePush extends BaseContext implements MfaPush
    * control.stop(); // To stop polling manually
    * ```
    */
-  startMfaPushPolling(
+  pollingManager(
     intervalMs: number,
     onComplete: () => void,
     onError?: (error: { status: number; responseText: string }) => void
   ): MfaPushPollingControl {
-    return mfaPushPolling({
+    return createPollingControl({
       intervalMs,
       onResult: onComplete,
       onError,

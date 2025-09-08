@@ -31,7 +31,7 @@ export const continueMethod = (payload?: WithRememberOptions) => getInstance().c
 export const resendPushNotification = (payload?: WithRememberOptions) => getInstance().resendPushNotification(payload);
 export const enterCodeManually = (payload?: CustomOptions) => getInstance().enterCodeManually(payload);
 export const tryAnotherMethod = (payload?: CustomOptions) => getInstance().tryAnotherMethod(payload);
-export const useMfaPushChallengePush = (intervalMs: number, onComplete: () => void) => getInstance().startMfaPushPolling(intervalMs, onComplete);
+export const usePollingManager = (intervalMs: number, onComplete: () => void, onError?: (error: { status: number; responseText: string }) => void) => getInstance().pollingManager(intervalMs, onComplete, onError);
 
 export type { ScreenMembersOnMfaPushChallengePush, UntrustedDataMembersOnMfaPushChallengePush, WithRememberOptions, MfaPushChallengePushMembers } from '@auth0/auth0-acul-js/mfa-push-challenge-push';
 

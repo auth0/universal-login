@@ -1,5 +1,5 @@
 import { ScreenIds, FormActions } from '../../constants';
-import { mfaPushPolling }  from '../../helpers/startMfaPushPolling.js';
+import { createPollingControl }  from '../../helpers/create-polling-control.js';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
@@ -122,17 +122,17 @@ export default class ResetPasswordMfaPushChallengePush extends BaseContext imple
    * import ResetPasswordMfaPushChallengePush from '@auth0/auth0-acul-js/reset-password-mfa-push-challenge-push';
    *
    * const resetPasswordMfaPushChallengePush = new ResetPasswordMfaPushChallengePush();
-   * resetPasswordMfaPushChallengePush.startMfaPushPolling(5000, (rememberDevice) => {
+   * resetPasswordMfaPushChallengePush.pollingManager(5000, (rememberDevice) => {
    *   console.log('Push notification approved. Remember device:', rememberDevice);
    * });
    * ```
    */
-  startMfaPushPolling(
+  pollingManager(
     intervalMs: number,
     onComplete: () => void,
     onError?: (error: { status: number; responseText: string }) => void
   ): MfaPushPollingControl {
-    return mfaPushPolling({
+    return createPollingControl({
       intervalMs,
       onResult: onComplete,
       onError,

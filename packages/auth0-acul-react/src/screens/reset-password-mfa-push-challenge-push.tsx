@@ -11,8 +11,6 @@ const getInstance = (): ResetPasswordMfaPushChallengePushMembers => {
   return instance;
 };
 
-export const useResetPasswordMfaPushChallengePush = (): ResetPasswordMfaPushChallengePushMembers => useMemo(() => getInstance(), []);
-
 const factory = new ContextHooks<ResetPasswordMfaPushChallengePushMembers>(getInstance);
 
 export const {
@@ -33,7 +31,7 @@ export const continueMethod = (payload?: CustomOptions) => getInstance().continu
 export const resendPushNotification = (payload?: CustomOptions) => getInstance().resendPushNotification(payload);
 export const enterCodeManually = (payload?: CustomOptions) => getInstance().enterCodeManually(payload);
 export const tryAnotherMethod = (payload?: CustomOptions) => getInstance().tryAnotherMethod(payload);
-export const useMfaPushChallengePush = (intervalMs: number, onComplete: () => void) => getInstance().startMfaPushPolling(intervalMs, onComplete);
+export const usePushPollingManager = (intervalMs: number, onComplete: () => void, onError?: (error: { status: number; responseText: string }) => void) => getInstance().pollingManager(intervalMs, onComplete, onError);
 
 export type { ScreenMembersOnResetPasswordMfaPushChallengePush, ResetPasswordMfaPushChallengePushMembers } from '@auth0/auth0-acul-js/reset-password-mfa-push-challenge-push';
 

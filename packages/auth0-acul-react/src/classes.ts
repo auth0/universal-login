@@ -274,7 +274,7 @@ export namespace MfaPhoneEnrollment {
   export const tryAnotherMethod = tryAnotherMethod_MfaPhoneEnrollment;
 }
 
-import { useMfaPushChallengePush as useMfaPushChallengePush_MfaPushChallengePush, useScreen as useScreen_MfaPushChallengePush, useTransaction as useTransaction_MfaPushChallengePush, continueMethod as continueMethod_MfaPushChallengePush, resendPushNotification as resendPushNotification_MfaPushChallengePush, enterCodeManually as enterCodeManually_MfaPushChallengePush, tryAnotherMethod as tryAnotherMethod_MfaPushChallengePush } from './screens/mfa-push-challenge-push';
+import { usePollingManager as useMfaPushChallengePush_MfaPushChallengePush, useScreen as useScreen_MfaPushChallengePush, useTransaction as useTransaction_MfaPushChallengePush, continueMethod as continueMethod_MfaPushChallengePush, resendPushNotification as resendPushNotification_MfaPushChallengePush, enterCodeManually as enterCodeManually_MfaPushChallengePush, tryAnotherMethod as tryAnotherMethod_MfaPushChallengePush } from './screens/mfa-push-challenge-push';
 export namespace MfaPushChallengePush {
   export const useMfaPushChallengePush = useMfaPushChallengePush_MfaPushChallengePush;
   export const useScreen = useScreen_MfaPushChallengePush;
@@ -570,7 +570,7 @@ export namespace ResetPasswordMfaPhoneChallenge {
   export const tryAnotherMethod = tryAnotherMethod_ResetPasswordMfaPhoneChallenge;
 }
 
-import { useResetPasswordMfaPushChallengePush as useResetPasswordMfaPushChallengePush_ResetPasswordMfaPushChallengePush, useScreen as useScreen_ResetPasswordMfaPushChallengePush, useTransaction as useTransaction_ResetPasswordMfaPushChallengePush, continueMethod as continueMethod_ResetPasswordMfaPushChallengePush, resendPushNotification as resendPushNotification_ResetPasswordMfaPushChallengePush, enterCodeManually as enterCodeManually_ResetPasswordMfaPushChallengePush, tryAnotherMethod as tryAnotherMethod_ResetPasswordMfaPushChallengePush } from './screens/reset-password-mfa-push-challenge-push';
+import { usePushPollingManager as useResetPasswordMfaPushChallengePush_ResetPasswordMfaPushChallengePush, useScreen as useScreen_ResetPasswordMfaPushChallengePush, useTransaction as useTransaction_ResetPasswordMfaPushChallengePush, continueMethod as continueMethod_ResetPasswordMfaPushChallengePush, resendPushNotification as resendPushNotification_ResetPasswordMfaPushChallengePush, enterCodeManually as enterCodeManually_ResetPasswordMfaPushChallengePush, tryAnotherMethod as tryAnotherMethod_ResetPasswordMfaPushChallengePush } from './screens/reset-password-mfa-push-challenge-push';
 export namespace ResetPasswordMfaPushChallengePush {
   export const useResetPasswordMfaPushChallengePush = useResetPasswordMfaPushChallengePush_ResetPasswordMfaPushChallengePush;
   export const useScreen = useScreen_ResetPasswordMfaPushChallengePush;
