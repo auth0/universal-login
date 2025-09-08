@@ -6,6 +6,36 @@ type AllowedFormats = {
   usernameInPhoneFormat?: boolean;
 };
 
+
+/**
+ * Validates a username string against a given username policy.
+ *
+ * This function checks the username for:
+ * - Presence (if no policy is provided)
+ * - Minimum and maximum length
+ * - Email format restrictions
+ * - Phone number format restrictions
+ *
+ * If no policy is provided, it defaults to checking whether the username is non-empty.
+ *
+ * @param {string} username - The username to validate.
+ * @param {UsernamePolicy | null} [policy] - Optional validation policy defining length limits and allowed formats.
+ * 
+ * @returns {UsernameValidationResult} An object containing:
+ *  - `isValid`: A boolean indicating if the username passed all validations.
+ *  - `errors`: An array of validation errors, if any.
+ *
+ * @example
+ * const result = validateUsername('john.doe@example.com', {
+ *   minLength: 5,
+ *   maxLength: 20,
+ *   allowedFormats: { usernameInEmailFormat: false },
+ * });
+ * 
+ * if (!result.isValid) {
+ *   console.log(result.errors);
+ * }
+ */
 export function validateUsername(
   username: string,
   policy?: UsernamePolicy | null
