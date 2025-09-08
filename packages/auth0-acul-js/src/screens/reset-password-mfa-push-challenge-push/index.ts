@@ -7,6 +7,7 @@ import { ScreenOverride } from './screen-override';
 
 import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
+import type { MfaPushPollingControl } from '../../../interfaces/screens/mfa-push-challenge-push';
 import type {
   ResetPasswordMfaPushChallengePushMembers,
   ScreenMembersOnResetPasswordMfaPushChallengePush as ScreenOptions,
@@ -127,18 +128,16 @@ export default class ResetPasswordMfaPushChallengePush extends BaseContext imple
    * ```
    */
   startMfaPushPolling(
-  intervalMs: number,
-  onComplete: () => void
-): { stop: () => void; start: () => void; running: () => boolean } {
-  const condition = (body: Record<string, unknown>): boolean =>
-    Boolean((body as { completed?: boolean }).completed);
-  return mfaPushPolling({
-    intervalMs,
-    url: window.location.href,
-    condition,
-    onResult: onComplete,
-  });
-}
+    intervalMs: number,
+    onComplete: () => void,
+    onError?: (error: { status: number; responseText: string }) => void
+  ): MfaPushPollingControl {
+    return mfaPushPolling({
+      intervalMs,
+      onResult: onComplete,
+      onError,
+    });
+  }
 }
 
 export { ResetPasswordMfaPushChallengePushMembers, ScreenOptions as ScreenMembersOnResetPasswordMfaPushChallengePush };

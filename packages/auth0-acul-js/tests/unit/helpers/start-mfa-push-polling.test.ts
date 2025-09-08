@@ -46,18 +46,17 @@ describe('mfaPushPolling', () => {
     const onResult = jest.fn();
     const onError = jest.fn();
 
-    mfaPushPolling({
+    const control = mfaPushPolling({
       intervalMs: 100,
-      url: '/test',
-      condition: (body) => !!body.completed,
       onResult,
       onError,
-    }).start();
+    });
+    control.startPolling();
 
     jest.runOnlyPendingTimers();
     if (_onload) _onload();
 
-    expect(mockXHR.open).toHaveBeenCalledWith('GET', '/test');
+    expect(mockXHR.open).toHaveBeenCalledWith('GET', 'http://localhost/');
     expect(mockXHR.setRequestHeader).toHaveBeenCalledWith('Accept', 'application/json');
     expect(mockXHR.send).toHaveBeenCalled();
     expect(onError).not.toHaveBeenCalled();
@@ -70,11 +69,9 @@ describe('mfaPushPolling', () => {
 
     mfaPushPolling({
       intervalMs: 100,
-      url: '/test',
-      condition: (body) => !!body.completed,
       onResult,
       onError,
-    }).start();
+    }).startPolling();
 
     jest.runOnlyPendingTimers();
     if (_onload) _onload();
@@ -91,11 +88,9 @@ describe('mfaPushPolling', () => {
 
     mfaPushPolling({
       intervalMs: 100,
-      url: '/test',
-      condition: (body) => !!body.completed,
       onResult,
       onError,
-    }).start();
+    }).startPolling();
 
     jest.runOnlyPendingTimers(); 
     if (_onload) _onload();
@@ -112,11 +107,9 @@ describe('mfaPushPolling', () => {
 
     mfaPushPolling({
       intervalMs: 100,
-      url: '/test',
-      condition: (body) => !!body.completed,
       onResult,
       onError,
-    }).start();
+    }).startPolling();
 
     jest.runOnlyPendingTimers();
     if (_onload) _onload();
@@ -130,11 +123,9 @@ describe('mfaPushPolling', () => {
 
     mfaPushPolling({
       intervalMs: 100,
-      url: '/test',
-      condition: (body) => !!body.completed,
       onResult,
       onError,
-    }).start();
+    }).startPolling();
 
     jest.runOnlyPendingTimers();
     if (_onerror) _onerror();
@@ -149,14 +140,11 @@ describe('mfaPushPolling', () => {
 
     const control = mfaPushPolling({
       intervalMs: 100,
-      url: '/test',
-      condition: (body) => !!body.completed,
       onResult,
       onError,
     });
-
-    control.start();
-    control.stop(); // Stop polling immediately
+    control.startPolling();
+    control.stopPolling();
 
     jest.runOnlyPendingTimers();
     if (_onload) _onload();

@@ -9,7 +9,6 @@ import React, {
   useState,
   useEffect,
   useRef,
-  useCallback,
   useMemo,
 } from 'react';
 import MfaPushChallengePush from '@auth0/auth0-acul-js/mfa-push-challenge-push';
@@ -17,17 +16,14 @@ import MfaPushChallengePush from '@auth0/auth0-acul-js/mfa-push-challenge-push';
 const MfaPushChallengePushScreen: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [rememberDevice, setRememberDevice] = useState(false);
-  const [isPolling, setIsPolling] = useState(true);
+  const [isPolling, setIsPolling] = useState(false);
   const mfaPushChallengePush = useMemo(() => new MfaPushChallengePush(), []);
   const { screen, transaction } = mfaPushChallengePush;
   const { deviceName, showRememberDevice } =
     mfaPushChallengePush.screen.data || {};
-    
-  const pollingControl = useRef<{ stop: () => void; start: () => void; running: () => boolean } | null>(null);
+  const pollingControl = useRef<ReturnType<typeof mfaPushChallengePush.startMfaPushPolling> | null>(null); 
 
-  // Initialize form values from untrustedData
   useEffect(() => {
-    // Use untrustedData to prepopulate form fields if available
     const savedFormData = mfaPushChallengePush.untrustedData.submittedFormData;
     if (savedFormData?.rememberDevice !== undefined) {
       setRememberDevice(savedFormData.rememberDevice);
@@ -53,23 +49,14 @@ const MfaPushChallengePushScreen: React.FC = () => {
       'Failed to switch authentication method. Please try again.',
   };
 
-  const startPolling = useCallback(async () => {
-    mfaPushChallengePush.continue({ rememberDevice });
-  }, [mfaPushChallengePush, rememberDevice]);
-
   useEffect(() => {
-    if (pollingControl.current) {
-      pollingControl.current.stop();
-    }
-    pollingControl.current = mfaPushChallengePush.startMfaPushPolling(5000, startPolling);
-    setIsPolling(true);
     return () => {
       if (pollingControl.current) {
-        pollingControl.current.stop();
+        pollingControl.current?.stopPolling();
       }
       setIsPolling(false);
     };
-  }, [startPolling, mfaPushChallengePush]);
+  }, []);
 
   const handleResend = async () => {
     setIsLoading(true);
@@ -104,12 +91,26 @@ const MfaPushChallengePushScreen: React.FC = () => {
     }
   };
 
-  const handleStopPolling = () => {
-    if (pollingControl.current) {
-      pollingControl.current.stop();
-      setIsPolling(false);
+  const handleStartPolling = () => {
+    if (!isPolling) {
+      pollingControl.current = mfaPushChallengePush.startMfaPushPolling(
+        5000,
+        () => {
+          mfaPushChallengePush.continue({ rememberDevice });
+          setIsPolling(false); // Stop spinner when challenge is completed
+        }
+      );
+      pollingControl.current?.startPolling();
+      setIsPolling(true);
     }
   };
+
+  const handleStopPolling = () => {
+  if (pollingControl.current) {
+    pollingControl.current?.stopPolling();
+    setIsPolling(false);
+  }
+};
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center py-12 sm:px-6 lg:px-8">
@@ -176,6 +177,14 @@ const MfaPushChallengePushScreen: React.FC = () => {
               className="w-full flex justify-center py-2 px-4 border border-red-500 rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50"
             >
               Stop Polling
+            </button>
+
+            <button
+              onClick={handleStartPolling}
+              // disabled={!isPolling}
+              className="w-full flex justify-center py-2 px-4 border border-green-500 rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
+            >
+              Start Polling
             </button>
 
             <button

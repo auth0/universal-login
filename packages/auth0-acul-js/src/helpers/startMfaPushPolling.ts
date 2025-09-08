@@ -1,4 +1,4 @@
-import type { StartMfaPushPollingOptions } from '../../interfaces/screens/mfa-push-challenge-push';
+import type { StartMfaPushPollingOptions, MfaPushPollingControl } from '../../interfaces/screens/mfa-push-challenge-push';
 
 /**
  * Starts polling the MFA push challenge endpoint using XHR GET requests.
@@ -19,19 +19,19 @@ import type { StartMfaPushPollingOptions } from '../../interfaces/screens/mfa-pu
  */
 export function mfaPushPolling({
   intervalMs,
-  url,
-  condition = (body: Record<string, unknown>): boolean => Boolean((body as { completed?: boolean }).completed),
   onResult,
   onError,
-}: Omit<StartMfaPushPollingOptions, 'state'> & { url?: string }): { stop: () => void; start: () => void; running: () => boolean } {
+}: StartMfaPushPollingOptions): MfaPushPollingControl {
+  const url = window.location.href;
+  const condition = (body: Record<string, unknown>): boolean => Boolean((body as { completed?: boolean }).completed);
   let cancelled = false;
   let timer: ReturnType<typeof setTimeout> | null = null;
   const pollingUrl = url || (typeof window !== 'undefined' ? window.location.href : '');
-  let isRunning = false;
+  let running = false;
 
   function internalPoll(): void {
     if (cancelled) return;
-    isRunning = true;
+    running = true;
     if (typeof document !== 'undefined' && document.hidden) {
       timer = setTimeout(internalPoll, intervalMs);
       return;
@@ -55,7 +55,7 @@ export function mfaPushPolling({
         if (typeof body === 'object' && body !== null && !Array.isArray(body)) {
           if (condition(body)) {
             if (onResult) onResult();
-            isRunning = false;
+            running = false;
             return;
           }
         }
@@ -77,24 +77,23 @@ export function mfaPushPolling({
     xhr.send();
   }
 
-  function start(): void {
-    if (!isRunning) {
+  function startPolling(): void {
+    if (!running) {
       cancelled = false;
       internalPoll();
     }
   }
 
-  function stop(): void {
+  function stopPolling(): void {
     cancelled = true;
-    isRunning = false;
+    running = false;
     if (timer) clearTimeout(timer);
   }
 
-  function running(): boolean {
-    return isRunning && !cancelled;
+  function isRunning(): boolean {
+    return running && !cancelled;
   }
 
-  start();
 
-  return { stop, start, running };
+  return { stopPolling, startPolling, isRunning };
 }

@@ -9,6 +9,7 @@ import { UntrustedDataOverride } from './untrusted-data-overrider';
 import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { UntrustedDataContext } from '../../../interfaces/models/untrusted-data';
+import type { MfaPushPollingControl } from '../../../interfaces/screens/mfa-push-challenge-push';
 import type {
   MfaPushChallengePushMembers,
   WithRememberOptions,
@@ -146,13 +147,9 @@ export default class MfaPushChallengePush extends BaseContext implements MfaPush
     intervalMs: number,
     onComplete: () => void,
     onError?: (error: { status: number; responseText: string }) => void
-  ): { stop: () => void; start: () => void; running: () => boolean } {
-    const condition = (body: Record<string, unknown>): boolean =>
-      Boolean((body as { completed?: boolean }).completed);
+  ): MfaPushPollingControl {
     return mfaPushPolling({
       intervalMs,
-      url: window.location.href,
-      condition,
       onResult: onComplete,
       onError,
     });

@@ -64,7 +64,7 @@ export interface MfaPushChallengePushMembers extends BaseMembers {
    * @param intervalMs Polling interval in milliseconds
    * @param onComplete Callback function to be called when polling is completed
    */
-  startMfaPushPolling(intervalMs: number, onComplete: () => void): void;
+  startMfaPushPolling(intervalMs: number, onComplete: () => void, onError?: (error: { status: number; responseText: string }) => void): void;
 }
 
 /**
@@ -72,8 +72,12 @@ export interface MfaPushChallengePushMembers extends BaseMembers {
  */
 export type StartMfaPushPollingOptions = {
   intervalMs: number;
-  url: string;
-  condition?: (body: Record<string, unknown>) => boolean;
   onResult?: () => void;
   onError?: (error: { status: number; responseText: string }) => void;
 };
+
+export interface MfaPushPollingControl {
+  stopPolling: () => void;
+  startPolling: () => void;
+  isRunning: () => boolean;
+}
