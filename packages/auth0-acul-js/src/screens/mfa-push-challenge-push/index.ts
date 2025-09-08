@@ -126,28 +126,37 @@ export default class MfaPushChallengePush extends BaseContext implements MfaPush
   /**
    * Starts polling the MFA push challenge endpoint.
    * Calls the provided callback when the polling condition is met.
+   * Optionally handles polling errors via onError callback.
    * 
    * @param intervalMs Polling interval in milliseconds
-   * @param onComplete Callback function called when polling condition is met, receives rememberDevice value
-   * @returns A cancel function to stop polling
+   * @param onComplete Callback function called when polling condition is met
+   * @param onError Optional callback called on polling error (receives error object)
+   * @returns Polling control object with stop/start/running
    * @example
    * ```typescript
-   * const cancel = mfaPushChallengePush.startMfaPushPolling(5000, (rememberDevice) => { mfaPushChallengePush.continue({ rememberDevice }); });
+   * const control = mfaPushChallengePush.startMfaPushPolling(
+   *   5000,
+   *   () => { mfaPushChallengePush.continue(); },
+   *   (error) => { console.error('Polling error:', error); }
+   * );
+   * control.stop(); // To stop polling manually
    * ```
    */
   startMfaPushPolling(
-  intervalMs: number,
-  onComplete: () => void
-): { stop: () => void; start: () => void; running: () => boolean } {
-  const condition = (body: Record<string, unknown>): boolean =>
-    Boolean((body as { completed?: boolean }).completed);
-  return mfaPushPolling({
-    intervalMs,
-    url: window.location.href,
-    condition,
-    onResult: onComplete,
-  });
-}
+    intervalMs: number,
+    onComplete: () => void,
+    onError?: (error: { status: number; responseText: string }) => void
+  ): { stop: () => void; start: () => void; running: () => boolean } {
+    const condition = (body: Record<string, unknown>): boolean =>
+      Boolean((body as { completed?: boolean }).completed);
+    return mfaPushPolling({
+      intervalMs,
+      url: window.location.href,
+      condition,
+      onResult: onComplete,
+      onError,
+    });
+  }
 }
 
 export {
