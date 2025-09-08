@@ -226,7 +226,7 @@ useEffect(() => {
   };
 }, []);
 
-// To manually stop polling (e.g., on button click):
+// To manually stop polling
 // pollerRef.current.stop();
 
 // To restart polling:
@@ -247,7 +247,7 @@ import MfaPushChallengePush from '@auth0/auth0-acul-js/mfa-push-challenge-push';
 
 const mfaPushChallengePush = new MfaPushChallengePush();
 
-// Get polling control object
+// Get polling object
 const polling = mfaPushChallengePush.startMfaPushPolling(5000, async () => {
   await mfaPushChallengePush.continue();
 });
@@ -255,10 +255,8 @@ const polling = mfaPushChallengePush.startMfaPushPolling(5000, async () => {
 // Start polling
 polling.start();
 
-// Stop polling (e.g., on user action)
 polling.stop();
 
-// Check if polling is running
 console.log(polling.running()); // true or false
 ```
 
@@ -273,19 +271,17 @@ const MfaPushChallengePushScreen: React.FC = () => {
   const pollingRef = useRef<any>(null);
 
   useEffect(() => {
-    // Get polling control object
+    // Get polling object
     pollingRef.current = mfaPushChallengePush.startMfaPushPolling(5000, async () => {
       await mfaPushChallengePush.continue();
     });
     // Start polling
     pollingRef.current.start();
     return () => {
-      // Stop polling on unmount
       pollingRef.current?.stop();
     };
   }, [mfaPushChallengePush]);
 
-  // You can check pollingRef.current.running() to see if polling is active
 
   return <div>...</div>;
 };
@@ -306,10 +302,9 @@ const mfaPushChallengePush = new MfaPushChallengePush();
 const pollInterval = setInterval(async () => {
   try {
     await mfaPushChallengePush.continue();
-    // If successful, the page will redirect
     clearInterval(pollInterval);
   } catch (error) {
-    // Ignore polling errors
+    
   }
 }, 5000);
 ```
