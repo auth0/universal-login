@@ -54,7 +54,8 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
       state: this.transaction.state,
       telemetry: [LoginId.screenIdentifier, 'login'],
     };
-    const browserCapabilities = await getBrowserCapabilities()
+
+    const browserCapabilities = await getBrowserCapabilities();
     await new FormHandler(options).submitData<LoginOptions>({
       ...payload,
       ...browserCapabilities
@@ -158,3 +159,4 @@ export {
 };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';
+export * from '../../utils/errors'
