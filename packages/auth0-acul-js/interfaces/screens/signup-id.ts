@@ -1,7 +1,7 @@
 import type { IdentifierType } from '../../src/constants';
 import type { CustomOptions } from '../common';
 import type { BaseContext, BaseMembers } from '../models/base-context';
-import type { Identifier, ScreenContext, ScreenMembers } from '../models/screen';
+import type { Identifier, ScreenContext, ScreenMembers, UsernameValidationResult } from '../models/screen';
 import type { TransactionMembers, UsernamePolicy } from '../models/transaction';
 import type { UntrustedDataContext } from '../models/untrusted-data';
 interface ExtendedScreenContext extends ScreenContext {
@@ -55,4 +55,5 @@ export interface SignupIdMembers extends BaseMembers {
   federatedSignup(payload: FederatedSignupOptions): Promise<void>;
   getEnabledIdentifiers(): Identifier[] | null;
   pickCountryCode(payload?: CustomOptions): Promise<void>;
+  validateUsername(username: string): UsernameValidationResult;
 }
