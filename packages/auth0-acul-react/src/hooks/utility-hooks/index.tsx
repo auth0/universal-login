@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import type { UseResendReturn, UseResendParams, ScreenWithResendManager } from '../../interfaces/common';
+import type { ResendControl } from '@auth0/auth0-acul-js';
 
 /**
  * Generic hook that works with any screen that has a resendManager method
@@ -8,42 +9,41 @@ import type { UseResendReturn, UseResendParams, ScreenWithResendManager } from '
  * @returns Object with remaining seconds, disabled state, and startResend function
  */
 
-export function useResendWithManager(
+export function resendManager(
   screenInstance: ScreenWithResendManager,
   payload?: UseResendParams
 ): UseResendReturn {
-  const { timeoutSeconds = 10, onResend, onComplete } = payload ?? {};
+  const { timeoutSeconds = 10, onTimeout } = payload ?? {};
   const [remaining, setRemaining] = useState(0);
   const [disabled, setDisabled] = useState(false);
-  const [resendCallback, setResendCallback] = useState<(() => Promise<void>) | null>(null);
+  const [resendControl, setResendControl] = useState<ResendControl | null>(null);
 
   // Handle state changes from resendManager
   const handleStateChange = useCallback((remainingSeconds: number, isDisabled: boolean) => {
     setRemaining(remainingSeconds);
     setDisabled(isDisabled);
     
-    // Call onComplete when timer hits 0 and is disabled
-    if (remainingSeconds === 0 && isDisabled === true && onComplete) {
-      onComplete();
+    // Call onTimeout when timer hits 0 and is disabled
+    if (remainingSeconds === 0 && isDisabled === true && onTimeout) {
+      onTimeout();
     }
-  }, [onComplete]);
+  }, [onTimeout]);
 
   // Initialize resend manager
   useEffect(() => {
-    const callback = screenInstance.resendManager({
+    const control = screenInstance.resendManager({
       timeoutSeconds,
-      onResend,
-      onStateChange: handleStateChange,
+      onStatusChange: handleStateChange,
     });
-    setResendCallback(() => callback);
-  }, [screenInstance, timeoutSeconds, onResend, handleStateChange]);
+    setResendControl(control);
+  }, [screenInstance, timeoutSeconds, handleStateChange]);
 
   // Memoize startResend function
   const startResend = useCallback(async () => {
-    if (resendCallback) {
-      await resendCallback();
+    if (resendControl) {
+      await resendControl.startResend();
     }
-  }, [resendCallback]);
+  }, [resendControl]);
 
   return {
     remaining,

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import PhoneIdentifierChallenge from '@auth0/auth0-acul-js/phone-identifier-challenge';
 import { ContextHooks } from '../hooks/context-hooks';
-import { useResendWithManager } from '../hooks/utility-hooks';
+import { resendManager } from '../hooks/utility-hooks';
 import type { UseResendParams, UseResendReturn } from '../interfaces/common';
 
 import type { PhoneIdentifierChallengeMembers, PhoneChallengeOptions, CustomOptions, ScreenMembersOnPhoneIdentifierChallenge } from '@auth0/auth0-acul-js/phone-identifier-challenge';
@@ -37,7 +37,7 @@ export const returnToPrevious = (payload?: CustomOptions) => getInstance().retur
 
 // Resend hook
 export const useResend = (payload?: UseResendParams): UseResendReturn => {
-  return useResendWithManager(getInstance(), payload);
+  return resendManager(getInstance(), payload);
 };
 
 export type { PhoneChallengeOptions, ScreenMembersOnPhoneIdentifierChallenge, PhoneIdentifierChallengeMembers } from '@auth0/auth0-acul-js/phone-identifier-challenge';

@@ -1,4 +1,4 @@
-import type { StartResendOptions } from '@auth0/auth0-acul-js';
+import type { StartResendOptions, ResendControl } from '@auth0/auth0-acul-js';
 
 /**
  * Return type for the useResend hook
@@ -14,13 +14,12 @@ export interface UseResendReturn {
  */
 export interface UseResendParams {
   timeoutSeconds?: number;
-  onResend?: () => Promise<void> | void;
-  onComplete?: () => void; // Called when timer hits 0
+  onTimeout?: () => void; // Called when timer hits 0
 }
 
 /**
  * Generic interface for any screen that has a resendManager method
  */
 export interface ScreenWithResendManager {
-  resendManager(options?: StartResendOptions): () => Promise<void>;
+  resendManager(options?: StartResendOptions): ResendControl;
 }

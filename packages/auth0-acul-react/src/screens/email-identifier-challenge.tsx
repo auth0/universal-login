@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import EmailIdentifierChallenge from '@auth0/auth0-acul-js/email-identifier-challenge';
 import { ContextHooks } from '../hooks/context-hooks';
-import { useResendWithManager } from '../hooks/utility-hooks';
+import { resendManager } from '../hooks/utility-hooks';
 import type { UseResendParams, UseResendReturn } from '../interfaces/common';
 
 import type { EmailIdentifierChallengeMembers, EmailChallengeOptions, CustomOptions, ScreenMembersOnEmailIdentifierChallenge } from '@auth0/auth0-acul-js/email-identifier-challenge';
@@ -38,7 +38,7 @@ export const returnToPrevious = (payload?: CustomOptions) => getInstance().retur
 
 // Resend hook
 export const useResend = (payload?: UseResendParams): UseResendReturn => {
-  return useResendWithManager(getInstance(), payload);
+  return resendManager(getInstance(), payload);
 };
 
 export type { EmailChallengeOptions, ScreenMembersOnEmailIdentifierChallenge, EmailIdentifierChallengeMembers } from '@auth0/auth0-acul-js/email-identifier-challenge';
