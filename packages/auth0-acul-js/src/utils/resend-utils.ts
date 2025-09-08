@@ -35,11 +35,12 @@ export function createResendControl(
     const timeoutMs = timeoutSeconds * 1000;
     const timeElapsed = currentTime - lastResendTime;
 
+    const previousRemaining = remaining;
     remaining = Math.max(0, Math.ceil((timeoutMs - timeElapsed) / 1000));
     disabled = remaining > 0 || !!resendLimitReached;
 
-    // Call onTimeout when countdown reaches 0
-    if (onTimeout && remaining === 0 && !hasCalledOnTimeout) {
+    // Call onTimeout when countdown reaches 0 from a positive value
+    if (onTimeout && previousRemaining > 0 && remaining === 0 && !hasCalledOnTimeout) {
       hasCalledOnTimeout = true;
       onTimeout();
     }
@@ -54,6 +55,7 @@ export function createResendControl(
     localStorage.setItem(storageKey, Date.now().toString());
     hasCalledOnTimeout = false; // Reset for new timer
     cleanup();
+    // Immediate update so UI reflects disabled state right away
     calculateState();
     intervalId = setInterval(() => {
       calculateState();
@@ -66,20 +68,28 @@ export function createResendControl(
   const callback = async (): Promise<void> => {
     calculateState();
     if (disabled) return;
+
     await resendMethod();
     startTimer();
   };
 
-  calculateState();
-  if (remaining > 0) {
-    intervalId = setInterval(() => {
-      calculateState();
-      if (remaining <= 0) {
-        cleanup();
-      }
-    }, 1000);
-  }
-  
+
+  setTimeout(() => {
+    cleanup();
+    calculateState();
+    if (remaining > 0) {
+      hasCalledOnTimeout = false; // Reset since we're starting an existing timer
+      intervalId = setInterval(() => {
+        calculateState();
+        if (remaining <= 0) {
+          cleanup();
+        }
+      }, 1000);
+    }
+  }, 0);
+
+
+
   return {
     startResend: callback
   };
