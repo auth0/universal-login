@@ -52,7 +52,7 @@ describe('mfaPushPolling', () => {
       condition: (body) => !!body.completed,
       onResult,
       onError,
-    })();
+    }).start();
 
     jest.runOnlyPendingTimers();
     if (_onload) _onload();
@@ -74,7 +74,7 @@ describe('mfaPushPolling', () => {
       condition: (body) => !!body.completed,
       onResult,
       onError,
-    })();
+    }).start();
 
     jest.runOnlyPendingTimers();
     if (_onload) _onload();
@@ -95,7 +95,7 @@ describe('mfaPushPolling', () => {
       condition: (body) => !!body.completed,
       onResult,
       onError,
-    })();
+    }).start();
 
     jest.runOnlyPendingTimers(); 
     if (_onload) _onload();
@@ -116,7 +116,7 @@ describe('mfaPushPolling', () => {
       condition: (body) => !!body.completed,
       onResult,
       onError,
-    })();
+    }).start();
 
     jest.runOnlyPendingTimers();
     if (_onload) _onload();
@@ -134,7 +134,7 @@ describe('mfaPushPolling', () => {
       condition: (body) => !!body.completed,
       onResult,
       onError,
-    })();
+    }).start();
 
     jest.runOnlyPendingTimers();
     if (_onerror) _onerror();

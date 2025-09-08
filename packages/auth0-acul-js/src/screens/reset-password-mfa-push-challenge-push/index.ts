@@ -127,18 +127,18 @@ export default class ResetPasswordMfaPushChallengePush extends BaseContext imple
    * ```
    */
   startMfaPushPolling(
-      intervalMs: number,
-      onComplete: () => void
-    ): () => void {
-      const condition = (body: Record<string, unknown>): boolean =>
-        Boolean((body as { completed?: boolean }).completed);
-      return mfaPushPolling({
-        intervalMs,
-        url: window.location.href,
-        condition,
-        onResult: onComplete,
-      });
-    }
+  intervalMs: number,
+  onComplete: () => void
+): { stop: () => void; start: () => void; running: () => boolean } {
+  const condition = (body: Record<string, unknown>): boolean =>
+    Boolean((body as { completed?: boolean }).completed);
+  return mfaPushPolling({
+    intervalMs,
+    url: window.location.href,
+    condition,
+    onResult: onComplete,
+  });
+}
 }
 
 export { ResetPasswordMfaPushChallengePushMembers, ScreenOptions as ScreenMembersOnResetPasswordMfaPushChallengePush };

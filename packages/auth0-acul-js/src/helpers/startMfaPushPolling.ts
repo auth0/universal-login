@@ -23,13 +23,15 @@ export function mfaPushPolling({
   condition = (body: Record<string, unknown>): boolean => Boolean((body as { completed?: boolean }).completed),
   onResult,
   onError,
-}: Omit<StartMfaPushPollingOptions, 'state'> & { url?: string }): () => void {
+}: Omit<StartMfaPushPollingOptions, 'state'> & { url?: string }): { stop: () => void; start: () => void; running: () => boolean } {
   let cancelled = false;
   let timer: ReturnType<typeof setTimeout> | null = null;
   const pollingUrl = url || (typeof window !== 'undefined' ? window.location.href : '');
+  let isRunning = false;
 
   function internalPoll(): void {
     if (cancelled) return;
+    isRunning = true;
     if (typeof document !== 'undefined' && document.hidden) {
       timer = setTimeout(internalPoll, intervalMs);
       return;
@@ -53,6 +55,7 @@ export function mfaPushPolling({
         if (typeof body === 'object' && body !== null && !Array.isArray(body)) {
           if (condition(body)) {
             if (onResult) onResult();
+            isRunning = false;
             return;
           }
         }
@@ -74,11 +77,24 @@ export function mfaPushPolling({
     xhr.send();
   }
 
-  internalPoll();
-  function cancel(): void {
+  function start(): void {
+    if (!isRunning) {
+      cancelled = false;
+      internalPoll();
+    }
+  }
+
+  function stop(): void {
     cancelled = true;
+    isRunning = false;
     if (timer) clearTimeout(timer);
   }
 
-  return cancel;
+  function running(): boolean {
+    return isRunning && !cancelled;
+  }
+
+  start();
+
+  return { stop, start, running };
 }
