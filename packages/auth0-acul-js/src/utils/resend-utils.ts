@@ -14,76 +14,73 @@ export function createResendControl(
   options?: StartResendOptions,
   resendLimitReached?: boolean
 ): ResendControl {
-  const { timeoutSeconds = 10, onStatusChange, onTimeout } = options || {};
-  const storageKey = `acul_resend_timeout_${screenIdentifier}`;
-
-  let remaining = 0;
-  let disabled = false;
-  let hasCalledOnTimeout = false; // Track if onTimeout has been called
+  const storageKey = `resend-timer-${screenIdentifier}`;
   let intervalId: ReturnType<typeof setInterval> | null = null;
 
-  const cleanup = (): void => {
+  const stopTimer = (): void => {
     if (intervalId) {
       clearInterval(intervalId);
       intervalId = null;
     }
   };
 
-  const calculateState = (): void => {
-    const lastResendTime = parseInt(localStorage.getItem(storageKey) || '0', 10);
-    const currentTime = Date.now();
-    const timeoutMs = timeoutSeconds * 1000;
-    const timeElapsed = currentTime - lastResendTime;
-  
-    const previousRemaining = remaining;
-    remaining = Math.max(0, Math.ceil((timeoutMs - timeElapsed) / 1000));
-    disabled = remaining > 0 || !!resendLimitReached;
+  const startTimer = (endTime: number): void => {
+    stopTimer();
 
-    // Call onTimeout when countdown reaches 0
-    if (onTimeout && previousRemaining > 0 && remaining === 0 && !hasCalledOnTimeout) {
-      hasCalledOnTimeout = true;
-      onTimeout();
-    }
-
-    // Always call onStatusChange if it exists
-    if (onStatusChange) {
-      onStatusChange(remaining, disabled);
-    }
-  };
-
-  const startTimer = (): void => {
-    localStorage.setItem(storageKey, Date.now().toString());
-    hasCalledOnTimeout = false; // Reset for new timer
-    cleanup();
-    // Immediate update so UI reflects disabled state right away
-    calculateState();
     intervalId = setInterval(() => {
-      calculateState();
+      const now = Date.now();
+      const remaining = Math.max(0, Math.round((endTime - now) / 1000));
+
+      options?.onStatusChange?.(remaining, true);
+
       if (remaining <= 0) {
-        cleanup();
+        stopTimer();
+        localStorage.removeItem(storageKey);
+        options?.onTimeout?.();
       }
     }, 1000);
   };
 
-  const callback = async (): Promise<void> => {
-    calculateState();
-    if (disabled) return;
-
-    await resendMethod();
-    startTimer();
-  };
-
-  if (remaining >= 0) {
-    cleanup();
-    intervalId = setInterval(() => {
-      calculateState();
-      if (remaining <= 0) {
-        cleanup();
-      }
-    }, 1000);
+  // Check for existing timer on initialization
+  const storedEndTime = localStorage.getItem(storageKey);
+  if (storedEndTime) {
+    const endTime = parseInt(storedEndTime, 10);
+    if (Date.now() < endTime) {
+      startTimer(endTime);
+    } else {
+      localStorage.removeItem(storageKey);
+    }
+  } else {
+    options?.onStatusChange?.(0, false);
   }
 
-  return {
-    startResend: callback
+  if (resendLimitReached) {
+    options?.onStatusChange?.(0, true);
+  }
+
+  const startResend = (): void => {
+    if (resendLimitReached) {
+      return;
+    }
+
+    const stored = localStorage.getItem(storageKey);
+    if (stored && Date.now() < parseInt(stored, 10)) {
+      // Timer is already running
+      return;
+    }
+    
+    const timeout = options?.timeoutSeconds ?? 60;
+    options?.onStatusChange?.(timeout, true);    
+    const endTime = Date.now() + timeout * 1000;
+    localStorage.setItem(storageKey, endTime.toString());
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    resendMethod();
+    startTimer(endTime);
   };
+
+  const getDisabled = () => {
+    return disabl
+  }
+
+  return { startResend };
 }

@@ -1,4 +1,4 @@
-import type { StartResendOptions, ResendControl } from '@auth0/auth0-acul-js';
+import type { StartResendOptions, ResendControl, OnTimeoutCallback } from '@auth0/auth0-acul-js';
 
 /**
  * Return type for the useResend hook
@@ -6,7 +6,7 @@ import type { StartResendOptions, ResendControl } from '@auth0/auth0-acul-js';
 export interface UseResendReturn {
   remaining: number;
   disabled: boolean;
-  startResend: () => Promise<void>;
+  startResend: () => void;
 }
 
 /**
@@ -14,7 +14,7 @@ export interface UseResendReturn {
  */
 export interface UseResendParams {
   timeoutSeconds?: number;
-  onTimeout?: () => void; // Called when timer hits 0
+  onTimeout?: OnTimeoutCallback;
 }
 
 /**

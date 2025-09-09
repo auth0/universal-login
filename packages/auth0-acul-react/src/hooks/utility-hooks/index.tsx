@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { UseResendReturn, UseResendParams, ScreenWithResendManager } from '../../interfaces/common';
 import type { ResendControl } from '@auth0/auth0-acul-js';
 
@@ -16,34 +16,23 @@ export function resendManager(
   const { timeoutSeconds = 10, onTimeout } = payload ?? {};
   const [remaining, setRemaining] = useState(0);
   const [disabled, setDisabled] = useState(false);
-  const [resendControl, setResendControl] = useState<ResendControl | null>(null);
 
   // Handle state changes from resendManager
   const handleStateChange = useCallback((remainingSeconds: number, isDisabled: boolean) => {
     setRemaining(remainingSeconds);
     setDisabled(isDisabled);
-  }, []);
+  }, [setRemaining, setDisabled]);
 
   // Initialize resend manager
-  useEffect(() => {
-    const control = screenInstance.resendManager({
+    const control = useRef(screenInstance.resendManager({
       timeoutSeconds,
       onStatusChange: handleStateChange,
       ...(onTimeout && { onTimeout }),
-    });
-    setResendControl(control);
-  }, [screenInstance, timeoutSeconds, handleStateChange]);
-
-  // Memoize startResend function
-  const startResend = useCallback(async () => {
-    if (resendControl) {
-      await resendControl.startResend();
-    }
-  }, [resendControl]);
+    }));
 
   return {
     remaining,
     disabled,
-    startResend,
+    startResend: control.current.startResend,
   };
 }

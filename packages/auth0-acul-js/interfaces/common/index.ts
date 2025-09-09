@@ -85,5 +85,5 @@ export interface StartResendOptions {
  * Control object returned by resendManager method
  */
 export interface ResendControl {
-  startResend: () => Promise<void>;
+  startResend: () => void;
 }
