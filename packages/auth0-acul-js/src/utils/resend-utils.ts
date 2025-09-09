@@ -34,7 +34,7 @@ export function createResendControl(
     const currentTime = Date.now();
     const timeoutMs = timeoutSeconds * 1000;
     const timeElapsed = currentTime - lastResendTime;
-
+  
     const previousRemaining = remaining;
     remaining = Math.max(0, Math.ceil((timeoutMs - timeElapsed) / 1000));
     disabled = remaining > 0 || !!resendLimitReached;
@@ -73,9 +73,7 @@ export function createResendControl(
     startTimer();
   };
 
-  calculateState(); // ensures disabled state is computed immediately
-
-  if (remaining > 0) {
+  if (remaining >= 0) {
     cleanup();
     intervalId = setInterval(() => {
       calculateState();
