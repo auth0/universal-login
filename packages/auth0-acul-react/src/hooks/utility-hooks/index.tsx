@@ -22,18 +22,14 @@ export function resendManager(
   const handleStateChange = useCallback((remainingSeconds: number, isDisabled: boolean) => {
     setRemaining(remainingSeconds);
     setDisabled(isDisabled);
-    
-    // Call onTimeout when timer hits 0 and is disabled
-    if (remainingSeconds === 0 && isDisabled === true && onTimeout) {
-      onTimeout();
-    }
-  }, [onTimeout]);
+  }, []);
 
   // Initialize resend manager
   useEffect(() => {
     const control = screenInstance.resendManager({
       timeoutSeconds,
       onStatusChange: handleStateChange,
+      ...(onTimeout && { onTimeout }),
     });
     setResendControl(control);
   }, [screenInstance, timeoutSeconds, handleStateChange]);
