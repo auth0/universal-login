@@ -31,6 +31,7 @@ export const useTransaction: () => TransactionMembersOnLogin = () => useMemo(() 
 // Screen methods
 export const login = (payload: LoginOptions) => getInstance().login(payload);
 export const federatedLogin = (payload: FederatedLoginOptions) => getInstance().federatedLogin(payload);
+export const useActiveIdentifiers = () => getInstance().getActiveIdentifiers();
 
 export type { ScreenMembersOnLogin, TransactionMembersOnLogin, LoginOptions, FederatedLoginOptions, LoginMembers } from '@auth0/auth0-acul-js/login';
 

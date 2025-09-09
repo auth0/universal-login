@@ -34,12 +34,12 @@ export function createResendControl(
     const currentTime = Date.now();
     const timeoutMs = timeoutSeconds * 1000;
     const timeElapsed = currentTime - lastResendTime;
-
+  
     const previousRemaining = remaining;
     remaining = Math.max(0, Math.ceil((timeoutMs - timeElapsed) / 1000));
     disabled = remaining > 0 || !!resendLimitReached;
 
-    // Call onTimeout when countdown reaches 0 from a positive value
+    // Call onTimeout when countdown reaches 0
     if (onTimeout && previousRemaining > 0 && remaining === 0 && !hasCalledOnTimeout) {
       hasCalledOnTimeout = true;
       onTimeout();
@@ -73,25 +73,17 @@ export function createResendControl(
     startTimer();
   };
 
-
-  setTimeout(() => {
+  if (remaining >= 0) {
     cleanup();
-    calculateState();
-    if (remaining > 0) {
-      hasCalledOnTimeout = false; // Reset since we're starting an existing timer
-      intervalId = setInterval(() => {
-        calculateState();
-        if (remaining <= 0) {
-          cleanup();
-        }
-      }, 1000);
-    }
-  }, 0);
-
-
+    intervalId = setInterval(() => {
+      calculateState();
+      if (remaining <= 0) {
+        cleanup();
+      }
+    }, 1000);
+  }
 
   return {
     startResend: callback
   };
 }
-

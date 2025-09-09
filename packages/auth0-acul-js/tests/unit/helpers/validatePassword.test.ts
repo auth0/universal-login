@@ -1,5 +1,10 @@
 import validatePassword from '../../../src/helpers/validatePassword';
 import type { PasswordComplexityRule, PasswordPolicy } from '../../../interfaces/models/transaction';
+import type { PasswordRuleValidation } from '../../../interfaces/models/screen';
+
+// Helper to get all failed rule codes
+const getFailedRules = (result: PasswordRuleValidation[]) =>
+  result.filter((r) => !r.isValid).map((r) => r.code);
 
 // Local test-only version of PasswordPolicy
 type TestPasswordPolicy = {
@@ -7,7 +12,6 @@ type TestPasswordPolicy = {
   minLength: number;
   passwordSecurityInfo?: PasswordComplexityRule[];
 };
-
 
 describe('validatePassword', () => {
   const baseSecurityInfo: PasswordComplexityRule[] = [
@@ -96,102 +100,104 @@ describe('validatePassword', () => {
     },
   };
 
-  it('returns invalid and error when password is empty and no policy', () => {
+  it('returns error when password is empty and no policy', () => {
     const result = validatePassword('', null);
-    expect(result.isValid).toBe(false);
-    expect(result.errors).toEqual([{ code: 'password_required', message: 'Password is required.' }]);
+    const failed = getFailedRules(result);
+    expect(failed).toContain('password_required');
   });
 
-  it('returns valid and no errors when password present and no policy', () => {
+  it('returns no errors when password present and no policy', () => {
     const result = validatePassword('anyPassword123!', null);
-    expect(result.isValid).toBe(true);
-    expect(result.errors.length).toBe(0);
+    const failed = getFailedRules(result);
+    expect(failed.length).toBe(0);
   });
 
   it('fails minLength rule', () => {
     const password = 'short';
     const policy = policies.fair as unknown as PasswordPolicy;
     const result = validatePassword(password, policy);
-    expect(result.isValid).toBe(false);
-    expect(result.errors.some(e => e.code === 'password-policy-length-at-least')).toBe(true);
+    const failed = getFailedRules(result);
+    expect(failed).toContain('password-policy-length-at-least');
   });
 
   it('fails missing lowercase rule', () => {
     const password = 'PASSWORD1!';
     const policy = policies.fair as unknown as PasswordPolicy;
     const result = validatePassword(password, policy);
-    expect(result.isValid).toBe(false);
-    expect(result.errors.some(e => e.code === 'password-policy-lower-case')).toBe(true);
+    const failed = getFailedRules(result);
+    expect(failed).toContain('password-policy-lower-case');
   });
 
   it('fails missing uppercase rule', () => {
     const password = 'password1!';
     const policy = policies.fair as unknown as PasswordPolicy;
     const result = validatePassword(password, policy);
-    expect(result.isValid).toBe(false);
-    expect(result.errors.some(e => e.code === 'password-policy-upper-case')).toBe(true);
+    const failed = getFailedRules(result);
+    expect(failed).toContain('password-policy-upper-case');
   });
 
   it('fails missing number rule', () => {
     const password = 'Password!';
     const policy = policies.fair as unknown as PasswordPolicy;
     const result = validatePassword(password, policy);
-    expect(result.isValid).toBe(false);
-    expect(result.errors.some(e => e.code === 'password-policy-numbers')).toBe(true);
+    const failed = getFailedRules(result);
+    expect(failed).toContain('password-policy-numbers');
   });
 
   it('fails missing special character rule', () => {
     const password = 'Password1';
     const policy = policies.fair as unknown as PasswordPolicy;
     const result = validatePassword(password, policy);
-    expect(result.isValid).toBe(false);
-    expect(result.errors.some(e => e.code === 'password-policy-special-characters')).toBe(true);
+    const failed = getFailedRules(result);
+    expect(failed).toContain('password-policy-special-characters');
   });
 
   it('fails identical chars rule when 3 identical in a row', () => {
     const password = 'Passsssword1!';
     const policy = policies.fair as unknown as PasswordPolicy;
     const result = validatePassword(password, policy);
-    expect(result.isValid).toBe(false);
-    expect(result.errors.some(e => e.code === 'password-policy-identical-chars')).toBe(true);
+    const failed = getFailedRules(result);
+    expect(failed).toContain('password-policy-identical-chars');
   });
 
   it('fails "contains at least" rule when not enough complexity types met', () => {
     const password = 'PasswordPassword';
     const policy = policies.fair as unknown as PasswordPolicy;
     const result = validatePassword(password, policy);
-    expect(result.isValid).toBe(false);
-    expect(result.errors.some(e => e.code === 'password-policy-contains-at-least')).toBe(true);
+    const failed = getFailedRules(result);
+    expect(failed).toContain('password-policy-contains-at-least');
   });
 
   it('fails nested items in "contains at least" when individual complexity rules fail', () => {
     const password = 'PasswordPassword';
     const policy = policies.fair as unknown as PasswordPolicy;
     const result = validatePassword(password, policy);
-    expect(result.errors.some(e => e.code === 'password-policy-numbers')).toBe(true);
-    expect(result.errors.some(e => e.code === 'password-policy-special-characters')).toBe(true);
+    const failed = getFailedRules(result);
+    expect(failed).toContain('password-policy-numbers');
+    expect(failed).toContain('password-policy-special-characters');
   });
 
   it('passes all rules with a strong password for fair policy', () => {
     const password = 'Strong1!';
     const policy = policies.fair as unknown as PasswordPolicy;
     const result = validatePassword(password, policy);
-    expect(result.isValid).toBe(true);
-    expect(result.errors.length).toBe(0);
+    const failed = getFailedRules(result);
+    expect(failed.length).toBe(0);
   });
 
   it('passes all rules with a very strong password for excellent policy', () => {
     const password = 'Excellent1@Password';
     const policy = policies.excellent as unknown as PasswordPolicy;
     const result = validatePassword(password, policy);
-    expect(result.isValid).toBe(true);
-    expect(result.errors.length).toBe(0);
+    const failed = getFailedRules(result);
+    expect(failed.length).toBe(0);
   });
 
   it('passes good policy with all complexity rules', () => {
     const password = 'GoodPass1!';
     const policy = policies.good as unknown as PasswordPolicy;
     const result = validatePassword(password, policy);
-    expect(result.isValid).toBe(true);
+    const failed = getFailedRules(result);
+    expect(failed.length).toBe(0);
   });
 });

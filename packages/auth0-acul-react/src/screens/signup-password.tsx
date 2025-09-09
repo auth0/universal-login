@@ -31,7 +31,7 @@ export const useTransaction: () => TransactionMembersOnSignupPassword = () => us
 // Screen methods
 export const signup = (payload: SignupPasswordOptions) => getInstance().signup(payload);
 export const federatedSignup = (payload: FederatedSignupOptions) => getInstance().federatedSignup(payload);
-export const validatePassword = (password: string) => getInstance().validatePassword(password);
+export const usePasswordValidation = (password: string) => getInstance().validatePassword(password);
 
 export type { FederatedSignupOptions, ScreenMembersOnSignupPassword, TransactionMembersOnSignupPassword, SignupPasswordOptions, SignupPasswordMembers } from '@auth0/auth0-acul-js/signup-password';
 

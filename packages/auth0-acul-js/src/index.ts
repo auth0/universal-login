@@ -6,3 +6,4 @@ export * from '../interfaces/export/extended-types';
 export * from '../interfaces/export/common';
 export * from './selectors/index';
 export * from './utils/resend-utils';
+export * from './utils/errors';

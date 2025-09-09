@@ -69,6 +69,20 @@ export default class Login extends BaseContext implements LoginMembers {
     const options: FormOptions = { state: this.transaction.state, telemetry: [Login.screenIdentifier, 'federatedLogin'] };
     await new FormHandler(options).submitData<FederatedLoginOptions>(payload);
   }
+
+  /**
+   * Gets the active identifier types for the login screen
+   * @returns An array of active identifier types or null if none are active
+   * @example
+   * ```typescript
+   * import Login from "@auth0/auth0-acul-js/login";
+   * const loginManager = new Login();
+   * loginManager.getActiveIdentifiers();
+   * ```
+   */
+  getActiveIdentifiers(): string[] | null {
+    return this.transaction.allowedIdentifiers || null;
+  }
 }
 
 export { LoginMembers, LoginOptions, FederatedLoginOptions, ScreenOptions as ScreenMembersOnLogin, TransactionOptions as TransactionMembersOnLogin };
