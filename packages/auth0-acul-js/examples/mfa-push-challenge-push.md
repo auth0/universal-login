@@ -284,9 +284,9 @@ const MfaPushChallengePushScreen: React.FC = () => {
       await mfaPushChallengePush.continue();
     });
     // Start polling
-    pollingRef.current.start();
+    pollingRef.current.startPolling();
     return () => {
-      pollingRef.current?.stop();
+      pollingRef.current?.stopPolling();
     };
   }, [mfaPushChallengePush]);
 
