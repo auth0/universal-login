@@ -31,7 +31,7 @@ export const useTransaction: () => TransactionMembersOnSignupId = () => useMemo(
 // Screen methods
 export const signup = (payload: SignupOptions) => getInstance().signup(payload);
 export const federatedSignup = (payload: FederatedSignupOptions) => getInstance().federatedSignup(payload);
-export const getEnabledIdentifiers = () => getInstance().getEnabledIdentifiers();
+export const useEnabledIdentifiers = () => getInstance().getEnabledIdentifiers();
 export const pickCountryCode = (payload?: CustomOptions) => getInstance().pickCountryCode(payload);
 
 export type { ScreenMembersOnSignupId, TransactionMembersOnSignupId, FederatedSignupOptions, SignupOptions, SignupIdMembers } from '@auth0/auth0-acul-js/signup-id';

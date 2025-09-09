@@ -9,7 +9,7 @@ import { TransactionOverride } from './transaction-override';
 
 import type { Identifier } from '../../../interfaces/models/screen';
 import type { ScreenContext } from '../../../interfaces/models/screen';
-import type { PasswordValidationResult } from '../../../interfaces/models/screen';
+import type { PasswordRuleValidation } from '../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type {
   SignupMembers,
@@ -115,7 +115,7 @@ export default class Signup extends BaseContext implements SignupMembers {
    * const result = signup.validatePassword('MyP@ssw0rd');
    * // result => { valid: true, errors: [] }
    */
-  validatePassword(password: string): PasswordValidationResult {
+  validatePassword(password: string): PasswordRuleValidation[] {
     const passwordPolicy = this.transaction?.passwordPolicy;
     return coreValidatePassword(password, passwordPolicy);
   }
@@ -140,6 +140,6 @@ export default class Signup extends BaseContext implements SignupMembers {
   } 
 }
 
-export { PasswordValidationResult, Identifier, SignupMembers, SignupOptions, ScreenOptions as ScreenMembersOnSignup, TransactionOptions as TransactionMembersOnSignup, FederatedSignupOptions };
+export { PasswordRuleValidation, Identifier, SignupMembers, SignupOptions, ScreenOptions as ScreenMembersOnSignup, TransactionOptions as TransactionMembersOnSignup, FederatedSignupOptions };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';
