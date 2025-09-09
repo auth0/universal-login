@@ -3,7 +3,7 @@ import ResetPasswordMfaPushChallengePush from '@auth0/auth0-acul-js/reset-passwo
 import { ContextHooks } from '../hooks/context-hooks';
 
 import type { ResetPasswordMfaPushChallengePushMembers, CustomOptions, ScreenMembersOnResetPasswordMfaPushChallengePush } from '@auth0/auth0-acul-js/reset-password-mfa-push-challenge-push';
-import { MfaPushPollingError } from './mfa-push-challenge-push';
+import { MfaPushPollingError } from '@auth0/auth0-acul-js/mfa-push-challenge-push';
 
 let instance: ResetPasswordMfaPushChallengePushMembers | null = null;
 const getInstance = (): ResetPasswordMfaPushChallengePushMembers => {

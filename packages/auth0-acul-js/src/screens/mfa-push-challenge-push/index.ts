@@ -161,6 +161,8 @@ export {
   WithRememberOptions,
   ScreenOptions as ScreenMembersOnMfaPushChallengePush,
   UntrustedDataOptions as UntrustedDataMembersOnMfaPushChallengePush,
+  MfaPushPollingError,
+  MfaPushPollingControl
 };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';

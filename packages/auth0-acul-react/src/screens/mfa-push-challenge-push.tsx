@@ -3,6 +3,8 @@ import MfaPushChallengePush from '@auth0/auth0-acul-js/mfa-push-challenge-push';
 import { ContextHooks } from '../hooks/context-hooks';
 
 import type { MfaPushChallengePushMembers, WithRememberOptions, CustomOptions, ScreenMembersOnMfaPushChallengePush } from '@auth0/auth0-acul-js/mfa-push-challenge-push';
+import { MfaPushPollingError } from '@auth0/auth0-acul-js/mfa-push-challenge-push';
+
 let instance: MfaPushChallengePushMembers | null = null;
 const getInstance = (): MfaPushChallengePushMembers => {
   if (!instance) {
@@ -10,10 +12,6 @@ const getInstance = (): MfaPushChallengePushMembers => {
   }
   return instance;
 };
-export interface MfaPushPollingError {
-  status: number;
-  responseText: string;
-}
 
 const factory = new ContextHooks<MfaPushChallengePushMembers>(getInstance);
 
