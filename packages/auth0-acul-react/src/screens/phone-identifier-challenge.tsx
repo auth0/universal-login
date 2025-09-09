@@ -37,7 +37,8 @@ export const returnToPrevious = (payload?: CustomOptions) => getInstance().retur
 
 // Resend hook
 export const useResend = (payload?: UseResendParams): UseResendReturn => {
-  return resendManager(getInstance(), payload);
+  const screenInstance = useMemo(() => getInstance(), []);
+  return resendManager(screenInstance, payload);
 };
 
 export type { PhoneChallengeOptions, ScreenMembersOnPhoneIdentifierChallenge, PhoneIdentifierChallengeMembers } from '@auth0/auth0-acul-js/phone-identifier-challenge';

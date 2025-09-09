@@ -38,7 +38,8 @@ export const returnToPrevious = (payload?: CustomOptions) => getInstance().retur
 
 // Resend hook
 export const useResend = (payload?: UseResendParams): UseResendReturn => {
-  return resendManager(getInstance(), payload);
+  const screenInstance = useMemo(() => getInstance(), []);
+  return resendManager(screenInstance, payload);
 };
 
 export type { EmailChallengeOptions, ScreenMembersOnEmailIdentifierChallenge, EmailIdentifierChallengeMembers } from '@auth0/auth0-acul-js/email-identifier-challenge';
