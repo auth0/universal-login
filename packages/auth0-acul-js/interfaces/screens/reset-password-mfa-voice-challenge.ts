@@ -1,4 +1,4 @@
-import type { CustomOptions } from '../../interfaces/common';
+import type { CustomOptions, StartResendOptions, ResendControl } from '../common';
 import type { BaseMembers } from '../models/base-context';
 import type { ScreenMembers } from '../models/screen';
 
@@ -72,4 +72,10 @@ export interface ResetPasswordMfaVoiceChallengeMembers extends BaseMembers {
    * @returns A promise that resolves when the request is submitted.
    */
   tryAnotherMethod(payload?: CustomOptions): Promise<void>;
+
+  /**
+   * Gets resend functionality with timeout management for this screen
+   * @param options Configuration options for resend functionality
+   */
+  resendManager(options?: StartResendOptions): ResendControl;
 }

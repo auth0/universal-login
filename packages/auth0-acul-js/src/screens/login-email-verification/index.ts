@@ -1,7 +1,9 @@
 import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
+import { createResendControl } from '../../utils/resend-utils';
 
+import type { StartResendOptions, ResendControl } from '../../../interfaces/common';
 import type {
   LoginEmailVerificationMembers,
   ContinueWithCodeOptions,
@@ -187,6 +189,41 @@ export default class LoginEmailVerification extends BaseContext implements Login
 
     // Use FormHandler to submit the data.
     await new FormHandler(formOptions).submitData<typeof submitPayload>(submitPayload);
+  }
+
+  /**
+   * Gets resend functionality with timeout management for this screen
+   * @param options - Configuration options for resend functionality
+   * @param options.timeoutSeconds - Number of seconds to wait before allowing resend (default: 10)
+   * @param options.onStatusChange - Callback to receive state updates (remaining seconds, disabled status)
+   * @param options.onTimeout - Callback to execute when timeout countdown reaches zero
+   * @returns ResendControl object with startResend method
+   * 
+   * @example
+   * ```typescript
+   * import LoginEmailVerification from '@auth0/auth0-acul-js/login-email-verification';
+   * 
+   * const loginEmailVerification = new LoginEmailVerification();
+   * const { startResend } = loginEmailVerification.resendManager({
+   *   timeoutSeconds: 15,
+   *   onStatusChange: (remainingSeconds, isDisabled) => {
+   *     console.log(`Resend available in ${remainingSeconds}s, disabled: ${isDisabled}`);
+   *   },
+   *   onTimeout: () => {
+   *     console.log('Resend is now available');
+   *   }
+   * });
+   * 
+   * // Call startResend when user clicks resend button
+   * startResend();
+   * ```
+   */
+  resendManager(options?: StartResendOptions): ResendControl {
+    return createResendControl(
+      LoginEmailVerification.screenIdentifier,
+      () => this.resendCode(),
+      options
+    );
   }
 }
 
