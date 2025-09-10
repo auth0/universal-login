@@ -58,4 +58,34 @@ export interface MfaPushChallengePushMembers extends BaseMembers {
    * @param payload Optional custom options to include with the request
    */
   tryAnotherMethod(payload?: CustomOptions): Promise<void>;
+
+   /**
+   * Allows polling for the push notification challenge to be approved.
+   * @param intervalMs Polling interval in milliseconds
+   * @param onComplete Callback function to be called when polling is completed
+   */
+  pollingManager(intervalMs: number, onComplete: () => void, onError?: (error: MfaPushPollingError) => void): MfaPushPollingControl;
+}
+
+/**
+ * Options for starting the MFA push polling
+ */
+export type StartMfaPushPollingOptions = {
+  intervalMs: number;
+  onResult?: () => void;
+  onError?: (error: MfaPushPollingError) => void;
+};
+
+export interface MfaPushPollingControl {
+  stopPolling: () => void;
+  startPolling: () => void;
+  isRunning: () => boolean;
+}
+
+export interface Error {
+  
+}
+export interface MfaPushPollingError {
+  status: number;
+  responseText: string;
 }

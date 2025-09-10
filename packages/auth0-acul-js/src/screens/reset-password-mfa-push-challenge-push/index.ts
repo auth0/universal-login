@@ -1,4 +1,5 @@
 import { ScreenIds, FormActions } from '../../constants';
+import { createPollingControl }  from '../../helpers/create-polling-control.js';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
@@ -6,6 +7,7 @@ import { ScreenOverride } from './screen-override';
 
 import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
+import type { MfaPushPollingControl, MfaPushPollingError } from '../../../interfaces/screens/mfa-push-challenge-push';
 import type {
   ResetPasswordMfaPushChallengePushMembers,
   ScreenMembersOnResetPasswordMfaPushChallengePush as ScreenOptions,
@@ -108,6 +110,32 @@ export default class ResetPasswordMfaPushChallengePush extends BaseContext imple
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
       action: FormActions.PICK_AUTHENTICATOR,
+    });
+  }
+
+  /**
+   * Allows polling for the push notification challenge to be approved.
+   * @param intervalMs Polling interval in milliseconds
+   * @param onComplete Callback function to be called when polling is completed
+   * @example
+   * ```typescript
+   * import ResetPasswordMfaPushChallengePush from '@auth0/auth0-acul-js/reset-password-mfa-push-challenge-push';
+   *
+   * const resetPasswordMfaPushChallengePush = new ResetPasswordMfaPushChallengePush();
+   * resetPasswordMfaPushChallengePush.pollingManager(5000, (rememberDevice) => {
+   *   console.log('Push notification approved. Remember device:', rememberDevice);
+   * });
+   * ```
+   */
+  pollingManager(
+    intervalMs: number,
+    onComplete: () => void,
+    onError?: (error: MfaPushPollingError) => void
+  ): MfaPushPollingControl {
+    return createPollingControl({
+      intervalMs,
+      onResult: onComplete,
+      onError,
     });
   }
 }

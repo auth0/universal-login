@@ -1,4 +1,5 @@
 import { ScreenIds, FormActions } from '../../constants';
+import { createPollingControl }  from '../../helpers/create-polling-control.js';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
@@ -8,6 +9,7 @@ import { UntrustedDataOverride } from './untrusted-data-overrider';
 import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { UntrustedDataContext } from '../../../interfaces/models/untrusted-data';
+import type { MfaPushPollingControl, MfaPushPollingError } from '../../../interfaces/screens/mfa-push-challenge-push';
 import type {
   MfaPushChallengePushMembers,
   WithRememberOptions,
@@ -121,6 +123,37 @@ export default class MfaPushChallengePush extends BaseContext implements MfaPush
       action: FormActions.PICK_AUTHENTICATOR,
     });
   }
+
+  /**
+   * Starts polling the MFA push challenge endpoint.
+   * Calls the provided callback when the polling condition is met.
+   * Optionally handles polling errors via onError callback.
+   * 
+   * @param intervalMs Polling interval in milliseconds
+   * @param onComplete Callback function called when polling condition is met
+   * @param onError Optional callback called on polling error (receives error object)
+   * @returns Polling control object with stop/start/running
+   * @example
+   * ```typescript
+   * const control = mfaPushChallengePush.pollingManager(
+   *   5000,
+   *   () => { mfaPushChallengePush.continue(); },
+   *   (error) => { console.error('Polling error:', error); }
+   * );
+   * control.stop(); // To stop polling manually
+   * ```
+   */
+  pollingManager(
+    intervalMs: number,
+    onComplete: () => void,
+    onError?: (error: MfaPushPollingError) => void
+  ): MfaPushPollingControl {
+    return createPollingControl({
+      intervalMs,
+      onResult: onComplete,
+      onError,
+    });
+  }
 }
 
 export {
@@ -128,6 +161,8 @@ export {
   WithRememberOptions,
   ScreenOptions as ScreenMembersOnMfaPushChallengePush,
   UntrustedDataOptions as UntrustedDataMembersOnMfaPushChallengePush,
+  MfaPushPollingError,
+  MfaPushPollingControl
 };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';

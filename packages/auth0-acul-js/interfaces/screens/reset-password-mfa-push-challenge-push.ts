@@ -1,6 +1,7 @@
 import type { CustomOptions } from '../common';
 import type { BaseMembers } from '../models/base-context';
 import type { ScreenMembers } from '../models/screen';
+import type { MfaPushPollingError } from '../screens/mfa-push-challenge-push';
 
 /**
  * Interface for the screen data specific to reset-password-mfa-push-challenge-push screen
@@ -41,4 +42,12 @@ export interface ResetPasswordMfaPushChallengePushMembers extends BaseMembers {
    * @param payload Optional custom options to include with the request
    */
   tryAnotherMethod(payload?: CustomOptions): Promise<void>;
+
+
+  /**
+   * Allows polling for the push notification challenge to be approved.
+   * @param intervalMs Polling interval in milliseconds
+   * @param onComplete Callback function to be called when polling is completed
+   */
+  pollingManager(intervalMs: number, onComplete: () => void, onError?: (error: MfaPushPollingError) => void): void;
 }
