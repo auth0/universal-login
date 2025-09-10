@@ -104,7 +104,7 @@ export default class EmailIdentifierChallenge extends BaseContext implements Ema
       EmailIdentifierChallenge.screenIdentifier,
       () => this.resendCode(),
       options,
-      // this.screen.data?.resendLimitReached
+      this.screen.data?.resendLimitReached
     );
   }
 }
