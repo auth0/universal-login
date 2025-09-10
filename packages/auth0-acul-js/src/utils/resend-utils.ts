@@ -45,7 +45,7 @@ export function createResendControl(
       onTimeout();
     }
 
-    // Only call onStatusChange if requested and it exists
+    // Always call onStatusChange if it exists
     if (onStatusChange) {
       onStatusChange(remaining, disabled);
     }
