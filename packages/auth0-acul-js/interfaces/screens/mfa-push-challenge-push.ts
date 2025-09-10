@@ -69,6 +69,7 @@ export interface MfaPushChallengePushMembers extends BaseMembers {
 
 /**
  * Options for starting the MFA push polling
+ * @public 
  */
 export type StartMfaPushPollingOptions = {
   intervalMs: number;
@@ -76,15 +77,26 @@ export type StartMfaPushPollingOptions = {
   onError?: (error: MfaPushPollingError) => void;
 };
 
+/**
+ * Control interface for the MFA push polling
+ *
+ * This interface is returned by {@link MfaPushChallengePushMembers.pollingManager} and allows you to start, stop, and check the status of polling for MFA push challenges.
+ *
+ * @public
+ */
 export interface MfaPushPollingControl {
   stopPolling: () => void;
   startPolling: () => void;
   isRunning: () => boolean;
 }
 
-export interface Error {
-  
-}
+/**
+ * Error interface for the MFA push polling
+ *
+ * This interface is used by the {@link MfaPushChallengePushMembers.pollingManager} method's onError callback to provide error details.
+ *
+ * @public
+ */
 export interface MfaPushPollingError {
   status: number;
   responseText: string;
