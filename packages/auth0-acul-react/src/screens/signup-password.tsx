@@ -31,6 +31,29 @@ export const useTransaction: () => TransactionMembersOnSignupPassword = () => us
 // Screen methods
 export const signup = (payload: SignupPasswordOptions) => getInstance().signup(payload);
 export const federatedSignup = (payload: FederatedSignupOptions) => getInstance().federatedSignup(payload);
+
+/**
+ * Validates a password string against the current password policy
+ * by delegating to the instance's `validatePassword` method.
+ *
+ * This function returns an array of password rule validation results,
+ * where each result contains the rule code, description, and whether
+ * the password satisfies that rule.
+ *
+ * @param {string} password - The password string to validate.
+ * @returns {PasswordRuleValidation[]} An array of validation results for each password policy rule.
+ *
+ * @example
+ * ```ts
+ * const results = usePasswordValidation('P@ssword123');
+ * console.log(results);
+ * // [
+ * //   { code: 'password-policy-length-at-least', policy: 'At least 12 characters', isValid: false },
+ * //   { code: 'password-policy-lower-case', policy: 'Lowercase letters (a-z)', isValid: true },
+ * //   ...
+ * // ]
+ * ```
+ */
 export const usePasswordValidation = (password: string) => getInstance().validatePassword(password);
 
 export type { FederatedSignupOptions, ScreenMembersOnSignupPassword, TransactionMembersOnSignupPassword, SignupPasswordOptions, SignupPasswordMembers } from '@auth0/auth0-acul-js/signup-password';

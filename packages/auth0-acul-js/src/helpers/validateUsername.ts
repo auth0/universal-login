@@ -1,3 +1,5 @@
+import { USERNAME_ERROR_CODES, USERNAME_ERROR_MESSAGES } from '../constants/errors';
+
 import type { UsernameValidationError, UsernameValidationResult } from '../../interfaces/models/screen';
 import type { UsernamePolicy } from '../../interfaces/models/transaction';
 
@@ -47,7 +49,7 @@ export function validateUsername(
       isValid: username.trim().length > 0,
       errors: username.trim().length > 0
         ? []
-        : [{ code: 'username-required', message: 'Username is required.' }],
+        : [{ code: USERNAME_ERROR_CODES.REQUIRED, message: USERNAME_ERROR_MESSAGES.REQUIRED }],
     };
   }
 
@@ -71,16 +73,16 @@ export function validateUsername(
   // 1. Check minimum length
   if (username.length < minLength) {
     errors.push({
-      code: 'username-too-short',
-      message: `Username must be at least ${minLength} characters long.`,
+      code: USERNAME_ERROR_CODES.TOO_SHORT,
+      message: USERNAME_ERROR_MESSAGES.TOO_SHORT(minLength),
     });
   }
 
   // 2. Check maximum length
   if (username.length > maxLength) {
     errors.push({
-      code: 'username-too-long',
-      message: `Username must be no more than ${maxLength} characters.`,
+      code: USERNAME_ERROR_CODES.TOO_LONG,
+      message: USERNAME_ERROR_MESSAGES.TOO_LONG(maxLength),
     });
   }
 
@@ -88,8 +90,8 @@ export function validateUsername(
   const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(username);
   if (!allowedFormats.usernameInEmailFormat && isEmail) {
     errors.push({
-      code: 'username-email-not-allowed',
-      message: 'Usernames in email format are not allowed.',
+      code: USERNAME_ERROR_CODES.EMAIL_NOT_ALLOWED,
+      message: USERNAME_ERROR_MESSAGES.EMAIL_NOT_ALLOWED,
     });
   }
 
@@ -98,8 +100,8 @@ export function validateUsername(
   const isPhone = /^\+?\d{7,15}$/.test(normalizedUsername);
   if (!allowedFormats.usernameInPhoneFormat && isPhone) {
     errors.push({
-      code: 'username-phone-not-allowed',
-      message: 'Usernames in phone number format are not allowed.',
+      code: USERNAME_ERROR_CODES.PHONE_NOT_ALLOWED,
+      message: USERNAME_ERROR_MESSAGES.PHONE_NOT_ALLOWED,
     });
   }
 

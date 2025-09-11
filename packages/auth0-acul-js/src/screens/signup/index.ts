@@ -104,18 +104,32 @@ export default class Signup extends BaseContext implements SignupMembers {
     });
   }
 
-  /**
-   * Validates a given password against the current password policy
-   * defined in the transaction context.
-   *
-   * @param password - The password string to validate.
-   * @returns Result object indicating whether the password is valid and why.
-   *
-   * @example
-   * const signup = new Signup();
-   * const result = signup.validatePassword('MyP@ssw0rd');
-   * // result => { valid: true, errors: [] }
-   */
+/**
+ * Validates a password string against the current transaction's password policy.
+ *
+ * This method retrieves the password policy from the current transaction context
+ * and delegates the actual validation to `coreValidatePassword`.
+ *
+ * It returns an array of validation results, each containing:
+ * - `code`: the identifier of the password rule,
+ * - `policy`: a user-friendly description of the rule,
+ * - `isValid`: boolean indicating if the password passed that rule.
+ *
+ * @param {string} password - The password string to validate.
+ * @returns {PasswordRuleValidation[]} An array of rule validation results.
+ *
+ * @example
+ * ```ts
+ * const signup = new Signup();
+ * const validationResults = signup.validatePassword('MyP@ssw0rd!');
+ * console.log(validationResults);
+ * // [
+ * //   { code: 'password-policy-length-at-least', policy: 'At least 12 characters', isValid: false },
+ * //   { code: 'password-policy-lower-case', policy: 'Lowercase letters (a-z)', isValid: true },
+ * //   ...
+ * // ]
+ * ```
+ */
   validatePassword(password: string): PasswordRuleValidation[] {
     const passwordPolicy = this.transaction?.passwordPolicy;
     return coreValidatePassword(password, passwordPolicy);
