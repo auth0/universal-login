@@ -35,9 +35,9 @@ export function resendManager(
   }, [screenInstance, timeoutSeconds, handleStateChange]);
 
   // Memoize startResend function
-  const startResend = useCallback(async () => {
+  const startResend = useCallback(() => {
     if (resendControl) {
-      await resendControl.startResend();
+      resendControl.startResend();
     }
   }, [resendControl]);
 
