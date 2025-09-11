@@ -8,3 +8,19 @@ export const Errors = {
   PASSKEY_CREATE_FAILED: 'Failed to create credentials',
   PASSKEY_EXPECTED_ASSERTION_RESPONSE: 'Expected AuthenticatorAssertionResponse',
 };
+
+export const USERNAME_ERROR_MESSAGES = {
+  REQUIRED: 'Username is required.',
+  TOO_SHORT: (min: number): string => `Username must be at least ${min} characters long.`,
+  TOO_LONG: (max: number): string => `Username must be no more than ${max} characters.`,
+  EMAIL_NOT_ALLOWED: 'Usernames in email format are not allowed.',
+  PHONE_NOT_ALLOWED: 'Usernames in phone number format are not allowed.',
+};
+
+export const USERNAME_ERROR_CODES = {
+  REQUIRED: 'username-required',
+  TOO_SHORT: 'username-too-short',
+  TOO_LONG: 'username-too-long',
+  EMAIL_NOT_ALLOWED: 'username-email-not-allowed',
+  PHONE_NOT_ALLOWED: 'username-phone-not-allowed',
+};

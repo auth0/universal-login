@@ -74,25 +74,25 @@ export default class SignupPassword extends BaseContext implements SignupPasswor
   }
 
   /**
-     * @remarks
-     * This methods handles allows signup via different social identifiers.
-     * Eg: Google, Facebook etc.
-     *
-     * @example
-     * import SignupPassword from "@auth0/auth0-acul-js/signup-id";
-     *
-     * const signupIdManager = new SignupPassword();
-     * const { transaction } = signupIdManager;
-     *
-     * //get social connections
-     * const socialConnection = transaction.getAlternateConnections(); //eg: "google-oauth2"
-     *
-     * const signupParams = {
-     *  connection : socialConnection[0].name, // "google-oauth2"
-     * };
-     *
-     * signupIdManager.federatedSignup(signupParams);
-     */
+   * @remarks
+   * This methods handles allows signup via different social identifiers.
+   * Eg: Google, Facebook etc.
+   *
+   * @example
+   * import SignupPassword from "@auth0/auth0-acul-js/signup-id";
+   *
+   * const signupIdManager = new SignupPassword();
+   * const { transaction } = signupIdManager;
+   *
+   * //get social connections
+   * const socialConnection = transaction.getAlternateConnections(); //eg: "google-oauth2"
+   *
+   * const signupParams = {
+   *  connection : socialConnection[0].name, // "google-oauth2"
+   * };
+   *
+   * signupIdManager.federatedSignup(signupParams);
+   */
   async federatedSignup(payload: FederatedSignupOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
@@ -103,18 +103,33 @@ export default class SignupPassword extends BaseContext implements SignupPasswor
   }
 
   /**
-   * Validates a given password against the current password policy
-   * defined in the transaction context.
-   *
-   * @param password - The password string to validate.
-   * @returns Result object indicating whether the password is valid and why.
-   *
-   * @example
-   * const signupPassword = new SignupPassword();
-   * const result = signupPassword.validatePassword('MyP@ssw0rd');
-   * // result => { valid: true, errors: [] }
-   */
-  validatePassword(password: string): PasswordRuleValidation[] {  
+  * Validates a password string against the current transaction's password policy.
+  *
+  * This method retrieves the password policy from the current transaction context
+  * and delegates the actual validation to `coreValidatePassword`.
+  *
+  * It returns an array of validation results, each containing:
+  * - `code`: the identifier of the password rule,
+  * - `policy`: a user-friendly description of the rule,
+  * - `isValid`: boolean indicating if the password passed that rule.
+  *
+  * @param {string} password - The password string to validate.
+  * @returns {PasswordRuleValidation[]} An array of rule validation results.
+  *
+  * @example
+  * ```ts
+  * import SignupPassword from "@auth0/auth0-acul-js/signup-password";
+  * const signupPasswordManager = new SignupPassword();
+  * const validationResults = signupPasswordManager.validatePassword('MyP@ssw0rd!');
+  * console.log(validationResults);
+  * // [
+  * //   { code: 'password-policy-length-at-least', policy: 'At least 12 characters', isValid: false },
+  * //   { code: 'password-policy-lower-case', policy: 'Lowercase letters (a-z)', isValid: true },
+  * //   ...
+  * // ]
+  * ```
+  */
+  validatePassword(password: string): PasswordRuleValidation[] {
     const passwordPolicy = this.transaction?.passwordPolicy;
     return coreValidatePassword(password, passwordPolicy);
   }

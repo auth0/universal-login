@@ -1,5 +1,6 @@
 import { ScreenIds, FormActions } from '../../constants';
 import coreGetIdentifier from '../../helpers/getEnabledIdentifiers';
+import coreValidateUsername from '../../helpers/validateUsername';
 import { BaseContext } from '../../models/base-context';
 import { getBrowserCapabilities } from '../../utils/browser-capabilities';
 import { FormHandler } from '../../utils/form-handler';
@@ -7,7 +8,7 @@ import { FormHandler } from '../../utils/form-handler';
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
 
-import type { Identifier } from '../../../interfaces/models/screen';
+import type { Identifier, UsernameValidationResult } from '../../../interfaces/models/screen';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type {
@@ -144,6 +145,23 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
       action: FormActions.PICK_COUNTRY_CODE,
     });
   }
+
+  /**
+     * Validates a given username against the current username policy
+     * defined in the transaction context.
+     *
+     * @param username - The username string to validate.
+     * @returns Result object indicating whether the username is valid and why.
+     *
+     * @example
+     * const signupIdManager = new SignupId();
+     * const result = signupIdManager.validateUsername('myusername');
+     * // result => { valid: true, errors: [] }
+     */
+    validateUsername(username: string): UsernameValidationResult {
+      const usernameValidationConfig = this.transaction.usernamePolicy;
+      return coreValidateUsername(username, usernameValidationConfig);
+    }
 }
 
 export {

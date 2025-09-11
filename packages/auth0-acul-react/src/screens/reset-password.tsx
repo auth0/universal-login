@@ -29,6 +29,29 @@ export const useScreen: () => ScreenMembersOnResetPassword = () => useMemo(() =>
 export const useTransaction = () => useMemo(() => getInstance().transaction, []);
 // Screen methods
 export const resetPassword = (payload: ResetPasswordOptions) => getInstance().resetPassword(payload);
+
+/**
+ * Validates a password string against the current password policy
+ * by delegating to the instance's `validatePassword` method.
+ *
+ * This function returns an array of password rule validation results,
+ * where each result contains the rule code, description, and whether
+ * the password satisfies that rule.
+ *
+ * @param {string} password - The password string to validate.
+ * @returns {PasswordRuleValidation[]} An array of validation results for each password policy rule.
+ *
+ * @example
+ * ```ts
+ * const results = usePasswordValidation('P@ssword123');
+ * console.log(results);
+ * // [
+ * //   { code: 'password-policy-length-at-least', policy: 'At least 12 characters', isValid: false },
+ * //   { code: 'password-policy-lower-case', policy: 'Lowercase letters (a-z)', isValid: true },
+ * //   ...
+ * // ]
+ * ```
+ */
 export const usePasswordValidation = (password: string) => getInstance().validatePassword(password);
 
 export type { ResetPasswordOptions, ScreenMembersOnResetPassword, ResetPasswordMembers } from '@auth0/auth0-acul-js/reset-password';

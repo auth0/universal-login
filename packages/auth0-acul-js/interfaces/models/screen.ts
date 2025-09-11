@@ -91,3 +91,13 @@ export type PasswordRuleValidation = {
   isValid: boolean;
   code: string;
 };
+
+export interface UsernameValidationError {
+  code: string;
+  message: string;
+}
+
+export interface UsernameValidationResult {
+  isValid: boolean;
+  errors: UsernameValidationError[];
+}

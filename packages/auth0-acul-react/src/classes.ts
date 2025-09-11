@@ -658,7 +658,7 @@ export namespace ResetPassword {
   export const resetPassword = resetPassword_ResetPassword;
 }
 
-import { useSignupId as useSignupId_SignupId, useScreen as useScreen_SignupId, useTransaction as useTransaction_SignupId, signup as signup_SignupId, federatedSignup as federatedSignup_SignupId, useEnabledIdentifiers as useEnabledIdentifiers_SignupId, pickCountryCode as pickCountryCode_SignupId } from './screens/signup-id';
+import { useSignupId as useSignupId_SignupId, useScreen as useScreen_SignupId, useTransaction as useTransaction_SignupId, signup as signup_SignupId, federatedSignup as federatedSignup_SignupId, useEnabledIdentifiers as useEnabledIdentifiers_SignupId, pickCountryCode as pickCountryCode_SignupId, useUsernameValidation as useUsernameValidation_SignupId } from './screens/signup-id';
 export namespace SignupId {
   export const useSignupId = useSignupId_SignupId;
   export const useScreen = useScreen_SignupId;
@@ -667,6 +667,7 @@ export namespace SignupId {
   export const federatedSignup = federatedSignup_SignupId;
   export const useEnabledIdentifiers = useEnabledIdentifiers_SignupId;
   export const pickCountryCode = pickCountryCode_SignupId;
+  export const useUsernameValidation = useUsernameValidation_SignupId;
 }
 
 import { useSignupPassword as useSignupPassword_SignupPassword, useScreen as useScreen_SignupPassword, useTransaction as useTransaction_SignupPassword, signup as signup_SignupPassword, federatedSignup as federatedSignup_SignupPassword, usePasswordValidation as usePasswordValidation_SignupPassword } from './screens/signup-password';
@@ -679,7 +680,7 @@ export namespace SignupPassword {
   export const usePasswordValidation = usePasswordValidation_SignupPassword;
 }
 
-import { useSignup as useSignup_Signup, useScreen as useScreen_Signup, useTransaction as useTransaction_Signup, signup as signup_Signup, federatedSignup as federatedSignup_Signup, pickCountryCode as pickCountryCode_Signup, usePasswordValidation as usePasswordValidation_Signup, useEnabledIdentifiers as useEnabledIdentifiers_Signup } from './screens/signup';
+import { useSignup as useSignup_Signup, useScreen as useScreen_Signup, useTransaction as useTransaction_Signup, signup as signup_Signup, federatedSignup as federatedSignup_Signup, pickCountryCode as pickCountryCode_Signup, usePasswordValidation as usePasswordValidation_Signup, useEnabledIdentifiers as useEnabledIdentifiers_Signup, useUsernameValidation as useUsernameValidation_Signup } from './screens/signup';
 export namespace Signup {
   export const useSignup = useSignup_Signup;
   export const useScreen = useScreen_Signup;
@@ -689,6 +690,7 @@ export namespace Signup {
   export const pickCountryCode = pickCountryCode_Signup;
   export const usePasswordValidation = usePasswordValidation_Signup;
   export const useEnabledIdentifiers = useEnabledIdentifiers_Signup;
+  export const useUsernameValidation = useUsernameValidation_Signup;
 }
 
 import { useCurrentScreen as use_currentScreen, useAuth0Themes as use_Auth0Themes, useErrors as use_Errors } from '../src/hooks/common-hooks';

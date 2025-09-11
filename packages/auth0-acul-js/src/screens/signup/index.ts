@@ -1,6 +1,7 @@
 import { ScreenIds, FormActions } from '../../constants';
 import coreGetIdentifier from '../../helpers/getEnabledIdentifiers';
 import coreValidatePassword from '../../helpers/validatePassword';
+import coreValidateUsername from '../../helpers/validateUsername';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
@@ -9,7 +10,7 @@ import { TransactionOverride } from './transaction-override';
 
 import type { Identifier } from '../../../interfaces/models/screen';
 import type { ScreenContext } from '../../../interfaces/models/screen';
-import type { PasswordRuleValidation } from '../../../interfaces/models/screen';
+import type { PasswordRuleValidation, UsernameValidationResult } from '../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type {
   SignupMembers,
@@ -103,18 +104,32 @@ export default class Signup extends BaseContext implements SignupMembers {
     });
   }
 
-  /**
-   * Validates a given password against the current password policy
-   * defined in the transaction context.
-   *
-   * @param password - The password string to validate.
-   * @returns Result object indicating whether the password is valid and why.
-   *
-   * @example
-   * const signup = new Signup();
-   * const result = signup.validatePassword('MyP@ssw0rd');
-   * // result => { valid: true, errors: [] }
-   */
+/**
+ * Validates a password string against the current transaction's password policy.
+ *
+ * This method retrieves the password policy from the current transaction context
+ * and delegates the actual validation to `coreValidatePassword`.
+ *
+ * It returns an array of validation results, each containing:
+ * - `code`: the identifier of the password rule,
+ * - `policy`: a user-friendly description of the rule,
+ * - `isValid`: boolean indicating if the password passed that rule.
+ *
+ * @param {string} password - The password string to validate.
+ * @returns {PasswordRuleValidation[]} An array of rule validation results.
+ *
+ * @example
+ * ```ts
+ * const signup = new Signup();
+ * const validationResults = signup.validatePassword('MyP@ssw0rd!');
+ * console.log(validationResults);
+ * // [
+ * //   { code: 'password-policy-length-at-least', policy: 'At least 12 characters', isValid: false },
+ * //   { code: 'password-policy-lower-case', policy: 'Lowercase letters (a-z)', isValid: true },
+ * //   ...
+ * // ]
+ * ```
+ */
   validatePassword(password: string): PasswordRuleValidation[] {
     const passwordPolicy = this.transaction?.passwordPolicy;
     return coreValidatePassword(password, passwordPolicy);
@@ -137,9 +152,26 @@ export default class Signup extends BaseContext implements SignupMembers {
       errors: this.transaction.errors ?? undefined, // convert `null` to `undefined`
     };
     return coreGetIdentifier(transaction.requiredIdentifiers ?? [], transaction.optionalIdentifiers ?? [], transaction.connectionStrategy);
-  } 
+  }
+
+  /**
+   * Validates a given username against the current username policy
+   * defined in the transaction context.
+   *
+   * @param username - The username string to validate.
+   * @returns Result object indicating whether the username is valid and why.
+   *
+   * @example
+   * const signup = new Signup();
+   * const result = signup.validateUsername('myusername');
+   * // result => { valid: true, errors: [] }
+   */
+  validateUsername(username: string): UsernameValidationResult {
+    const usernameValidationConfig = this.transaction.usernamePolicy;
+    return coreValidateUsername(username, usernameValidationConfig);
+  }
 }
 
-export { PasswordRuleValidation, Identifier, SignupMembers, SignupOptions, ScreenOptions as ScreenMembersOnSignup, TransactionOptions as TransactionMembersOnSignup, FederatedSignupOptions };
+export { PasswordRuleValidation, UsernameValidationResult, Identifier, SignupMembers, SignupOptions, ScreenOptions as ScreenMembersOnSignup, TransactionOptions as TransactionMembersOnSignup, FederatedSignupOptions };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';
