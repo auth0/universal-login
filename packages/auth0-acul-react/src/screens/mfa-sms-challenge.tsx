@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
 import MfaSmsChallenge from '@auth0/auth0-acul-js/mfa-sms-challenge';
 import { ContextHooks } from '../hooks/context-hooks';
+import { resendManager } from '../hooks/utility-hooks';
+import type { UseResendParams, UseResendReturn } from '../interfaces/common';
 
 import type { MfaSmsChallengeMembers, MfaSmsChallengeOptions, CustomOptions, ScreenMembersOnMfaSmsChallenge } from '@auth0/auth0-acul-js/mfa-sms-challenge';
 let instance: MfaSmsChallengeMembers | null = null;
@@ -34,6 +36,12 @@ export const pickSms = (payload?: CustomOptions) => getInstance().pickSms(payloa
 export const resendCode = (payload?: CustomOptions) => getInstance().resendCode(payload);
 export const tryAnotherMethod = (payload?: CustomOptions) => getInstance().tryAnotherMethod(payload);
 export const getACall = (payload?: CustomOptions) => getInstance().getACall(payload);
+
+// Resend hook
+export const useResend = (payload?: UseResendParams): UseResendReturn => {
+  const screenInstance = useMemo(() => getInstance(), []);
+  return resendManager(screenInstance, payload);
+};
 
 export type { MfaSmsChallengeOptions, ScreenMembersOnMfaSmsChallenge, MfaSmsChallengeMembers, UntrustedDataMembersOnMfaSmsChallenge } from '@auth0/auth0-acul-js/mfa-sms-challenge';
 

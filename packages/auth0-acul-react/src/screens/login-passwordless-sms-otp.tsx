@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
 import LoginPasswordlessSmsOtp from '@auth0/auth0-acul-js/login-passwordless-sms-otp';
 import { ContextHooks } from '../hooks/context-hooks';
+import { resendManager } from '../hooks/utility-hooks';
+import type { UseResendParams, UseResendReturn } from '../interfaces/common';
 
 import type { LoginPasswordlessSmsOtpMembers, SubmitOTPOptions, CustomOptions, ScreenMembersOnLoginPasswordlessSmsOtp, TransactionMembersOnLoginPasswordlessSmsOtp } from '@auth0/auth0-acul-js/login-passwordless-sms-otp';
 let instance: LoginPasswordlessSmsOtpMembers | null = null;
@@ -31,6 +33,12 @@ export const useTransaction: () => TransactionMembersOnLoginPasswordlessSmsOtp =
 // Screen methods
 export const submitOTP = (payload: SubmitOTPOptions) => getInstance().submitOTP(payload);
 export const resendOTP = (payload?: CustomOptions) => getInstance().resendOTP(payload);
+
+// Resend hook
+export const useResend = (payload?: UseResendParams): UseResendReturn => {
+  const screenInstance = useMemo(() => getInstance(), []);
+  return resendManager(screenInstance, payload);
+};
 
 export type { ScreenMembersOnLoginPasswordlessSmsOtp, TransactionMembersOnLoginPasswordlessSmsOtp, SubmitOTPOptions, LoginPasswordlessSmsOtpMembers } from '@auth0/auth0-acul-js/login-passwordless-sms-otp';
 

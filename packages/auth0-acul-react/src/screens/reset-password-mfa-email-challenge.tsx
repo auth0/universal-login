@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
 import ResetPasswordMfaEmailChallenge from '@auth0/auth0-acul-js/reset-password-mfa-email-challenge';
 import { ContextHooks } from '../hooks/context-hooks';
+import { resendManager } from '../hooks/utility-hooks';
+import type { UseResendParams, UseResendReturn } from '../interfaces/common';
 
 import type { ResetPasswordMfaEmailChallengeMembers, ContinueOptions, ResendCodeOptions, TryAnotherMethodOptions, ScreenMembersOnResetPasswordMfaEmailChallenge } from '@auth0/auth0-acul-js/reset-password-mfa-email-challenge';
 let instance: ResetPasswordMfaEmailChallengeMembers | null = null;
@@ -32,6 +34,12 @@ export const useTransaction = () => useMemo(() => getInstance().transaction, [])
 export const continueMethod = (payload: ContinueOptions) => getInstance().continue(payload);
 export const resendCode = (payload?: ResendCodeOptions) => getInstance().resendCode(payload);
 export const tryAnotherMethod = (payload?: TryAnotherMethodOptions) => getInstance().tryAnotherMethod(payload);
+
+// Resend hook
+export const useResend = (payload?: UseResendParams): UseResendReturn => {
+  const screenInstance = useMemo(() => getInstance(), []);
+  return resendManager(screenInstance, payload);
+};
 
 export type { ScreenMembersOnResetPasswordMfaEmailChallenge, ContinueOptions, ResendCodeOptions, TryAnotherMethodOptions, ResetPasswordMfaEmailChallengeMembers } from '@auth0/auth0-acul-js/reset-password-mfa-email-challenge';
 

@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
 import MfaEmailChallenge from '@auth0/auth0-acul-js/mfa-email-challenge';
 import { ContextHooks } from '../hooks/context-hooks';
+import { resendManager } from '../hooks/utility-hooks';
+import type { UseResendParams, UseResendReturn } from '../interfaces/common';
 
 import type { MfaEmailChallengeMembers, ContinueOptions, ResendCodeOptions, TryAnotherMethodOptions, ScreenMembersOnMfaEmailChallenge } from '@auth0/auth0-acul-js/mfa-email-challenge';
 let instance: MfaEmailChallengeMembers | null = null;
@@ -32,6 +34,12 @@ export const useTransaction = () => useMemo(() => getInstance().transaction, [])
 export const continueMethod = (payload: ContinueOptions) => getInstance().continue(payload);
 export const resendCode = (payload?: ResendCodeOptions) => getInstance().resendCode(payload);
 export const tryAnotherMethod = (payload?: TryAnotherMethodOptions) => getInstance().tryAnotherMethod(payload);
+
+// Resend hook
+export const useResend = (payload?: UseResendParams): UseResendReturn => {
+  const screenInstance = useMemo(() => getInstance(), []);
+  return resendManager(screenInstance, payload);
+};
 
 export type { ScreenMembersOnMfaEmailChallenge, UntrustedDataMembersOnMfaEmailChallenge, ContinueOptions, ResendCodeOptions, TryAnotherMethodOptions, MfaEmailChallengeMembers } from '@auth0/auth0-acul-js/mfa-email-challenge';
 

@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
 import EmailOTPChallenge from '@auth0/auth0-acul-js/email-otp-challenge';
 import { ContextHooks } from '../hooks/context-hooks';
+import { resendManager } from '../hooks/utility-hooks';
+import type { UseResendParams, UseResendReturn } from '../interfaces/common';
 
 import type { EmailOTPChallengeMembers, OtpCodeOptions, CustomOptions, ScreenMembersOnEmailOTPChallenge } from '@auth0/auth0-acul-js/email-otp-challenge';
 let instance: EmailOTPChallengeMembers | null = null;
@@ -31,6 +33,12 @@ export const useTransaction = () => useMemo(() => getInstance().transaction, [])
 // Screen methods
 export const submitCode = (options: OtpCodeOptions) => getInstance().submitCode(options);
 export const resendCode = (options?: CustomOptions) => getInstance().resendCode(options);
+
+// Resend hook
+export const useResend = (payload?: UseResendParams): UseResendReturn => {
+  const screenInstance = useMemo(() => getInstance(), []);
+  return resendManager(screenInstance, payload);
+};
 
 export type { ScreenMembersOnEmailOTPChallenge, OtpCodeOptions, EmailOTPChallengeMembers } from '@auth0/auth0-acul-js/email-otp-challenge';
 
