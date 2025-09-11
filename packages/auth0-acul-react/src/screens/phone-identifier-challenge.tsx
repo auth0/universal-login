@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
 import PhoneIdentifierChallenge from '@auth0/auth0-acul-js/phone-identifier-challenge';
 import { ContextHooks } from '../hooks/context-hooks';
+import { resendManager } from '../hooks/utility-hooks';
+import type { UseResendParams, UseResendReturn } from '../interfaces/common';
 
 import type { PhoneIdentifierChallengeMembers, PhoneChallengeOptions, CustomOptions, ScreenMembersOnPhoneIdentifierChallenge } from '@auth0/auth0-acul-js/phone-identifier-challenge';
 let instance: PhoneIdentifierChallengeMembers | null = null;
@@ -32,6 +34,12 @@ export const useTransaction = () => useMemo(() => getInstance().transaction, [])
 export const submitPhoneChallenge = (payload: PhoneChallengeOptions) => getInstance().submitPhoneChallenge(payload);
 export const resendCode = (payload?: CustomOptions) => getInstance().resendCode(payload);
 export const returnToPrevious = (payload?: CustomOptions) => getInstance().returnToPrevious(payload);
+
+// Resend hook
+export const useResend = (payload?: UseResendParams): UseResendReturn => {
+  const screenInstance = useMemo(() => getInstance(), []);
+  return resendManager(screenInstance, payload);
+};
 
 export type { PhoneChallengeOptions, ScreenMembersOnPhoneIdentifierChallenge, PhoneIdentifierChallengeMembers } from '@auth0/auth0-acul-js/phone-identifier-challenge';
 

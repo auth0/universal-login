@@ -12,7 +12,7 @@ export function createResendControl(
   screenIdentifier: string,
   resendMethod: () => Promise<void>,
   options?: StartResendOptions,
-  resendLimitReached?: boolean
+  resendLimitReached?: boolean,
 ): ResendControl {
   const { timeoutSeconds = 10, onStatusChange, onTimeout } = options || {};
   const storageKey = `acul_resend_timeout_${screenIdentifier}`;
@@ -34,7 +34,7 @@ export function createResendControl(
     const currentTime = Date.now();
     const timeoutMs = timeoutSeconds * 1000;
     const timeElapsed = currentTime - lastResendTime;
-  
+
     const previousRemaining = remaining;
     remaining = Math.max(0, Math.ceil((timeoutMs - timeElapsed) / 1000));
     disabled = remaining > 0 || !!resendLimitReached;
@@ -73,8 +73,11 @@ export function createResendControl(
     startTimer();
   };
 
-  if (remaining >= 0) {
-    cleanup();
+  // Initial state calculation without triggering onStatusChange
+  calculateState();
+
+  // Resume countdown if there's time remaining from previous session
+  if (remaining > 0) {
     intervalId = setInterval(() => {
       calculateState();
       if (remaining <= 0) {
