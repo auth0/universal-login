@@ -106,7 +106,7 @@ export default class PhoneIdentifierChallenge extends BaseContext implements Pho
       PhoneIdentifierChallenge.screenIdentifier,
       () => this.resendCode(),
       options,
-      this.screen.data?.resendLimitReached
+      !!this.screen.data?.resendLimitReached
     );
   }
 }
