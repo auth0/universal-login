@@ -35,7 +35,41 @@ export const continueMethod = (payload: ContinueOptions) => getInstance().contin
 export const resendCode = (payload?: ResendCodeOptions) => getInstance().resendCode(payload);
 export const tryAnotherMethod = (payload?: TryAnotherMethodOptions) => getInstance().tryAnotherMethod(payload);
 
-// Resend hook
+/**
+ * Hook for managing email resend functionality in reset password MFA email challenge screen.
+ *
+ * This hook provides functionality to resend MFA email challenges during password reset 
+ * with built-in rate limiting and timeout management. It returns the resend state and 
+ * controls for user interaction.
+ *
+ * @param {UseResendParams} [payload] - Optional configuration for the resend behavior
+ * @param {number} [payload.timeoutSeconds] - Custom timeout duration in seconds
+ * @param {OnTimeoutCallback} [payload.onTimeout] - Callback function executed when timeout expires
+ * 
+ * @returns {UseResendReturn} Object containing:
+ *  - `remaining`: number of seconds remaining before resend is available
+ *  - `disabled`: boolean indicating if resend is currently disabled
+ *  - `startResend`: function to trigger the resend operation
+ *
+ * @example
+ * ```tsx
+ * function ResetPasswordMfaEmailForm() {
+ *   const { remaining, disabled, startResend } = useResend({
+ *     timeoutSeconds: 60,
+ *     onTimeout: () => console.log('Reset password MFA email resend available')
+ *   });
+ *   
+ *   return (
+ *     <button 
+ *       onClick={startResend} 
+ *       disabled={disabled}
+ *     >
+ *       {disabled ? `Resend in ${remaining}s` : 'Resend Reset Code'}
+ *     </button>
+ *   );
+ * }
+ * ```
+ */
 export const useResend = (payload?: UseResendParams): UseResendReturn => {
   const screenInstance = useMemo(() => getInstance(), []);
   return resendManager(screenInstance, payload);

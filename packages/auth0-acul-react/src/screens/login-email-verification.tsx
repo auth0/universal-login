@@ -34,7 +34,41 @@ export const useTransaction = () => useMemo(() => getInstance().transaction, [])
 export const continueWithCode = (payload: ContinueWithCodeOptions) => getInstance().continueWithCode(payload);
 export const resendCode = (payload?: ResendCodeOptions) => getInstance().resendCode(payload);
 
-// Resend hook
+/**
+ * Hook for managing email resend functionality in login email verification screen.
+ *
+ * This hook provides functionality to resend email verification during login 
+ * with built-in rate limiting and timeout management. It returns the resend state and 
+ * controls for user interaction.
+ *
+ * @param {UseResendParams} [payload] - Optional configuration for the resend behavior
+ * @param {number} [payload.timeoutSeconds] - Custom timeout duration in seconds
+ * @param {OnTimeoutCallback} [payload.onTimeout] - Callback function executed when timeout expires
+ * 
+ * @returns {UseResendReturn} Object containing:
+ *  - `remaining`: number of seconds remaining before resend is available
+ *  - `disabled`: boolean indicating if resend is currently disabled
+ *  - `startResend`: function to trigger the resend operation
+ *
+ * @example
+ * ```tsx
+ * function LoginEmailVerificationForm() {
+ *   const { remaining, disabled, startResend } = useResend({
+ *     timeoutSeconds: 60,
+ *     onTimeout: () => console.log('Login email verification resend available')
+ *   });
+ *   
+ *   return (
+ *     <button 
+ *       onClick={startResend} 
+ *       disabled={disabled}
+ *     >
+ *       {disabled ? `Resend in ${remaining}s` : 'Resend Verification'}
+ *     </button>
+ *   );
+ * }
+ * ```
+ */
 export const useResend = (payload?: UseResendParams): UseResendReturn => {
   const screenInstance = useMemo(() => getInstance(), []);
   return resendManager(screenInstance, payload);

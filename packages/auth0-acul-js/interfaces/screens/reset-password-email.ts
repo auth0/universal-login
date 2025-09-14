@@ -1,4 +1,4 @@
-import type { CustomOptions } from '../common';
+import type { CustomOptions, StartResendOptions, ResendControl } from '../common';
 import type { BaseMembers } from '../models/base-context';
 import type { ScreenMembers, ScreenData } from '../models/screen';
 
@@ -19,4 +19,5 @@ export interface ScreenMembersOnResetPasswordEmail extends ScreenMembers {
 export interface ResetPasswordEmailMembers extends BaseMembers {
   screen: ScreenMembersOnResetPasswordEmail;
   resendEmail(payload?: CustomOptions): Promise<void>;
+  resendManager(options?: StartResendOptions): ResendControl;
 }

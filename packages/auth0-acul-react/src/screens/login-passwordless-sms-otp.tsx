@@ -34,7 +34,41 @@ export const useTransaction: () => TransactionMembersOnLoginPasswordlessSmsOtp =
 export const submitOTP = (payload: SubmitOTPOptions) => getInstance().submitOTP(payload);
 export const resendOTP = (payload?: CustomOptions) => getInstance().resendOTP(payload);
 
-// Resend hook
+/**
+ * Hook for managing SMS OTP resend functionality in login passwordless SMS OTP screen.
+ *
+ * This hook provides functionality to resend SMS OTP codes during passwordless login 
+ * with built-in rate limiting and timeout management. It returns the resend state and 
+ * controls for user interaction.
+ *
+ * @param {UseResendParams} [payload] - Optional configuration for the resend behavior
+ * @param {number} [payload.timeoutSeconds] - Custom timeout duration in seconds
+ * @param {OnTimeoutCallback} [payload.onTimeout] - Callback function executed when timeout expires
+ * 
+ * @returns {UseResendReturn} Object containing:
+ *  - `remaining`: number of seconds remaining before resend is available
+ *  - `disabled`: boolean indicating if resend is currently disabled
+ *  - `startResend`: function to trigger the resend operation
+ *
+ * @example
+ * ```tsx
+ * function LoginPasswordlessSmsOtpForm() {
+ *   const { remaining, disabled, startResend } = useResend({
+ *     timeoutSeconds: 60,
+ *     onTimeout: () => console.log('Passwordless SMS OTP resend available')
+ *   });
+ *   
+ *   return (
+ *     <button 
+ *       onClick={startResend} 
+ *       disabled={disabled}
+ *     >
+ *       {disabled ? `Resend in ${remaining}s` : 'Resend SMS Code'}
+ *     </button>
+ *   );
+ * }
+ * ```
+ */
 export const useResend = (payload?: UseResendParams): UseResendReturn => {
   const screenInstance = useMemo(() => getInstance(), []);
   return resendManager(screenInstance, payload);

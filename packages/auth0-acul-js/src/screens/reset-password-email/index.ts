@@ -1,10 +1,11 @@
 import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
+import { createResendControl } from '../../utils/resend-utils';
 
 import { ScreenOverride } from './screen-override';
 
-import type { CustomOptions } from '../../../interfaces/common';
+import type { CustomOptions, StartResendOptions, ResendControl } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type {
   ResetPasswordEmailMembers,
@@ -35,6 +36,39 @@ export default class ResetPasswordEmail extends BaseContext implements ResetPass
       telemetry: [ResetPasswordEmail.screenIdentifier, 'resendEmail'],
     };
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.RESEND_EMAIL });
+  }
+
+  /**
+   * Creates a resend control manager for handling email resend operations.
+   * 
+   * @param options Configuration options for the resend control
+   * @returns A ResendControl object with resend functionality and state management
+   * 
+   * @example
+   * ```typescript
+   * import ResetPasswordEmail from '@auth0/auth0-acul-js/reset-password-email';
+   * 
+   * const resetPasswordEmail = new ResetPasswordEmail();
+   * const { startResend } = resetPasswordEmail.resendManager({
+   *   timeoutSeconds: 60,
+   *   onStatusChange: (remainingSeconds, isDisabled) => {
+   *     console.log(`Resend available in ${remainingSeconds}s, disabled: ${isDisabled}`);
+   *   },
+   *   onTimeout: () => {
+   *     console.log('Resend is now available');
+   *   }
+   * });
+   * 
+   * // Call startResend when user clicks resend button
+   * startResend();
+   * ```
+   */
+  resendManager(options?: StartResendOptions): ResendControl {
+    return createResendControl(
+      ResetPasswordEmail.screenIdentifier,
+      () => this.resendEmail(),
+      options
+    );
   }
 }
 export { ResetPasswordEmailMembers, ResetPasswordEmailOptions, ScreenOptions as ScreenMembersOnResetPasswordEmail };

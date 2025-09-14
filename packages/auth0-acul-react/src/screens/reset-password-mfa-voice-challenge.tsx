@@ -36,7 +36,41 @@ export const switchToSms = (payload?: CustomOptions) => getInstance().switchToSm
 export const resendCode = (payload?: CustomOptions) => getInstance().resendCode(payload);
 export const tryAnotherMethod = (payload?: CustomOptions) => getInstance().tryAnotherMethod(payload);
 
-// Resend hook
+/**
+ * Hook for managing voice call resend functionality in reset password MFA voice challenge screen.
+ *
+ * This hook provides functionality to resend MFA voice challenges during password reset 
+ * with built-in rate limiting and timeout management. It returns the resend state and 
+ * controls for user interaction.
+ *
+ * @param {UseResendParams} [payload] - Optional configuration for the resend behavior
+ * @param {number} [payload.timeoutSeconds] - Custom timeout duration in seconds
+ * @param {OnTimeoutCallback} [payload.onTimeout] - Callback function executed when timeout expires
+ * 
+ * @returns {UseResendReturn} Object containing:
+ *  - `remaining`: number of seconds remaining before resend is available
+ *  - `disabled`: boolean indicating if resend is currently disabled
+ *  - `startResend`: function to trigger the resend operation
+ *
+ * @example
+ * ```tsx
+ * function ResetPasswordMfaVoiceForm() {
+ *   const { remaining, disabled, startResend } = useResend({
+ *     timeoutSeconds: 90,
+ *     onTimeout: () => console.log('Reset password MFA voice call resend available')
+ *   });
+ *   
+ *   return (
+ *     <button 
+ *       onClick={startResend} 
+ *       disabled={disabled}
+ *     >
+ *       {disabled ? `Call again in ${remaining}s` : 'Call Again'}
+ *     </button>
+ *   );
+ * }
+ * ```
+ */
 export const useResend = (payload?: UseResendParams): UseResendReturn => {
   const screenInstance = useMemo(() => getInstance(), []);
   return resendManager(screenInstance, payload);
