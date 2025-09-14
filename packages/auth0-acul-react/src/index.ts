@@ -13,6 +13,7 @@ export { useEmailIdentifierChallenge } from './screens/email-identifier-challeng
 export { useInterstitialCaptcha } from './screens/interstitial-captcha';
 export { useSignup } from './screens/signup';
 export { useLogin } from './screens/login';
+export { useResend } from './screens/email-identifier-challenge';
 export { useResetPassword } from './screens/reset-password';
 export { useResetPasswordRequest } from './screens/reset-password-request';
 export { useResetPasswordEmail } from './screens/reset-password-email';

@@ -33,6 +33,38 @@ export const continueMethod = (payload?: CustomOptions) => getInstance().continu
 export const resendPushNotification = (payload?: CustomOptions) => getInstance().resendPushNotification(payload);
 export const enterCodeManually = (payload?: CustomOptions) => getInstance().enterCodeManually(payload);
 export const tryAnotherMethod = (payload?: CustomOptions) => getInstance().tryAnotherMethod(payload);
+
+/**
+ * Polling manager for handling MFA push notifications
+ * @param intervalMs - The polling interval in milliseconds
+ * @param onComplete - Callback function to be called on successful polling
+ * @param onError - Callback function to be called on polling error
+ * @returns A function to start the polling
+ * @example
+ * ```tsx
+ * import React, { useEffect, useRef } from 'react';
+ * import MfaPushChallengePush from '@auth0/auth0-acul-js/mfa-push-challenge-push';
+
+ * const MfaPushChallengePushScreen: React.FC = () => {
+ *   const mfaPushChallengePush = React.useMemo(() => new MfaPushChallengePush(), []);
+ *   const pollingRef = useRef<any>(null);
+
+ *   useEffect(() => {
+ *     // Get polling object
+ *     pollingRef.current = mfaPushChallengePush.pollingManager(5000, async () => {
+ *       await mfaPushChallengePush.continue();
+ *     });
+ *     // Start polling
+ *     pollingRef.current.startPolling();
+ *     return () => {
+ *       pollingRef.current?.stopPolling();
+ *     };
+ *   }, [mfaPushChallengePush]);
+ *
+ *   return <div>...</div>;
+ * };
+ * ```
+ */
 export const usePushPollingManager = (intervalMs: number, onComplete: () => void, onError?: (error: MfaPushPollingError) => void) => getInstance().pollingManager(intervalMs, onComplete, onError);
 
 export type { ScreenMembersOnResetPasswordMfaPushChallengePush, ResetPasswordMfaPushChallengePushMembers } from '@auth0/auth0-acul-js/reset-password-mfa-push-challenge-push';

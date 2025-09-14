@@ -56,7 +56,7 @@ export namespace DeviceCodeConfirmation {
   export const cancel = cancel_DeviceCodeConfirmation;
 }
 
-import { useEmailIdentifierChallenge as useEmailIdentifierChallenge_EmailIdentifierChallenge, useScreen as useScreen_EmailIdentifierChallenge, useTransaction as useTransaction_EmailIdentifierChallenge, submitEmailChallenge as submitEmailChallenge_EmailIdentifierChallenge, resendCode as resendCode_EmailIdentifierChallenge, returnToPrevious as returnToPrevious_EmailIdentifierChallenge } from './screens/email-identifier-challenge';
+import { useResend as useResend_EmailIdentifierChallenge, useEmailIdentifierChallenge as useEmailIdentifierChallenge_EmailIdentifierChallenge, useScreen as useScreen_EmailIdentifierChallenge, useTransaction as useTransaction_EmailIdentifierChallenge, submitEmailChallenge as submitEmailChallenge_EmailIdentifierChallenge, resendCode as resendCode_EmailIdentifierChallenge, returnToPrevious as returnToPrevious_EmailIdentifierChallenge } from './screens/email-identifier-challenge';
 export namespace EmailIdentifierChallenge {
   export const useEmailIdentifierChallenge = useEmailIdentifierChallenge_EmailIdentifierChallenge;
   export const useScreen = useScreen_EmailIdentifierChallenge;
@@ -64,6 +64,7 @@ export namespace EmailIdentifierChallenge {
   export const submitEmailChallenge = submitEmailChallenge_EmailIdentifierChallenge;
   export const resendCode = resendCode_EmailIdentifierChallenge;
   export const returnToPrevious = returnToPrevious_EmailIdentifierChallenge;
+  export const useResend = useResend_EmailIdentifierChallenge;
 }
 
 import { useEmailOTPChallenge as useEmailOTPChallenge_EmailOtpChallenge, useScreen as useScreen_EmailOtpChallenge, useTransaction as useTransaction_EmailOtpChallenge, submitCode as submitCode_EmailOtpChallenge, resendCode as resendCode_EmailOtpChallenge } from './screens/email-otp-challenge';
@@ -278,7 +279,7 @@ export namespace MfaPhoneEnrollment {
 
 import { usePollingManager as useMfaPushChallengePush_MfaPushChallengePush, useScreen as useScreen_MfaPushChallengePush, useTransaction as useTransaction_MfaPushChallengePush, continueMethod as continueMethod_MfaPushChallengePush, resendPushNotification as resendPushNotification_MfaPushChallengePush, enterCodeManually as enterCodeManually_MfaPushChallengePush, tryAnotherMethod as tryAnotherMethod_MfaPushChallengePush } from './screens/mfa-push-challenge-push';
 export namespace MfaPushChallengePush {
-  export const useMfaPushChallengePush = useMfaPushChallengePush_MfaPushChallengePush;
+  export const pollingManager = useMfaPushChallengePush_MfaPushChallengePush;
   export const useScreen = useScreen_MfaPushChallengePush;
   export const useTransaction = useTransaction_MfaPushChallengePush;
   export const continueMethod = continueMethod_MfaPushChallengePush;
@@ -574,7 +575,7 @@ export namespace ResetPasswordMfaPhoneChallenge {
 
 import { usePushPollingManager as useResetPasswordMfaPushChallengePush_ResetPasswordMfaPushChallengePush, useScreen as useScreen_ResetPasswordMfaPushChallengePush, useTransaction as useTransaction_ResetPasswordMfaPushChallengePush, continueMethod as continueMethod_ResetPasswordMfaPushChallengePush, resendPushNotification as resendPushNotification_ResetPasswordMfaPushChallengePush, enterCodeManually as enterCodeManually_ResetPasswordMfaPushChallengePush, tryAnotherMethod as tryAnotherMethod_ResetPasswordMfaPushChallengePush } from './screens/reset-password-mfa-push-challenge-push';
 export namespace ResetPasswordMfaPushChallengePush {
-  export const useResetPasswordMfaPushChallengePush = useResetPasswordMfaPushChallengePush_ResetPasswordMfaPushChallengePush;
+  export const usePushPollingManager = useResetPasswordMfaPushChallengePush_ResetPasswordMfaPushChallengePush;
   export const useScreen = useScreen_ResetPasswordMfaPushChallengePush;
   export const useTransaction = useTransaction_ResetPasswordMfaPushChallengePush;
   export const continueMethod = continueMethod_ResetPasswordMfaPushChallengePush;

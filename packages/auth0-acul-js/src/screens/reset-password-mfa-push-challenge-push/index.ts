@@ -114,17 +114,22 @@ export default class ResetPasswordMfaPushChallengePush extends BaseContext imple
   }
 
   /**
-   * Allows polling for the push notification challenge to be approved.
+   * Starts polling the MFA push challenge endpoint.
+   * Calls the provided callback when the polling condition is met.
+   * Optionally handles polling errors via onError callback.
+   * 
    * @param intervalMs Polling interval in milliseconds
-   * @param onComplete Callback function to be called when polling is completed
+   * @param onComplete Callback function called when polling condition is met
+   * @param onError Optional callback called on polling error (receives error object)
+   * @returns Polling control object with stop/start/running
    * @example
    * ```typescript
-   * import ResetPasswordMfaPushChallengePush from '@auth0/auth0-acul-js/reset-password-mfa-push-challenge-push';
-   *
-   * const resetPasswordMfaPushChallengePush = new ResetPasswordMfaPushChallengePush();
-   * resetPasswordMfaPushChallengePush.pollingManager(5000, (rememberDevice) => {
-   *   console.log('Push notification approved. Remember device:', rememberDevice);
-   * });
+   * const control = resetPasswordMfaPushChallengePush.pollingManager(
+   *   5000,
+   *   () => { resetPasswordMfaPushChallengePush.continue(); },
+   *   (error) => { console.error('Polling error:', error); }
+   * );
+   * control.stop(); // To stop polling manually
    * ```
    */
   pollingManager(
