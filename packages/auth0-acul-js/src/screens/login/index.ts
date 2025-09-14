@@ -1,10 +1,11 @@
-import { ScreenIds } from '../../constants';
+import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
 
+import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type {
@@ -68,6 +69,28 @@ export default class Login extends BaseContext implements LoginMembers {
   async federatedLogin(payload: FederatedLoginOptions): Promise<void> {
     const options: FormOptions = { state: this.transaction.state, telemetry: [Login.screenIdentifier, 'federatedLogin'] };
     await new FormHandler(options).submitData<FederatedLoginOptions>(payload);
+  }
+
+  /**
+   * Picks country code for phone number input
+   * @param payload Optional custom options
+   * @example
+   * ```typescript
+   * import Login from "@auth0/auth0-acul-js/login";
+   * const loginManager = new Login();
+   * loginManager.pickCountryCode();
+   * ```
+   */
+  async pickCountryCode(payload?: CustomOptions): Promise<void> {
+    const options: FormOptions = {
+      state: this.transaction.state,
+      telemetry: [Login.screenIdentifier, 'pickCountryCode'],
+    };
+
+    await new FormHandler(options).submitData<CustomOptions>({
+      ...payload,
+      action: FormActions.PICK_COUNTRY_CODE,
+    });
   }
 }
 

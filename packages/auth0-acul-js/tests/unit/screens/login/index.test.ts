@@ -1,8 +1,9 @@
+import { ScreenIds, FormActions } from '../../../../src/constants';
 import Login from '../../../../src/screens/login';
-import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
-import { LoginOptions, FederatedLoginOptions } from '../../../../interfaces/screens/login';
-import { ScreenIds } from '../../../../src//constants';
+import { baseContextData } from '../../../data/test-data';
+
+import type { LoginOptions, FederatedLoginOptions } from '../../../../interfaces/screens/login';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -94,6 +95,31 @@ describe('Login', () => {
         connection: 'google-oauth2',
       };
       await expect(login.federatedLogin(payload)).rejects.toThrow('Mocked reject');
+    });
+  });
+
+  describe('pickCountryCode', () => {
+    it('should submit pick-country-code action without payload', async () => {
+      await login.pickCountryCode();
+      expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith({
+        action: FormActions.PICK_COUNTRY_CODE,
+      });
+    });
+
+    it('should submit pick-country-code action with custom payload', async () => {
+      const payload = { customField: 'customValue' };
+      await login.pickCountryCode(payload);
+      expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith({
+        ...payload,
+        action: FormActions.PICK_COUNTRY_CODE,
+      });
+    });
+
+    it('should throw error when promise is rejected', async () => {
+      mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
+      await expect(login.pickCountryCode()).rejects.toThrow('Mocked reject');
     });
   });
 });
