@@ -37,6 +37,34 @@ export const resendCode = (payload?: CustomOptions) => getInstance().resendCode(
 export const returnToPrevious = (payload?: CustomOptions) => getInstance().returnToPrevious(payload);
 
 // Resend hook
+/**
+ * Hook for managing the resend functionality
+ * @param payload Optional parameters for the resend action
+ * @returns An object containing the resend functionality
+ * @example
+ * ```tsx
+ * import EmailIdentifierChallenge from '@auth0/auth0-acul-js/email-identifier-challenge';
+ * const MyComponent = () => {
+ *   const emailChallenge = useEmailIdentifierChallenge();
+ *   const handleStatusChange = (remainingSeconds, isDisabled) => {
+ *     setDisabled(isDisabled);
+ *     setRemaining(remainingSeconds);
+ *   };
+ * 
+ *   const handleTimeout = () => {
+ *     console.log('Timeout completed, resend is now available');
+ *   };
+ * 
+ *   const { startResend } = emailChallenge.resendManager({
+ *     timeoutSeconds: 15,
+ *     onStatusChange: handleStatusChange,
+ *     onTimeout: handleTimeout
+ *   });
+ *   
+ *   // Call startResend when user clicks resend button
+ *   await startResend();
+ * ```
+*/
 export const useResend = (payload?: UseResendParams): UseResendReturn => {
   const screenInstance = useMemo(() => getInstance(), []);
   return resendManager(screenInstance, payload);
