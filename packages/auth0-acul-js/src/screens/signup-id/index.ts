@@ -1,9 +1,9 @@
 import { ScreenIds, FormActions } from '../../constants';
-import coreGetIdentifier from '../../helpers/getEnabledIdentifiers';
-import coreValidateUsername from '../../helpers/validateUsername';
 import { BaseContext } from '../../models/base-context';
 import { getBrowserCapabilities } from '../../utils/browser-capabilities';
 import { FormHandler } from '../../utils/form-handler';
+import coreGetIdentifier from '../../utils/getEnabledIdentifiers';
+import coreValidateUsername from '../../utils/validateUsername';
 
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
@@ -127,7 +127,7 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
     };
     return coreGetIdentifier(transaction.requiredIdentifiers ?? [], transaction.optionalIdentifiers ?? [], transaction.connectionStrategy);
   }
-  
+
   /**
    * @example
    * import SignupId from "@auth0/auth0-acul-js/signup-id";
@@ -158,10 +158,10 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
      * const result = signupIdManager.validateUsername('myusername');
      * // result => { valid: true, errors: [] }
      */
-    validateUsername(username: string): UsernameValidationResult {
-      const usernameValidationConfig = this.transaction.usernamePolicy;
-      return coreValidateUsername(username, usernameValidationConfig);
-    }
+  validateUsername(username: string): UsernameValidationResult {
+    const usernameValidationConfig = this.transaction.usernamePolicy;
+    return coreValidateUsername(username, usernameValidationConfig);
+  }
 }
 
 export {

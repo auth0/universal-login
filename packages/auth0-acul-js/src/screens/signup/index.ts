@@ -1,9 +1,9 @@
 import { ScreenIds, FormActions } from '../../constants';
-import coreGetIdentifier from '../../helpers/getEnabledIdentifiers';
-import coreValidatePassword from '../../helpers/validatePassword';
-import coreValidateUsername from '../../helpers/validateUsername';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
+import coreGetIdentifier from '../../utils/getEnabledIdentifiers';
+import coreValidatePassword from '../../utils/validatePassword';
+import coreValidateUsername from '../../utils/validateUsername';
 
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
@@ -104,32 +104,32 @@ export default class Signup extends BaseContext implements SignupMembers {
     });
   }
 
-/**
- * Validates a password string against the current transaction's password policy.
- *
- * This method retrieves the password policy from the current transaction context
- * and delegates the actual validation to `coreValidatePassword`.
- *
- * It returns an array of validation results, each containing:
- * - `code`: the identifier of the password rule,
- * - `policy`: a user-friendly description of the rule,
- * - `isValid`: boolean indicating if the password passed that rule.
- *
- * @param {string} password - The password string to validate.
- * @returns {PasswordRuleValidation[]} An array of rule validation results.
- *
- * @example
- * ```ts
- * const signup = new Signup();
- * const validationResults = signup.validatePassword('MyP@ssw0rd!');
- * console.log(validationResults);
- * // [
- * //   { code: 'password-policy-length-at-least', policy: 'At least 12 characters', isValid: false },
- * //   { code: 'password-policy-lower-case', policy: 'Lowercase letters (a-z)', isValid: true },
- * //   ...
- * // ]
- * ```
- */
+  /**
+   * Validates a password string against the current transaction's password policy.
+   *
+   * This method retrieves the password policy from the current transaction context
+   * and delegates the actual validation to `coreValidatePassword`.
+   *
+   * It returns an array of validation results, each containing:
+   * - `code`: the identifier of the password rule,
+   * - `policy`: a user-friendly description of the rule,
+   * - `isValid`: boolean indicating if the password passed that rule.
+   *
+   * @param {string} password - The password string to validate.
+   * @returns {PasswordRuleValidation[]} An array of rule validation results.
+   *
+   * @example
+   * ```ts
+   * const signup = new Signup();
+   * const validationResults = signup.validatePassword('MyP@ssw0rd!');
+   * console.log(validationResults);
+   * // [
+   * //   { code: 'password-policy-length-at-least', policy: 'At least 12 characters', isValid: false },
+   * //   { code: 'password-policy-lower-case', policy: 'Lowercase letters (a-z)', isValid: true },
+   * //   ...
+   * // ]
+   * ```
+   */
   validatePassword(password: string): PasswordRuleValidation[] {
     const passwordPolicy = this.transaction?.passwordPolicy;
     return coreValidatePassword(password, passwordPolicy);
@@ -146,7 +146,7 @@ export default class Signup extends BaseContext implements SignupMembers {
    * const identifiers = signup.getEnabledIdentifiers();
    * // [{ type: 'email', required: true }, { type: 'username', required: false }]
    */
-  getEnabledIdentifiers(): Identifier[] | null { 
+  getEnabledIdentifiers(): Identifier[] | null {
     const transaction = {
       ...this.transaction,
       errors: this.transaction.errors ?? undefined, // convert `null` to `undefined`

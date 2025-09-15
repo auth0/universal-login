@@ -1,13 +1,17 @@
+import { ScreenIds } from '../../../../src//constants';
+import { FormActions } from '../../../../src/constants';
+import { BaseContext } from '../../../../src/models/base-context';
 import Signup from '../../../../src/screens/signup';
 import { ScreenOverride } from '../../../../src/screens/signup/screen-override';
 import { TransactionOverride } from '../../../../src/screens/signup/transaction-override';
 import { FormHandler } from '../../../../src/utils/form-handler';
-import { BaseContext } from '../../../../src/models/base-context';
+import coreGetIdentifier from '../../../../src/utils/getEnabledIdentifiers';
+import coreValidatePassword from '../../../../src/utils/validatePassword';
+
 import type { ScreenContext } from '../../../../interfaces/models/screen';
 import type { PasswordPolicy, TransactionContext } from '../../../../interfaces/models/transaction';
 import type { SignupOptions, FederatedSignupOptions } from '../../../../interfaces/screens/signup';
-import { ScreenIds } from '../../../../src//constants';
-import { FormActions } from '../../../../src/constants';
+
 
 jest.mock('../../../../src/screens/signup/screen-override');
 jest.mock('../../../../src/screens/signup/transaction-override');
@@ -15,11 +19,9 @@ jest.mock('../../../../src/utils/form-handler');
 jest.mock('../../../../src/models/base-context');
 
 // We also need to mock these helper functions used inside the methods we want to test
-jest.mock('../../../../src/helpers/validatePassword', () => jest.fn());
-jest.mock('../../../../src/helpers/getEnabledIdentifiers', () => jest.fn());
+jest.mock('../../../../src/utils/validatePassword', () => jest.fn());
+jest.mock('../../../../src/utils/getEnabledIdentifiers', () => jest.fn());
 
-import coreValidatePassword from '../../../../src/helpers/validatePassword';
-import coreGetIdentifier from '../../../../src/helpers/getEnabledIdentifiers';
 
 describe('Signup', () => {
   let signup: Signup;
@@ -91,7 +93,7 @@ describe('Signup', () => {
 
   describe('validatePassword', () => {
     it('should call coreValidatePassword with password and transaction.passwordPolicy', () => {
-      const mockPolicy = { policy: "low", minLength: 8,  };
+      const mockPolicy = { policy: "low", minLength: 8, };
       signup.transaction.passwordPolicy = mockPolicy as PasswordPolicy;
 
       const mockResult = { isValid: true, errors: [] };

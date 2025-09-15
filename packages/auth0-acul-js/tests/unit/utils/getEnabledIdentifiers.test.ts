@@ -1,6 +1,7 @@
-import getEnabledIdentifiers from '../../../src/helpers/getEnabledIdentifiers';
 import { ConnectionStrategy } from '../../../src/constants';
-import type { Identifier, IdentifierType } from '../../../interfaces/models/screen';
+import getEnabledIdentifiers from '../../../src/utils/getEnabledIdentifiers';
+
+import type { IdentifierType } from '../../../interfaces/models/screen';
 
 describe('getEnabledIdentifiers', () => {
   it('returns a required email identifier for passwordless email strategy', () => {

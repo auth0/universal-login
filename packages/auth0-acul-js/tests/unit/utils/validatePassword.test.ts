@@ -1,4 +1,4 @@
-import validatePassword from '../../../src/helpers/validatePassword';
+import validatePassword from '../../../src/utils/validatePassword';
 import type { PasswordComplexityRule, PasswordPolicy } from '../../../interfaces/models/transaction';
 import type { PasswordRuleValidation } from '../../../interfaces/models/screen';
 

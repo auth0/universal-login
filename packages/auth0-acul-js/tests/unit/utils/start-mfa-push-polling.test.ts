@@ -1,4 +1,4 @@
-import { createPollingControl } from '../../../src/helpers/create-polling-control.js';
+import { createPollingControl } from '../../../src/utils/create-polling-control.js';
 
 describe('createPollingControl', () => {
   let originalXMLHttpRequest: typeof XMLHttpRequest;

@@ -1,12 +1,14 @@
-import ResetPassword from '../../../../src/screens/reset-password';
-import { baseContextData } from '../../../data/test-data';
-import { FormHandler } from '../../../../src/utils/form-handler';
-import { ResetPasswordOptions } from 'interfaces/screens/reset-password';
+
 import { ScreenIds } from '../../../../src//constants';
-import coreValidatePassword from '../../../../src/helpers/validatePassword';
+import ResetPassword from '../../../../src/screens/reset-password';
+import { FormHandler } from '../../../../src/utils/form-handler';
+import coreValidatePassword from '../../../../src/utils/validatePassword';
+import { baseContextData } from '../../../data/test-data';
+
 import type { PasswordPolicy } from '../../../../interfaces/models/transaction';
+import type { ResetPasswordOptions } from 'interfaces/screens/reset-password';
 jest.mock('../../../../src/utils/form-handler');
-jest.mock('../../../../src/helpers/validatePassword', () => jest.fn());
+jest.mock('../../../../src/utils/validatePassword', () => jest.fn());
 
 describe('ResetPassword', () => {
   let resetPassword: ResetPassword;

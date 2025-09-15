@@ -1,6 +1,6 @@
 import { ScreenIds, FormActions } from '../../constants';
-import { createPollingControl }  from '../../helpers/create-polling-control.js';
 import { BaseContext } from '../../models/base-context';
+import { createPollingControl } from '../../utils/create-polling-control.js';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
