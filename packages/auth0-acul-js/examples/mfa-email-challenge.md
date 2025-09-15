@@ -5,16 +5,39 @@ This screen is displayed when a user needs to verify their email during MFA.
 ## React Component Example with TailwindCSS
 
 ```tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import MfaEmailChallenge from '@auth0/auth0-acul-js/mfa-email-challenge';
 
 const MfaEmailChallengeScreen: React.FC = () => {
   const [code, setCode] = useState('');
   const [rememberDevice, setRememberDevice] = useState(false);
   const [error, setError] = useState('');
+  const [disabled, setDisabled] = useState(false);
+  const [remainingSeconds, setRemainingSeconds] = useState(0);
 
-  const mfaEmailChallenge = new MfaEmailChallenge();
+  const mfaEmailChallenge = useMemo(() => new MfaEmailChallenge(), []);
   const { screen } = mfaEmailChallenge;
+
+  function handleStatusChange(remainingSeconds: number, isDisabled: boolean) {
+    setDisabled(isDisabled);
+    setRemainingSeconds(remainingSeconds);
+  }
+
+  function handleTimeout() {
+    console.log('Resend timeout completed');
+  }
+
+  const resendManager = useMemo(
+    () =>
+      mfaEmailChallenge.resendManager({
+        timeoutSeconds: 15,
+        onStatusChange: handleStatusChange,
+        onTimeout: handleTimeout,
+      }),
+    [mfaEmailChallenge]
+  );
+
+  const { startResend } = resendManager;
   
   // Initialize form values from untrustedData
   useEffect(() => {
@@ -23,7 +46,7 @@ const MfaEmailChallengeScreen: React.FC = () => {
     if (savedFormData?.rememberDevice !== undefined) {
       setRememberDevice(savedFormData.rememberDevice);
     }
-  }, []);
+  }, [mfaEmailChallenge]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,7 +64,7 @@ const MfaEmailChallengeScreen: React.FC = () => {
 
   const handleResendCode = async () => {
     try {
-      await mfaEmailChallenge.resendCode();
+      await startResend();
     } catch (err) {
       setError('Failed to resend code. Please try again.');
     }
@@ -115,7 +138,7 @@ const MfaEmailChallengeScreen: React.FC = () => {
               </div>
             )}
 
-            {error && <div className="text-red-600 text-sm">{error}</div>}
+
 
             <div>
               <button
@@ -131,9 +154,10 @@ const MfaEmailChallengeScreen: React.FC = () => {
             <div className="flex justify-between">
               <button
                 onClick={handleResendCode}
-                className="text-sm text-blue-600 hover:text-blue-500"
+                disabled={disabled}
+                className={`text-sm ${disabled ? 'text-gray-400 cursor-not-allowed' : 'text-blue-600 hover:text-blue-500'}`}
               >
-                Resend Code
+                {disabled ? `Resend code in ${remainingSeconds}s` : 'Resend Code'}
               </button>
               <button
                 onClick={handlePickEmail}
@@ -149,6 +173,8 @@ const MfaEmailChallengeScreen: React.FC = () => {
               </button>
             </div>
           </div>
+
+          {error && <div className="text-red-600 text-sm mt-2">{error}</div>}
         </div>
       </div>
     </div>
@@ -156,6 +182,34 @@ const MfaEmailChallengeScreen: React.FC = () => {
 };
 
 export default MfaEmailChallengeScreen;
+
+```
+
+## resendManager
+
+```typescript
+import MfaEmailChallenge from '@auth0/auth0-acul-js/mfa-email-challenge';
+
+const mfaEmailChallenge = new MfaEmailChallenge();
+
+function handleStatusChange(remainingSeconds: number, isDisabled: boolean) {
+  console.log(`Resend available in ${remainingSeconds}s, disabled: ${isDisabled}`);
+}
+
+function handleTimeout() {
+  console.log('Resend timeout completed');
+}
+
+const resendManager = mfaEmailChallenge.resendManager({
+  timeoutSeconds: 15,
+  onStatusChange: handleStatusChange,
+  onTimeout: handleTimeout,
+});
+
+const { startResend } = resendManager;
+
+// Use startResend() to initiate the resend with cooldown
+startResend();
 
 ```
 

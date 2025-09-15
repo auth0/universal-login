@@ -7,15 +7,40 @@ This screen is displayed when the user needs to enter the code sent to their pho
 ## React Component Example with TailwindCSS
 
 ```tsx
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import ResetPasswordMfaVoiceChallenge from '@auth0/auth0-acul-js/reset-password-mfa-voice-challenge';
 
 const ResetPasswordMfaVoiceChallengeScreen: React.FC = () => {
   const [code, setCode] = useState('');
   const [showLinkSms, setShowLinkSms] = useState(false);
-  const resetPasswordMfaVoiceChallenge = new ResetPasswordMfaVoiceChallenge();
+  const [disabled, setDisabled] = useState(false);
+  const [remainingSeconds, setRemainingSeconds] = useState(0);
+  
+  const resetPasswordMfaVoiceChallenge = useMemo(() => new ResetPasswordMfaVoiceChallenge(), []);
+  
   const { screen, transaction } = resetPasswordMfaVoiceChallenge;
   const texts = screen?.texts ?? {};
+
+  function handleStatusChange(remainingSeconds: number, isDisabled: boolean) {
+    setDisabled(isDisabled);
+    setRemainingSeconds(remainingSeconds);
+  }
+
+  function handleTimeout() {
+    console.log('Resend timeout completed');
+  }
+
+  const resendManager = useMemo(
+    () =>
+      resetPasswordMfaVoiceChallenge.resendManager({
+        timeoutSeconds: 15,
+        onStatusChange: handleStatusChange,
+        onTimeout: handleTimeout,
+      }),
+    [resetPasswordMfaVoiceChallenge]
+  );
+
+  const { startResend } = resendManager;
 
   // Initialize state from screen data
   React.useEffect(() => {
@@ -43,9 +68,9 @@ const ResetPasswordMfaVoiceChallengeScreen: React.FC = () => {
 
   const handleResendCode = async () => {
     try {
-      await resetPasswordMfaVoiceChallenge.resendCode();
+      await startResend();
     } catch (error) {
-      console.error('Resend code failed:', error);
+      console.error('Failed to resend code:', error);
     }
   };
 
@@ -100,10 +125,18 @@ const ResetPasswordMfaVoiceChallengeScreen: React.FC = () => {
         <div className="flex flex-col space-y-2 text-sm text-center">
           <button
             onClick={handleResendCode}
-            className="text-blue-600 hover:underline"
+            disabled={disabled}
+            className={`${
+              disabled
+                ? "text-gray-400 cursor-not-allowed"
+                : "text-blue-600 hover:underline"
+            }`}
             type="button"
           >
-            {texts.resendActionText ?? 'Call Again'}
+            {disabled 
+              ? `${texts.resendActionText ?? 'Call Again'} (${remainingSeconds}s)`
+              : texts.resendActionText ?? 'Call Again'
+            }
           </button>
           
           {showLinkSms && (
