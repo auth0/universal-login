@@ -1,4 +1,3 @@
-// typedoc.js
 export default {
   out: 'docs',
   entryPoints: ['./src/export.ts'],

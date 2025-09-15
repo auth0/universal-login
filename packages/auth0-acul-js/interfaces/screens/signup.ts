@@ -1,4 +1,5 @@
-import type { Identifier, PasswordRuleValidation, UsernameValidationResult } from '../../interfaces/models/screen'
+import type { Identifier, UsernameValidationResult } from '../../interfaces/models/screen'
+import type { PasswordValidationResult } from '../../interfaces/utils/validate-password';
 import type { IdentifierType } from '../../src/constants';
 import type { CustomOptions } from '../common';
 import type { BaseMembers } from '../models/base-context';
@@ -36,7 +37,7 @@ export interface SignupMembers extends BaseMembers {
   signup(payload: SignupOptions): Promise<void>;
   federatedSignup(payload: FederatedSignupOptions): Promise<void>;
   pickCountryCode(payload?: CustomOptions): Promise<void>;
-  validatePassword(password: string): PasswordRuleValidation[];
+  validatePassword(password: string): PasswordValidationResult;
   getEnabledIdentifiers(): Identifier[] | null;
   validateUsername(username: string): UsernameValidationResult;
 }

@@ -1,4 +1,5 @@
 export type ErrorItem = {
+  id: string;
   code: string;
   message: string;
   field?: string;
@@ -6,6 +7,8 @@ export type ErrorItem = {
 };
 
 export type ErrorKind = 'server' | 'client' | 'developer';
+
+export const ERROR_KINDS: ErrorKind[] = ['server', 'client', 'developer'];
 
 type Bucket = {
   server: ReadonlyArray<ErrorItem>;
@@ -15,12 +18,12 @@ type Bucket = {
 
 type Listener = () => void;
 
+/** Compare two error lists by id only for maximal speed. */
 export function listsEqual(a: ReadonlyArray<ErrorItem>, b: ReadonlyArray<ErrorItem>) {
   if (a === b) return true;
   if (a.length !== b.length) return false;
   for (let i = 0; i < a.length; i++) {
-    const x = a[i], y = b[i];
-    if (x.code !== y.code || x.message !== y.message || x.field !== y.field) return false;
+    if (a[i].id !== b[i].id) return false;
   }
   return true;
 }
@@ -31,7 +34,13 @@ const EMPTY_BUCKET: Bucket = Object.freeze({
   developer: Object.freeze([]),
 });
 
-/** Per-screen error store keyed by the screen instance (singleton per page). */
+let nextId = 0;
+const genId = () => `${Date.now()}-${nextId++}`;
+
+/**
+ * Per-screen error store keyed by the screen instance (singleton per page).
+ * Generates a stable id for every inserted error for fast diffing and removal.
+ */
 class ErrorStore {
   private data = new WeakMap<object, Bucket>();
   private listeners = new WeakMap<object, Set<Listener>>();
@@ -56,37 +65,46 @@ class ErrorStore {
   }
 
   snapshot(key: object): Readonly<Bucket> {
-    // Return existing references so React re-renders only on real changes.
     return this.ensure(key);
   }
 
-  // Replace an entire kind (useful for server or client resets).
-  replace(key: object, kind: ErrorKind, list: ErrorItem[]) {
+  /** Add ids and freeze an array of ErrorItem-like objects. */
+  private normalize(list: Array<Omit<ErrorItem, 'id'> & { id?: string }>): ReadonlyArray<ErrorItem> {
+    return Object.freeze(
+      list.map((e) =>
+        Object.freeze({
+          ...e,
+          id: e.id ?? genId(),
+        })
+      )
+    );
+  }
+
+  /** Replace an entire kind with a new list (generating ids if needed). */
+  replace(key: object, kind: ErrorKind, list: Array<Omit<ErrorItem, 'id'> | ErrorItem>) {
     const prev = this.ensure(key);
-
-    // ✅ Compare before allocating
-    if (listsEqual(prev[kind], list)) return;
-
-    const nextList = Object.freeze(list.slice());
+    const nextList = this.normalize(list);
+    if (listsEqual(prev[kind], nextList)) return;
+    
     const next: Bucket = Object.freeze({
       server: kind === 'server' ? nextList : prev.server,
       client: kind === 'client' ? nextList : prev.client,
       developer: kind === 'developer' ? nextList : prev.developer,
     });
-
+    
     this.data.set(key, next);
     this.notify(key);
   }
 
-  // Append client/developer error(s).
-  push(key: object, kind: 'client' | 'developer', list: ErrorItem | ErrorItem[]) {
+  /** Append one or more items to a kind. */
+  push(key: object, kind: ErrorKind, list: Omit<ErrorItem, 'id'> | ErrorItem | Array<Omit<ErrorItem, 'id'> | ErrorItem>) {
     const prev = this.ensure(key);
     const arr = Array.isArray(list) ? list : [list];
-    if (arr.length === 0) return; // nothing to do
+    if (arr.length === 0) return;
 
-    const nextKindList = Object.freeze([...prev[kind], ...arr]);
+    const nextKindList = Object.freeze([...prev[kind], ...this.normalize(arr)]);
     const next: Bucket = Object.freeze({
-      server: prev.server,
+      server: kind === 'server' ? nextKindList : prev.server,
       client: kind === 'client' ? nextKindList : prev.client,
       developer: kind === 'developer' ? nextKindList : prev.developer,
     });
@@ -95,31 +113,71 @@ class ErrorStore {
     this.notify(key);
   }
 
-  // Clear one or more kinds (default: all).
+  /** Clear one or more kinds (default: all kinds). */
   clear(key: object, kinds: ErrorKind[] = ['server', 'client', 'developer']) {
     const prev = this.ensure(key);
 
-    // Compute new refs but only swap if at least one actually changes.
     let server = prev.server;
     let client = prev.client;
     let developer = prev.developer;
-
     let changed = false;
+
+    const empty = (k: ErrorKind) => Object.freeze([]) as ReadonlyArray<ErrorItem>;
+
     for (const k of kinds) {
-      if (k === 'server' && server !== EMPTY_BUCKET.server) {
-        server = EMPTY_BUCKET.server;
+      if (k === 'server' && server.length) {
+        server = empty('server');
         changed = true;
-      } else if (k === 'client' && client !== EMPTY_BUCKET.client) {
-        client = EMPTY_BUCKET.client;
+      } else if (k === 'client' && client.length) {
+        client = empty('client');
         changed = true;
-      } else if (k === 'developer' && developer !== EMPTY_BUCKET.developer) {
-        developer = EMPTY_BUCKET.developer;
+      } else if (k === 'developer' && developer.length) {
+        developer = empty('developer');
         changed = true;
       }
     }
 
-    if (!changed) return; // ✅ no-op if already clear
+    if (!changed) return;
+    const next: Bucket = Object.freeze({ server, client, developer });
+    this.data.set(key, next);
+    this.notify(key);
+  }
 
+  /**
+   * Remove errors that match a given id or predicate from specified kinds.
+   */
+  remove(
+    key: object,
+    kinds: ErrorKind[] = ['server', 'client', 'developer'],
+    test: string | ((e: ErrorItem) => boolean)
+  ) {
+    const prev = this.ensure(key);
+    const isMatch = typeof test === 'string' ? (e: ErrorItem) => e.id === test : test;
+
+    let server = prev.server;
+    let client = prev.client;
+    let developer = prev.developer;
+    let changed = false;
+
+    const maybeFilter = (list: ReadonlyArray<ErrorItem>) => {
+      const filtered = list.filter((e) => !isMatch(e));
+      return filtered.length === list.length ? list : Object.freeze(filtered);
+    };
+
+    if (kinds.includes('server')) {
+      const next = maybeFilter(server);
+      if (next !== server) { server = next; changed = true; }
+    }
+    if (kinds.includes('client')) {
+      const next = maybeFilter(client);
+      if (next !== client) { client = next; changed = true; }
+    }
+    if (kinds.includes('developer')) {
+      const next = maybeFilter(developer);
+      if (next !== developer) { developer = next; changed = true; }
+    }
+
+    if (!changed) return;
     const next: Bucket = Object.freeze({ server, client, developer });
     this.data.set(key, next);
     this.notify(key);

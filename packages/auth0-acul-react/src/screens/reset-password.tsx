@@ -39,7 +39,7 @@ export const resetPassword = (payload: ResetPasswordOptions) => getInstance().re
  * the password satisfies that rule.
  *
  * @param {string} password - The password string to validate.
- * @returns {PasswordRuleValidation[]} An array of validation results for each password policy rule.
+ * @returns {PasswordValidationResult}
  *
  * @example
  * ```ts

@@ -54,9 +54,10 @@ export interface UsernamePolicy {
 }
 
 export interface PasswordPolicy {
+  enabled?: boolean;
   minLength?: number;
-  policy: 'low' | 'fair' | 'good' | 'excellent';
-  passwordSecurityInfo?: PasswordComplexityRule;
+  policy: 'none' | 'low' | 'fair' | 'good' | 'excellent';
+  passwordSecurityInfo?: PasswordComplexityRule[];
 }
 
 export interface DBConnection extends Connection {
@@ -98,7 +99,7 @@ export interface DBConnection extends Connection {
         enabled: boolean;
         policy: string;
         min_length: number;
-        password_security_info?: PasswordComplexityRule;
+        password_security_info?: PasswordComplexityRule[];
       };
       passkey: {
         enabled: boolean;

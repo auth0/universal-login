@@ -1,9 +1,9 @@
 import { ScreenIds, FormActions } from '../../constants';
-import coreGetIdentifier from '../../helpers/getEnabledIdentifiers';
-import coreValidateUsername from '../../helpers/validateUsername';
 import { BaseContext } from '../../models/base-context';
 import { getBrowserCapabilities } from '../../utils/browser-capabilities';
 import { FormHandler } from '../../utils/form-handler';
+import coreGetIdentifier from '../../utils/get-enabled-identifiers';
+import coreValidateUsername from '../../utils/validate-username';
 
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';

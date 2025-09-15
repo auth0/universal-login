@@ -1,4 +1,4 @@
-import type { PasswordRuleValidation } from '../../interfaces/models/screen'
+import type { PasswordValidationResult } from '../../interfaces/utils/validate-password';
 import type { IdentifierType } from '../../src/constants';
 import type { BaseContext, BaseMembers } from '../models/base-context';
 import type { ScreenContext, ScreenMembers } from '../models/screen';
@@ -57,5 +57,5 @@ export interface SignupPasswordMembers extends BaseMembers {
   transaction: TransactionMembersOnSignupPassword;
   signup(payload: SignupPasswordOptions): Promise<void>;
   federatedSignup(payload: FederatedSignupOptions): Promise<void>;
-  validatePassword(password: string): PasswordRuleValidation[];
+  validatePassword(password: string): PasswordValidationResult;
 }

@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import LoginId from '@auth0/auth0-acul-js/login-id';
 import { ContextHooks } from '../hooks/context-hooks';
+import { createUseErrors } from '../hooks/common/use-errors';
 
 import type { LoginIdMembers, LoginOptions, FederatedLoginOptions, CustomOptions, ScreenMembersOnLoginId, TransactionMembersOnLoginId } from '@auth0/auth0-acul-js/login-id';
 let instance: LoginIdMembers | null = null;
@@ -28,8 +29,14 @@ export const {
 export const useScreen: () => ScreenMembersOnLoginId = () => useMemo(() => getInstance().screen, []);
 export const useTransaction: () => TransactionMembersOnLoginId = () => useMemo(() => getInstance().transaction, []);
 
+const {
+  useErrors,
+  withErrorHandler
+// @ts-ignore
+} = createUseErrors(getInstance);
+
 // Screen methods
-export const login = (payload: LoginOptions) => getInstance().login(payload);
+export const login = (payload: LoginOptions) => withErrorHandler(getInstance().login(payload));
 export const federatedLogin = (payload: FederatedLoginOptions) => getInstance().federatedLogin(payload);
 export const passkeyLogin = (payload?: CustomOptions) => getInstance().passkeyLogin(payload);
 export const pickCountryCode = (payload?: CustomOptions) => getInstance().pickCountryCode(payload);
@@ -56,3 +63,5 @@ export const useActiveIdentifiers = () => getInstance().getActiveIdentifiers();
 export type { ScreenMembersOnLoginId, TransactionMembersOnLoginId, LoginOptions, FederatedLoginOptions, LoginIdMembers } from '@auth0/auth0-acul-js/login-id';
 
 export type * from '@auth0/auth0-acul-js/login-id';
+
+export { useErrors };

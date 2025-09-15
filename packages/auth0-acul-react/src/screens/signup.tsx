@@ -42,7 +42,7 @@ export const pickCountryCode = (payload?: CustomOptions) => getInstance().pickCo
  * the password satisfies that rule.
  *
  * @param {string} password - The password string to validate.
- * @returns {PasswordRuleValidation[]} An array of validation results for each password policy rule.
+ * @returns {PasswordValidationResult} An array of validation results for each password policy rule.
  *
  * @example
  * ```ts

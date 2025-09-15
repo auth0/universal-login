@@ -1,16 +1,17 @@
+import { PasswordValidationResult } from '../../../interfaces/utils/validate-password';
 import { ScreenIds, FormActions } from '../../constants';
-import coreGetIdentifier from '../../helpers/getEnabledIdentifiers';
-import coreValidatePassword from '../../helpers/validatePassword';
-import coreValidateUsername from '../../helpers/validateUsername';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
+import coreGetIdentifier from '../../utils/get-enabled-identifiers';
+import { validatePassword as _validatePassword} from '../../utils/validate-password';
+import coreValidateUsername from '../../utils/validate-username';
 
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
 
 import type { Identifier } from '../../../interfaces/models/screen';
 import type { ScreenContext } from '../../../interfaces/models/screen';
-import type { PasswordRuleValidation, UsernameValidationResult } from '../../../interfaces/models/screen';
+import type { UsernameValidationResult } from '../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type {
   SignupMembers,
@@ -104,35 +105,9 @@ export default class Signup extends BaseContext implements SignupMembers {
     });
   }
 
-/**
- * Validates a password string against the current transaction's password policy.
- *
- * This method retrieves the password policy from the current transaction context
- * and delegates the actual validation to `coreValidatePassword`.
- *
- * It returns an array of validation results, each containing:
- * - `code`: the identifier of the password rule,
- * - `policy`: a user-friendly description of the rule,
- * - `isValid`: boolean indicating if the password passed that rule.
- *
- * @param {string} password - The password string to validate.
- * @returns {PasswordRuleValidation[]} An array of rule validation results.
- *
- * @example
- * ```ts
- * const signup = new Signup();
- * const validationResults = signup.validatePassword('MyP@ssw0rd!');
- * console.log(validationResults);
- * // [
- * //   { code: 'password-policy-length-at-least', policy: 'At least 12 characters', isValid: false },
- * //   { code: 'password-policy-lower-case', policy: 'Lowercase letters (a-z)', isValid: true },
- * //   ...
- * // ]
- * ```
- */
-  validatePassword(password: string): PasswordRuleValidation[] {
+  validatePassword(password: string): PasswordValidationResult {
     const passwordPolicy = this.transaction?.passwordPolicy;
-    return coreValidatePassword(password, passwordPolicy);
+    return _validatePassword(password, passwordPolicy);
   }
 
   /**
@@ -172,6 +147,6 @@ export default class Signup extends BaseContext implements SignupMembers {
   }
 }
 
-export { PasswordRuleValidation, UsernameValidationResult, Identifier, SignupMembers, SignupOptions, ScreenOptions as ScreenMembersOnSignup, TransactionOptions as TransactionMembersOnSignup, FederatedSignupOptions };
+export { PasswordValidationResult, UsernameValidationResult, Identifier, SignupMembers, SignupOptions, ScreenOptions as ScreenMembersOnSignup, TransactionOptions as TransactionMembersOnSignup, FederatedSignupOptions };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';

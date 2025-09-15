@@ -86,12 +86,6 @@ export interface Identifier {
   required: boolean;
 }
 
-export type PasswordRuleValidation = {
-  policy: string;
-  isValid: boolean;
-  code: string;
-};
-
 export interface UsernameValidationError {
   code: string;
   message: string;
