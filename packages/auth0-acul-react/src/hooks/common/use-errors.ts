@@ -1,13 +1,14 @@
 import { useEffect, useMemo, useRef, useSyncExternalStore, useCallback } from 'react';
 import { errorStore, ERROR_KINDS, type ErrorItem, type ErrorKind } from '../../state/error-store';
-import { SDKUsageError, UserInputError, Auth0ServerError } from '@auth0/auth0-acul-js';
+import {
+  SDKUsageError,
+  UserInputError,
+  Auth0ServerError,
+  getErrors as getServerErrors,
+} from '@auth0/auth0-acul-js';
 
 export interface ErrorInfo extends ErrorItem {
   kind: ErrorKind;
-}
-
-export interface WithGetErrors {
-  getErrors?: () => Omit<ErrorItem, 'id'>[];
 }
 
 export interface ErrorsResult extends ReadonlyArray<ErrorInfo> {
@@ -26,11 +27,10 @@ export interface UseErrorsResult {
   dismissAll: () => void;
 }
 
-function classifyKind(e: any): 'client' | 'developer' | 'server' | null {
+function classifyKind(e: any): ErrorKind | null {
   if (e instanceof UserInputError) return 'client';
   if (e instanceof SDKUsageError) return 'developer';
   if (e instanceof Auth0ServerError) return 'server';
-
   return null;
 }
 
@@ -50,9 +50,8 @@ function filterByField<T extends { field?: string }>(
   return list.filter((e) => e.field === field);
 }
 
-export function createUseErrors<M extends WithGetErrors>(getInstance: () => M) {
-  const key = getInstance as unknown as object;
-
+export function createUseErrors() {
+  // Caches for tagged errors
   const cacheServer = new WeakMap<ReadonlyArray<ErrorItem>, ReadonlyArray<ErrorInfo>>();
   const cacheClient = new WeakMap<ReadonlyArray<ErrorItem>, ReadonlyArray<ErrorInfo>>();
   const cacheDev = new WeakMap<ReadonlyArray<ErrorItem>, ReadonlyArray<ErrorInfo>>();
@@ -61,7 +60,7 @@ export function createUseErrors<M extends WithGetErrors>(getInstance: () => M) {
     const cache = kind === 'server' ? cacheServer : kind === 'client' ? cacheClient : cacheDev;
     const hit = cache.get(arr);
     if (hit) return hit;
-    const out = Object.freeze(arr.map((e) => Object.freeze({ ...e, kind: kind as ErrorKind })));
+    const out = Object.freeze(arr.map((e) => Object.freeze({ ...e, kind })));
     cache.set(arr, out);
     return out;
   };
@@ -70,17 +69,18 @@ export function createUseErrors<M extends WithGetErrors>(getInstance: () => M) {
     const { includeDevErrors = false } = options;
 
     const snap = useSyncExternalStore(
-      (cb) => errorStore.subscribe(key, cb),
-      () => errorStore.snapshot(key)
+      (cb) => errorStore.subscribe(cb),
+      () => errorStore.snapshot()
     );
 
     const didInit = useRef(false);
     useEffect(() => {
       if (didInit.current) return;
       didInit.current = true;
-      const instance = getInstance();
-      const server = (instance.getErrors?.() ?? []) as Array<Omit<ErrorItem, 'id'>>;
-      errorStore.replace(key, 'server', server);
+
+      // Get server errors directly from TS SDK on first render.
+      const server = (getServerErrors?.() ?? []) as Array<Omit<ErrorItem, 'id'>>;
+      errorStore.replace('server', server);
     }, []);
 
     const serverTagged = useMemo(() => tag('server', snap.server), [snap.server]);
@@ -95,7 +95,6 @@ export function createUseErrors<M extends WithGetErrors>(getInstance: () => M) {
 
     const errors: ErrorsResult = useMemo(() => {
       const arr = Object.assign([...all], {
-        // Get all errors of a specific kind, optionally filtered by field.
         byKind(kind: ErrorKind, opts?: { field?: string }): ReadonlyArray<ErrorInfo> {
           const base =
             kind === 'client' ? clientTagged :
@@ -103,12 +102,8 @@ export function createUseErrors<M extends WithGetErrors>(getInstance: () => M) {
             serverTagged;
           return opts?.field ? Object.freeze(filterByField(base, opts.field)) : base;
         },
-
-        // Get all errors for a specific field, optionally filtered by kind.
         byField(field: string, opts?: { kind?: ErrorKind }): ReadonlyArray<ErrorInfo> {
-          if (opts?.kind) {
-            return arr.byKind(opts.kind, { field });
-          }
+          if (opts?.kind) return arr.byKind(opts.kind, { field });
           return Object.freeze(filterByField(all, field));
         }
       });
@@ -118,11 +113,11 @@ export function createUseErrors<M extends WithGetErrors>(getInstance: () => M) {
     const hasError = all.length > 0;
 
     const dismiss = useCallback((id: string) => {
-      errorStore.remove(key, ERROR_KINDS, id);
+      errorStore.remove(ERROR_KINDS, id);
     }, []);
 
     const dismissAll = useCallback(() => {
-      errorStore.clear(key, ERROR_KINDS);
+      errorStore.clear(ERROR_KINDS);
     }, []);
 
     return useMemo(
@@ -131,41 +126,40 @@ export function createUseErrors<M extends WithGetErrors>(getInstance: () => M) {
     );
   }
 
-  /* internal helpers for SDK usage */
+  // ---------- INTERNAL (SDK-only) ----------
   function __replaceClientErrors(list: Array<Omit<ErrorItem, 'id'>>) {
-    errorStore.replace(key, 'client', list);
+    errorStore.replace('client', list);
   }
   function __clearClientErrors() {
-    errorStore.clear(key, ['client']);
+    errorStore.clear(['client']);
   }
   function __pushClientErrors(list: Omit<ErrorItem, 'id'> | Array<Omit<ErrorItem, 'id'>>) {
-    errorStore.push(key, 'client', list);
+    errorStore.push('client', list);
   }
 
   function __replaceDeveloperErrors(list: Array<Omit<ErrorItem, 'id'>>) {
-    errorStore.replace(key, 'developer', list);
+    errorStore.replace('developer', list);
   }
   function __clearDeveloperErrors() {
-    errorStore.clear(key, ['developer']);
+    errorStore.clear(['developer']);
   }
   function __pushDeveloperErrors(list: Omit<ErrorItem, 'id'> | Array<Omit<ErrorItem, 'id'>>) {
-    errorStore.push(key, 'developer', list);
+    errorStore.push('developer', list);
   }
 
   function __replaceServerErrors(list: Array<Omit<ErrorItem, 'id'>>) {
-    errorStore.replace(key, 'server', list);
+    errorStore.replace('server', list);
   }
   function __clearServerErrors() {
-    errorStore.clear(key, ['server']);
+    errorStore.clear(['server']);
   }
   function __pushServerErrors(list: Omit<ErrorItem, 'id'> | Array<Omit<ErrorItem, 'id'>>) {
-    errorStore.push(key, 'server', list);
+    errorStore.push('server', list);
   }
 
   function __syncServerErrors() {
-    const inst = getInstance();
-    const server = (inst.getErrors?.() ?? []) as Array<Omit<ErrorItem, 'id'>>;
-    errorStore.replace(key, 'server', server);
+    const server = (getServerErrors?.() ?? []) as Array<Omit<ErrorItem, 'id'>>;
+    errorStore.replace('server', server);
   }
 
   const isPromise = (v: unknown): v is Promise<unknown> =>
@@ -199,7 +193,10 @@ export function createUseErrors<M extends WithGetErrors>(getInstance: () => M) {
   }
 
   return {
+    // Public API
     useErrors,
+
+    // Internal API
     withErrorHandler,
     __replaceClientErrors,
     __clearClientErrors,

@@ -19,7 +19,7 @@ type Bucket = {
 type Listener = () => void;
 
 /** Compare two error lists by id only for maximal speed. */
-export function listsEqual(a: ReadonlyArray<ErrorItem>, b: ReadonlyArray<ErrorItem>) {
+function listsEqual(a: ReadonlyArray<ErrorItem>, b: ReadonlyArray<ErrorItem>) {
   if (a === b) return true;
   if (a.length !== b.length) return false;
   for (let i = 0; i < a.length; i++) {
@@ -38,34 +38,22 @@ let nextId = 0;
 const genId = () => `${Date.now()}-${nextId++}`;
 
 /**
- * Per-screen error store keyed by the screen instance (singleton per page).
- * Generates a stable id for every inserted error for fast diffing and removal.
+ * Global error store for ACUL (one screen per page).
+ * - Holds a single bucket of errors across the current page.
+ * - Generates stable ids for every inserted error.
+ * - Emits immutable snapshots to subscribers.
  */
 class ErrorStore {
-  private data = new WeakMap<object, Bucket>();
-  private listeners = new WeakMap<object, Set<Listener>>();
+  private bucket: Bucket = EMPTY_BUCKET;
+  private listeners: Set<Listener> = new Set();
 
-  private ensure(key: object): Bucket {
-    let b = this.data.get(key);
-    if (!b) {
-      b = EMPTY_BUCKET;
-      this.data.set(key, b);
-    }
-    return b;
+  subscribe(cb: Listener): () => void {
+    this.listeners.add(cb);
+    return () => this.listeners.delete(cb);
   }
 
-  subscribe(key: object, cb: Listener): () => void {
-    let set = this.listeners.get(key);
-    if (!set) {
-      set = new Set();
-      this.listeners.set(key, set);
-    }
-    set.add(cb);
-    return () => set!.delete(cb);
-  }
-
-  snapshot(key: object): Readonly<Bucket> {
-    return this.ensure(key);
+  snapshot(): Readonly<Bucket> {
+    return this.bucket;
   }
 
   /** Add ids and freeze an array of ErrorItem-like objects. */
@@ -81,112 +69,77 @@ class ErrorStore {
   }
 
   /** Replace an entire kind with a new list (generating ids if needed). */
-  replace(key: object, kind: ErrorKind, list: Array<Omit<ErrorItem, 'id'> | ErrorItem>) {
-    const prev = this.ensure(key);
+  replace(kind: ErrorKind, list: Array<Omit<ErrorItem, 'id'> | ErrorItem>) {
     const nextList = this.normalize(list);
-    if (listsEqual(prev[kind], nextList)) return;
-    
-    const next: Bucket = Object.freeze({
-      server: kind === 'server' ? nextList : prev.server,
-      client: kind === 'client' ? nextList : prev.client,
-      developer: kind === 'developer' ? nextList : prev.developer,
+    if (listsEqual(this.bucket[kind], nextList)) return;
+
+    this.bucket = Object.freeze({
+      ...this.bucket,
+      [kind]: nextList,
     });
-    
-    this.data.set(key, next);
-    this.notify(key);
+    this.notify();
   }
 
   /** Append one or more items to a kind. */
-  push(key: object, kind: ErrorKind, list: Omit<ErrorItem, 'id'> | ErrorItem | Array<Omit<ErrorItem, 'id'> | ErrorItem>) {
-    const prev = this.ensure(key);
+  push(
+    kind: ErrorKind,
+    list: Omit<ErrorItem, 'id'> | ErrorItem | Array<Omit<ErrorItem, 'id'> | ErrorItem>
+  ) {
     const arr = Array.isArray(list) ? list : [list];
     if (arr.length === 0) return;
 
-    const nextKindList = Object.freeze([...prev[kind], ...this.normalize(arr)]);
-    const next: Bucket = Object.freeze({
-      server: kind === 'server' ? nextKindList : prev.server,
-      client: kind === 'client' ? nextKindList : prev.client,
-      developer: kind === 'developer' ? nextKindList : prev.developer,
+    const nextKindList = Object.freeze([...this.bucket[kind], ...this.normalize(arr)]);
+    this.bucket = Object.freeze({
+      ...this.bucket,
+      [kind]: nextKindList,
     });
-
-    this.data.set(key, next);
-    this.notify(key);
+    this.notify();
   }
 
   /** Clear one or more kinds (default: all kinds). */
-  clear(key: object, kinds: ErrorKind[] = ['server', 'client', 'developer']) {
-    const prev = this.ensure(key);
-
-    let server = prev.server;
-    let client = prev.client;
-    let developer = prev.developer;
+  clear(kinds: ErrorKind[] = ERROR_KINDS) {
     let changed = false;
-
-    const empty = (k: ErrorKind) => Object.freeze([]) as ReadonlyArray<ErrorItem>;
+    const next: Partial<Bucket> = {};
 
     for (const k of kinds) {
-      if (k === 'server' && server.length) {
-        server = empty('server');
-        changed = true;
-      } else if (k === 'client' && client.length) {
-        client = empty('client');
-        changed = true;
-      } else if (k === 'developer' && developer.length) {
-        developer = empty('developer');
+      if (this.bucket[k].length > 0) {
+        (next as any)[k] = Object.freeze([]);
         changed = true;
       }
     }
 
     if (!changed) return;
-    const next: Bucket = Object.freeze({ server, client, developer });
-    this.data.set(key, next);
-    this.notify(key);
+    this.bucket = Object.freeze({ ...this.bucket, ...next });
+    this.notify();
   }
 
   /**
    * Remove errors that match a given id or predicate from specified kinds.
    */
   remove(
-    key: object,
-    kinds: ErrorKind[] = ['server', 'client', 'developer'],
+    kinds: ErrorKind[] = ERROR_KINDS,
     test: string | ((e: ErrorItem) => boolean)
   ) {
-    const prev = this.ensure(key);
     const isMatch = typeof test === 'string' ? (e: ErrorItem) => e.id === test : test;
 
-    let server = prev.server;
-    let client = prev.client;
-    let developer = prev.developer;
     let changed = false;
+    const next: Partial<Bucket> = {};
 
-    const maybeFilter = (list: ReadonlyArray<ErrorItem>) => {
-      const filtered = list.filter((e) => !isMatch(e));
-      return filtered.length === list.length ? list : Object.freeze(filtered);
-    };
-
-    if (kinds.includes('server')) {
-      const next = maybeFilter(server);
-      if (next !== server) { server = next; changed = true; }
-    }
-    if (kinds.includes('client')) {
-      const next = maybeFilter(client);
-      if (next !== client) { client = next; changed = true; }
-    }
-    if (kinds.includes('developer')) {
-      const next = maybeFilter(developer);
-      if (next !== developer) { developer = next; changed = true; }
+    for (const k of kinds) {
+      const filtered = this.bucket[k].filter((e) => !isMatch(e));
+      if (filtered.length !== this.bucket[k].length) {
+        (next as any)[k] = Object.freeze(filtered);
+        changed = true;
+      }
     }
 
     if (!changed) return;
-    const next: Bucket = Object.freeze({ server, client, developer });
-    this.data.set(key, next);
-    this.notify(key);
+    this.bucket = Object.freeze({ ...this.bucket, ...next });
+    this.notify();
   }
 
-  private notify(key: object) {
-    const set = this.listeners.get(key);
-    if (!set) return;
-    for (const cb of set) cb();
+  private notify() {
+    for (const cb of this.listeners) cb();
   }
 }
 
