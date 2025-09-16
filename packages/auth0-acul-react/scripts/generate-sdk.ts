@@ -11,9 +11,9 @@ const DOCS_INDEX_PATH = path.join(CORE_SDK_PATH, 'docs', 'index.json');
 
 const SCREENS_OUTPUT_PATH = path.resolve(__dirname, '../src/screens');
 const HOOKS_FOLDER = path.resolve(__dirname, '../src/hooks');
-const CONTEXT_HOOKS_PATH = path.resolve(HOOKS_FOLDER, 'context-hooks/index.tsx');
-const UTILITY_HOOKS_PATH = path.resolve(HOOKS_FOLDER, 'utility-hooks/index.tsx');
-const COMMON_HOOKS_PATH = path.resolve(HOOKS_FOLDER, 'common-hooks/index.tsx');
+const CONTEXT_HOOKS_PATH = path.resolve(HOOKS_FOLDER, 'context/index.tsx');
+const UTILITY_HOOKS_PATH = path.resolve(HOOKS_FOLDER, 'utility/resend-manager.ts');
+const COMMON_HOOKS_PATH = path.resolve(HOOKS_FOLDER, 'common/index.ts');
 const INDEX_FILE_PATH = path.resolve(__dirname, '../src/index.ts');
 const PACKAGE_JSON_PATH = path.resolve(__dirname, '../package.json');
 const EXAMPLES_PATH = path.resolve(__dirname, '../examples');
@@ -178,8 +178,16 @@ fs.mkdirSync(path.dirname(UTILITY_HOOKS_PATH), { recursive: true });
 fs.mkdirSync(path.dirname(COMMON_HOOKS_PATH), { recursive: true });
 fs.mkdirSync(path.dirname(CONTEXT_HOOKS_PATH), { recursive: true });
 fs.mkdirSync(EXAMPLES_PATH, { recursive: true });
-fs.writeFileSync(UTILITY_HOOKS_PATH, '// Manual utility hooks go here\n', 'utf8');
-fs.writeFileSync(COMMON_HOOKS_PATH, '// Manual common hooks go here\n', 'utf8');
+
+// Only create utility hooks file if it doesn't exist (preserve existing content)
+if (!fs.existsSync(UTILITY_HOOKS_PATH)) {
+  fs.writeFileSync(UTILITY_HOOKS_PATH, '// Manual utility hooks go here\n', 'utf8');
+}
+
+// Only create common hooks file if it doesn't exist (preserve existing content)  
+if (!fs.existsSync(COMMON_HOOKS_PATH)) {
+  fs.writeFileSync(COMMON_HOOKS_PATH, '// Manual common hooks go here\n', 'utf8');
+}
 
 const project = new Project({ tsConfigFilePath: path.join(CORE_SDK_PATH, 'tsconfig.json') });
 const entry = project.getSourceFileOrThrow(path.join(CORE_SDK_PATH, 'src/screens/index.ts'));
@@ -194,14 +202,7 @@ const pkg = JSON.parse(fs.readFileSync(PACKAGE_JSON_PATH, 'utf8'));
 pkg.exports ||= {};
 pkg.exports['.'] = { import: './dist/index.js', types: './dist/index.d.ts' };
 
-const commonHooksContent = `import { 
-  getCurrentScreenOptions, 
-  getCurrentThemeOptions, 
-  getErrors, 
-  CurrentScreenOptions, 
-  FlattenedTheme,
-  type Error as TransactionError
-} from '@auth0/auth0-acul-js';
+const commonHooksContent = `import { getCurrentScreenOptions, getCurrentThemeOptions, getErrors, CurrentScreenOptions, FlattenedTheme, type Error as TransactionError } from '@auth0/auth0-acul-js';
 
 export const useCurrentScreen = (): CurrentScreenOptions | null => {
   return getCurrentScreenOptions();
@@ -216,8 +217,14 @@ export const useErrors = (): TransactionError[] | null => {
 };
 `;
 
-fs.writeFileSync(COMMON_HOOKS_PATH, commonHooksContent, 'utf8');
-console.log('✅ Common hooks generated in common-hooks.tsx');
+// Only write common hooks if the file doesn't exist or contains placeholder content
+const existingContent = fs.existsSync(COMMON_HOOKS_PATH) ? fs.readFileSync(COMMON_HOOKS_PATH, 'utf8') : '';
+if (!fs.existsSync(COMMON_HOOKS_PATH) || existingContent.includes('// Manual common hooks go here')) {
+  fs.writeFileSync(COMMON_HOOKS_PATH, commonHooksContent, 'utf8');
+  console.log('✅ Common hooks generated in common/index.ts');
+} else {
+  console.log('✅ Common hooks preserved (existing content found)');
+}
 
 const sharedHooks = `import { type BaseMembers } from "@auth0/auth0-acul-js";
 
@@ -234,7 +241,7 @@ fs.writeFileSync(CONTEXT_HOOKS_PATH, sharedHooks + '\n', 'utf8');
 const indexExports: string[] = [];
 const indexTypes: string[] = [];
 
-indexExports.push(`export { useCurrentScreen, useAuth0Themes, useErrors } from './hooks/common-hooks';`);
+indexExports.push(`export { useCurrentScreen, useAuth0Themes, useErrors2 } from './hooks/common';`);
 
 let screenCount = 0;
 
@@ -327,7 +334,7 @@ for (const symbol of screenSymbols) {
       ? `import ${screenName} from '@auth0/auth0-acul-js/${kebab}';`
       : `import { ${screenName} } from '@auth0/auth0-acul-js/${kebab}';`
   );
-  screenLines.push(`import { ContextHooks } from '../hooks/context-hooks';\n`);
+  screenLines.push(`import { ContextHooks } from '../hooks/context';\n`);
 
   usedInterfaces.add(baseInterface);
   
@@ -387,6 +394,25 @@ for (const symbol of screenSymbols) {
       const argNames = method.params.map(p => p.name).join(', ');
       screenLines.push(`export const ${safe} = (${args}) => getInstance().${method.name}(${argNames});`);
     }
+  }
+
+  // Check if this screen has resendManager method and add useResend hook
+  const hasResendManager = exportedMethods.some(method => method.name === 'resendManager');
+  if (hasResendManager) {
+    // Add resend utility import after context hooks import
+    const contextImportIndex = screenLines.findIndex(line => line.includes("import { ContextHooks } from '../hooks/context';"));
+    if (contextImportIndex !== -1) {
+      screenLines.splice(contextImportIndex + 1, 0, `import { resendManager as resendUtility } from '../hooks/utility/resend-manager';`);
+      screenLines.splice(contextImportIndex + 2, 0, `import type { UseResendParams, UseResendReturn } from '../interfaces/common';`);
+      screenLines.splice(contextImportIndex + 3, 0, ``); // Add empty line after imports
+    }
+
+    // Add useResend hook after screen methods
+    screenLines.push(`\n// Resend hook`);
+    screenLines.push(`export const useResend = (payload?: UseResendParams): UseResendReturn => {`);
+    screenLines.push(`  const screenInstance = useMemo(() => getInstance(), []);`);
+    screenLines.push(`  return resendUtility(screenInstance, payload);`);
+    screenLines.push(`};`);
   }
 
   // Insert type import after imports
@@ -471,7 +497,7 @@ for (const file of screenFiles) {
     functionLines.push('}\n');
   }
 }
-  functionLines.push(`import { useCurrentScreen as use_currentScreen, useAuth0Themes as use_Auth0Themes, useErrors as use_Errors } from '../src/hooks/common-hooks';`);
+  functionLines.push(`import { useCurrentScreen as use_currentScreen, useAuth0Themes as use_Auth0Themes, useErrors2 as use_Errors } from '../src/hooks/common';`);
   functionLines.push(`export namespace CommonHooks {
     export const useCurrentScreen = use_currentScreen;
     export const useAuth0Themes = use_Auth0Themes;
@@ -502,14 +528,16 @@ for (const file of screenFilesForInterfaces) {
 
   if (types.length) {
     const interfaceFilePath = path.join(INTERFACES_OUTPUT_PATH, `${kebab}.ts`);
-    const interfaceContent = `// AUTO-GENERATED - DO NOT EDIT
-    export type { ${types.join(', ')} } from '@auth0/auth0-acul-js/${kebab}';
-    `;
+    const interfaceContent = `export type { ${types.join(', ')} } from '@auth0/auth0-acul-js/${kebab}';
+`;
     fs.writeFileSync(interfaceFilePath, interfaceContent, 'utf8');
     screenInterfaceExports.push(`export * as ${pascal} from './interfaces/${kebab}';`);
     console.log(`✅ interfaces/${kebab}.ts generated`);
   }
 }
+
+// Add Common interfaces export
+screenInterfaceExports.push('export * as Common from \'./interfaces/common\';');
 
 fs.writeFileSync(
   INTERFACES_TS_PATH,

@@ -1,4 +1,5 @@
 import type { CustomOptions } from '../common';
+import type { MfaPushPollingControl, MfaPushPollingOptions, MfaPushPollingError } from '../common/mfa-push-polling';
 import type { BaseMembers } from '../models/base-context';
 import type { ScreenMembers } from '../models/screen';
 import type { UntrustedDataMembers } from '../models/untrusted-data';
@@ -27,6 +28,8 @@ export interface UntrustedDataMembersOnMfaPushChallengePush extends UntrustedDat
 export interface WithRememberOptions extends CustomOptions {
   rememberDevice?: boolean;
 }
+
+
 
 /**
  * Interface defining the available methods and properties for the mfa-push-challenge-push screen
@@ -59,45 +62,20 @@ export interface MfaPushChallengePushMembers extends BaseMembers {
    */
   tryAnotherMethod(payload?: CustomOptions): Promise<void>;
 
-   /**
+  /**
    * Allows polling for the push notification challenge to be approved.
-   * @param intervalMs Polling interval in milliseconds
-   * @param onComplete Callback function to be called when polling is completed
+   * @param options Optional polling configuration options
    */
-  pollingManager(intervalMs: number, onComplete: () => void, onError?: (error: MfaPushPollingError) => void): MfaPushPollingControl;
+  pollingManager(options?: MfaPushPollingOptions): MfaPushPollingControl;
 }
 
 /**
- * Options for starting the MFA push polling
- * @public 
+ * Options for starting the MFA push polling (used internally by createPollingControl)
+ * @internal
  */
-export type StartMfaPushPollingOptions = {
+export interface StartMfaPushPollingOptions {
   intervalMs: number;
   onResult?: () => void;
   onError?: (error: MfaPushPollingError) => void;
-};
-
-/**
- * Control interface for the MFA push polling
- *
- * This interface is returned by {@link MfaPushChallengePushMembers.pollingManager} and allows you to start, stop, and check the status of polling for MFA push challenges.
- *
- * @public
- */
-export interface MfaPushPollingControl {
-  stopPolling: () => void;
-  startPolling: () => void;
-  isRunning: () => boolean;
 }
 
-/**
- * Error interface for the MFA push polling
- *
- * This interface is used by the {@link MfaPushChallengePushMembers.pollingManager} method's onError callback to provide error details.
- *
- * @public
- */
-export interface MfaPushPollingError {
-  status: number;
-  responseText: string;
-}

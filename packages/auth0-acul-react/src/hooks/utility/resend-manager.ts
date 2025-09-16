@@ -8,7 +8,6 @@ import type { ResendControl } from '@auth0/auth0-acul-js';
  * @param payload - Resend parameters
  * @returns Object with remaining seconds, disabled state, and startResend function
  */
-
 export function resendManager(
   screenInstance: ScreenWithResendManager,
   payload?: UseResendParams

@@ -1,15 +1,15 @@
 import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
-import { createPollingControl }  from '../../utils/create-polling-control.js';
+import { createPollingControl }  from '../../utils/create-polling-control';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
 import { UntrustedDataOverride } from './untrusted-data-overrider';
 
 import type { CustomOptions } from '../../../interfaces/common';
+import type { MfaPushPollingControl, MfaPushPollingOptions } from '../../../interfaces/common/mfa-push-polling';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { UntrustedDataContext } from '../../../interfaces/models/untrusted-data';
-import type { MfaPushPollingControl, MfaPushPollingError } from '../../../interfaces/screens/mfa-push-challenge-push';
 import type {
   MfaPushChallengePushMembers,
   WithRememberOptions,
@@ -129,29 +129,26 @@ export default class MfaPushChallengePush extends BaseContext implements MfaPush
    * Calls the provided callback when the polling condition is met.
    * Optionally handles polling errors via onError callback.
    * 
-   * @param intervalMs Polling interval in milliseconds
-   * @param onComplete Callback function called when polling condition is met
-   * @param onError Optional callback called on polling error (receives error object)
+   * @param options Optional polling configuration options
    * @returns Polling control object with stop/start/running
    * @example
    * ```typescript
-   * const control = mfaPushChallengePush.pollingManager(
-   *   5000,
-   *   () => { mfaPushChallengePush.continue(); },
-   *   (error) => { console.error('Polling error:', error); }
-   * );
+   * const control = mfaPushChallengePush.pollingManager({
+   *   intervalMs: 5000,
+   *   onComplete: () => { mfaPushChallengePush.continue(); },
+   *   onError: (error) => { console.error('Polling error:', error); }
+   * });
    * control.stop(); // To stop polling manually
    * ```
    */
-  pollingManager(
-    intervalMs: number,
-    onComplete: () => void,
-    onError?: (error: MfaPushPollingError) => void
-  ): MfaPushPollingControl {
+  pollingManager(options?: MfaPushPollingOptions): MfaPushPollingControl {
+    if (!options) {
+      throw new Error('Polling options are required');
+    }
     return createPollingControl({
-      intervalMs,
-      onResult: onComplete,
-      onError,
+      intervalMs: options.intervalMs,
+      onResult: options.onComplete,
+      onError: options.onError,
     });
   }
 }
@@ -160,9 +157,7 @@ export {
   MfaPushChallengePushMembers,
   WithRememberOptions,
   ScreenOptions as ScreenMembersOnMfaPushChallengePush,
-  UntrustedDataOptions as UntrustedDataMembersOnMfaPushChallengePush,
-  MfaPushPollingError,
-  MfaPushPollingControl
+  UntrustedDataOptions as UntrustedDataMembersOnMfaPushChallengePush
 };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';

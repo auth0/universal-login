@@ -5,7 +5,7 @@ import type { PasswordComplexityRule } from "../../interfaces/models/transaction
  * {@link PasswordPolicy}.
  *
  * @remarks
- * This type is the return value of {@link validatePassword}.  
+ * This type is the return value of the validatePassword function.  
  * It contains:
  *
  * - **`isValid`** – `true` only when every rule in the evaluated

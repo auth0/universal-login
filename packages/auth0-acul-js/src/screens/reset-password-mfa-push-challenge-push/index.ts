@@ -1,13 +1,13 @@
 import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
-import { createPollingControl }  from '../../utils/create-polling-control.js';
+import { createPollingControl } from '../../utils/create-polling-control';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
 
 import type { CustomOptions } from '../../../interfaces/common';
+import type { MfaPushPollingControl, MfaPushPollingOptions, MfaPushPollingError } from '../../../interfaces/common/mfa-push-polling';
 import type { ScreenContext } from '../../../interfaces/models/screen';
-import type { MfaPushPollingControl, MfaPushPollingError } from '../../../interfaces/screens/mfa-push-challenge-push';
 import type {
   ResetPasswordMfaPushChallengePushMembers,
   ScreenMembersOnResetPasswordMfaPushChallengePush as ScreenOptions,
@@ -115,31 +115,37 @@ export default class ResetPasswordMfaPushChallengePush extends BaseContext imple
 
   /**
    * Allows polling for the push notification challenge to be approved.
-   * @param intervalMs Polling interval in milliseconds
-   * @param onComplete Callback function to be called when polling is completed
+   * @param options Optional polling configuration options
+   * @returns Control object with polling management methods
    * @example
    * ```typescript
    * import ResetPasswordMfaPushChallengePush from '@auth0/auth0-acul-js/reset-password-mfa-push-challenge-push';
    *
    * const resetPasswordMfaPushChallengePush = new ResetPasswordMfaPushChallengePush();
-   * resetPasswordMfaPushChallengePush.pollingManager(5000, (rememberDevice) => {
-   *   console.log('Push notification approved. Remember device:', rememberDevice);
+   * const control = resetPasswordMfaPushChallengePush.pollingManager({
+   *   intervalMs: 5000,
+   *   onComplete: () => {
+   *     console.log('Push notification approved');
+   *   },
+   *   onError: (error) => {
+   *     console.error('Polling failed:', error);
+   *   }
    * });
+   * // control.stopPolling(); // To stop polling manually
    * ```
    */
-  pollingManager(
-    intervalMs: number,
-    onComplete: () => void,
-    onError?: (error: MfaPushPollingError) => void
-  ): MfaPushPollingControl {
+  pollingManager(options?: MfaPushPollingOptions): MfaPushPollingControl {
+    if (!options) {
+      throw new Error('Polling options are required');
+    }
     return createPollingControl({
-      intervalMs,
-      onResult: onComplete,
-      onError,
+      intervalMs: options.intervalMs,
+      onResult: options.onComplete,
+      onError: options.onError,
     });
   }
 }
 
-export { ResetPasswordMfaPushChallengePushMembers, ScreenOptions as ScreenMembersOnResetPasswordMfaPushChallengePush };
+export { ResetPasswordMfaPushChallengePushMembers, ScreenOptions as ScreenMembersOnResetPasswordMfaPushChallengePush, MfaPushPollingError };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';

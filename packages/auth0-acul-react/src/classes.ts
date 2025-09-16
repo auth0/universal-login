@@ -56,23 +56,27 @@ export namespace DeviceCodeConfirmation {
   export const cancel = cancel_DeviceCodeConfirmation;
 }
 
-import { useEmailIdentifierChallenge as useEmailIdentifierChallenge_EmailIdentifierChallenge, useScreen as useScreen_EmailIdentifierChallenge, useTransaction as useTransaction_EmailIdentifierChallenge, submitEmailChallenge as submitEmailChallenge_EmailIdentifierChallenge, resendCode as resendCode_EmailIdentifierChallenge, returnToPrevious as returnToPrevious_EmailIdentifierChallenge } from './screens/email-identifier-challenge';
+import { useEmailIdentifierChallenge as useEmailIdentifierChallenge_EmailIdentifierChallenge, useScreen as useScreen_EmailIdentifierChallenge, useTransaction as useTransaction_EmailIdentifierChallenge, submitEmailChallenge as submitEmailChallenge_EmailIdentifierChallenge, resendCode as resendCode_EmailIdentifierChallenge, resendManager as resendManager_EmailIdentifierChallenge, returnToPrevious as returnToPrevious_EmailIdentifierChallenge, useResend as useResend_EmailIdentifierChallenge } from './screens/email-identifier-challenge';
 export namespace EmailIdentifierChallenge {
   export const useEmailIdentifierChallenge = useEmailIdentifierChallenge_EmailIdentifierChallenge;
   export const useScreen = useScreen_EmailIdentifierChallenge;
   export const useTransaction = useTransaction_EmailIdentifierChallenge;
   export const submitEmailChallenge = submitEmailChallenge_EmailIdentifierChallenge;
   export const resendCode = resendCode_EmailIdentifierChallenge;
+  export const resendManager = resendManager_EmailIdentifierChallenge;
   export const returnToPrevious = returnToPrevious_EmailIdentifierChallenge;
+  export const useResend = useResend_EmailIdentifierChallenge;
 }
 
-import { useEmailOTPChallenge as useEmailOTPChallenge_EmailOtpChallenge, useScreen as useScreen_EmailOtpChallenge, useTransaction as useTransaction_EmailOtpChallenge, submitCode as submitCode_EmailOtpChallenge, resendCode as resendCode_EmailOtpChallenge } from './screens/email-otp-challenge';
+import { useEmailOTPChallenge as useEmailOTPChallenge_EmailOtpChallenge, useScreen as useScreen_EmailOtpChallenge, useTransaction as useTransaction_EmailOtpChallenge, submitCode as submitCode_EmailOtpChallenge, resendCode as resendCode_EmailOtpChallenge, resendManager as resendManager_EmailOtpChallenge, useResend as useResend_EmailOtpChallenge } from './screens/email-otp-challenge';
 export namespace EmailOtpChallenge {
   export const useEmailOTPChallenge = useEmailOTPChallenge_EmailOtpChallenge;
   export const useScreen = useScreen_EmailOtpChallenge;
   export const useTransaction = useTransaction_EmailOtpChallenge;
   export const submitCode = submitCode_EmailOtpChallenge;
   export const resendCode = resendCode_EmailOtpChallenge;
+  export const resendManager = resendManager_EmailOtpChallenge;
+  export const useResend = useResend_EmailOtpChallenge;
 }
 
 import { useEmailVerificationResult as useEmailVerificationResult_EmailVerificationResult, useScreen as useScreen_EmailVerificationResult, useTransaction as useTransaction_EmailVerificationResult } from './screens/email-verification-result';
@@ -89,16 +93,18 @@ export namespace InterstitialCaptcha {
   export const useTransaction = useTransaction_InterstitialCaptcha;
 }
 
-import { useLoginEmailVerification as useLoginEmailVerification_LoginEmailVerification, useScreen as useScreen_LoginEmailVerification, useTransaction as useTransaction_LoginEmailVerification, continueWithCode as continueWithCode_LoginEmailVerification, resendCode as resendCode_LoginEmailVerification } from './screens/login-email-verification';
+import { useLoginEmailVerification as useLoginEmailVerification_LoginEmailVerification, useScreen as useScreen_LoginEmailVerification, useTransaction as useTransaction_LoginEmailVerification, continueWithCode as continueWithCode_LoginEmailVerification, resendCode as resendCode_LoginEmailVerification, resendManager as resendManager_LoginEmailVerification, useResend as useResend_LoginEmailVerification } from './screens/login-email-verification';
 export namespace LoginEmailVerification {
   export const useLoginEmailVerification = useLoginEmailVerification_LoginEmailVerification;
   export const useScreen = useScreen_LoginEmailVerification;
   export const useTransaction = useTransaction_LoginEmailVerification;
   export const continueWithCode = continueWithCode_LoginEmailVerification;
   export const resendCode = resendCode_LoginEmailVerification;
+  export const resendManager = resendManager_LoginEmailVerification;
+  export const useResend = useResend_LoginEmailVerification;
 }
 
-import { useLoginId as useLoginId_LoginId, useScreen as useScreen_LoginId, useTransaction as useTransaction_LoginId, login as login_LoginId, federatedLogin as federatedLogin_LoginId, passkeyLogin as passkeyLogin_LoginId, pickCountryCode as pickCountryCode_LoginId, useActiveIdentifiers as useActiveIdentifiers_LoginId } from './screens/login-id';
+import { useLoginId as useLoginId_LoginId, useScreen as useScreen_LoginId, useTransaction as useTransaction_LoginId, login as login_LoginId, federatedLogin as federatedLogin_LoginId, passkeyLogin as passkeyLogin_LoginId, pickCountryCode as pickCountryCode_LoginId, getActiveIdentifiers as getActiveIdentifiers_LoginId } from './screens/login-id';
 export namespace LoginId {
   export const useLoginId = useLoginId_LoginId;
   export const useScreen = useScreen_LoginId;
@@ -107,7 +113,7 @@ export namespace LoginId {
   export const federatedLogin = federatedLogin_LoginId;
   export const passkeyLogin = passkeyLogin_LoginId;
   export const pickCountryCode = pickCountryCode_LoginId;
-  export const useActiveIdentifiers =  useActiveIdentifiers_Login;
+  export const getActiveIdentifiers = getActiveIdentifiers_LoginId;
 }
 
 import { useLoginPassword as useLoginPassword_LoginPassword, useScreen as useScreen_LoginPassword, useTransaction as useTransaction_LoginPassword, login as login_LoginPassword, federatedLogin as federatedLogin_LoginPassword } from './screens/login-password';
@@ -128,23 +134,25 @@ export namespace LoginPasswordlessEmailCode {
   export const resendCode = resendCode_LoginPasswordlessEmailCode;
 }
 
-import { useLoginPasswordlessSmsOtp as useLoginPasswordlessSmsOtp_LoginPasswordlessSmsOtp, useScreen as useScreen_LoginPasswordlessSmsOtp, useTransaction as useTransaction_LoginPasswordlessSmsOtp, submitOTP as submitOTP_LoginPasswordlessSmsOtp, resendOTP as resendOTP_LoginPasswordlessSmsOtp } from './screens/login-passwordless-sms-otp';
+import { useLoginPasswordlessSmsOtp as useLoginPasswordlessSmsOtp_LoginPasswordlessSmsOtp, useScreen as useScreen_LoginPasswordlessSmsOtp, useTransaction as useTransaction_LoginPasswordlessSmsOtp, submitOTP as submitOTP_LoginPasswordlessSmsOtp, resendOTP as resendOTP_LoginPasswordlessSmsOtp, resendManager as resendManager_LoginPasswordlessSmsOtp, useResend as useResend_LoginPasswordlessSmsOtp } from './screens/login-passwordless-sms-otp';
 export namespace LoginPasswordlessSmsOtp {
   export const useLoginPasswordlessSmsOtp = useLoginPasswordlessSmsOtp_LoginPasswordlessSmsOtp;
   export const useScreen = useScreen_LoginPasswordlessSmsOtp;
   export const useTransaction = useTransaction_LoginPasswordlessSmsOtp;
   export const submitOTP = submitOTP_LoginPasswordlessSmsOtp;
   export const resendOTP = resendOTP_LoginPasswordlessSmsOtp;
+  export const resendManager = resendManager_LoginPasswordlessSmsOtp;
+  export const useResend = useResend_LoginPasswordlessSmsOtp;
 }
 
-import { useLogin as useLogin_Login, useScreen as useScreen_Login, useTransaction as useTransaction_Login, login as login_Login, federatedLogin as federatedLogin_Login, useActiveIdentifiers as useActiveIdentifiers_Login } from './screens/login';
+import { useLogin as useLogin_Login, useScreen as useScreen_Login, useTransaction as useTransaction_Login, login as login_Login, federatedLogin as federatedLogin_Login, getActiveIdentifiers as getActiveIdentifiers_Login } from './screens/login';
 export namespace Login {
   export const useLogin = useLogin_Login;
   export const useScreen = useScreen_Login;
   export const useTransaction = useTransaction_Login;
   export const login = login_Login;
   export const federatedLogin = federatedLogin_Login;
-  export const useActiveIdentifiers =  useActiveIdentifiers_Login;
+  export const getActiveIdentifiers = getActiveIdentifiers_Login;
 }
 
 import { useLogoutAborted as useLogoutAborted_LogoutAborted, useScreen as useScreen_LogoutAborted, useTransaction as useTransaction_LogoutAborted } from './screens/logout-aborted';
@@ -194,7 +202,7 @@ export namespace MfaDetectBrowserCapabilities {
   export const detectCapabilities = detectCapabilities_MfaDetectBrowserCapabilities;
 }
 
-import { useMfaEmailChallenge as useMfaEmailChallenge_MfaEmailChallenge, useScreen as useScreen_MfaEmailChallenge, useTransaction as useTransaction_MfaEmailChallenge, continueMethod as continueMethod_MfaEmailChallenge, resendCode as resendCode_MfaEmailChallenge, tryAnotherMethod as tryAnotherMethod_MfaEmailChallenge } from './screens/mfa-email-challenge';
+import { useMfaEmailChallenge as useMfaEmailChallenge_MfaEmailChallenge, useScreen as useScreen_MfaEmailChallenge, useTransaction as useTransaction_MfaEmailChallenge, continueMethod as continueMethod_MfaEmailChallenge, resendCode as resendCode_MfaEmailChallenge, tryAnotherMethod as tryAnotherMethod_MfaEmailChallenge, resendManager as resendManager_MfaEmailChallenge, useResend as useResend_MfaEmailChallenge } from './screens/mfa-email-challenge';
 export namespace MfaEmailChallenge {
   export const useMfaEmailChallenge = useMfaEmailChallenge_MfaEmailChallenge;
   export const useScreen = useScreen_MfaEmailChallenge;
@@ -202,6 +210,8 @@ export namespace MfaEmailChallenge {
   export const continueMethod = continueMethod_MfaEmailChallenge;
   export const resendCode = resendCode_MfaEmailChallenge;
   export const tryAnotherMethod = tryAnotherMethod_MfaEmailChallenge;
+  export const resendManager = resendManager_MfaEmailChallenge;
+  export const useResend = useResend_MfaEmailChallenge;
 }
 
 import { useMfaEmailList as useMfaEmailList_MfaEmailList, useScreen as useScreen_MfaEmailList, useTransaction as useTransaction_MfaEmailList, selectMfaEmail as selectMfaEmail_MfaEmailList, goBack as goBack_MfaEmailList } from './screens/mfa-email-list';
@@ -276,7 +286,7 @@ export namespace MfaPhoneEnrollment {
   export const tryAnotherMethod = tryAnotherMethod_MfaPhoneEnrollment;
 }
 
-import { usePollingManager as useMfaPushChallengePush_MfaPushChallengePush, useScreen as useScreen_MfaPushChallengePush, useTransaction as useTransaction_MfaPushChallengePush, continueMethod as continueMethod_MfaPushChallengePush, resendPushNotification as resendPushNotification_MfaPushChallengePush, enterCodeManually as enterCodeManually_MfaPushChallengePush, tryAnotherMethod as tryAnotherMethod_MfaPushChallengePush } from './screens/mfa-push-challenge-push';
+import { useMfaPushChallengePush as useMfaPushChallengePush_MfaPushChallengePush, useScreen as useScreen_MfaPushChallengePush, useTransaction as useTransaction_MfaPushChallengePush, continueMethod as continueMethod_MfaPushChallengePush, resendPushNotification as resendPushNotification_MfaPushChallengePush, enterCodeManually as enterCodeManually_MfaPushChallengePush, tryAnotherMethod as tryAnotherMethod_MfaPushChallengePush, pollingManager as pollingManager_MfaPushChallengePush } from './screens/mfa-push-challenge-push';
 export namespace MfaPushChallengePush {
   export const useMfaPushChallengePush = useMfaPushChallengePush_MfaPushChallengePush;
   export const useScreen = useScreen_MfaPushChallengePush;
@@ -285,6 +295,7 @@ export namespace MfaPushChallengePush {
   export const resendPushNotification = resendPushNotification_MfaPushChallengePush;
   export const enterCodeManually = enterCodeManually_MfaPushChallengePush;
   export const tryAnotherMethod = tryAnotherMethod_MfaPushChallengePush;
+  export const pollingManager = pollingManager_MfaPushChallengePush;
 }
 
 import { useMfaPushEnrollmentQr as useMfaPushEnrollmentQr_MfaPushEnrollmentQr, useScreen as useScreen_MfaPushEnrollmentQr, useTransaction as useTransaction_MfaPushEnrollmentQr, pickAuthenticator as pickAuthenticator_MfaPushEnrollmentQr } from './screens/mfa-push-enrollment-qr';
@@ -338,7 +349,7 @@ export namespace MfaRecoveryCodeEnrollment {
   export const continueMethod = continueMethod_MfaRecoveryCodeEnrollment;
 }
 
-import { useMfaSmsChallenge as useMfaSmsChallenge_MfaSmsChallenge, useScreen as useScreen_MfaSmsChallenge, useTransaction as useTransaction_MfaSmsChallenge, continueMfaSmsChallenge as continueMfaSmsChallenge_MfaSmsChallenge, pickSms as pickSms_MfaSmsChallenge, resendCode as resendCode_MfaSmsChallenge, tryAnotherMethod as tryAnotherMethod_MfaSmsChallenge, getACall as getACall_MfaSmsChallenge } from './screens/mfa-sms-challenge';
+import { useMfaSmsChallenge as useMfaSmsChallenge_MfaSmsChallenge, useScreen as useScreen_MfaSmsChallenge, useTransaction as useTransaction_MfaSmsChallenge, continueMfaSmsChallenge as continueMfaSmsChallenge_MfaSmsChallenge, pickSms as pickSms_MfaSmsChallenge, resendCode as resendCode_MfaSmsChallenge, tryAnotherMethod as tryAnotherMethod_MfaSmsChallenge, getACall as getACall_MfaSmsChallenge, resendManager as resendManager_MfaSmsChallenge, useResend as useResend_MfaSmsChallenge } from './screens/mfa-sms-challenge';
 export namespace MfaSmsChallenge {
   export const useMfaSmsChallenge = useMfaSmsChallenge_MfaSmsChallenge;
   export const useScreen = useScreen_MfaSmsChallenge;
@@ -348,6 +359,8 @@ export namespace MfaSmsChallenge {
   export const resendCode = resendCode_MfaSmsChallenge;
   export const tryAnotherMethod = tryAnotherMethod_MfaSmsChallenge;
   export const getACall = getACall_MfaSmsChallenge;
+  export const resendManager = resendManager_MfaSmsChallenge;
+  export const useResend = useResend_MfaSmsChallenge;
 }
 
 import { useMfaSmsEnrollment as useMfaSmsEnrollment_MfaSmsEnrollment, useScreen as useScreen_MfaSmsEnrollment, useTransaction as useTransaction_MfaSmsEnrollment, pickCountryCode as pickCountryCode_MfaSmsEnrollment, continueEnrollment as continueEnrollment_MfaSmsEnrollment, tryAnotherMethod as tryAnotherMethod_MfaSmsEnrollment } from './screens/mfa-sms-enrollment';
@@ -369,7 +382,7 @@ export namespace MfaSmsList {
   export const backAction = backAction_MfaSmsList;
 }
 
-import { useMfaVoiceChallenge as useMfaVoiceChallenge_MfaVoiceChallenge, useScreen as useScreen_MfaVoiceChallenge, useTransaction as useTransaction_MfaVoiceChallenge, continueMethod as continueMethod_MfaVoiceChallenge, pickPhone as pickPhone_MfaVoiceChallenge, switchToSms as switchToSms_MfaVoiceChallenge, resendCode as resendCode_MfaVoiceChallenge, tryAnotherMethod as tryAnotherMethod_MfaVoiceChallenge } from './screens/mfa-voice-challenge';
+import { useMfaVoiceChallenge as useMfaVoiceChallenge_MfaVoiceChallenge, useScreen as useScreen_MfaVoiceChallenge, useTransaction as useTransaction_MfaVoiceChallenge, continueMethod as continueMethod_MfaVoiceChallenge, pickPhone as pickPhone_MfaVoiceChallenge, switchToSms as switchToSms_MfaVoiceChallenge, resendCode as resendCode_MfaVoiceChallenge, tryAnotherMethod as tryAnotherMethod_MfaVoiceChallenge, resendManager as resendManager_MfaVoiceChallenge, useResend as useResend_MfaVoiceChallenge } from './screens/mfa-voice-challenge';
 export namespace MfaVoiceChallenge {
   export const useMfaVoiceChallenge = useMfaVoiceChallenge_MfaVoiceChallenge;
   export const useScreen = useScreen_MfaVoiceChallenge;
@@ -379,6 +392,8 @@ export namespace MfaVoiceChallenge {
   export const switchToSms = switchToSms_MfaVoiceChallenge;
   export const resendCode = resendCode_MfaVoiceChallenge;
   export const tryAnotherMethod = tryAnotherMethod_MfaVoiceChallenge;
+  export const resendManager = resendManager_MfaVoiceChallenge;
+  export const useResend = useResend_MfaVoiceChallenge;
 }
 
 import { useMfaVoiceEnrollment as useMfaVoiceEnrollment_MfaVoiceEnrollment, useScreen as useScreen_MfaVoiceEnrollment, useTransaction as useTransaction_MfaVoiceEnrollment, continueMethod as continueMethod_MfaVoiceEnrollment, tryAnotherMethod as tryAnotherMethod_MfaVoiceEnrollment, selectPhoneCountryCode as selectPhoneCountryCode_MfaVoiceEnrollment } from './screens/mfa-voice-enrollment';
@@ -502,14 +517,16 @@ export namespace PasskeyEnrollment {
   export const abortPasskeyEnrollment = abortPasskeyEnrollment_PasskeyEnrollment;
 }
 
-import { usePhoneIdentifierChallenge as usePhoneIdentifierChallenge_PhoneIdentifierChallenge, useScreen as useScreen_PhoneIdentifierChallenge, useTransaction as useTransaction_PhoneIdentifierChallenge, submitPhoneChallenge as submitPhoneChallenge_PhoneIdentifierChallenge, resendCode as resendCode_PhoneIdentifierChallenge, returnToPrevious as returnToPrevious_PhoneIdentifierChallenge } from './screens/phone-identifier-challenge';
+import { usePhoneIdentifierChallenge as usePhoneIdentifierChallenge_PhoneIdentifierChallenge, useScreen as useScreen_PhoneIdentifierChallenge, useTransaction as useTransaction_PhoneIdentifierChallenge, submitPhoneChallenge as submitPhoneChallenge_PhoneIdentifierChallenge, resendCode as resendCode_PhoneIdentifierChallenge, resendManager as resendManager_PhoneIdentifierChallenge, returnToPrevious as returnToPrevious_PhoneIdentifierChallenge, useResend as useResend_PhoneIdentifierChallenge } from './screens/phone-identifier-challenge';
 export namespace PhoneIdentifierChallenge {
   export const usePhoneIdentifierChallenge = usePhoneIdentifierChallenge_PhoneIdentifierChallenge;
   export const useScreen = useScreen_PhoneIdentifierChallenge;
   export const useTransaction = useTransaction_PhoneIdentifierChallenge;
   export const submitPhoneChallenge = submitPhoneChallenge_PhoneIdentifierChallenge;
   export const resendCode = resendCode_PhoneIdentifierChallenge;
+  export const resendManager = resendManager_PhoneIdentifierChallenge;
   export const returnToPrevious = returnToPrevious_PhoneIdentifierChallenge;
+  export const useResend = useResend_PhoneIdentifierChallenge;
 }
 
 import { usePhoneIdentifierEnrollment as usePhoneIdentifierEnrollment_PhoneIdentifierEnrollment, useScreen as useScreen_PhoneIdentifierEnrollment, useTransaction as useTransaction_PhoneIdentifierEnrollment, continuePhoneEnrollment as continuePhoneEnrollment_PhoneIdentifierEnrollment, returnToPrevious as returnToPrevious_PhoneIdentifierEnrollment } from './screens/phone-identifier-enrollment';
@@ -544,7 +561,7 @@ export namespace ResetPasswordError {
   export const useTransaction = useTransaction_ResetPasswordError;
 }
 
-import { useResetPasswordMfaEmailChallenge as useResetPasswordMfaEmailChallenge_ResetPasswordMfaEmailChallenge, useScreen as useScreen_ResetPasswordMfaEmailChallenge, useTransaction as useTransaction_ResetPasswordMfaEmailChallenge, continueMethod as continueMethod_ResetPasswordMfaEmailChallenge, resendCode as resendCode_ResetPasswordMfaEmailChallenge, tryAnotherMethod as tryAnotherMethod_ResetPasswordMfaEmailChallenge } from './screens/reset-password-mfa-email-challenge';
+import { useResetPasswordMfaEmailChallenge as useResetPasswordMfaEmailChallenge_ResetPasswordMfaEmailChallenge, useScreen as useScreen_ResetPasswordMfaEmailChallenge, useTransaction as useTransaction_ResetPasswordMfaEmailChallenge, continueMethod as continueMethod_ResetPasswordMfaEmailChallenge, resendCode as resendCode_ResetPasswordMfaEmailChallenge, tryAnotherMethod as tryAnotherMethod_ResetPasswordMfaEmailChallenge, resendManager as resendManager_ResetPasswordMfaEmailChallenge, useResend as useResend_ResetPasswordMfaEmailChallenge } from './screens/reset-password-mfa-email-challenge';
 export namespace ResetPasswordMfaEmailChallenge {
   export const useResetPasswordMfaEmailChallenge = useResetPasswordMfaEmailChallenge_ResetPasswordMfaEmailChallenge;
   export const useScreen = useScreen_ResetPasswordMfaEmailChallenge;
@@ -552,6 +569,8 @@ export namespace ResetPasswordMfaEmailChallenge {
   export const continueMethod = continueMethod_ResetPasswordMfaEmailChallenge;
   export const resendCode = resendCode_ResetPasswordMfaEmailChallenge;
   export const tryAnotherMethod = tryAnotherMethod_ResetPasswordMfaEmailChallenge;
+  export const resendManager = resendManager_ResetPasswordMfaEmailChallenge;
+  export const useResend = useResend_ResetPasswordMfaEmailChallenge;
 }
 
 import { useResetPasswordMfaOtpChallenge as useResetPasswordMfaOtpChallenge_ResetPasswordMfaOtpChallenge, useScreen as useScreen_ResetPasswordMfaOtpChallenge, useTransaction as useTransaction_ResetPasswordMfaOtpChallenge, continueMethod as continueMethod_ResetPasswordMfaOtpChallenge, tryAnotherMethod as tryAnotherMethod_ResetPasswordMfaOtpChallenge } from './screens/reset-password-mfa-otp-challenge';
@@ -572,7 +591,7 @@ export namespace ResetPasswordMfaPhoneChallenge {
   export const tryAnotherMethod = tryAnotherMethod_ResetPasswordMfaPhoneChallenge;
 }
 
-import { usePushPollingManager as useResetPasswordMfaPushChallengePush_ResetPasswordMfaPushChallengePush, useScreen as useScreen_ResetPasswordMfaPushChallengePush, useTransaction as useTransaction_ResetPasswordMfaPushChallengePush, continueMethod as continueMethod_ResetPasswordMfaPushChallengePush, resendPushNotification as resendPushNotification_ResetPasswordMfaPushChallengePush, enterCodeManually as enterCodeManually_ResetPasswordMfaPushChallengePush, tryAnotherMethod as tryAnotherMethod_ResetPasswordMfaPushChallengePush } from './screens/reset-password-mfa-push-challenge-push';
+import { useResetPasswordMfaPushChallengePush as useResetPasswordMfaPushChallengePush_ResetPasswordMfaPushChallengePush, useScreen as useScreen_ResetPasswordMfaPushChallengePush, useTransaction as useTransaction_ResetPasswordMfaPushChallengePush, continueMethod as continueMethod_ResetPasswordMfaPushChallengePush, resendPushNotification as resendPushNotification_ResetPasswordMfaPushChallengePush, enterCodeManually as enterCodeManually_ResetPasswordMfaPushChallengePush, tryAnotherMethod as tryAnotherMethod_ResetPasswordMfaPushChallengePush, pollingManager as pollingManager_ResetPasswordMfaPushChallengePush } from './screens/reset-password-mfa-push-challenge-push';
 export namespace ResetPasswordMfaPushChallengePush {
   export const useResetPasswordMfaPushChallengePush = useResetPasswordMfaPushChallengePush_ResetPasswordMfaPushChallengePush;
   export const useScreen = useScreen_ResetPasswordMfaPushChallengePush;
@@ -581,6 +600,7 @@ export namespace ResetPasswordMfaPushChallengePush {
   export const resendPushNotification = resendPushNotification_ResetPasswordMfaPushChallengePush;
   export const enterCodeManually = enterCodeManually_ResetPasswordMfaPushChallengePush;
   export const tryAnotherMethod = tryAnotherMethod_ResetPasswordMfaPushChallengePush;
+  export const pollingManager = pollingManager_ResetPasswordMfaPushChallengePush;
 }
 
 import { useResetPasswordMfaRecoveryCodeChallenge as useResetPasswordMfaRecoveryCodeChallenge_ResetPasswordMfaRecoveryCodeChallenge, useScreen as useScreen_ResetPasswordMfaRecoveryCodeChallenge, useTransaction as useTransaction_ResetPasswordMfaRecoveryCodeChallenge, continueMethod as continueMethod_ResetPasswordMfaRecoveryCodeChallenge, tryAnotherMethod as tryAnotherMethod_ResetPasswordMfaRecoveryCodeChallenge } from './screens/reset-password-mfa-recovery-code-challenge';
@@ -592,7 +612,7 @@ export namespace ResetPasswordMfaRecoveryCodeChallenge {
   export const tryAnotherMethod = tryAnotherMethod_ResetPasswordMfaRecoveryCodeChallenge;
 }
 
-import { useResetPasswordMfaSmsChallenge as useResetPasswordMfaSmsChallenge_ResetPasswordMfaSmsChallenge, useScreen as useScreen_ResetPasswordMfaSmsChallenge, useTransaction as useTransaction_ResetPasswordMfaSmsChallenge, continueMfaSmsChallenge as continueMfaSmsChallenge_ResetPasswordMfaSmsChallenge, resendCode as resendCode_ResetPasswordMfaSmsChallenge, tryAnotherMethod as tryAnotherMethod_ResetPasswordMfaSmsChallenge, getACall as getACall_ResetPasswordMfaSmsChallenge } from './screens/reset-password-mfa-sms-challenge';
+import { useResetPasswordMfaSmsChallenge as useResetPasswordMfaSmsChallenge_ResetPasswordMfaSmsChallenge, useScreen as useScreen_ResetPasswordMfaSmsChallenge, useTransaction as useTransaction_ResetPasswordMfaSmsChallenge, continueMfaSmsChallenge as continueMfaSmsChallenge_ResetPasswordMfaSmsChallenge, resendCode as resendCode_ResetPasswordMfaSmsChallenge, tryAnotherMethod as tryAnotherMethod_ResetPasswordMfaSmsChallenge, getACall as getACall_ResetPasswordMfaSmsChallenge, resendManager as resendManager_ResetPasswordMfaSmsChallenge, useResend as useResend_ResetPasswordMfaSmsChallenge } from './screens/reset-password-mfa-sms-challenge';
 export namespace ResetPasswordMfaSmsChallenge {
   export const useResetPasswordMfaSmsChallenge = useResetPasswordMfaSmsChallenge_ResetPasswordMfaSmsChallenge;
   export const useScreen = useScreen_ResetPasswordMfaSmsChallenge;
@@ -601,9 +621,11 @@ export namespace ResetPasswordMfaSmsChallenge {
   export const resendCode = resendCode_ResetPasswordMfaSmsChallenge;
   export const tryAnotherMethod = tryAnotherMethod_ResetPasswordMfaSmsChallenge;
   export const getACall = getACall_ResetPasswordMfaSmsChallenge;
+  export const resendManager = resendManager_ResetPasswordMfaSmsChallenge;
+  export const useResend = useResend_ResetPasswordMfaSmsChallenge;
 }
 
-import { useResetPasswordMfaVoiceChallenge as useResetPasswordMfaVoiceChallenge_ResetPasswordMfaVoiceChallenge, useScreen as useScreen_ResetPasswordMfaVoiceChallenge, useTransaction as useTransaction_ResetPasswordMfaVoiceChallenge, continueMethod as continueMethod_ResetPasswordMfaVoiceChallenge, switchToSms as switchToSms_ResetPasswordMfaVoiceChallenge, resendCode as resendCode_ResetPasswordMfaVoiceChallenge, tryAnotherMethod as tryAnotherMethod_ResetPasswordMfaVoiceChallenge } from './screens/reset-password-mfa-voice-challenge';
+import { useResetPasswordMfaVoiceChallenge as useResetPasswordMfaVoiceChallenge_ResetPasswordMfaVoiceChallenge, useScreen as useScreen_ResetPasswordMfaVoiceChallenge, useTransaction as useTransaction_ResetPasswordMfaVoiceChallenge, continueMethod as continueMethod_ResetPasswordMfaVoiceChallenge, switchToSms as switchToSms_ResetPasswordMfaVoiceChallenge, resendCode as resendCode_ResetPasswordMfaVoiceChallenge, tryAnotherMethod as tryAnotherMethod_ResetPasswordMfaVoiceChallenge, resendManager as resendManager_ResetPasswordMfaVoiceChallenge, useResend as useResend_ResetPasswordMfaVoiceChallenge } from './screens/reset-password-mfa-voice-challenge';
 export namespace ResetPasswordMfaVoiceChallenge {
   export const useResetPasswordMfaVoiceChallenge = useResetPasswordMfaVoiceChallenge_ResetPasswordMfaVoiceChallenge;
   export const useScreen = useScreen_ResetPasswordMfaVoiceChallenge;
@@ -612,6 +634,8 @@ export namespace ResetPasswordMfaVoiceChallenge {
   export const switchToSms = switchToSms_ResetPasswordMfaVoiceChallenge;
   export const resendCode = resendCode_ResetPasswordMfaVoiceChallenge;
   export const tryAnotherMethod = tryAnotherMethod_ResetPasswordMfaVoiceChallenge;
+  export const resendManager = resendManager_ResetPasswordMfaVoiceChallenge;
+  export const useResend = useResend_ResetPasswordMfaVoiceChallenge;
 }
 
 import { useResetPasswordMfaWebAuthnPlatformChallenge as useResetPasswordMfaWebAuthnPlatformChallenge_ResetPasswordMfaWebauthnPlatformChallenge, useScreen as useScreen_ResetPasswordMfaWebauthnPlatformChallenge, useTransaction as useTransaction_ResetPasswordMfaWebauthnPlatformChallenge, continueWithPasskey as continueWithPasskey_ResetPasswordMfaWebauthnPlatformChallenge, reportBrowserError as reportBrowserError_ResetPasswordMfaWebauthnPlatformChallenge, tryAnotherMethod as tryAnotherMethod_ResetPasswordMfaWebauthnPlatformChallenge } from './screens/reset-password-mfa-webauthn-platform-challenge';
@@ -650,37 +674,38 @@ export namespace ResetPasswordSuccess {
   export const useTransaction = useTransaction_ResetPasswordSuccess;
 }
 
-import { useResetPassword as useResetPassword_ResetPassword, useScreen as useScreen_ResetPassword, useTransaction as useTransaction_ResetPassword, resetPassword as resetPassword_ResetPassword } from './screens/reset-password';
+import { useResetPassword as useResetPassword_ResetPassword, useScreen as useScreen_ResetPassword, useTransaction as useTransaction_ResetPassword, resetPassword as resetPassword_ResetPassword, validatePassword as validatePassword_ResetPassword } from './screens/reset-password';
 export namespace ResetPassword {
   export const useResetPassword = useResetPassword_ResetPassword;
   export const useScreen = useScreen_ResetPassword;
   export const useTransaction = useTransaction_ResetPassword;
   export const resetPassword = resetPassword_ResetPassword;
+  export const validatePassword = validatePassword_ResetPassword;
 }
 
-import { useSignupId as useSignupId_SignupId, useScreen as useScreen_SignupId, useTransaction as useTransaction_SignupId, signup as signup_SignupId, federatedSignup as federatedSignup_SignupId, useEnabledIdentifiers as useEnabledIdentifiers_SignupId, pickCountryCode as pickCountryCode_SignupId, useUsernameValidation as useUsernameValidation_SignupId } from './screens/signup-id';
+import { useSignupId as useSignupId_SignupId, useScreen as useScreen_SignupId, useTransaction as useTransaction_SignupId, signup as signup_SignupId, federatedSignup as federatedSignup_SignupId, getEnabledIdentifiers as getEnabledIdentifiers_SignupId, pickCountryCode as pickCountryCode_SignupId, validateUsername as validateUsername_SignupId } from './screens/signup-id';
 export namespace SignupId {
   export const useSignupId = useSignupId_SignupId;
   export const useScreen = useScreen_SignupId;
   export const useTransaction = useTransaction_SignupId;
   export const signup = signup_SignupId;
   export const federatedSignup = federatedSignup_SignupId;
-  export const useEnabledIdentifiers = useEnabledIdentifiers_SignupId;
+  export const getEnabledIdentifiers = getEnabledIdentifiers_SignupId;
   export const pickCountryCode = pickCountryCode_SignupId;
-  export const useUsernameValidation = useUsernameValidation_SignupId;
+  export const validateUsername = validateUsername_SignupId;
 }
 
-import { useSignupPassword as useSignupPassword_SignupPassword, useScreen as useScreen_SignupPassword, useTransaction as useTransaction_SignupPassword, signup as signup_SignupPassword, federatedSignup as federatedSignup_SignupPassword, usePasswordValidation as usePasswordValidation_SignupPassword } from './screens/signup-password';
+import { useSignupPassword as useSignupPassword_SignupPassword, useScreen as useScreen_SignupPassword, useTransaction as useTransaction_SignupPassword, signup as signup_SignupPassword, federatedSignup as federatedSignup_SignupPassword, validatePassword as validatePassword_SignupPassword } from './screens/signup-password';
 export namespace SignupPassword {
   export const useSignupPassword = useSignupPassword_SignupPassword;
   export const useScreen = useScreen_SignupPassword;
   export const useTransaction = useTransaction_SignupPassword;
   export const signup = signup_SignupPassword;
   export const federatedSignup = federatedSignup_SignupPassword;
-  export const usePasswordValidation = usePasswordValidation_SignupPassword;
+  export const validatePassword = validatePassword_SignupPassword;
 }
 
-import { useSignup as useSignup_Signup, useScreen as useScreen_Signup, useTransaction as useTransaction_Signup, signup as signup_Signup, federatedSignup as federatedSignup_Signup, pickCountryCode as pickCountryCode_Signup, usePasswordValidation as usePasswordValidation_Signup, useEnabledIdentifiers as useEnabledIdentifiers_Signup, useUsernameValidation as useUsernameValidation_Signup } from './screens/signup';
+import { useSignup as useSignup_Signup, useScreen as useScreen_Signup, useTransaction as useTransaction_Signup, signup as signup_Signup, federatedSignup as federatedSignup_Signup, pickCountryCode as pickCountryCode_Signup, validatePassword as validatePassword_Signup, getEnabledIdentifiers as getEnabledIdentifiers_Signup, validateUsername as validateUsername_Signup } from './screens/signup';
 export namespace Signup {
   export const useSignup = useSignup_Signup;
   export const useScreen = useScreen_Signup;
@@ -688,12 +713,12 @@ export namespace Signup {
   export const signup = signup_Signup;
   export const federatedSignup = federatedSignup_Signup;
   export const pickCountryCode = pickCountryCode_Signup;
-  export const usePasswordValidation = usePasswordValidation_Signup;
-  export const useEnabledIdentifiers = useEnabledIdentifiers_Signup;
-  export const useUsernameValidation = useUsernameValidation_Signup;
+  export const validatePassword = validatePassword_Signup;
+  export const getEnabledIdentifiers = getEnabledIdentifiers_Signup;
+  export const validateUsername = validateUsername_Signup;
 }
 
-import { useCurrentScreen as use_currentScreen, useAuth0Themes as use_Auth0Themes, useErrors as use_Errors } from '../src/hooks/common-hooks';
+import { useCurrentScreen as use_currentScreen, useAuth0Themes as use_Auth0Themes, useErrors2 as use_Errors } from '../src/hooks/common';
 export namespace CommonHooks {
     export const useCurrentScreen = use_currentScreen;
     export const useAuth0Themes = use_Auth0Themes;

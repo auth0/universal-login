@@ -8,3 +8,4 @@ export type { PasskeyCreateResponse, CredentialResponse } from '../utils/passkey
 export type { Branding } from '../models/organization';
 export type { Organizations } from '../models/user';
 export type { PasswordValidationResult } from '../utils/validate-password';
+export type { MfaPushPollingControl, MfaPushPollingError, MfaPushPollingCompleteCallback, MfaPushPollingErrorCallback, MfaPushPollingOptions } from '../common/mfa-push-polling';
