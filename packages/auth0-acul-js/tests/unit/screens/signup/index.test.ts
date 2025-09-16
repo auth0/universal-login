@@ -22,7 +22,7 @@ jest.mock('../../../../src/utils/validate-password', () => ({
 jest.mock('../../../../src/utils/get-enabled-identifiers', () => jest.fn());
 
 import { validatePassword as _validatePassword } from '../../../../src/utils/validate-password';
-import coreGetIdentifier from '../../../../src/utils/get-enabled-identifiers';
+import { getEnabledIdentifiers } from '../../../../src/utils/get-enabled-identifiers';
 
 describe('Signup', () => {
   let signup: Signup;
@@ -122,7 +122,7 @@ describe('Signup', () => {
   });
 
   describe('getEnabledIdentifiers', () => {
-    it('should call coreGetIdentifier with required, optional identifiers and connectionStrategy', () => {
+    it('should call getEnabledIdentifiers with required, optional identifiers and connectionStrategy', () => {
       signup.transaction.requiredIdentifiers = ['email', 'phone'];
       signup.transaction.optionalIdentifiers = ['username'];
       signup.transaction.connectionStrategy = 'strategyX';
@@ -134,11 +134,11 @@ describe('Signup', () => {
         { type: 'username', required: false },
       ];
 
-      (coreGetIdentifier as jest.Mock).mockReturnValue(mockIdentifiers);
+      (getEnabledIdentifiers as jest.Mock).mockReturnValue(mockIdentifiers);
 
       const result = signup.getEnabledIdentifiers();
 
-      expect(coreGetIdentifier).toHaveBeenCalledWith(
+      expect(getEnabledIdentifiers).toHaveBeenCalledWith(
         ['email', 'phone'],
         ['username'],
         'strategyX'
@@ -152,11 +152,11 @@ describe('Signup', () => {
       signup.transaction.connectionStrategy = 'strategyY';
       signup.transaction.errors = null;
 
-      (coreGetIdentifier as jest.Mock).mockReturnValue(null);
+      (getEnabledIdentifiers as jest.Mock).mockReturnValue(null);
 
       const result = signup.getEnabledIdentifiers();
 
-      expect(coreGetIdentifier).toHaveBeenCalledWith([], [], 'strategyY');
+      expect(getEnabledIdentifiers).toHaveBeenCalledWith([], [], 'strategyY');
       expect(result).toBeNull();
     });
   });

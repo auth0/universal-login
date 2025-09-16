@@ -1,7 +1,10 @@
 import { useMemo } from 'react';
 import Signup from '@auth0/auth0-acul-js/signup';
 import { ContextHooks } from '../hooks/context-hooks';
-
+import { createUseErrors } from '../hooks/common/use-errors';
+import { validateUsername } from '../hooks/utility-hooks/validate-username';
+import { validatePassword  } from '../hooks/utility-hooks/validate-password';
+import type { UsernameValidationResult } from '@auth0/auth0-acul-js/signup';
 import type { SignupMembers, SignupOptions, FederatedSignupOptions, CustomOptions, ScreenMembersOnSignup, TransactionMembersOnSignup } from '@auth0/auth0-acul-js/signup';
 let instance: SignupMembers | null = null;
 const getInstance = (): SignupMembers => {
@@ -24,6 +27,9 @@ export const {
   usePrompt,
   useUntrustedData
 } = factory;
+
+// @ts-ignore
+export const {useErrors} = createUseErrors<SignupMembers>(getInstance)
 
 export const useScreen: () => ScreenMembersOnSignup = () => useMemo(() => getInstance().screen, []);
 export const useTransaction: () => TransactionMembersOnSignup = () => useMemo(() => getInstance().transaction, []);
@@ -55,7 +61,7 @@ export const pickCountryCode = (payload?: CustomOptions) => getInstance().pickCo
  * // ]
  * ```
  */
-export const usePasswordValidation = (password: string) => getInstance().validatePassword(password);
+export const usePasswordValidation = (password: string) => validatePassword(password, getInstance);
 
 /**
  * Retrieves the list of enabled identifiers for the current transaction instance.
@@ -104,7 +110,7 @@ export const useEnabledIdentifiers = () => getInstance().getEnabledIdentifiers()
  * }
  * ```
  */
-export const useUsernameValidation = (username: string) => getInstance().validateUsername(username);
+export const useUsernameValidation = (username: string): UsernameValidationResult => validateUsername(username, getInstance);
 
 export type { SignupOptions, FederatedSignupOptions, ScreenMembersOnSignup, TransactionMembersOnSignup, SignupMembers } from '@auth0/auth0-acul-js/signup';
 

@@ -1,7 +1,9 @@
 import type { IdentifierType } from '../../src/constants';
 import type { CustomOptions } from '../common';
 import type { BaseContext, BaseMembers } from '../models/base-context';
-import type { Identifier, ScreenContext, ScreenMembers, UsernameValidationResult } from '../models/screen';
+import type { ScreenContext, ScreenMembers } from '../models/screen';
+import type { Identifier } from '../utils/get-enabled-identifiers';
+import type { UsernameValidationResult } from '../utils/validate-username';
 import type { TransactionMembers, UsernamePolicy } from '../models/transaction';
 import type { UntrustedDataContext } from '../models/untrusted-data';
 interface ExtendedScreenContext extends ScreenContext {

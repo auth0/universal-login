@@ -2,13 +2,14 @@ import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { getBrowserCapabilities } from '../../utils/browser-capabilities';
 import { FormHandler } from '../../utils/form-handler';
-import coreGetIdentifier from '../../utils/get-enabled-identifiers';
-import coreValidateUsername from '../../utils/validate-username';
+import { getEnabledIdentifiers as _getEnabledIdentifiers} from '../../utils/get-enabled-identifiers';
+import { validateUsername as _validateUsername} from '../../utils/validate-username';
 
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
 
-import type { Identifier, UsernameValidationResult } from '../../../interfaces/models/screen';
+import type { UsernameValidationResult } from '../../../interfaces/utils/validate-username';
+import type { Identifier } from '../../../interfaces/utils/get-enabled-identifiers';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type {
@@ -125,7 +126,7 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
       ...this.transaction,
       errors: this.transaction.errors ?? undefined, // convert `null` to `undefined`
     };
-    return coreGetIdentifier(transaction.requiredIdentifiers ?? [], transaction.optionalIdentifiers ?? [], transaction.connectionStrategy);
+    return _getEnabledIdentifiers(transaction.requiredIdentifiers ?? [], transaction.optionalIdentifiers ?? [], transaction.connectionStrategy);
   }
   
   /**
@@ -160,13 +161,14 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
      */
     validateUsername(username: string): UsernameValidationResult {
       const usernameValidationConfig = this.transaction.usernamePolicy;
-      return coreValidateUsername(username, usernameValidationConfig);
+      return _validateUsername(username, usernameValidationConfig);
     }
 }
 
 export {
   SignupIdMembers,
   Identifier,
+  UsernameValidationResult,
   SignupOptions,
   FederatedSignupOptions,
   ScreenOptions as ScreenMembersOnSignupId,

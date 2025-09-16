@@ -2,16 +2,16 @@ import { PasswordValidationResult } from '../../../interfaces/utils/validate-pas
 import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
-import coreGetIdentifier from '../../utils/get-enabled-identifiers';
+import { getEnabledIdentifiers as _getEnabledIdentifiers} from '../../utils/get-enabled-identifiers';
 import { validatePassword as _validatePassword} from '../../utils/validate-password';
-import coreValidateUsername from '../../utils/validate-username';
+import { validateUsername as _validateUsername} from '../../utils/validate-username';
 
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
 
-import type { Identifier } from '../../../interfaces/models/screen';
+import type { Identifier } from '../../../interfaces/utils/get-enabled-identifiers';
 import type { ScreenContext } from '../../../interfaces/models/screen';
-import type { UsernameValidationResult } from '../../../interfaces/models/screen';
+import type { UsernameValidationResult } from '../../../interfaces/utils/validate-username';
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type {
   SignupMembers,
@@ -126,7 +126,7 @@ export default class Signup extends BaseContext implements SignupMembers {
       ...this.transaction,
       errors: this.transaction.errors ?? undefined, // convert `null` to `undefined`
     };
-    return coreGetIdentifier(transaction.requiredIdentifiers ?? [], transaction.optionalIdentifiers ?? [], transaction.connectionStrategy);
+    return _getEnabledIdentifiers(transaction.requiredIdentifiers ?? [], transaction.optionalIdentifiers ?? [], transaction.connectionStrategy);
   }
 
   /**
@@ -143,7 +143,7 @@ export default class Signup extends BaseContext implements SignupMembers {
    */
   validateUsername(username: string): UsernameValidationResult {
     const usernameValidationConfig = this.transaction.usernamePolicy;
-    return coreValidateUsername(username, usernameValidationConfig);
+    return _validateUsername(username, usernameValidationConfig);
   }
 }
 

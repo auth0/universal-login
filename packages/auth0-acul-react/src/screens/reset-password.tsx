@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
 import ResetPassword from '@auth0/auth0-acul-js/reset-password';
 import { ContextHooks } from '../hooks/context-hooks';
+import { validatePassword } from '../hooks/utility-hooks/validate-password';
+import { createUseErrors } from '../hooks/common/use-errors';
 
 import type { ResetPasswordMembers, ResetPasswordOptions, ScreenMembersOnResetPassword } from '@auth0/auth0-acul-js/reset-password';
 let instance: ResetPasswordMembers | null = null;
@@ -30,6 +32,8 @@ export const useTransaction = () => useMemo(() => getInstance().transaction, [])
 // Screen methods
 export const resetPassword = (payload: ResetPasswordOptions) => getInstance().resetPassword(payload);
 
+// @ts-ignore
+export const { useErrors } = createUseErrors(getInstance);
 /**
  * Validates a password string against the current password policy
  * by delegating to the instance's `validatePassword` method.
@@ -52,7 +56,7 @@ export const resetPassword = (payload: ResetPasswordOptions) => getInstance().re
  * // ]
  * ```
  */
-export const usePasswordValidation = (password: string) => getInstance().validatePassword(password);
+export const usePasswordValidation = (password: string) => validatePassword( password, getInstance);
 
 export type { ResetPasswordOptions, ScreenMembersOnResetPassword, ResetPasswordMembers } from '@auth0/auth0-acul-js/reset-password';
 

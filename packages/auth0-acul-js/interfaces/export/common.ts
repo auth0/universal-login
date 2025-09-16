@@ -1,4 +1,4 @@
-export type { CaptchaContext, PhonePrefix, PasskeyCreate, Scope, AuthorizationDetail, Identifier, IdentifierType as ScreenIdentifierType, UsernameValidationResult, UsernameValidationError } from '../models/screen';
+export type { CaptchaContext, PhonePrefix, PasskeyCreate, Scope, AuthorizationDetail } from '../models/screen';
 export type { Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, PasswordComplexityRule } from '../models/transaction';
 export type { BrandingSettings, BrandingThemes } from '../models/branding';
 export type { CustomOptions, WebAuthnErrorDetails, CurrentScreenOptions, FlattenedTheme, OnStatusChangeCallback, OnTimeoutCallback, StartResendOptions, ResendControl } from '../common/index';
@@ -8,3 +8,5 @@ export type { PasskeyCreateResponse, CredentialResponse } from '../utils/passkey
 export type { Branding } from '../models/organization';
 export type { Organizations } from '../models/user';
 export type { PasswordValidationResult } from '../utils/validate-password';
+export type { Identifier, IdentifierType as ScreenIdentifierType } from '../utils/get-enabled-identifiers';
+export type { UsernameValidationResult, UsernameValidationError } from '../utils/validate-username';

@@ -1,6 +1,6 @@
 import { USERNAME_ERROR_CODES, USERNAME_ERROR_MESSAGES } from '../constants/errors';
 
-import type { UsernameValidationError, UsernameValidationResult } from '../../interfaces/models/screen';
+import type { UsernameValidationError, UsernameValidationResult } from '../../interfaces/utils/validate-username';
 import type { UsernamePolicy } from '../../interfaces/models/transaction';
 
 type AllowedFormats = {
@@ -26,17 +26,6 @@ type AllowedFormats = {
  * @returns {UsernameValidationResult} An object containing:
  *  - `isValid`: A boolean indicating if the username passed all validations.
  *  - `errors`: An array of validation errors, if any.
- *
- * @example
- * const result = validateUsername('john.doe@example.com', {
- *   minLength: 5,
- *   maxLength: 20,
- *   allowedFormats: { usernameInEmailFormat: false },
- * });
- * 
- * if (!result.isValid) {
- *   console.log(result.errors);
- * }
  */
 export function validateUsername(
   username: string,
@@ -111,4 +100,3 @@ export function validateUsername(
   };
 }
 
-export default validateUsername;

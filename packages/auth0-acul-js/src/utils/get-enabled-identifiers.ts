@@ -1,6 +1,6 @@
 import { ConnectionStrategy } from '../constants';
 
-import type { Identifier, IdentifierType } from '../../interfaces/models/screen';
+import type { Identifier, IdentifierType } from '../../interfaces/utils/get-enabled-identifiers';
 
 const passwordlessStrategyToIdentifier: Record<string, IdentifierType> = {
   email: 'email',
@@ -11,10 +11,6 @@ const passwordlessStrategyToIdentifier: Record<string, IdentifierType> = {
  * Returns a list of enabled identifiers (email, phone, or username), each with its `required` status,
  * based on the given required and optional identifiers, and the connection strategy.
  *
- * This function supports both:
- * - **Passwordless** flows (email or SMS): returns a single required identifier based on the strategy.
- * - **Username-password** flows: combines required and optional identifiers into one list.
- *
  * @param requiredIdentifiers - An array of identifier types (e.g., `['email', 'phone']`) marked as required.
  * @param optionalIdentifiers - An array of identifier types marked as optional.
  * @param connectionStrategy - The connection strategy string (e.g., `'email'`, `'sms'`, `'auth0'`, etc.).
@@ -22,16 +18,8 @@ const passwordlessStrategyToIdentifier: Record<string, IdentifierType> = {
  * @returns An array of `Identifier` objects, where each contains a `type` (identifier type)
  * and a `required` flag indicating whether it is mandatory for signup.
  *
- * @example
- * ```ts
- * const enabled = getEnabledIdentifiers(['email'], ['username'], 'auth0');
- * // => [
- * //   { type: 'email', required: true },
- * //   { type: 'username', required: false }
- * // ]
- * ```
  */
-function getEnabledIdentifiers(
+export function getEnabledIdentifiers(
   requiredIdentifiers: Array<IdentifierType>,
   optionalIdentifiers: Array<IdentifierType>,
   connectionStrategy: string | null
@@ -59,5 +47,3 @@ function getEnabledIdentifiers(
 
   return [...requiredMapped, ...optionalMapped];
 }
-
-export default getEnabledIdentifiers;

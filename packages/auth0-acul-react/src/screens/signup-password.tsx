@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
 import SignupPassword from '@auth0/auth0-acul-js/signup-password';
 import { ContextHooks } from '../hooks/context-hooks';
+import { validatePassword } from '../hooks/utility-hooks/validate-password';
+import { createUseErrors } from '../hooks/common/use-errors';
 
 import type { SignupPasswordMembers, SignupPasswordOptions, FederatedSignupOptions, ScreenMembersOnSignupPassword, TransactionMembersOnSignupPassword } from '@auth0/auth0-acul-js/signup-password';
 let instance: SignupPasswordMembers | null = null;
@@ -31,6 +33,8 @@ export const useTransaction: () => TransactionMembersOnSignupPassword = () => us
 // Screen methods
 export const signup = (payload: SignupPasswordOptions) => getInstance().signup(payload);
 export const federatedSignup = (payload: FederatedSignupOptions) => getInstance().federatedSignup(payload);
+//@ts-ignore
+export const { useErrors } = createUseErrors(getInstance);
 
 /**
  * Validates a password string against the current password policy
@@ -54,7 +58,8 @@ export const federatedSignup = (payload: FederatedSignupOptions) => getInstance(
  * // ]
  * ```
  */
-export const usePasswordValidation = (password: string) => getInstance().validatePassword(password);
+//@ts-ignore
+export const usePasswordValidation = (password: string) => validatePassword(password, getInstance);
 
 export type { FederatedSignupOptions, ScreenMembersOnSignupPassword, TransactionMembersOnSignupPassword, SignupPasswordOptions, SignupPasswordMembers } from '@auth0/auth0-acul-js/signup-password';
 
