@@ -19,7 +19,9 @@ jest.mock('../../../../src/utils/validate-password', () => ({
   validatePassword: jest.fn(),
 }));
 
-jest.mock('../../../../src/utils/get-enabled-identifiers', () => jest.fn());
+jest.mock('../../../../src/utils/get-enabled-identifiers', () => ({
+  getEnabledIdentifiers: jest.fn(),
+}));
 
 import { validatePassword as _validatePassword } from '../../../../src/utils/validate-password';
 import { getEnabledIdentifiers } from '../../../../src/utils/get-enabled-identifiers';

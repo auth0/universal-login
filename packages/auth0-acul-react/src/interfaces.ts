@@ -75,4 +75,4 @@ export * as SignupId from './interfaces/signup-id';
 export * as SignupPassword from './interfaces/signup-password';
 export * as Signup from './interfaces/signup';
 export * as Common from './interfaces/common';
-export {}
+export {};
