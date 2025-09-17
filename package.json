@@ -14,8 +14,13 @@
     "test": "npm test --workspaces",
     "build": "npm run build --workspaces",
     "docs": "npm run docs --workspaces",
+    "docs:unified": "npm run docs && node ./scripts/unify-docs.js",
+    "docs:serve": "npm run docs:unified && npx http-server ./docs -p 3000 -o",
+    "docs:clean": "rm -rf ./docs && mkdir -p ./docs",
+    "docs:deploy-preview": "npm run docs:clean && npm run docs:unified",
     "format": "npm run format --workspaces",
-    "preinstall": "node ./scripts/check-node-version.js && node ./scripts/block-local-install.js"
+    "preinstall": "node ./scripts/check-node-version.js && node ./scripts/block-local-install.js",
+    "postinstall": "npm run docs:unified"
   },
   "engines": {
     "node": "^22.0.0"
@@ -41,6 +46,7 @@
     "eslint-import-resolver-typescript": "^4.3.2",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-prettier": "^5.2.6",
+    "http-server": "^14.1.1",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "markdown-it": "^14.1.0",
@@ -55,5 +61,8 @@
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.29.1",
     "yaml": "^2.6.1"
+  },
+  "dependencies": {
+    "marked": "^16.3.0"
   }
 }
