@@ -1,5 +1,4 @@
-import type { StartMfaPushPollingOptions, MfaPushPollingControl } from '../../interfaces/screens/mfa-push-challenge-push';
-
+import type { MfaPushPollingControl, StartMfaPushPollingOptions } from '../../interfaces/common/mfa-push-polling';
 /**
  * Starts polling the MFA push challenge endpoint using XHR GET requests.
  * 

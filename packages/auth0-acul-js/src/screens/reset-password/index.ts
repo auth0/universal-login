@@ -52,6 +52,6 @@ export default class ResetPassword extends BaseContext implements ResetPasswordM
     return _validatePassword(password, passwordPolicy);
   }
 }
-export { ResetPasswordMembers, ResetPasswordOptions, ScreenOptions as ScreenMembersOnResetPassword };
+export { ResetPasswordMembers, ResetPasswordOptions, ScreenOptions as ScreenMembersOnResetPassword, TransactionOptions as TransactionMembersOnResetPassword };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';
