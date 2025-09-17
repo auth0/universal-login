@@ -2,8 +2,7 @@ import { useMemo } from 'react';
 import ResetPasswordMfaPushChallengePush from '@auth0/auth0-acul-js/reset-password-mfa-push-challenge-push';
 import { ContextHooks } from '../hooks/context-hooks';
 
-import type { ResetPasswordMfaPushChallengePushMembers, CustomOptions, ScreenMembersOnResetPasswordMfaPushChallengePush } from '@auth0/auth0-acul-js/reset-password-mfa-push-challenge-push';
-import { MfaPushPollingError } from '@auth0/auth0-acul-js/mfa-push-challenge-push';
+import type { ResetPasswordMfaPushChallengePushMembers, CustomOptions, ScreenMembersOnResetPasswordMfaPushChallengePush, MfaPushPollingOptions } from '@auth0/auth0-acul-js/reset-password-mfa-push-challenge-push';
 
 let instance: ResetPasswordMfaPushChallengePushMembers | null = null;
 const getInstance = (): ResetPasswordMfaPushChallengePushMembers => {
@@ -33,7 +32,7 @@ export const continueMethod = (payload?: CustomOptions) => getInstance().continu
 export const resendPushNotification = (payload?: CustomOptions) => getInstance().resendPushNotification(payload);
 export const enterCodeManually = (payload?: CustomOptions) => getInstance().enterCodeManually(payload);
 export const tryAnotherMethod = (payload?: CustomOptions) => getInstance().tryAnotherMethod(payload);
-export const usePushPollingManager = (intervalMs: number, onComplete: () => void, onError?: (error: MfaPushPollingError) => void) => getInstance().pollingManager({ intervalMs, onComplete, onError });
+export const usePushPollingManager = (options?: MfaPushPollingOptions) => getInstance().pollingManager(options);
 
 export type { ScreenMembersOnResetPasswordMfaPushChallengePush, ResetPasswordMfaPushChallengePushMembers } from '@auth0/auth0-acul-js/reset-password-mfa-push-challenge-push';
 
