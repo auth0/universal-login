@@ -2,10 +2,10 @@ import type { IdentifierType } from '../../src/constants';
 import type { CustomOptions } from '../common';
 import type { BaseContext, BaseMembers } from '../models/base-context';
 import type { ScreenContext, ScreenMembers } from '../models/screen';
-import type { Identifier } from '../utils/get-enabled-identifiers';
-import type { UsernameValidationResult } from '../utils/validate-username';
 import type { TransactionMembers, UsernamePolicy } from '../models/transaction';
 import type { UntrustedDataContext } from '../models/untrusted-data';
+import type { Identifier } from '../utils/get-enabled-identifiers';
+import type { UsernameValidationResult } from '../utils/validate-username';
 interface ExtendedScreenContext extends ScreenContext {
   links: {
     login: string;

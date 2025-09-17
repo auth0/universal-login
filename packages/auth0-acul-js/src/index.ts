@@ -7,3 +7,6 @@ export * from '../interfaces/export/common';
 export * from './selectors/index';
 export * from './utils/resend-utils';
 export * from './utils/errors';
+export * from './utils/validate-password';
+export * from './utils/validate-username';
+export * from './utils/get-enabled-identifiers';

@@ -1,7 +1,7 @@
 import { USERNAME_ERROR_CODES, USERNAME_ERROR_MESSAGES } from '../constants/errors';
 
-import type { UsernameValidationError, UsernameValidationResult } from '../../interfaces/utils/validate-username';
 import type { UsernamePolicy } from '../../interfaces/models/transaction';
+import type { UsernameValidationError, UsernameValidationResult } from '../../interfaces/utils/validate-username';
 
 type AllowedFormats = {
   usernameInEmailFormat?: boolean;

@@ -8,8 +8,6 @@ import { validateUsername as _validateUsername} from '../../utils/validate-usern
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
 
-import type { UsernameValidationResult } from '../../../interfaces/utils/validate-username';
-import type { Identifier } from '../../../interfaces/utils/get-enabled-identifiers';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type {
@@ -20,6 +18,9 @@ import type {
   FederatedSignupOptions,
 } from '../../../interfaces/screens/signup-id';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import type { Identifier } from '../../../interfaces/utils/get-enabled-identifiers';
+import type { UsernameValidationResult } from '../../../interfaces/utils/validate-username';
+
 
 export default class SignupId extends BaseContext implements SignupIdMembers {
   static screenIdentifier: string = ScreenIds.SIGNUP_ID;
