@@ -7,6 +7,13 @@ export const Identifiers = {
   PHONE: 'phone' as const,
 } as const;
 
+export const Fields = {
+  EMAIL: 'email' as const,
+  USERNAME: 'username' as const,
+  PHONE: 'phone' as const,
+  PASSWORD: 'password' as const
+}
+
 /**
  * Type representing valid identifier values
  */

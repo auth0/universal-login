@@ -1,13 +1,21 @@
-import { USERNAME_ERROR_CODES, USERNAME_ERROR_MESSAGES } from '../constants/errors';
+import {
+  USERNAME_ERROR_CODES,
+  USERNAME_ERROR_MESSAGES,
+} from '../constants/errors';
+import { Fields } from '../constants/identifiers';
 
-import type { UsernameValidationError, UsernameValidationResult } from '../../interfaces/utils/validate-username';
 import type { UsernamePolicy } from '../../interfaces/models/transaction';
+import type {
+  UsernameValidationError,
+  UsernameValidationResult,
+} from '../../interfaces/utils/validate-username';
 
 type AllowedFormats = {
   usernameInEmailFormat?: boolean;
   usernameInPhoneFormat?: boolean;
 };
 
+const field = Fields.USERNAME;
 
 /**
  * Validates a username string against a given username policy.
@@ -22,7 +30,7 @@ type AllowedFormats = {
  *
  * @param {string} username - The username to validate.
  * @param {UsernamePolicy | null} [policy] - Optional validation policy defining length limits and allowed formats.
- * 
+ *
  * @returns {UsernameValidationResult} An object containing:
  *  - `isValid`: A boolean indicating if the username passed all validations.
  *  - `errors`: An array of validation errors, if any.
@@ -38,7 +46,13 @@ export function validateUsername(
       isValid: username.trim().length > 0,
       errors: username.trim().length > 0
         ? []
-        : [{ code: USERNAME_ERROR_CODES.REQUIRED, message: USERNAME_ERROR_MESSAGES.REQUIRED }],
+        : [
+            {
+              code: USERNAME_ERROR_CODES.REQUIRED,
+              message: USERNAME_ERROR_MESSAGES.REQUIRED,
+              field
+            },
+          ],
     };
   }
 
@@ -64,6 +78,7 @@ export function validateUsername(
     errors.push({
       code: USERNAME_ERROR_CODES.TOO_SHORT,
       message: USERNAME_ERROR_MESSAGES.TOO_SHORT(minLength),
+      field
     });
   }
 
@@ -72,6 +87,7 @@ export function validateUsername(
     errors.push({
       code: USERNAME_ERROR_CODES.TOO_LONG,
       message: USERNAME_ERROR_MESSAGES.TOO_LONG(maxLength),
+      field
     });
   }
 
@@ -81,6 +97,7 @@ export function validateUsername(
     errors.push({
       code: USERNAME_ERROR_CODES.EMAIL_NOT_ALLOWED,
       message: USERNAME_ERROR_MESSAGES.EMAIL_NOT_ALLOWED,
+      field
     });
   }
 
@@ -91,6 +108,7 @@ export function validateUsername(
     errors.push({
       code: USERNAME_ERROR_CODES.PHONE_NOT_ALLOWED,
       message: USERNAME_ERROR_MESSAGES.PHONE_NOT_ALLOWED,
+      field
     });
   }
 
@@ -99,4 +117,3 @@ export function validateUsername(
     errors,
   };
 }
-

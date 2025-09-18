@@ -7,13 +7,9 @@ import {
   getErrors as getServerErrors,
 } from '@auth0/auth0-acul-js';
 
-export interface ErrorInfo extends ErrorItem {
-  kind: ErrorKind;
-}
-
-export interface ErrorsResult extends ReadonlyArray<ErrorInfo> {
-  byKind(kind: ErrorKind, opts?: { field?: string }): ReadonlyArray<ErrorInfo>;
-  byField(field: string, opts?: { kind?: ErrorKind }): ReadonlyArray<ErrorInfo>;
+export interface ErrorsResult extends ReadonlyArray<ErrorItem> {
+  byKind(kind: ErrorKind, opts?: { field?: string }): ReadonlyArray<ErrorItem>;
+  byField(field: string, opts?: { kind?: ErrorKind }): ReadonlyArray<ErrorItem>;
 }
 
 export interface UseErrorOptions {
@@ -50,163 +46,236 @@ function filterByField<T extends { field?: string }>(
   return list.filter((e) => e.field === field);
 }
 
-export function createUseErrors() {
-  // Caches for tagged errors
-  const cacheServer = new WeakMap<ReadonlyArray<ErrorItem>, ReadonlyArray<ErrorInfo>>();
-  const cacheClient = new WeakMap<ReadonlyArray<ErrorItem>, ReadonlyArray<ErrorInfo>>();
-  const cacheDev = new WeakMap<ReadonlyArray<ErrorItem>, ReadonlyArray<ErrorInfo>>();
+// caches for tagging
+const cacheServer = new WeakMap<ReadonlyArray<ErrorItem>, ReadonlyArray<ErrorItem>>();
+const cacheClient = new WeakMap<ReadonlyArray<ErrorItem>, ReadonlyArray<ErrorItem>>();
+const cacheDev = new WeakMap<ReadonlyArray<ErrorItem>, ReadonlyArray<ErrorItem>>();
 
-  const tag = (kind: ErrorKind, arr: ReadonlyArray<ErrorItem>): ReadonlyArray<ErrorInfo> => {
-    const cache = kind === 'server' ? cacheServer : kind === 'client' ? cacheClient : cacheDev;
-    const hit = cache.get(arr);
-    if (hit) return hit;
-    const out = Object.freeze(arr.map((e) => Object.freeze({ ...e, kind })));
-    cache.set(arr, out);
-    return out;
-  };
+const tag = (kind: ErrorKind, arr: ReadonlyArray<ErrorItem>): ReadonlyArray<ErrorItem> => {
+  const cache = kind === 'server' ? cacheServer : kind === 'client' ? cacheClient : cacheDev;
+  const hit = cache.get(arr);
+  if (hit) return hit;
+  const out = Object.freeze(arr.map((e) => Object.freeze({ ...e, kind })));
+  cache.set(arr, out);
+  return out;
+};
 
-  function useErrors(options: UseErrorOptions = {}): UseErrorsResult {
-    const { includeDevErrors = false } = options;
+/**
+ * React hook for reading and managing errors in ACUL (Advanced Customization of Universal Login).
+ * With all validation and server-side errors. It groups errors into three kinds:
+ * - `server` — errors returned by Auth0 or your own backend.
+ * - `client` — errors from client-side validation (e.g., invalid form input).
+ * - `developer` — errors caused by incorrect integration or SDK misuse.
+ * 
+ * @SupportedScreens
+ * - The `useErrors` hook is available on every ACUL screen.
+ *
+ * @param options.includeDevErrors - When `true`, developer errors are included in
+ *   the returned list. Defaults to `false`.
+ *
+ * @returns An object of type {@link UseErrorsResult}, containing:
+ * - `errors` — the full error list of type {@link ErrorsResult}, with helpers:
+ *   - `errors.byKind(kind, filter?)` — filter by error kind and optionally by field.
+ *   - `errors.byField(field, filter?)` — filter by field and optionally by kind.
+ * - `hasError` — `true` if any error is currently present.
+ * - `dismiss(id)` — remove a specific error by its ID.
+ * - `dismissAll()` — clear all tracked errors.
+ *
+ * @usage
+ * Typical usage is inside a form or screen component where you need to
+ * reactively display errors and provide ways to dismiss them:
+ *
+ * @example
+ * ```tsx
+ * import { useErrors } from "@auth0/auth0-acul-react";
+ *
+ * export function SignupForm() {
+ *   const { errors, hasError, dismiss, dismissAll } = useErrors();
+ *
+ *   return (
+ *     <div>
+ *       {hasError && (
+ *         <div className="mb-4">
+ *           {errors.byKind("server").map(err => (
+ *             <div key={err.id} className="text-red-600">
+ *               {err.message}
+ *               <button onClick={() => dismiss(err.id)}>Dismiss</button>
+ *             </div>
+ *           ))}
+ *         </div>
+ *       )}
+ *
+ *       <button onClick={dismissAll}>Clear All Errors</button>
+ *     </div>
+ *   );
+ * }
+ * ```
+ *
+ * In addition to rendering messages, you can filter by field or kind:
+ * ```ts
+ * console.log(errors.byKind('client')); // all client errors
+ * console.log(errors.byKind('client', { field: 'username' })); // client errors for field 'username'
+ * console.log(errors.byField('username')); // all errors for field 'username'
+ * console.log(errors.byField('username', { kind: 'server' })); // server errors for field 'username'
+ * ```
+ */
 
-    const snap = useSyncExternalStore(
-      (cb) => errorStore.subscribe(cb),
-      () => errorStore.snapshot()
-    );
+export function useErrors(options: UseErrorOptions = {}): UseErrorsResult {
+  const { includeDevErrors = false } = options;
 
-    const didInit = useRef(false);
-    useEffect(() => {
-      if (didInit.current) return;
-      didInit.current = true;
+  const snap = useSyncExternalStore(
+    (cb) => errorStore.subscribe(cb),
+    () => errorStore.snapshot()
+  );
 
-      // Get server errors directly from TS SDK on first render.
-      const server = (getServerErrors?.() ?? []) as Array<Omit<ErrorItem, 'id'>>;
-      errorStore.replace('server', server);
-    }, []);
+  const didInit = useRef(false);
+  useEffect(() => {
+    if (didInit.current) return;
+    didInit.current = true;
 
-    const serverTagged = useMemo(() => tag('server', snap.server), [snap.server]);
-    const clientTagged = useMemo(() => tag('client', snap.client), [snap.client]);
-    const devTagged = useMemo(() => tag('developer', snap.developer), [snap.developer]);
-
-    const all = useMemo<ReadonlyArray<ErrorInfo>>(
-      () =>
-        Object.freeze([...(includeDevErrors ? devTagged : []), ...clientTagged, ...serverTagged]),
-      [includeDevErrors, devTagged, clientTagged, serverTagged]
-    );
-
-    const errors: ErrorsResult = useMemo(() => {
-      const arr = Object.assign([...all], {
-        byKind(kind: ErrorKind, opts?: { field?: string }): ReadonlyArray<ErrorInfo> {
-          const base =
-            kind === 'client' ? clientTagged :
-            kind === 'developer' ? devTagged :
-            serverTagged;
-          return opts?.field ? Object.freeze(filterByField(base, opts.field)) : base;
-        },
-        byField(field: string, opts?: { kind?: ErrorKind }): ReadonlyArray<ErrorInfo> {
-          if (opts?.kind) return arr.byKind(opts.kind, { field });
-          return Object.freeze(filterByField(all, field));
-        }
-      });
-      return Object.freeze(arr);
-    }, [all, clientTagged, devTagged, serverTagged]);
-
-    const hasError = all.length > 0;
-
-    const dismiss = useCallback((id: string) => {
-      errorStore.remove(ERROR_KINDS, id);
-    }, []);
-
-    const dismissAll = useCallback(() => {
-      errorStore.clear(ERROR_KINDS);
-    }, []);
-
-    return useMemo(
-      () => ({ errors, hasError, dismiss, dismissAll }),
-      [errors, hasError, dismiss, dismissAll]
-    );
-  }
-
-  // ---------- INTERNAL (SDK-only) ----------
-  function __replaceClientErrors(list: Array<Omit<ErrorItem, 'id'>>) {
-    errorStore.replace('client', list);
-  }
-  function __clearClientErrors() {
-    errorStore.clear(['client']);
-  }
-  function __pushClientErrors(list: Omit<ErrorItem, 'id'> | Array<Omit<ErrorItem, 'id'>>) {
-    errorStore.push('client', list);
-  }
-
-  function __replaceDeveloperErrors(list: Array<Omit<ErrorItem, 'id'>>) {
-    errorStore.replace('developer', list);
-  }
-  function __clearDeveloperErrors() {
-    errorStore.clear(['developer']);
-  }
-  function __pushDeveloperErrors(list: Omit<ErrorItem, 'id'> | Array<Omit<ErrorItem, 'id'>>) {
-    errorStore.push('developer', list);
-  }
-
-  function __replaceServerErrors(list: Array<Omit<ErrorItem, 'id'>>) {
-    errorStore.replace('server', list);
-  }
-  function __clearServerErrors() {
-    errorStore.clear(['server']);
-  }
-  function __pushServerErrors(list: Omit<ErrorItem, 'id'> | Array<Omit<ErrorItem, 'id'>>) {
-    errorStore.push('server', list);
-  }
-
-  function __syncServerErrors() {
+    // Get server errors directly from TS SDK on first render.
     const server = (getServerErrors?.() ?? []) as Array<Omit<ErrorItem, 'id'>>;
     errorStore.replace('server', server);
-  }
+  }, []);
 
-  const isPromise = (v: unknown): v is Promise<unknown> =>
-    !!v && typeof (v as any).then === 'function';
+  const serverTagged = useMemo(() => tag('server', snap.server), [snap.server]);
+  const clientTagged = useMemo(() => tag('client', snap.client), [snap.client]);
+  const devTagged = useMemo(() => tag('developer', snap.developer), [snap.developer]);
 
-  function withErrorHandler<T>(fn: () => T): T;
-  function withErrorHandler<T>(fn: () => Promise<T>): Promise<T>;
-  function withErrorHandler<T>(promise: Promise<T>): Promise<T>;
-  function withErrorHandler<T>(
-    actionOrPromise: (() => T | Promise<T>) | Promise<T>
-  ): T | Promise<T> {
-    const handle = (e: any) => {
-      const kind = classifyKind(e);
-      const normalized = toErrorObject(e);
-      if (kind === 'client') __replaceClientErrors([normalized]);
-      else if (kind === 'developer') __replaceDeveloperErrors([normalized]);
-      else if (kind === 'server') __replaceServerErrors([normalized]);
-      throw e;
-    };
+  const all = useMemo<ReadonlyArray<ErrorItem>>(
+    () =>
+      Object.freeze([...(includeDevErrors ? devTagged : []), ...clientTagged, ...serverTagged]),
+    [includeDevErrors, devTagged, clientTagged, serverTagged]
+  );
 
-    if (typeof actionOrPromise === 'function') {
-      try {
-        const result = (actionOrPromise as () => T | Promise<T>)();
-        return isPromise(result) ? (result as Promise<T>).catch(handle) : result;
-      } catch (e) {
-        handle(e);
+  const errors: ErrorsResult = useMemo(() => {
+    const arr = Object.assign([...all], {
+      byKind(kind: ErrorKind, opts?: { field?: string }): ReadonlyArray<ErrorItem> {
+        const base =
+          kind === 'client' ? clientTagged : kind === 'developer' ? devTagged : serverTagged;
+        return opts?.field ? Object.freeze(filterByField(base, opts.field)) : base;
+      },
+      byField(field: string, opts?: { kind?: ErrorKind }): ReadonlyArray<ErrorItem> {
+        if (opts?.kind) return arr.byKind(opts.kind, { field });
+        return Object.freeze(filterByField(all, field));
+      },
+    });
+    return Object.freeze(arr);
+  }, [all, clientTagged, devTagged, serverTagged]);
+
+  const hasError = all.length > 0;
+
+  const dismiss = useCallback((id: string) => {
+    errorStore.remove(ERROR_KINDS, id);
+  }, []);
+
+  const dismissAll = useCallback(() => {
+    errorStore.clear(ERROR_KINDS);
+  }, []);
+
+  return useMemo(
+    () => ({ errors, hasError, dismiss, dismissAll }),
+    [errors, hasError, dismiss, dismissAll]
+  );
+}
+
+// ---------------- INTERNAL (SDK-only) ----------------
+const isPromise = (v: unknown): v is Promise<unknown> =>
+  !!v && typeof (v as any).then === 'function';
+
+function withErrorHandler<T>(
+  actionOrPromise: (() => T | Promise<T>) | Promise<T>
+): T | Promise<T> {
+  const handle = (e: unknown) => {
+    const kind = classifyKind(e);
+    const normalized = toErrorObject(e);
+    switch (kind) {
+      case 'client':
+        errorManager.replaceClientErrors([normalized]);
+        break;
+      case 'developer':
+        errorManager.replaceDeveloperErrors([normalized]);
+        break;
+      case 'server':
+        errorManager.replaceServerErrors([normalized]);
+        break;
+      default: {
+        console.error('[auth0-acul-react] Unhandled error:', e);
+        throw e;
       }
     }
+  };
 
-    return (actionOrPromise as Promise<T>).catch(handle);
+  if (typeof actionOrPromise === 'function') {
+    try {
+      const result = (actionOrPromise as () => T | Promise<T>)();
+      return isPromise(result) ? result.catch((e) => { handle(e); throw e; }) : result;
+    } catch (e) {
+      handle(e);
+      throw e;
+    }
   }
 
-  return {
-    // Public API
-    useErrors,
-
-    // Internal API
-    withErrorHandler,
-    __replaceClientErrors,
-    __clearClientErrors,
-    __pushClientErrors,
-    __replaceDeveloperErrors,
-    __clearDeveloperErrors,
-    __pushDeveloperErrors,
-    __replaceServerErrors,
-    __clearServerErrors,
-    __pushServerErrors,
-    __syncServerErrors,
-  };
+  return (actionOrPromise as Promise<T>).catch((e) => {
+    handle(e);
+    throw e;
+  });
 }
+
+/**
+ * @hidden
+ * Internal error manager for use by SDK methods.
+ * Use the `useErrors` hook in React components instead.
+ */
+export const errorManager = {
+  withErrorHandler,
+
+  replaceClientErrors(list: Array<Omit<ErrorItem, 'id'>>, opts?: { byField?: string }) {
+    if (opts?.byField) {
+      errorStore.replacePartial('client', list, opts.byField);
+    } else {
+      errorStore.replace('client', list);
+    }
+  },
+  clearClientErrors() {
+    errorStore.clear(['client']);
+  },
+  pushClientErrors(list: Omit<ErrorItem, 'id'> | Array<Omit<ErrorItem, 'id'>>) {
+    errorStore.push('client', list);
+  },
+
+  replaceDeveloperErrors(list: Array<Omit<ErrorItem, 'id'>>, opts?: { byField?: string }) {
+    if (opts?.byField) {
+      errorStore.replacePartial('developer', list, opts.byField);
+    } else {
+      errorStore.replace('developer', list);
+    }
+  },
+  clearDeveloperErrors() {
+    errorStore.clear(['developer']);
+  },
+  pushDeveloperErrors(list: Omit<ErrorItem, 'id'> | Array<Omit<ErrorItem, 'id'>>) {
+    errorStore.push('developer', list);
+  },
+
+  replaceServerErrors(list: Array<Omit<ErrorItem, 'id'>>, opts?: { byField?: string }) {
+    if (opts?.byField) {
+      errorStore.replacePartial('server', list, opts.byField);
+    } else {
+      errorStore.replace('server', list);
+    }
+  },
+  clearServerErrors() {
+    errorStore.clear(['server']);
+  },
+  pushServerErrors(list: Omit<ErrorItem, 'id'> | Array<Omit<ErrorItem, 'id'>>) {
+    errorStore.push('server', list);
+  },
+
+  syncServerErrors() {
+    const server = (getServerErrors?.() ?? []) as Array<Omit<ErrorItem, 'id'>>;
+    errorStore.replace('server', server);
+  },
+};
+
+export { ErrorItem, ErrorKind };

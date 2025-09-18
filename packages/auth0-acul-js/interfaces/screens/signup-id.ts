@@ -2,10 +2,10 @@ import type { IdentifierType } from '../../src/constants';
 import type { CustomOptions } from '../common';
 import type { BaseContext, BaseMembers } from '../models/base-context';
 import type { ScreenContext, ScreenMembers } from '../models/screen';
-import type { Identifier } from '../utils/get-enabled-identifiers';
-import type { UsernameValidationResult } from '../utils/validate-username';
 import type { TransactionMembers, UsernamePolicy } from '../models/transaction';
 import type { UntrustedDataContext } from '../models/untrusted-data';
+import type { Identifier } from '../utils/get-enabled-identifiers';
+import type { UsernameValidationResult } from '../utils/validate-username';
 interface ExtendedScreenContext extends ScreenContext {
   links: {
     login: string;
@@ -14,10 +14,11 @@ interface ExtendedScreenContext extends ScreenContext {
 
 interface ExtendedUntrustedDataContext extends UntrustedDataContext {
   submitted_form_data?: {
-    /* this object is opt-in */ email?: string;
+    /* this object is opt-in */ 
+    email?: string;
     phone?: string;
     username?: string;
-    'ulp_{someField}'?: string; // Custom Prompts Fields
+    [key: string]: string | undefined; // keys like "ulp_xxx" are allowed
   };
 }
 

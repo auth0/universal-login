@@ -1,6 +1,6 @@
-import type { UsernameValidationResult } from '../../interfaces/utils/validate-username';
 import type { Identifier } from '../../interfaces/utils/get-enabled-identifiers';
 import type { PasswordValidationResult } from '../../interfaces/utils/validate-password';
+import type { UsernameValidationResult } from '../../interfaces/utils/validate-username';
 import type { IdentifierType } from '../../src/constants';
 import type { CustomOptions } from '../common';
 import type { BaseMembers } from '../models/base-context';

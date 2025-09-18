@@ -136,6 +136,7 @@ export interface PasswordComplexityRule {
   code: string;
   label: string;
   status: 'valid' | 'error';
+  isValid: boolean;
   args?: {
     count: number;
     total?: number;

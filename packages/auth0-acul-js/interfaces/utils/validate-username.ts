@@ -17,6 +17,11 @@ export interface UsernameValidationError {
    * Example: `"Username must be at least 3 characters long."`
    */
   message: string;
+
+  /**
+   * The field associated with the validation error, typically "username", "email", or "phone".
+   */
+  field: string;
 }
 
 

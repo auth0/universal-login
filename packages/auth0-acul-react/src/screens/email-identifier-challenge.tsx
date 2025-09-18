@@ -1,18 +1,20 @@
 import { useMemo } from 'react';
 import EmailIdentifierChallenge from '@auth0/auth0-acul-js/email-identifier-challenge';
 import { ContextHooks } from '../hooks/context-hooks';
-import { resendManager } from '../hooks/utility-hooks';
-import type { UseResendParams, UseResendReturn } from '../interfaces/common';
+import { useResend } from '../hooks/utility-hooks/resend-manager';
+import { getScreen, setScreen } from '../state/instance-store';
 
 import type { EmailIdentifierChallengeMembers, EmailChallengeOptions, CustomOptions, ScreenMembersOnEmailIdentifierChallenge } from '@auth0/auth0-acul-js/email-identifier-challenge';
 
-let instance: EmailIdentifierChallengeMembers | null = null;
-const getInstance = (): EmailIdentifierChallengeMembers => {
-  if (!instance) {
-    instance = new EmailIdentifierChallenge();
+function getInstance(): EmailIdentifierChallengeMembers {
+  try {
+    return getScreen<EmailIdentifierChallengeMembers>();
+  } catch {
+    const inst = new EmailIdentifierChallenge();
+    setScreen(inst);
+    return inst;
   }
-  return instance;
-};
+}
 
 export const useEmailIdentifierChallenge = (): EmailIdentifierChallengeMembers => useMemo(() => getInstance(), []);
 
@@ -37,10 +39,7 @@ export const resendCode = (payload?: CustomOptions) => getInstance().resendCode(
 export const returnToPrevious = (payload?: CustomOptions) => getInstance().returnToPrevious(payload);
 
 // Resend hook
-export const useResend = (payload?: UseResendParams): UseResendReturn => {
-  const screenInstance = useMemo(() => getInstance(), []);
-  return resendManager(screenInstance, payload);
-};
+export { useResend };
 
 export type { EmailChallengeOptions, ScreenMembersOnEmailIdentifierChallenge, EmailIdentifierChallengeMembers } from '@auth0/auth0-acul-js/email-identifier-challenge';
 

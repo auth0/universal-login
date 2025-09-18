@@ -1,17 +1,20 @@
 import { useMemo } from 'react';
 import MfaPushChallengePush from '@auth0/auth0-acul-js/mfa-push-challenge-push';
 import { ContextHooks } from '../hooks/context-hooks';
+import { getScreen, setScreen } from '../state/instance-store';
+import { useMfaPollingManager } from '../hooks/utility-hooks/polling-manager';
 
 import type { MfaPushChallengePushMembers, WithRememberOptions, CustomOptions, ScreenMembersOnMfaPushChallengePush } from '@auth0/auth0-acul-js/mfa-push-challenge-push';
-import { MfaPushPollingError } from '@auth0/auth0-acul-js/mfa-push-challenge-push';
 
-let instance: MfaPushChallengePushMembers | null = null;
-const getInstance = (): MfaPushChallengePushMembers => {
-  if (!instance) {
-    instance = new MfaPushChallengePush();
+function getInstance(): MfaPushChallengePushMembers {
+  try {
+    return getScreen<MfaPushChallengePushMembers>();
+  } catch {
+    const inst = new MfaPushChallengePush();
+    setScreen(inst);
+    return inst;
   }
-  return instance;
-};
+}
 
 const factory = new ContextHooks<MfaPushChallengePushMembers>(getInstance);
 
@@ -33,7 +36,8 @@ export const continueMethod = (payload?: WithRememberOptions) => getInstance().c
 export const resendPushNotification = (payload?: WithRememberOptions) => getInstance().resendPushNotification(payload);
 export const enterCodeManually = (payload?: CustomOptions) => getInstance().enterCodeManually(payload);
 export const tryAnotherMethod = (payload?: CustomOptions) => getInstance().tryAnotherMethod(payload);
-export const usePollingManager = (intervalMs: number, onComplete: () => void, onError?: (error: MfaPushPollingError) => void) => getInstance().pollingManager(intervalMs, onComplete, onError);
+
+export { useMfaPollingManager };
 
 export type { ScreenMembersOnMfaPushChallengePush, UntrustedDataMembersOnMfaPushChallengePush, WithRememberOptions, MfaPushChallengePushMembers } from '@auth0/auth0-acul-js/mfa-push-challenge-push';
 

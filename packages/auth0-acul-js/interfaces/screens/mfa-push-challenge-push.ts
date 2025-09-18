@@ -1,7 +1,7 @@
-import type { CustomOptions } from '../common';
-import type { BaseMembers } from '../models/base-context';
-import type { ScreenMembers } from '../models/screen';
-import type { UntrustedDataMembers } from '../models/untrusted-data';
+import type { CustomOptions } from "../common";
+import type { BaseMembers } from "../models/base-context";
+import type { ScreenMembers } from "../models/screen";
+import type { UntrustedDataMembers } from "../models/untrusted-data";
 
 /**
  * Interface for the screen data specific to mfa-push-challenge-push screen
@@ -18,7 +18,8 @@ export interface ScreenMembersOnMfaPushChallengePush extends ScreenMembers {
 /**
  * Interface for untrusted data specific to mfa-push-challenge-push screen
  */
-export interface UntrustedDataMembersOnMfaPushChallengePush extends UntrustedDataMembers {
+export interface UntrustedDataMembersOnMfaPushChallengePush
+  extends UntrustedDataMembers {
   submittedFormData: {
     rememberDevice: boolean;
   } | null;
@@ -59,17 +60,21 @@ export interface MfaPushChallengePushMembers extends BaseMembers {
    */
   tryAnotherMethod(payload?: CustomOptions): Promise<void>;
 
-   /**
+  /**
    * Allows polling for the push notification challenge to be approved.
    * @param intervalMs Polling interval in milliseconds
    * @param onComplete Callback function to be called when polling is completed
    */
-  pollingManager(intervalMs: number, onComplete: () => void, onError?: (error: MfaPushPollingError) => void): MfaPushPollingControl;
+  pollingManager(
+    intervalMs: number,
+    onComplete: () => void,
+    onError?: (error: MfaPushPollingError) => void
+  ): MfaPushPollingControl;
 }
 
 /**
  * Options for starting the MFA push polling
- * @public 
+ * @public
  */
 export type StartMfaPushPollingOptions = {
   intervalMs: number;
