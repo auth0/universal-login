@@ -2,7 +2,8 @@ import { useMemo } from 'react';
 import ResetPasswordMfaPushChallengePush from '@auth0/auth0-acul-js/reset-password-mfa-push-challenge-push';
 import { ContextHooks } from '../hooks/context-hooks';
 import { getScreen, setScreen } from '../state/instance-store';
-import { useMfaPollingManager } from '../hooks/utility-hooks/polling-manager';
+import { useMfaPolling } from '../hooks/utility-hooks/polling-manager';
+import { useErrors } from '../hooks/common/use-errors';
 
 import type { ResetPasswordMfaPushChallengePushMembers, CustomOptions, ScreenMembersOnResetPasswordMfaPushChallengePush } from '@auth0/auth0-acul-js/reset-password-mfa-push-challenge-push';
 
@@ -37,7 +38,8 @@ export const resendPushNotification = (payload?: CustomOptions) => getInstance()
 export const enterCodeManually = (payload?: CustomOptions) => getInstance().enterCodeManually(payload);
 export const tryAnotherMethod = (payload?: CustomOptions) => getInstance().tryAnotherMethod(payload);
 
-export { useMfaPollingManager };
+export { useMfaPolling };
+export { useErrors };
 
 
 export type { ScreenMembersOnResetPasswordMfaPushChallengePush, ResetPasswordMfaPushChallengePushMembers } from '@auth0/auth0-acul-js/reset-password-mfa-push-challenge-push';

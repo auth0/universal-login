@@ -31,7 +31,7 @@ export { useMfaEmailChallenge } from './screens/mfa-email-challenge';
 export { useMfaEmailList } from './screens/mfa-email-list';
 export { useMfaEnrollResult } from './screens/mfa-enroll-result';
 export { useMfaLoginOptions } from './screens/mfa-login-options';
-export { useMfaPollingManager } from './screens/mfa-push-challenge-push';
+export { useMfaPolling } from './screens/mfa-push-challenge-push';
 export { useMfaOtpChallenge } from './screens/mfa-otp-challenge';
 export { useMfaOtpEnrollmentQr } from './screens/mfa-otp-enrollment-qr';
 export { useMfaOtpEnrollmentCode } from './screens/mfa-otp-enrollment-code';

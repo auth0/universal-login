@@ -1,86 +1,99 @@
-import type { StartMfaPushPollingOptions, MfaPushPollingControl } from '../../interfaces/screens/mfa-push-challenge-push';
+import type { Error as ErrorSchema } from "../../interfaces/models/transaction";
+import type {
+  MfaPollingOptions,
+  MfaPushPollingControl,
+} from "../../interfaces/utils/polling-control.ts";
 
 /**
  * Starts polling the MFA push challenge endpoint using XHR GET requests.
- * 
+ *
  * - Polls the given URL (or current page URL if not provided) at the specified interval.
  * - Calls the `condition` function with the response body to determine if polling should stop.
- * - If the condition is met, calls `onResult` and stops polling.
+ * - If the condition is met, calls `onCompleted` and stops polling.
  * - Handles rate limiting (HTTP 429) by waiting until the rate limit resets.
  * - Calls `onError` if a non-200/429 response is received.
  * - Returns a cancel function to stop polling.
- * 
- * @param intervalMs - Polling interval in milliseconds.
- * @param onResult - Callback when the condition is met.
- * @param onError - Callback on error response.
+ *
+ * @param options - {@link MfaPollingOptions}
  * @returns A cancel function to stop polling.
  */
-export function createPollingControl({
-  intervalMs,
-  onResult,
-  onError,
-}: StartMfaPushPollingOptions): MfaPushPollingControl {
+export function createPollingControl(
+  options?: MfaPollingOptions
+): MfaPushPollingControl {
+  const { intervalMs = 5000, onCompleted, onError } = options || {};
   const url = window.location.href;
-  const condition = (body: Record<string, unknown>): boolean => Boolean((body as { completed?: boolean }).completed);
+  const condition = (body: Record<string, unknown>): boolean =>
+    Boolean((body as { completed?: boolean }).completed);
   let cancelled = false;
   let timer: ReturnType<typeof setTimeout> | null = null;
-  const pollingUrl = url || (typeof window !== 'undefined' ? window.location.href : '');
+  const pollingUrl =
+    url || (typeof window !== "undefined" ? window.location.href : "");
   let running = false;
 
   function internalPoll(): void {
     if (cancelled) return;
     running = true;
-    if (typeof document !== 'undefined' && document.hidden) {
-      if (timer !== null) {
-       clearTimeout(timer);
-      }
+
+    if (typeof document !== "undefined" && document.hidden) {
+      if (timer) clearTimeout(timer);
       timer = setTimeout(internalPoll, intervalMs);
       return;
     }
 
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', pollingUrl);
-    xhr.setRequestHeader('Accept', 'application/json');
+    xhr.open("GET", pollingUrl);
+    xhr.setRequestHeader("Accept", "application/json");
+
     xhr.onload = function (): void {
       if (cancelled) return;
       let body: Record<string, unknown> | string;
       try {
         body =
-          xhr.getResponseHeader('Content-Type')?.split(';')[0] === 'application/json'
+          xhr.getResponseHeader("Content-Type")?.split(";")[0] === "application/json"
             ? (JSON.parse(xhr.responseText) as Record<string, unknown>)
             : xhr.responseText;
       } catch {
         body = xhr.responseText;
       }
+
       if (xhr.status === 200) {
-        if (typeof body === 'object' && body !== null && !Array.isArray(body)) {
+        if (typeof body === "object" && body && !Array.isArray(body)) {
           if (condition(body)) {
-            if (onResult) onResult();
+            onCompleted?.();
             running = false;
             return;
           }
         }
-        if (timer !== null) {
-          clearTimeout(timer);
-        }
+        if (timer) clearTimeout(timer);
         timer = setTimeout(internalPoll, intervalMs);
         return;
       }
+
       if (xhr.status === 429) {
-        const end = Number.parseInt(xhr.getResponseHeader('X-RateLimit-Reset') || '0') * 1000;
-        const wait = end - new Date().getTime();
-        if (timer !== null) {
-          clearTimeout(timer);
-        }
+        const end =
+          Number.parseInt(xhr.getResponseHeader("X-RateLimit-Reset") || "0") * 1000;
+        const wait = end - Date.now();
+        if (timer) clearTimeout(timer);
         timer = setTimeout(internalPoll, wait > intervalMs ? wait : intervalMs);
         return;
       }
-      if (onError) onError({ status: xhr.status, responseText: xhr.responseText });
+
+      const err: ErrorSchema = {
+        code: `polling_error_${xhr.status}`,
+        message: parseErrorMessage(xhr.responseText, xhr.status),
+      };
+      onError?.(err);
     };
+
     xhr.onerror = function (): void {
       if (cancelled) return;
-      if (onError) onError({ status: xhr.status, responseText: xhr.responseText });
+      const err: ErrorSchema = {
+        code: "polling_network_error",
+        message: "Network error while polling MFA push challenge.",
+      };
+      onError?.(err);
     };
+
     xhr.send();
   }
 
@@ -102,4 +115,17 @@ export function createPollingControl({
   }
 
   return { stopPolling, startPolling, isRunning };
+}
+
+function parseErrorMessage(responseText: string, status: number): string {
+  try {
+    const parsed: unknown = JSON.parse(responseText);
+    if (typeof parsed === "object" && parsed && "message" in parsed) {
+      return String((parsed as { message?: string }).message) || `Polling error (${status})`;
+    }
+    
+  } catch {
+    // Not JSON, fall back
+  }
+  return responseText?.trim() || `Polling error (${status})`;
 }

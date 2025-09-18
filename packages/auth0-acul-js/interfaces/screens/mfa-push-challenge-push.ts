@@ -2,6 +2,10 @@ import type { CustomOptions } from "../common";
 import type { BaseMembers } from "../models/base-context";
 import type { ScreenMembers } from "../models/screen";
 import type { UntrustedDataMembers } from "../models/untrusted-data";
+import type {
+  MfaPollingOptions,
+  MfaPushPollingControl,
+} from "../utils/polling-control.ts";
 
 /**
  * Interface for the screen data specific to mfa-push-challenge-push screen
@@ -60,49 +64,10 @@ export interface MfaPushChallengePushMembers extends BaseMembers {
    */
   tryAnotherMethod(payload?: CustomOptions): Promise<void>;
 
-  /**
-   * Allows polling for the push notification challenge to be approved.
-   * @param intervalMs Polling interval in milliseconds
-   * @param onComplete Callback function to be called when polling is completed
-   */
-  pollingManager(
-    intervalMs: number,
-    onComplete: () => void,
-    onError?: (error: MfaPushPollingError) => void
-  ): MfaPushPollingControl;
-}
-
-/**
- * Options for starting the MFA push polling
- * @public
- */
-export type StartMfaPushPollingOptions = {
-  intervalMs: number;
-  onResult?: () => void;
-  onError?: (error: MfaPushPollingError) => void;
-};
-
-/**
- * Control interface for the MFA push polling
- *
- * This interface is returned by {@link MfaPushChallengePushMembers.pollingManager} and allows you to start, stop, and check the status of polling for MFA push challenges.
- *
- * @public
- */
-export interface MfaPushPollingControl {
-  stopPolling: () => void;
-  startPolling: () => void;
-  isRunning: () => boolean;
-}
-
-/**
- * Error interface for the MFA push polling
- *
- * This interface is used by the {@link MfaPushChallengePushMembers.pollingManager} method's onError callback to provide error details.
- *
- * @public
- */
-export interface MfaPushPollingError {
-  status: number;
-  responseText: string;
+  /** 
+   * Manages polling for MFA push challenge status
+   * @param options Configuration options for polling of type {@link MfaPollingOptions}
+   * @returns An object to control the polling process
+  */
+  pollingManager(options: MfaPollingOptions): MfaPushPollingControl;
 }
