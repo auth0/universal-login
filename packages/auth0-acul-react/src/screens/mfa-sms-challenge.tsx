@@ -1,15 +1,20 @@
 import { useMemo } from 'react';
 import MfaSmsChallenge from '@auth0/auth0-acul-js/mfa-sms-challenge';
 import { ContextHooks } from '../hooks/context-hooks';
+import { setScreen, getScreen } from '../state/instance-store';
+import { useResend } from '../hooks/utility-hooks/resend-manager';
 
 import type { MfaSmsChallengeMembers, MfaSmsChallengeOptions, CustomOptions, ScreenMembersOnMfaSmsChallenge } from '@auth0/auth0-acul-js/mfa-sms-challenge';
-let instance: MfaSmsChallengeMembers | null = null;
-const getInstance = (): MfaSmsChallengeMembers => {
-  if (!instance) {
-    instance = new MfaSmsChallenge();
+
+function getInstance(): MfaSmsChallengeMembers {
+  try {
+    return getScreen<MfaSmsChallengeMembers>();
+  } catch {
+    const inst = new MfaSmsChallenge();
+    setScreen(inst);
+    return inst;
   }
-  return instance;
-};
+}
 
 export const useMfaSmsChallenge = (): MfaSmsChallengeMembers => useMemo(() => getInstance(), []);
 
@@ -38,3 +43,5 @@ export const getACall = (payload?: CustomOptions) => getInstance().getACall(payl
 export type { MfaSmsChallengeOptions, ScreenMembersOnMfaSmsChallenge, MfaSmsChallengeMembers, UntrustedDataMembersOnMfaSmsChallenge } from '@auth0/auth0-acul-js/mfa-sms-challenge';
 
 export type * from '@auth0/auth0-acul-js/mfa-sms-challenge';
+
+export { useResend };
