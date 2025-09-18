@@ -1,16 +1,20 @@
 import { useMemo } from 'react';
 import MfaPushChallengePush from '@auth0/auth0-acul-js/mfa-push-challenge-push';
 import { ContextHooks } from '../hooks/context-hooks';
+import { getScreen, setScreen } from '../state/instance-store';
+// import { useMfaPollingManager } from '../hooks/utility-hooks/polling-manager';
 
 import type { MfaPushChallengePushMembers, WithRememberOptions, CustomOptions, ScreenMembersOnMfaPushChallengePush, MfaPushPollingOptions } from '@auth0/auth0-acul-js/mfa-push-challenge-push';
 
-let instance: MfaPushChallengePushMembers | null = null;
-const getInstance = (): MfaPushChallengePushMembers => {
-  if (!instance) {
-    instance = new MfaPushChallengePush();
+function getInstance(): MfaPushChallengePushMembers {
+  try {
+    return getScreen<MfaPushChallengePushMembers>();
+  } catch {
+    const inst = new MfaPushChallengePush();
+    setScreen(inst);
+    return inst;
   }
-  return instance;
-};
+}
 
 const factory = new ContextHooks<MfaPushChallengePushMembers>(getInstance);
 

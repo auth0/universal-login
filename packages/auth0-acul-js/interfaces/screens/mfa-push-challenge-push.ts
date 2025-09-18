@@ -19,7 +19,8 @@ export interface ScreenMembersOnMfaPushChallengePush extends ScreenMembers {
 /**
  * Interface for untrusted data specific to mfa-push-challenge-push screen
  */
-export interface UntrustedDataMembersOnMfaPushChallengePush extends UntrustedDataMembers {
+export interface UntrustedDataMembersOnMfaPushChallengePush
+  extends UntrustedDataMembers {
   submittedFormData: {
     rememberDevice: boolean;
   } | null;

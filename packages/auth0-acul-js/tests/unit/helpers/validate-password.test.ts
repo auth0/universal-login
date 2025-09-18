@@ -12,7 +12,7 @@ describe('validatePassword', () => {
     const result = validatePassword('');
     expect(result.isValid).toBe(false);
     expect(result.results).toEqual([
-      { code: 'no_password', label: 'Password is required.', status: 'error' }
+      { code: 'no_password', label: 'Password is required.', status: 'error', isValid: false }
     ]);
   });
 
@@ -38,7 +38,7 @@ describe('validatePassword', () => {
 
   it('validates password length rule', () => {
     const rules: PasswordComplexityRule[] = [
-      { code: 'password-policy-length-at-least', label: 'At least 12 chars', status: 'valid', args: { count: 12 } }
+      { code: 'password-policy-length-at-least', label: 'At least 12 chars', status: 'valid', isValid: true, args: { count: 12 } }
     ];
     const policy: PasswordPolicy = { policy: 'excellent', minLength: 12, passwordSecurityInfo: rules };
 
@@ -53,10 +53,10 @@ describe('validatePassword', () => {
 
   it('validates lower/upper/number/special char rules directly', () => {
     const rules: PasswordComplexityRule[] = [
-      { code: 'password-policy-lower-case', label: 'lower', status: 'valid' },
-      { code: 'password-policy-upper-case', label: 'upper', status: 'valid' },
-      { code: 'password-policy-numbers', label: 'number', status: 'valid' },
-      { code: 'password-policy-special-characters', label: 'special', status: 'valid' }
+      { code: 'password-policy-lower-case', label: 'lower', status: 'valid', isValid: true },
+      { code: 'password-policy-upper-case', label: 'upper', status: 'valid', isValid: true },
+      { code: 'password-policy-numbers', label: 'number', status: 'valid', isValid: true },
+      { code: 'password-policy-special-characters', label: 'special', status: 'valid', isValid: true },
     ];
     const policy: PasswordPolicy = { policy: 'excellent', passwordSecurityInfo: rules };
 
@@ -74,7 +74,7 @@ describe('validatePassword', () => {
 
   it('validates password-policy-identical-chars rule', () => {
     const rules: PasswordComplexityRule[] = [
-      { code: 'password-policy-identical-chars', label: 'No triple identical', status: 'valid' }
+      { code: 'password-policy-identical-chars', label: 'No triple identical', status: 'valid', isValid: true }
     ];
     const policy: PasswordPolicy = { policy: 'excellent', passwordSecurityInfo: rules };
 
@@ -88,12 +88,13 @@ describe('validatePassword', () => {
         code: 'password-policy-contains-at-least',
         label: 'At least 3 of',
         status: 'valid',
+        isValid: true,
         args: { count: 3 },
         items: [
-          { code: 'password-policy-lower-case', label: 'lower', status: 'valid' },
-          { code: 'password-policy-upper-case', label: 'upper', status: 'valid' },
-          { code: 'password-policy-numbers', label: 'number', status: 'valid' },
-          { code: 'password-policy-special-characters', label: 'special', status: 'valid' }
+          { code: 'password-policy-lower-case', label: 'lower', status: 'valid', isValid: true },
+          { code: 'password-policy-upper-case', label: 'upper', status: 'valid', isValid: true },
+          { code: 'password-policy-numbers', label: 'number', status: 'valid', isValid: true },
+          { code: 'password-policy-special-characters', label: 'special', status: 'valid', isValid: true },
         ]
       }
     ];
@@ -110,7 +111,7 @@ describe('validatePassword', () => {
 
   it('marks unknown rules as valid', () => {
     const rules: PasswordComplexityRule[] = [
-      { code: 'unknown-rule', label: 'Unknown rule', status: 'valid' }
+      { code: 'unknown-rule', label: 'Unknown rule', status: 'valid', isValid: true }
     ];
     const policy: PasswordPolicy = { policy: 'fair', passwordSecurityInfo: rules };
 
@@ -121,8 +122,8 @@ describe('validatePassword', () => {
 
   it('computes overall isValid as the logical AND of all rules', () => {
     const rules: PasswordComplexityRule[] = [
-      { code: 'password-policy-lower-case', label: 'lower', status: 'valid' },
-      { code: 'password-policy-upper-case', label: 'upper', status: 'valid' }
+      { code: 'password-policy-lower-case', label: 'lower', status: 'valid', isValid: true },
+      { code: 'password-policy-upper-case', label: 'upper', status: 'valid', isValid: true }
     ];
     const policy: PasswordPolicy = { policy: 'excellent', passwordSecurityInfo: rules };
 

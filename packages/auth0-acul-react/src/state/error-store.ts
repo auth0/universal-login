@@ -1,10 +1,10 @@
-export type ErrorItem = {
+import type { Error as Auth0Error } from '@auth0/auth0-acul-js';
+
+export interface ErrorItem extends Auth0Error {
   id: string;
-  code: string;
-  message: string;
-  field?: string;
-  rules?: Array<Record<string, unknown>>;
-};
+  label?: string;
+  kind?: ErrorKind;
+}
 
 export type ErrorKind = 'server' | 'client' | 'developer';
 
@@ -57,7 +57,9 @@ class ErrorStore {
   }
 
   /** Add ids and freeze an array of ErrorItem-like objects. */
-  private normalize(list: Array<Omit<ErrorItem, 'id'> & { id?: string }>): ReadonlyArray<ErrorItem> {
+  private normalize(
+    list: Array<Omit<ErrorItem, 'id'> & { id?: string }>
+  ): ReadonlyArray<ErrorItem> {
     return Object.freeze(
       list.map((e) =>
         Object.freeze({
@@ -76,6 +78,26 @@ class ErrorStore {
     this.bucket = Object.freeze({
       ...this.bucket,
       [kind]: nextList,
+    });
+    this.notify();
+  }
+
+  /**
+   * Replace only errors for a specific field within a kind.
+   * - Keeps all existing errors for other fields.
+   * - Normalizes incoming errors and replaces matching field ones.
+   */
+  replacePartial(kind: ErrorKind, list: Array<Omit<ErrorItem, 'id'> | ErrorItem>, field: string) {
+    const incoming = this.normalize(list);
+
+    const existing = this.bucket[kind].filter((e) => e.field !== field);
+    const nextKindList = Object.freeze([...existing, ...incoming]);
+
+    if (listsEqual(this.bucket[kind], nextKindList)) return;
+
+    this.bucket = Object.freeze({
+      ...this.bucket,
+      [kind]: nextKindList,
     });
     this.notify();
   }
@@ -116,10 +138,7 @@ class ErrorStore {
   /**
    * Remove errors that match a given id or predicate from specified kinds.
    */
-  remove(
-    kinds: ErrorKind[] = ERROR_KINDS,
-    test: string | ((e: ErrorItem) => boolean)
-  ) {
+  remove(kinds: ErrorKind[] = ERROR_KINDS, test: string | ((e: ErrorItem) => boolean)) {
     const isMatch = typeof test === 'string' ? (e: ErrorItem) => e.id === test : test;
 
     let changed = false;

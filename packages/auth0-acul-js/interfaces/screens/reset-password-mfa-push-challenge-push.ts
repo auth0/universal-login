@@ -6,7 +6,8 @@ import type { ScreenMembers } from '../models/screen';
 /**
  * Interface for the screen data specific to reset-password-mfa-push-challenge-push screen
  */
-export interface ScreenMembersOnResetPasswordMfaPushChallengePush extends ScreenMembers {
+export interface ScreenMembersOnResetPasswordMfaPushChallengePush
+  extends ScreenMembers {
   data: {
     deviceName: string;
     rememberDevice?: boolean;
@@ -42,7 +43,6 @@ export interface ResetPasswordMfaPushChallengePushMembers extends BaseMembers {
    * @param payload Optional custom options to include with the request
    */
   tryAnotherMethod(payload?: CustomOptions): Promise<void>;
-
 
   /**
    * Allows polling for the push notification challenge to be approved.

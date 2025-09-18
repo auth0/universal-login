@@ -1,15 +1,20 @@
 import { useMemo } from 'react';
 import SignupId from '@auth0/auth0-acul-js/signup-id';
+import { setScreen, getScreen  } from '../state/instance-store';
 import { ContextHooks } from '../hooks/context-hooks';
+import { useErrors } from '../hooks/common/use-errors';
 
 import type { SignupIdMembers, SignupOptions, FederatedSignupOptions, CustomOptions, ScreenMembersOnSignupId, TransactionMembersOnSignupId } from '@auth0/auth0-acul-js/signup-id';
-let instance: SignupIdMembers | null = null;
-const getInstance = (): SignupIdMembers => {
-  if (!instance) {
-    instance = new SignupId();
+
+function getInstance(): SignupIdMembers {
+  try {
+    return getScreen<SignupIdMembers>();
+  } catch {
+    const inst = new SignupId();
+    setScreen(inst);
+    return inst;
   }
-  return instance;
-};
+}
 
 export const useSignupId = (): SignupIdMembers => useMemo(() => getInstance(), []);
 
@@ -80,8 +85,10 @@ export const pickCountryCode = (payload?: CustomOptions) => getInstance().pickCo
  * }
  * ```
  */
-export const useUsernameValidation = (username: string) => getInstance().validateUsername(username);
 
 export type { ScreenMembersOnSignupId, TransactionMembersOnSignupId, FederatedSignupOptions, SignupOptions, SignupIdMembers } from '@auth0/auth0-acul-js/signup-id';
 
 export type * from '@auth0/auth0-acul-js/signup-id';
+
+export { useUsernameValidation } from '../hooks/utility-hooks/validate-username';
+export { useErrors };

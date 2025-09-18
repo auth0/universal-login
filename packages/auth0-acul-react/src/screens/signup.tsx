@@ -1,18 +1,20 @@
 import { useMemo } from 'react';
 import Signup from '@auth0/auth0-acul-js/signup';
 import { ContextHooks } from '../hooks/context-hooks';
-import { createUseErrors } from '../hooks/common/use-errors';
-import { validateUsername } from '../hooks/utility-hooks/validate-username';
-import { validatePassword  } from '../hooks/utility-hooks/validate-password';
-import type { UsernameValidationResult } from '@auth0/auth0-acul-js/signup';
+import { useErrors } from '../hooks/common/use-errors';
+import { setScreen, getScreen  } from '../state/instance-store';
+import { getEnabledIdentifiers } from '../hooks/utility-hooks/enabled-identifiers';
 import type { SignupMembers, SignupOptions, FederatedSignupOptions, CustomOptions, ScreenMembersOnSignup, TransactionMembersOnSignup } from '@auth0/auth0-acul-js/signup';
-let instance: SignupMembers | null = null;
-const getInstance = (): SignupMembers => {
-  if (!instance) {
-    instance = new Signup();
+
+function getInstance(): SignupMembers {
+  try {
+    return getScreen<SignupMembers>();
+  } catch {
+    const inst = new Signup();
+    setScreen(inst);
+    return inst;
   }
-  return instance;
-};
+}
 
 export const useSignup = (): SignupMembers => useMemo(() => getInstance(), []);
 
@@ -28,9 +30,6 @@ export const {
   useUntrustedData
 } = factory;
 
-// @ts-ignore
-export const {useErrors} = createUseErrors<SignupMembers>(getInstance)
-
 export const useScreen: () => ScreenMembersOnSignup = () => useMemo(() => getInstance().screen, []);
 export const useTransaction: () => TransactionMembersOnSignup = () => useMemo(() => getInstance().transaction, []);
 
@@ -39,29 +38,6 @@ export const signup = (payload: SignupOptions) => getInstance().signup(payload);
 export const federatedSignup = (payload: FederatedSignupOptions) => getInstance().federatedSignup(payload);
 export const pickCountryCode = (payload?: CustomOptions) => getInstance().pickCountryCode(payload);
 
-/**
- * Validates a password string against the current password policy
- * by delegating to the instance's `validatePassword` method.
- *
- * This function returns an array of password rule validation results,
- * where each result contains the rule code, description, and whether
- * the password satisfies that rule.
- *
- * @param {string} password - The password string to validate.
- * @returns {PasswordValidationResult} An array of validation results for each password policy rule.
- *
- * @example
- * ```ts
- * const results = usePasswordValidation('P@ssword123');
- * console.log(results);
- * // [
- * //   { code: 'password-policy-length-at-least', policy: 'At least 12 characters', isValid: false },
- * //   { code: 'password-policy-lower-case', policy: 'Lowercase letters (a-z)', isValid: true },
- * //   ...
- * // ]
- * ```
- */
-export const usePasswordValidation = (password: string) => validatePassword(password, getInstance);
 
 /**
  * Retrieves the list of enabled identifiers for the current transaction instance.
@@ -86,7 +62,7 @@ export const usePasswordValidation = (password: string) => validatePassword(pass
  * // ]
  * ```
  */
-export const useEnabledIdentifiers = () => getInstance().getEnabledIdentifiers();
+export const useEnabledIdentifiers = () => getEnabledIdentifiers(getInstance);
 
 /**
  * Validates a username string against the current transaction's username policy.
@@ -110,8 +86,11 @@ export const useEnabledIdentifiers = () => getInstance().getEnabledIdentifiers()
  * }
  * ```
  */
-export const useUsernameValidation = (username: string): UsernameValidationResult => validateUsername(username, getInstance);
 
 export type { SignupOptions, FederatedSignupOptions, ScreenMembersOnSignup, TransactionMembersOnSignup, SignupMembers } from '@auth0/auth0-acul-js/signup';
 
 export type * from '@auth0/auth0-acul-js/signup';
+
+export { usePasswordValidation } from '../hooks/utility-hooks/validate-password';
+export { useUsernameValidation } from '../hooks/utility-hooks/validate-username';
+export { useErrors };

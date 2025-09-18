@@ -14,10 +14,11 @@ interface ExtendedScreenContext extends ScreenContext {
 
 interface ExtendedUntrustedDataContext extends UntrustedDataContext {
   submitted_form_data?: {
-    /* this object is opt-in */ email?: string;
+    /* this object is opt-in */ 
+    email?: string;
     phone?: string;
     username?: string;
-    'ulp_{someField}'?: string; // Custom Prompts Fields
+    [key: string]: string | undefined; // keys like "ulp_xxx" are allowed
   };
 }
 

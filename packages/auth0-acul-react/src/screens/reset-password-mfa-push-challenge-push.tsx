@@ -1,16 +1,20 @@
 import { useMemo } from 'react';
 import ResetPasswordMfaPushChallengePush from '@auth0/auth0-acul-js/reset-password-mfa-push-challenge-push';
 import { ContextHooks } from '../hooks/context-hooks';
+import { getScreen, setScreen } from '../state/instance-store';
+import { useMfaPollingManager } from '../hooks/utility-hooks/polling-manager';
 
 import type { ResetPasswordMfaPushChallengePushMembers, CustomOptions, ScreenMembersOnResetPasswordMfaPushChallengePush, MfaPushPollingOptions } from '@auth0/auth0-acul-js/reset-password-mfa-push-challenge-push';
 
-let instance: ResetPasswordMfaPushChallengePushMembers | null = null;
-const getInstance = (): ResetPasswordMfaPushChallengePushMembers => {
-  if (!instance) {
-    instance = new ResetPasswordMfaPushChallengePush();
+function getInstance(): ResetPasswordMfaPushChallengePushMembers {
+  try {
+    return getScreen<ResetPasswordMfaPushChallengePushMembers>();
+  } catch {
+    const inst = new ResetPasswordMfaPushChallengePush();
+    setScreen(inst);
+    return inst;
   }
-  return instance;
-};
+}
 
 const factory = new ContextHooks<ResetPasswordMfaPushChallengePushMembers>(getInstance);
 
