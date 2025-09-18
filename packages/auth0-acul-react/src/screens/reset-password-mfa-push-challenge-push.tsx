@@ -4,7 +4,7 @@ import { ContextHooks } from '../hooks/context-hooks';
 import { getScreen, setScreen } from '../state/instance-store';
 import { usePollingControl } from '../hooks/utility-hooks/polling-manager';
 
-import type { ResetPasswordMfaPushChallengePushMembers, CustomOptions, ScreenMembersOnResetPasswordMfaPushChallengePush, MfaPushPollingOptions } from '@auth0/auth0-acul-js/reset-password-mfa-push-challenge-push';
+import type { ResetPasswordMfaPushChallengePushMembers, CustomOptions, ScreenMembersOnResetPasswordMfaPushChallengePush } from '@auth0/auth0-acul-js/reset-password-mfa-push-challenge-push';
 
 function getInstance(): ResetPasswordMfaPushChallengePushMembers {
   try {
@@ -36,11 +36,8 @@ export const continueMethod = (payload?: CustomOptions) => getInstance().continu
 export const resendPushNotification = (payload?: CustomOptions) => getInstance().resendPushNotification(payload);
 export const enterCodeManually = (payload?: CustomOptions) => getInstance().enterCodeManually(payload);
 export const tryAnotherMethod = (payload?: CustomOptions) => getInstance().tryAnotherMethod(payload);
-export const useResetPollingManager = (options: MfaPushPollingOptions) => {
-  const instance = useMemo(() => getInstance(), []);
-  
-  return usePollingControl(instance.pollingManager.bind(instance), options);
-};
+export const useResetPollingManager = { usePollingControl };
+
 export type { ScreenMembersOnResetPasswordMfaPushChallengePush, ResetPasswordMfaPushChallengePushMembers } from '@auth0/auth0-acul-js/reset-password-mfa-push-challenge-push';
 
 export type * from '@auth0/auth0-acul-js/reset-password-mfa-push-challenge-push';
