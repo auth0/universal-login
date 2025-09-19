@@ -1,15 +1,19 @@
 import { useMemo } from 'react';
 import LoginEmailVerification from '@auth0/auth0-acul-js/login-email-verification';
 import { ContextHooks } from '../hooks/context-hooks';
+import { useResend } from '../hooks/utility-hooks/resend-manager';
+import { setScreen, getScreen } from '../state/instance-store';
 
 import type { LoginEmailVerificationMembers, ContinueWithCodeOptions, ResendCodeOptions } from '@auth0/auth0-acul-js/login-email-verification';
-let instance: LoginEmailVerificationMembers | null = null;
-const getInstance = (): LoginEmailVerificationMembers => {
-  if (!instance) {
-    instance = new LoginEmailVerification();
+function getInstance(): LoginEmailVerification {
+  try {
+    return getScreen<LoginEmailVerification>();
+  } catch {
+    const inst = new LoginEmailVerification();
+    setScreen(inst);
+    return inst;
   }
-  return instance;
-};
+}
 
 export const useLoginEmailVerification = (): LoginEmailVerificationMembers => useMemo(() => getInstance(), []);
 
@@ -31,6 +35,9 @@ export const useTransaction = () => useMemo(() => getInstance().transaction, [])
 // Screen methods
 export const continueWithCode = (payload: ContinueWithCodeOptions) => getInstance().continueWithCode(payload);
 export const resendCode = (payload?: ResendCodeOptions) => getInstance().resendCode(payload);
+
+// Resend hook
+export { useResend };
 
 export type { ResendCodeOptions, LoginEmailVerificationMembers } from '@auth0/auth0-acul-js/login-email-verification';
 

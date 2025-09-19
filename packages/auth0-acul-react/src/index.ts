@@ -35,6 +35,7 @@ export { useMfaPolling } from './screens/mfa-push-challenge-push';
 export { useMfaOtpChallenge } from './screens/mfa-otp-challenge';
 export { useMfaOtpEnrollmentQr } from './screens/mfa-otp-enrollment-qr';
 export { useMfaOtpEnrollmentCode } from './screens/mfa-otp-enrollment-code';
+export { useResend } from './screens/mfa-email-challenge';
 // export { usePushPollingManager } from './screens/reset-password-mfa-push-challenge-push';
 export { useResetPasswordMfaEmailChallenge } from './screens/reset-password-mfa-email-challenge';
 export { useResetPasswordMfaSmsChallenge } from './screens/reset-password-mfa-sms-challenge';

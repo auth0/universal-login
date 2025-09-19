@@ -1,15 +1,20 @@
 import { useMemo } from 'react';
 import MfaVoiceChallenge from '@auth0/auth0-acul-js/mfa-voice-challenge';
 import { ContextHooks } from '../hooks/context-hooks';
+import { useResend } from '../hooks/utility-hooks/resend-manager';
+import { setScreen, getScreen } from '../state/instance-store';
 
 import type { MfaVoiceChallengeMembers, MfaVoiceChallengeContinueOptions, CustomOptions, ScreenMembersOnMfaVoiceChallenge } from '@auth0/auth0-acul-js/mfa-voice-challenge';
-let instance: MfaVoiceChallengeMembers | null = null;
-const getInstance = (): MfaVoiceChallengeMembers => {
-  if (!instance) {
-    instance = new MfaVoiceChallenge();
+function getInstance(): MfaVoiceChallenge {
+  try {
+    return getScreen<MfaVoiceChallenge>();
+  } catch {
+    const inst = new MfaVoiceChallenge();
+    setScreen(inst);
+    return inst;
   }
-  return instance;
-};
+}
+
 
 export const useMfaVoiceChallenge = (): MfaVoiceChallengeMembers => useMemo(() => getInstance(), []);
 
@@ -34,6 +39,9 @@ export const pickPhone = (payload?: CustomOptions) => getInstance().pickPhone(pa
 export const switchToSms = (payload?: CustomOptions) => getInstance().switchToSms(payload);
 export const resendCode = (payload?: CustomOptions) => getInstance().resendCode(payload);
 export const tryAnotherMethod = (payload?: CustomOptions) => getInstance().tryAnotherMethod(payload);
+
+// Resend hook
+export { useResend };
 
 export type { MfaVoiceChallengeContinueOptions, ScreenMembersOnMfaVoiceChallenge, MfaVoiceChallengeMembers, UntrustedDataMembersOnMfaVoiceChallenge } from '@auth0/auth0-acul-js/mfa-voice-challenge';
 

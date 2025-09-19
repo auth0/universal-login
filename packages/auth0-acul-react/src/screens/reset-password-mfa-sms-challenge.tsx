@@ -1,15 +1,19 @@
 import { useMemo } from 'react';
 import ResetPasswordMfaSmsChallenge from '@auth0/auth0-acul-js/reset-password-mfa-sms-challenge';
 import { ContextHooks } from '../hooks/context-hooks';
+import { useResend } from '../hooks/utility-hooks/resend-manager';
+import { setScreen, getScreen } from '../state/instance-store';
 
 import type { ResetPasswordMfaSmsChallengeMembers, MfaSmsChallengeOptions, CustomOptions, ScreenMembersOnResetPasswordMfaSmsChallenge } from '@auth0/auth0-acul-js/reset-password-mfa-sms-challenge';
-let instance: ResetPasswordMfaSmsChallengeMembers | null = null;
-const getInstance = (): ResetPasswordMfaSmsChallengeMembers => {
-  if (!instance) {
-    instance = new ResetPasswordMfaSmsChallenge();
+function getInstance(): ResetPasswordMfaSmsChallenge {
+  try {
+    return getScreen<ResetPasswordMfaSmsChallenge>();
+  } catch {
+    const inst = new ResetPasswordMfaSmsChallenge();
+    setScreen(inst);
+    return inst;
   }
-  return instance;
-};
+}
 
 export const useResetPasswordMfaSmsChallenge = (): ResetPasswordMfaSmsChallengeMembers => useMemo(() => getInstance(), []);
 
@@ -33,6 +37,9 @@ export const continueMfaSmsChallenge = (payload: MfaSmsChallengeOptions) => getI
 export const resendCode = (payload?: CustomOptions) => getInstance().resendCode(payload);
 export const tryAnotherMethod = (payload?: CustomOptions) => getInstance().tryAnotherMethod(payload);
 export const getACall = (payload?: CustomOptions) => getInstance().getACall(payload);
+
+// Resend hook
+export { useResend };
 
 export type { MfaSmsChallengeOptions, ScreenMembersOnResetPasswordMfaSmsChallenge, ResetPasswordMfaSmsChallengeMembers } from '@auth0/auth0-acul-js/reset-password-mfa-sms-challenge';
 
