@@ -159,6 +159,8 @@ export default class MfaPushChallengePush
    * - `startPolling()` — Starts or resumes polling.
    * - `stopPolling()` — Cancels polling immediately.
    * - `isRunning()` — Indicates whether polling is currently active.
+   * 
+   * @category Utility
    *
    * @example
    * ```ts
@@ -188,6 +190,7 @@ export {
   WithRememberOptions,
   ScreenOptions as ScreenMembersOnMfaPushChallengePush,
   UntrustedDataOptions as UntrustedDataMembersOnMfaPushChallengePush,
+  MfaPollingOptions,
   MfaPushPollingControl,
 };
 export * from "../../../interfaces/export/common";

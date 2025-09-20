@@ -1,18 +1,23 @@
 import { useMemo } from 'react';
 import MfaDetectBrowserCapabilities from '@auth0/auth0-acul-js/mfa-detect-browser-capabilities';
-import { ContextHooks } from '../hooks/context-hooks';
-
+import { ContextHooks } from '../hooks/context';
 import type { MfaDetectBrowserCapabilitiesMembers, CustomOptions } from '@auth0/auth0-acul-js/mfa-detect-browser-capabilities';
-let instance: MfaDetectBrowserCapabilitiesMembers | null = null;
-const getInstance = (): MfaDetectBrowserCapabilitiesMembers => {
-  if (!instance) {
-    instance = new MfaDetectBrowserCapabilities();
+import { useErrors, useAuth0Themes } from '../hooks/common';
+import { errorManager } from '../hooks/common/errors';
+
+import { setScreen, getScreen } from '../state/instance-store';
+
+function getInstance(): MfaDetectBrowserCapabilitiesMembers {
+  try {
+    return getScreen<MfaDetectBrowserCapabilitiesMembers>();
+  } catch {
+    const instance = new MfaDetectBrowserCapabilities();
+    setScreen(instance);
+    return instance;
   }
-  return instance;
 };
 
-export const useMfaDetectBrowserCapabilities = (): MfaDetectBrowserCapabilitiesMembers => useMemo(() => getInstance(), []);
-
+const { withError } = errorManager;
 const factory = new ContextHooks<MfaDetectBrowserCapabilitiesMembers>(getInstance);
 
 export const {
@@ -25,12 +30,18 @@ export const {
   useUntrustedData
 } = factory;
 
+// Context hooks
 export const useScreen = () => useMemo(() => getInstance().screen, []);
 export const useTransaction = () => useMemo(() => getInstance().transaction, []);
 
-// Screen methods
-export const detectCapabilities = (payload: CustomOptions) => getInstance().detectCapabilities(payload);
+// Submit functions
+export const detectCapabilities = (payload: CustomOptions) => withError(getInstance().detectCapabilities(payload));
 
-export type { MfaDetectBrowserCapabilitiesMembers } from '@auth0/auth0-acul-js/mfa-detect-browser-capabilities';
+// Common hooks
+export { useErrors, useAuth0Themes };
 
+// Main instance hook. Returns singleton instance of MfaDetectBrowserCapabilities
+export const useMfaDetectBrowserCapabilities = (): MfaDetectBrowserCapabilitiesMembers => useMemo(() => getInstance(), []);
+
+// Export all types from the core SDK for this screen
 export type * from '@auth0/auth0-acul-js/mfa-detect-browser-capabilities';

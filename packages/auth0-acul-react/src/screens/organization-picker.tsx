@@ -1,18 +1,23 @@
 import { useMemo } from 'react';
 import OrganizationPicker from '@auth0/auth0-acul-js/organization-picker';
-import { ContextHooks } from '../hooks/context-hooks';
-
+import { ContextHooks } from '../hooks/context';
 import type { OrganizationPickerMembers, CustomOptions } from '@auth0/auth0-acul-js/organization-picker';
-let instance: OrganizationPickerMembers | null = null;
-const getInstance = (): OrganizationPickerMembers => {
-  if (!instance) {
-    instance = new OrganizationPicker();
+import { useErrors, useAuth0Themes } from '../hooks/common';
+import { errorManager } from '../hooks/common/errors';
+
+import { setScreen, getScreen } from '../state/instance-store';
+
+function getInstance(): OrganizationPickerMembers {
+  try {
+    return getScreen<OrganizationPickerMembers>();
+  } catch {
+    const instance = new OrganizationPicker();
+    setScreen(instance);
+    return instance;
   }
-  return instance;
 };
 
-export const useOrganizationPicker = (): OrganizationPickerMembers => useMemo(() => getInstance(), []);
-
+const { withError } = errorManager;
 const factory = new ContextHooks<OrganizationPickerMembers>(getInstance);
 
 export const {
@@ -25,13 +30,19 @@ export const {
   useUntrustedData
 } = factory;
 
+// Context hooks
 export const useScreen = () => useMemo(() => getInstance().screen, []);
 export const useTransaction = () => useMemo(() => getInstance().transaction, []);
 
-// Screen methods
-export const selectOrganization = (payload: { organization: string; state: string }) => getInstance().selectOrganization(payload);
-export const skipOrganizationSelection = (payload?: CustomOptions) => getInstance().skipOrganizationSelection(payload);
+// Submit functions
+export const selectOrganization = (payload: { organization: string; state: string }) => withError(getInstance().selectOrganization(payload));
+export const skipOrganizationSelection = (payload?: CustomOptions) => withError(getInstance().skipOrganizationSelection(payload));
 
-export type { SelectOrganizationOptions, OrganizationPickerMembers } from '@auth0/auth0-acul-js/organization-picker';
+// Common hooks
+export { useErrors, useAuth0Themes };
 
+// Main instance hook. Returns singleton instance of OrganizationPicker
+export const useOrganizationPicker = (): OrganizationPickerMembers => useMemo(() => getInstance(), []);
+
+// Export all types from the core SDK for this screen
 export type * from '@auth0/auth0-acul-js/organization-picker';

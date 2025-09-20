@@ -1,18 +1,20 @@
 import { useMemo } from 'react';
 import DeviceCodeActivationDenied from '@auth0/auth0-acul-js/device-code-activation-denied';
-import { ContextHooks } from '../hooks/context-hooks';
-
+import { ContextHooks } from '../hooks/context';
 import type { DeviceCodeActivationDeniedMembers } from '@auth0/auth0-acul-js/device-code-activation-denied';
-let instance: DeviceCodeActivationDeniedMembers | null = null;
-const getInstance = (): DeviceCodeActivationDeniedMembers => {
-  if (!instance) {
-    instance = new DeviceCodeActivationDenied();
+import { useErrors, useAuth0Themes } from '../hooks/common';
+
+import { setScreen, getScreen } from '../state/instance-store';
+
+function getInstance(): DeviceCodeActivationDeniedMembers {
+  try {
+    return getScreen<DeviceCodeActivationDeniedMembers>();
+  } catch {
+    const instance = new DeviceCodeActivationDenied();
+    setScreen(instance);
+    return instance;
   }
-  return instance;
 };
-
-export const useDeviceCodeActivationDenied = (): DeviceCodeActivationDeniedMembers => useMemo(() => getInstance(), []);
-
 const factory = new ContextHooks<DeviceCodeActivationDeniedMembers>(getInstance);
 
 export const {
@@ -25,9 +27,15 @@ export const {
   useUntrustedData
 } = factory;
 
+// Context hooks
 export const useScreen = () => useMemo(() => getInstance().screen, []);
 export const useTransaction = () => useMemo(() => getInstance().transaction, []);
 
-export type { DeviceCodeActivationDeniedMembers } from '@auth0/auth0-acul-js/device-code-activation-denied';
+// Common hooks
+export { useErrors, useAuth0Themes };
 
+// Main instance hook. Returns singleton instance of DeviceCodeActivationDenied
+export const useDeviceCodeActivationDenied = (): DeviceCodeActivationDeniedMembers => useMemo(() => getInstance(), []);
+
+// Export all types from the core SDK for this screen
 export type * from '@auth0/auth0-acul-js/device-code-activation-denied';

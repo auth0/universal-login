@@ -79,6 +79,7 @@ export default class Login extends BaseContext implements LoginMembers {
    * const loginManager = new Login();
    * loginManager.getActiveIdentifiers();
    * ```
+   * @category Utility
    */
   getActiveIdentifiers(): string[] | null {
     return this.transaction.allowedIdentifiers || null;

@@ -93,6 +93,7 @@ export interface LoginMembers extends BaseMembers {
   /**
    * Gets the active identifier types for the login screen
    * @returns An array of active identifier types or null if none are active
+   * @category Utility
    */
   getActiveIdentifiers(): string[] | null;
 }

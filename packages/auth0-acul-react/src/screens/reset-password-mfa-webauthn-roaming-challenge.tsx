@@ -1,18 +1,23 @@
 import { useMemo } from 'react';
 import ResetPasswordMfaWebAuthnRoamingChallenge from '@auth0/auth0-acul-js/reset-password-mfa-webauthn-roaming-challenge';
-import { ContextHooks } from '../hooks/context-hooks';
-
+import { ContextHooks } from '../hooks/context';
 import type { ResetPasswordMfaWebAuthnRoamingChallengeMembers, UseSecurityKeyOptions, ShowErrorOptions, TryAnotherMethodOptions, ScreenMembersOnResetPasswordMfaWebAuthnRoamingChallenge } from '@auth0/auth0-acul-js/reset-password-mfa-webauthn-roaming-challenge';
-let instance: ResetPasswordMfaWebAuthnRoamingChallengeMembers | null = null;
-const getInstance = (): ResetPasswordMfaWebAuthnRoamingChallengeMembers => {
-  if (!instance) {
-    instance = new ResetPasswordMfaWebAuthnRoamingChallenge();
+import { useErrors, useAuth0Themes } from '../hooks/common';
+import { errorManager } from '../hooks/common/errors';
+
+import { setScreen, getScreen } from '../state/instance-store';
+
+function getInstance(): ResetPasswordMfaWebAuthnRoamingChallengeMembers {
+  try {
+    return getScreen<ResetPasswordMfaWebAuthnRoamingChallengeMembers>();
+  } catch {
+    const instance = new ResetPasswordMfaWebAuthnRoamingChallenge();
+    setScreen(instance);
+    return instance;
   }
-  return instance;
 };
 
-export const useResetPasswordMfaWebAuthnRoamingChallenge = (): ResetPasswordMfaWebAuthnRoamingChallengeMembers => useMemo(() => getInstance(), []);
-
+const { withError } = errorManager;
 const factory = new ContextHooks<ResetPasswordMfaWebAuthnRoamingChallengeMembers>(getInstance);
 
 export const {
@@ -25,14 +30,20 @@ export const {
   useUntrustedData
 } = factory;
 
+// Context hooks
 export const useScreen: () => ScreenMembersOnResetPasswordMfaWebAuthnRoamingChallenge = () => useMemo(() => getInstance().screen, []);
 export const useTransaction = () => useMemo(() => getInstance().transaction, []);
 
-// Screen methods
-export const useSecurityKey = (options?: UseSecurityKeyOptions) => getInstance().useSecurityKey(options);
-export const showError = (options: ShowErrorOptions) => getInstance().showError(options);
-export const tryAnotherMethod = (options?: TryAnotherMethodOptions) => getInstance().tryAnotherMethod(options);
+// Submit functions
+export const useSecurityKey = (options?: UseSecurityKeyOptions) => withError(getInstance().useSecurityKey(options));
+export const showError = (options: ShowErrorOptions) => withError(getInstance().showError(options));
+export const tryAnotherMethod = (options?: TryAnotherMethodOptions) => withError(getInstance().tryAnotherMethod(options));
 
-export type { ScreenMembersOnResetPasswordMfaWebAuthnRoamingChallenge, ShowErrorOptions, TryAnotherMethodOptions, ResetPasswordMfaWebAuthnRoamingChallengeMembers } from '@auth0/auth0-acul-js/reset-password-mfa-webauthn-roaming-challenge';
+// Common hooks
+export { useErrors, useAuth0Themes };
 
+// Main instance hook. Returns singleton instance of ResetPasswordMfaWebAuthnRoamingChallenge
+export const useResetPasswordMfaWebAuthnRoamingChallenge = (): ResetPasswordMfaWebAuthnRoamingChallengeMembers => useMemo(() => getInstance(), []);
+
+// Export all types from the core SDK for this screen
 export type * from '@auth0/auth0-acul-js/reset-password-mfa-webauthn-roaming-challenge';

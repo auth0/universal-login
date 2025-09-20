@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc",
     "test": "jest",
-    "generate:sdk": "tsx ./scripts/generate-sdk.ts",
+    "generate:sdk": "tsx ./scripts/generate-sdk/index.ts",
     "generate:examples": "tsx ./scripts/generate-examples.ts",
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
@@ -371,6 +371,7 @@
     "@testing-library/jest-dom": "^6.0.0",
     "@testing-library/react": "^14.0.0",
     "@types/react": "^18.3.24",
+    "chalk": "^5.6.2",
     "eslint-plugin-react": "^7.37.5"
   },
   "dependencies": {

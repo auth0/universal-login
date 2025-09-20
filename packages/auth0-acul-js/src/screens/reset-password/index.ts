@@ -47,11 +47,16 @@ export default class ResetPassword extends BaseContext implements ResetPasswordM
     await new FormHandler(options).submitData(payload);
   }
 
+  /**
+   * @param password 
+   * @returns An object of type {@link PasswordValidationResult} indicating whether the password is valid and why.
+   * @category Utility
+   */
   validatePassword(password: string): PasswordValidationResult {
     const passwordPolicy = this.transaction?.passwordPolicy;
     return _validatePassword(password, passwordPolicy);
   }
 }
-export { ResetPasswordMembers, ResetPasswordOptions, ScreenOptions as ScreenMembersOnResetPassword };
+export { ResetPasswordMembers, ResetPasswordOptions, ScreenOptions as ScreenMembersOnResetPassword, TransactionOverride as TransactionMembersOnResetPassword };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';

@@ -1,23 +1,23 @@
 import { useMemo } from 'react';
 import Signup from '@auth0/auth0-acul-js/signup';
-import { ContextHooks } from '../hooks/context-hooks';
-import { useErrors } from '../hooks/common/use-errors';
-import { setScreen, getScreen  } from '../state/instance-store';
-import { getEnabledIdentifiers } from '../hooks/utility-hooks/enabled-identifiers';
+import { ContextHooks } from '../hooks/context';
 import type { SignupMembers, SignupOptions, FederatedSignupOptions, CustomOptions, ScreenMembersOnSignup, TransactionMembersOnSignup } from '@auth0/auth0-acul-js/signup';
+import { useErrors, useAuth0Themes } from '../hooks/common';
+import { errorManager } from '../hooks/common/errors';
+
+import { setScreen, getScreen } from '../state/instance-store';
 
 function getInstance(): SignupMembers {
   try {
     return getScreen<SignupMembers>();
   } catch {
-    const inst = new Signup();
-    setScreen(inst);
-    return inst;
+    const instance = new Signup();
+    setScreen(instance);
+    return instance;
   }
-}
+};
 
-export const useSignup = (): SignupMembers => useMemo(() => getInstance(), []);
-
+const { withError } = errorManager;
 const factory = new ContextHooks<SignupMembers>(getInstance);
 
 export const {
@@ -30,67 +30,29 @@ export const {
   useUntrustedData
 } = factory;
 
+// Context hooks
 export const useScreen: () => ScreenMembersOnSignup = () => useMemo(() => getInstance().screen, []);
 export const useTransaction: () => TransactionMembersOnSignup = () => useMemo(() => getInstance().transaction, []);
 
-// Screen methods
-export const signup = (payload: SignupOptions) => getInstance().signup(payload);
-export const federatedSignup = (payload: FederatedSignupOptions) => getInstance().federatedSignup(payload);
-export const pickCountryCode = (payload?: CustomOptions) => getInstance().pickCountryCode(payload);
+// Submit functions
+export const signup = (payload: SignupOptions) => withError(getInstance().signup(payload));
+export const federatedSignup = (payload: FederatedSignupOptions) => withError(getInstance().federatedSignup(payload));
+export const pickCountryCode = (payload?: CustomOptions) => withError(getInstance().pickCountryCode(payload));
 
+// Utility Hooks
+export { usePasswordValidation } from '../hooks/utility/validate-password';
 
-/**
- * Retrieves the list of enabled identifiers for the current transaction instance.
- *
- * This function returns an array of `Identifier` objects representing the enabled identifiers 
- * (such as email, phone, username) along with their `required` status, based on the transaction's
- * required and optional identifiers and connection strategy.
- *
- * It internally delegates to the instance's `getEnabledIdentifiers` method, which uses the
- * current transaction data.
- *
- * @returns {Identifier[] | null} An array of enabled identifiers with their required flags,
- * or `null` if no identifiers are available.
- *
- * @example
- * ```ts
- * const enabledIdentifiers = useEnabledIdentifiers();
- * console.log(enabledIdentifiers);
- * // [
- * //   { type: 'email', required: true },
- * //   { type: 'username', required: false }
- * // ]
- * ```
- */
-export const useEnabledIdentifiers = () => getEnabledIdentifiers(getInstance);
+// Utility Hooks
+export { useEnabledIdentifiers } from '../hooks/utility/enabled-identifiers';
 
-/**
- * Validates a username string against the current transaction's username policy.
- *
- * This function delegates the validation to the instance's `validateUsername` method,
- * which checks the username for compliance with rules such as:
- * - Minimum and maximum length
- * - Allowed username formats (email or phone number formats)
- * - Presence if no policy is defined
- *
- * @param {string} username - The username string to validate.
- * @returns {UsernameValidationResult} The validation result containing:
- *  - `isValid`: boolean indicating if the username passed all checks.
- *  - `errors`: an array of validation errors, if any.
- *
- * @example
- * ```ts
- * const result = useUsernameValidation('john.doe@example.com');
- * if (!result.isValid) {
- *   console.log(result.errors);
- * }
- * ```
- */
+// Utility Hooks
+export { useUsernameValidation } from '../hooks/utility/validate-username';
 
-export type { SignupOptions, FederatedSignupOptions, ScreenMembersOnSignup, TransactionMembersOnSignup, SignupMembers } from '@auth0/auth0-acul-js/signup';
+// Common hooks
+export { useErrors, useAuth0Themes };
 
+// Main instance hook. Returns singleton instance of Signup
+export const useSignup = (): SignupMembers => useMemo(() => getInstance(), []);
+
+// Export all types from the core SDK for this screen
 export type * from '@auth0/auth0-acul-js/signup';
-
-export { usePasswordValidation } from '../hooks/utility-hooks/validate-password';
-export { useUsernameValidation } from '../hooks/utility-hooks/validate-username';
-export { useErrors };

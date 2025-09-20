@@ -1,18 +1,23 @@
 import { useMemo } from 'react';
 import MfaOtpChallenge from '@auth0/auth0-acul-js/mfa-otp-challenge';
-import { ContextHooks } from '../hooks/context-hooks';
-
+import { ContextHooks } from '../hooks/context';
 import type { MfaOtpChallengeMembers, ContinueOptions, TryAnotherMethodOptions, ScreenMembersOnMfaOtpChallenge } from '@auth0/auth0-acul-js/mfa-otp-challenge';
-let instance: MfaOtpChallengeMembers | null = null;
-const getInstance = (): MfaOtpChallengeMembers => {
-  if (!instance) {
-    instance = new MfaOtpChallenge();
+import { useErrors, useAuth0Themes } from '../hooks/common';
+import { errorManager } from '../hooks/common/errors';
+
+import { setScreen, getScreen } from '../state/instance-store';
+
+function getInstance(): MfaOtpChallengeMembers {
+  try {
+    return getScreen<MfaOtpChallengeMembers>();
+  } catch {
+    const instance = new MfaOtpChallenge();
+    setScreen(instance);
+    return instance;
   }
-  return instance;
 };
 
-export const useMfaOtpChallenge = (): MfaOtpChallengeMembers => useMemo(() => getInstance(), []);
-
+const { withError } = errorManager;
 const factory = new ContextHooks<MfaOtpChallengeMembers>(getInstance);
 
 export const {
@@ -25,13 +30,19 @@ export const {
   useUntrustedData
 } = factory;
 
+// Context hooks
 export const useScreen: () => ScreenMembersOnMfaOtpChallenge = () => useMemo(() => getInstance().screen, []);
 export const useTransaction = () => useMemo(() => getInstance().transaction, []);
 
-// Screen methods
-export const continueMethod = (payload: ContinueOptions) => getInstance().continue(payload);
-export const tryAnotherMethod = (payload?: TryAnotherMethodOptions) => getInstance().tryAnotherMethod(payload);
+// Submit functions
+export const continueMethod = (payload: ContinueOptions) => withError(getInstance().continue(payload));
+export const tryAnotherMethod = (payload?: TryAnotherMethodOptions) => withError(getInstance().tryAnotherMethod(payload));
 
-export type { ScreenMembersOnMfaOtpChallenge, UntrustedDataMembersOnMfaOtpChallenge, ContinueOptions, TryAnotherMethodOptions, MfaOtpChallengeMembers } from '@auth0/auth0-acul-js/mfa-otp-challenge';
+// Common hooks
+export { useErrors, useAuth0Themes };
 
+// Main instance hook. Returns singleton instance of MfaOtpChallenge
+export const useMfaOtpChallenge = (): MfaOtpChallengeMembers => useMemo(() => getInstance(), []);
+
+// Export all types from the core SDK for this screen
 export type * from '@auth0/auth0-acul-js/mfa-otp-challenge';

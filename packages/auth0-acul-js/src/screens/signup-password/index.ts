@@ -116,6 +116,7 @@ export default class SignupPassword extends BaseContext implements SignupPasswor
   *
   * @param {string} password - The password string to validate.
   * @returns {PasswordValidationResult}
+  * @category Utility
   *
   * @example
   * ```ts

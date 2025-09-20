@@ -1,18 +1,23 @@
 import { useMemo } from 'react';
 import LoginPassword from '@auth0/auth0-acul-js/login-password';
-import { ContextHooks } from '../hooks/context-hooks';
-
+import { ContextHooks } from '../hooks/context';
 import type { LoginPasswordMembers, LoginPasswordOptions, FederatedLoginOptions, ScreenMembersOnLoginPassword, TransactionMembersOnLoginPassword } from '@auth0/auth0-acul-js/login-password';
-let instance: LoginPasswordMembers | null = null;
-const getInstance = (): LoginPasswordMembers => {
-  if (!instance) {
-    instance = new LoginPassword();
+import { useErrors, useAuth0Themes } from '../hooks/common';
+import { errorManager } from '../hooks/common/errors';
+
+import { setScreen, getScreen } from '../state/instance-store';
+
+function getInstance(): LoginPasswordMembers {
+  try {
+    return getScreen<LoginPasswordMembers>();
+  } catch {
+    const instance = new LoginPassword();
+    setScreen(instance);
+    return instance;
   }
-  return instance;
 };
 
-export const useLoginPassword = (): LoginPasswordMembers => useMemo(() => getInstance(), []);
-
+const { withError } = errorManager;
 const factory = new ContextHooks<LoginPasswordMembers>(getInstance);
 
 export const {
@@ -25,13 +30,19 @@ export const {
   useUntrustedData
 } = factory;
 
+// Context hooks
 export const useScreen: () => ScreenMembersOnLoginPassword = () => useMemo(() => getInstance().screen, []);
 export const useTransaction: () => TransactionMembersOnLoginPassword = () => useMemo(() => getInstance().transaction, []);
 
-// Screen methods
-export const login = (payload: LoginPasswordOptions) => getInstance().login(payload);
-export const federatedLogin = (payload: FederatedLoginOptions) => getInstance().federatedLogin(payload);
+// Submit functions
+export const login = (payload: LoginPasswordOptions) => withError(getInstance().login(payload));
+export const federatedLogin = (payload: FederatedLoginOptions) => withError(getInstance().federatedLogin(payload));
 
-export type { ScreenMembersOnLoginPassword, TransactionMembersOnLoginPassword, LoginPasswordOptions, FederatedLoginOptions, LoginPasswordMembers } from '@auth0/auth0-acul-js/login-password';
+// Common hooks
+export { useErrors, useAuth0Themes };
 
+// Main instance hook. Returns singleton instance of LoginPassword
+export const useLoginPassword = (): LoginPasswordMembers => useMemo(() => getInstance(), []);
+
+// Export all types from the core SDK for this screen
 export type * from '@auth0/auth0-acul-js/login-password';

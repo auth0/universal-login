@@ -1,18 +1,23 @@
 import { useMemo } from 'react';
 import MfaPhoneChallenge from '@auth0/auth0-acul-js/mfa-phone-challenge';
-import { ContextHooks } from '../hooks/context-hooks';
-
+import { ContextHooks } from '../hooks/context';
 import type { MfaPhoneChallengeMembers, ContinueOptions, PickPhoneOptions, PickAuthenticatorOptions, ScreenMembersOnMfaPhoneChallenge } from '@auth0/auth0-acul-js/mfa-phone-challenge';
-let instance: MfaPhoneChallengeMembers | null = null;
-const getInstance = (): MfaPhoneChallengeMembers => {
-  if (!instance) {
-    instance = new MfaPhoneChallenge();
+import { useErrors, useAuth0Themes } from '../hooks/common';
+import { errorManager } from '../hooks/common/errors';
+
+import { setScreen, getScreen } from '../state/instance-store';
+
+function getInstance(): MfaPhoneChallengeMembers {
+  try {
+    return getScreen<MfaPhoneChallengeMembers>();
+  } catch {
+    const instance = new MfaPhoneChallenge();
+    setScreen(instance);
+    return instance;
   }
-  return instance;
 };
 
-export const useMfaPhoneChallenge = (): MfaPhoneChallengeMembers => useMemo(() => getInstance(), []);
-
+const { withError } = errorManager;
 const factory = new ContextHooks<MfaPhoneChallengeMembers>(getInstance);
 
 export const {
@@ -25,14 +30,20 @@ export const {
   useUntrustedData
 } = factory;
 
+// Context hooks
 export const useScreen: () => ScreenMembersOnMfaPhoneChallenge = () => useMemo(() => getInstance().screen, []);
 export const useTransaction = () => useMemo(() => getInstance().transaction, []);
 
-// Screen methods
-export const continueMethod = (payload: ContinueOptions) => getInstance().continue(payload);
-export const pickPhone = (payload?: PickPhoneOptions) => getInstance().pickPhone(payload);
-export const tryAnotherMethod = (payload?: PickAuthenticatorOptions) => getInstance().tryAnotherMethod(payload);
+// Submit functions
+export const continueMethod = (payload: ContinueOptions) => withError(getInstance().continue(payload));
+export const pickPhone = (payload?: PickPhoneOptions) => withError(getInstance().pickPhone(payload));
+export const tryAnotherMethod = (payload?: PickAuthenticatorOptions) => withError(getInstance().tryAnotherMethod(payload));
 
-export type { ScreenMembersOnMfaPhoneChallenge, ContinueOptions, MfaPhoneChallengeMembers } from '@auth0/auth0-acul-js/mfa-phone-challenge';
+// Common hooks
+export { useErrors, useAuth0Themes };
 
+// Main instance hook. Returns singleton instance of MfaPhoneChallenge
+export const useMfaPhoneChallenge = (): MfaPhoneChallengeMembers => useMemo(() => getInstance(), []);
+
+// Export all types from the core SDK for this screen
 export type * from '@auth0/auth0-acul-js/mfa-phone-challenge';

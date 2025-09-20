@@ -1,18 +1,23 @@
 import { useMemo } from 'react';
 import LoginEmailVerification from '@auth0/auth0-acul-js/login-email-verification';
-import { ContextHooks } from '../hooks/context-hooks';
+import { ContextHooks } from '../hooks/context';
+import type { LoginEmailVerificationMembers, ContinueWithCodeOptions, ResendCodeOptions, StartResendOptions } from '@auth0/auth0-acul-js/login-email-verification';
+import { useErrors, useAuth0Themes } from '../hooks/common';
+import { errorManager } from '../hooks/common/errors';
 
-import type { LoginEmailVerificationMembers, ContinueWithCodeOptions, ResendCodeOptions } from '@auth0/auth0-acul-js/login-email-verification';
-let instance: LoginEmailVerificationMembers | null = null;
-const getInstance = (): LoginEmailVerificationMembers => {
-  if (!instance) {
-    instance = new LoginEmailVerification();
+import { setScreen, getScreen } from '../state/instance-store';
+
+function getInstance(): LoginEmailVerificationMembers {
+  try {
+    return getScreen<LoginEmailVerificationMembers>();
+  } catch {
+    const instance = new LoginEmailVerification();
+    setScreen(instance);
+    return instance;
   }
-  return instance;
 };
 
-export const useLoginEmailVerification = (): LoginEmailVerificationMembers => useMemo(() => getInstance(), []);
-
+const { withError } = errorManager;
 const factory = new ContextHooks<LoginEmailVerificationMembers>(getInstance);
 
 export const {
@@ -25,13 +30,22 @@ export const {
   useUntrustedData
 } = factory;
 
+// Context hooks
 export const useScreen = () => useMemo(() => getInstance().screen, []);
 export const useTransaction = () => useMemo(() => getInstance().transaction, []);
 
-// Screen methods
-export const continueWithCode = (payload: ContinueWithCodeOptions) => getInstance().continueWithCode(payload);
-export const resendCode = (payload?: ResendCodeOptions) => getInstance().resendCode(payload);
+// Submit functions
+export const continueWithCode = (payload: ContinueWithCodeOptions) => withError(getInstance().continueWithCode(payload));
+export const resendCode = (payload?: ResendCodeOptions) => withError(getInstance().resendCode(payload));
 
-export type { ResendCodeOptions, LoginEmailVerificationMembers } from '@auth0/auth0-acul-js/login-email-verification';
+// Utility Hooks
+export { useResend } from '../hooks/utility/resend-manager';
 
+// Common hooks
+export { useErrors, useAuth0Themes };
+
+// Main instance hook. Returns singleton instance of LoginEmailVerification
+export const useLoginEmailVerification = (): LoginEmailVerificationMembers => useMemo(() => getInstance(), []);
+
+// Export all types from the core SDK for this screen
 export type * from '@auth0/auth0-acul-js/login-email-verification';

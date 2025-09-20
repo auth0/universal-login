@@ -1,18 +1,23 @@
 import { useMemo } from 'react';
 import MfaWebAuthnNotAvailableError from '@auth0/auth0-acul-js/mfa-webauthn-not-available-error';
-import { ContextHooks } from '../hooks/context-hooks';
-
+import { ContextHooks } from '../hooks/context';
 import type { MfaWebAuthnNotAvailableErrorMembers, CustomOptions } from '@auth0/auth0-acul-js/mfa-webauthn-not-available-error';
-let instance: MfaWebAuthnNotAvailableErrorMembers | null = null;
-const getInstance = (): MfaWebAuthnNotAvailableErrorMembers => {
-  if (!instance) {
-    instance = new MfaWebAuthnNotAvailableError();
+import { useErrors, useAuth0Themes } from '../hooks/common';
+import { errorManager } from '../hooks/common/errors';
+
+import { setScreen, getScreen } from '../state/instance-store';
+
+function getInstance(): MfaWebAuthnNotAvailableErrorMembers {
+  try {
+    return getScreen<MfaWebAuthnNotAvailableErrorMembers>();
+  } catch {
+    const instance = new MfaWebAuthnNotAvailableError();
+    setScreen(instance);
+    return instance;
   }
-  return instance;
 };
 
-export const useMfaWebAuthnNotAvailableError = (): MfaWebAuthnNotAvailableErrorMembers => useMemo(() => getInstance(), []);
-
+const { withError } = errorManager;
 const factory = new ContextHooks<MfaWebAuthnNotAvailableErrorMembers>(getInstance);
 
 export const {
@@ -25,12 +30,18 @@ export const {
   useUntrustedData
 } = factory;
 
+// Context hooks
 export const useScreen = () => useMemo(() => getInstance().screen, []);
 export const useTransaction = () => useMemo(() => getInstance().transaction, []);
 
-// Screen methods
-export const tryAnotherMethod = (payload?: CustomOptions) => getInstance().tryAnotherMethod(payload);
+// Submit functions
+export const tryAnotherMethod = (payload?: CustomOptions) => withError(getInstance().tryAnotherMethod(payload));
 
-export type { MfaWebAuthnNotAvailableErrorMembers } from '@auth0/auth0-acul-js/mfa-webauthn-not-available-error';
+// Common hooks
+export { useErrors, useAuth0Themes };
 
+// Main instance hook. Returns singleton instance of MfaWebAuthnNotAvailableError
+export const useMfaWebAuthnNotAvailableError = (): MfaWebAuthnNotAvailableErrorMembers => useMemo(() => getInstance(), []);
+
+// Export all types from the core SDK for this screen
 export type * from '@auth0/auth0-acul-js/mfa-webauthn-not-available-error';

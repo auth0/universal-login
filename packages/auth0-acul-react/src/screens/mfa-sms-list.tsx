@@ -1,18 +1,23 @@
 import { useMemo } from 'react';
 import MfaSmsList from '@auth0/auth0-acul-js/mfa-sms-list';
-import { ContextHooks } from '../hooks/context-hooks';
-
+import { ContextHooks } from '../hooks/context';
 import type { MfaSmsListMembers, MfaSmsListOptions, CustomOptions } from '@auth0/auth0-acul-js/mfa-sms-list';
-let instance: MfaSmsListMembers | null = null;
-const getInstance = (): MfaSmsListMembers => {
-  if (!instance) {
-    instance = new MfaSmsList();
+import { useErrors, useAuth0Themes } from '../hooks/common';
+import { errorManager } from '../hooks/common/errors';
+
+import { setScreen, getScreen } from '../state/instance-store';
+
+function getInstance(): MfaSmsListMembers {
+  try {
+    return getScreen<MfaSmsListMembers>();
+  } catch {
+    const instance = new MfaSmsList();
+    setScreen(instance);
+    return instance;
   }
-  return instance;
 };
 
-export const useMfaSmsList = (): MfaSmsListMembers => useMemo(() => getInstance(), []);
-
+const { withError } = errorManager;
 const factory = new ContextHooks<MfaSmsListMembers>(getInstance);
 
 export const {
@@ -25,13 +30,19 @@ export const {
   useUntrustedData
 } = factory;
 
+// Context hooks
 export const useScreen = () => useMemo(() => getInstance().screen, []);
 export const useTransaction = () => useMemo(() => getInstance().transaction, []);
 
-// Screen methods
-export const selectPhoneNumber = (payload?: MfaSmsListOptions) => getInstance().selectPhoneNumber(payload);
-export const backAction = (payload?: CustomOptions) => getInstance().backAction(payload);
+// Submit functions
+export const selectPhoneNumber = (payload?: MfaSmsListOptions) => withError(getInstance().selectPhoneNumber(payload));
+export const backAction = (payload?: CustomOptions) => withError(getInstance().backAction(payload));
 
-export type { MfaSmsListOptions, MfaSmsListMembers } from '@auth0/auth0-acul-js/mfa-sms-list';
+// Common hooks
+export { useErrors, useAuth0Themes };
 
+// Main instance hook. Returns singleton instance of MfaSmsList
+export const useMfaSmsList = (): MfaSmsListMembers => useMemo(() => getInstance(), []);
+
+// Export all types from the core SDK for this screen
 export type * from '@auth0/auth0-acul-js/mfa-sms-list';

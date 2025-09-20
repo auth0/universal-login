@@ -134,6 +134,8 @@ export default class ResetPasswordMfaPushChallengePush extends BaseContext imple
    * - `startPolling()` — Starts or resumes polling.
    * - `stopPolling()` — Cancels polling immediately.
    * - `isRunning()` — Indicates whether polling is currently active.
+   * 
+   * @category Utility
    *
    * @example
    * ```ts
@@ -158,6 +160,11 @@ export default class ResetPasswordMfaPushChallengePush extends BaseContext imple
   }
 }
 
-export { ResetPasswordMfaPushChallengePushMembers, ScreenOptions as ScreenMembersOnResetPasswordMfaPushChallengePush };
+export {
+  ResetPasswordMfaPushChallengePushMembers,
+  ScreenOptions as ScreenMembersOnResetPasswordMfaPushChallengePush,
+  MfaPollingOptions,
+  MfaPushPollingControl,
+};
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';

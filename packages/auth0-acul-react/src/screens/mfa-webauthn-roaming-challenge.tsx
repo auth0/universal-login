@@ -1,18 +1,23 @@
 import { useMemo } from 'react';
 import MfaWebAuthnRoamingChallenge from '@auth0/auth0-acul-js/mfa-webauthn-roaming-challenge';
-import { ContextHooks } from '../hooks/context-hooks';
-
+import { ContextHooks } from '../hooks/context';
 import type { MfaWebAuthnRoamingChallengeMembers, VerifySecurityKeyOptions, ReportWebAuthnErrorOptions, TryAnotherMethodOptions, ScreenMembersOnMfaWebAuthnRoamingChallenge } from '@auth0/auth0-acul-js/mfa-webauthn-roaming-challenge';
-let instance: MfaWebAuthnRoamingChallengeMembers | null = null;
-const getInstance = (): MfaWebAuthnRoamingChallengeMembers => {
-  if (!instance) {
-    instance = new MfaWebAuthnRoamingChallenge();
+import { useErrors, useAuth0Themes } from '../hooks/common';
+import { errorManager } from '../hooks/common/errors';
+
+import { setScreen, getScreen } from '../state/instance-store';
+
+function getInstance(): MfaWebAuthnRoamingChallengeMembers {
+  try {
+    return getScreen<MfaWebAuthnRoamingChallengeMembers>();
+  } catch {
+    const instance = new MfaWebAuthnRoamingChallenge();
+    setScreen(instance);
+    return instance;
   }
-  return instance;
 };
 
-export const useMfaWebAuthnRoamingChallenge = (): MfaWebAuthnRoamingChallengeMembers => useMemo(() => getInstance(), []);
-
+const { withError } = errorManager;
 const factory = new ContextHooks<MfaWebAuthnRoamingChallengeMembers>(getInstance);
 
 export const {
@@ -25,14 +30,20 @@ export const {
   useUntrustedData
 } = factory;
 
+// Context hooks
 export const useScreen: () => ScreenMembersOnMfaWebAuthnRoamingChallenge = () => useMemo(() => getInstance().screen, []);
 export const useTransaction = () => useMemo(() => getInstance().transaction, []);
 
-// Screen methods
-export const verify = (options?: VerifySecurityKeyOptions) => getInstance().verify(options);
-export const reportWebAuthnError = (options: ReportWebAuthnErrorOptions) => getInstance().reportWebAuthnError(options);
-export const tryAnotherMethod = (options?: TryAnotherMethodOptions) => getInstance().tryAnotherMethod(options);
+// Submit functions
+export const verify = (options?: VerifySecurityKeyOptions) => withError(getInstance().verify(options));
+export const reportWebAuthnError = (options: ReportWebAuthnErrorOptions) => withError(getInstance().reportWebAuthnError(options));
+export const tryAnotherMethod = (options?: TryAnotherMethodOptions) => withError(getInstance().tryAnotherMethod(options));
 
-export type { ScreenMembersOnMfaWebAuthnRoamingChallenge, VerifySecurityKeyOptions, TryAnotherMethodOptions, MfaWebAuthnRoamingChallengeMembers } from '@auth0/auth0-acul-js/mfa-webauthn-roaming-challenge';
+// Common hooks
+export { useErrors, useAuth0Themes };
 
+// Main instance hook. Returns singleton instance of MfaWebAuthnRoamingChallenge
+export const useMfaWebAuthnRoamingChallenge = (): MfaWebAuthnRoamingChallengeMembers => useMemo(() => getInstance(), []);
+
+// Export all types from the core SDK for this screen
 export type * from '@auth0/auth0-acul-js/mfa-webauthn-roaming-challenge';

@@ -1,18 +1,23 @@
 import { useMemo } from 'react';
 import Logout from '@auth0/auth0-acul-js/logout';
-import { ContextHooks } from '../hooks/context-hooks';
-
+import { ContextHooks } from '../hooks/context';
 import type { LogoutMembers, ConfirmLogoutOptions } from '@auth0/auth0-acul-js/logout';
-let instance: LogoutMembers | null = null;
-const getInstance = (): LogoutMembers => {
-  if (!instance) {
-    instance = new Logout();
+import { useErrors, useAuth0Themes } from '../hooks/common';
+import { errorManager } from '../hooks/common/errors';
+
+import { setScreen, getScreen } from '../state/instance-store';
+
+function getInstance(): LogoutMembers {
+  try {
+    return getScreen<LogoutMembers>();
+  } catch {
+    const instance = new Logout();
+    setScreen(instance);
+    return instance;
   }
-  return instance;
 };
 
-export const useLogout = (): LogoutMembers => useMemo(() => getInstance(), []);
-
+const { withError } = errorManager;
 const factory = new ContextHooks<LogoutMembers>(getInstance);
 
 export const {
@@ -25,12 +30,18 @@ export const {
   useUntrustedData
 } = factory;
 
+// Context hooks
 export const useScreen = () => useMemo(() => getInstance().screen, []);
 export const useTransaction = () => useMemo(() => getInstance().transaction, []);
 
-// Screen methods
-export const confirmLogout = (payload: ConfirmLogoutOptions) => getInstance().confirmLogout(payload);
+// Submit functions
+export const confirmLogout = (payload: ConfirmLogoutOptions) => withError(getInstance().confirmLogout(payload));
 
-export type { ConfirmLogoutOptions, LogoutMembers } from '@auth0/auth0-acul-js/logout';
+// Common hooks
+export { useErrors, useAuth0Themes };
 
+// Main instance hook. Returns singleton instance of Logout
+export const useLogout = (): LogoutMembers => useMemo(() => getInstance(), []);
+
+// Export all types from the core SDK for this screen
 export type * from '@auth0/auth0-acul-js/logout';

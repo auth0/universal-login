@@ -1,18 +1,23 @@
 import { useMemo } from 'react';
 import OrganizationSelection from '@auth0/auth0-acul-js/organization-selection';
-import { ContextHooks } from '../hooks/context-hooks';
-
+import { ContextHooks } from '../hooks/context';
 import type { OrganizationSelectionMembers, ContinueWithOrganizationNameOptions, ScreenMembersOnOrganizationSelection } from '@auth0/auth0-acul-js/organization-selection';
-let instance: OrganizationSelectionMembers | null = null;
-const getInstance = (): OrganizationSelectionMembers => {
-  if (!instance) {
-    instance = new OrganizationSelection();
+import { useErrors, useAuth0Themes } from '../hooks/common';
+import { errorManager } from '../hooks/common/errors';
+
+import { setScreen, getScreen } from '../state/instance-store';
+
+function getInstance(): OrganizationSelectionMembers {
+  try {
+    return getScreen<OrganizationSelectionMembers>();
+  } catch {
+    const instance = new OrganizationSelection();
+    setScreen(instance);
+    return instance;
   }
-  return instance;
 };
 
-export const useOrganizationSelection = (): OrganizationSelectionMembers => useMemo(() => getInstance(), []);
-
+const { withError } = errorManager;
 const factory = new ContextHooks<OrganizationSelectionMembers>(getInstance);
 
 export const {
@@ -25,12 +30,18 @@ export const {
   useUntrustedData
 } = factory;
 
+// Context hooks
 export const useScreen: () => ScreenMembersOnOrganizationSelection = () => useMemo(() => getInstance().screen, []);
 export const useTransaction = () => useMemo(() => getInstance().transaction, []);
 
-// Screen methods
-export const continueWithOrganizationName = (payload: ContinueWithOrganizationNameOptions) => getInstance().continueWithOrganizationName(payload);
+// Submit functions
+export const continueWithOrganizationName = (payload: ContinueWithOrganizationNameOptions) => withError(getInstance().continueWithOrganizationName(payload));
 
-export type { ContinueWithOrganizationNameOptions, ScreenMembersOnOrganizationSelection, OrganizationSelectionMembers } from '@auth0/auth0-acul-js/organization-selection';
+// Common hooks
+export { useErrors, useAuth0Themes };
 
+// Main instance hook. Returns singleton instance of OrganizationSelection
+export const useOrganizationSelection = (): OrganizationSelectionMembers => useMemo(() => getInstance(), []);
+
+// Export all types from the core SDK for this screen
 export type * from '@auth0/auth0-acul-js/organization-selection';
