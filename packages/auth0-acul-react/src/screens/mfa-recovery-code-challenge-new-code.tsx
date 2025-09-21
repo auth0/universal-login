@@ -1,25 +1,25 @@
-import { useMemo } from 'react';
 import MfaRecoveryCodeChallengeNewCode from '@auth0/auth0-acul-js/mfa-recovery-code-challenge-new-code';
-import { ContextHooks } from '../hooks/context';
-import type { MfaRecoveryCodeChallengeNewCodeMembers, ContinueOptions, ScreenMembersOnMfaRecoveryCodeChallengeNewCode } from '@auth0/auth0-acul-js/mfa-recovery-code-challenge-new-code';
-import { useErrors, useAuth0Themes } from '../hooks/common';
+import { useMemo } from 'react';
+
 import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-import { setScreen, getScreen } from '../state/instance-store';
+import type {
+  MfaRecoveryCodeChallengeNewCodeMembers,
+  ContinueOptions,
+} from '@auth0/auth0-acul-js/mfa-recovery-code-challenge-new-code';
 
-function getInstance(): MfaRecoveryCodeChallengeNewCodeMembers {
-  try {
-    return getScreen<MfaRecoveryCodeChallengeNewCodeMembers>();
-  } catch {
-    const instance = new MfaRecoveryCodeChallengeNewCode();
-    setScreen(instance);
-    return instance;
-  }
-};
+// Register the singleton instance of MfaRecoveryCodeChallengeNewCode
+const instance = registerScreen<MfaRecoveryCodeChallengeNewCodeMembers>(
+  MfaRecoveryCodeChallengeNewCode
+)!;
 
+// Error wrapper
 const { withError } = errorManager;
-const factory = new ContextHooks<MfaRecoveryCodeChallengeNewCodeMembers>(getInstance);
 
+// Context hooks
+const factory = new ContextHooks<MfaRecoveryCodeChallengeNewCodeMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -27,21 +27,27 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-// Context hooks
-export const useScreen: () => ScreenMembersOnMfaRecoveryCodeChallengeNewCode = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
-
 // Submit functions
-export const continueMethod = (payload?: ContinueOptions) => withError(getInstance().continue(payload));
+export const continueMethod = (payload?: ContinueOptions) => withError(instance.continue(payload));
 
 // Common hooks
-export { useErrors, useAuth0Themes };
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
 // Main instance hook. Returns singleton instance of MfaRecoveryCodeChallengeNewCode
-export const useMfaRecoveryCodeChallengeNewCode = (): MfaRecoveryCodeChallengeNewCodeMembers => useMemo(() => getInstance(), []);
+export const useMfaRecoveryCodeChallengeNewCode = (): MfaRecoveryCodeChallengeNewCodeMembers =>
+  useMemo(() => instance, []);
 
 // Export all types from the core SDK for this screen
-export type * from '@auth0/auth0-acul-js/mfa-recovery-code-challenge-new-code';

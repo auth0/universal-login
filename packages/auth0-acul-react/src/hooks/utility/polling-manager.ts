@@ -1,18 +1,20 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
+import { getScreen } from '../../state/instance-store';
+import { errorManager } from '../common/errors';
+
 import type {
   MfaPollingOptions,
   MfaPushPollingControl,
-  Error as ULError
+  Error as ULError,
 } from '@auth0/auth0-acul-js';
-import { getScreen } from '../../state/instance-store';
-import { errorManager } from '../common/errors';
 
 /**
  * Result object returned by {@link useMfaPolling}.
  *
  * @public
  */
-export interface UseMfaPollingResults {
+export interface MfaPollingResult {
   /**
    * Indicates whether the MFA push polling process is currently active.
    *
@@ -60,7 +62,7 @@ export interface UseMfaPollingResults {
  * @param options - {@link MfaPollingOptions} specifying the polling interval,
  *                  success callback (`onCompleted`), and optional error handler (`onError`).
  *
- * @returns {@link UseMfaPollingResults} containing:
+ * @returns {@link MfaPollingResult} containing:
  * - `isRunning` — `true` while polling is active.
  * - `startPolling()` — starts or resumes polling.
  * - `stopPolling()` — stops polling immediately.
@@ -72,7 +74,7 @@ export interface UseMfaPollingResults {
  * export function MfaPushStatus() {
  *   const { isRunning, startPolling, stopPolling } = useMfaPolling({
  *     intervalMs: 5000,
- *     onCompleted: () => console.log('Push approved!'),
+ *     onCompleted: () => console.log('Push approved!/denied'),
  *     onError: (error) => console.error('Polling error:', error)
  *   });
  *
@@ -96,7 +98,7 @@ export interface UseMfaPollingResults {
  *
  * @public
  */
-export function useMfaPolling(options?: MfaPollingOptions): UseMfaPollingResults {
+export function useMfaPolling(options?: MfaPollingOptions): MfaPollingResult {
   const [isRunning, setIsRunning] = useState(false);
 
   // Wrap callbacks safely to immediately update `isRunning` on completion/error.
@@ -112,7 +114,7 @@ export function useMfaPolling(options?: MfaPollingOptions): UseMfaPollingResults
         setIsRunning(false);
         errorManager.pushServerErrors([error]);
         safe.onError?.(error);
-      }
+      },
     };
   }, [options]);
 
@@ -144,10 +146,14 @@ export function useMfaPolling(options?: MfaPollingOptions): UseMfaPollingResults
     let mounted = true;
 
     const tick = () => {
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
       const running = pollingControl.isRunning();
       setIsRunning(running);
-      if (running) requestAnimationFrame(tick);
+      if (running) {
+        requestAnimationFrame(tick);
+      }
     };
     tick();
 

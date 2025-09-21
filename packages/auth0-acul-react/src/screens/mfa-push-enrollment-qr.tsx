@@ -1,25 +1,23 @@
-import { useMemo } from 'react';
 import MfaPushEnrollmentQr from '@auth0/auth0-acul-js/mfa-push-enrollment-qr';
-import { ContextHooks } from '../hooks/context';
-import type { MfaPushEnrollmentQrMembers, CustomOptions, ScreenMembersOnMfaPushEnrollmentQr } from '@auth0/auth0-acul-js/mfa-push-enrollment-qr';
-import { useErrors, useAuth0Themes } from '../hooks/common';
+import { useMemo } from 'react';
+
 import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-import { setScreen, getScreen } from '../state/instance-store';
+import type {
+  MfaPushEnrollmentQrMembers,
+  CustomOptions,
+} from '@auth0/auth0-acul-js/mfa-push-enrollment-qr';
 
-function getInstance(): MfaPushEnrollmentQrMembers {
-  try {
-    return getScreen<MfaPushEnrollmentQrMembers>();
-  } catch {
-    const instance = new MfaPushEnrollmentQr();
-    setScreen(instance);
-    return instance;
-  }
-};
+// Register the singleton instance of MfaPushEnrollmentQr
+const instance = registerScreen<MfaPushEnrollmentQrMembers>(MfaPushEnrollmentQr)!;
 
+// Error wrapper
 const { withError } = errorManager;
-const factory = new ContextHooks<MfaPushEnrollmentQrMembers>(getInstance);
 
+// Context hooks
+const factory = new ContextHooks<MfaPushEnrollmentQrMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -27,21 +25,27 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-// Context hooks
-export const useScreen: () => ScreenMembersOnMfaPushEnrollmentQr = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
-
 // Submit functions
-export const pickAuthenticator = (payload?: CustomOptions) => withError(getInstance().pickAuthenticator(payload));
+export const pickAuthenticator = (payload?: CustomOptions) =>
+  withError(instance.pickAuthenticator(payload));
 
 // Common hooks
-export { useErrors, useAuth0Themes };
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
 // Main instance hook. Returns singleton instance of MfaPushEnrollmentQr
-export const useMfaPushEnrollmentQr = (): MfaPushEnrollmentQrMembers => useMemo(() => getInstance(), []);
+export const useMfaPushEnrollmentQr = (): MfaPushEnrollmentQrMembers => useMemo(() => instance, []);
 
 // Export all types from the core SDK for this screen
-export type * from '@auth0/auth0-acul-js/mfa-push-enrollment-qr';

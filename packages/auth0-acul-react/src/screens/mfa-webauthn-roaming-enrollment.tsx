@@ -1,25 +1,25 @@
-import { useMemo } from 'react';
 import MfaWebAuthnRoamingEnrollment from '@auth0/auth0-acul-js/mfa-webauthn-roaming-enrollment';
-import { ContextHooks } from '../hooks/context';
-import type { MfaWebAuthnRoamingEnrollmentMembers, CustomOptions, ShowErrorOptions, TryAnotherMethodOptions, ScreenMembersOnMfaWebAuthnRoamingEnrollment } from '@auth0/auth0-acul-js/mfa-webauthn-roaming-enrollment';
-import { useErrors, useAuth0Themes } from '../hooks/common';
+import { useMemo } from 'react';
+
 import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-import { setScreen, getScreen } from '../state/instance-store';
+import type {
+  MfaWebAuthnRoamingEnrollmentMembers,
+  CustomOptions,
+  ShowErrorOptions,
+  TryAnotherMethodOptions,
+} from '@auth0/auth0-acul-js/mfa-webauthn-roaming-enrollment';
 
-function getInstance(): MfaWebAuthnRoamingEnrollmentMembers {
-  try {
-    return getScreen<MfaWebAuthnRoamingEnrollmentMembers>();
-  } catch {
-    const instance = new MfaWebAuthnRoamingEnrollment();
-    setScreen(instance);
-    return instance;
-  }
-};
+// Register the singleton instance of MfaWebAuthnRoamingEnrollment
+const instance = registerScreen<MfaWebAuthnRoamingEnrollmentMembers>(MfaWebAuthnRoamingEnrollment)!;
 
+// Error wrapper
 const { withError } = errorManager;
-const factory = new ContextHooks<MfaWebAuthnRoamingEnrollmentMembers>(getInstance);
 
+// Context hooks
+const factory = new ContextHooks<MfaWebAuthnRoamingEnrollmentMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -27,23 +27,30 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-// Context hooks
-export const useScreen: () => ScreenMembersOnMfaWebAuthnRoamingEnrollment = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
-
 // Submit functions
-export const enroll = (payload: CustomOptions) => withError(getInstance().enroll(payload));
-export const showError = (payload: ShowErrorOptions) => withError(getInstance().showError(payload));
-export const tryAnotherMethod = (payload?: TryAnotherMethodOptions) => withError(getInstance().tryAnotherMethod(payload));
+export const enroll = (payload: CustomOptions) => withError(instance.enroll(payload));
+export const showError = (payload: ShowErrorOptions) => withError(instance.showError(payload));
+export const tryAnotherMethod = (payload?: TryAnotherMethodOptions) =>
+  withError(instance.tryAnotherMethod(payload));
 
 // Common hooks
-export { useErrors, useAuth0Themes };
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
 // Main instance hook. Returns singleton instance of MfaWebAuthnRoamingEnrollment
-export const useMfaWebAuthnRoamingEnrollment = (): MfaWebAuthnRoamingEnrollmentMembers => useMemo(() => getInstance(), []);
+export const useMfaWebAuthnRoamingEnrollment = (): MfaWebAuthnRoamingEnrollmentMembers =>
+  useMemo(() => instance, []);
 
 // Export all types from the core SDK for this screen
-export type * from '@auth0/auth0-acul-js/mfa-webauthn-roaming-enrollment';

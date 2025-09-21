@@ -1,25 +1,20 @@
-import { useMemo } from 'react';
 import Consent from '@auth0/auth0-acul-js/consent';
-import { ContextHooks } from '../hooks/context';
-import type { ConsentMembers, CustomOptions, ScreenMembersOnConsent } from '@auth0/auth0-acul-js/consent';
-import { useErrors, useAuth0Themes } from '../hooks/common';
+import { useMemo } from 'react';
+
 import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-import { setScreen, getScreen } from '../state/instance-store';
+import type { ConsentMembers, CustomOptions } from '@auth0/auth0-acul-js/consent';
 
-function getInstance(): ConsentMembers {
-  try {
-    return getScreen<ConsentMembers>();
-  } catch {
-    const instance = new Consent();
-    setScreen(instance);
-    return instance;
-  }
-};
+// Register the singleton instance of Consent
+const instance = registerScreen<ConsentMembers>(Consent)!;
 
+// Error wrapper
 const { withError } = errorManager;
-const factory = new ContextHooks<ConsentMembers>(getInstance);
 
+// Context hooks
+const factory = new ContextHooks<ConsentMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -27,22 +22,27 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-// Context hooks
-export const useScreen: () => ScreenMembersOnConsent = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
-
 // Submit functions
-export const accept = (payload?: CustomOptions) => withError(getInstance().accept(payload));
-export const deny = (payload?: CustomOptions) => withError(getInstance().deny(payload));
+export const accept = (payload?: CustomOptions) => withError(instance.accept(payload));
+export const deny = (payload?: CustomOptions) => withError(instance.deny(payload));
 
 // Common hooks
-export { useErrors, useAuth0Themes };
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
 // Main instance hook. Returns singleton instance of Consent
-export const useConsent = (): ConsentMembers => useMemo(() => getInstance(), []);
+export const useConsent = (): ConsentMembers => useMemo(() => instance, []);
 
 // Export all types from the core SDK for this screen
-export type * from '@auth0/auth0-acul-js/consent';

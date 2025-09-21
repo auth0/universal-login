@@ -1,10 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import type {
-  StartResendOptions,
-  ResendControl,
-  OnTimeoutCallback,
-} from '@auth0/auth0-acul-js';
+
 import { getScreen } from '../../state/instance-store';
+
+import type { StartResendOptions, ResendControl } from '@auth0/auth0-acul-js';
 
 /** Return type for {@link useResend}. */
 export interface UseResendReturn {
@@ -17,7 +15,7 @@ export interface UseResendReturn {
 }
 
 /** Optional configuration for {@link useResend}. */
-export interface UseResendParams {
+export interface UseResendOptions {
   /**
    * Countdown duration (in seconds) before another resend is allowed.
    * Defaults to `10`.
@@ -27,11 +25,11 @@ export interface UseResendParams {
    * Callback fired when the countdown finishes and the resend
    * action becomes available again.
    */
-  onTimeout?: OnTimeoutCallback;
+  onTimeout?: () => void;
 }
 
 /** Screens that support resend operations expose a `resendManager` method. */
-export interface ScreenWithResendManager {
+interface WithResendManager {
   resendManager(options?: StartResendOptions): ResendControl;
 }
 
@@ -72,9 +70,9 @@ export interface ScreenWithResendManager {
  * - The underlying `ResendControl` has no explicit teardown method; the hook does not require manual cleanup.
  * - The hook re-initializes the resend manager if `timeoutSeconds` or `onTimeout` change.
  */
-export function useResend(options?: UseResendParams): UseResendReturn {
+export function useResend(options?: UseResendOptions): UseResendReturn {
   const { timeoutSeconds = 10, onTimeout } = options ?? {};
-  const screen = useMemo(() => getScreen<ScreenWithResendManager>(), []);
+  const screen = useMemo(() => getScreen<WithResendManager>(), []);
 
   const [remaining, setRemaining] = useState(0);
   const [disabled, setDisabled] = useState(false);

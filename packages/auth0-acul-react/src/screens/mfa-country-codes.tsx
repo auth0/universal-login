@@ -1,25 +1,24 @@
-import { useMemo } from 'react';
 import MfaCountryCodes from '@auth0/auth0-acul-js/mfa-country-codes';
-import { ContextHooks } from '../hooks/context';
-import type { MfaCountryCodesMembers, SelectCountryCodeOptions, CustomOptions, ScreenMembersOnMfaCountryCodes } from '@auth0/auth0-acul-js/mfa-country-codes';
-import { useErrors, useAuth0Themes } from '../hooks/common';
+import { useMemo } from 'react';
+
 import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-import { setScreen, getScreen } from '../state/instance-store';
+import type {
+  MfaCountryCodesMembers,
+  SelectCountryCodeOptions,
+  CustomOptions,
+} from '@auth0/auth0-acul-js/mfa-country-codes';
 
-function getInstance(): MfaCountryCodesMembers {
-  try {
-    return getScreen<MfaCountryCodesMembers>();
-  } catch {
-    const instance = new MfaCountryCodes();
-    setScreen(instance);
-    return instance;
-  }
-};
+// Register the singleton instance of MfaCountryCodes
+const instance = registerScreen<MfaCountryCodesMembers>(MfaCountryCodes)!;
 
+// Error wrapper
 const { withError } = errorManager;
-const factory = new ContextHooks<MfaCountryCodesMembers>(getInstance);
 
+// Context hooks
+const factory = new ContextHooks<MfaCountryCodesMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -27,22 +26,28 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-// Context hooks
-export const useScreen: () => ScreenMembersOnMfaCountryCodes = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
-
 // Submit functions
-export const selectCountryCode = (payload: SelectCountryCodeOptions) => withError(getInstance().selectCountryCode(payload));
-export const goBack = (payload?: CustomOptions) => withError(getInstance().goBack(payload));
+export const selectCountryCode = (payload: SelectCountryCodeOptions) =>
+  withError(instance.selectCountryCode(payload));
+export const goBack = (payload?: CustomOptions) => withError(instance.goBack(payload));
 
 // Common hooks
-export { useErrors, useAuth0Themes };
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
 // Main instance hook. Returns singleton instance of MfaCountryCodes
-export const useMfaCountryCodes = (): MfaCountryCodesMembers => useMemo(() => getInstance(), []);
+export const useMfaCountryCodes = (): MfaCountryCodesMembers => useMemo(() => instance, []);
 
 // Export all types from the core SDK for this screen
-export type * from '@auth0/auth0-acul-js/mfa-country-codes';

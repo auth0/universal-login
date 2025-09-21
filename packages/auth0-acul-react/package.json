@@ -9,8 +9,8 @@
     "test": "jest",
     "generate:sdk": "tsx ./scripts/generate-sdk/index.ts",
     "generate:examples": "tsx ./scripts/generate-examples.ts",
-    "lint": "eslint . --ext .ts,.tsx",
-    "lint:fix": "eslint . --ext .ts,.tsx --fix",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
     "docs": "typedoc --options typedoc.js",
     "postbuild": "npm run docs"
   },
@@ -21,6 +21,10 @@
     ".": {
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
+    },
+    "./types": {
+      "import": "./dist/types/index.js",
+      "types": "./dist/types/index.d.ts"
     },
     "./login-id": {
       "import": "./dist/screens/login-id.js",

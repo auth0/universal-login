@@ -21,11 +21,13 @@
 
   "resendManager": {
     "name": "useResend",
-    "path": "../hooks/utility/resend-manager"
+    "path": "../hooks/utility/resend-manager",
+    "types": ["UseResendReturn", "UseResendOptions"]
   },
 
   "pollingManager": {
     "name": "useMfaPolling",
-    "path": "../hooks/utility/polling-manager"
+    "path": "../hooks/utility/polling-manager",
+    "types": ["MfaPollingResult"]
   }
 }

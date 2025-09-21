@@ -187,29 +187,22 @@ for (const symbol of screenSymbols) {
 
   const hasDefaultExport = !!screenFile.getDefaultExportSymbol();
   screenLines.push(`import { useMemo } from 'react';`);
-  screenLines.push(
-    hasDefaultExport
-      ? `import ${screenName} from '@auth0/auth0-acul-js/${kebab}';`
-      : `import { ${screenName} } from '@auth0/auth0-acul-js/${kebab}';`
-  );
+  screenLines.push(`import ${screenName} from '@auth0/auth0-acul-js/${kebab}';`);
   screenLines.push(`import { ContextHooks } from '../hooks/context';`);
-  screenLines.push(`import { useErrors, useAuth0Themes } from '../hooks/common';`);
-
   if (exportedMethods.length) {
     // We need `errorManager` only if there are exported methods
     screenLines.push(`import { errorManager } from '../hooks/common/errors';`);
   }
-
-  screenLines.push(`\nimport { setScreen, getScreen } from '../state/instance-store';\n`);
-
+  screenLines.push(`import { registerScreen } from '../state/instance-store';`);
   usedInterfaces.add(baseInterface);
 
   // Extract type identifiers from method parameters for imports
   // Transform "LoginOptions | undefined" → ["LoginOptions"], "Promise<T>" → ["Promise", "T"], etc.
   const PRIMITIVES = new Set(['any', 'string', 'number', 'boolean', 'undefined', 'void', 'null']);
 
-  exportedMethods.forEach((m) =>
-    m.params.forEach((p) => {
+  exportedMethods.forEach((m) => {
+    if (m.isUtility) return;
+    return m.params.forEach((p) => {
       const typeTokens = p.type
         .replace(/\[\]/g, '') // Remove arrays: Type[] → Type
         .replace(/[<>|&]/g, ',') // Split on: generics, unions, intersections
@@ -218,48 +211,23 @@ for (const symbol of screenSymbols) {
         .filter((t) => t && !PRIMITIVES.has(t) && !t.startsWith('{')); // Keep only importable types
 
       typeTokens.forEach((t) => usedInterfaces.add(t));
-    })
-  );
+    });
+  });
 
   // Lazy singleton instance
-  screenLines.push(`function getInstance(): ${baseInterface} {`);
-  screenLines.push(`  try {`);
-  screenLines.push(`    return getScreen<${baseInterface}>();`);
-  screenLines.push(`  } catch {`);
-  screenLines.push(`    const instance = new ${screenName}();`);
-  screenLines.push(`    setScreen(instance);`);
-  screenLines.push(`    return instance;`);
-  screenLines.push(`  }`);
-  screenLines.push(`};`);
+  screenLines.push(`\n// Register the singleton instance of ${screenName}`);
+  screenLines.push(`const instance = registerScreen<${baseInterface}>(${screenName})!;`);
 
   if (exportedMethods.length) {
-    screenLines.push(`\nconst { withError } = errorManager;`);
+    screenLines.push(`\n// Error wrapper`);
+    screenLines.push(`const { withError } = errorManager;`);
   }
   // Context hooks factory (unchanged logic but now uses singleton)
-  screenLines.push(`const factory = new ContextHooks<${baseInterface}>(getInstance);\n`);
-  const shared = CONTEXT_MODELS.filter((m) => !['screen', 'transaction'].includes(m));
+  screenLines.push(`\n// Context hooks`);
+  screenLines.push(`const factory = new ContextHooks<${baseInterface}>(instance);`);
   screenLines.push(`export const {`);
-  screenLines.push(`  ${shared.map((m) => `use${toPascal(m)}`).join(',\n  ')}`);
+  screenLines.push(`  ${CONTEXT_MODELS.map((m) => `use${toPascal(m)}`).join(',\n  ')}`);
   screenLines.push(`} = factory;`);
-
-  // screen / transaction hooks with useMemo\
-  screenLines.push('\n// Context hooks');
-  for (const model of ['screen', 'transaction']) {
-    if (!allProps.has(model)) continue;
-    const pascal = toPascal(model);
-    const specific = `${pascal}MembersOn${screenName}`;
-    const hookName = `use${pascal}`;
-    if (typedInterfaces.has(specific)) {
-      screenLines.push(
-        `export const ${hookName}: () => ${specific} = () => useMemo(() => getInstance().${model}, []);`
-      );
-      usedInterfaces.add(specific);
-    } else {
-      screenLines.push(
-        `export const ${hookName} = () => useMemo(() => getInstance().${model}, []);`
-      );
-    }
-  }
 
   if (exportedMethods.length) {
     screenLines.push(`\n// Submit functions`);
@@ -275,14 +243,14 @@ for (const symbol of screenSymbols) {
         .join(', ');
       const argNames = method.params.map((p) => p.name).join(', ');
       screenLines.push(
-        `export const ${safe} = (${args}) => withError(getInstance().${method.name}(${argNames}));`
+        `export const ${safe} = (${args}) => withError(instance.${method.name}(${argNames}));`
       );
     }
 
     if (utilityMethods.length) {
       for (const method of utilityMethods) {
         const hookConfig = utilityMap[method.name];
-        
+
         if (!hookConfig) {
           logger.error(
             `No utility map entry found for method '${method.name}' in screen '${screenName}'. Skipping export.`
@@ -290,10 +258,16 @@ for (const symbol of screenSymbols) {
           errorCount++;
           continue;
         }
-        
-        const { name, path } = hookConfig || {};
+
+        const { name, path, types } = hookConfig || {};
         screenLines.push(`\n// Utility Hooks`);
         screenLines.push(`export { ${name} } from '${path}';`);
+
+        // ALso export the types
+        if (Array.isArray(types) && types.length > 0) {
+          //screenLines.push(`export type { ${types.join(', ')} } from '${path}';`);
+          // types.forEach((t: string) => usedInterfaces.add(t));
+        }
       }
     }
   }
@@ -309,16 +283,18 @@ for (const symbol of screenSymbols) {
     );
   }
   screenLines.push(`\n// Common hooks`);
-  screenLines.push(`export { useErrors, useAuth0Themes };`);
-  
+  screenLines.push(
+    `export { useCurrentScreen, useErrors, useAuth0Themes, type UseErrorOptions, type UseErrorsResult, type ErrorsResult, type ErrorKind } from '../hooks/common';`
+  );
+
   // Main hook (memoized)
   screenLines.push(`\n// Main instance hook. Returns singleton instance of ${screenName}`);
   screenLines.push(
-    `export const ${instanceHook} = (): ${baseInterface} => useMemo(() => getInstance(), []);`
+    `export const ${instanceHook} = (): ${baseInterface} => useMemo(() => instance, []);`
   );
-  
+
   screenLines.push(`\n// Export all types from the core SDK for this screen`);
-  screenLines.push(`export type * from '@auth0/auth0-acul-js/${kebab}';`);
+  // screenLines.push(`export type * from '@auth0/auth0-acul-js/${kebab}';`);
 
   fs.writeFileSync(path.join(SCREENS_OUTPUT_PATH, `${kebab}.tsx`), screenLines.join('\n'), 'utf8');
 
@@ -329,7 +305,7 @@ for (const symbol of screenSymbols) {
 
   indexExports.push(`export { ${instanceHook} } from './screens/${kebab}';`);
 
-  logger.success(`${screenName}: Exports with shared + overridden context hooks and methods`);
+  logger.info(`${screenName}: Exports with shared + overridden context hooks and methods`);
   screenCount++;
 }
 
@@ -337,7 +313,7 @@ fs.writeFileSync(PACKAGE_JSON_PATH, JSON.stringify(pkg, null, 2), 'utf8');
 
 // Add common types from core SDK
 indexTypes.push('\n// Common types from core SDK');
-indexTypes.push(`export type * from '@auth0/auth0-acul-js';`);
+// indexTypes.push(`export type * from '@auth0/auth0-acul-js';`);
 
 indexExports.push(`export { useCurrentScreen, useErrors, useAuth0Themes } from './hooks/common';`);
 
@@ -346,111 +322,6 @@ fs.writeFileSync(
   `${indexExports.join('\n')}\n\n${indexTypes.join('\n')}\n`,
   'utf8'
 );
-
-const FUNCTIONS_TS_PATH = path.resolve(__dirname, '../../src/classes.ts');
-const INTERFACES_TS_PATH = path.resolve(__dirname, '../../src/interfaces.ts');
-const EXPORT_TS_PATH = path.resolve(__dirname, '../../src/export.ts');
-
-const functionLines: string[] = [];
-const screenFiles = fs.readdirSync(SCREENS_OUTPUT_PATH).filter((f) => f.endsWith('.tsx'));
-
-for (const file of screenFiles) {
-  const kebab = file.replace('.tsx', '');
-  const pascal = toPascalFromKebab(kebab);
-  const screenPath = `./screens/${kebab}`;
-  const source = fs.readFileSync(path.join(SCREENS_OUTPUT_PATH, file), 'utf8');
-
-  const exportRegex = /^export\s+(const|function)\s+([a-zA-Z0-9_]+)\s*[(:=]/gm;
-  const reExportRegex = /^export\s+\{\s*([a-zA-Z0-9_,\s]+)\s*\}\s+from\s+['"][^'"]+['"]/gm;
-  let match;
-  const exports: string[] = [];
-
-  while ((match = exportRegex.exec(source)) !== null) {
-    exports.push(match[2]);
-  }
-
-  while ((match = reExportRegex.exec(source)) !== null) {
-    match[1]
-      .split(',')
-      .map((e) => e.trim())
-      .forEach((e) => {
-        if (e) exports.push(e);
-      });
-  }
-
-  if (exports.length) {
-    const aliasedImports = exports.map((identifier) => {
-      return `${identifier} as ${identifier}_${pascal}`;
-    });
-    functionLines.push(`import { ${aliasedImports.join(', ')} } from '${screenPath}';`);
-    functionLines.push(`export namespace ${pascal} {`);
-    exports.forEach((identifier) => {
-      functionLines.push(`  export const ${identifier} = ${identifier}_${pascal};`);
-    });
-    functionLines.push('}\n');
-  }
-}
-functionLines.push(
-  `import { useCurrentScreen as use_currentScreen, useAuth0Themes as use_Auth0Themes, useErrors as use_Errors } from '../src/hooks/common';`
-);
-functionLines.push(`export namespace CommonHooks {
-    export const useCurrentScreen = use_currentScreen;
-    export const useAuth0Themes = use_Auth0Themes;
-    export const useErrors = use_Errors;
-  }\n`);
-
-const screenFilesForInterfaces = fs
-  .readdirSync(SCREENS_OUTPUT_PATH)
-  .filter((f) => f.endsWith('.tsx'));
-const INTERFACES_OUTPUT_PATH = path.resolve(__dirname, '../../src/interfaces');
-fs.mkdirSync(INTERFACES_OUTPUT_PATH, { recursive: true });
-
-const screenInterfaceExports: string[] = [];
-
-for (const file of screenFilesForInterfaces) {
-  const kebab = file.replace('.tsx', '');
-  const pascal = toPascalFromKebab(kebab);
-
-  // Find all type exports for this screen in the generated screen file
-  const source = fs.readFileSync(path.join(SCREENS_OUTPUT_PATH, file), 'utf8');
-  const typeExportRegex = /^export\s+type\s+\{\s*([^}]+)\s*\}\s+from\s+['"]([^'"]+)['"]/gm;
-  let match;
-  const types: string[] = [];
-
-  while ((match = typeExportRegex.exec(source)) !== null) {
-    match[1]
-      .split(',')
-      .map((e) => e.trim())
-      .forEach((e) => {
-        if (e) types.push(e);
-      });
-  }
-
-  if (types.length) {
-    const interfaceFilePath = path.join(INTERFACES_OUTPUT_PATH, `${kebab}.ts`);
-    const interfaceContent = `export type { ${types.join(', ')} } from '@auth0/auth0-acul-js/${kebab}';`;
-    fs.writeFileSync(interfaceFilePath, interfaceContent, 'utf8');
-    screenInterfaceExports.push(`export * as ${pascal} from './interfaces/${kebab}';`);
-    logger.success(`interfaces/${kebab}.ts generated`);
-  }
-}
-
-fs.writeFileSync(
-  INTERFACES_TS_PATH,
-  `${screenInterfaceExports.join('\n')}\n` + 'export {}',
-  'utf8'
-);
-logger.success('interfaces.ts generated with grouped screen-wise exports');
-fs.writeFileSync(
-  FUNCTIONS_TS_PATH,
-  '/* eslint-disable @typescript-eslint/no-namespace */\n' + functionLines.join('\n'),
-  'utf8'
-);
-
-const exportLines: string[] = [];
-exportLines.push(`export * as Classes from './classes';`);
-exportLines.push(`export * as Interfaces from './interfaces';`);
-fs.writeFileSync(EXPORT_TS_PATH, exportLines.join('\n'), 'utf8');
 
 if (errorCount > 0) {
   logger.error(
@@ -462,4 +333,16 @@ if (errorCount > 0) {
     `SDK generation completed successfully with ${screenCount} screens processed.`,
     true
   );
+  logger.info(
+    `Running "npm run lint:fix" to apply code formatting to generated files...`,
+    true
+  );
+  // Trigger `npm run lint:fix` to clean up formatting
+  const { execSync } = await import('child_process');
+  try {
+    execSync('npm run lint:fix', { stdio: 'inherit', cwd: path.resolve(__dirname, '../../') });
+    logger.success('Code formatting applied via `npm run lint:fix`.', true);
+  } catch (e) {
+    logger.error('Failed to apply code formatting via `npm run lint:fix`. Please run it manually.');
+  }
 }

@@ -1,25 +1,27 @@
-import { useMemo } from 'react';
 import ResetPasswordMfaWebAuthnPlatformChallenge from '@auth0/auth0-acul-js/reset-password-mfa-webauthn-platform-challenge';
-import { ContextHooks } from '../hooks/context';
-import type { ResetPasswordMfaWebAuthnPlatformChallengeMembers, ContinueWithPasskeyOptions, ReportBrowserErrorOptions, TryAnotherMethodOptions, ScreenMembersOnResetPasswordMfaWebAuthnPlatformChallenge } from '@auth0/auth0-acul-js/reset-password-mfa-webauthn-platform-challenge';
-import { useErrors, useAuth0Themes } from '../hooks/common';
+import { useMemo } from 'react';
+
 import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-import { setScreen, getScreen } from '../state/instance-store';
+import type {
+  ResetPasswordMfaWebAuthnPlatformChallengeMembers,
+  ContinueWithPasskeyOptions,
+  ReportBrowserErrorOptions,
+  TryAnotherMethodOptions,
+} from '@auth0/auth0-acul-js/reset-password-mfa-webauthn-platform-challenge';
 
-function getInstance(): ResetPasswordMfaWebAuthnPlatformChallengeMembers {
-  try {
-    return getScreen<ResetPasswordMfaWebAuthnPlatformChallengeMembers>();
-  } catch {
-    const instance = new ResetPasswordMfaWebAuthnPlatformChallenge();
-    setScreen(instance);
-    return instance;
-  }
-};
+// Register the singleton instance of ResetPasswordMfaWebAuthnPlatformChallenge
+const instance = registerScreen<ResetPasswordMfaWebAuthnPlatformChallengeMembers>(
+  ResetPasswordMfaWebAuthnPlatformChallenge
+)!;
 
+// Error wrapper
 const { withError } = errorManager;
-const factory = new ContextHooks<ResetPasswordMfaWebAuthnPlatformChallengeMembers>(getInstance);
 
+// Context hooks
+const factory = new ContextHooks<ResetPasswordMfaWebAuthnPlatformChallengeMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -27,23 +29,32 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-// Context hooks
-export const useScreen: () => ScreenMembersOnResetPasswordMfaWebAuthnPlatformChallenge = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
-
 // Submit functions
-export const continueWithPasskey = (options?: ContinueWithPasskeyOptions) => withError(getInstance().continueWithPasskey(options));
-export const reportBrowserError = (options: ReportBrowserErrorOptions) => withError(getInstance().reportBrowserError(options));
-export const tryAnotherMethod = (options?: TryAnotherMethodOptions) => withError(getInstance().tryAnotherMethod(options));
+export const continueWithPasskey = (options?: ContinueWithPasskeyOptions) =>
+  withError(instance.continueWithPasskey(options));
+export const reportBrowserError = (options: ReportBrowserErrorOptions) =>
+  withError(instance.reportBrowserError(options));
+export const tryAnotherMethod = (options?: TryAnotherMethodOptions) =>
+  withError(instance.tryAnotherMethod(options));
 
 // Common hooks
-export { useErrors, useAuth0Themes };
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
 // Main instance hook. Returns singleton instance of ResetPasswordMfaWebAuthnPlatformChallenge
-export const useResetPasswordMfaWebAuthnPlatformChallenge = (): ResetPasswordMfaWebAuthnPlatformChallengeMembers => useMemo(() => getInstance(), []);
+export const useResetPasswordMfaWebAuthnPlatformChallenge =
+  (): ResetPasswordMfaWebAuthnPlatformChallengeMembers => useMemo(() => instance, []);
 
 // Export all types from the core SDK for this screen
-export type * from '@auth0/auth0-acul-js/reset-password-mfa-webauthn-platform-challenge';

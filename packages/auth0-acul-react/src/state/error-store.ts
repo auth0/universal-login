@@ -89,7 +89,6 @@ class ErrorStore {
    */
   replacePartial(kind: ErrorKind, list: Array<Omit<ErrorItem, 'id'> | ErrorItem>, field: string) {
     const incoming = this.normalize(list);
-
     const existing = this.bucket[kind].filter((e) => e.field !== field);
     const nextKindList = Object.freeze([...existing, ...incoming]);
 
@@ -121,17 +120,17 @@ class ErrorStore {
   /** Clear one or more kinds (default: all kinds). */
   clear(kinds: ErrorKind[] = ERROR_KINDS) {
     let changed = false;
-    const next: Partial<Bucket> = {};
+    const next: Bucket = { ...this.bucket };
 
     for (const k of kinds) {
       if (this.bucket[k].length > 0) {
-        (next as any)[k] = Object.freeze([]);
+        next[k] = Object.freeze([]);
         changed = true;
       }
     }
 
     if (!changed) return;
-    this.bucket = Object.freeze({ ...this.bucket, ...next });
+    this.bucket = Object.freeze(next);
     this.notify();
   }
 
@@ -142,18 +141,18 @@ class ErrorStore {
     const isMatch = typeof test === 'string' ? (e: ErrorItem) => e.id === test : test;
 
     let changed = false;
-    const next: Partial<Bucket> = {};
+    const next: Bucket = { ...this.bucket };
 
     for (const k of kinds) {
       const filtered = this.bucket[k].filter((e) => !isMatch(e));
       if (filtered.length !== this.bucket[k].length) {
-        (next as any)[k] = Object.freeze(filtered);
+        next[k] = Object.freeze(filtered);
         changed = true;
       }
     }
 
     if (!changed) return;
-    this.bucket = Object.freeze({ ...this.bucket, ...next });
+    this.bucket = Object.freeze(next);
     this.notify();
   }
 

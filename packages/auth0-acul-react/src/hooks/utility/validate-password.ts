@@ -1,9 +1,11 @@
-import type { PasswordValidationResult } from '@auth0/auth0-acul-js';
-import { errorManager } from '../common/errors';
 import { useMemo } from 'react';
-import { getScreen } from '../../state/instance-store';
 
-interface ScreenWithValidatePassword {
+import { getScreen } from '../../state/instance-store';
+import { errorManager } from '../common/errors';
+
+import type { PasswordValidationResult } from '@auth0/auth0-acul-js';
+
+interface WithValidatePassword {
   validatePassword: (password: string) => PasswordValidationResult;
 }
 
@@ -13,15 +15,15 @@ interface ScreenWithValidatePassword {
  *
  * Optionally, it can send the validation results to the global error manager so that
  * form error components can update automatically.
- * 
+ *
  * @SupportedScreens
  * - `signup`
  * - `signup-password`
  * - `reset-password`
  *
- * @param password 
+ * @param password
  * - The password to validate.
- * @param options.includeInErrors 
+ * @param options.includeInErrors
  * - If `true`, validation errors are stored in the global error manager under the `password` field. Defaults to `false`.
  *
  * @returns A {@link PasswordValidationResult} object containing:
@@ -38,9 +40,12 @@ interface ScreenWithValidatePassword {
  *    }
  * ```
  */
-export function usePasswordValidation(password: string, options?: { includeInErrors?: boolean }): PasswordValidationResult {
+export function usePasswordValidation(
+  password: string,
+  options?: { includeInErrors?: boolean }
+): PasswordValidationResult {
   return useMemo(() => {
-    const instance = getScreen<ScreenWithValidatePassword>();
+    const instance = getScreen<WithValidatePassword>();
     const validation = instance.validatePassword(password);
 
     if (options?.includeInErrors) {
@@ -59,6 +64,6 @@ export function usePasswordValidation(password: string, options?: { includeInErr
 
     return validation;
   }, [password, options?.includeInErrors]);
-};
+}
 
 export { PasswordValidationResult, PasswordComplexityRule } from '@auth0/auth0-acul-js';

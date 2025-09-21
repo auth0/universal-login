@@ -1,11 +1,13 @@
-import { useEffect, useMemo, useRef, useSyncExternalStore, useCallback } from 'react';
-import { errorStore, ERROR_KINDS, type ErrorItem, type ErrorKind } from '../../state/error-store';
 import {
   SDKUsageError,
   UserInputError,
   Auth0ServerError,
   getErrors as getServerErrors,
+  type Error as Auth0Error,
 } from '@auth0/auth0-acul-js';
+import { useEffect, useMemo, useRef, useSyncExternalStore, useCallback } from 'react';
+
+import { errorStore, ERROR_KINDS, type ErrorItem, type ErrorKind } from '../../state/error-store';
 
 export interface ErrorsResult extends ReadonlyArray<ErrorItem> {
   byKind(kind: ErrorKind, opts?: { field?: string }): ReadonlyArray<ErrorItem>;
@@ -23,18 +25,24 @@ export interface UseErrorsResult {
   dismissAll: () => void;
 }
 
-function classifyKind(e: any): ErrorKind | null {
-  if (e instanceof UserInputError) return 'client';
-  if (e instanceof SDKUsageError) return 'developer';
-  if (e instanceof Auth0ServerError) return 'server';
+function classifyKind(e: unknown): ErrorKind | null {
+  if (e instanceof UserInputError) {
+    return 'client';
+  }
+  if (e instanceof SDKUsageError) {
+    return 'developer';
+  }
+  if (e instanceof Auth0ServerError) {
+    return 'server';
+  }
   return null;
 }
 
-function toErrorObject(e: any): Omit<ErrorItem, 'id'> {
+function toErrorObject(e: unknown): Omit<ErrorItem, 'id'> {
   return {
-    code: e?.code ?? e?.name ?? 'unknown_error',
-    message: e?.message ?? 'Unknown error',
-    field: e?.field,
+    code: (e as Auth0Error)?.code ?? (e instanceof Error ? e.name : undefined) ?? 'unknown_error',
+    message: (e as Auth0Error)?.message ?? 'Unknown error',
+    field: (e as Auth0Error)?.field,
   };
 }
 
@@ -42,7 +50,9 @@ function filterByField<T extends { field?: string }>(
   list: ReadonlyArray<T>,
   field?: string
 ): ReadonlyArray<T> {
-  if (!field) return list;
+  if (!field) {
+    return list;
+  }
   return list.filter((e) => e.field === field);
 }
 
@@ -54,7 +64,9 @@ const cacheDev = new WeakMap<ReadonlyArray<ErrorItem>, ReadonlyArray<ErrorItem>>
 const tag = (kind: ErrorKind, arr: ReadonlyArray<ErrorItem>): ReadonlyArray<ErrorItem> => {
   const cache = kind === 'server' ? cacheServer : kind === 'client' ? cacheClient : cacheDev;
   const hit = cache.get(arr);
-  if (hit) return hit;
+  if (hit) {
+    return hit;
+  }
   const out = Object.freeze(arr.map((e) => Object.freeze({ ...e, kind })));
   cache.set(arr, out);
   return out;
@@ -66,7 +78,7 @@ const tag = (kind: ErrorKind, arr: ReadonlyArray<ErrorItem>): ReadonlyArray<Erro
  * - `server` — errors returned by Auth0 or your own backend.
  * - `client` — errors from client-side validation (e.g., invalid form input).
  * - `developer` — errors caused by incorrect integration or SDK misuse.
- * 
+ *
  * @SupportedScreens
  * - The `useErrors` hook is available on every ACUL screen.
  *
@@ -130,7 +142,9 @@ export function useErrors(options: UseErrorOptions = {}): UseErrorsResult {
 
   const didInit = useRef(false);
   useEffect(() => {
-    if (didInit.current) return;
+    if (didInit.current) {
+      return;
+    }
     didInit.current = true;
 
     // Get server errors directly from TS SDK on first render.
@@ -143,8 +157,7 @@ export function useErrors(options: UseErrorOptions = {}): UseErrorsResult {
   const devTagged = useMemo(() => tag('developer', snap.developer), [snap.developer]);
 
   const all = useMemo<ReadonlyArray<ErrorItem>>(
-    () =>
-      Object.freeze([...(includeDevErrors ? devTagged : []), ...clientTagged, ...serverTagged]),
+    () => Object.freeze([...(includeDevErrors ? devTagged : []), ...clientTagged, ...serverTagged]),
     [includeDevErrors, devTagged, clientTagged, serverTagged]
   );
 
@@ -156,7 +169,9 @@ export function useErrors(options: UseErrorOptions = {}): UseErrorsResult {
         return opts?.field ? Object.freeze(filterByField(base, opts.field)) : base;
       },
       byField(field: string, opts?: { kind?: ErrorKind }): ReadonlyArray<ErrorItem> {
-        if (opts?.kind) return arr.byKind(opts.kind, { field });
+        if (opts?.kind) {
+          return arr.byKind(opts.kind, { field });
+        }
         return Object.freeze(filterByField(all, field));
       },
     });
@@ -181,11 +196,12 @@ export function useErrors(options: UseErrorOptions = {}): UseErrorsResult {
 
 // ---------------- INTERNAL (SDK-only) ----------------
 const isPromise = (v: unknown): v is Promise<unknown> =>
-  !!v && typeof (v as any).then === 'function';
+  typeof v === 'object' &&
+  v !== null &&
+  'then' in v &&
+  typeof (v as { then: unknown }).then === 'function';
 
-function withError<T>(
-  actionOrPromise: (() => T | Promise<T>) | Promise<T>
-): T | Promise<T> {
+function withError<T>(actionOrPromise: (() => T | Promise<T>) | Promise<T>): T | Promise<T> {
   const handle = (e: unknown) => {
     const kind = classifyKind(e);
     const normalized = toErrorObject(e);
@@ -209,14 +225,19 @@ function withError<T>(
   if (typeof actionOrPromise === 'function') {
     try {
       const result = (actionOrPromise as () => T | Promise<T>)();
-      return isPromise(result) ? result.catch((e) => { handle(e); throw e; }) : result;
+      return isPromise(result)
+        ? result.catch((e) => {
+            handle(e);
+            throw e;
+          })
+        : result;
     } catch (e) {
       handle(e);
       throw e;
     }
   }
 
-  return (actionOrPromise as Promise<T>).catch((e) => {
+  return actionOrPromise.catch((e) => {
     handle(e);
     throw e;
   });

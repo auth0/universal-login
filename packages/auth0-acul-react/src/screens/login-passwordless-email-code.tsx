@@ -1,25 +1,24 @@
-import { useMemo } from 'react';
 import LoginPasswordlessEmailCode from '@auth0/auth0-acul-js/login-passwordless-email-code';
-import { ContextHooks } from '../hooks/context';
-import type { LoginPasswordlessEmailCodeMembers, SubmitCodeOptions, CustomOptions, ScreenMembersOnLoginPasswordlessEmailCode, TransactionMembersOnLoginPasswordlessEmailCode } from '@auth0/auth0-acul-js/login-passwordless-email-code';
-import { useErrors, useAuth0Themes } from '../hooks/common';
+import { useMemo } from 'react';
+
 import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-import { setScreen, getScreen } from '../state/instance-store';
+import type {
+  LoginPasswordlessEmailCodeMembers,
+  SubmitCodeOptions,
+  CustomOptions,
+} from '@auth0/auth0-acul-js/login-passwordless-email-code';
 
-function getInstance(): LoginPasswordlessEmailCodeMembers {
-  try {
-    return getScreen<LoginPasswordlessEmailCodeMembers>();
-  } catch {
-    const instance = new LoginPasswordlessEmailCode();
-    setScreen(instance);
-    return instance;
-  }
-};
+// Register the singleton instance of LoginPasswordlessEmailCode
+const instance = registerScreen<LoginPasswordlessEmailCodeMembers>(LoginPasswordlessEmailCode)!;
 
+// Error wrapper
 const { withError } = errorManager;
-const factory = new ContextHooks<LoginPasswordlessEmailCodeMembers>(getInstance);
 
+// Context hooks
+const factory = new ContextHooks<LoginPasswordlessEmailCodeMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -27,22 +26,28 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-// Context hooks
-export const useScreen: () => ScreenMembersOnLoginPasswordlessEmailCode = () => useMemo(() => getInstance().screen, []);
-export const useTransaction: () => TransactionMembersOnLoginPasswordlessEmailCode = () => useMemo(() => getInstance().transaction, []);
-
 // Submit functions
-export const submitCode = (payload: SubmitCodeOptions) => withError(getInstance().submitCode(payload));
-export const resendCode = (payload?: CustomOptions) => withError(getInstance().resendCode(payload));
+export const submitCode = (payload: SubmitCodeOptions) => withError(instance.submitCode(payload));
+export const resendCode = (payload?: CustomOptions) => withError(instance.resendCode(payload));
 
 // Common hooks
-export { useErrors, useAuth0Themes };
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
 // Main instance hook. Returns singleton instance of LoginPasswordlessEmailCode
-export const useLoginPasswordlessEmailCode = (): LoginPasswordlessEmailCodeMembers => useMemo(() => getInstance(), []);
+export const useLoginPasswordlessEmailCode = (): LoginPasswordlessEmailCodeMembers =>
+  useMemo(() => instance, []);
 
 // Export all types from the core SDK for this screen
-export type * from '@auth0/auth0-acul-js/login-passwordless-email-code';

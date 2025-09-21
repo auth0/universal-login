@@ -76,6 +76,4 @@ export { useResetPasswordMfaWebAuthnPlatformChallenge } from './screens/reset-pa
 export { useResetPasswordMfaWebAuthnRoamingChallenge } from './screens/reset-password-mfa-webauthn-roaming-challenge';
 export { useCurrentScreen, useErrors, useAuth0Themes } from './hooks/common';
 
-
 // Common types from core SDK
-export type * from '@auth0/auth0-acul-js';

@@ -1,7 +1,7 @@
 export type { CaptchaContext, PhonePrefix, PasskeyCreate, Scope, AuthorizationDetail } from '../models/screen';
 export type { Connection, EnterpriseConnection, PasswordPolicy, UsernamePolicy, Error, Error as ULError, PasswordComplexityRule } from '../models/transaction';
 export type { BrandingSettings, BrandingThemes } from '../models/branding';
-export type { CustomOptions, WebAuthnErrorDetails, CurrentScreenOptions, FlattenedTheme, OnStatusChangeCallback, OnTimeoutCallback, StartResendOptions, ResendControl } from '../common/index';
+export type { CustomOptions, WebAuthnErrorDetails, CurrentScreenOptions, FlattenedTheme, OnStatusChangeCallback, StartResendOptions, ResendControl } from '../common/index';
 export type { EnrolledEmail, EnrolledPhoneNumber, EnrolledDevice } from '../models/user';
 export type { IdentifierType } from '../../src/constants';
 export type { PasskeyCreateResponse, CredentialResponse } from '../utils/passkeys';

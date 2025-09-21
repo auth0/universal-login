@@ -1,25 +1,25 @@
-import { useMemo } from 'react';
 import ResetPasswordMfaPushChallengePush from '@auth0/auth0-acul-js/reset-password-mfa-push-challenge-push';
-import { ContextHooks } from '../hooks/context';
-import type { ResetPasswordMfaPushChallengePushMembers, CustomOptions, MfaPollingOptions, ScreenMembersOnResetPasswordMfaPushChallengePush } from '@auth0/auth0-acul-js/reset-password-mfa-push-challenge-push';
-import { useErrors, useAuth0Themes } from '../hooks/common';
+import { useMemo } from 'react';
+
 import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-import { setScreen, getScreen } from '../state/instance-store';
+import type {
+  ResetPasswordMfaPushChallengePushMembers,
+  CustomOptions,
+} from '@auth0/auth0-acul-js/reset-password-mfa-push-challenge-push';
 
-function getInstance(): ResetPasswordMfaPushChallengePushMembers {
-  try {
-    return getScreen<ResetPasswordMfaPushChallengePushMembers>();
-  } catch {
-    const instance = new ResetPasswordMfaPushChallengePush();
-    setScreen(instance);
-    return instance;
-  }
-};
+// Register the singleton instance of ResetPasswordMfaPushChallengePush
+const instance = registerScreen<ResetPasswordMfaPushChallengePushMembers>(
+  ResetPasswordMfaPushChallengePush
+)!;
 
+// Error wrapper
 const { withError } = errorManager;
-const factory = new ContextHooks<ResetPasswordMfaPushChallengePushMembers>(getInstance);
 
+// Context hooks
+const factory = new ContextHooks<ResetPasswordMfaPushChallengePushMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -27,27 +27,36 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-// Context hooks
-export const useScreen: () => ScreenMembersOnResetPasswordMfaPushChallengePush = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
-
 // Submit functions
-export const continueMethod = (payload?: CustomOptions) => withError(getInstance().continue(payload));
-export const resendPushNotification = (payload?: CustomOptions) => withError(getInstance().resendPushNotification(payload));
-export const enterCodeManually = (payload?: CustomOptions) => withError(getInstance().enterCodeManually(payload));
-export const tryAnotherMethod = (payload?: CustomOptions) => withError(getInstance().tryAnotherMethod(payload));
+export const continueMethod = (payload?: CustomOptions) => withError(instance.continue(payload));
+export const resendPushNotification = (payload?: CustomOptions) =>
+  withError(instance.resendPushNotification(payload));
+export const enterCodeManually = (payload?: CustomOptions) =>
+  withError(instance.enterCodeManually(payload));
+export const tryAnotherMethod = (payload?: CustomOptions) =>
+  withError(instance.tryAnotherMethod(payload));
 
 // Utility Hooks
 export { useMfaPolling } from '../hooks/utility/polling-manager';
 
 // Common hooks
-export { useErrors, useAuth0Themes };
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
 // Main instance hook. Returns singleton instance of ResetPasswordMfaPushChallengePush
-export const useResetPasswordMfaPushChallengePush = (): ResetPasswordMfaPushChallengePushMembers => useMemo(() => getInstance(), []);
+export const useResetPasswordMfaPushChallengePush = (): ResetPasswordMfaPushChallengePushMembers =>
+  useMemo(() => instance, []);
 
 // Export all types from the core SDK for this screen
-export type * from '@auth0/auth0-acul-js/reset-password-mfa-push-challenge-push';

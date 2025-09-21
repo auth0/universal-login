@@ -1,25 +1,27 @@
-import { useMemo } from 'react';
 import MfaWebAuthnPlatformEnrollment from '@auth0/auth0-acul-js/mfa-webauthn-platform-enrollment';
-import { ContextHooks } from '../hooks/context';
-import type { MfaWebAuthnPlatformEnrollmentMembers, SubmitPasskeyCredentialOptions, ReportBrowserErrorOptions, CustomOptions, ScreenMembersOnMfaWebAuthnPlatformEnrollment } from '@auth0/auth0-acul-js/mfa-webauthn-platform-enrollment';
-import { useErrors, useAuth0Themes } from '../hooks/common';
+import { useMemo } from 'react';
+
 import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-import { setScreen, getScreen } from '../state/instance-store';
+import type {
+  MfaWebAuthnPlatformEnrollmentMembers,
+  SubmitPasskeyCredentialOptions,
+  ReportBrowserErrorOptions,
+  CustomOptions,
+} from '@auth0/auth0-acul-js/mfa-webauthn-platform-enrollment';
 
-function getInstance(): MfaWebAuthnPlatformEnrollmentMembers {
-  try {
-    return getScreen<MfaWebAuthnPlatformEnrollmentMembers>();
-  } catch {
-    const instance = new MfaWebAuthnPlatformEnrollment();
-    setScreen(instance);
-    return instance;
-  }
-};
+// Register the singleton instance of MfaWebAuthnPlatformEnrollment
+const instance = registerScreen<MfaWebAuthnPlatformEnrollmentMembers>(
+  MfaWebAuthnPlatformEnrollment
+)!;
 
+// Error wrapper
 const { withError } = errorManager;
-const factory = new ContextHooks<MfaWebAuthnPlatformEnrollmentMembers>(getInstance);
 
+// Context hooks
+const factory = new ContextHooks<MfaWebAuthnPlatformEnrollmentMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -27,24 +29,34 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-// Context hooks
-export const useScreen: () => ScreenMembersOnMfaWebAuthnPlatformEnrollment = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
-
 // Submit functions
-export const submitPasskeyCredential = (payload?: SubmitPasskeyCredentialOptions) => withError(getInstance().submitPasskeyCredential(payload));
-export const reportBrowserError = (payload: ReportBrowserErrorOptions) => withError(getInstance().reportBrowserError(payload));
-export const snoozeEnrollment = (payload?: CustomOptions) => withError(getInstance().snoozeEnrollment(payload));
-export const refuseEnrollmentOnThisDevice = (payload?: CustomOptions) => withError(getInstance().refuseEnrollmentOnThisDevice(payload));
+export const submitPasskeyCredential = (payload?: SubmitPasskeyCredentialOptions) =>
+  withError(instance.submitPasskeyCredential(payload));
+export const reportBrowserError = (payload: ReportBrowserErrorOptions) =>
+  withError(instance.reportBrowserError(payload));
+export const snoozeEnrollment = (payload?: CustomOptions) =>
+  withError(instance.snoozeEnrollment(payload));
+export const refuseEnrollmentOnThisDevice = (payload?: CustomOptions) =>
+  withError(instance.refuseEnrollmentOnThisDevice(payload));
 
 // Common hooks
-export { useErrors, useAuth0Themes };
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
 // Main instance hook. Returns singleton instance of MfaWebAuthnPlatformEnrollment
-export const useMfaWebAuthnPlatformEnrollment = (): MfaWebAuthnPlatformEnrollmentMembers => useMemo(() => getInstance(), []);
+export const useMfaWebAuthnPlatformEnrollment = (): MfaWebAuthnPlatformEnrollmentMembers =>
+  useMemo(() => instance, []);
 
 // Export all types from the core SDK for this screen
-export type * from '@auth0/auth0-acul-js/mfa-webauthn-platform-enrollment';

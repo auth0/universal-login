@@ -1,25 +1,20 @@
-import { useMemo } from 'react';
 import Login from '@auth0/auth0-acul-js/login';
-import { ContextHooks } from '../hooks/context';
-import type { LoginMembers, LoginOptions, FederatedLoginOptions, ScreenMembersOnLogin, TransactionMembersOnLogin } from '@auth0/auth0-acul-js/login';
-import { useErrors, useAuth0Themes } from '../hooks/common';
+import { useMemo } from 'react';
+
 import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-import { setScreen, getScreen } from '../state/instance-store';
+import type { LoginMembers, LoginOptions, FederatedLoginOptions } from '@auth0/auth0-acul-js/login';
 
-function getInstance(): LoginMembers {
-  try {
-    return getScreen<LoginMembers>();
-  } catch {
-    const instance = new Login();
-    setScreen(instance);
-    return instance;
-  }
-};
+// Register the singleton instance of Login
+const instance = registerScreen<LoginMembers>(Login)!;
 
+// Error wrapper
 const { withError } = errorManager;
-const factory = new ContextHooks<LoginMembers>(getInstance);
 
+// Context hooks
+const factory = new ContextHooks<LoginMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -27,25 +22,31 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-// Context hooks
-export const useScreen: () => ScreenMembersOnLogin = () => useMemo(() => getInstance().screen, []);
-export const useTransaction: () => TransactionMembersOnLogin = () => useMemo(() => getInstance().transaction, []);
-
 // Submit functions
-export const login = (payload: LoginOptions) => withError(getInstance().login(payload));
-export const federatedLogin = (payload: FederatedLoginOptions) => withError(getInstance().federatedLogin(payload));
+export const login = (payload: LoginOptions) => withError(instance.login(payload));
+export const federatedLogin = (payload: FederatedLoginOptions) =>
+  withError(instance.federatedLogin(payload));
 
 // Utility Hooks
 export { useActiveIdentifiers } from '../hooks/utility/active-identifiers';
 
 // Common hooks
-export { useErrors, useAuth0Themes };
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
 // Main instance hook. Returns singleton instance of Login
-export const useLogin = (): LoginMembers => useMemo(() => getInstance(), []);
+export const useLogin = (): LoginMembers => useMemo(() => instance, []);
 
 // Export all types from the core SDK for this screen
-export type * from '@auth0/auth0-acul-js/login';

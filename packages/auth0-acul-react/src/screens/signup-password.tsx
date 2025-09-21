@@ -1,25 +1,24 @@
-import { useMemo } from 'react';
 import SignupPassword from '@auth0/auth0-acul-js/signup-password';
-import { ContextHooks } from '../hooks/context';
-import type { SignupPasswordMembers, SignupPasswordOptions, FederatedSignupOptions, ScreenMembersOnSignupPassword, TransactionMembersOnSignupPassword } from '@auth0/auth0-acul-js/signup-password';
-import { useErrors, useAuth0Themes } from '../hooks/common';
+import { useMemo } from 'react';
+
 import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-import { setScreen, getScreen } from '../state/instance-store';
+import type {
+  SignupPasswordMembers,
+  SignupPasswordOptions,
+  FederatedSignupOptions,
+} from '@auth0/auth0-acul-js/signup-password';
 
-function getInstance(): SignupPasswordMembers {
-  try {
-    return getScreen<SignupPasswordMembers>();
-  } catch {
-    const instance = new SignupPassword();
-    setScreen(instance);
-    return instance;
-  }
-};
+// Register the singleton instance of SignupPassword
+const instance = registerScreen<SignupPasswordMembers>(SignupPassword)!;
 
+// Error wrapper
 const { withError } = errorManager;
-const factory = new ContextHooks<SignupPasswordMembers>(getInstance);
 
+// Context hooks
+const factory = new ContextHooks<SignupPasswordMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -27,25 +26,31 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-// Context hooks
-export const useScreen: () => ScreenMembersOnSignupPassword = () => useMemo(() => getInstance().screen, []);
-export const useTransaction: () => TransactionMembersOnSignupPassword = () => useMemo(() => getInstance().transaction, []);
-
 // Submit functions
-export const signup = (payload: SignupPasswordOptions) => withError(getInstance().signup(payload));
-export const federatedSignup = (payload: FederatedSignupOptions) => withError(getInstance().federatedSignup(payload));
+export const signup = (payload: SignupPasswordOptions) => withError(instance.signup(payload));
+export const federatedSignup = (payload: FederatedSignupOptions) =>
+  withError(instance.federatedSignup(payload));
 
 // Utility Hooks
 export { usePasswordValidation } from '../hooks/utility/validate-password';
 
 // Common hooks
-export { useErrors, useAuth0Themes };
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
 // Main instance hook. Returns singleton instance of SignupPassword
-export const useSignupPassword = (): SignupPasswordMembers => useMemo(() => getInstance(), []);
+export const useSignupPassword = (): SignupPasswordMembers => useMemo(() => instance, []);
 
 // Export all types from the core SDK for this screen
-export type * from '@auth0/auth0-acul-js/signup-password';

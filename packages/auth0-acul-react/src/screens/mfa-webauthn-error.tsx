@@ -1,25 +1,23 @@
-import { useMemo } from 'react';
 import MfaWebAuthnError from '@auth0/auth0-acul-js/mfa-webauthn-error';
-import { ContextHooks } from '../hooks/context';
-import type { MfaWebAuthnErrorMembers, CustomOptions, ScreenMembersOnMfaWebAuthnError } from '@auth0/auth0-acul-js/mfa-webauthn-error';
-import { useErrors, useAuth0Themes } from '../hooks/common';
+import { useMemo } from 'react';
+
 import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-import { setScreen, getScreen } from '../state/instance-store';
+import type {
+  MfaWebAuthnErrorMembers,
+  CustomOptions,
+} from '@auth0/auth0-acul-js/mfa-webauthn-error';
 
-function getInstance(): MfaWebAuthnErrorMembers {
-  try {
-    return getScreen<MfaWebAuthnErrorMembers>();
-  } catch {
-    const instance = new MfaWebAuthnError();
-    setScreen(instance);
-    return instance;
-  }
-};
+// Register the singleton instance of MfaWebAuthnError
+const instance = registerScreen<MfaWebAuthnErrorMembers>(MfaWebAuthnError)!;
 
+// Error wrapper
 const { withError } = errorManager;
-const factory = new ContextHooks<MfaWebAuthnErrorMembers>(getInstance);
 
+// Context hooks
+const factory = new ContextHooks<MfaWebAuthnErrorMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -27,24 +25,30 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-// Context hooks
-export const useScreen: () => ScreenMembersOnMfaWebAuthnError = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
-
 // Submit functions
-export const tryAgain = (payload?: CustomOptions) => withError(getInstance().tryAgain(payload));
-export const usePassword = (payload?: CustomOptions) => withError(getInstance().usePassword(payload));
-export const tryAnotherMethod = (payload?: CustomOptions) => withError(getInstance().tryAnotherMethod(payload));
-export const noThanks = (payload?: CustomOptions) => withError(getInstance().noThanks(payload));
+export const tryAgain = (payload?: CustomOptions) => withError(instance.tryAgain(payload));
+export const usePassword = (payload?: CustomOptions) => withError(instance.usePassword(payload));
+export const tryAnotherMethod = (payload?: CustomOptions) =>
+  withError(instance.tryAnotherMethod(payload));
+export const noThanks = (payload?: CustomOptions) => withError(instance.noThanks(payload));
 
 // Common hooks
-export { useErrors, useAuth0Themes };
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
 // Main instance hook. Returns singleton instance of MfaWebAuthnError
-export const useMfaWebAuthnError = (): MfaWebAuthnErrorMembers => useMemo(() => getInstance(), []);
+export const useMfaWebAuthnError = (): MfaWebAuthnErrorMembers => useMemo(() => instance, []);
 
 // Export all types from the core SDK for this screen
-export type * from '@auth0/auth0-acul-js/mfa-webauthn-error';

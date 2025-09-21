@@ -1,9 +1,11 @@
 import { useMemo } from 'react';
-import type { UsernameValidationResult } from '@auth0/auth0-acul-js';
-import { errorManager } from '../common/errors';
-import { getScreen } from '../../state/instance-store';
 
-interface ScreenWithValidateUsername {
+import { getScreen } from '../../state/instance-store';
+import { errorManager } from '../common/errors';
+
+import type { UsernameValidationResult } from '@auth0/auth0-acul-js';
+
+interface WithValidateUsername {
   validateUsername: (username: string) => UsernameValidationResult;
 }
 
@@ -11,11 +13,11 @@ interface ScreenWithValidateUsername {
  * React hook for validating a username against the current Auth0 username policy.
  *
  * This hook checks the provided username against all configured validation rules
- * and returns a structured result describing whether it passes.  
+ * and returns a structured result describing whether it passes.
  * Optionally, it can send validation errors to the global error manager so that
  * UI components observing the `username` field can automatically display or react
  * to these errors.
- * 
+ *
  * @SupportedScreens
  * - `signup`
  * - `signup-id`
@@ -65,7 +67,7 @@ export function useUsernameValidation(
   options?: { includeInErrors?: boolean }
 ): UsernameValidationResult {
   return useMemo(() => {
-    const instance = getScreen<ScreenWithValidateUsername>();
+    const instance = getScreen<WithValidateUsername>();
     const result = instance.validateUsername(username);
 
     if (options?.includeInErrors) {

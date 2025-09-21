@@ -1,34 +1,36 @@
-import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
-import react from 'eslint-plugin-react';
-import parser from '@typescript-eslint/parser';
+import prettier from 'eslint-config-prettier';
+import js from '@eslint/js';
+import importPlugin from 'eslint-plugin-import';
+import eslintPluginPrettier from 'eslint-plugin-prettier';
 
-/** @type {import("eslint").Linter.FlatConfig[]} */
 export default [
-  js.configs.recommended,
-  ...tseslint.configs.recommended,
   {
-    files: ['**/*.ts', '**/*.tsx'],
+    ignores: ['dist/**', 'coverage/**', 'node_modules/**'],
+  },
+  js.configs.recommended,
+  ...tseslint.configs.recommendedTypeChecked,
+  prettier,
+  {
+    files: ['src/**/*.{ts,tsx}'],
     languageOptions: {
-      parser,
+      parser: tseslint.parser,
       parserOptions: {
-        ecmaVersion: 2020,
-        sourceType: 'module',
-        ecmaFeatures: { jsx: true },
+        project: ['./tsconfig.json'],
+        tsconfigRootDir: process.cwd(),
       },
     },
-    plugins: {
-      react,
-      '@typescript-eslint': tseslint.plugin,
-    },
-    settings: {
-      react: {
-        version: 'detect',
-      },
-    },
+    plugins: { import: importPlugin, prettier: eslintPluginPrettier },
     rules: {
-      ...react.configs.recommended.rules,
-      '@typescript-eslint/no-explicit-any': 'off', // Disable the rule
+      'prettier/prettier': 'error',
+      'import/order': [
+        'error',
+        {
+          groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'type'],
+          'newlines-between': 'always',
+          alphabetize: { order: 'asc', caseInsensitive: true },
+        },
+      ],
     },
   },
 ];
