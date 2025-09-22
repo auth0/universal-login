@@ -50,14 +50,16 @@ export function usePasswordValidation(
 
     if (options?.includeInErrors) {
       errorManager.replaceClientErrors(
-        [
-          {
-            code: 'password-policy-error',
-            field: 'password',
-            message: 'The password does not meet the required criteria.',
-            rules: validation.results,
-          },
-        ],
+        validation.isValid
+          ? []
+          : [
+              {
+                code: 'password-policy-error',
+                field: 'password',
+                message: 'The password does not meet the required criteria.',
+                rules: validation.results,
+              },
+            ],
         { byField: 'password' }
       );
     }
