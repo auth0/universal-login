@@ -1,5 +1,6 @@
-import { ScreenOverride } from '../../../../src/screens/reset-password-mfa-sms-challenge/screen-override';
 import { Screen } from '../../../../src/models/screen';
+import { ScreenOverride } from '../../../../src/screens/reset-password-mfa-sms-challenge/screen-override';
+
 import type { ScreenContext } from '../../../../interfaces/models/screen';
 
 describe('ScreenOverride', () => {
@@ -26,6 +27,28 @@ describe('ScreenOverride', () => {
     const screenOverride = new ScreenOverride(screenContext);
 
     expect(screenOverride.data).toBeNull();
+  });
+
+  it('should handle null data in getScreenData', () => {
+    const screenContext: ScreenContext = {
+      name: 'reset-password-mfa-sms-challenge',
+      data: null
+    } as unknown as ScreenContext;
+
+    const result = ScreenOverride.getScreenData(screenContext);
+
+    expect(result).toBeNull();
+  });
+
+  it('should handle undefined data in getScreenData', () => {
+    const screenContext: ScreenContext = {
+      name: 'reset-password-mfa-sms-challenge',
+      data: undefined
+    } as ScreenContext;
+
+    const result = ScreenOverride.getScreenData(screenContext);
+
+    expect(result).toBeNull();
   });
 
   it('should extend Screen class', () => {

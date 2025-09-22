@@ -2,7 +2,7 @@ import MfaOtpEnrollmentQr from '../../../../src/screens/mfa-otp-enrollment-qr';
 import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { CustomOptions } from 'interfaces/common';
-import { FormActions } from '../../../../src/constants';
+import { FormActions, ScreenIds } from '../../../../src/constants';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -12,12 +12,22 @@ describe('MfaOtpEnrollmentQr', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
-    window.universal_login_context = baseContextData;
+    window.universal_login_context = {
+      ...baseContextData,
+      screen: {
+        ...baseContextData.screen,
+        name: 'mfa-otp-enrollment-qr',
+      }
+    };
     mfaOtpEnrollmentQr = new MfaOtpEnrollmentQr();
     mockFormHandler = {
       submitData: jest.fn(),
     };
     (FormHandler as jest.Mock).mockImplementation(() => mockFormHandler);
+  });
+
+  it('should have the correct screenIdentifier', () => {
+    expect(MfaOtpEnrollmentQr.screenIdentifier).toBe(ScreenIds.MFA_OTP_ENROLLMENT_QR);
   });
 
   describe('toggleView method', () => {
