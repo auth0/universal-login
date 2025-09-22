@@ -2,7 +2,7 @@ import type { Error as ErrorSchema } from "../../interfaces/models/transaction";
 import type {
   MfaPollingOptions,
   MfaPushPollingControl,
-} from "../../interfaces/utils/polling-control.ts";
+} from "../../interfaces/utils/polling-control";
 
 /**
  * Starts polling the MFA push challenge endpoint using XHR GET requests.

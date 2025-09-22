@@ -19,12 +19,12 @@ jest.mock('../../../../src/utils/validate-password', () => ({
   validatePassword: jest.fn(),
 }));
 
-jest.mock('../../../../src/utils/get-enabled-identifiers', () => ({
+jest.mock('../../../../src/utils/enabled-identifiers', () => ({
   getEnabledIdentifiers: jest.fn(),
 }));
 
 import { validatePassword as _validatePassword } from '../../../../src/utils/validate-password';
-import { getEnabledIdentifiers } from '../../../../src/utils/get-enabled-identifiers';
+import { getEnabledIdentifiers } from '../../../../src/utils/enabled-identifiers';
 
 describe('Signup', () => {
   let signup: Signup;

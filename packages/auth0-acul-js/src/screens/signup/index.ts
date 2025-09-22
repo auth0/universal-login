@@ -1,8 +1,8 @@
 import { PasswordValidationResult } from '../../../interfaces/utils/validate-password';
 import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
+import { getEnabledIdentifiers as _getEnabledIdentifiers} from '../../utils/enabled-identifiers';
 import { FormHandler } from '../../utils/form-handler';
-import { getEnabledIdentifiers as _getEnabledIdentifiers} from '../../utils/get-enabled-identifiers';
 import { validatePassword as _validatePassword} from '../../utils/validate-password';
 import { validateUsername as _validateUsername} from '../../utils/validate-username';
 
@@ -18,8 +18,8 @@ import type {
   FederatedSignupOptions,
   TransactionMembersOnSignup as TransactionOptions,
 } from '../../../interfaces/screens/signup';
+import type { Identifier } from '../../../interfaces/utils/enabled-identifiers';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import type { Identifier } from '../../../interfaces/utils/get-enabled-identifiers';
 import type { UsernameValidationResult } from '../../../interfaces/utils/validate-username';
 
 export default class Signup extends BaseContext implements SignupMembers {

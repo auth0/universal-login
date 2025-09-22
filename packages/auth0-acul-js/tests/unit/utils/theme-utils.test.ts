@@ -4,7 +4,7 @@ import {
   flattenBorders,
   flattenPageBackground,
   flattenWidget,
-} from '../../../src/utils/theme-utils';
+} from '../../../src/utils/branding-theme';
 
 describe('Theme Utils', () => {
   describe('flattenColors', () => {
