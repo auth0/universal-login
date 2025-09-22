@@ -22,6 +22,71 @@ const UNIFIED_DOCS_DIR = path.join(ROOT_DIR, 'docs');
 let totalFiles = 0;
 let processedFiles = 0;
 
+// Parse command line arguments for selective package updates
+const args = process.argv.slice(2);
+const packageFilter = args.find(arg => arg.startsWith('--package='))?.split('=')[1];
+const packagesFilter = args.find(arg => arg.startsWith('--packages='))?.split('=')[1]?.split(',');
+const forceAll = args.includes('--all');
+
+console.log('🔍 Command line options:');
+if (packageFilter) console.log(`   • Single package: ${packageFilter}`);
+if (packagesFilter) console.log(`   • Multiple packages: ${packagesFilter.join(', ')}`);
+if (forceAll) console.log('   • Force all packages');
+if (!packageFilter && !packagesFilter && !forceAll) console.log('   • Auto-detect changed packages');
+
+/**
+ * Check if a package should be included based on filters
+ */
+function shouldIncludePackage(packageName) {
+  // If specific package filter is set
+  if (packageFilter) {
+    return packageName === packageFilter;
+  }
+  
+  // If multiple packages filter is set
+  if (packagesFilter && packagesFilter.length > 0) {
+    return packagesFilter.includes(packageName);
+  }
+  
+  // If force all is set, include everything
+  if (forceAll) {
+    return true;
+  }
+  
+  // Default: include all packages (for backwards compatibility)
+  return true;
+}
+
+/**
+ * Detect recently changed packages using git
+ */
+async function getChangedPackages() {
+  try {
+    const { exec } = await import('child_process');
+    const { promisify } = await import('util');
+    const execAsync = promisify(exec);
+    
+    // Get list of changed files in the last commit or staged files
+    const { stdout } = await execAsync('git diff --name-only HEAD~1 HEAD || git diff --cached --name-only || git diff --name-only');
+    
+    const changedFiles = stdout.split('\n').filter(Boolean);
+    const changedPackages = new Set();
+    
+    // Extract package names from changed file paths
+    changedFiles.forEach(file => {
+      const match = file.match(/^packages\/([^\/]+)\//);
+      if (match) {
+        changedPackages.add(match[1]);
+      }
+    });
+    
+    return Array.from(changedPackages);
+  } catch (error) {
+    console.warn('⚠️  Could not detect changed packages via git:', error.message);
+    return [];
+  }
+}
+
 async function readMd() {
     try {
         const readmePath = path.join(ROOT_DIR, 'README.md');
@@ -135,6 +200,12 @@ async function getPackagesWithDocs() {
       }
     }
 
+    // Get changed packages for auto-detection
+    const changedPackages = await getChangedPackages();
+    if (changedPackages.length > 0 && !packageFilter && !packagesFilter && !forceAll) {
+      console.log(`🔍 Auto-detected changed packages: ${changedPackages.join(', ')}`);
+    }
+
     for (const packageName of validPackageNames) {
       const packageDocsDir = path.join(PACKAGES_DIR, packageName, 'docs');
       const packageJsonPath = path.join(PACKAGES_DIR, packageName, 'package.json');
@@ -143,18 +214,28 @@ async function getPackagesWithDocs() {
       const packageJsonExists = fsSync.existsSync(packageJsonPath);
       
       if (docsExists && packageJsonExists) {
-        try {
-          const packageJsonContent = await fs.readFile(packageJsonPath, 'utf8');
-          const packageJson = JSON.parse(packageJsonContent);
-          packages.push({
-            name: packageName,
-            displayName: packageJson.name || packageName,
-            description: packageJson.description || '',
-            version: packageJson.version || '0.0.0',
-            docsPath: packageDocsDir
-          });
-        } catch (error) {
-          console.warn(`Failed to read package.json for ${packageName}:`, error.message);
+        // Check if package should be included based on filters or changes
+        let includePackage = shouldIncludePackage(packageName);
+        
+        // If no explicit filters and we have changed packages, only include changed ones
+        if (!packageFilter && !packagesFilter && !forceAll && changedPackages.length > 0) {
+          includePackage = changedPackages.includes(packageName);
+        }
+        
+        if (includePackage) {
+          try {
+            const packageJsonContent = await fs.readFile(packageJsonPath, 'utf8');
+            const packageJson = JSON.parse(packageJsonContent);
+            packages.push({
+              name: packageName,
+              displayName: packageJson.name || packageName,
+              description: packageJson.description || '',
+              version: packageJson.version || '0.0.0',
+              docsPath: packageDocsDir
+            });
+          } catch (error) {
+            console.warn(`Failed to read package.json for ${packageName}:`, error.message);
+          }
         }
       }
     }
@@ -227,10 +308,60 @@ function extractCssContent(htmlContent) {
 }
 
 /**
+ * Get all packages that have docs folders (for landing page generation)
+ */
+async function getAllPackagesForLanding() {
+  const packages = [];
+  
+  try {
+    const exists = fsSync.existsSync(PACKAGES_DIR);
+    if (!exists) return packages;
+
+    const packageNames = await fs.readdir(PACKAGES_DIR);
+    
+    for (const packageName of packageNames) {
+      const packageDir = path.join(PACKAGES_DIR, packageName);
+      const stat = await fs.stat(packageDir).catch(() => null);
+      if (!stat?.isDirectory()) continue;
+      
+      const packageDocsDir = path.join(PACKAGES_DIR, packageName, 'docs');
+      const packageJsonPath = path.join(PACKAGES_DIR, packageName, 'package.json');
+      const unifiedDocsDir = path.join(UNIFIED_DOCS_DIR, packageName);
+      
+      // Check if docs exist either in package or unified location
+      const docsExists = fsSync.existsSync(packageDocsDir) || fsSync.existsSync(unifiedDocsDir);
+      const packageJsonExists = fsSync.existsSync(packageJsonPath);
+      
+      if (docsExists && packageJsonExists) {
+        try {
+          const packageJsonContent = await fs.readFile(packageJsonPath, 'utf8');
+          const packageJson = JSON.parse(packageJsonContent);
+          packages.push({
+            name: packageName,
+            displayName: packageJson.name || packageName,
+            description: packageJson.description || '',
+            version: packageJson.version || '0.0.0'
+          });
+        } catch (error) {
+          console.warn(`Failed to read package.json for ${packageName}:`, error.message);
+        }
+      }
+    }
+  } catch (error) {
+    console.error('Error reading packages for landing page:', error.message);
+  }
+
+  return packages;
+}
+
+/**
  * Generate main index.html with README content and package links (async)
  */
-async function generateMainIndex(packages) {
+async function generateMainIndex(updatedPackages) {
   console.log('📝 Generating main index.html with README content...');
+  
+  // Get all packages for the landing page (not just updated ones)
+  const allPackages = await getAllPackagesForLanding();
   
   // Create main index.html with README content and package links
   const indexHtml = `<!DOCTYPE html>
@@ -399,15 +530,11 @@ async function generateMainIndex(packages) {
         <p>Comprehensive documentation for all packages</p>
     </div>
     
-    <div class="readme-content">
-        ${await readMd()}
-    </div>
-    
     <div class="packages-section">
         <h2>📚 Package Documentation</h2>
         <p style="text-align: center; color: #666;">Browse individual package documentation</p>
         <div class="package-links">
-            ${packages.map(pkg => `
+            ${allPackages.map(pkg => `
                 <div class="package-card">
                     <div class="package-title">📦 ${pkg.displayName}</div>
                     <div class="package-version">v${pkg.version}</div>
@@ -421,6 +548,10 @@ async function generateMainIndex(packages) {
                 </div>
             `).join('')}
         </div>
+    </div>
+
+    <div class="readme-content">
+        ${await readMd()}
     </div>
 
     <div class="footer">
@@ -490,6 +621,26 @@ async function unifyDocumentation() {
     console.log(`   • ${pkg.displayName} (v${pkg.version})`);
   });
 
+  // Clean existing unified docs (only for packages we're updating)
+  if (packages.length > 0) {
+    console.log('\n🧹 Cleaning unified docs for selected packages...');
+    const items = await fs.readdir(UNIFIED_DOCS_DIR).catch(() => []);
+    const packageNames = packages.map(pkg => pkg.name);
+    
+    for (const item of items) {
+      if (item !== 'README.md' && item !== 'index.html' && item !== '.nojekyll') {
+        const itemPath = path.join(UNIFIED_DOCS_DIR, item);
+        const stat = await fs.stat(itemPath).catch(() => null);
+        
+        if (stat?.isDirectory() && packageNames.includes(item)) {
+          console.log(`   • Cleaning ${item}...`);
+          await fs.rm(itemPath, { recursive: true, force: true });
+        }
+      }
+    }
+    console.log('   ✅ Cleaned existing docs for selected packages');
+  }
+
   // Count total files for progress tracking
   console.log('\n📊 Counting files for progress tracking...');
   for (const pkg of packages) {
@@ -529,6 +680,12 @@ async function unifyDocumentation() {
   console.log('\n🎉 Documentation unification complete!');
   console.log(`📖 Open ${path.join(UNIFIED_DOCS_DIR, 'index.html')} in your browser to view the documentation.`);
   console.log(`📁 Individual package docs are available in their respective folders.`);
+  
+  console.log('\n💡 Usage options for selective updates:');
+  console.log('   • node scripts/unify-docs.js --package=auth0-acul-js    (single package)');
+  console.log('   • node scripts/unify-docs.js --packages=auth0-acul-js,auth0-acul-react    (multiple packages)');
+  console.log('   • node scripts/unify-docs.js --all    (force all packages)');
+  console.log('   • node scripts/unify-docs.js    (auto-detect changed packages via git)');
 }
 
 // Run the script
