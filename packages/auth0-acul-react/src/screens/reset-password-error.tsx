@@ -1,20 +1,16 @@
-import { useMemo } from 'react';
 import ResetPasswordError from '@auth0/auth0-acul-js/reset-password-error';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { ResetPasswordErrorMembers, ScreenMembersOnResetPasswordError } from '@auth0/auth0-acul-js/reset-password-error';
-let instance: ResetPasswordErrorMembers | null = null;
-const getInstance = (): ResetPasswordErrorMembers => {
-  if (!instance) {
-    instance = new ResetPasswordError();
-  }
-  return instance;
-};
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const useResetPasswordError = (): ResetPasswordErrorMembers => useMemo(() => getInstance(), []);
+import type { ResetPasswordErrorMembers } from '@auth0/auth0-acul-js/reset-password-error';
 
-const factory = new ContextHooks<ResetPasswordErrorMembers>(getInstance);
+// Register the singleton instance of ResetPasswordError
+const instance = registerScreen<ResetPasswordErrorMembers>(ResetPasswordError)!;
 
+// Context hooks
+const factory = new ContextHooks<ResetPasswordErrorMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,12 +18,23 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen: () => ScreenMembersOnResetPasswordError = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type { ScreenMembersOnResetPasswordError, ResetPasswordErrorMembers } from '@auth0/auth0-acul-js/reset-password-error';
+// Main instance hook. Returns singleton instance of ResetPasswordError
+export const useResetPasswordError = (): ResetPasswordErrorMembers => useMemo(() => instance, []);
 
-export type * from '@auth0/auth0-acul-js/reset-password-error';
+// Export all types from the core SDK for this screen

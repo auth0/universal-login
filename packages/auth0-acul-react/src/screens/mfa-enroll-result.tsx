@@ -1,20 +1,16 @@
-import { useMemo } from 'react';
 import MfaEnrollResult from '@auth0/auth0-acul-js/mfa-enroll-result';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { MfaEnrollResultMembers, ScreenMembersOnMfaEnrollResult } from '@auth0/auth0-acul-js/mfa-enroll-result';
-let instance: MfaEnrollResultMembers | null = null;
-const getInstance = (): MfaEnrollResultMembers => {
-  if (!instance) {
-    instance = new MfaEnrollResult();
-  }
-  return instance;
-};
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const useMfaEnrollResult = (): MfaEnrollResultMembers => useMemo(() => getInstance(), []);
+import type { MfaEnrollResultMembers } from '@auth0/auth0-acul-js/mfa-enroll-result';
 
-const factory = new ContextHooks<MfaEnrollResultMembers>(getInstance);
+// Register the singleton instance of MfaEnrollResult
+const instance = registerScreen<MfaEnrollResultMembers>(MfaEnrollResult)!;
 
+// Context hooks
+const factory = new ContextHooks<MfaEnrollResultMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,12 +18,23 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen: () => ScreenMembersOnMfaEnrollResult = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type { ScreenMembersOnMfaEnrollResult, MfaEnrollResultMembers } from '@auth0/auth0-acul-js/mfa-enroll-result';
+// Main instance hook. Returns singleton instance of MfaEnrollResult
+export const useMfaEnrollResult = (): MfaEnrollResultMembers => useMemo(() => instance, []);
 
-export type * from '@auth0/auth0-acul-js/mfa-enroll-result';
+// Export all types from the core SDK for this screen

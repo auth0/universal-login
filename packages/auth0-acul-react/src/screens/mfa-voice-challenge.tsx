@@ -1,20 +1,24 @@
-import { useMemo } from 'react';
 import MfaVoiceChallenge from '@auth0/auth0-acul-js/mfa-voice-challenge';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { MfaVoiceChallengeMembers, MfaVoiceChallengeContinueOptions, CustomOptions, ScreenMembersOnMfaVoiceChallenge } from '@auth0/auth0-acul-js/mfa-voice-challenge';
-let instance: MfaVoiceChallengeMembers | null = null;
-const getInstance = (): MfaVoiceChallengeMembers => {
-  if (!instance) {
-    instance = new MfaVoiceChallenge();
-  }
-  return instance;
-};
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const useMfaVoiceChallenge = (): MfaVoiceChallengeMembers => useMemo(() => getInstance(), []);
+import type {
+  MfaVoiceChallengeMembers,
+  MfaVoiceChallengeContinueOptions,
+  CustomOptions,
+} from '@auth0/auth0-acul-js/mfa-voice-challenge';
 
-const factory = new ContextHooks<MfaVoiceChallengeMembers>(getInstance);
+// Register the singleton instance of MfaVoiceChallenge
+const instance = registerScreen<MfaVoiceChallengeMembers>(MfaVoiceChallenge)!;
 
+// Error wrapper
+const { withError } = errorManager;
+
+// Context hooks
+const factory = new ContextHooks<MfaVoiceChallengeMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,19 +26,35 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen: () => ScreenMembersOnMfaVoiceChallenge = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const continueMethod = (payload: MfaVoiceChallengeContinueOptions) =>
+  withError(instance.continue(payload));
+export const pickPhone = (payload?: CustomOptions) => withError(instance.pickPhone(payload));
+export const switchToSms = (payload?: CustomOptions) => withError(instance.switchToSms(payload));
+export const resendCode = (payload?: CustomOptions) => withError(instance.resendCode(payload));
+export const tryAnotherMethod = (payload?: CustomOptions) =>
+  withError(instance.tryAnotherMethod(payload));
 
-// Screen methods
-export const continueMethod = (payload: MfaVoiceChallengeContinueOptions) => getInstance().continue(payload);
-export const pickPhone = (payload?: CustomOptions) => getInstance().pickPhone(payload);
-export const switchToSms = (payload?: CustomOptions) => getInstance().switchToSms(payload);
-export const resendCode = (payload?: CustomOptions) => getInstance().resendCode(payload);
-export const tryAnotherMethod = (payload?: CustomOptions) => getInstance().tryAnotherMethod(payload);
+// Utility Hooks
+export { useResend } from '../hooks/utility/resend-manager';
 
-export type { MfaVoiceChallengeContinueOptions, ScreenMembersOnMfaVoiceChallenge, MfaVoiceChallengeMembers, UntrustedDataMembersOnMfaVoiceChallenge } from '@auth0/auth0-acul-js/mfa-voice-challenge';
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type * from '@auth0/auth0-acul-js/mfa-voice-challenge';
+// Main instance hook. Returns singleton instance of MfaVoiceChallenge
+export const useMfaVoiceChallenge = (): MfaVoiceChallengeMembers => useMemo(() => instance, []);
+
+// Export all types from the core SDK for this screen

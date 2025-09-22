@@ -1,12 +1,12 @@
 import { ScreenIds } from '../../constants';
-import coreValidatePassword from '../../helpers/validatePassword';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
+import { validatePassword as _validatePassword} from '../../utils/validate-password';
+
 
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
 
-import type { PasswordRuleValidation } from '../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type {
   SignupPasswordMembers,
@@ -17,6 +17,7 @@ import type {
   FederatedSignupOptions
 } from '../../../interfaces/screens/signup-password';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import type { PasswordValidationResult } from '../../../interfaces/utils/validate-password';
 
 export default class SignupPassword extends BaseContext implements SignupPasswordMembers {
   static screenIdentifier: string = ScreenIds.SIGNUP_PASSWORD;
@@ -114,7 +115,8 @@ export default class SignupPassword extends BaseContext implements SignupPasswor
   * - `isValid`: boolean indicating if the password passed that rule.
   *
   * @param {string} password - The password string to validate.
-  * @returns {PasswordRuleValidation[]} An array of rule validation results.
+  * @returns {PasswordValidationResult}
+  * @category Utility
   *
   * @example
   * ```ts
@@ -129,9 +131,9 @@ export default class SignupPassword extends BaseContext implements SignupPasswor
   * // ]
   * ```
   */
-  validatePassword(password: string): PasswordRuleValidation[] {
+  validatePassword(password: string): PasswordValidationResult {
     const passwordPolicy = this.transaction?.passwordPolicy;
-    return coreValidatePassword(password, passwordPolicy);
+    return _validatePassword(password, passwordPolicy);
   }
 }
 

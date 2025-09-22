@@ -1,20 +1,20 @@
-import { useMemo } from 'react';
 import RedeemTicket from '@auth0/auth0-acul-js/redeem-ticket';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
+
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
 import type { RedeemTicketMembers, CustomOptions } from '@auth0/auth0-acul-js/redeem-ticket';
-let instance: RedeemTicketMembers | null = null;
-const getInstance = (): RedeemTicketMembers => {
-  if (!instance) {
-    instance = new RedeemTicket();
-  }
-  return instance;
-};
 
-export const useRedeemTicket = (): RedeemTicketMembers => useMemo(() => getInstance(), []);
+// Register the singleton instance of RedeemTicket
+const instance = registerScreen<RedeemTicketMembers>(RedeemTicket)!;
 
-const factory = new ContextHooks<RedeemTicketMembers>(getInstance);
+// Error wrapper
+const { withError } = errorManager;
 
+// Context hooks
+const factory = new ContextHooks<RedeemTicketMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,15 +22,26 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const continueMethod = (payload?: CustomOptions) => withError(instance.continue(payload));
 
-// Screen methods
-export const continueMethod = (payload?: CustomOptions) => getInstance().continue(payload);
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type { RedeemTicketMembers } from '@auth0/auth0-acul-js/redeem-ticket';
+// Main instance hook. Returns singleton instance of RedeemTicket
+export const useRedeemTicket = (): RedeemTicketMembers => useMemo(() => instance, []);
 
-export type * from '@auth0/auth0-acul-js/redeem-ticket';
+// Export all types from the core SDK for this screen

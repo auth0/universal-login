@@ -1,20 +1,20 @@
-import { useMemo } from 'react';
 import MfaPushWelcome from '@auth0/auth0-acul-js/mfa-push-welcome';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { MfaPushWelcomeMembers, CustomOptions, ScreenMembersOnMfaPushWelcome } from '@auth0/auth0-acul-js/mfa-push-welcome';
-let instance: MfaPushWelcomeMembers | null = null;
-const getInstance = (): MfaPushWelcomeMembers => {
-  if (!instance) {
-    instance = new MfaPushWelcome();
-  }
-  return instance;
-};
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const useMfaPushWelcome = (): MfaPushWelcomeMembers => useMemo(() => getInstance(), []);
+import type { MfaPushWelcomeMembers, CustomOptions } from '@auth0/auth0-acul-js/mfa-push-welcome';
 
-const factory = new ContextHooks<MfaPushWelcomeMembers>(getInstance);
+// Register the singleton instance of MfaPushWelcome
+const instance = registerScreen<MfaPushWelcomeMembers>(MfaPushWelcome)!;
 
+// Error wrapper
+const { withError } = errorManager;
+
+// Context hooks
+const factory = new ContextHooks<MfaPushWelcomeMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,16 +22,28 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen: () => ScreenMembersOnMfaPushWelcome = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const enroll = (payload?: CustomOptions) => withError(instance.enroll(payload));
+export const pickAuthenticator = (payload?: CustomOptions) =>
+  withError(instance.pickAuthenticator(payload));
 
-// Screen methods
-export const enroll = (payload?: CustomOptions) => getInstance().enroll(payload);
-export const pickAuthenticator = (payload?: CustomOptions) => getInstance().pickAuthenticator(payload);
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type { ScreenMembersOnMfaPushWelcome, MfaPushWelcomeMembers } from '@auth0/auth0-acul-js/mfa-push-welcome';
+// Main instance hook. Returns singleton instance of MfaPushWelcome
+export const useMfaPushWelcome = (): MfaPushWelcomeMembers => useMemo(() => instance, []);
 
-export type * from '@auth0/auth0-acul-js/mfa-push-welcome';
+// Export all types from the core SDK for this screen

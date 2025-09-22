@@ -1,20 +1,23 @@
-import { useMemo } from 'react';
 import MfaRecoveryCodeEnrollment from '@auth0/auth0-acul-js/mfa-recovery-code-enrollment';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { MfaRecoveryCodeEnrollmentMembers, MfaRecoveryCodeEnrollmentContinueOptions, ScreenMembersOnMfaRecoveryCodeEnrollment } from '@auth0/auth0-acul-js/mfa-recovery-code-enrollment';
-let instance: MfaRecoveryCodeEnrollmentMembers | null = null;
-const getInstance = (): MfaRecoveryCodeEnrollmentMembers => {
-  if (!instance) {
-    instance = new MfaRecoveryCodeEnrollment();
-  }
-  return instance;
-};
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const useMfaRecoveryCodeEnrollment = (): MfaRecoveryCodeEnrollmentMembers => useMemo(() => getInstance(), []);
+import type {
+  MfaRecoveryCodeEnrollmentMembers,
+  MfaRecoveryCodeEnrollmentContinueOptions,
+} from '@auth0/auth0-acul-js/mfa-recovery-code-enrollment';
 
-const factory = new ContextHooks<MfaRecoveryCodeEnrollmentMembers>(getInstance);
+// Register the singleton instance of MfaRecoveryCodeEnrollment
+const instance = registerScreen<MfaRecoveryCodeEnrollmentMembers>(MfaRecoveryCodeEnrollment)!;
 
+// Error wrapper
+const { withError } = errorManager;
+
+// Context hooks
+const factory = new ContextHooks<MfaRecoveryCodeEnrollmentMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,15 +25,28 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen: () => ScreenMembersOnMfaRecoveryCodeEnrollment = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const continueMethod = (payload: MfaRecoveryCodeEnrollmentContinueOptions) =>
+  withError(instance.continue(payload));
 
-// Screen methods
-export const continueMethod = (payload: MfaRecoveryCodeEnrollmentContinueOptions) => getInstance().continue(payload);
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type { ScreenMembersOnMfaRecoveryCodeEnrollment, MfaRecoveryCodeEnrollmentContinueOptions, MfaRecoveryCodeEnrollmentMembers } from '@auth0/auth0-acul-js/mfa-recovery-code-enrollment';
+// Main instance hook. Returns singleton instance of MfaRecoveryCodeEnrollment
+export const useMfaRecoveryCodeEnrollment = (): MfaRecoveryCodeEnrollmentMembers =>
+  useMemo(() => instance, []);
 
-export type * from '@auth0/auth0-acul-js/mfa-recovery-code-enrollment';
+// Export all types from the core SDK for this screen

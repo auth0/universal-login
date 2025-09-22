@@ -52,6 +52,11 @@ export function createResendControl(
   };
 
   const startTimer = (): void => {
+    // Don't start timer if resend limit is reached
+    if (resendLimitReached) {
+      return;
+    }
+    
     localStorage.setItem(storageKey, Date.now().toString());
     hasCalledOnTimeout = false; // Reset for new timer
     cleanup();
@@ -76,8 +81,8 @@ export function createResendControl(
   // Initial state calculation without triggering onStatusChange
   calculateState();
 
-  // Resume countdown if there's time remaining from previous session
-  if (remaining > 0) {
+  // Resume countdown if there's time remaining from previous session and resend limit not reached
+  if (remaining > 0 && !resendLimitReached) {
     intervalId = setInterval(() => {
       calculateState();
       if (remaining <= 0) {

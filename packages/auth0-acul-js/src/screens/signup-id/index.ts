@@ -1,14 +1,13 @@
 import { ScreenIds, FormActions } from '../../constants';
-import coreGetIdentifier from '../../helpers/getEnabledIdentifiers';
-import coreValidateUsername from '../../helpers/validateUsername';
 import { BaseContext } from '../../models/base-context';
 import { getBrowserCapabilities } from '../../utils/browser-capabilities';
 import { FormHandler } from '../../utils/form-handler';
+import { getEnabledIdentifiers as _getEnabledIdentifiers} from '../../utils/get-enabled-identifiers';
+import { validateUsername as _validateUsername} from '../../utils/validate-username';
 
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
 
-import type { Identifier, UsernameValidationResult } from '../../../interfaces/models/screen';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type {
@@ -19,6 +18,8 @@ import type {
   FederatedSignupOptions,
 } from '../../../interfaces/screens/signup-id';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import type { Identifier } from '../../../interfaces/utils/get-enabled-identifiers';
+import type { UsernameValidationResult } from '../../../interfaces/utils/validate-username';
 
 export default class SignupId extends BaseContext implements SignupIdMembers {
   static screenIdentifier: string = ScreenIds.SIGNUP_ID;
@@ -114,7 +115,7 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
    * marking each as required or optional based on transaction config.
    *
    * @returns Array of identifier objects (e.g., email, phone, username).
-   *
+   * @category Utility
    * @example
    * const signupId = new SignupId();
    * const identifiers = signupId.getEnabledIdentifiers();
@@ -125,7 +126,7 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
       ...this.transaction,
       errors: this.transaction.errors ?? undefined, // convert `null` to `undefined`
     };
-    return coreGetIdentifier(transaction.requiredIdentifiers ?? [], transaction.optionalIdentifiers ?? [], transaction.connectionStrategy);
+    return _getEnabledIdentifiers(transaction.requiredIdentifiers ?? [], transaction.optionalIdentifiers ?? [], transaction.connectionStrategy);
   }
   
   /**
@@ -152,6 +153,7 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
      *
      * @param username - The username string to validate.
      * @returns Result object indicating whether the username is valid and why.
+     * @category Utility
      *
      * @example
      * const signupIdManager = new SignupId();
@@ -160,13 +162,14 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
      */
     validateUsername(username: string): UsernameValidationResult {
       const usernameValidationConfig = this.transaction.usernamePolicy;
-      return coreValidateUsername(username, usernameValidationConfig);
+      return _validateUsername(username, usernameValidationConfig);
     }
 }
 
 export {
   SignupIdMembers,
   Identifier,
+  UsernameValidationResult,
   SignupOptions,
   FederatedSignupOptions,
   ScreenOptions as ScreenMembersOnSignupId,

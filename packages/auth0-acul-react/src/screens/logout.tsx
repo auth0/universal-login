@@ -1,20 +1,20 @@
-import { useMemo } from 'react';
 import Logout from '@auth0/auth0-acul-js/logout';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
+
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
 import type { LogoutMembers, ConfirmLogoutOptions } from '@auth0/auth0-acul-js/logout';
-let instance: LogoutMembers | null = null;
-const getInstance = (): LogoutMembers => {
-  if (!instance) {
-    instance = new Logout();
-  }
-  return instance;
-};
 
-export const useLogout = (): LogoutMembers => useMemo(() => getInstance(), []);
+// Register the singleton instance of Logout
+const instance = registerScreen<LogoutMembers>(Logout)!;
 
-const factory = new ContextHooks<LogoutMembers>(getInstance);
+// Error wrapper
+const { withError } = errorManager;
 
+// Context hooks
+const factory = new ContextHooks<LogoutMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,15 +22,27 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const confirmLogout = (payload: ConfirmLogoutOptions) =>
+  withError(instance.confirmLogout(payload));
 
-// Screen methods
-export const confirmLogout = (payload: ConfirmLogoutOptions) => getInstance().confirmLogout(payload);
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type { ConfirmLogoutOptions, LogoutMembers } from '@auth0/auth0-acul-js/logout';
+// Main instance hook. Returns singleton instance of Logout
+export const useLogout = (): LogoutMembers => useMemo(() => instance, []);
 
-export type * from '@auth0/auth0-acul-js/logout';
+// Export all types from the core SDK for this screen

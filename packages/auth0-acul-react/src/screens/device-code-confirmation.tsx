@@ -1,20 +1,23 @@
-import { useMemo } from 'react';
 import DeviceCodeConfirmation from '@auth0/auth0-acul-js/device-code-confirmation';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { DeviceCodeConfirmationMembers, CustomOptions, ScreenMembersOnDeviceCodeConfirmation } from '@auth0/auth0-acul-js/device-code-confirmation';
-let instance: DeviceCodeConfirmationMembers | null = null;
-const getInstance = (): DeviceCodeConfirmationMembers => {
-  if (!instance) {
-    instance = new DeviceCodeConfirmation();
-  }
-  return instance;
-};
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const useDeviceCodeConfirmation = (): DeviceCodeConfirmationMembers => useMemo(() => getInstance(), []);
+import type {
+  DeviceCodeConfirmationMembers,
+  CustomOptions,
+} from '@auth0/auth0-acul-js/device-code-confirmation';
 
-const factory = new ContextHooks<DeviceCodeConfirmationMembers>(getInstance);
+// Register the singleton instance of DeviceCodeConfirmation
+const instance = registerScreen<DeviceCodeConfirmationMembers>(DeviceCodeConfirmation)!;
 
+// Error wrapper
+const { withError } = errorManager;
+
+// Context hooks
+const factory = new ContextHooks<DeviceCodeConfirmationMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,16 +25,28 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen: () => ScreenMembersOnDeviceCodeConfirmation = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const confirm = (payload?: CustomOptions) => withError(instance.confirm(payload));
+export const cancel = (payload?: CustomOptions) => withError(instance.cancel(payload));
 
-// Screen methods
-export const confirm = (payload?: CustomOptions) => getInstance().confirm(payload);
-export const cancel = (payload?: CustomOptions) => getInstance().cancel(payload);
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type { ScreenMembersOnDeviceCodeConfirmation, DeviceCodeConfirmationMembers } from '@auth0/auth0-acul-js/device-code-confirmation';
+// Main instance hook. Returns singleton instance of DeviceCodeConfirmation
+export const useDeviceCodeConfirmation = (): DeviceCodeConfirmationMembers =>
+  useMemo(() => instance, []);
 
-export type * from '@auth0/auth0-acul-js/device-code-confirmation';
+// Export all types from the core SDK for this screen

@@ -1,20 +1,23 @@
-import { useMemo } from 'react';
 import MfaLoginOptions from '@auth0/auth0-acul-js/mfa-login-options';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { MfaLoginOptionsMembers, LoginEnrollOptions, ScreenMembersOnMfaLoginOptions } from '@auth0/auth0-acul-js/mfa-login-options';
-let instance: MfaLoginOptionsMembers | null = null;
-const getInstance = (): MfaLoginOptionsMembers => {
-  if (!instance) {
-    instance = new MfaLoginOptions();
-  }
-  return instance;
-};
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const useMfaLoginOptions = (): MfaLoginOptionsMembers => useMemo(() => getInstance(), []);
+import type {
+  MfaLoginOptionsMembers,
+  LoginEnrollOptions,
+} from '@auth0/auth0-acul-js/mfa-login-options';
 
-const factory = new ContextHooks<MfaLoginOptionsMembers>(getInstance);
+// Register the singleton instance of MfaLoginOptions
+const instance = registerScreen<MfaLoginOptionsMembers>(MfaLoginOptions)!;
 
+// Error wrapper
+const { withError } = errorManager;
+
+// Context hooks
+const factory = new ContextHooks<MfaLoginOptionsMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,15 +25,26 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen: () => ScreenMembersOnMfaLoginOptions = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const enroll = (payload: LoginEnrollOptions) => withError(instance.enroll(payload));
 
-// Screen methods
-export const enroll = (payload: LoginEnrollOptions) => getInstance().enroll(payload);
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type { ScreenMembersOnMfaLoginOptions, LoginEnrollOptions, MfaLoginOptionsMembers } from '@auth0/auth0-acul-js/mfa-login-options';
+// Main instance hook. Returns singleton instance of MfaLoginOptions
+export const useMfaLoginOptions = (): MfaLoginOptionsMembers => useMemo(() => instance, []);
 
-export type * from '@auth0/auth0-acul-js/mfa-login-options';
+// Export all types from the core SDK for this screen

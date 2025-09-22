@@ -1,20 +1,24 @@
-import { useMemo } from 'react';
 import EmailOTPChallenge from '@auth0/auth0-acul-js/email-otp-challenge';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { EmailOTPChallengeMembers, OtpCodeOptions, CustomOptions, ScreenMembersOnEmailOTPChallenge } from '@auth0/auth0-acul-js/email-otp-challenge';
-let instance: EmailOTPChallengeMembers | null = null;
-const getInstance = (): EmailOTPChallengeMembers => {
-  if (!instance) {
-    instance = new EmailOTPChallenge();
-  }
-  return instance;
-};
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const useEmailOTPChallenge = (): EmailOTPChallengeMembers => useMemo(() => getInstance(), []);
+import type {
+  EmailOTPChallengeMembers,
+  OtpCodeOptions,
+  CustomOptions,
+} from '@auth0/auth0-acul-js/email-otp-challenge';
 
-const factory = new ContextHooks<EmailOTPChallengeMembers>(getInstance);
+// Register the singleton instance of EmailOTPChallenge
+const instance = registerScreen<EmailOTPChallengeMembers>(EmailOTPChallenge)!;
 
+// Error wrapper
+const { withError } = errorManager;
+
+// Context hooks
+const factory = new ContextHooks<EmailOTPChallengeMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,16 +26,30 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen: () => ScreenMembersOnEmailOTPChallenge = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const submitCode = (options: OtpCodeOptions) => withError(instance.submitCode(options));
+export const resendCode = (options?: CustomOptions) => withError(instance.resendCode(options));
 
-// Screen methods
-export const submitCode = (options: OtpCodeOptions) => getInstance().submitCode(options);
-export const resendCode = (options?: CustomOptions) => getInstance().resendCode(options);
+// Utility Hooks
+export { useResend } from '../hooks/utility/resend-manager';
 
-export type { ScreenMembersOnEmailOTPChallenge, OtpCodeOptions, EmailOTPChallengeMembers } from '@auth0/auth0-acul-js/email-otp-challenge';
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type * from '@auth0/auth0-acul-js/email-otp-challenge';
+// Main instance hook. Returns singleton instance of EmailOTPChallenge
+export const useEmailOTPChallenge = (): EmailOTPChallengeMembers => useMemo(() => instance, []);
+
+// Export all types from the core SDK for this screen

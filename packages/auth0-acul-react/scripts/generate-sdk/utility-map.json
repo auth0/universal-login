@@ -1,0 +1,33 @@
+{
+  "validateUsername": {
+    "name": "useUsernameValidation",
+    "path": "../hooks/utility/validate-username"
+  },
+
+  "validatePassword": {
+    "name": "usePasswordValidation",
+    "path": "../hooks/utility/validate-password"
+  },
+
+  "getEnabledIdentifiers": {
+    "name": "useEnabledIdentifiers",
+    "path": "../hooks/utility/enabled-identifiers"
+  },
+
+  "getActiveIdentifiers": {
+    "name": "useActiveIdentifiers",
+    "path": "../hooks/utility/active-identifiers"
+  },
+
+  "resendManager": {
+    "name": "useResend",
+    "path": "../hooks/utility/resend-manager",
+    "types": ["UseResendReturn", "UseResendOptions"]
+  },
+
+  "pollingManager": {
+    "name": "useMfaPolling",
+    "path": "../hooks/utility/polling-manager",
+    "types": ["MfaPollingResult"]
+  }
+}

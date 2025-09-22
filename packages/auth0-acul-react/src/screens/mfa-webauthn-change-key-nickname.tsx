@@ -1,20 +1,23 @@
-import { useMemo } from 'react';
 import MfaWebAuthnChangeKeyNickname from '@auth0/auth0-acul-js/mfa-webauthn-change-key-nickname';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { MfaWebAuthnChangeKeyNicknameMembers, ContinueOptions, ScreenMembersOnMfaWebAuthnChangeKeyNickname } from '@auth0/auth0-acul-js/mfa-webauthn-change-key-nickname';
-let instance: MfaWebAuthnChangeKeyNicknameMembers | null = null;
-const getInstance = (): MfaWebAuthnChangeKeyNicknameMembers => {
-  if (!instance) {
-    instance = new MfaWebAuthnChangeKeyNickname();
-  }
-  return instance;
-};
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const useMfaWebAuthnChangeKeyNickname = (): MfaWebAuthnChangeKeyNicknameMembers => useMemo(() => getInstance(), []);
+import type {
+  MfaWebAuthnChangeKeyNicknameMembers,
+  ContinueOptions,
+} from '@auth0/auth0-acul-js/mfa-webauthn-change-key-nickname';
 
-const factory = new ContextHooks<MfaWebAuthnChangeKeyNicknameMembers>(getInstance);
+// Register the singleton instance of MfaWebAuthnChangeKeyNickname
+const instance = registerScreen<MfaWebAuthnChangeKeyNicknameMembers>(MfaWebAuthnChangeKeyNickname)!;
 
+// Error wrapper
+const { withError } = errorManager;
+
+// Context hooks
+const factory = new ContextHooks<MfaWebAuthnChangeKeyNicknameMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,15 +25,28 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen: () => ScreenMembersOnMfaWebAuthnChangeKeyNickname = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const continueWithNewNickname = (payload: ContinueOptions) =>
+  withError(instance.continueWithNewNickname(payload));
 
-// Screen methods
-export const continueWithNewNickname = (payload: ContinueOptions) => getInstance().continueWithNewNickname(payload);
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type { ScreenMembersOnMfaWebAuthnChangeKeyNickname, ContinueOptions, MfaWebAuthnChangeKeyNicknameMembers } from '@auth0/auth0-acul-js/mfa-webauthn-change-key-nickname';
+// Main instance hook. Returns singleton instance of MfaWebAuthnChangeKeyNickname
+export const useMfaWebAuthnChangeKeyNickname = (): MfaWebAuthnChangeKeyNicknameMembers =>
+  useMemo(() => instance, []);
 
-export type * from '@auth0/auth0-acul-js/mfa-webauthn-change-key-nickname';
+// Export all types from the core SDK for this screen

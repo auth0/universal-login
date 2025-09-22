@@ -1,20 +1,23 @@
-import { useMemo } from 'react';
 import MfaSmsEnrollment from '@auth0/auth0-acul-js/mfa-sms-enrollment';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { MfaSmsEnrollmentMembers, CustomOptions, ScreenMembersOnMfaSmsEnrollment } from '@auth0/auth0-acul-js/mfa-sms-enrollment';
-let instance: MfaSmsEnrollmentMembers | null = null;
-const getInstance = (): MfaSmsEnrollmentMembers => {
-  if (!instance) {
-    instance = new MfaSmsEnrollment();
-  }
-  return instance;
-};
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const useMfaSmsEnrollment = (): MfaSmsEnrollmentMembers => useMemo(() => getInstance(), []);
+import type {
+  MfaSmsEnrollmentMembers,
+  CustomOptions,
+} from '@auth0/auth0-acul-js/mfa-sms-enrollment';
 
-const factory = new ContextHooks<MfaSmsEnrollmentMembers>(getInstance);
+// Register the singleton instance of MfaSmsEnrollment
+const instance = registerScreen<MfaSmsEnrollmentMembers>(MfaSmsEnrollment)!;
 
+// Error wrapper
+const { withError } = errorManager;
+
+// Context hooks
+const factory = new ContextHooks<MfaSmsEnrollmentMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,17 +25,31 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen: () => ScreenMembersOnMfaSmsEnrollment = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const pickCountryCode = (payload?: CustomOptions) =>
+  withError(instance.pickCountryCode(payload));
+export const continueEnrollment = (payload: { phone: string; captcha?: string }) =>
+  withError(instance.continueEnrollment(payload));
+export const tryAnotherMethod = (payload?: CustomOptions) =>
+  withError(instance.tryAnotherMethod(payload));
 
-// Screen methods
-export const pickCountryCode = (payload?: CustomOptions) => getInstance().pickCountryCode(payload);
-export const continueEnrollment = (payload: { phone: string; captcha?: string }) => getInstance().continueEnrollment(payload);
-export const tryAnotherMethod = (payload?: CustomOptions) => getInstance().tryAnotherMethod(payload);
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type { MfaSmsEnrollmentOptions, ScreenMembersOnMfaSmsEnrollment, MfaSmsEnrollmentMembers } from '@auth0/auth0-acul-js/mfa-sms-enrollment';
+// Main instance hook. Returns singleton instance of MfaSmsEnrollment
+export const useMfaSmsEnrollment = (): MfaSmsEnrollmentMembers => useMemo(() => instance, []);
 
-export type * from '@auth0/auth0-acul-js/mfa-sms-enrollment';
+// Export all types from the core SDK for this screen

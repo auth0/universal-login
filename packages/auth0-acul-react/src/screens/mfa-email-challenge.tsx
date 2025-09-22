@@ -1,20 +1,25 @@
-import { useMemo } from 'react';
 import MfaEmailChallenge from '@auth0/auth0-acul-js/mfa-email-challenge';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { MfaEmailChallengeMembers, ContinueOptions, ResendCodeOptions, TryAnotherMethodOptions, ScreenMembersOnMfaEmailChallenge } from '@auth0/auth0-acul-js/mfa-email-challenge';
-let instance: MfaEmailChallengeMembers | null = null;
-const getInstance = (): MfaEmailChallengeMembers => {
-  if (!instance) {
-    instance = new MfaEmailChallenge();
-  }
-  return instance;
-};
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const useMfaEmailChallenge = (): MfaEmailChallengeMembers => useMemo(() => getInstance(), []);
+import type {
+  MfaEmailChallengeMembers,
+  ContinueOptions,
+  ResendCodeOptions,
+  TryAnotherMethodOptions,
+} from '@auth0/auth0-acul-js/mfa-email-challenge';
 
-const factory = new ContextHooks<MfaEmailChallengeMembers>(getInstance);
+// Register the singleton instance of MfaEmailChallenge
+const instance = registerScreen<MfaEmailChallengeMembers>(MfaEmailChallenge)!;
 
+// Error wrapper
+const { withError } = errorManager;
+
+// Context hooks
+const factory = new ContextHooks<MfaEmailChallengeMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,17 +27,32 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen: () => ScreenMembersOnMfaEmailChallenge = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const continueMethod = (payload: ContinueOptions) => withError(instance.continue(payload));
+export const resendCode = (payload?: ResendCodeOptions) => withError(instance.resendCode(payload));
+export const tryAnotherMethod = (payload?: TryAnotherMethodOptions) =>
+  withError(instance.tryAnotherMethod(payload));
 
-// Screen methods
-export const continueMethod = (payload: ContinueOptions) => getInstance().continue(payload);
-export const resendCode = (payload?: ResendCodeOptions) => getInstance().resendCode(payload);
-export const tryAnotherMethod = (payload?: TryAnotherMethodOptions) => getInstance().tryAnotherMethod(payload);
+// Utility Hooks
+export { useResend } from '../hooks/utility/resend-manager';
 
-export type { ScreenMembersOnMfaEmailChallenge, UntrustedDataMembersOnMfaEmailChallenge, ContinueOptions, ResendCodeOptions, TryAnotherMethodOptions, MfaEmailChallengeMembers } from '@auth0/auth0-acul-js/mfa-email-challenge';
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type * from '@auth0/auth0-acul-js/mfa-email-challenge';
+// Main instance hook. Returns singleton instance of MfaEmailChallenge
+export const useMfaEmailChallenge = (): MfaEmailChallengeMembers => useMemo(() => instance, []);
+
+// Export all types from the core SDK for this screen

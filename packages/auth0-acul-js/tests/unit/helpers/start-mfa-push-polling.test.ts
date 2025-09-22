@@ -1,4 +1,4 @@
-import { createPollingControl } from '../../../src/helpers/create-polling-control.js';
+import { createPollingControl } from '../../../src/utils/create-polling-control.js';
 
 describe('createPollingControl', () => {
   let originalXMLHttpRequest: typeof XMLHttpRequest;
@@ -42,13 +42,13 @@ describe('createPollingControl', () => {
     jest.clearAllMocks();
   });
 
-  it('should call onResult when condition is met', () => {
-    const onResult = jest.fn();
+  it('should call onCompleted when condition is met', () => {
+    const onCompleted = jest.fn();
     const onError = jest.fn();
 
     const control = createPollingControl({
       intervalMs: 100,
-      onResult,
+      onCompleted,
       onError,
     });
     control.startPolling();
@@ -63,84 +63,84 @@ describe('createPollingControl', () => {
   });
 
   it('should continue polling if condition is not met', () => {
-    const onResult = jest.fn();
+    const onCompleted = jest.fn();
     const onError = jest.fn();
     mockXHR.responseText = JSON.stringify({ completed: false });
 
     createPollingControl({
       intervalMs: 100,
-      onResult,
+      onCompleted,
       onError,
     }).startPolling();
 
     jest.runOnlyPendingTimers();
     if (_onload) _onload();
 
-    expect(onResult).not.toHaveBeenCalled();
+    expect(onCompleted).not.toHaveBeenCalled();
     expect(mockXHR.send).toHaveBeenCalled();
   });
 
   it('should handle rate limiting (429)', () => {
-    const onResult = jest.fn();
+    const onCompleted = jest.fn();
     const onError = jest.fn();
     mockXHR.status = 429;
     mockXHR.getResponseHeader = jest.fn((header) => header === 'X-RateLimit-Reset' ? `${Math.floor(Date.now() / 1000) + 2}` : 'application/json');
 
     createPollingControl({
       intervalMs: 100,
-      onResult,
+      onCompleted,
       onError,
     }).startPolling();
 
     jest.runOnlyPendingTimers(); 
     if (_onload) _onload();
 
-    expect(onResult).not.toHaveBeenCalled();
+    expect(onCompleted).not.toHaveBeenCalled();
     expect(mockXHR.send).toHaveBeenCalled();
   });
 
   it('should call onError for non-200/429 status', () => {
-    const onResult = jest.fn();
+    const onCompleted = jest.fn();
     const onError = jest.fn();
     mockXHR.status = 500;
     mockXHR.responseText = 'error';
 
     createPollingControl({
       intervalMs: 100,
-      onResult,
+      onCompleted,
       onError,
     }).startPolling();
 
     jest.runOnlyPendingTimers();
     if (_onload) _onload();
 
-    expect(onResult).not.toHaveBeenCalled();
+    expect(onCompleted).not.toHaveBeenCalled();
   });
 
   it('should call onError on XHR error', () => {
-    const onResult = jest.fn();
+    const onCompleted = jest.fn();
     const onError = jest.fn();
 
     createPollingControl({
       intervalMs: 100,
-      onResult,
+      onCompleted,
       onError,
     }).startPolling();
 
     jest.runOnlyPendingTimers();
     if (_onerror) _onerror();
 
-    expect(onResult).not.toHaveBeenCalled();
+    expect(onCompleted).not.toHaveBeenCalled();
   });
 
   it('should stop polling when stop is called', () => {
-    const onResult = jest.fn();
+    const onCompleted = jest.fn();
     const onError = jest.fn();
     mockXHR.responseText = JSON.stringify({ completed: false });
 
     const control = createPollingControl({
       intervalMs: 100,
-      onResult,
+      onCompleted,
       onError,
     });
     control.startPolling();
@@ -150,7 +150,7 @@ describe('createPollingControl', () => {
     if (_onload) _onload();
     if (_onerror) _onerror();
 
-    expect(onResult).not.toHaveBeenCalled();
+    expect(onCompleted).not.toHaveBeenCalled();
     expect(onError).not.toHaveBeenCalled();
   });
 });

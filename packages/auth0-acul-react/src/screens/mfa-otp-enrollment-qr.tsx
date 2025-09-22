@@ -1,20 +1,24 @@
-import { useMemo } from 'react';
 import MfaOtpEnrollmentQr from '@auth0/auth0-acul-js/mfa-otp-enrollment-qr';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { MfaOtpEnrollmentQrMembers, CustomOptions, ContinueOptions, ScreenMembersOnMfaOtpEnrollmentQr } from '@auth0/auth0-acul-js/mfa-otp-enrollment-qr';
-let instance: MfaOtpEnrollmentQrMembers | null = null;
-const getInstance = (): MfaOtpEnrollmentQrMembers => {
-  if (!instance) {
-    instance = new MfaOtpEnrollmentQr();
-  }
-  return instance;
-};
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const useMfaOtpEnrollmentQr = (): MfaOtpEnrollmentQrMembers => useMemo(() => getInstance(), []);
+import type {
+  MfaOtpEnrollmentQrMembers,
+  CustomOptions,
+  ContinueOptions,
+} from '@auth0/auth0-acul-js/mfa-otp-enrollment-qr';
 
-const factory = new ContextHooks<MfaOtpEnrollmentQrMembers>(getInstance);
+// Register the singleton instance of MfaOtpEnrollmentQr
+const instance = registerScreen<MfaOtpEnrollmentQrMembers>(MfaOtpEnrollmentQr)!;
 
+// Error wrapper
+const { withError } = errorManager;
+
+// Context hooks
+const factory = new ContextHooks<MfaOtpEnrollmentQrMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,17 +26,29 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen: () => ScreenMembersOnMfaOtpEnrollmentQr = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const toggleView = (payload?: CustomOptions) => withError(instance.toggleView(payload));
+export const continueMethod = (payload: ContinueOptions) => withError(instance.continue(payload));
+export const tryAnotherMethod = (payload?: CustomOptions) =>
+  withError(instance.tryAnotherMethod(payload));
 
-// Screen methods
-export const toggleView = (payload?: CustomOptions) => getInstance().toggleView(payload);
-export const continueMethod = (payload: ContinueOptions) => getInstance().continue(payload);
-export const tryAnotherMethod = (payload?: CustomOptions) => getInstance().tryAnotherMethod(payload);
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type { ScreenMembersOnMfaOtpEnrollmentQr, ContinueOptions, MfaOtpEnrollmentQrMembers } from '@auth0/auth0-acul-js/mfa-otp-enrollment-qr';
+// Main instance hook. Returns singleton instance of MfaOtpEnrollmentQr
+export const useMfaOtpEnrollmentQr = (): MfaOtpEnrollmentQrMembers => useMemo(() => instance, []);
 
-export type * from '@auth0/auth0-acul-js/mfa-otp-enrollment-qr';
+// Export all types from the core SDK for this screen

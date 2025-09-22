@@ -1,12 +1,12 @@
 import { ScreenIds } from '../../constants';
-import coreValidatePassword from '../../helpers/validatePassword';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
+import { validatePassword as _validatePassword } from '../../utils/validate-password';
 
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
 
-import type { ScreenContext, PasswordRuleValidation } from '../../../interfaces/models/screen';
+import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type {
   ResetPasswordOptions,
@@ -15,6 +15,7 @@ import type {
   TransactionMembersOnResetPassword as TransactionOptions
 } from '../../../interfaces/screens/reset-password';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import type { PasswordValidationResult } from '../../../interfaces/utils/validate-password';
 export default class ResetPassword extends BaseContext implements ResetPasswordMembers {
   static screenIdentifier: string = ScreenIds.RESET_PASSWORD;
   screen: ScreenOptions;
@@ -47,49 +48,15 @@ export default class ResetPassword extends BaseContext implements ResetPasswordM
   }
 
   /**
-   * Validates a given password against the current password policy
-   * defined in the transaction context.
-   *
-   * @param password - The password string to validate.
-   * @returns Result object indicating whether the password is valid and why.
-   *
-   * @example
-   * const resetPassword = new ResetPassword();
-   * const result = resetPassword.validatePassword('MyP@ssw0rd');
-   * // result => { valid: true, errors: [] }
+   * @param password 
+   * @returns An object of type {@link PasswordValidationResult} indicating whether the password is valid and why.
+   * @category Utility
    */
-
-   /**
-  * Validates a password string against the current transaction's password policy.
-  *
-  * This method retrieves the password policy from the current transaction context
-  * and delegates the actual validation to `coreValidatePassword`.
-  *
-  * It returns an array of validation results, each containing:
-  * - `code`: the identifier of the password rule,
-  * - `policy`: a user-friendly description of the rule,
-  * - `isValid`: boolean indicating if the password passed that rule.
-  *
-  * @param {string} password - The password string to validate.
-  * @returns {PasswordRuleValidation[]} An array of rule validation results.
-  *
-  * @example
-  * ```ts
-  * const resetPassword = new ResetPassword();
-  * const validationResults = resetPassword.validatePassword('MyP@ssw0rd!');
-  * console.log(validationResults);
-  * // [
-  * //   { code: 'password-policy-length-at-least', policy: 'At least 12 characters', isValid: false },
-  * //   { code: 'password-policy-lower-case', policy: 'Lowercase letters (a-z)', isValid: true },
-  * //   ...
-  * // ]
-  * ```
-  */
-  validatePassword(password: string): PasswordRuleValidation[] {
+  validatePassword(password: string): PasswordValidationResult {
     const passwordPolicy = this.transaction?.passwordPolicy;
-    return coreValidatePassword(password, passwordPolicy);
+    return _validatePassword(password, passwordPolicy);
   }
 }
-export { ResetPasswordMembers, ResetPasswordOptions, ScreenOptions as ScreenMembersOnResetPassword };
+export { ResetPasswordMembers, ResetPasswordOptions, ScreenOptions as ScreenMembersOnResetPassword, TransactionOverride as TransactionMembersOnResetPassword };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';

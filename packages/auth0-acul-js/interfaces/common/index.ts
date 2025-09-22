@@ -68,17 +68,12 @@ export interface FlattenedTheme {
 export type OnStatusChangeCallback = (remainingSeconds: number, isDisabled: boolean) => void;
 
 /**
- * Callback function for timeout events when the resend countdown reaches zero.
- */
-export type OnTimeoutCallback = () => void;
-
-/**
  * Options for configuring resend functionality
  */
 export interface StartResendOptions {
   timeoutSeconds?: number;
   onStatusChange?: OnStatusChangeCallback;
-  onTimeout?: OnTimeoutCallback;
+  onTimeout?: () => void;
 }
 
 /**

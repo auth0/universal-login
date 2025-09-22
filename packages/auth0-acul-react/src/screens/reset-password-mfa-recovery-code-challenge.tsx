@@ -1,20 +1,25 @@
-import { useMemo } from 'react';
 import ResetPasswordMfaRecoveryCodeChallenge from '@auth0/auth0-acul-js/reset-password-mfa-recovery-code-challenge';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { ResetPasswordMfaRecoveryCodeChallengeMembers, CustomOptions } from '@auth0/auth0-acul-js/reset-password-mfa-recovery-code-challenge';
-let instance: ResetPasswordMfaRecoveryCodeChallengeMembers | null = null;
-const getInstance = (): ResetPasswordMfaRecoveryCodeChallengeMembers => {
-  if (!instance) {
-    instance = new ResetPasswordMfaRecoveryCodeChallenge();
-  }
-  return instance;
-};
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const useResetPasswordMfaRecoveryCodeChallenge = (): ResetPasswordMfaRecoveryCodeChallengeMembers => useMemo(() => getInstance(), []);
+import type {
+  ResetPasswordMfaRecoveryCodeChallengeMembers,
+  CustomOptions,
+} from '@auth0/auth0-acul-js/reset-password-mfa-recovery-code-challenge';
 
-const factory = new ContextHooks<ResetPasswordMfaRecoveryCodeChallengeMembers>(getInstance);
+// Register the singleton instance of ResetPasswordMfaRecoveryCodeChallenge
+const instance = registerScreen<ResetPasswordMfaRecoveryCodeChallengeMembers>(
+  ResetPasswordMfaRecoveryCodeChallenge
+)!;
 
+// Error wrapper
+const { withError } = errorManager;
+
+// Context hooks
+const factory = new ContextHooks<ResetPasswordMfaRecoveryCodeChallengeMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,16 +27,30 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const continueMethod = (code: string, payload?: CustomOptions) =>
+  withError(instance.continue(code, payload));
+export const tryAnotherMethod = (payload?: CustomOptions) =>
+  withError(instance.tryAnotherMethod(payload));
 
-// Screen methods
-export const continueMethod = (code: string, payload?: CustomOptions) => getInstance().continue(code, payload);
-export const tryAnotherMethod = (payload?: CustomOptions) => getInstance().tryAnotherMethod(payload);
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type { ResetPasswordMfaRecoveryCodeChallengeMembers } from '@auth0/auth0-acul-js/reset-password-mfa-recovery-code-challenge';
+// Main instance hook. Returns singleton instance of ResetPasswordMfaRecoveryCodeChallenge
+export const useResetPasswordMfaRecoveryCodeChallenge =
+  (): ResetPasswordMfaRecoveryCodeChallengeMembers => useMemo(() => instance, []);
 
-export type * from '@auth0/auth0-acul-js/reset-password-mfa-recovery-code-challenge';
+// Export all types from the core SDK for this screen

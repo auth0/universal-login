@@ -1,20 +1,24 @@
-import { useMemo } from 'react';
 import MfaPushList from '@auth0/auth0-acul-js/mfa-push-list';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { MfaPushListMembers, SelectMfaPushDeviceOptions, CustomOptions } from '@auth0/auth0-acul-js/mfa-push-list';
-let instance: MfaPushListMembers | null = null;
-const getInstance = (): MfaPushListMembers => {
-  if (!instance) {
-    instance = new MfaPushList();
-  }
-  return instance;
-};
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const useMfaPushList = (): MfaPushListMembers => useMemo(() => getInstance(), []);
+import type {
+  MfaPushListMembers,
+  SelectMfaPushDeviceOptions,
+  CustomOptions,
+} from '@auth0/auth0-acul-js/mfa-push-list';
 
-const factory = new ContextHooks<MfaPushListMembers>(getInstance);
+// Register the singleton instance of MfaPushList
+const instance = registerScreen<MfaPushListMembers>(MfaPushList)!;
 
+// Error wrapper
+const { withError } = errorManager;
+
+// Context hooks
+const factory = new ContextHooks<MfaPushListMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,16 +26,28 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const selectMfaPushDevice = (payload: SelectMfaPushDeviceOptions) =>
+  withError(instance.selectMfaPushDevice(payload));
+export const goBack = (payload?: CustomOptions) => withError(instance.goBack(payload));
 
-// Screen methods
-export const selectMfaPushDevice = (payload: SelectMfaPushDeviceOptions) => getInstance().selectMfaPushDevice(payload);
-export const goBack = (payload?: CustomOptions) => getInstance().goBack(payload);
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type { SelectMfaPushDeviceOptions, MfaPushListMembers } from '@auth0/auth0-acul-js/mfa-push-list';
+// Main instance hook. Returns singleton instance of MfaPushList
+export const useMfaPushList = (): MfaPushListMembers => useMemo(() => instance, []);
 
-export type * from '@auth0/auth0-acul-js/mfa-push-list';
+// Export all types from the core SDK for this screen

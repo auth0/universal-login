@@ -1,20 +1,24 @@
-import { useMemo } from 'react';
 import MfaSmsChallenge from '@auth0/auth0-acul-js/mfa-sms-challenge';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { MfaSmsChallengeMembers, MfaSmsChallengeOptions, CustomOptions, ScreenMembersOnMfaSmsChallenge } from '@auth0/auth0-acul-js/mfa-sms-challenge';
-let instance: MfaSmsChallengeMembers | null = null;
-const getInstance = (): MfaSmsChallengeMembers => {
-  if (!instance) {
-    instance = new MfaSmsChallenge();
-  }
-  return instance;
-};
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const useMfaSmsChallenge = (): MfaSmsChallengeMembers => useMemo(() => getInstance(), []);
+import type {
+  MfaSmsChallengeMembers,
+  MfaSmsChallengeOptions,
+  CustomOptions,
+} from '@auth0/auth0-acul-js/mfa-sms-challenge';
 
-const factory = new ContextHooks<MfaSmsChallengeMembers>(getInstance);
+// Register the singleton instance of MfaSmsChallenge
+const instance = registerScreen<MfaSmsChallengeMembers>(MfaSmsChallenge)!;
 
+// Error wrapper
+const { withError } = errorManager;
+
+// Context hooks
+const factory = new ContextHooks<MfaSmsChallengeMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,19 +26,35 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen: () => ScreenMembersOnMfaSmsChallenge = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const continueMfaSmsChallenge = (payload: MfaSmsChallengeOptions) =>
+  withError(instance.continueMfaSmsChallenge(payload));
+export const pickSms = (payload?: CustomOptions) => withError(instance.pickSms(payload));
+export const resendCode = (payload?: CustomOptions) => withError(instance.resendCode(payload));
+export const tryAnotherMethod = (payload?: CustomOptions) =>
+  withError(instance.tryAnotherMethod(payload));
+export const getACall = (payload?: CustomOptions) => withError(instance.getACall(payload));
 
-// Screen methods
-export const continueMfaSmsChallenge = (payload: MfaSmsChallengeOptions) => getInstance().continueMfaSmsChallenge(payload);
-export const pickSms = (payload?: CustomOptions) => getInstance().pickSms(payload);
-export const resendCode = (payload?: CustomOptions) => getInstance().resendCode(payload);
-export const tryAnotherMethod = (payload?: CustomOptions) => getInstance().tryAnotherMethod(payload);
-export const getACall = (payload?: CustomOptions) => getInstance().getACall(payload);
+// Utility Hooks
+export { useResend } from '../hooks/utility/resend-manager';
 
-export type { MfaSmsChallengeOptions, ScreenMembersOnMfaSmsChallenge, MfaSmsChallengeMembers, UntrustedDataMembersOnMfaSmsChallenge } from '@auth0/auth0-acul-js/mfa-sms-challenge';
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type * from '@auth0/auth0-acul-js/mfa-sms-challenge';
+// Main instance hook. Returns singleton instance of MfaSmsChallenge
+export const useMfaSmsChallenge = (): MfaSmsChallengeMembers => useMemo(() => instance, []);
+
+// Export all types from the core SDK for this screen

@@ -1,20 +1,23 @@
-import { useMemo } from 'react';
 import DeviceCodeActivation from '@auth0/auth0-acul-js/device-code-activation';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { DeviceCodeActivationMembers, ContinueOptions } from '@auth0/auth0-acul-js/device-code-activation';
-let instance: DeviceCodeActivationMembers | null = null;
-const getInstance = (): DeviceCodeActivationMembers => {
-  if (!instance) {
-    instance = new DeviceCodeActivation();
-  }
-  return instance;
-};
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const useDeviceCodeActivation = (): DeviceCodeActivationMembers => useMemo(() => getInstance(), []);
+import type {
+  DeviceCodeActivationMembers,
+  ContinueOptions,
+} from '@auth0/auth0-acul-js/device-code-activation';
 
-const factory = new ContextHooks<DeviceCodeActivationMembers>(getInstance);
+// Register the singleton instance of DeviceCodeActivation
+const instance = registerScreen<DeviceCodeActivationMembers>(DeviceCodeActivation)!;
 
+// Error wrapper
+const { withError } = errorManager;
+
+// Context hooks
+const factory = new ContextHooks<DeviceCodeActivationMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,15 +25,27 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const continueMethod = (payload: ContinueOptions) => withError(instance.continue(payload));
 
-// Screen methods
-export const continueMethod = (payload: ContinueOptions) => getInstance().continue(payload);
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type { ContinueOptions, DeviceCodeActivationMembers } from '@auth0/auth0-acul-js/device-code-activation';
+// Main instance hook. Returns singleton instance of DeviceCodeActivation
+export const useDeviceCodeActivation = (): DeviceCodeActivationMembers =>
+  useMemo(() => instance, []);
 
-export type * from '@auth0/auth0-acul-js/device-code-activation';
+// Export all types from the core SDK for this screen

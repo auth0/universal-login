@@ -1,20 +1,24 @@
-import { useMemo } from 'react';
 import ResetPasswordMfaOtpChallenge from '@auth0/auth0-acul-js/reset-password-mfa-otp-challenge';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { ResetPasswordMfaOtpChallengeMembers, ContinueOptions, TryAnotherMethodOptions } from '@auth0/auth0-acul-js/reset-password-mfa-otp-challenge';
-let instance: ResetPasswordMfaOtpChallengeMembers | null = null;
-const getInstance = (): ResetPasswordMfaOtpChallengeMembers => {
-  if (!instance) {
-    instance = new ResetPasswordMfaOtpChallenge();
-  }
-  return instance;
-};
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const useResetPasswordMfaOtpChallenge = (): ResetPasswordMfaOtpChallengeMembers => useMemo(() => getInstance(), []);
+import type {
+  ResetPasswordMfaOtpChallengeMembers,
+  ContinueOptions,
+  TryAnotherMethodOptions,
+} from '@auth0/auth0-acul-js/reset-password-mfa-otp-challenge';
 
-const factory = new ContextHooks<ResetPasswordMfaOtpChallengeMembers>(getInstance);
+// Register the singleton instance of ResetPasswordMfaOtpChallenge
+const instance = registerScreen<ResetPasswordMfaOtpChallengeMembers>(ResetPasswordMfaOtpChallenge)!;
 
+// Error wrapper
+const { withError } = errorManager;
+
+// Context hooks
+const factory = new ContextHooks<ResetPasswordMfaOtpChallengeMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,16 +26,29 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const continueMethod = (payload: ContinueOptions) => withError(instance.continue(payload));
+export const tryAnotherMethod = (payload?: TryAnotherMethodOptions) =>
+  withError(instance.tryAnotherMethod(payload));
 
-// Screen methods
-export const continueMethod = (payload: ContinueOptions) => getInstance().continue(payload);
-export const tryAnotherMethod = (payload?: TryAnotherMethodOptions) => getInstance().tryAnotherMethod(payload);
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type { ContinueOptions, TryAnotherMethodOptions, ResetPasswordMfaOtpChallengeMembers } from '@auth0/auth0-acul-js/reset-password-mfa-otp-challenge';
+// Main instance hook. Returns singleton instance of ResetPasswordMfaOtpChallenge
+export const useResetPasswordMfaOtpChallenge = (): ResetPasswordMfaOtpChallengeMembers =>
+  useMemo(() => instance, []);
 
-export type * from '@auth0/auth0-acul-js/reset-password-mfa-otp-challenge';
+// Export all types from the core SDK for this screen

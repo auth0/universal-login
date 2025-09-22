@@ -15,11 +15,16 @@ jest.mock('../../../../src/utils/form-handler');
 jest.mock('../../../../src/models/base-context');
 
 // We also need to mock these helper functions used inside the methods we want to test
-jest.mock('../../../../src/helpers/validatePassword', () => jest.fn());
-jest.mock('../../../../src/helpers/getEnabledIdentifiers', () => jest.fn());
+jest.mock('../../../../src/utils/validate-password', () => ({
+  validatePassword: jest.fn(),
+}));
 
-import coreValidatePassword from '../../../../src/helpers/validatePassword';
-import coreGetIdentifier from '../../../../src/helpers/getEnabledIdentifiers';
+jest.mock('../../../../src/utils/get-enabled-identifiers', () => ({
+  getEnabledIdentifiers: jest.fn(),
+}));
+
+import { validatePassword as _validatePassword } from '../../../../src/utils/validate-password';
+import { getEnabledIdentifiers } from '../../../../src/utils/get-enabled-identifiers';
 
 describe('Signup', () => {
   let signup: Signup;
@@ -90,36 +95,36 @@ describe('Signup', () => {
   // === NEW TESTS FOR validatePassword AND getEnabledIdentifiers ===
 
   describe('validatePassword', () => {
-    it('should call coreValidatePassword with password and transaction.passwordPolicy', () => {
+    it('should call _validatePassword with password and transaction.passwordPolicy', () => {
       const mockPolicy = { policy: "low", minLength: 8,  };
       signup.transaction.passwordPolicy = mockPolicy as PasswordPolicy;
 
       const mockResult = { isValid: true, errors: [] };
-      (coreValidatePassword as jest.Mock).mockReturnValue(mockResult);
+      (_validatePassword as jest.Mock).mockReturnValue(mockResult);
 
       const password = 'MyP@ssw0rd';
       const result = signup.validatePassword(password);
 
-      expect(coreValidatePassword).toHaveBeenCalledWith(password, mockPolicy);
+      expect(_validatePassword).toHaveBeenCalledWith(password, mockPolicy);
       expect(result).toBe(mockResult);
     });
 
-    it('should call coreValidatePassword with null policy if none in transaction', () => {
+    it('should call _validatePassword with null policy if none in transaction', () => {
       signup.transaction.passwordPolicy = null;
 
       const mockResult = { isValid: false, errors: [{ code: 'password_required', message: 'Password is required.' }] };
-      (coreValidatePassword as jest.Mock).mockReturnValue(mockResult);
+      (_validatePassword as jest.Mock).mockReturnValue(mockResult);
 
       const password = 'anyPassword';
       const result = signup.validatePassword(password);
 
-      expect(coreValidatePassword).toHaveBeenCalledWith(password, null);
+      expect(_validatePassword).toHaveBeenCalledWith(password, null);
       expect(result).toBe(mockResult);
     });
   });
 
   describe('getEnabledIdentifiers', () => {
-    it('should call coreGetIdentifier with required, optional identifiers and connectionStrategy', () => {
+    it('should call getEnabledIdentifiers with required, optional identifiers and connectionStrategy', () => {
       signup.transaction.requiredIdentifiers = ['email', 'phone'];
       signup.transaction.optionalIdentifiers = ['username'];
       signup.transaction.connectionStrategy = 'strategyX';
@@ -131,11 +136,11 @@ describe('Signup', () => {
         { type: 'username', required: false },
       ];
 
-      (coreGetIdentifier as jest.Mock).mockReturnValue(mockIdentifiers);
+      (getEnabledIdentifiers as jest.Mock).mockReturnValue(mockIdentifiers);
 
       const result = signup.getEnabledIdentifiers();
 
-      expect(coreGetIdentifier).toHaveBeenCalledWith(
+      expect(getEnabledIdentifiers).toHaveBeenCalledWith(
         ['email', 'phone'],
         ['username'],
         'strategyX'
@@ -149,11 +154,11 @@ describe('Signup', () => {
       signup.transaction.connectionStrategy = 'strategyY';
       signup.transaction.errors = null;
 
-      (coreGetIdentifier as jest.Mock).mockReturnValue(null);
+      (getEnabledIdentifiers as jest.Mock).mockReturnValue(null);
 
       const result = signup.getEnabledIdentifiers();
 
-      expect(coreGetIdentifier).toHaveBeenCalledWith([], [], 'strategyY');
+      expect(getEnabledIdentifiers).toHaveBeenCalledWith([], [], 'strategyY');
       expect(result).toBeNull();
     });
   });

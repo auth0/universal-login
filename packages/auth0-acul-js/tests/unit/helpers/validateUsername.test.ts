@@ -1,4 +1,4 @@
-import validateUsername from '../../../src/helpers/validateUsername';
+import { validateUsername } from '../../../src/utils/validate-username';
 import type { UsernamePolicy } from '../../../interfaces/models/transaction';
 
 // Helper to extract failed error codes

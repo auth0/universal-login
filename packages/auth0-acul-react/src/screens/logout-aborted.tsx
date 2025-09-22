@@ -1,20 +1,16 @@
-import { useMemo } from 'react';
 import LogoutAborted from '@auth0/auth0-acul-js/logout-aborted';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
+
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
 import type { LogoutAbortedMembers } from '@auth0/auth0-acul-js/logout-aborted';
-let instance: LogoutAbortedMembers | null = null;
-const getInstance = (): LogoutAbortedMembers => {
-  if (!instance) {
-    instance = new LogoutAborted();
-  }
-  return instance;
-};
 
-export const useLogoutAborted = (): LogoutAbortedMembers => useMemo(() => getInstance(), []);
+// Register the singleton instance of LogoutAborted
+const instance = registerScreen<LogoutAbortedMembers>(LogoutAborted)!;
 
-const factory = new ContextHooks<LogoutAbortedMembers>(getInstance);
-
+// Context hooks
+const factory = new ContextHooks<LogoutAbortedMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,12 +18,23 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type { LogoutAbortedMembers } from '@auth0/auth0-acul-js/logout-aborted';
+// Main instance hook. Returns singleton instance of LogoutAborted
+export const useLogoutAborted = (): LogoutAbortedMembers => useMemo(() => instance, []);
 
-export type * from '@auth0/auth0-acul-js/logout-aborted';
+// Export all types from the core SDK for this screen
