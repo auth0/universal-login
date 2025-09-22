@@ -1,8 +1,10 @@
-import MfaOtpEnrollmentQr from '../../../../src/screens/mfa-otp-enrollment-qr';
-import { baseContextData } from '../../../data/test-data';
-import { FormHandler } from '../../../../src/utils/form-handler';
-import { CustomOptions } from 'interfaces/common';
+
 import { FormActions, ScreenIds } from '../../../../src/constants';
+import MfaOtpEnrollmentQr from '../../../../src/screens/mfa-otp-enrollment-qr';
+import { FormHandler } from '../../../../src/utils/form-handler';
+import { baseContextData } from '../../../data/test-data';
+
+import type { CustomOptions } from 'interfaces/common';
 
 jest.mock('../../../../src/utils/form-handler');
 
