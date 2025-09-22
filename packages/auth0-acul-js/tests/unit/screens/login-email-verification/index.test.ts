@@ -2,12 +2,14 @@ import { ScreenIds, FormActions } from '../../../../src/constants';
 import { BaseContext } from '../../../../src/models/base-context';
 import LoginEmailVerification from '../../../../src/screens/login-email-verification';
 import { FormHandler } from '../../../../src/utils/form-handler';
+import { createResendControl } from '../../../../src/utils/resend-utils';
 import { baseContextData } from '../../../data/test-data';
 
 import type { ContinueWithCodeOptions, ResendCodeOptions } from '../../../../interfaces/screens/login-email-verification';
 
 // Mock FormHandler to spy on its methods and prevent actual form submissions
 jest.mock('../../../../src/utils/form-handler');
+jest.mock('../../../../src/utils/resend-utils');
 
 /**
  * @group unit
@@ -18,14 +20,13 @@ describe('LoginEmailVerification Screen SDK', () => {
   let mockFormHandlerInstance: { submitData: jest.Mock };
   const testTransactionState = 'login-email-verification-state-123';
   const screenName = ScreenIds.LOGIN_EMAIL_VERIFICATION;
-  const endpoint = '/u/login-email-verification';
 
   beforeEach(() => {
     // Clear all mocks before each test to ensure test isolation
     jest.clearAllMocks();
 
     // Mock the global window object and the universal_login_context
-    global.window = Object.create(window); // Ensure a clean window object
+    global.window = Object.create(window) as Window & typeof globalThis; // Ensure a clean window object
     Object.defineProperty(window, 'universal_login_context', {
       value: {
         ...baseContextData, // Spread base test data
@@ -151,6 +152,109 @@ describe('LoginEmailVerification Screen SDK', () => {
       mockFormHandlerInstance.submitData.mockRejectedValue(submissionError);
 
       await expect(loginEmailVerification.resendCode()).rejects.toThrow(submissionError);
+    });
+  });
+
+  describe('resendManager method', () => {
+    let mockResendControl: { startResend: jest.Mock };
+
+    beforeEach(() => {
+      mockResendControl = {
+        startResend: jest.fn(),
+      };
+      (createResendControl as jest.Mock).mockReturnValue(mockResendControl);
+    });
+
+    it('should create resend control with correct parameters', () => {
+      const options = {
+        timeoutSeconds: 15,
+        onStatusChange: jest.fn(),
+        onTimeout: jest.fn(),
+      };
+
+      const result = loginEmailVerification.resendManager(options);
+
+      expect(createResendControl).toHaveBeenCalledWith(
+        'login-email-verification',
+        expect.any(Function),
+        options
+      );
+      expect(result).toBe(mockResendControl);
+    });
+
+    it('should create resend control without options', () => {
+      const result = loginEmailVerification.resendManager();
+
+      expect(createResendControl).toHaveBeenCalledWith(
+        'login-email-verification',
+        expect.any(Function),
+        undefined
+      );
+      expect(result).toBe(mockResendControl);
+    });
+
+    it('should pass resendCode method as callback to createResendControl', async () => {
+      loginEmailVerification.resendManager();
+
+      // Get the callback function passed to createResendControl
+      const callArgs = (createResendControl as jest.Mock).mock.calls[0] as unknown[];
+      const resendCallback = callArgs[1] as () => Promise<void>;
+
+      // Call the callback and verify it calls resendCode
+      await resendCallback();
+
+      expect(mockFormHandlerInstance.submitData).toHaveBeenCalledWith({
+        action: FormActions.RESEND_CODE,
+      });
+    });
+
+    it('should handle resend callback with custom options', async () => {
+      const options = {
+        timeoutSeconds: 30,
+        onStatusChange: jest.fn(),
+        onTimeout: jest.fn(),
+      };
+
+      loginEmailVerification.resendManager(options);
+
+      // Get the callback function passed to createResendControl
+      const callArgs = (createResendControl as jest.Mock).mock.calls[0] as unknown[];
+      const resendCallback = callArgs[1] as () => Promise<void>;
+
+      // Call the callback
+      await resendCallback();
+
+      expect(mockFormHandlerInstance.submitData).toHaveBeenCalledWith({
+        action: FormActions.RESEND_CODE,
+      });
+    });
+
+    it('should return ResendControl with startResend method', () => {
+      const result = loginEmailVerification.resendManager();
+
+      expect(result).toHaveProperty('startResend');
+      expect(typeof result.startResend).toBe('function');
+    });
+
+    it('should call startResend method from returned control', () => {
+      const result = loginEmailVerification.resendManager();
+      
+      result.startResend();
+
+      expect(mockResendControl.startResend).toHaveBeenCalledTimes(1);
+    });
+
+    it('should handle resend callback rejection', async () => {
+      mockFormHandlerInstance.submitData.mockRejectedValue(new Error('Resend failed'));
+      
+      loginEmailVerification.resendManager();
+
+      // Get the callback function passed to createResendControl
+      const callArgs = (createResendControl as jest.Mock).mock.calls[0] as unknown[];
+      const resendCallback = callArgs[1] as () => Promise<void>;
+
+      // The callback should propagate the error
+      await expect(resendCallback()).rejects.toThrow('Resend failed');
     });
   });
 });
