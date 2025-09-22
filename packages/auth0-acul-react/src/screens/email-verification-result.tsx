@@ -1,20 +1,16 @@
-import { useMemo } from 'react';
 import EmailVerificationResult from '@auth0/auth0-acul-js/email-verification-result';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { EmailVerificationResultMembers, ScreenMembersOnEmailVerificationResult } from '@auth0/auth0-acul-js/email-verification-result';
-let instance: EmailVerificationResultMembers | null = null;
-const getInstance = (): EmailVerificationResultMembers => {
-  if (!instance) {
-    instance = new EmailVerificationResult();
-  }
-  return instance;
-};
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const useEmailVerificationResult = (): EmailVerificationResultMembers => useMemo(() => getInstance(), []);
+import type { EmailVerificationResultMembers } from '@auth0/auth0-acul-js/email-verification-result';
 
-const factory = new ContextHooks<EmailVerificationResultMembers>(getInstance);
+// Register the singleton instance of EmailVerificationResult
+const instance = registerScreen<EmailVerificationResultMembers>(EmailVerificationResult)!;
 
+// Context hooks
+const factory = new ContextHooks<EmailVerificationResultMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,12 +18,24 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen: () => ScreenMembersOnEmailVerificationResult = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type { ScreenMembersOnEmailVerificationResult, EmailVerificationResultMembers } from '@auth0/auth0-acul-js/email-verification-result';
+// Main instance hook. Returns singleton instance of EmailVerificationResult
+export const useEmailVerificationResult = (): EmailVerificationResultMembers =>
+  useMemo(() => instance, []);
 
-export type * from '@auth0/auth0-acul-js/email-verification-result';
+// Export all types from the core SDK for this screen

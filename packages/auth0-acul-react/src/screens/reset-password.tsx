@@ -1,20 +1,23 @@
-import { useMemo } from 'react';
 import ResetPassword from '@auth0/auth0-acul-js/reset-password';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { ResetPasswordMembers, ResetPasswordOptions, ScreenMembersOnResetPassword } from '@auth0/auth0-acul-js/reset-password';
-let instance: ResetPasswordMembers | null = null;
-const getInstance = (): ResetPasswordMembers => {
-  if (!instance) {
-    instance = new ResetPassword();
-  }
-  return instance;
-};
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const useResetPassword = (): ResetPasswordMembers => useMemo(() => getInstance(), []);
+import type {
+  ResetPasswordMembers,
+  ResetPasswordOptions,
+} from '@auth0/auth0-acul-js/reset-password';
 
-const factory = new ContextHooks<ResetPasswordMembers>(getInstance);
+// Register the singleton instance of ResetPassword
+const instance = registerScreen<ResetPasswordMembers>(ResetPassword)!;
 
+// Error wrapper
+const { withError } = errorManager;
+
+// Context hooks
+const factory = new ContextHooks<ResetPasswordMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,38 +25,30 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen: () => ScreenMembersOnResetPassword = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
-// Screen methods
-export const resetPassword = (payload: ResetPasswordOptions) => getInstance().resetPassword(payload);
+// Submit functions
+export const resetPassword = (payload: ResetPasswordOptions) =>
+  withError(instance.resetPassword(payload));
 
-/**
- * Validates a password string against the current password policy
- * by delegating to the instance's `validatePassword` method.
- *
- * This function returns an array of password rule validation results,
- * where each result contains the rule code, description, and whether
- * the password satisfies that rule.
- *
- * @param {string} password - The password string to validate.
- * @returns {PasswordRuleValidation[]} An array of validation results for each password policy rule.
- *
- * @example
- * ```ts
- * const results = usePasswordValidation('P@ssword123');
- * console.log(results);
- * // [
- * //   { code: 'password-policy-length-at-least', policy: 'At least 12 characters', isValid: false },
- * //   { code: 'password-policy-lower-case', policy: 'Lowercase letters (a-z)', isValid: true },
- * //   ...
- * // ]
- * ```
- */
-export const usePasswordValidation = (password: string) => getInstance().validatePassword(password);
+// Utility Hooks
+export { usePasswordValidation } from '../hooks/utility/validate-password';
 
-export type { ResetPasswordOptions, ScreenMembersOnResetPassword, ResetPasswordMembers } from '@auth0/auth0-acul-js/reset-password';
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type * from '@auth0/auth0-acul-js/reset-password';
+// Main instance hook. Returns singleton instance of ResetPassword
+export const useResetPassword = (): ResetPasswordMembers => useMemo(() => instance, []);
+
+// Export all types from the core SDK for this screen

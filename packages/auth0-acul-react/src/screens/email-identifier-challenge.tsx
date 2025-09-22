@@ -1,23 +1,24 @@
-import { useMemo } from 'react';
 import EmailIdentifierChallenge from '@auth0/auth0-acul-js/email-identifier-challenge';
-import { ContextHooks } from '../hooks/context-hooks';
-import { resendManager } from '../hooks/utility-hooks';
-import type { UseResendParams, UseResendReturn } from '../interfaces/common';
+import { useMemo } from 'react';
 
-import type { EmailIdentifierChallengeMembers, EmailChallengeOptions, CustomOptions, ScreenMembersOnEmailIdentifierChallenge } from '@auth0/auth0-acul-js/email-identifier-challenge';
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-let instance: EmailIdentifierChallengeMembers | null = null;
-const getInstance = (): EmailIdentifierChallengeMembers => {
-  if (!instance) {
-    instance = new EmailIdentifierChallenge();
-  }
-  return instance;
-};
+import type {
+  EmailIdentifierChallengeMembers,
+  EmailChallengeOptions,
+  CustomOptions,
+} from '@auth0/auth0-acul-js/email-identifier-challenge';
 
-export const useEmailIdentifierChallenge = (): EmailIdentifierChallengeMembers => useMemo(() => getInstance(), []);
+// Register the singleton instance of EmailIdentifierChallenge
+const instance = registerScreen<EmailIdentifierChallengeMembers>(EmailIdentifierChallenge)!;
 
-const factory = new ContextHooks<EmailIdentifierChallengeMembers>(getInstance);
+// Error wrapper
+const { withError } = errorManager;
 
+// Context hooks
+const factory = new ContextHooks<EmailIdentifierChallengeMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -25,23 +26,34 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen: () => ScreenMembersOnEmailIdentifierChallenge = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const submitEmailChallenge = (payload: EmailChallengeOptions) =>
+  withError(instance.submitEmailChallenge(payload));
+export const resendCode = (payload?: CustomOptions) => withError(instance.resendCode(payload));
+export const returnToPrevious = (payload?: CustomOptions) =>
+  withError(instance.returnToPrevious(payload));
 
-// Screen methods
-export const submitEmailChallenge = (payload: EmailChallengeOptions) => getInstance().submitEmailChallenge(payload);
-export const resendCode = (payload?: CustomOptions) => getInstance().resendCode(payload);
-export const returnToPrevious = (payload?: CustomOptions) => getInstance().returnToPrevious(payload);
+// Utility Hooks
+export { useResend } from '../hooks/utility/resend-manager';
 
-// Resend hook
-export const useResend = (payload?: UseResendParams): UseResendReturn => {
-  const screenInstance = useMemo(() => getInstance(), []);
-  return resendManager(screenInstance, payload);
-};
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type { EmailChallengeOptions, ScreenMembersOnEmailIdentifierChallenge, EmailIdentifierChallengeMembers } from '@auth0/auth0-acul-js/email-identifier-challenge';
+// Main instance hook. Returns singleton instance of EmailIdentifierChallenge
+export const useEmailIdentifierChallenge = (): EmailIdentifierChallengeMembers =>
+  useMemo(() => instance, []);
 
-export type * from '@auth0/auth0-acul-js/email-identifier-challenge';
+// Export all types from the core SDK for this screen

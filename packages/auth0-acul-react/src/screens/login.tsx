@@ -1,20 +1,20 @@
-import { useMemo } from 'react';
 import Login from '@auth0/auth0-acul-js/login';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { LoginMembers, LoginOptions, FederatedLoginOptions, ScreenMembersOnLogin, TransactionMembersOnLogin } from '@auth0/auth0-acul-js/login';
-let instance: LoginMembers | null = null;
-const getInstance = (): LoginMembers => {
-  if (!instance) {
-    instance = new Login();
-  }
-  return instance;
-};
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const useLogin = (): LoginMembers => useMemo(() => getInstance(), []);
+import type { LoginMembers, LoginOptions, FederatedLoginOptions } from '@auth0/auth0-acul-js/login';
 
-const factory = new ContextHooks<LoginMembers>(getInstance);
+// Register the singleton instance of Login
+const instance = registerScreen<LoginMembers>(Login)!;
 
+// Error wrapper
+const { withError } = errorManager;
+
+// Context hooks
+const factory = new ContextHooks<LoginMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,35 +22,31 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen: () => ScreenMembersOnLogin = () => useMemo(() => getInstance().screen, []);
-export const useTransaction: () => TransactionMembersOnLogin = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const login = (payload: LoginOptions) => withError(instance.login(payload));
+export const federatedLogin = (payload: FederatedLoginOptions) =>
+  withError(instance.federatedLogin(payload));
 
-// Screen methods
-export const login = (payload: LoginOptions) => getInstance().login(payload);
-export const federatedLogin = (payload: FederatedLoginOptions) => getInstance().federatedLogin(payload);
+// Utility Hooks
+export { useActiveIdentifiers } from '../hooks/utility/active-identifiers';
 
-/**
- * Retrieves the active identifier types for the current transaction instance.
- *
- * This function returns an array of active identifier types (e.g., `email`, `phone`, `username`)
- * or `null` if no active identifiers are set.
- *
- * It internally calls the instance's `getActiveIdentifiers` method.
- *
- * @returns {string[] | null} An array of active identifier types or `null` if none are active.
- *
- * @example
- * ```ts
- * const activeIds = useActiveIdentifiers();
- * console.log(activeIds);
- * // ['email', 'username']
- * ```
- */
-export const useActiveIdentifiers = () => getInstance().getActiveIdentifiers();
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type { ScreenMembersOnLogin, TransactionMembersOnLogin, LoginOptions, FederatedLoginOptions, LoginMembers } from '@auth0/auth0-acul-js/login';
+// Main instance hook. Returns singleton instance of Login
+export const useLogin = (): LoginMembers => useMemo(() => instance, []);
 
-export type * from '@auth0/auth0-acul-js/login';
+// Export all types from the core SDK for this screen

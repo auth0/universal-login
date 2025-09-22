@@ -1,20 +1,24 @@
-import { useMemo } from 'react';
 import MfaPushChallengePush from '@auth0/auth0-acul-js/mfa-push-challenge-push';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { MfaPushChallengePushMembers, WithRememberOptions, CustomOptions, ScreenMembersOnMfaPushChallengePush } from '@auth0/auth0-acul-js/mfa-push-challenge-push';
-import { MfaPushPollingError } from '@auth0/auth0-acul-js/mfa-push-challenge-push';
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-let instance: MfaPushChallengePushMembers | null = null;
-const getInstance = (): MfaPushChallengePushMembers => {
-  if (!instance) {
-    instance = new MfaPushChallengePush();
-  }
-  return instance;
-};
+import type {
+  MfaPushChallengePushMembers,
+  WithRememberOptions,
+  CustomOptions,
+} from '@auth0/auth0-acul-js/mfa-push-challenge-push';
 
-const factory = new ContextHooks<MfaPushChallengePushMembers>(getInstance);
+// Register the singleton instance of MfaPushChallengePush
+const instance = registerScreen<MfaPushChallengePushMembers>(MfaPushChallengePush)!;
 
+// Error wrapper
+const { withError } = errorManager;
+
+// Context hooks
+const factory = new ContextHooks<MfaPushChallengePushMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,19 +26,37 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen: () => ScreenMembersOnMfaPushChallengePush = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const continueMethod = (payload?: WithRememberOptions) =>
+  withError(instance.continue(payload));
+export const resendPushNotification = (payload?: WithRememberOptions) =>
+  withError(instance.resendPushNotification(payload));
+export const enterCodeManually = (payload?: CustomOptions) =>
+  withError(instance.enterCodeManually(payload));
+export const tryAnotherMethod = (payload?: CustomOptions) =>
+  withError(instance.tryAnotherMethod(payload));
 
-// Screen methods
-export const continueMethod = (payload?: WithRememberOptions) => getInstance().continue(payload);
-export const resendPushNotification = (payload?: WithRememberOptions) => getInstance().resendPushNotification(payload);
-export const enterCodeManually = (payload?: CustomOptions) => getInstance().enterCodeManually(payload);
-export const tryAnotherMethod = (payload?: CustomOptions) => getInstance().tryAnotherMethod(payload);
-export const usePollingManager = (intervalMs: number, onComplete: () => void, onError?: (error: MfaPushPollingError) => void) => getInstance().pollingManager(intervalMs, onComplete, onError);
+// Utility Hooks
+export { useMfaPolling } from '../hooks/utility/polling-manager';
 
-export type { ScreenMembersOnMfaPushChallengePush, UntrustedDataMembersOnMfaPushChallengePush, WithRememberOptions, MfaPushChallengePushMembers } from '@auth0/auth0-acul-js/mfa-push-challenge-push';
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type * from '@auth0/auth0-acul-js/mfa-push-challenge-push';
+// Main instance hook. Returns singleton instance of MfaPushChallengePush
+export const useMfaPushChallengePush = (): MfaPushChallengePushMembers =>
+  useMemo(() => instance, []);
+
+// Export all types from the core SDK for this screen

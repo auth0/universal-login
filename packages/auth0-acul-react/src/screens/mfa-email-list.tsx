@@ -1,20 +1,24 @@
-import { useMemo } from 'react';
 import MfaEmailList from '@auth0/auth0-acul-js/mfa-email-list';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { MfaEmailListMembers, SelectMfaEmailOptions, CustomOptions, ScreenMembersOnMfaEmailList } from '@auth0/auth0-acul-js/mfa-email-list';
-let instance: MfaEmailListMembers | null = null;
-const getInstance = (): MfaEmailListMembers => {
-  if (!instance) {
-    instance = new MfaEmailList();
-  }
-  return instance;
-};
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const useMfaEmailList = (): MfaEmailListMembers => useMemo(() => getInstance(), []);
+import type {
+  MfaEmailListMembers,
+  SelectMfaEmailOptions,
+  CustomOptions,
+} from '@auth0/auth0-acul-js/mfa-email-list';
 
-const factory = new ContextHooks<MfaEmailListMembers>(getInstance);
+// Register the singleton instance of MfaEmailList
+const instance = registerScreen<MfaEmailListMembers>(MfaEmailList)!;
 
+// Error wrapper
+const { withError } = errorManager;
+
+// Context hooks
+const factory = new ContextHooks<MfaEmailListMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,16 +26,28 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen: () => ScreenMembersOnMfaEmailList = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const selectMfaEmail = (payload: SelectMfaEmailOptions) =>
+  withError(instance.selectMfaEmail(payload));
+export const goBack = (payload?: CustomOptions) => withError(instance.goBack(payload));
 
-// Screen methods
-export const selectMfaEmail = (payload: SelectMfaEmailOptions) => getInstance().selectMfaEmail(payload);
-export const goBack = (payload?: CustomOptions) => getInstance().goBack(payload);
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type { ScreenMembersOnMfaEmailList, SelectMfaEmailOptions, MfaEmailListMembers } from '@auth0/auth0-acul-js/mfa-email-list';
+// Main instance hook. Returns singleton instance of MfaEmailList
+export const useMfaEmailList = (): MfaEmailListMembers => useMemo(() => instance, []);
 
-export type * from '@auth0/auth0-acul-js/mfa-email-list';
+// Export all types from the core SDK for this screen

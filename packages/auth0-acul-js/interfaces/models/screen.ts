@@ -77,27 +77,3 @@ export interface ScreenMembers {
   texts: Record<string, string> | null;
   captcha: CaptchaContext | null;
 }
-
-//types and interfaces related to utility hooks
-export type IdentifierType = 'email' | 'phone' | 'username';
-
-export interface Identifier {
-  type: IdentifierType;
-  required: boolean;
-}
-
-export type PasswordRuleValidation = {
-  policy: string;
-  isValid: boolean;
-  code: string;
-};
-
-export interface UsernameValidationError {
-  code: string;
-  message: string;
-}
-
-export interface UsernameValidationResult {
-  isValid: boolean;
-  errors: UsernameValidationError[];
-}

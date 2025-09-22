@@ -1,20 +1,24 @@
-import { useMemo } from 'react';
 import LoginPasswordlessSmsOtp from '@auth0/auth0-acul-js/login-passwordless-sms-otp';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { LoginPasswordlessSmsOtpMembers, SubmitOTPOptions, CustomOptions, ScreenMembersOnLoginPasswordlessSmsOtp, TransactionMembersOnLoginPasswordlessSmsOtp } from '@auth0/auth0-acul-js/login-passwordless-sms-otp';
-let instance: LoginPasswordlessSmsOtpMembers | null = null;
-const getInstance = (): LoginPasswordlessSmsOtpMembers => {
-  if (!instance) {
-    instance = new LoginPasswordlessSmsOtp();
-  }
-  return instance;
-};
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const useLoginPasswordlessSmsOtp = (): LoginPasswordlessSmsOtpMembers => useMemo(() => getInstance(), []);
+import type {
+  LoginPasswordlessSmsOtpMembers,
+  SubmitOTPOptions,
+  CustomOptions,
+} from '@auth0/auth0-acul-js/login-passwordless-sms-otp';
 
-const factory = new ContextHooks<LoginPasswordlessSmsOtpMembers>(getInstance);
+// Register the singleton instance of LoginPasswordlessSmsOtp
+const instance = registerScreen<LoginPasswordlessSmsOtpMembers>(LoginPasswordlessSmsOtp)!;
 
+// Error wrapper
+const { withError } = errorManager;
+
+// Context hooks
+const factory = new ContextHooks<LoginPasswordlessSmsOtpMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,16 +26,31 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen: () => ScreenMembersOnLoginPasswordlessSmsOtp = () => useMemo(() => getInstance().screen, []);
-export const useTransaction: () => TransactionMembersOnLoginPasswordlessSmsOtp = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const submitOTP = (payload: SubmitOTPOptions) => withError(instance.submitOTP(payload));
+export const resendOTP = (payload?: CustomOptions) => withError(instance.resendOTP(payload));
 
-// Screen methods
-export const submitOTP = (payload: SubmitOTPOptions) => getInstance().submitOTP(payload);
-export const resendOTP = (payload?: CustomOptions) => getInstance().resendOTP(payload);
+// Utility Hooks
+export { useResend } from '../hooks/utility/resend-manager';
 
-export type { ScreenMembersOnLoginPasswordlessSmsOtp, TransactionMembersOnLoginPasswordlessSmsOtp, SubmitOTPOptions, LoginPasswordlessSmsOtpMembers } from '@auth0/auth0-acul-js/login-passwordless-sms-otp';
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type * from '@auth0/auth0-acul-js/login-passwordless-sms-otp';
+// Main instance hook. Returns singleton instance of LoginPasswordlessSmsOtp
+export const useLoginPasswordlessSmsOtp = (): LoginPasswordlessSmsOtpMembers =>
+  useMemo(() => instance, []);
+
+// Export all types from the core SDK for this screen

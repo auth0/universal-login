@@ -1,20 +1,26 @@
-import { useMemo } from 'react';
 import ResetPasswordMfaVoiceChallenge from '@auth0/auth0-acul-js/reset-password-mfa-voice-challenge';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { ResetPasswordMfaVoiceChallengeMembers, ContinueOptions, CustomOptions, ScreenMembersOnResetPasswordMfaVoiceChallenge } from '@auth0/auth0-acul-js/reset-password-mfa-voice-challenge';
-let instance: ResetPasswordMfaVoiceChallengeMembers | null = null;
-const getInstance = (): ResetPasswordMfaVoiceChallengeMembers => {
-  if (!instance) {
-    instance = new ResetPasswordMfaVoiceChallenge();
-  }
-  return instance;
-};
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const useResetPasswordMfaVoiceChallenge = (): ResetPasswordMfaVoiceChallengeMembers => useMemo(() => getInstance(), []);
+import type {
+  ResetPasswordMfaVoiceChallengeMembers,
+  ContinueOptions,
+  CustomOptions,
+} from '@auth0/auth0-acul-js/reset-password-mfa-voice-challenge';
 
-const factory = new ContextHooks<ResetPasswordMfaVoiceChallengeMembers>(getInstance);
+// Register the singleton instance of ResetPasswordMfaVoiceChallenge
+const instance = registerScreen<ResetPasswordMfaVoiceChallengeMembers>(
+  ResetPasswordMfaVoiceChallenge
+)!;
 
+// Error wrapper
+const { withError } = errorManager;
+
+// Context hooks
+const factory = new ContextHooks<ResetPasswordMfaVoiceChallengeMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,18 +28,34 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen: () => ScreenMembersOnResetPasswordMfaVoiceChallenge = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const continueMethod = (payload: ContinueOptions) => withError(instance.continue(payload));
+export const switchToSms = (payload?: CustomOptions) => withError(instance.switchToSms(payload));
+export const resendCode = (payload?: CustomOptions) => withError(instance.resendCode(payload));
+export const tryAnotherMethod = (payload?: CustomOptions) =>
+  withError(instance.tryAnotherMethod(payload));
 
-// Screen methods
-export const continueMethod = (payload: ContinueOptions) => getInstance().continue(payload);
-export const switchToSms = (payload?: CustomOptions) => getInstance().switchToSms(payload);
-export const resendCode = (payload?: CustomOptions) => getInstance().resendCode(payload);
-export const tryAnotherMethod = (payload?: CustomOptions) => getInstance().tryAnotherMethod(payload);
+// Utility Hooks
+export { useResend } from '../hooks/utility/resend-manager';
 
-export type { ScreenMembersOnResetPasswordMfaVoiceChallenge, ContinueOptions, ResetPasswordMfaVoiceChallengeMembers } from '@auth0/auth0-acul-js/reset-password-mfa-voice-challenge';
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type * from '@auth0/auth0-acul-js/reset-password-mfa-voice-challenge';
+// Main instance hook. Returns singleton instance of ResetPasswordMfaVoiceChallenge
+export const useResetPasswordMfaVoiceChallenge = (): ResetPasswordMfaVoiceChallengeMembers =>
+  useMemo(() => instance, []);
+
+// Export all types from the core SDK for this screen

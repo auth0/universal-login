@@ -14,7 +14,13 @@ describe('MfaOtpEnrollmentCode', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
-    window.universal_login_context = baseContextData;
+    window.universal_login_context = {
+      ...baseContextData,
+      screen: {
+        ...baseContextData.screen,
+        name: 'mfa-otp-enrollment-code',
+      }
+    };
     mfaOtpEnrollmentCode = new MfaOtpEnrollmentCode();
     mockFormHandler = {
       submitData: jest.fn(),

@@ -1,20 +1,24 @@
-import { useMemo } from 'react';
 import ResetPasswordRequest from '@auth0/auth0-acul-js/reset-password-request';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { ResetPasswordRequestMembers, ResetPasswordRequestOptions, CustomOptions, ScreenMembersOnResetPasswordRequest, TransactionMembersOnResetPasswordRequest } from '@auth0/auth0-acul-js/reset-password-request';
-let instance: ResetPasswordRequestMembers | null = null;
-const getInstance = (): ResetPasswordRequestMembers => {
-  if (!instance) {
-    instance = new ResetPasswordRequest();
-  }
-  return instance;
-};
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const useResetPasswordRequest = (): ResetPasswordRequestMembers => useMemo(() => getInstance(), []);
+import type {
+  ResetPasswordRequestMembers,
+  ResetPasswordRequestOptions,
+  CustomOptions,
+} from '@auth0/auth0-acul-js/reset-password-request';
 
-const factory = new ContextHooks<ResetPasswordRequestMembers>(getInstance);
+// Register the singleton instance of ResetPasswordRequest
+const instance = registerScreen<ResetPasswordRequestMembers>(ResetPasswordRequest)!;
 
+// Error wrapper
+const { withError } = errorManager;
+
+// Context hooks
+const factory = new ContextHooks<ResetPasswordRequestMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,16 +26,29 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen: () => ScreenMembersOnResetPasswordRequest = () => useMemo(() => getInstance().screen, []);
-export const useTransaction: () => TransactionMembersOnResetPasswordRequest = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const resetPassword = (payload: ResetPasswordRequestOptions) =>
+  withError(instance.resetPassword(payload));
+export const backToLogin = (payload?: CustomOptions) => withError(instance.backToLogin(payload));
 
-// Screen methods
-export const resetPassword = (payload: ResetPasswordRequestOptions) => getInstance().resetPassword(payload);
-export const backToLogin = (payload?: CustomOptions) => getInstance().backToLogin(payload);
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type { ResetPasswordRequestOptions, TransactionMembersOnResetPasswordRequest, ScreenMembersOnResetPasswordRequest, ResetPasswordRequestMembers } from '@auth0/auth0-acul-js/reset-password-request';
+// Main instance hook. Returns singleton instance of ResetPasswordRequest
+export const useResetPasswordRequest = (): ResetPasswordRequestMembers =>
+  useMemo(() => instance, []);
 
-export type * from '@auth0/auth0-acul-js/reset-password-request';
+// Export all types from the core SDK for this screen

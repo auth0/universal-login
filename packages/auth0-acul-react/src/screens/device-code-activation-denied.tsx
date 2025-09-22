@@ -1,20 +1,16 @@
-import { useMemo } from 'react';
 import DeviceCodeActivationDenied from '@auth0/auth0-acul-js/device-code-activation-denied';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
+
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
 import type { DeviceCodeActivationDeniedMembers } from '@auth0/auth0-acul-js/device-code-activation-denied';
-let instance: DeviceCodeActivationDeniedMembers | null = null;
-const getInstance = (): DeviceCodeActivationDeniedMembers => {
-  if (!instance) {
-    instance = new DeviceCodeActivationDenied();
-  }
-  return instance;
-};
 
-export const useDeviceCodeActivationDenied = (): DeviceCodeActivationDeniedMembers => useMemo(() => getInstance(), []);
+// Register the singleton instance of DeviceCodeActivationDenied
+const instance = registerScreen<DeviceCodeActivationDeniedMembers>(DeviceCodeActivationDenied)!;
 
-const factory = new ContextHooks<DeviceCodeActivationDeniedMembers>(getInstance);
-
+// Context hooks
+const factory = new ContextHooks<DeviceCodeActivationDeniedMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,12 +18,24 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type { DeviceCodeActivationDeniedMembers } from '@auth0/auth0-acul-js/device-code-activation-denied';
+// Main instance hook. Returns singleton instance of DeviceCodeActivationDenied
+export const useDeviceCodeActivationDenied = (): DeviceCodeActivationDeniedMembers =>
+  useMemo(() => instance, []);
 
-export type * from '@auth0/auth0-acul-js/device-code-activation-denied';
+// Export all types from the core SDK for this screen

@@ -1,20 +1,24 @@
-import { useMemo } from 'react';
 import MfaOtpEnrollmentCode from '@auth0/auth0-acul-js/mfa-otp-enrollment-code';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { MfaOtpEnrollmentCodeMembers, ContinueOptions, TryAnotherMethodOptions, ScreenMembersOnMfaOtpEnrollmentCode } from '@auth0/auth0-acul-js/mfa-otp-enrollment-code';
-let instance: MfaOtpEnrollmentCodeMembers | null = null;
-const getInstance = (): MfaOtpEnrollmentCodeMembers => {
-  if (!instance) {
-    instance = new MfaOtpEnrollmentCode();
-  }
-  return instance;
-};
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const useMfaOtpEnrollmentCode = (): MfaOtpEnrollmentCodeMembers => useMemo(() => getInstance(), []);
+import type {
+  MfaOtpEnrollmentCodeMembers,
+  ContinueOptions,
+  TryAnotherMethodOptions,
+} from '@auth0/auth0-acul-js/mfa-otp-enrollment-code';
 
-const factory = new ContextHooks<MfaOtpEnrollmentCodeMembers>(getInstance);
+// Register the singleton instance of MfaOtpEnrollmentCode
+const instance = registerScreen<MfaOtpEnrollmentCodeMembers>(MfaOtpEnrollmentCode)!;
 
+// Error wrapper
+const { withError } = errorManager;
+
+// Context hooks
+const factory = new ContextHooks<MfaOtpEnrollmentCodeMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,16 +26,29 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen: () => ScreenMembersOnMfaOtpEnrollmentCode = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const continueMethod = (payload: ContinueOptions) => withError(instance.continue(payload));
+export const tryAnotherMethod = (payload?: TryAnotherMethodOptions) =>
+  withError(instance.tryAnotherMethod(payload));
 
-// Screen methods
-export const continueMethod = (payload: ContinueOptions) => getInstance().continue(payload);
-export const tryAnotherMethod = (payload?: TryAnotherMethodOptions) => getInstance().tryAnotherMethod(payload);
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type { ContinueOptions, TryAnotherMethodOptions, ScreenMembersOnMfaOtpEnrollmentCode, MfaOtpEnrollmentCodeMembers } from '@auth0/auth0-acul-js/mfa-otp-enrollment-code';
+// Main instance hook. Returns singleton instance of MfaOtpEnrollmentCode
+export const useMfaOtpEnrollmentCode = (): MfaOtpEnrollmentCodeMembers =>
+  useMemo(() => instance, []);
 
-export type * from '@auth0/auth0-acul-js/mfa-otp-enrollment-code';
+// Export all types from the core SDK for this screen

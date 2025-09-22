@@ -1,20 +1,23 @@
-import { useMemo } from 'react';
 import AcceptInvitation from '@auth0/auth0-acul-js/accept-invitation';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { AcceptInvitationMembers, CustomOptions, ScreenMembersOnAcceptInvitation } from '@auth0/auth0-acul-js/accept-invitation';
-let instance: AcceptInvitationMembers | null = null;
-const getInstance = (): AcceptInvitationMembers => {
-  if (!instance) {
-    instance = new AcceptInvitation();
-  }
-  return instance;
-};
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const useAcceptInvitation = (): AcceptInvitationMembers => useMemo(() => getInstance(), []);
+import type {
+  AcceptInvitationMembers,
+  CustomOptions,
+} from '@auth0/auth0-acul-js/accept-invitation';
 
-const factory = new ContextHooks<AcceptInvitationMembers>(getInstance);
+// Register the singleton instance of AcceptInvitation
+const instance = registerScreen<AcceptInvitationMembers>(AcceptInvitation)!;
 
+// Error wrapper
+const { withError } = errorManager;
+
+// Context hooks
+const factory = new ContextHooks<AcceptInvitationMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,15 +25,27 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen: () => ScreenMembersOnAcceptInvitation = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const acceptInvitation = (payload?: CustomOptions) =>
+  withError(instance.acceptInvitation(payload));
 
-// Screen methods
-export const acceptInvitation = (payload?: CustomOptions) => getInstance().acceptInvitation(payload);
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type { ScreenMembersOnAcceptInvitation, AcceptInvitationMembers } from '@auth0/auth0-acul-js/accept-invitation';
+// Main instance hook. Returns singleton instance of AcceptInvitation
+export const useAcceptInvitation = (): AcceptInvitationMembers => useMemo(() => instance, []);
 
-export type * from '@auth0/auth0-acul-js/accept-invitation';
+// Export all types from the core SDK for this screen

@@ -1,4 +1,4 @@
-import { FormActions } from '../../constants';
+import { FormActions, ScreenIds } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 import { createResendControl } from '../../utils/resend-utils';
@@ -24,6 +24,11 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * as part of a multi-factor authentication flow.
  */
 export default class MfaVoiceChallenge extends BaseContext implements MfaVoiceChallengeMembers {
+  /**
+   * Screen identifier for validation and telemetry
+   */
+  static screenIdentifier: string = ScreenIds.MFA_VOICE_CHALLENGE;
+
   /**
    * Screen-specific properties and data.
    */
@@ -173,6 +178,7 @@ export default class MfaVoiceChallenge extends BaseContext implements MfaVoiceCh
    * @param options.onStatusChange - Callback to receive state updates (remaining seconds, disabled status)
    * @param options.onTimeout - Callback to execute when timeout countdown reaches zero
    * @returns ResendControl object with startResend method
+   * @category Utility
    * 
    * @example
    * ```typescript

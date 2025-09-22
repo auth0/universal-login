@@ -1,20 +1,24 @@
-import { useMemo } from 'react';
 import PasskeyEnrollmentLocal from '@auth0/auth0-acul-js/passkey-enrollment-local';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { PasskeyEnrollmentLocalMembers, CustomOptions, AbortEnrollmentOptions, ScreenMembersOnPasskeyEnrollmentLocal } from '@auth0/auth0-acul-js/passkey-enrollment-local';
-let instance: PasskeyEnrollmentLocalMembers | null = null;
-const getInstance = (): PasskeyEnrollmentLocalMembers => {
-  if (!instance) {
-    instance = new PasskeyEnrollmentLocal();
-  }
-  return instance;
-};
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const usePasskeyEnrollmentLocal = (): PasskeyEnrollmentLocalMembers => useMemo(() => getInstance(), []);
+import type {
+  PasskeyEnrollmentLocalMembers,
+  CustomOptions,
+  AbortEnrollmentOptions,
+} from '@auth0/auth0-acul-js/passkey-enrollment-local';
 
-const factory = new ContextHooks<PasskeyEnrollmentLocalMembers>(getInstance);
+// Register the singleton instance of PasskeyEnrollmentLocal
+const instance = registerScreen<PasskeyEnrollmentLocalMembers>(PasskeyEnrollmentLocal)!;
 
+// Error wrapper
+const { withError } = errorManager;
+
+// Context hooks
+const factory = new ContextHooks<PasskeyEnrollmentLocalMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,16 +26,30 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen: () => ScreenMembersOnPasskeyEnrollmentLocal = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const continuePasskeyEnrollment = (payload?: CustomOptions) =>
+  withError(instance.continuePasskeyEnrollment(payload));
+export const abortPasskeyEnrollment = (payload: AbortEnrollmentOptions) =>
+  withError(instance.abortPasskeyEnrollment(payload));
 
-// Screen methods
-export const continuePasskeyEnrollment = (payload?: CustomOptions) => getInstance().continuePasskeyEnrollment(payload);
-export const abortPasskeyEnrollment = (payload: AbortEnrollmentOptions) => getInstance().abortPasskeyEnrollment(payload);
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type { AbortEnrollmentOptions, ScreenMembersOnPasskeyEnrollmentLocal, PasskeyEnrollmentLocalMembers } from '@auth0/auth0-acul-js/passkey-enrollment-local';
+// Main instance hook. Returns singleton instance of PasskeyEnrollmentLocal
+export const usePasskeyEnrollmentLocal = (): PasskeyEnrollmentLocalMembers =>
+  useMemo(() => instance, []);
 
-export type * from '@auth0/auth0-acul-js/passkey-enrollment-local';
+// Export all types from the core SDK for this screen

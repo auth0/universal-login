@@ -1,20 +1,25 @@
-import { useMemo } from 'react';
 import MfaWebAuthnPlatformChallenge from '@auth0/auth0-acul-js/mfa-webauthn-platform-challenge';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { MfaWebAuthnPlatformChallengeMembers, VerifyPlatformAuthenticatorOptions, ReportBrowserErrorOptions, TryAnotherMethodOptions, ScreenMembersOnMfaWebAuthnPlatformChallenge } from '@auth0/auth0-acul-js/mfa-webauthn-platform-challenge';
-let instance: MfaWebAuthnPlatformChallengeMembers | null = null;
-const getInstance = (): MfaWebAuthnPlatformChallengeMembers => {
-  if (!instance) {
-    instance = new MfaWebAuthnPlatformChallenge();
-  }
-  return instance;
-};
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const useMfaWebAuthnPlatformChallenge = (): MfaWebAuthnPlatformChallengeMembers => useMemo(() => getInstance(), []);
+import type {
+  MfaWebAuthnPlatformChallengeMembers,
+  VerifyPlatformAuthenticatorOptions,
+  ReportBrowserErrorOptions,
+  TryAnotherMethodOptions,
+} from '@auth0/auth0-acul-js/mfa-webauthn-platform-challenge';
 
-const factory = new ContextHooks<MfaWebAuthnPlatformChallengeMembers>(getInstance);
+// Register the singleton instance of MfaWebAuthnPlatformChallenge
+const instance = registerScreen<MfaWebAuthnPlatformChallengeMembers>(MfaWebAuthnPlatformChallenge)!;
 
+// Error wrapper
+const { withError } = errorManager;
+
+// Context hooks
+const factory = new ContextHooks<MfaWebAuthnPlatformChallengeMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,17 +27,32 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen: () => ScreenMembersOnMfaWebAuthnPlatformChallenge = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const verify = (options?: VerifyPlatformAuthenticatorOptions) =>
+  withError(instance.verify(options));
+export const reportBrowserError = (options: ReportBrowserErrorOptions) =>
+  withError(instance.reportBrowserError(options));
+export const tryAnotherMethod = (options?: TryAnotherMethodOptions) =>
+  withError(instance.tryAnotherMethod(options));
 
-// Screen methods
-export const verify = (options?: VerifyPlatformAuthenticatorOptions) => getInstance().verify(options);
-export const reportBrowserError = (options: ReportBrowserErrorOptions) => getInstance().reportBrowserError(options);
-export const tryAnotherMethod = (options?: TryAnotherMethodOptions) => getInstance().tryAnotherMethod(options);
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type { ScreenMembersOnMfaWebAuthnPlatformChallenge, VerifyPlatformAuthenticatorOptions, ReportBrowserErrorOptions, TryAnotherMethodOptions, MfaWebAuthnPlatformChallengeMembers } from '@auth0/auth0-acul-js/mfa-webauthn-platform-challenge';
+// Main instance hook. Returns singleton instance of MfaWebAuthnPlatformChallenge
+export const useMfaWebAuthnPlatformChallenge = (): MfaWebAuthnPlatformChallengeMembers =>
+  useMemo(() => instance, []);
 
-export type * from '@auth0/auth0-acul-js/mfa-webauthn-platform-challenge';
+// Export all types from the core SDK for this screen

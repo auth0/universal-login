@@ -1,19 +1,21 @@
+import { FormActions, ScreenIds } from '../../../../src/constants';
 import ResetPasswordMfaSmsChallenge from '../../../../src/screens/reset-password-mfa-sms-challenge';
-import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
-import { ScreenIds } from '../../../../src//constants';
+import { createResendControl } from '../../../../src/utils/resend-utils';
+import { baseContextData } from '../../../data/test-data';
 
-import type { MfaSmsChallengeOptions } from 'interfaces/screens/reset-password-mfa-sms-challenge';
 import type { CustomOptions } from 'interfaces/common';
-import { FormActions } from '../../../../src/constants';
+import type { MfaSmsChallengeOptions } from 'interfaces/screens/reset-password-mfa-sms-challenge';
 
 jest.mock('../../../../src/utils/form-handler');
+jest.mock('../../../../src/utils/resend-utils');
 
 describe('ResetPasswordMfaSmsChallenge', () => {
   let resetPasswordMfaSmsChallenge: ResetPasswordMfaSmsChallenge;
   let mockFormHandler: { submitData: jest.Mock };
 
   beforeEach(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     global.window = Object.create(window);
     baseContextData.screen.name = ScreenIds.RESET_PASSWORD_MFA_SMS_CHALLENGE;
     window.universal_login_context = baseContextData;
@@ -147,6 +149,92 @@ describe('ResetPasswordMfaSmsChallenge', () => {
         customParam: 'customValue',
       };
       await expect(resetPasswordMfaSmsChallenge.getACall(payload)).rejects.toThrow('Mocked reject');
+    });
+  });
+
+  describe('resendManager method', () => {
+    let mockCreateResendControl: jest.Mock;
+    let mockResendControl: { startResend: jest.Mock };
+
+    beforeEach(() => {
+      mockResendControl = {
+        startResend: jest.fn(),
+      };
+      mockCreateResendControl = createResendControl as jest.Mock;
+      mockCreateResendControl.mockReturnValue(mockResendControl);
+    });
+
+    it('should call createResendControl with correct screen identifier and resend function', () => {
+      resetPasswordMfaSmsChallenge.resendManager();
+
+      expect(mockCreateResendControl).toHaveBeenCalledWith(
+        ScreenIds.RESET_PASSWORD_MFA_SMS_CHALLENGE,
+        expect.any(Function),
+        undefined
+      );
+    });
+
+    it('should call createResendControl with provided options', () => {
+      const options = { timeoutSeconds: 30 };
+      resetPasswordMfaSmsChallenge.resendManager(options);
+
+      expect(mockCreateResendControl).toHaveBeenCalledWith(
+        ScreenIds.RESET_PASSWORD_MFA_SMS_CHALLENGE,
+        expect.any(Function),
+        options
+      );
+    });
+
+    it('should return the result from createResendControl', () => {
+      const result = resetPasswordMfaSmsChallenge.resendManager();
+
+      expect(result).toBe(mockResendControl);
+    });
+
+    it('should pass resendCode method as callback to createResendControl', () => {
+      resetPasswordMfaSmsChallenge.resendManager();
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+      const callback = mockCreateResendControl.mock.calls[0][1];
+      expect(typeof callback).toBe('function');
+    });
+
+    it('should provide a function that calls resendCode when invoked', async () => {
+      resetPasswordMfaSmsChallenge.resendManager();
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+      const callback = mockCreateResendControl.mock.calls[0][1];
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      await callback();
+
+      // Verify that FormHandler.submitData was called as expected by resendCode
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith(
+        expect.objectContaining({
+          action: FormActions.RESEND_CODE,
+        })
+      );
+    });
+
+    it('should pass callback options to createResendControl', () => {
+      const options = {
+        timeoutSeconds: 15,
+        onStatusChange: jest.fn(),
+        onTimeout: jest.fn()
+      };
+      resetPasswordMfaSmsChallenge.resendManager(options);
+
+      expect(mockCreateResendControl).toHaveBeenCalledWith(
+        ScreenIds.RESET_PASSWORD_MFA_SMS_CHALLENGE,
+        expect.any(Function),
+        options
+      );
+    });
+
+    it('should handle startResend method from returned control object', () => {
+      const result = resetPasswordMfaSmsChallenge.resendManager();
+      result.startResend();
+
+      expect(mockResendControl.startResend).toHaveBeenCalledTimes(1);
     });
   });
 });

@@ -1,20 +1,23 @@
-import { useMemo } from 'react';
 import PasskeyEnrollment from '@auth0/auth0-acul-js/passkey-enrollment';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { PasskeyEnrollmentMembers, CustomOptions, ScreenMembersOnPasskeyEnrollment } from '@auth0/auth0-acul-js/passkey-enrollment';
-let instance: PasskeyEnrollmentMembers | null = null;
-const getInstance = (): PasskeyEnrollmentMembers => {
-  if (!instance) {
-    instance = new PasskeyEnrollment();
-  }
-  return instance;
-};
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const usePasskeyEnrollment = (): PasskeyEnrollmentMembers => useMemo(() => getInstance(), []);
+import type {
+  PasskeyEnrollmentMembers,
+  CustomOptions,
+} from '@auth0/auth0-acul-js/passkey-enrollment';
 
-const factory = new ContextHooks<PasskeyEnrollmentMembers>(getInstance);
+// Register the singleton instance of PasskeyEnrollment
+const instance = registerScreen<PasskeyEnrollmentMembers>(PasskeyEnrollment)!;
 
+// Error wrapper
+const { withError } = errorManager;
+
+// Context hooks
+const factory = new ContextHooks<PasskeyEnrollmentMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,16 +25,29 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen: () => ScreenMembersOnPasskeyEnrollment = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const continuePasskeyEnrollment = (payload?: CustomOptions) =>
+  withError(instance.continuePasskeyEnrollment(payload));
+export const abortPasskeyEnrollment = (payload?: CustomOptions) =>
+  withError(instance.abortPasskeyEnrollment(payload));
 
-// Screen methods
-export const continuePasskeyEnrollment = (payload?: CustomOptions) => getInstance().continuePasskeyEnrollment(payload);
-export const abortPasskeyEnrollment = (payload?: CustomOptions) => getInstance().abortPasskeyEnrollment(payload);
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type { ScreenMembersOnPasskeyEnrollment, PasskeyEnrollmentMembers } from '@auth0/auth0-acul-js/passkey-enrollment';
+// Main instance hook. Returns singleton instance of PasskeyEnrollment
+export const usePasskeyEnrollment = (): PasskeyEnrollmentMembers => useMemo(() => instance, []);
 
-export type * from '@auth0/auth0-acul-js/passkey-enrollment';
+// Export all types from the core SDK for this screen

@@ -1,22 +1,24 @@
-import { useMemo } from 'react';
 import PhoneIdentifierChallenge from '@auth0/auth0-acul-js/phone-identifier-challenge';
-import { ContextHooks } from '../hooks/context-hooks';
-import { resendManager } from '../hooks/utility-hooks';
-import type { UseResendParams, UseResendReturn } from '../interfaces/common';
+import { useMemo } from 'react';
 
-import type { PhoneIdentifierChallengeMembers, PhoneChallengeOptions, CustomOptions, ScreenMembersOnPhoneIdentifierChallenge } from '@auth0/auth0-acul-js/phone-identifier-challenge';
-let instance: PhoneIdentifierChallengeMembers | null = null;
-const getInstance = (): PhoneIdentifierChallengeMembers => {
-  if (!instance) {
-    instance = new PhoneIdentifierChallenge();
-  }
-  return instance;
-};
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const usePhoneIdentifierChallenge = (): PhoneIdentifierChallengeMembers => useMemo(() => getInstance(), []);
+import type {
+  PhoneIdentifierChallengeMembers,
+  PhoneChallengeOptions,
+  CustomOptions,
+} from '@auth0/auth0-acul-js/phone-identifier-challenge';
 
-const factory = new ContextHooks<PhoneIdentifierChallengeMembers>(getInstance);
+// Register the singleton instance of PhoneIdentifierChallenge
+const instance = registerScreen<PhoneIdentifierChallengeMembers>(PhoneIdentifierChallenge)!;
 
+// Error wrapper
+const { withError } = errorManager;
+
+// Context hooks
+const factory = new ContextHooks<PhoneIdentifierChallengeMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -24,23 +26,34 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen: () => ScreenMembersOnPhoneIdentifierChallenge = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const submitPhoneChallenge = (payload: PhoneChallengeOptions) =>
+  withError(instance.submitPhoneChallenge(payload));
+export const resendCode = (payload?: CustomOptions) => withError(instance.resendCode(payload));
+export const returnToPrevious = (payload?: CustomOptions) =>
+  withError(instance.returnToPrevious(payload));
 
-// Screen methods
-export const submitPhoneChallenge = (payload: PhoneChallengeOptions) => getInstance().submitPhoneChallenge(payload);
-export const resendCode = (payload?: CustomOptions) => getInstance().resendCode(payload);
-export const returnToPrevious = (payload?: CustomOptions) => getInstance().returnToPrevious(payload);
+// Utility Hooks
+export { useResend } from '../hooks/utility/resend-manager';
 
-// Resend hook
-export const useResend = (payload?: UseResendParams): UseResendReturn => {
-  const screenInstance = useMemo(() => getInstance(), []);
-  return resendManager(screenInstance, payload);
-};
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type { PhoneChallengeOptions, ScreenMembersOnPhoneIdentifierChallenge, PhoneIdentifierChallengeMembers } from '@auth0/auth0-acul-js/phone-identifier-challenge';
+// Main instance hook. Returns singleton instance of PhoneIdentifierChallenge
+export const usePhoneIdentifierChallenge = (): PhoneIdentifierChallengeMembers =>
+  useMemo(() => instance, []);
 
-export type * from '@auth0/auth0-acul-js/phone-identifier-challenge';
+// Export all types from the core SDK for this screen

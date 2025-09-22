@@ -1,20 +1,23 @@
-import { useMemo } from 'react';
 import ResetPasswordEmail from '@auth0/auth0-acul-js/reset-password-email';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { ResetPasswordEmailMembers, CustomOptions, ScreenMembersOnResetPasswordEmail } from '@auth0/auth0-acul-js/reset-password-email';
-let instance: ResetPasswordEmailMembers | null = null;
-const getInstance = (): ResetPasswordEmailMembers => {
-  if (!instance) {
-    instance = new ResetPasswordEmail();
-  }
-  return instance;
-};
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const useResetPasswordEmail = (): ResetPasswordEmailMembers => useMemo(() => getInstance(), []);
+import type {
+  ResetPasswordEmailMembers,
+  CustomOptions,
+} from '@auth0/auth0-acul-js/reset-password-email';
 
-const factory = new ContextHooks<ResetPasswordEmailMembers>(getInstance);
+// Register the singleton instance of ResetPasswordEmail
+const instance = registerScreen<ResetPasswordEmailMembers>(ResetPasswordEmail)!;
 
+// Error wrapper
+const { withError } = errorManager;
+
+// Context hooks
+const factory = new ContextHooks<ResetPasswordEmailMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,15 +25,26 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen: () => ScreenMembersOnResetPasswordEmail = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const resendEmail = (payload?: CustomOptions) => withError(instance.resendEmail(payload));
 
-// Screen methods
-export const resendEmail = (payload?: CustomOptions) => getInstance().resendEmail(payload);
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type { ResetPasswordEmailOptions, ScreenMembersOnResetPasswordEmail, ResetPasswordEmailMembers } from '@auth0/auth0-acul-js/reset-password-email';
+// Main instance hook. Returns singleton instance of ResetPasswordEmail
+export const useResetPasswordEmail = (): ResetPasswordEmailMembers => useMemo(() => instance, []);
 
-export type * from '@auth0/auth0-acul-js/reset-password-email';
+// Export all types from the core SDK for this screen

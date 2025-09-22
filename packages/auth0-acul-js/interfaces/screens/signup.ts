@@ -1,4 +1,6 @@
-import type { Identifier, PasswordRuleValidation, UsernameValidationResult } from '../../interfaces/models/screen'
+import type { Identifier } from '../../interfaces/utils/get-enabled-identifiers';
+import type { PasswordValidationResult } from '../../interfaces/utils/validate-password';
+import type { UsernameValidationResult } from '../../interfaces/utils/validate-username';
 import type { IdentifierType } from '../../src/constants';
 import type { CustomOptions } from '../common';
 import type { BaseMembers } from '../models/base-context';
@@ -36,7 +38,28 @@ export interface SignupMembers extends BaseMembers {
   signup(payload: SignupOptions): Promise<void>;
   federatedSignup(payload: FederatedSignupOptions): Promise<void>;
   pickCountryCode(payload?: CustomOptions): Promise<void>;
-  validatePassword(password: string): PasswordRuleValidation[];
+  validatePassword(password: string): PasswordValidationResult;
+  /**
+ * Returns a list of enabled identifiers (e.g. email, phone, username)
+ * based on the current transaction state.
+ *
+ * Identifiers may be required or optional depending on the connection strategy
+ * and configuration provided during the authentication or signup flow.
+ *
+ * @returns An array of enabled {@link Identifier} objects, or `null` if the transaction is not initialized.
+ *
+ * @example
+ * ```ts
+ * const identifiers = authClient.getEnabledIdentifiers();
+ * if (identifiers) {
+ *   identifiers.forEach(({ type, required }) => {
+ *     console.log(`${type} is ${required ? 'required' : 'optional'}`);
+ *   });
+ * }
+ * ```
+ * @category Utility
+ * @see Identifier
+ */
   getEnabledIdentifiers(): Identifier[] | null;
   validateUsername(username: string): UsernameValidationResult;
 }

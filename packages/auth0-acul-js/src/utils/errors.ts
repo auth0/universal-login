@@ -35,3 +35,16 @@ export class SDKUsageError extends AculError {
     Object.setPrototypeOf(this, new.target.prototype);
   }
 }
+
+/**
+ * Error caused by server-side issues (e.g., network problems, polling errors).
+ * These errors are typically not actionable by end-users.
+ */
+export class Auth0ServerError extends AculError {
+  public readonly code = 'AUTH0_SERVER_ERROR';
+
+  constructor(message: string, field?: string) {
+    super(message, field);
+    Object.setPrototypeOf(this, new.target.prototype);
+  }
+}

@@ -1,20 +1,25 @@
-import { useMemo } from 'react';
 import LoginId from '@auth0/auth0-acul-js/login-id';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { LoginIdMembers, LoginOptions, FederatedLoginOptions, CustomOptions, ScreenMembersOnLoginId, TransactionMembersOnLoginId } from '@auth0/auth0-acul-js/login-id';
-let instance: LoginIdMembers | null = null;
-const getInstance = (): LoginIdMembers => {
-  if (!instance) {
-    instance = new LoginId();
-  }
-  return instance;
-};
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const useLoginId = (): LoginIdMembers => useMemo(() => getInstance(), []);
+import type {
+  LoginIdMembers,
+  LoginOptions,
+  FederatedLoginOptions,
+  CustomOptions,
+} from '@auth0/auth0-acul-js/login-id';
 
-const factory = new ContextHooks<LoginIdMembers>(getInstance);
+// Register the singleton instance of LoginId
+const instance = registerScreen<LoginIdMembers>(LoginId)!;
 
+// Error wrapper
+const { withError } = errorManager;
+
+// Context hooks
+const factory = new ContextHooks<LoginIdMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,37 +27,34 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen: () => ScreenMembersOnLoginId = () => useMemo(() => getInstance().screen, []);
-export const useTransaction: () => TransactionMembersOnLoginId = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const login = (payload: LoginOptions) => withError(instance.login(payload));
+export const federatedLogin = (payload: FederatedLoginOptions) =>
+  withError(instance.federatedLogin(payload));
+export const passkeyLogin = (payload?: CustomOptions) => withError(instance.passkeyLogin(payload));
+export const pickCountryCode = (payload?: CustomOptions) =>
+  withError(instance.pickCountryCode(payload));
 
-// Screen methods
-export const login = (payload: LoginOptions) => getInstance().login(payload);
-export const federatedLogin = (payload: FederatedLoginOptions) => getInstance().federatedLogin(payload);
-export const passkeyLogin = (payload?: CustomOptions) => getInstance().passkeyLogin(payload);
-export const pickCountryCode = (payload?: CustomOptions) => getInstance().pickCountryCode(payload);
+// Utility Hooks
+export { useActiveIdentifiers } from '../hooks/utility/active-identifiers';
 
-/**
- * Retrieves the active identifier types for the current transaction instance.
- *
- * This function returns an array of active identifier types (e.g., `email`, `phone`, `username`)
- * or `null` if no active identifiers are set.
- *
- * It internally calls the instance's `getActiveIdentifiers` method.
- *
- * @returns {string[] | null} An array of active identifier types or `null` if none are active.
- *
- * @example
- * ```ts
- * const activeIds = useActiveIdentifiers();
- * console.log(activeIds);
- * // ['email', 'username']
- * ```
- */
-export const useActiveIdentifiers = () => getInstance().getActiveIdentifiers();
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type { ScreenMembersOnLoginId, TransactionMembersOnLoginId, LoginOptions, FederatedLoginOptions, LoginIdMembers } from '@auth0/auth0-acul-js/login-id';
+// Main instance hook. Returns singleton instance of LoginId
+export const useLoginId = (): LoginIdMembers => useMemo(() => instance, []);
 
-export type * from '@auth0/auth0-acul-js/login-id';
+// Export all types from the core SDK for this screen

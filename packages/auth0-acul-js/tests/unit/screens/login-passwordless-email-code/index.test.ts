@@ -1,19 +1,21 @@
+import { FormActions, ScreenIds } from '../../../../src/constants';
 import LoginPasswordlessEmailCode from '../../../../src/screens/login-passwordless-email-code';
-import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
-import { SubmitCodeOptions } from 'interfaces/screens/login-passwordless-email-code';
-import { CustomOptions } from 'interfaces/common';
-import { ScreenIds } from '../../../../src//constants';
-import { FormActions } from '../../../../src/constants';
+import { createResendControl } from '../../../../src/utils/resend-utils';
+import { baseContextData } from '../../../data/test-data';
+
+import type { CustomOptions } from 'interfaces/common';
+import type { SubmitCodeOptions } from 'interfaces/screens/login-passwordless-email-code';
 
 jest.mock('../../../../src/utils/form-handler');
+jest.mock('../../../../src/utils/resend-utils');
 
 describe('LoginPasswordlessEmailCode', () => {
   let loginPasswordlessEmailCode: LoginPasswordlessEmailCode;
   let mockFormHandler: { submitData: jest.Mock };
 
   beforeEach(() => {
-    global.window = Object.create(window);
+    global.window = Object.create(window) as Window & typeof globalThis;
     baseContextData.screen.name = ScreenIds.LOGIN_PASSWORDLESS_EMAIL_CODE;
     window.universal_login_context = baseContextData;
 
@@ -108,6 +110,109 @@ describe('LoginPasswordlessEmailCode', () => {
       await expect(
         loginPasswordlessEmailCode.resendCode(payload)
       ).rejects.toThrow('Mocked reject');
+    });
+  });
+
+  describe('resendManager method', () => {
+    let mockResendControl: { startResend: jest.Mock };
+
+    beforeEach(() => {
+      mockResendControl = {
+        startResend: jest.fn(),
+      };
+      (createResendControl as jest.Mock).mockReturnValue(mockResendControl);
+    });
+
+    it('should create resend control with correct parameters', () => {
+      const options = {
+        timeoutSeconds: 30,
+        onStatusChange: jest.fn(),
+        onTimeout: jest.fn(),
+      };
+
+      const result = loginPasswordlessEmailCode.resendManager(options);
+
+      expect(createResendControl).toHaveBeenCalledWith(
+        'login-passwordless-email-code',
+        expect.any(Function),
+        options
+      );
+      expect(result).toBe(mockResendControl);
+    });
+
+    it('should create resend control without options', () => {
+      const result = loginPasswordlessEmailCode.resendManager();
+
+      expect(createResendControl).toHaveBeenCalledWith(
+        'login-passwordless-email-code',
+        expect.any(Function),
+        undefined
+      );
+      expect(result).toBe(mockResendControl);
+    });
+
+    it('should pass resendCode method as callback to createResendControl', async () => {
+      loginPasswordlessEmailCode.resendManager();
+
+      // Get the callback function passed to createResendControl
+      const callArgs = (createResendControl as jest.Mock).mock.calls[0] as unknown[];
+      const resendCallback = callArgs[1] as () => Promise<void>;
+
+      // Call the callback and verify it calls resendCode
+      await resendCallback();
+
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith({
+        action: FormActions.RESEND,
+      });
+    });
+
+    it('should handle resend callback with custom options', async () => {
+      const options = {
+        timeoutSeconds: 60,
+        onStatusChange: jest.fn(),
+        onTimeout: jest.fn(),
+      };
+
+      loginPasswordlessEmailCode.resendManager(options);
+
+      // Get the callback function passed to createResendControl
+      const callArgs = (createResendControl as jest.Mock).mock.calls[0] as unknown[];
+      const resendCallback = callArgs[1] as () => Promise<void>;
+
+      // Call the callback
+      await resendCallback();
+
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith({
+        action: FormActions.RESEND,
+      });
+    });
+
+    it('should return ResendControl with startResend method', () => {
+      const result = loginPasswordlessEmailCode.resendManager();
+
+      expect(result).toHaveProperty('startResend');
+      expect(typeof result.startResend).toBe('function');
+    });
+
+    it('should call startResend method from returned control', () => {
+      const result = loginPasswordlessEmailCode.resendManager();
+
+      result.startResend();
+
+      expect(mockResendControl.startResend).toHaveBeenCalledTimes(1);
+    });
+
+    it('should handle resend callback rejection', async () => {
+      mockFormHandler.submitData.mockRejectedValue(new Error('Resend failed'));
+
+      loginPasswordlessEmailCode.resendManager();
+
+      // Get the callback function passed to createResendControl
+      const callArgs = (createResendControl as jest.Mock).mock.calls[0] as unknown[];
+      const resendCallback = callArgs[1] as () => Promise<void>;
+
+      // The callback should propagate the error
+      await expect(resendCallback()).rejects.toThrow('Resend failed');
     });
   });
 });

@@ -1,8 +1,10 @@
-import { baseContextData } from '../../../data/test-data';
-import { FormHandler } from '../../../../src/utils/form-handler';
+import { FormActions, ScreenIds } from '../../../../src/constants';
 import ResetPasswordMfaOtpChallenge from '../../../../src/screens/reset-password-mfa-otp-challenge';
+import { FormHandler } from '../../../../src/utils/form-handler';
+import { baseContextData } from '../../../data/test-data';
+
 import type { ContinueOptions } from '../../../../interfaces/screens/reset-password-mfa-otp-challenge';
-import { FormActions } from '../../../../src/constants';
+
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -12,12 +14,22 @@ describe('ResetPasswordMfaOtpChallenge', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
-    window.universal_login_context = baseContextData;
+    window.universal_login_context = {
+      ...baseContextData,
+      screen: {
+        ...baseContextData.screen,
+        name: 'reset-password-mfa-otp-challenge',
+      }
+    };
     resetPasswordMfaOtpChallenge = new ResetPasswordMfaOtpChallenge();
     mockFormHandler = {
       submitData: jest.fn(),
     };
     (FormHandler as jest.Mock).mockImplementation(() => mockFormHandler);
+  });
+
+  it('should have the correct screenIdentifier', () => {
+    expect(ResetPasswordMfaOtpChallenge.screenIdentifier).toBe(ScreenIds.RESET_PASSWORD_MFA_OTP_CHALLENGE);
   });
 
   describe('continue method', () => {

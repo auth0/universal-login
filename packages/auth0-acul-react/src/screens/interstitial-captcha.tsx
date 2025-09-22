@@ -1,20 +1,16 @@
-import { useMemo } from 'react';
 import InterstitialCaptcha from '@auth0/auth0-acul-js/interstitial-captcha';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
+
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
 import type { InterstitialCaptchaMembers } from '@auth0/auth0-acul-js/interstitial-captcha';
-let instance: InterstitialCaptchaMembers | null = null;
-const getInstance = (): InterstitialCaptchaMembers => {
-  if (!instance) {
-    instance = new InterstitialCaptcha();
-  }
-  return instance;
-};
 
-export const useInterstitialCaptcha = (): InterstitialCaptchaMembers => useMemo(() => getInstance(), []);
+// Register the singleton instance of InterstitialCaptcha
+const instance = registerScreen<InterstitialCaptchaMembers>(InterstitialCaptcha)!;
 
-const factory = new ContextHooks<InterstitialCaptchaMembers>(getInstance);
-
+// Context hooks
+const factory = new ContextHooks<InterstitialCaptchaMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,12 +18,23 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type { SubmitCaptchaOptions, InterstitialCaptchaMembers } from '@auth0/auth0-acul-js/interstitial-captcha';
+// Main instance hook. Returns singleton instance of InterstitialCaptcha
+export const useInterstitialCaptcha = (): InterstitialCaptchaMembers => useMemo(() => instance, []);
 
-export type * from '@auth0/auth0-acul-js/interstitial-captcha';
+// Export all types from the core SDK for this screen

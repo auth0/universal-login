@@ -1,20 +1,23 @@
-import { useMemo } from 'react';
 import MfaDetectBrowserCapabilities from '@auth0/auth0-acul-js/mfa-detect-browser-capabilities';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { MfaDetectBrowserCapabilitiesMembers, CustomOptions } from '@auth0/auth0-acul-js/mfa-detect-browser-capabilities';
-let instance: MfaDetectBrowserCapabilitiesMembers | null = null;
-const getInstance = (): MfaDetectBrowserCapabilitiesMembers => {
-  if (!instance) {
-    instance = new MfaDetectBrowserCapabilities();
-  }
-  return instance;
-};
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const useMfaDetectBrowserCapabilities = (): MfaDetectBrowserCapabilitiesMembers => useMemo(() => getInstance(), []);
+import type {
+  MfaDetectBrowserCapabilitiesMembers,
+  CustomOptions,
+} from '@auth0/auth0-acul-js/mfa-detect-browser-capabilities';
 
-const factory = new ContextHooks<MfaDetectBrowserCapabilitiesMembers>(getInstance);
+// Register the singleton instance of MfaDetectBrowserCapabilities
+const instance = registerScreen<MfaDetectBrowserCapabilitiesMembers>(MfaDetectBrowserCapabilities)!;
 
+// Error wrapper
+const { withError } = errorManager;
+
+// Context hooks
+const factory = new ContextHooks<MfaDetectBrowserCapabilitiesMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,15 +25,28 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const detectCapabilities = (payload: CustomOptions) =>
+  withError(instance.detectCapabilities(payload));
 
-// Screen methods
-export const detectCapabilities = (payload: CustomOptions) => getInstance().detectCapabilities(payload);
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type { MfaDetectBrowserCapabilitiesMembers } from '@auth0/auth0-acul-js/mfa-detect-browser-capabilities';
+// Main instance hook. Returns singleton instance of MfaDetectBrowserCapabilities
+export const useMfaDetectBrowserCapabilities = (): MfaDetectBrowserCapabilitiesMembers =>
+  useMemo(() => instance, []);
 
-export type * from '@auth0/auth0-acul-js/mfa-detect-browser-capabilities';
+// Export all types from the core SDK for this screen

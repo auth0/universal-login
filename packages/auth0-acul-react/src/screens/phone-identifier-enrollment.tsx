@@ -1,20 +1,24 @@
-import { useMemo } from 'react';
 import PhoneIdentifierEnrollment from '@auth0/auth0-acul-js/phone-identifier-enrollment';
-import { ContextHooks } from '../hooks/context-hooks';
+import { useMemo } from 'react';
 
-import type { PhoneIdentifierEnrollmentMembers, PhoneEnrollmentOptions, CustomOptions, ScreenMembersOnPhoneIdentifierEnrollment } from '@auth0/auth0-acul-js/phone-identifier-enrollment';
-let instance: PhoneIdentifierEnrollmentMembers | null = null;
-const getInstance = (): PhoneIdentifierEnrollmentMembers => {
-  if (!instance) {
-    instance = new PhoneIdentifierEnrollment();
-  }
-  return instance;
-};
+import { errorManager } from '../hooks/common/errors';
+import { ContextHooks } from '../hooks/context';
+import { registerScreen } from '../state/instance-store';
 
-export const usePhoneIdentifierEnrollment = (): PhoneIdentifierEnrollmentMembers => useMemo(() => getInstance(), []);
+import type {
+  PhoneIdentifierEnrollmentMembers,
+  PhoneEnrollmentOptions,
+  CustomOptions,
+} from '@auth0/auth0-acul-js/phone-identifier-enrollment';
 
-const factory = new ContextHooks<PhoneIdentifierEnrollmentMembers>(getInstance);
+// Register the singleton instance of PhoneIdentifierEnrollment
+const instance = registerScreen<PhoneIdentifierEnrollmentMembers>(PhoneIdentifierEnrollment)!;
 
+// Error wrapper
+const { withError } = errorManager;
+
+// Context hooks
+const factory = new ContextHooks<PhoneIdentifierEnrollmentMembers>(instance);
 export const {
   useUser,
   useTenant,
@@ -22,16 +26,30 @@ export const {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useScreen,
+  useTransaction,
+  useUntrustedData,
 } = factory;
 
-export const useScreen: () => ScreenMembersOnPhoneIdentifierEnrollment = () => useMemo(() => getInstance().screen, []);
-export const useTransaction = () => useMemo(() => getInstance().transaction, []);
+// Submit functions
+export const continuePhoneEnrollment = (payload: PhoneEnrollmentOptions) =>
+  withError(instance.continuePhoneEnrollment(payload));
+export const returnToPrevious = (payload?: CustomOptions) =>
+  withError(instance.returnToPrevious(payload));
 
-// Screen methods
-export const continuePhoneEnrollment = (payload: PhoneEnrollmentOptions) => getInstance().continuePhoneEnrollment(payload);
-export const returnToPrevious = (payload?: CustomOptions) => getInstance().returnToPrevious(payload);
+// Common hooks
+export {
+  useCurrentScreen,
+  useErrors,
+  useAuth0Themes,
+  type UseErrorOptions,
+  type UseErrorsResult,
+  type ErrorsResult,
+  type ErrorKind,
+} from '../hooks/common';
 
-export type { ScreenMembersOnPhoneIdentifierEnrollment, PhoneEnrollmentOptions, PhoneIdentifierEnrollmentMembers } from '@auth0/auth0-acul-js/phone-identifier-enrollment';
+// Main instance hook. Returns singleton instance of PhoneIdentifierEnrollment
+export const usePhoneIdentifierEnrollment = (): PhoneIdentifierEnrollmentMembers =>
+  useMemo(() => instance, []);
 
-export type * from '@auth0/auth0-acul-js/phone-identifier-enrollment';
+// Export all types from the core SDK for this screen
