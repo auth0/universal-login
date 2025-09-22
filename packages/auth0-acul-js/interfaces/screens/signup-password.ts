@@ -31,7 +31,7 @@ export interface ScreenMembersOnSignupPassword extends ScreenMembers {
   editLink: string | null;
   data: {
     email?: string;
-    phone?: string;
+    phoneNumber?: string;
     username?: string;
   } | null;
 }
@@ -46,7 +46,7 @@ export interface TransactionMembersOnSignupPassword extends TransactionMembers {
 export interface SignupPasswordOptions {
   email?: string;
   username?: string;
-  phone?: string;
+  phoneNumber?: string;
   password: string;
   captcha?: string;
   [key: string]: string | number | boolean | undefined;
