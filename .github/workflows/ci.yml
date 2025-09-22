@@ -9,6 +9,9 @@ jobs:
   build:
     name: Build (Lint + Test + Build + Docs) (Monorepo Root)
     runs-on: ubuntu-latest
+    env:
+      NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      NPM_PUBLIC_TOKEN: ${{ secrets.NPM_PUBLIC_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
@@ -18,13 +21,20 @@ jobs:
           node-version: 22
           cache: 'npm'
 
+      - name: Configure npm registry authentication
+        run: |
+          echo "//a0us.jfrog.io/artifactory/api/npm/npm/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" >> ~/.npmrc
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_PUBLIC_TOKEN }}" >> ~/.npmrc
+        if: ${{ env.NPM_AUTH_TOKEN != '' || env.NPM_PUBLIC_TOKEN != '' }}
+
       - name: Install dependencies at root
-        run: npm install
+        run: npm install --no-optional
+        continue-on-error: false
 
 
-      - name: Generate SDK files
-        run: npm run generate:sdk
-        working-directory: packages/auth0-acul-react
+      # - name: Generate SDK files
+      #   run: npm run generate:sdk
+      #   working-directory: packages/auth0-acul-react
 
       - name: Build all workspaces
         run: npm run build
