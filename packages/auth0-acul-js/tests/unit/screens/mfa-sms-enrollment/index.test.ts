@@ -1,10 +1,12 @@
-import MfaSmsEnrollment from '../../../../src/screens/mfa-sms-enrollment';
-import { baseContextData } from '../../../data/test-data';
-import { FormHandler } from '../../../../src/utils/form-handler';
-import { CustomOptions } from 'interfaces/common';
-import { MfaSmsEnrollmentOptions } from 'interfaces/screens/mfa-sms-enrollment';
-import { ScreenIds } from '../../../../src//constants';
+
+import { ScreenIds } from '../../../../src/constants';
 import { FormActions } from '../../../../src/constants';
+import MfaSmsEnrollment from '../../../../src/screens/mfa-sms-enrollment';
+import { FormHandler } from '../../../../src/utils/form-handler';
+import { baseContextData } from '../../../data/test-data';
+
+import type { CustomOptions } from 'interfaces/common';
+import type { MfaSmsEnrollmentOptions } from 'interfaces/screens/mfa-sms-enrollment';
 
 jest.mock('../../../../src/utils/form-handler');
 

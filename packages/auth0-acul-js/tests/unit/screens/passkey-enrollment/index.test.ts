@@ -1,10 +1,12 @@
+
+import { ScreenIds } from '../../../../src/constants';
+import { FormActions } from '../../../../src/constants';
 import PasskeyEnrollment from '../../../../src/screens/passkey-enrollment';
-import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { createPasskeyCredentials } from '../../../../src/utils/passkeys';
-import { CustomOptions } from 'interfaces/common';
-import { ScreenIds } from '../../../../src//constants';
-import { FormActions } from '../../../../src/constants';
+import { baseContextData } from '../../../data/test-data';
+
+import type { CustomOptions } from 'interfaces/common';
 
 jest.mock('../../../../src/utils/form-handler');
 jest.mock('../../../../src/utils/passkeys');

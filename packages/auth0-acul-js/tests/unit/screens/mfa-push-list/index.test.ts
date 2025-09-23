@@ -1,10 +1,12 @@
-import { baseContextData } from '../../../data/test-data';
-import { FormHandler } from '../../../../src/utils/form-handler';
-import MfaPushList from '../../../../src/screens/mfa-push-list';
-import { CustomOptions } from 'interfaces/common';
-import { SelectMfaPushDeviceOptions } from 'interfaces/screens/mfa-push-list';
-import { ScreenIds } from '../../../../src//constants';
+
+import { ScreenIds } from '../../../../src/constants';
 import { FormActions } from '../../../../src/constants';
+import MfaPushList from '../../../../src/screens/mfa-push-list';
+import { FormHandler } from '../../../../src/utils/form-handler';
+import { baseContextData } from '../../../data/test-data';
+
+import type { CustomOptions } from 'interfaces/common';
+import type { SelectMfaPushDeviceOptions } from 'interfaces/screens/mfa-push-list';
 
 jest.mock('../../../../src/utils/form-handler');
 

@@ -1,7 +1,10 @@
-import ResetPasswordMfaEmailChallenge from '../../../../src/screens/reset-password-mfa-email-challenge';
-import type { ScreenMembersOnResetPasswordMfaEmailChallenge } from '../../../../interfaces/screens/reset-password-mfa-email-challenge';
-import { ScreenIds } from '../../../../src//constants';
+import { ScreenIds } from '../../../../src/constants';
 import { FormActions } from '../../../../src/constants';
+import ResetPasswordMfaEmailChallenge from '../../../../src/screens/reset-password-mfa-email-challenge';
+import { createResendControl } from '../../../../src/utils/resend-utils';
+
+
+jest.mock('../../../../src/utils/resend-utils');
 
 describe('ResetPasswordMfaEmailChallenge', () => {
   let resetPasswordMfaEmailChallenge: ResetPasswordMfaEmailChallenge;
@@ -35,7 +38,7 @@ describe('ResetPasswordMfaEmailChallenge', () => {
   });
 
   it('should have the correct email from screen data', () => {
-    expect((resetPasswordMfaEmailChallenge.screen as ScreenMembersOnResetPasswordMfaEmailChallenge).data?.email).toBe('test@example.com');
+    expect((resetPasswordMfaEmailChallenge.screen).data?.email).toBe('test@example.com');
   });
 
   describe('continue', () => {
@@ -85,6 +88,122 @@ describe('ResetPasswordMfaEmailChallenge', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith({
         action: FormActions.PICK_AUTHENTICATOR,
       });
+    });
+  });
+
+  describe('resendManager method', () => {
+    let mockStartResend: jest.Mock;
+
+    beforeEach(() => {
+      mockStartResend = jest.fn();
+      (createResendControl as jest.Mock).mockReturnValue({
+        startResend: mockStartResend,
+      });
+    });
+
+    it('should call createResendControl with correct screen identifier and resend function', () => {
+      resetPasswordMfaEmailChallenge.resendManager();
+
+      expect(createResendControl).toHaveBeenCalledWith(
+        'reset-password-mfa-email-challenge',
+        expect.any(Function),
+        undefined
+      );
+    });
+
+    it('should call createResendControl with provided options', () => {
+      const options = {
+        timeoutSeconds: 15,
+        onStatusChange: jest.fn(),
+        onTimeout: jest.fn(),
+      };
+
+      resetPasswordMfaEmailChallenge.resendManager(options);
+
+      expect(createResendControl).toHaveBeenCalledWith(
+        'reset-password-mfa-email-challenge',
+        expect.any(Function),
+        options
+      );
+    });
+
+    it('should return the result from createResendControl', () => {
+      const expectedResult = { startResend: mockStartResend };
+      (createResendControl as jest.Mock).mockReturnValue(expectedResult);
+
+      const result = resetPasswordMfaEmailChallenge.resendManager();
+
+      expect(result).toBe(expectedResult);
+    });
+
+    it('should pass resendCode method as callback to createResendControl', () => {
+      resetPasswordMfaEmailChallenge.resendManager();
+
+      const resendCallback = (createResendControl as jest.Mock).mock.calls[0][1] as () => Promise<void>;
+      expect(typeof resendCallback).toBe('function');
+    });
+
+    it('should provide a function that calls resendCode when invoked', async () => {
+      resetPasswordMfaEmailChallenge.resendManager();
+
+      expect(createResendControl).toHaveBeenCalledWith(
+        'reset-password-mfa-email-challenge',
+        expect.any(Function),
+        undefined
+      );
+
+      const callbackArg = (createResendControl as jest.Mock).mock.calls[0][1];
+      expect(typeof callbackArg).toBe('function');
+      
+      const result = callbackArg();
+      expect(result).toBeInstanceOf(Promise);
+      
+      await result;
+    });
+
+    it('should pass callback options to createResendControl', () => {
+      const onStatusChange = jest.fn();
+      const onTimeout = jest.fn();
+      const options = {
+        timeoutSeconds: 20,
+        onStatusChange,
+        onTimeout,
+      };
+
+      resetPasswordMfaEmailChallenge.resendManager(options);
+
+      expect(createResendControl).toHaveBeenCalledWith(
+        'reset-password-mfa-email-challenge',
+        expect.any(Function),
+        expect.objectContaining({
+          timeoutSeconds: 20,
+          onStatusChange,
+          onTimeout,
+        })
+      );
+    });
+
+    it('should handle startResend method from returned control object', () => {
+      const result = resetPasswordMfaEmailChallenge.resendManager();
+
+      result.startResend();
+
+      expect(mockStartResend).toHaveBeenCalled();
+    });
+
+    it('should return ResendControl with startResend method', () => {
+      const result = resetPasswordMfaEmailChallenge.resendManager();
+
+      expect(result).toHaveProperty('startResend');
+      expect(typeof result.startResend).toBe('function');
+    });
+
+    it('should call startResend method from returned control', () => {
+      const result = resetPasswordMfaEmailChallenge.resendManager();
+
+      result.startResend();
+
+      expect(mockStartResend).toHaveBeenCalledTimes(1);
     });
   });
 });

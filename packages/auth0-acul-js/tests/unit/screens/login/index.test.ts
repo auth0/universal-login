@@ -1,8 +1,9 @@
+import { ScreenIds } from '../../../../src/constants';
 import Login from '../../../../src/screens/login';
-import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
-import { LoginOptions, FederatedLoginOptions } from '../../../../interfaces/screens/login';
-import { ScreenIds } from '../../../../src//constants';
+import { baseContextData } from '../../../data/test-data';
+
+import type { LoginOptions, FederatedLoginOptions } from '../../../../interfaces/screens/login';
 
 jest.mock('../../../../src/utils/form-handler');
 

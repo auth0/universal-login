@@ -1,9 +1,11 @@
-import { baseContextData } from '../../../data/test-data';
-import { FormHandler } from '../../../../src/utils/form-handler';
-import { CustomOptions } from '../../../../interfaces/common';
-import MfaPushChallengePush, { WithRememberOptions } from '../../../../src/screens/mfa-push-challenge-push';
-import { ScreenIds } from '../../../../src//constants';
+import { ScreenIds } from '../../../../src/constants';
 import { FormActions } from '../../../../src/constants';
+import MfaPushChallengePush from '../../../../src/screens/mfa-push-challenge-push';
+import { FormHandler } from '../../../../src/utils/form-handler';
+import { baseContextData } from '../../../data/test-data';
+
+import type { CustomOptions } from '../../../../interfaces/common';
+import type { WithRememberOptions } from '../../../../src/screens/mfa-push-challenge-push';
 jest.mock('../../../../src/utils/form-handler');
 
 describe('MfaPushChallengePush', () => {
