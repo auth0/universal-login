@@ -1,6 +1,6 @@
 import { ConnectionStrategy } from '../constants';
 
-import type { Identifier, IdentifierType } from '../../interfaces/utils/enabled-identifiers';
+import type { Identifier, IdentifierType } from '../../interfaces/utils/signup-identifiers';
 
 const passwordlessStrategyToIdentifier: Record<string, IdentifierType> = {
   email: 'email',
@@ -19,7 +19,7 @@ const passwordlessStrategyToIdentifier: Record<string, IdentifierType> = {
  * and a `required` flag indicating whether it is mandatory for signup.
  *
  */
-export function getEnabledIdentifiers(
+export function getSignupIdentifiers(
   requiredIdentifiers: Array<IdentifierType>,
   optionalIdentifiers: Array<IdentifierType>,
   connectionStrategy: string | null

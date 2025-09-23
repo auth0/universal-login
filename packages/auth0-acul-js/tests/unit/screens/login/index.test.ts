@@ -98,18 +98,18 @@ describe('Login', () => {
     });
   });
 
-  describe('getActiveIdentifiers method', () => {
+  describe('getLoginIdentifiers method', () => {
       it('should return allowedIdentifiers when set in transaction', () => {
         login.transaction.allowedIdentifiers = ['email', 'username'];
-        const result = login.getActiveIdentifiers();
+        const result = login.getLoginIdentifiers();
         expect(result).toEqual(['email', 'username']);
       });
 
       it('should return null when allowedIdentifiers is null or empty', () => {
         login.transaction.allowedIdentifiers = null;
-        expect(login.getActiveIdentifiers()).toBeNull();
+        expect(login.getLoginIdentifiers()).toBeNull();
         login.transaction.allowedIdentifiers = [];
-        expect(login.getActiveIdentifiers()).toEqual([]);
+        expect(login.getLoginIdentifiers()).toEqual([]);
       });
   });
 

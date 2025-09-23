@@ -40,7 +40,7 @@ export const pickCountryCode = (payload?: CustomOptions) =>
   withError(instance.pickCountryCode(payload));
 
 // Utility Hooks
-export { useEnabledIdentifiers } from '../hooks/utility/enabled-identifiers';
+export { useSignupIdentifiers } from '../hooks/utility/signup-identifiers';
 
 // Utility Hooks
 export { useUsernameValidation } from '../hooks/utility/validate-username';

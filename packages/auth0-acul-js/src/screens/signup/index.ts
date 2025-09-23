@@ -1,8 +1,8 @@
 import { PasswordValidationResult } from '../../../interfaces/utils/validate-password';
 import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
-import { getEnabledIdentifiers as _getEnabledIdentifiers} from '../../utils/enabled-identifiers';
 import { FormHandler } from '../../utils/form-handler';
+import { getSignupIdentifiers as _getSignupIdentifiers} from '../../utils/signup-identifiers';
 import { validatePassword as _validatePassword} from '../../utils/validate-password';
 import { validateUsername as _validateUsername} from '../../utils/validate-username';
 
@@ -18,8 +18,8 @@ import type {
   FederatedSignupOptions,
   TransactionMembersOnSignup as TransactionOptions,
 } from '../../../interfaces/screens/signup';
-import type { Identifier } from '../../../interfaces/utils/enabled-identifiers';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import type { Identifier } from '../../../interfaces/utils/signup-identifiers';
 import type { UsernameValidationResult } from '../../../interfaces/utils/validate-username';
 
 export default class Signup extends BaseContext implements SignupMembers {
@@ -123,15 +123,15 @@ export default class Signup extends BaseContext implements SignupMembers {
    * @category Utility
    * @example
    * const signup = new Signup();
-   * const identifiers = signup.getEnabledIdentifiers();
+   * const identifiers = signup.getSignupIdentifiers();
    * // [{ type: 'email', required: true }, { type: 'username', required: false }]
    */
-  getEnabledIdentifiers(): Identifier[] | null { 
+  getSignupIdentifiers(): Identifier[] | null { 
     const transaction = {
       ...this.transaction,
       errors: this.transaction.errors ?? undefined, // convert `null` to `undefined`
     };
-    return _getEnabledIdentifiers(transaction.requiredIdentifiers ?? [], transaction.optionalIdentifiers ?? [], transaction.connectionStrategy);
+    return _getSignupIdentifiers(transaction.requiredIdentifiers ?? [], transaction.optionalIdentifiers ?? [], transaction.connectionStrategy);
   }
 
   /**
