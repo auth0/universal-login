@@ -1,6 +1,6 @@
 import { ConnectionStrategy } from '../constants';
 
-import type { Identifier, IdentifierType } from '../../interfaces/utils/get-signup-identifiers';
+import type { Identifier, IdentifierType } from '../../interfaces/utils/signup-identifiers';
 
 const passwordlessStrategyToIdentifier: Record<string, IdentifierType> = {
   email: 'email',

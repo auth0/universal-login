@@ -4,7 +4,7 @@ import { BaseContext } from '../../../../src/models/base-context';
 import Signup from '../../../../src/screens/signup';
 import { ScreenOverride } from '../../../../src/screens/signup/screen-override';
 import { TransactionOverride } from '../../../../src/screens/signup/transaction-override';
-import { getEnabledIdentifiers } from '../../../../src/utils/enabled-identifiers';
+import { getSignupIdentifiers } from '../../../../src/utils/signup-identifiers';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { validatePassword as _validatePassword } from '../../../../src/utils/validate-password';
 
@@ -23,12 +23,10 @@ jest.mock('../../../../src/utils/validate-password', () => ({
   validatePassword: jest.fn(),
 }));
 
-jest.mock('../../../../src/utils/get-signup-identifiers', () => ({
+jest.mock('../../../../src/utils/signup-identifiers', () => ({
   getSignupIdentifiers: jest.fn(),
 }));
 
-import { validatePassword as _validatePassword } from '../../../../src/utils/validate-password';
-import { getSignupIdentifiers } from '../../../../src/utils/get-signup-identifiers';
 
 describe('Signup', () => {
   let signup: Signup;

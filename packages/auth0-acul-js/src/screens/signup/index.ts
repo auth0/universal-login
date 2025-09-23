@@ -2,7 +2,7 @@ import { PasswordValidationResult } from '../../../interfaces/utils/validate-pas
 import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
-import { getSignupIdentifiers as _getSignupIdentifiers} from '../../utils/get-signup-identifiers';
+import { getSignupIdentifiers as _getSignupIdentifiers} from '../../utils/signup-identifiers';
 import { validatePassword as _validatePassword} from '../../utils/validate-password';
 import { validateUsername as _validateUsername} from '../../utils/validate-username';
 
@@ -19,7 +19,7 @@ import type {
   TransactionMembersOnSignup as TransactionOptions,
 } from '../../../interfaces/screens/signup';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import type { Identifier } from '../../../interfaces/utils/get-signup-identifiers';
+import type { Identifier } from '../../../interfaces/utils/signup-identifiers';
 import type { UsernameValidationResult } from '../../../interfaces/utils/validate-username';
 
 export default class Signup extends BaseContext implements SignupMembers {

@@ -9,5 +9,5 @@ export type { PasskeyCreateResponse, CredentialResponse } from '../utils/passkey
 export type { Branding } from '../models/organization';
 export type { Organizations } from '../models/user';
 export type { PasswordValidationResult } from '../utils/validate-password';
-export type { Identifier, IdentifierType as ScreenIdentifierType } from '../utils/get-signup-identifiers';
+export type { Identifier, IdentifierType as ScreenIdentifierType } from '../utils/signup-identifiers';
 export type { UsernameValidationResult, UsernameValidationError } from '../utils/validate-username';
