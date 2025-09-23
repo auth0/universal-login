@@ -1,10 +1,10 @@
 import { ScreenIds } from '../../../../src/constants';
 import { FormActions } from '../../../../src/constants';
 import ResetPasswordMfaEmailChallenge from '../../../../src/screens/reset-password-mfa-email-challenge';
-import { createResendControl } from '../../../../src/utils/resend-utils';
+import { createResendControl } from '../../../../src/utils/resend-control';
 
 
-jest.mock('../../../../src/utils/resend-utils');
+jest.mock('../../../../src/utils/resend-control');
 
 describe('ResetPasswordMfaEmailChallenge', () => {
   let resetPasswordMfaEmailChallenge: ResetPasswordMfaEmailChallenge;

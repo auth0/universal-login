@@ -1,14 +1,14 @@
 import { FormActions } from '../../../../src/constants';
 import MfaVoiceChallenge from '../../../../src/screens/mfa-voice-challenge';
 import { FormHandler } from '../../../../src/utils/form-handler';
-import { createResendControl } from '../../../../src/utils/resend-utils';
+import { createResendControl } from '../../../../src/utils/resend-control';
 import { baseContextData } from '../../../data/test-data';
 
 import type { CustomOptions } from '../../../../interfaces/common';
 import type { MfaVoiceChallengeContinueOptions } from '../../../../interfaces/screens/mfa-voice-challenge';
 
 jest.mock('../../../../src/utils/form-handler');
-jest.mock('../../../../src/utils/resend-utils');
+jest.mock('../../../../src/utils/resend-control');
 
 describe('MfaVoiceChallenge', () => {
   let mfaVoiceChallenge: MfaVoiceChallenge;

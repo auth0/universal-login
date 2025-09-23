@@ -1,4 +1,4 @@
-import type { StartResendOptions, ResendControl } from '../../interfaces/common';
+import type { StartResendOptions, ResendControl } from '../../interfaces/utils/resend-control';
 
 /**
  * Utility function to create resend functionality with timeout management

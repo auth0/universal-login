@@ -4,8 +4,8 @@ import { BaseContext } from '../../../../src/models/base-context';
 import Signup from '../../../../src/screens/signup';
 import { ScreenOverride } from '../../../../src/screens/signup/screen-override';
 import { TransactionOverride } from '../../../../src/screens/signup/transaction-override';
+import { getEnabledIdentifiers } from '../../../../src/utils/enabled-identifiers';
 import { FormHandler } from '../../../../src/utils/form-handler';
-import { getEnabledIdentifiers } from '../../../../src/utils/get-enabled-identifiers';
 import { validatePassword as _validatePassword } from '../../../../src/utils/validate-password';
 
 import type { ScreenContext } from '../../../../interfaces/models/screen';
@@ -23,7 +23,7 @@ jest.mock('../../../../src/utils/validate-password', () => ({
   validatePassword: jest.fn(),
 }));
 
-jest.mock('../../../../src/utils/get-enabled-identifiers', () => ({
+jest.mock('../../../../src/utils/enabled-identifiers', () => ({
   getEnabledIdentifiers: jest.fn(),
 }));
 
