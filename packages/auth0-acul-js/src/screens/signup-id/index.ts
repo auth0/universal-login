@@ -1,8 +1,8 @@
 import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { getBrowserCapabilities } from '../../utils/browser-capabilities';
+import { getEnabledIdentifiers as _getEnabledIdentifiers} from '../../utils/enabled-identifiers';
 import { FormHandler } from '../../utils/form-handler';
-import { getEnabledIdentifiers as _getEnabledIdentifiers} from '../../utils/get-enabled-identifiers';
 import { validateUsername as _validateUsername} from '../../utils/validate-username';
 
 import { ScreenOverride } from './screen-override';
@@ -17,8 +17,8 @@ import type {
   SignupOptions,
   FederatedSignupOptions,
 } from '../../../interfaces/screens/signup-id';
+import type { Identifier } from '../../../interfaces/utils/enabled-identifiers';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import type { Identifier } from '../../../interfaces/utils/get-enabled-identifiers';
 import type { UsernameValidationResult } from '../../../interfaces/utils/validate-username';
 
 export default class SignupId extends BaseContext implements SignupIdMembers {

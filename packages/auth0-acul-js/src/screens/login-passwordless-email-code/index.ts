@@ -1,12 +1,12 @@
 import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
-import { createResendControl } from '../../utils/resend-utils';
+import { createResendControl } from '../../utils/resend-control';
 
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
 
-import type { CustomOptions, StartResendOptions, ResendControl } from '../../../interfaces/common';
+import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type {
@@ -16,6 +16,7 @@ import type {
   SubmitCodeOptions,
 } from '../../../interfaces/screens/login-passwordless-email-code';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import type { StartResendOptions, ResendControl } from  '../../../interfaces/utils/resend-control';
 
 export default class LoginPasswordlessEmailCode extends BaseContext implements LoginPasswordlessEmailCodeMembers {
   static screenIdentifier: string = ScreenIds.LOGIN_PASSWORDLESS_EMAIL_CODE;
@@ -74,6 +75,7 @@ export default class LoginPasswordlessEmailCode extends BaseContext implements L
    * 
    * @param options Configuration options for the resend control
    * @returns A ResendControl object with resend functionality and state management
+   * @category Utility
    * 
    * @example
    * ```typescript

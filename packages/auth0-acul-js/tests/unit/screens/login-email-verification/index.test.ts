@@ -2,14 +2,14 @@ import { ScreenIds, FormActions } from '../../../../src/constants';
 import { BaseContext } from '../../../../src/models/base-context';
 import LoginEmailVerification from '../../../../src/screens/login-email-verification';
 import { FormHandler } from '../../../../src/utils/form-handler';
-import { createResendControl } from '../../../../src/utils/resend-utils';
+import { createResendControl } from '../../../../src/utils/resend-control';
 import { baseContextData } from '../../../data/test-data';
 
 import type { ContinueWithCodeOptions, ResendCodeOptions } from '../../../../interfaces/screens/login-email-verification';
 
 // Mock FormHandler to spy on its methods and prevent actual form submissions
 jest.mock('../../../../src/utils/form-handler');
-jest.mock('../../../../src/utils/resend-utils');
+jest.mock('../../../../src/utils/resend-control');
 
 /**
  * @group unit

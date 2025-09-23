@@ -27,9 +27,6 @@ export interface UsernameValidationError {
 
 /**
  * The result of validating a username against one or more rules.
- *
- * This object is typically returned from a function like 
- * {@link validateUsername} or a related validation hook.
  */
 export interface UsernameValidationResult {
   /**
