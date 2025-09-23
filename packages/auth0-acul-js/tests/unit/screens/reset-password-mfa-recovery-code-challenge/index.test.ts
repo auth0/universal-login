@@ -1,8 +1,8 @@
-import ResetPasswordMfaRecoveryCodeChallenge from '../../../../src/screens/reset-password-mfa-recovery-code-challenge';
-import { baseContextData } from '../../../data/test-data';
-import { FormHandler } from '../../../../src/utils/form-handler';
-import { ScreenIds } from '../../../../src//constants';
+import { ScreenIds } from '../../../../src/constants';
 import { FormActions } from '../../../../src/constants';
+import ResetPasswordMfaRecoveryCodeChallenge from '../../../../src/screens/reset-password-mfa-recovery-code-challenge';
+import { FormHandler } from '../../../../src/utils/form-handler';
+import { baseContextData } from '../../../data/test-data';
 
 jest.mock('../../../../src/utils/form-handler');
 

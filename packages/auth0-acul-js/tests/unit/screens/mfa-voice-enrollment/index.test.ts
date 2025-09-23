@@ -1,9 +1,11 @@
-import MfaVoiceEnrollment from "../../../../src/screens/mfa-voice-enrollment";
-import { baseContextData } from '../../../data/test-data';
-import { FormHandler } from '../../../../src/utils/form-handler';
-import { CustomOptions } from 'interfaces/common';
-import { ScreenIds } from '../../../../src//constants';
+
+import { ScreenIds } from '../../../../src/constants';
 import { FormActions } from '../../../../src/constants';
+import MfaVoiceEnrollment from "../../../../src/screens/mfa-voice-enrollment";
+import { FormHandler } from '../../../../src/utils/form-handler';
+import { baseContextData } from '../../../data/test-data';
+
+import type { CustomOptions } from 'interfaces/common';
 
 jest.mock('../../../../src/utils/form-handler');
 
