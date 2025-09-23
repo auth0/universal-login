@@ -8,3 +8,5 @@ export * as usePasswordValidation from '../hooks/utility/validate-password';
 export * as useUsernameValidation from '../hooks/utility/validate-username';
 export * as useResend from '../hooks/utility/resend-manager';
 export * as useMfaPolling from '../hooks/utility/polling-manager';
+export * as useSignupIdentifiers from '../hooks/utility/signup-identifiers';
+export * as useLoginIdentifiers from '../hooks/utility/login-identifiers';

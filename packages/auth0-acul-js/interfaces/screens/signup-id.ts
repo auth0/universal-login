@@ -56,7 +56,7 @@ export interface SignupIdMembers extends BaseMembers {
   transaction: TransactionMembersOnSignupId;
   signup(payload: SignupOptions): Promise<void>;
   federatedSignup(payload: FederatedSignupOptions): Promise<void>;
-  getEnabledIdentifiers(): Identifier[] | null;
+  getSignupIdentifiers(): Identifier[] | null;
   pickCountryCode(payload?: CustomOptions): Promise<void>;
   validateUsername(username: string): UsernameValidationResult;
 }

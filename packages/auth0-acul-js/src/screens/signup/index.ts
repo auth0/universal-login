@@ -2,7 +2,7 @@ import { PasswordValidationResult } from '../../../interfaces/utils/validate-pas
 import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
-import { getEnabledIdentifiers as _getEnabledIdentifiers} from '../../utils/get-enabled-identifiers';
+import { getSignupIdentifiers as _getSignupIdentifiers} from '../../utils/get-signup-identifiers';
 import { validatePassword as _validatePassword} from '../../utils/validate-password';
 import { validateUsername as _validateUsername} from '../../utils/validate-username';
 
@@ -123,15 +123,15 @@ export default class Signup extends BaseContext implements SignupMembers {
    * @category Utility
    * @example
    * const signup = new Signup();
-   * const identifiers = signup.getEnabledIdentifiers();
+   * const identifiers = signup.getSignupIdentifiers();
    * // [{ type: 'email', required: true }, { type: 'username', required: false }]
    */
-  getEnabledIdentifiers(): Identifier[] | null { 
+  getSignupIdentifiers(): Identifier[] | null { 
     const transaction = {
       ...this.transaction,
       errors: this.transaction.errors ?? undefined, // convert `null` to `undefined`
     };
-    return _getEnabledIdentifiers(transaction.requiredIdentifiers ?? [], transaction.optionalIdentifiers ?? [], transaction.connectionStrategy);
+    return _getSignupIdentifiers(transaction.requiredIdentifiers ?? [], transaction.optionalIdentifiers ?? [], transaction.connectionStrategy);
   }
 
   /**

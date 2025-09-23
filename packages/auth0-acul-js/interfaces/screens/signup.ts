@@ -50,7 +50,7 @@ export interface SignupMembers extends BaseMembers {
  *
  * @example
  * ```ts
- * const identifiers = authClient.getEnabledIdentifiers();
+ * const identifiers = authClient.getSignupIdentifiers();
  * if (identifiers) {
  *   identifiers.forEach(({ type, required }) => {
  *     console.log(`${type} is ${required ? 'required' : 'optional'}`);
@@ -60,6 +60,6 @@ export interface SignupMembers extends BaseMembers {
  * @category Utility
  * @see Identifier
  */
-  getEnabledIdentifiers(): Identifier[] | null;
+  getSignupIdentifiers(): Identifier[] | null;
   validateUsername(username: string): UsernameValidationResult;
 }

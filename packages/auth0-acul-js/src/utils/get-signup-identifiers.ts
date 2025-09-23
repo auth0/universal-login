@@ -19,7 +19,7 @@ const passwordlessStrategyToIdentifier: Record<string, IdentifierType> = {
  * and a `required` flag indicating whether it is mandatory for signup.
  *
  */
-export function getEnabledIdentifiers(
+export function getSignupIdentifiers(
   requiredIdentifiers: Array<IdentifierType>,
   optionalIdentifiers: Array<IdentifierType>,
   connectionStrategy: string | null

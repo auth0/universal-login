@@ -19,12 +19,12 @@ jest.mock('../../../../src/utils/validate-password', () => ({
   validatePassword: jest.fn(),
 }));
 
-jest.mock('../../../../src/utils/get-enabled-identifiers', () => ({
-  getEnabledIdentifiers: jest.fn(),
+jest.mock('../../../../src/utils/get-signup-identifiers', () => ({
+  getSignupIdentifiers: jest.fn(),
 }));
 
 import { validatePassword as _validatePassword } from '../../../../src/utils/validate-password';
-import { getEnabledIdentifiers } from '../../../../src/utils/get-enabled-identifiers';
+import { getSignupIdentifiers } from '../../../../src/utils/get-signup-identifiers';
 
 describe('Signup', () => {
   let signup: Signup;
@@ -136,11 +136,11 @@ describe('Signup', () => {
         { type: 'username', required: false },
       ];
 
-      (getEnabledIdentifiers as jest.Mock).mockReturnValue(mockIdentifiers);
+      (getSignupIdentifiers as jest.Mock).mockReturnValue(mockIdentifiers);
 
-      const result = signup.getEnabledIdentifiers();
+      const result = signup.getSignupIdentifiers();
 
-      expect(getEnabledIdentifiers).toHaveBeenCalledWith(
+      expect(getSignupIdentifiers).toHaveBeenCalledWith(
         ['email', 'phone'],
         ['username'],
         'strategyX'
@@ -154,11 +154,11 @@ describe('Signup', () => {
       signup.transaction.connectionStrategy = 'strategyY';
       signup.transaction.errors = null;
 
-      (getEnabledIdentifiers as jest.Mock).mockReturnValue(null);
+      (getSignupIdentifiers as jest.Mock).mockReturnValue(null);
 
-      const result = signup.getEnabledIdentifiers();
+      const result = signup.getSignupIdentifiers();
 
-      expect(getEnabledIdentifiers).toHaveBeenCalledWith([], [], 'strategyY');
+      expect(getSignupIdentifiers).toHaveBeenCalledWith([], [], 'strategyY');
       expect(result).toBeNull();
     });
   });

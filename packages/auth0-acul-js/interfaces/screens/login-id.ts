@@ -61,5 +61,5 @@ export interface LoginIdMembers extends BaseMembers {
   federatedLogin(payload: FederatedLoginOptions): Promise<void>;
   passkeyLogin(payload?: CustomOptions): Promise<void>;
   pickCountryCode(payload?: CustomOptions): Promise<void>;
-  getActiveIdentifiers(): string[] | null;
+  getLoginIdentifiers(): string[] | null;
 }
