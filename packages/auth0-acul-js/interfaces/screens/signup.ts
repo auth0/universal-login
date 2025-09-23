@@ -1,4 +1,3 @@
-import type { Identifier } from '../../interfaces/utils/get-enabled-identifiers';
 import type { PasswordValidationResult } from '../../interfaces/utils/validate-password';
 import type { UsernameValidationResult } from '../../interfaces/utils/validate-username';
 import type { IdentifierType } from '../../src/constants';
@@ -6,6 +5,7 @@ import type { CustomOptions } from '../common';
 import type { BaseMembers } from '../models/base-context';
 import type { ScreenMembers } from '../models/screen';
 import type { TransactionMembers, UsernamePolicy, PasswordPolicy } from '../models/transaction';
+import type { Identifier } from '../utils/enabled-identifiers';
 export interface SignupOptions {
   email?: string;
   username?: string;

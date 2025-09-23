@@ -6,7 +6,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
 import { BaseContext } from '../../../src/models/base-context';
-import { getCurrentScreen, getCurrentScreenOptions, getCurrentThemeOptions, getErrors } from '../../../src/selectors';
+import { getCurrentScreen, getCurrentScreenOptions, getCurrentThemeOptions, getErrors } from '../../../src/common';
 
 // Mock the BaseContext
 jest.mock('../../../src/models/base-context');
@@ -20,7 +20,7 @@ jest.mock('../../../src/models/branding', () => ({
 }));
 
 // Mock theme utilities
-jest.mock('../../../src/utils/theme-utils', () => ({
+jest.mock('../../../src/utils/branding-theme', () => ({
   flattenColors: jest.fn(),
   flattenFonts: jest.fn(),
   flattenBorders: jest.fn(),
@@ -177,7 +177,7 @@ describe('Selectors', () => {
     beforeEach(() => {
       // Access the mocked modules directly
       const brandingModule = jest.requireMock('../../../src/models/branding');
-      const themeUtilsModule = jest.requireMock('../../../src/utils/theme-utils');
+      const themeUtilsModule = jest.requireMock('../../../src/utils/branding-theme');
       
       mockBranding = brandingModule.Branding;
       mockThemeUtils = themeUtilsModule;

@@ -1,11 +1,11 @@
 import { FormActions, ScreenIds } from '../../../../src/constants';
 import ResetPasswordMfaVoiceChallenge from '../../../../src/screens/reset-password-mfa-voice-challenge';
 import { FormHandler } from '../../../../src/utils/form-handler';
-import { createResendControl } from '../../../../src/utils/resend-utils';
+import { createResendControl } from '../../../../src/utils/resend-control';
 import { baseContextData } from '../../../data/test-data';
 
 jest.mock('../../../../src/utils/form-handler');
-jest.mock('../../../../src/utils/resend-utils');
+jest.mock('../../../../src/utils/resend-control');
 
 describe('ResetPasswordMfaVoiceChallenge', () => {
   let instance: ResetPasswordMfaVoiceChallenge;

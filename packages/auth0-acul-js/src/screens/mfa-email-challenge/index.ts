@@ -1,12 +1,12 @@
 import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
-import { createResendControl } from '../../utils/resend-utils';
+import { createResendControl } from '../../utils/resend-control';
 
 import { ScreenOverride } from './screen-override';
 import { UntrustedDataOverride } from './untrusted-data-overrider';
 
-import type { CustomOptions, StartResendOptions, ResendControl } from '../../../interfaces/common';
+import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { UntrustedDataContext } from '../../../interfaces/models/untrusted-data';
 import type {
@@ -18,6 +18,7 @@ import type {
   UntrustedDataMembersOnMfaEmailChallenge as UntrustedDataOptions,
 } from '../../../interfaces/screens/mfa-email-challenge';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import type { StartResendOptions, ResendControl } from  '../../../interfaces/utils/resend-control';
 
 /**
  * Class implementing the mfa-email-challenge screen functionality

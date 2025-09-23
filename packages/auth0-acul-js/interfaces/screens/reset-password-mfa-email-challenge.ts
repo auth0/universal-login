@@ -1,6 +1,6 @@
-import type { StartResendOptions, ResendControl } from '../common';
 import type { BaseMembers } from '../models/base-context';
 import type { ScreenMembers } from '../models/screen';
+import type { StartResendOptions, ResendControl } from '../utils/resend-control';
 
 /**
  * Interface for the screen data specific to reset-password-mfa-email-challenge screen

@@ -1,12 +1,12 @@
 import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
-import { createResendControl } from '../../utils/resend-utils';
+import { createResendControl } from '../../utils/resend-control';
 
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
 
-import type { CustomOptions, StartResendOptions, ResendControl } from '../../../interfaces/common';
+import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type {
@@ -16,6 +16,7 @@ import type {
   SubmitOTPOptions,
 } from '../../../interfaces/screens/login-passwordless-sms-otp';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import type { StartResendOptions, ResendControl } from  '../../../interfaces/utils/resend-control';
 
 export default class LoginPasswordlessSmsOtp extends BaseContext implements LoginPasswordlessSmsOtpMembers {
   static screenIdentifier: string = ScreenIds.LOGIN_PASSWORDLESS_SMS_OTP;

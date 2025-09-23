@@ -35,6 +35,9 @@ export const {
 export const submitCode = (payload: SubmitCodeOptions) => withError(instance.submitCode(payload));
 export const resendCode = (payload?: CustomOptions) => withError(instance.resendCode(payload));
 
+// Utility Hooks
+export { useResend } from '../hooks/utility/resend-manager';
+
 // Common hooks
 export {
   useCurrentScreen,

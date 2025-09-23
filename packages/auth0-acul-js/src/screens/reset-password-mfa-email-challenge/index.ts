@@ -1,11 +1,11 @@
 import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
-import { createResendControl } from '../../utils/resend-utils';
+import { createResendControl } from '../../utils/resend-control';
 
 import { ScreenOverride } from './screen-override';
 
-import type { CustomOptions, StartResendOptions, ResendControl } from '../../../interfaces/common';
+import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type {
   ResetPasswordMfaEmailChallengeMembers,
@@ -15,6 +15,7 @@ import type {
   TryAnotherMethodOptions,
 } from '../../../interfaces/screens/reset-password-mfa-email-challenge';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import type { StartResendOptions, ResendControl  } from '../../../interfaces/utils/resend-control';
 
 /**
  * Class implementing the reset-password-mfa-email-challenge screen functionality
