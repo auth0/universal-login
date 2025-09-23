@@ -1,4 +1,4 @@
-import { ScreenIds } from '../../../../src//constants';
+import { ScreenIds } from '../../../../src/constants';
 import { FormActions } from '../../../../src/constants';
 import MfaDetectBrowserCapabilities from '../../../../src/screens/mfa-detect-browser-capabilities';
 import { isJsAvailable, isBrave, isWebAuthAvailable, isWebAuthPlatformAvailable, getBrowserCapabilities } from '../../../../src/utils/browser-capabilities';

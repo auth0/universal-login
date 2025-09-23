@@ -1,4 +1,4 @@
-import { ScreenIds } from '../../../../src//constants';
+import { ScreenIds } from '../../../../src/constants';
 import SignupPassword from '../../../../src/screens/signup-password';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { baseContextData } from '../../../data/test-data';
@@ -12,7 +12,10 @@ describe('SignupPassword', () => {
   let mockFormHandler: { submitData: jest.Mock };
 
   beforeEach(() => {
-    global.window = Object.create(window);
+    Object.defineProperty(global, 'window', {
+      value: Object.create(window),
+      writable: true
+    });
     baseContextData.screen.name = ScreenIds.SIGNUP_PASSWORD;
     window.universal_login_context = baseContextData;
 

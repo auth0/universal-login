@@ -1,8 +1,8 @@
-import MfaSmsList from '../../../../src/screens/mfa-sms-list';
-import { baseContextData } from '../../../data/test-data';
-import { FormHandler } from '../../../../src/utils/form-handler';
-import { ScreenIds } from '../../../../src//constants';
+import { ScreenIds } from '../../../../src/constants';
 import { FormActions } from '../../../../src/constants';
+import MfaSmsList from '../../../../src/screens/mfa-sms-list';
+import { FormHandler } from '../../../../src/utils/form-handler';
+import { baseContextData } from '../../../data/test-data';
 
 jest.mock('../../../../src/utils/form-handler');
 

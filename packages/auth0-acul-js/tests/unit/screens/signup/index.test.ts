@@ -1,13 +1,17 @@
+import { ScreenIds } from '../../../../src/constants';
+import { FormActions } from '../../../../src/constants';
+import { BaseContext } from '../../../../src/models/base-context';
 import Signup from '../../../../src/screens/signup';
 import { ScreenOverride } from '../../../../src/screens/signup/screen-override';
 import { TransactionOverride } from '../../../../src/screens/signup/transaction-override';
+import { getEnabledIdentifiers } from '../../../../src/utils/enabled-identifiers';
 import { FormHandler } from '../../../../src/utils/form-handler';
-import { BaseContext } from '../../../../src/models/base-context';
+import { validatePassword as _validatePassword } from '../../../../src/utils/validate-password';
+
 import type { ScreenContext } from '../../../../interfaces/models/screen';
 import type { PasswordPolicy, TransactionContext } from '../../../../interfaces/models/transaction';
 import type { SignupOptions, FederatedSignupOptions } from '../../../../interfaces/screens/signup';
-import { ScreenIds } from '../../../../src//constants';
-import { FormActions } from '../../../../src/constants';
+
 
 jest.mock('../../../../src/screens/signup/screen-override');
 jest.mock('../../../../src/screens/signup/transaction-override');
@@ -23,8 +27,6 @@ jest.mock('../../../../src/utils/enabled-identifiers', () => ({
   getEnabledIdentifiers: jest.fn(),
 }));
 
-import { validatePassword as _validatePassword } from '../../../../src/utils/validate-password';
-import { getEnabledIdentifiers } from '../../../../src/utils/enabled-identifiers';
 
 describe('Signup', () => {
   let signup: Signup;
