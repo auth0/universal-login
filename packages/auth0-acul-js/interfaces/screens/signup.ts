@@ -5,7 +5,7 @@ import type { CustomOptions } from '../common';
 import type { BaseMembers } from '../models/base-context';
 import type { ScreenMembers } from '../models/screen';
 import type { TransactionMembers, UsernamePolicy, PasswordPolicy } from '../models/transaction';
-import type { Identifier } from '../utils/enabled-identifiers';
+import type { Identifier } from '../utils/get-signup-identifiers';
 export interface SignupOptions {
   email?: string;
   username?: string;

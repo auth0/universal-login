@@ -1,6 +1,6 @@
 import {  getSignupIdentifiers } from '../../../src/utils/get-signup-identifiers';
 import { ConnectionStrategy } from '../../../src/constants';
-import type { IdentifierType } from '../../../interfaces/utils/enabled-identifiers';
+import type { IdentifierType } from '../../../interfaces/utils/get-signup-identifiers';
 
 describe('getSignupIdentifiers', () => {
   it('returns a required email identifier for passwordless email strategy', () => {
