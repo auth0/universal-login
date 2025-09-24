@@ -1,7 +1,7 @@
 import InterstitialCaptcha from '@auth0/auth0-acul-js/interstitial-captcha';
 import { useMemo } from 'react';
 
-import { ContextHooks } from '../hooks/context';
+import { ContextHooks } from '../hooks';
 import { registerScreen } from '../state/instance-store';
 
 import type { InterstitialCaptchaMembers } from '@auth0/auth0-acul-js/interstitial-captcha';
@@ -32,7 +32,7 @@ export {
   type UseErrorsResult,
   type ErrorsResult,
   type ErrorKind,
-} from '../hooks/common';
+} from '../hooks';
 
 // Main instance hook. Returns singleton instance of InterstitialCaptcha
 export const useInterstitialCaptcha = (): InterstitialCaptchaMembers => useMemo(() => instance, []);

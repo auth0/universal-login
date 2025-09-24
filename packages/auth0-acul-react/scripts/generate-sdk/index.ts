@@ -187,10 +187,10 @@ for (const symbol of screenSymbols) {
   const hasDefaultExport = !!screenFile.getDefaultExportSymbol();
   screenLines.push(`import { useMemo } from 'react';`);
   screenLines.push(`import ${screenName} from '@auth0/auth0-acul-js/${kebab}';`);
-  screenLines.push(`import { ContextHooks } from '../hooks/context';`);
+  screenLines.push(`import { ContextHooks } from '../hooks';`);
   if (exportedMethods.length) {
     // We need `errorManager` only if there are exported methods
-    screenLines.push(`import { errorManager } from '../hooks/common/errors';`);
+    screenLines.push(`import { errorManager } from '../hooks';`);
   }
   screenLines.push(`import { registerScreen } from '../state/instance-store';`);
   usedInterfaces.add(baseInterface);
@@ -283,7 +283,7 @@ for (const symbol of screenSymbols) {
   }
   screenLines.push(`\n// Common hooks`);
   screenLines.push(
-    `export { useCurrentScreen, useErrors, useAuth0Themes, type UseErrorOptions, type UseErrorsResult, type ErrorsResult, type ErrorKind } from '../hooks/common';`
+    `export { useCurrentScreen, useErrors, useAuth0Themes, type UseErrorOptions, type UseErrorsResult, type ErrorsResult, type ErrorKind } from '../hooks';`
   );
 
   // Main hook (memoized)
@@ -314,7 +314,7 @@ fs.writeFileSync(PACKAGE_JSON_PATH, JSON.stringify(pkg, null, 2), 'utf8');
 indexTypes.push('\n// Common types from core SDK');
 // indexTypes.push(`export type * from '@auth0/auth0-acul-js';`);
 
-indexExports.push(`export { useCurrentScreen, useErrors, useAuth0Themes } from './hooks/common';`);
+indexExports.push(`export { useCurrentScreen, useErrors, useAuth0Themes } from './hooks';`);
 
 fs.writeFileSync(
   INDEX_FILE_PATH,

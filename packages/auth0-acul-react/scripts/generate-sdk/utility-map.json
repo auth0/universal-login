@@ -9,14 +9,14 @@
     "path": "../hooks/utility/validate-password"
   },
 
-  "getEnabledIdentifiers": {
-    "name": "useEnabledIdentifiers",
-    "path": "../hooks/utility/enabled-identifiers"
+  "getSignupIdentifiers": {
+    "name": "useSignupIdentifiers",
+    "path": "../hooks/utility/signup-identifiers"
   },
 
-  "getActiveIdentifiers": {
-    "name": "useActiveIdentifiers",
-    "path": "../hooks/utility/active-identifiers"
+  "getLoginIdentifiers": {
+    "name": "useLoginIdentifiers",
+    "path": "../hooks/utility/login-identifiers"
   },
 
   "resendManager": {

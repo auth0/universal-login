@@ -1,6 +1,7 @@
 export { useAuth0Themes } from './common/auth0-themes';
 export { useCurrentScreen } from './common/current-screen';
 export {
+  errorManager,
   useErrors,
   type UseErrorOptions,
   type UseErrorsResult,
@@ -9,8 +10,9 @@ export {
   type ErrorItem,
 } from './common/errors';
 
-export { useActiveIdentifiers } from './utility/active-identifiers';
-export { useEnabledIdentifiers } from './utility/enabled-identifiers';
+export { ContextHooks } from './context';
+export { useLoginIdentifiers } from './utility/login-identifiers';
+export { useSignupIdentifiers } from './utility/signup-identifiers';
 export { useMfaPolling, type MfaPollingResult, type ULError } from './utility/polling-manager';
 export { useResend, type UseResendReturn, type UseResendOptions } from './utility/resend-manager';
 export {

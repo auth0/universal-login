@@ -1,8 +1,8 @@
 import RedeemTicket from '@auth0/auth0-acul-js/redeem-ticket';
 import { useMemo } from 'react';
 
-import { errorManager } from '../hooks/common/errors';
-import { ContextHooks } from '../hooks/context';
+import { ContextHooks } from '../hooks';
+import { errorManager } from '../hooks';
 import { registerScreen } from '../state/instance-store';
 
 import type { RedeemTicketMembers, CustomOptions } from '@auth0/auth0-acul-js/redeem-ticket';
@@ -39,7 +39,7 @@ export {
   type UseErrorsResult,
   type ErrorsResult,
   type ErrorKind,
-} from '../hooks/common';
+} from '../hooks';
 
 // Main instance hook. Returns singleton instance of RedeemTicket
 export const useRedeemTicket = (): RedeemTicketMembers => useMemo(() => instance, []);

@@ -1,7 +1,7 @@
 import EmailVerificationResult from '@auth0/auth0-acul-js/email-verification-result';
 import { useMemo } from 'react';
 
-import { ContextHooks } from '../hooks/context';
+import { ContextHooks } from '../hooks';
 import { registerScreen } from '../state/instance-store';
 
 import type { EmailVerificationResultMembers } from '@auth0/auth0-acul-js/email-verification-result';
@@ -32,7 +32,7 @@ export {
   type UseErrorsResult,
   type ErrorsResult,
   type ErrorKind,
-} from '../hooks/common';
+} from '../hooks';
 
 // Main instance hook. Returns singleton instance of EmailVerificationResult
 export const useEmailVerificationResult = (): EmailVerificationResultMembers =>
