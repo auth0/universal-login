@@ -52,6 +52,6 @@ runs:
         else
           TAG="latest"
         fi
-        
+        npm view . --json
       shell: bash
 
