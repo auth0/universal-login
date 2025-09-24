@@ -2,6 +2,7 @@ import { ScreenIds, FormActions, Errors } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { getBrowserCapabilities } from '../../utils/browser-capabilities';
 import { FormHandler } from '../../utils/form-handler';
+import { getLoginIdentifiers as _getLoginIdentifiers} from '../../utils/login-identifiers';
 import { getPasskeyCredentials } from '../../utils/passkeys';
 
 import { ScreenOverride } from './screen-override';
@@ -147,7 +148,7 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
    * @utilityFeature
    */
   getLoginIdentifiers(): string[] | null {
-    return this.transaction.allowedIdentifiers;
+    return _getLoginIdentifiers(this.transaction.allowedIdentifiers);
   }
 }
 

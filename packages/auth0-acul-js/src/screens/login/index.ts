@@ -1,6 +1,7 @@
 import { ScreenIds } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
+import { getLoginIdentifiers as _getLoginIdentifiers} from '../../utils/login-identifiers';
 
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
@@ -82,7 +83,7 @@ export default class Login extends BaseContext implements LoginMembers {
    * @utilityFeature
    */
   getLoginIdentifiers(): string[] | null {
-    return this.transaction.allowedIdentifiers || null;
+    return _getLoginIdentifiers(this.transaction.allowedIdentifiers);
   }
 }
 
