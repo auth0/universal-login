@@ -1,9 +1,12 @@
-// React testing requires @testing-library/jest-dom for enhanced matchers
-// Core SDK doesn't need this, but React packages do for proper DOM testing
-// Jest setup files must use require() even with useESM: true and ESM preset
-require('@testing-library/jest-dom');
+import '@testing-library/jest-dom';
 
+// Extend global types for SDK name and version
+declare global {
+  var __SDK_NAME__: string;
+  var __SDK_VERSION__: string;
+}
 
+// Set SDK name and version
 globalThis.__SDK_NAME__ = global.__SDK_NAME__ || '@auth0/auth0-acul-react';
 globalThis.__SDK_VERSION__ = global.__SDK_VERSION__ || '0.1.0';
 

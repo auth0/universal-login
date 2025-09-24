@@ -23,7 +23,7 @@ export default {
     '!**/node_modules/**',
     '!**/tests/**',
   ],
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   // React Testing Library recommended settings
   testEnvironmentOptions: {
     customExportConditions: ['node', 'node-addons'],
