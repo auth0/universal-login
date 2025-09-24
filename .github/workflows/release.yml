@@ -2,9 +2,10 @@ name: Monorepo Release
 
 on:
   pull_request:
-    types: [closed, opened, synchronize]
+    types:
+      - closed
     branches:
-      - 'feature/test-pipeline'
+      - 'master'
   workflow_dispatch:
 permissions:
   contents: write
@@ -85,10 +86,7 @@ jobs:
           version: ${{ steps.meta.outputs.version }}
 
       - name: Generate documentation for released package only
-        run: |
-          npm run build --workspace=${{ steps.meta.outputs.name }}
-          npm run docs --workspace=${{ steps.meta.outputs.name }}
-          node ./scripts/unify-docs.js --package=${{ steps.meta.outputs.dir }}
+        run: npm run docs:unified ${{ steps.meta.outputs.dir }}
 
       - name: Deploy updated documentation
         uses: peaceiris/actions-gh-pages@v3
