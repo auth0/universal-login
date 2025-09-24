@@ -17,12 +17,9 @@ jobs:
         with:
           node-version: 22
           cache: 'npm'
-          registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies at root
-        run: npm ci --registry https://registry.npmjs.org
-        env:
-          NODE_AUTH_TOKEN: ""
+        run: npm install
 
       - name: Build all workspaces
         run: npm run build
