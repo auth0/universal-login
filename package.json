@@ -14,15 +14,10 @@
     "test": "npm test --workspaces",
     "build": "npm run build --workspaces",
     "docs": "npm run docs --workspaces",
-    "docs:unified": "npm run build && npm run docs && node ./scripts/unify-docs.js",
-    "docs:unified:all": "npm run build && npm run docs && node ./scripts/unify-docs.js --all",
     "docs:unified:js": "npm run build --workspace=packages/auth0-acul-js && npm run docs --workspace=packages/auth0-acul-js && node ./scripts/unify-docs.js --package=auth0-acul-js",
     "docs:unified:react": "npm run build --workspace=packages/auth0-acul-react && npm run docs --workspace=packages/auth0-acul-react && node ./scripts/unify-docs.js --package=auth0-acul-react",
-    "docs:clean": "rm -rf ./docs && mkdir -p ./docs",
-    "docs:deploy-preview": "npm run docs:clean && npm run docs:unified",
     "format": "npm run format --workspaces",
-    "preinstall": "node ./scripts/check-node-version.js && node ./scripts/block-local-install.js",
-    "postinstall": "npm run docs:unified --if-present"
+    "preinstall": "node ./scripts/check-node-version.js && node ./scripts/block-local-install.js"
   },
   "engines": {
     "node": "^22.0.0"
