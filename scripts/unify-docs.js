@@ -32,7 +32,7 @@ console.log('🔍 Command line options:');
 if (packageFilter) console.log(`   • Single package: ${packageFilter}`);
 if (packagesFilter) console.log(`   • Multiple packages: ${packagesFilter.join(', ')}`);
 if (forceAll) console.log('   • Force all packages');
-if (!packageFilter && !packagesFilter && !forceAll) console.log('   • Auto-detect changed packages');
+if (!packageFilter && !packagesFilter && !forceAll) console.log('   • Auto-detect changed packages (release-safe mode)');
 
 /**
  * Check if a package should be included based on filters
@@ -204,6 +204,8 @@ async function getPackagesWithDocs() {
     const changedPackages = await getChangedPackages();
     if (changedPackages.length > 0 && !packageFilter && !packagesFilter && !forceAll) {
       console.log(`🔍 Auto-detected changed packages: ${changedPackages.join(', ')}`);
+    } else if (changedPackages.length === 0 && !packageFilter && !packagesFilter && !forceAll) {
+      console.log('🔍 No changed packages detected. Use --all to force rebuild all packages.');
     }
 
     for (const packageName of validPackageNames) {
@@ -632,13 +634,23 @@ async function unifyDocumentation() {
         const itemPath = path.join(UNIFIED_DOCS_DIR, item);
         const stat = await fs.stat(itemPath).catch(() => null);
         
+        // Only clean if this package is being updated AND the directory exists
         if (stat?.isDirectory() && packageNames.includes(item)) {
-          console.log(`   • Cleaning ${item}...`);
+          console.log(`   • Cleaning ${item} (package being updated)...`);
           await fs.rm(itemPath, { recursive: true, force: true });
         }
       }
     }
-    console.log('   ✅ Cleaned existing docs for selected packages');
+    console.log('   ✅ Cleaned existing docs for selected packages only');
+    
+    // Log preserved packages
+    const preservedPackages = items.filter(item => 
+      item !== 'README.md' && item !== 'index.html' && item !== '.nojekyll' && 
+      !packageNames.includes(item)
+    );
+    if (preservedPackages.length > 0) {
+      console.log(`   📦 Preserved documentation for: ${preservedPackages.join(', ')}`);
+    }
   }
 
   // Count total files for progress tracking
@@ -674,18 +686,7 @@ async function unifyDocumentation() {
   // Create .nojekyll file for GitHub Pages
   console.log('📝 Creating .nojekyll file for GitHub Pages...');
   const nojekyllPath = path.join(UNIFIED_DOCS_DIR, '.nojekyll');
-  await fs.writeFile(nojekyllPath, '', 'utf8');
-  console.log('   ✅ Created .nojekyll file');
-
-  console.log('\n🎉 Documentation unification complete!');
-  console.log(`📖 Open ${path.join(UNIFIED_DOCS_DIR, 'index.html')} in your browser to view the documentation.`);
-  console.log(`📁 Individual package docs are available in their respective folders.`);
-  
-  console.log('\n💡 Usage options for selective updates:');
-  console.log('   • node scripts/unify-docs.js --package=auth0-acul-js    (single package)');
-  console.log('   • node scripts/unify-docs.js --packages=auth0-acul-js,auth0-acul-react    (multiple packages)');
-  console.log('   • node scripts/unify-docs.js --all    (force all packages)');
-  console.log('   • node scripts/unify-docs.js    (auto-detect changed packages via git)');
+  await fs.writeFile(nojekyllPath, '', 'utf8')
 }
 
 // Run the script

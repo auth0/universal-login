@@ -14,18 +14,15 @@
     "test": "npm test --workspaces",
     "build": "npm run build --workspaces",
     "docs": "npm run docs --workspaces",
-    "docs:unified": "npm run docs && node ./scripts/unify-docs.js",
-    "docs:unified:all": "npm run docs && node ./scripts/unify-docs.js --all",
-    "docs:unified:js": "npm run docs --workspace=packages/auth0-acul-js && node ./scripts/unify-docs.js --package=auth0-acul-js",
-    "docs:unified:react": "npm run docs --workspace=packages/auth0-acul-react && node ./scripts/unify-docs.js --package=auth0-acul-react",
-    "docs:serve": "npm run docs:unified && npx http-server ./docs -p 3000 -o",
-    "docs:serve:js": "npm run docs:unified:js && npx http-server ./docs -p 3000 -o",
-    "docs:serve:react": "npm run docs:unified:react && npx http-server ./docs -p 3000 -o",
+    "docs:unified": "npm run build && npm run docs && node ./scripts/unify-docs.js",
+    "docs:unified:all": "npm run build && npm run docs && node ./scripts/unify-docs.js --all",
+    "docs:unified:js": "npm run build --workspace=packages/auth0-acul-js && npm run docs --workspace=packages/auth0-acul-js && node ./scripts/unify-docs.js --package=auth0-acul-js",
+    "docs:unified:react": "npm run build --workspace=packages/auth0-acul-react && npm run docs --workspace=packages/auth0-acul-react && node ./scripts/unify-docs.js --package=auth0-acul-react",
     "docs:clean": "rm -rf ./docs && mkdir -p ./docs",
     "docs:deploy-preview": "npm run docs:clean && npm run docs:unified",
     "format": "npm run format --workspaces",
     "preinstall": "node ./scripts/check-node-version.js && node ./scripts/block-local-install.js",
-    "postinstall": "npm run docs:unified"
+    "postinstall": "npm run docs:unified --if-present"
   },
   "engines": {
     "node": "^22.0.0"
@@ -51,7 +48,6 @@
     "eslint-import-resolver-typescript": "^4.3.2",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-prettier": "^5.2.6",
-    "http-server": "^14.1.1",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "markdown-it": "^14.1.0",

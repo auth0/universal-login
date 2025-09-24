@@ -85,22 +85,15 @@ jobs:
           name: ${{ steps.meta.outputs.tag_name }}
           version: ${{ steps.meta.outputs.version }}
 
-      - name: Generate package documentation
-        run: npm run docs --workspace=${{ steps.meta.outputs.name }}
+      - name: Generate documentation for released package only
+        run: |
+          npm run build --workspace=${{ steps.meta.outputs.name }}
+          npm run docs --workspace=${{ steps.meta.outputs.name }}
+          node ./scripts/unify-docs.js --package=${{ steps.meta.outputs.dir }}
 
-      - name: Update unified documentation
-        run: |
-          # Generate unified documentation to include the updated package docs
-          npm run docs:unified
-          
-      - name: Commit updated documentation
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add docs/
-          if git diff --staged --quiet; then
-            echo "No documentation changes to commit"
-          else
-            git commit -m "docs: update unified documentation for ${{ steps.meta.outputs.tag_name }}"
-            git push
-          fi
+      - name: Deploy updated documentation
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
+          keep_files: true
