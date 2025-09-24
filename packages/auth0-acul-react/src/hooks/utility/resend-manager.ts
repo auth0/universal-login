@@ -41,7 +41,7 @@ interface WithResendManager {
  * - Tells you whether the resend button should be disabled.
  * - Provides a `startResend` function to trigger a resend immediately.
  *
- * @SupportedScreens
+ * @supportedScreens
  * - `email-identifier-challenge`
  * - `email-otp-challenge`
  * - `login-email-verification`
