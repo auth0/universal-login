@@ -18,8 +18,7 @@
   "license": "MIT",
   "description": "The Auth0 ACUL React SDK enables you to build Advanced Customization for Universal Login with React hooks and components.",
   "repository": {
-    "type": "git",
-    "url": "https://github.com/auth0/universal-login/tree/master/packages/auth0-acul-react"
+    "type": "git"
   },
   "peerDependencies": {
     "react": "^18.3.1"
