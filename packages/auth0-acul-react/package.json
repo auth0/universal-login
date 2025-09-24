@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "test": "jest",
+    "test": "jest --verbose tests/**/* --coverage",
     "generate:sdk": "tsx ./scripts/generate-sdk/index.ts",
     "generate:examples": "tsx ./scripts/generate-examples.ts",
     "lint": "eslint src --ext .ts,.tsx",
