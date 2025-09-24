@@ -18,6 +18,9 @@ jobs:
           node-version: 22
           cache: 'npm'
 
+      - name: Set up npm auth
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+
       - name: Install dependencies at root
         run: npm install
 
