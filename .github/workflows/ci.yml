@@ -19,7 +19,7 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies at root
-        run: npm install
+        run: npm ci
 
       - name: Build all workspaces
         run: npm run build
