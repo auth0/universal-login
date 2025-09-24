@@ -91,8 +91,7 @@ export const LoginId: React.FC = () => {
 import React, { useRef, useState, useMemo } from 'react';
 import { useScreen, useTransaction, login, federatedLogin, passkeyLogin, useLoginIdentifiers } from '@auth0/auth0-acul-react/login-id';
 import { Logo } from '../../components/Logo';
-// import { useErrors } from '@auth0/auth0-acul-react';
-// import type { AculError } from '@auth0/auth0-acul-react';
+
 // pickCountryCode
 const LoginIdScreen: React.FC = () => {
   const screen = useScreen();

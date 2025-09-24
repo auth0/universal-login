@@ -30,7 +30,7 @@ interface WithLoginIdentifiers {
  * ```
  */
 
-export const useLoginIdentifiers = (): IdentifierType[] | [] => {
+export const useLoginIdentifiers = (): IdentifierType[] => {
   const instance = getScreen<WithLoginIdentifiers>();
-  return instance.getLoginIdentifiers() ?? [];
+  return instance.getLoginIdentifiers();
 };

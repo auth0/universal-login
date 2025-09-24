@@ -1,3 +1,4 @@
+
 import { ScreenIds } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
@@ -16,6 +17,7 @@ import type {
   FederatedLoginOptions,
 } from '../../../interfaces/screens/login';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import type { IdentifierType } from 'interfaces/utils';
 
 /**
  * Login screen implementation class
@@ -82,7 +84,7 @@ export default class Login extends BaseContext implements LoginMembers {
    * ```
    * @utilityFeature
    */
-  getLoginIdentifiers(): string[] | null {
+  getLoginIdentifiers(): IdentifierType[] | null {
     return _getLoginIdentifiers(this.transaction.allowedIdentifiers);
   }
 }

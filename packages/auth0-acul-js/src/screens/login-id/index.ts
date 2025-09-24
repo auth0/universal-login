@@ -1,3 +1,4 @@
+
 import { ScreenIds, FormActions, Errors } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { getBrowserCapabilities } from '../../utils/browser-capabilities';
@@ -19,6 +20,7 @@ import type {
   FederatedLoginOptions,
 } from '../../../interfaces/screens/login-id';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import type { IdentifierType } from 'interfaces/utils';
 
 export default class LoginId extends BaseContext implements LoginIdMembers {
   static screenIdentifier: string = ScreenIds.LOGIN_ID;
@@ -147,7 +149,7 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
    * ```
    * @utilityFeature
    */
-  getLoginIdentifiers(): string[] | null {
+  getLoginIdentifiers(): IdentifierType[] | null{
     return _getLoginIdentifiers(this.transaction.allowedIdentifiers);
   }
 }
