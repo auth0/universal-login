@@ -21,9 +21,9 @@ jobs:
       - name: Install dependencies at root
         run: npm ci
 
-      - name: Generate SDK files
-        # run: npm run generate:sdk
-        working-directory: packages/auth0-acul-react
+      # - name: Generate SDK files
+      #   run: npm run generate:sdk
+      #   working-directory: packages/auth0-acul-react
 
       - name: Build all workspaces
         run: npm run build
