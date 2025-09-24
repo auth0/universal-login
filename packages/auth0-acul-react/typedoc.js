@@ -12,15 +12,5 @@ export default {
   includeVersion: true,
   categorizeByGroup: true,
   json: 'docs/index.json',
-  blockTags: [
-    '@param',
-    '@returns',
-    '@example',
-    '@remarks',
-    '@module',
-    '@SupportedScreens',
-    '@usage',
-    '@description'
-  ],
   sort: ['source-order']
 };
