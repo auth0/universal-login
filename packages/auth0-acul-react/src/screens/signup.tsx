@@ -43,7 +43,7 @@ export const pickCountryCode = (payload?: CustomOptions) =>
 export { usePasswordValidation } from '../hooks/utility/validate-password';
 
 // Utility Hooks
-export { useEnabledIdentifiers } from '../hooks/utility/enabled-identifiers';
+export { useSignupIdentifiers } from '../hooks/utility/signup-identifiers';
 
 // Utility Hooks
 export { useUsernameValidation } from '../hooks/utility/validate-username';

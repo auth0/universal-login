@@ -1,6 +1,6 @@
 import { BaseContext } from '../models/base-context';
 import { Branding } from '../models/branding';
-import { flattenColors, flattenFonts, flattenBorders, flattenPageBackground, flattenWidget } from '../utils/theme-utils';
+import { flattenColors, flattenFonts, flattenBorders, flattenPageBackground, flattenWidget } from '../utils/branding-theme';
 
 import type { CurrentScreenOptions } from '../../interfaces/common';
 import type { FlattenedTheme } from '../../interfaces/common';

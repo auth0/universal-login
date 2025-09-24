@@ -1,13 +1,13 @@
 import { FormActions, ScreenIds } from '../../../../src/constants';
 import MfaEmailChallenge from '../../../../src/screens/mfa-email-challenge';
 import { FormHandler } from '../../../../src/utils/form-handler';
-import { createResendControl } from '../../../../src/utils/resend-utils';
+import { createResendControl } from '../../../../src/utils/resend-control';
 import { baseContextData } from '../../../data/test-data';
 
 import type { ContinueOptions, ResendCodeOptions } from '../../../../interfaces/screens/mfa-email-challenge';
 
 jest.mock('../../../../src/utils/form-handler');
-jest.mock('../../../../src/utils/resend-utils');
+jest.mock('../../../../src/utils/resend-control');
 
 describe('MfaEmailChallenge', () => {
   let mfaEmailChallenge: MfaEmailChallenge;

@@ -1,14 +1,14 @@
 import { FormActions, ScreenIds } from '../../../../src/constants';
 import PhoneIdentifierChallenge from '../../../../src/screens/phone-identifier-challenge';
 import { FormHandler } from '../../../../src/utils/form-handler';
-import { createResendControl } from '../../../../src/utils/resend-utils';
+import { createResendControl } from '../../../../src/utils/resend-control';
 import { baseContextData } from '../../../data/test-data';
 
 import type { CustomOptions } from 'interfaces/common';
 import type { PhoneChallengeOptions } from 'interfaces/screens/phone-identifier-challenge';
 
 jest.mock('../../../../src/utils/form-handler');
-jest.mock('../../../../src/utils/resend-utils');
+jest.mock('../../../../src/utils/resend-control');
 
 describe('PhoneIdentifierChallenge', () => {
   let phoneIdentifierChallenge: PhoneIdentifierChallenge;

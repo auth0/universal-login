@@ -1,15 +1,15 @@
 import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
-import { createResendControl } from '../../utils/resend-utils';
+import { createResendControl } from '../../utils/resend-control';
 
-import type { StartResendOptions, ResendControl } from '../../../interfaces/common';
 import type {
   LoginEmailVerificationMembers,
   ContinueWithCodeOptions,
   ResendCodeOptions,
 } from '../../../interfaces/screens/login-email-verification';
 import type { FormOptions as InternalFormOptions } from '../../../interfaces/utils/form-handler';
+import type { StartResendOptions, ResendControl } from '../../../interfaces/utils/resend-control';
 
 /**
  * @class LoginEmailVerification

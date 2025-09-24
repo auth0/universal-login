@@ -41,7 +41,7 @@ export const pickCountryCode = (payload?: CustomOptions) =>
   withError(instance.pickCountryCode(payload));
 
 // Utility Hooks
-export { useActiveIdentifiers } from '../hooks/utility/active-identifiers';
+export { useLoginIdentifiers } from '../hooks/utility/login-identifiers';
 
 // Common hooks
 export {

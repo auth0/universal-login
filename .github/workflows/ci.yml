@@ -23,7 +23,7 @@ jobs:
         run: npm ci --no-audit --no-fund
         env:
           NODE_AUTH_TOKEN: ""
-
+          
       # - name: Generate SDK files
       #   run: npm run generate:sdk
       #   working-directory: packages/auth0-acul-react

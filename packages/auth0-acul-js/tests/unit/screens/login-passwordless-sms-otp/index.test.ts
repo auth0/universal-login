@@ -1,14 +1,14 @@
 import { FormActions, ScreenIds } from '../../../../src/constants';
 import LoginPasswordlessSmsOtp from '../../../../src/screens/login-passwordless-sms-otp';
 import { FormHandler } from '../../../../src/utils/form-handler';
-import { createResendControl } from '../../../../src/utils/resend-utils';
+import { createResendControl } from '../../../../src/utils/resend-control';
 import { baseContextData } from '../../../data/test-data';
 
 import type { CustomOptions } from 'interfaces/common';
 import type { SubmitOTPOptions } from 'interfaces/screens/login-passwordless-sms-otp';
 
 jest.mock('../../../../src/utils/form-handler');
-jest.mock('../../../../src/utils/resend-utils');
+jest.mock('../../../../src/utils/resend-control');
 
 describe('LoginPasswordlessSmsOtp', () => {
   let loginPasswordlessSmsOtp: LoginPasswordlessSmsOtp;

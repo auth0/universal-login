@@ -1,13 +1,17 @@
+import { ScreenIds } from '../../../../src/constants';
+import { FormActions } from '../../../../src/constants';
+import { BaseContext } from '../../../../src/models/base-context';
 import Signup from '../../../../src/screens/signup';
 import { ScreenOverride } from '../../../../src/screens/signup/screen-override';
 import { TransactionOverride } from '../../../../src/screens/signup/transaction-override';
+import { getSignupIdentifiers } from '../../../../src/utils/signup-identifiers';
 import { FormHandler } from '../../../../src/utils/form-handler';
-import { BaseContext } from '../../../../src/models/base-context';
+import { validatePassword as _validatePassword } from '../../../../src/utils/validate-password';
+
 import type { ScreenContext } from '../../../../interfaces/models/screen';
 import type { PasswordPolicy, TransactionContext } from '../../../../interfaces/models/transaction';
 import type { SignupOptions, FederatedSignupOptions } from '../../../../interfaces/screens/signup';
-import { ScreenIds } from '../../../../src//constants';
-import { FormActions } from '../../../../src/constants';
+
 
 jest.mock('../../../../src/screens/signup/screen-override');
 jest.mock('../../../../src/screens/signup/transaction-override');
@@ -19,12 +23,10 @@ jest.mock('../../../../src/utils/validate-password', () => ({
   validatePassword: jest.fn(),
 }));
 
-jest.mock('../../../../src/utils/get-enabled-identifiers', () => ({
-  getEnabledIdentifiers: jest.fn(),
+jest.mock('../../../../src/utils/signup-identifiers', () => ({
+  getSignupIdentifiers: jest.fn(),
 }));
 
-import { validatePassword as _validatePassword } from '../../../../src/utils/validate-password';
-import { getEnabledIdentifiers } from '../../../../src/utils/get-enabled-identifiers';
 
 describe('Signup', () => {
   let signup: Signup;
@@ -136,11 +138,11 @@ describe('Signup', () => {
         { type: 'username', required: false },
       ];
 
-      (getEnabledIdentifiers as jest.Mock).mockReturnValue(mockIdentifiers);
+      (getSignupIdentifiers as jest.Mock).mockReturnValue(mockIdentifiers);
 
-      const result = signup.getEnabledIdentifiers();
+      const result = signup.getSignupIdentifiers();
 
-      expect(getEnabledIdentifiers).toHaveBeenCalledWith(
+      expect(getSignupIdentifiers).toHaveBeenCalledWith(
         ['email', 'phone'],
         ['username'],
         'strategyX'
@@ -154,11 +156,11 @@ describe('Signup', () => {
       signup.transaction.connectionStrategy = 'strategyY';
       signup.transaction.errors = null;
 
-      (getEnabledIdentifiers as jest.Mock).mockReturnValue(null);
+      (getSignupIdentifiers as jest.Mock).mockReturnValue(null);
 
-      const result = signup.getEnabledIdentifiers();
+      const result = signup.getSignupIdentifiers();
 
-      expect(getEnabledIdentifiers).toHaveBeenCalledWith([], [], 'strategyY');
+      expect(getSignupIdentifiers).toHaveBeenCalledWith([], [], 'strategyY');
       expect(result).toBeNull();
     });
   });

@@ -33,7 +33,7 @@ export const federatedLogin = (payload: FederatedLoginOptions) =>
   withError(instance.federatedLogin(payload));
 
 // Utility Hooks
-export { useActiveIdentifiers } from '../hooks/utility/active-identifiers';
+export { useLoginIdentifiers } from '../hooks/utility/login-identifiers';
 
 // Common hooks
 export {

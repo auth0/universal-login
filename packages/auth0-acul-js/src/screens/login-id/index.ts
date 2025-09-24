@@ -142,11 +142,11 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
    * ```typescript
    * import LoginId from "@auth0/auth0-acul-js/login";
    * const loginIdManager = new LoginId();
-   * loginIdManager.getActiveIdentifiers();
+   * loginIdManager.getLoginIdentifiers();
    * ```
    * @category Utility
    */
-  getActiveIdentifiers(): string[] | null {
+  getLoginIdentifiers(): string[] | null {
     return this.transaction.allowedIdentifiers;
   }
 }

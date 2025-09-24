@@ -1,14 +1,14 @@
 import { FormActions, ScreenIds } from '../../../../src/constants';
 import LoginPasswordlessEmailCode from '../../../../src/screens/login-passwordless-email-code';
 import { FormHandler } from '../../../../src/utils/form-handler';
-import { createResendControl } from '../../../../src/utils/resend-utils';
+import { createResendControl } from '../../../../src/utils/resend-control';
 import { baseContextData } from '../../../data/test-data';
 
 import type { CustomOptions } from 'interfaces/common';
 import type { SubmitCodeOptions } from 'interfaces/screens/login-passwordless-email-code';
 
 jest.mock('../../../../src/utils/form-handler');
-jest.mock('../../../../src/utils/resend-utils');
+jest.mock('../../../../src/utils/resend-control');
 
 describe('LoginPasswordlessEmailCode', () => {
   let loginPasswordlessEmailCode: LoginPasswordlessEmailCode;
