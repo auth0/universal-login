@@ -3,13 +3,7 @@ import fs from 'fs';
 
 const initCwd = process.env.INIT_CWD;
 
-// Safety check - allow CI environments to skip this check
 if (!initCwd) {
-  // If we're in CI or don't have INIT_CWD, skip the check
-  if (process.env.CI || process.env.GITHUB_ACTIONS) {
-    console.log('🤖 CI environment detected, skipping install location check');
-    process.exit(0);
-  }
   console.error('\n🚫 INIT_CWD not available. Cannot verify install location.\n');
   process.exit(1);
 }
