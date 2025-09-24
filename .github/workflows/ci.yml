@@ -17,8 +17,6 @@ jobs:
         with:
           node-version: 22
           cache: 'npm'
-        env:
-          NODE_AUTH_TOKEN: ""
 
       - name: Install dependencies at root
         run: npm install --registry https://registry.npmjs.org
