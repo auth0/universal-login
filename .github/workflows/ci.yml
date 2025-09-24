@@ -19,12 +19,7 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies at root
-        run: npm install
-
-
-      # - name: Generate SDK files
-      #   run: npm run generate:sdk
-      #   working-directory: packages/auth0-acul-react
+        run: npm install --registry https://registry.npmjs.org
 
       - name: Build all workspaces
         run: npm run build

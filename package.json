@@ -14,6 +14,8 @@
     "test": "npm test --workspaces",
     "build": "npm run build --workspaces",
     "docs": "npm run docs --workspaces",
+    "docs:unified:js": "npm run build --workspace=packages/auth0-acul-js && npm run docs --workspace=packages/auth0-acul-js && node ./scripts/unify-docs.js --package=auth0-acul-js",
+    "docs:unified:react": "npm run build --workspace=packages/auth0-acul-react && npm run docs --workspace=packages/auth0-acul-react && node ./scripts/unify-docs.js --package=auth0-acul-react",
     "format": "npm run format --workspaces",
     "preinstall": "node ./scripts/check-node-version.js && node ./scripts/block-local-install.js"
   },
@@ -55,5 +57,8 @@
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.29.1",
     "yaml": "^2.6.1"
+  },
+  "dependencies": {
+    "marked": "^16.3.0"
   }
 }
