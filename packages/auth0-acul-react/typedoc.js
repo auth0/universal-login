@@ -11,5 +11,15 @@ export default {
   excludeExternals: true,
   includeVersion: true,
   categorizeByGroup: true,
-  json: 'docs/index.json'
+  json: 'docs/index.json',
+  blockTags: [
+    '@param',
+    '@returns',
+    '@example',
+    '@remarks',
+    '@module',
+    '@SupportedScreens',
+    '@usage',
+    '@description'
+  ]
 };
