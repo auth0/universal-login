@@ -17,16 +17,9 @@ jobs:
         with:
           node-version: 22
           cache: 'npm'
-          registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies at root
-        run: npm ci --no-audit --no-fund
-        env:
-          NODE_AUTH_TOKEN: ""
-          
-      # - name: Generate SDK files
-      #   run: npm run generate:sdk
-      #   working-directory: packages/auth0-acul-react
+        run: npm install
 
       - name: Build all workspaces
         run: npm run build
