@@ -14,7 +14,6 @@ const UTILITY_MAP_PATH = path.resolve(__dirname, './utility-map.json');
 
 const SCREENS_OUTPUT_PATH = path.resolve(__dirname, '../../src/screens');
 const INDEX_FILE_PATH = path.resolve(__dirname, '../../src/index.ts');
-const PACKAGE_JSON_PATH = path.resolve(__dirname, '../../package.json');
 
 const CONTEXT_MODELS = [
   'user',
@@ -95,10 +94,6 @@ const screenSymbols = entry.getExportSymbols().filter((symbol) => {
   const decl = aliased?.getDeclarations()[0];
   return decl?.getKind() === SyntaxKind.ClassDeclaration;
 });
-
-const pkg = JSON.parse(fs.readFileSync(PACKAGE_JSON_PATH, 'utf8'));
-pkg.exports ||= {};
-pkg.exports['.'] = { import: './dist/index.js', types: './dist/index.d.ts' };
 
 const indexExports: string[] = [];
 const indexTypes: string[] = [];
@@ -297,18 +292,11 @@ for (const symbol of screenSymbols) {
 
   fs.writeFileSync(path.join(SCREENS_OUTPUT_PATH, `${kebab}.tsx`), screenLines.join('\n'), 'utf8');
 
-  pkg.exports[`./${kebab}`] = {
-    import: `./dist/screens/${kebab}.js`,
-    types: `./dist/screens/${kebab}.d.ts`,
-  };
-
   indexExports.push(`export { ${instanceHook} } from './screens/${kebab}';`);
 
   logger.info(`${screenName}: Exports with shared + overridden context hooks and methods`);
   screenCount++;
 }
-
-fs.writeFileSync(PACKAGE_JSON_PATH, JSON.stringify(pkg, null, 2), 'utf8');
 
 // Add common types from core SDK
 indexTypes.push('\n// Common types from core SDK');
