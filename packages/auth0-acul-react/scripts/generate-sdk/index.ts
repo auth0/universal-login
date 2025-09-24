@@ -165,9 +165,8 @@ for (const symbol of screenSymbols) {
                 const docs = method.getJsDocs();
                 const hasUtilityTag = docs.some((doc) =>
                   doc.getTags().some((tag) => {
-                    const hasUtilityString = tag.getComment()?.toString().startsWith('Utility');
-                    const isCategory = tag.getTagName() === 'category';
-                    return isCategory && hasUtilityString;
+                    const isUtility = tag.getTagName() === 'utilityFeature';
+                    return isUtility;
                   })
                 );
                 const match = exportedMethods.find((m) => m.name === methodName);

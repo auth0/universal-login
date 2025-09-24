@@ -16,7 +16,7 @@ interface WithValidatePassword {
  * Optionally, it can send the validation results to the global error manager so that
  * form error components can update automatically.
  *
- * @SupportedScreens
+ * @supportedScreens
  * - `signup`
  * - `signup-password`
  * - `reset-password`

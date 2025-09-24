@@ -115,7 +115,7 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
    * marking each as required or optional based on transaction config.
    *
    * @returns Array of identifier objects (e.g., email, phone, username).
-   * @category Utility
+   * @utilityFeature
    * @example
    * const signupId = new SignupId();
    * const identifiers = signupId.getSignupIdentifiers();
@@ -153,7 +153,7 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
      *
      * @param username - The username string to validate.
      * @returns Result object indicating whether the username is valid and why.
-     * @category Utility
+     * @utilityFeature
      *
      * @example
      * const signupIdManager = new SignupId();

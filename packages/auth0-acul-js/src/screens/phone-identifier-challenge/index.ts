@@ -80,7 +80,7 @@ export default class PhoneIdentifierChallenge extends BaseContext implements Pho
    * @param options.onStatusChange - Callback to receive state updates (remaining seconds, disabled status)
    * @param options.onTimeout - Callback to execute when timeout countdown reaches zero
    * @returns ResendControl object with startResend method
-   * @category Utility
+   * @utilityFeature
    * 
    * @example
    * import PhoneIdentifierChallenge from '@auth0/auth0-acul-js/phone-identifier-challenge';
