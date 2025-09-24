@@ -686,7 +686,8 @@ async function unifyDocumentation() {
   // Create .nojekyll file for GitHub Pages
   console.log('📝 Creating .nojekyll file for GitHub Pages...');
   const nojekyllPath = path.join(UNIFIED_DOCS_DIR, '.nojekyll');
-  await fs.writeFile(nojekyllPath, '', 'utf8')
+  await fs.writeFile(nojekyllPath, '', 'utf8');
+  console.log('✅ Created .nojekyll file for GitHub Pages');
 }
 
 // Run the script

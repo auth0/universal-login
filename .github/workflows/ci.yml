@@ -17,12 +17,11 @@ jobs:
         with:
           node-version: 22
           cache: 'npm'
-
-      - name: Set up npm auth
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+        env:
+          NODE_AUTH_TOKEN: ""
 
       - name: Install dependencies at root
-        run: npm install
+        run: npm install --registry https://registry.npmjs.org
 
       - name: Build all workspaces
         run: npm run build
