@@ -31,19 +31,26 @@
 ```typescript
 import React, { useState } from 'react';
 import SignupPassword from '@auth0/auth0-acul-js/signup-password';
+import { Logo } from '../../components/Logo';
+import Button from '../../components/Button';
 
 const SignupPasswordScreen: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
 
-  const [passwordErrors, setPasswordErrors] = useState<Array<{ code: string; message: string }>>([]);
-
   const signupPasswordManager = new SignupPassword();
 
-  const handleSignup = async (e: { preventDefault: () => void }) => {
+  const email = signupPasswordManager.screen.data?.email || '';
+  const phone = signupPasswordManager.screen.data?.phoneNumber || '';
+  const username = signupPasswordManager.screen.data?.username || '';
+
+  const title = signupPasswordManager.screen.texts?.title || '';
+  const description = signupPasswordManager.screen.texts?.description || '';
+
+  const { isValid, results } = signupPasswordManager.validatePassword(password);
+
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setSuccess(false);
@@ -53,22 +60,10 @@ const SignupPasswordScreen: React.FC = () => {
       return;
     }
 
-    // ✅ Use validatePassword from the instance
-    const { isValid, errors } = signupPasswordManager.validatePassword(password);
-
-    if (!isValid) {
-      setPasswordErrors(errors);
-      return;
-    }
-
-    setPasswordErrors([]);
+    if (!isValid) return;
 
     try {
-      await signupPasswordManager.signup({
-        email,
-        phone,
-        password,
-      });
+      await signupPasswordManager.signup({ email, username, phone, password });
       setSuccess(true);
     } catch {
       setError('Signup failed. Please try again later.');
@@ -76,91 +71,128 @@ const SignupPasswordScreen: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Sign up with password
-        </h2>
+    <div className="prompt-container">
+      <Logo />
+
+      {/* Title Section (inline, not imported) */}
+      <div className="title-container">
+        <h1 className="mt-6 text-center text-3xl font-extrabold text-gray-900">{title}</h1>
+        <div>
+          <p className="mt-2 text-center text-sm text-gray-600">{description}</p>
+        </div>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSignup}>
+      {/* Form */}
+      <div className="input-container">
+        <form onSubmit={handleSignup}>
+          {email && (
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email
-              </label>
+              <label>Email</label>
               <input
-                id="email"
-                name="email"
                 type="email"
-                required
+                id="email"
+                placeholder="Enter your email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+                disabled
               />
             </div>
+          )}
 
+
+          {username && (
             <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-                Phone (optional)
-              </label>
+              <label>Username</label>
               <input
-                id="phone"
-                name="phone"
-                type="tel"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+                type="text"
+                id="username"
+                placeholder="Enter your username"
+                value={username}
+                disabled
               />
             </div>
+          )}
 
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className={`mt-1 block w-full px-3 py-2 border ${
-                  passwordErrors.length ? 'border-red-500' : 'border-gray-300'
-                } rounded-md`}
-              />
-              {/* Show validation errors if any */}
-              {passwordErrors.length > 0 && (
-                <ul className="text-red-500 text-sm mt-1 list-disc list-inside">
-                  {passwordErrors.map((err) => (
-                    <li key={err.code}>{err.message}</li>
-                  ))}
-                </ul>
-              )}
-            </div>
-
-            {error && <div className="text-red-600 text-sm">{error}</div>}
-            {success && (
-              <div className="text-green-600 text-sm">
-                Signup successful! Please check your email to verify your account.
+          {
+            phone && (
+              <div>
+                <label>Phone</label>
+                <input
+                  type="tel"
+                  id="phone"
+                  placeholder="Enter your phone number"
+                  value={phone}
+                  disabled
+                />
               </div>
-            )}
+            )
+          }
 
-            <div>
-              <button
-                type="submit"
-                className="w-full flex justify-center py-2 px-4 rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
-              >
-                Sign Up
-              </button>
+
+
+          <label>Password</label>
+          <input
+            type="password"
+            id="password"
+            placeholder="Enter your password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className={!isValid && password.length > 0 ? 'error' : ''}
+          />
+
+          {/* Password Validation Rules */}
+
+          {password.length > 0 && results.length > 0 && (
+            <div className="mt-2 border border-gray-300 rounded p-2 text-sm">
+              <p className="text-gray-700 mb-1">Your password must contain:</p>
+              <ul className="list-disc ml-4">
+                {results.map((rule) => (
+                  <li
+                    key={rule.code}
+                    className={rule.status === 'valid' ? 'text-green-600' : 'text-gray-700'}
+                  >
+                    {rule.label}
+                    {rule.items && rule.items.length > 0 && (
+                      <ul className="ml-5 list-disc">
+                        {rule.items.map((sub) => (
+                          <li
+                            key={sub.code}
+                            className={sub.status === 'valid' ? 'text-green-600' : 'text-gray-700'}
+                          >
+                            {sub.label}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                ))}
+              </ul>
             </div>
-          </form>
-        </div>
+          )}
+          {/* Error & Success messages */}
+          {error && (
+            <div className="error-container">
+              <p>{error}</p>
+            </div>
+          )}
+
+          {success && (
+            <div className="success-message">
+              Signup successful! Please check your email to verify your account.
+            </div>
+          )}
+
+          {/* Submit Button */}
+          <div className="button-container">
+            <Button onClick={() => handleSignup}>
+              Sign Up
+            </Button>
+          </div>
+        </form>
       </div>
     </div>
   );
 };
 
 export default SignupPasswordScreen;
+
 ```
