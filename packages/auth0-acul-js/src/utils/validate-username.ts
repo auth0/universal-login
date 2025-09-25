@@ -39,6 +39,7 @@ export function validateUsername(
   username: string,
   policy?: UsernamePolicy | null
 ): UsernameValidationResult {
+  console.log(policy, "username-policy")
   const errors: UsernameValidationError[] = [];
 
   if (!policy) {
