@@ -1,4 +1,4 @@
-import { ScreenIds } from '../../../../src//constants';
+import { ScreenIds } from '../../../../src/constants';
 import SignupPassword from '../../../../src/screens/signup-password';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { baseContextData } from '../../../data/test-data';
@@ -12,7 +12,10 @@ describe('SignupPassword', () => {
   let mockFormHandler: { submitData: jest.Mock };
 
   beforeEach(() => {
-    global.window = Object.create(window);
+    Object.defineProperty(global, 'window', {
+      value: Object.create(window),
+      writable: true
+    });
     baseContextData.screen.name = ScreenIds.SIGNUP_PASSWORD;
     window.universal_login_context = baseContextData;
 
@@ -49,11 +52,11 @@ describe('SignupPassword', () => {
       );
     });
 
-    it('should transform phone to phone_number', async () => {
+    it('should handle phoneNumber field correctly', async () => {
       const payload: SignupPasswordOptions = {
         username: 'testUser',
         password: 'testPassword',
-        phone: '+1234567890',
+        phoneNumber: '+1234567890',
       };
 
       await signupPassword.signup(payload);
@@ -62,39 +65,29 @@ describe('SignupPassword', () => {
         expect.objectContaining({
           username: 'testUser',
           password: 'testPassword',
-          phone_number: '+1234567890',
+          phoneNumber: '+1234567890',
         })
-      );
-      expect(mockFormHandler.submitData).not.toHaveBeenCalledWith(
-        expect.objectContaining({ phone: '+1234567890' })
       );
     });
 
-    it('should throw error when required fields are missing', async () => {
+    it('should throw error when FormHandler rejects', async () => {
       const payload: SignupPasswordOptions = {
         username: '',
         password: 'testPassword',
       };
 
-      jest
-        .spyOn(signupPassword, 'signup')
-        .mockImplementationOnce(async (payload) => {
-          if (!payload.username || !payload.password) {
-            throw new Error('Missing required fields');
-          }
-          await mockFormHandler.submitData(payload);
-        });
+      mockFormHandler.submitData.mockRejectedValue(new Error('Missing required fields'));
 
       await expect(signupPassword.signup(payload)).rejects.toThrow(
         'Missing required fields'
       );
     });
 
-    it('should not transform phone when phone is empty', async () => {
+    it('should handle empty phoneNumber field correctly', async () => {
       const payload: SignupPasswordOptions = {
         username: 'testUser',
         password: 'testPassword',
-        phone: '',
+        phoneNumber: '',
       };
 
       await signupPassword.signup(payload);
@@ -103,21 +96,19 @@ describe('SignupPassword', () => {
         expect.objectContaining({
           username: 'testUser',
           password: 'testPassword',
+          phoneNumber: '',
         })
-      );
-      expect(mockFormHandler.submitData).not.toHaveBeenCalledWith(
-        expect.objectContaining({ phone_number: '' })
       );
     });
 
-    it('should handle invalid phone number format', async () => {
+    it('should handle invalid phoneNumber format', async () => {
       mockFormHandler.submitData.mockRejectedValue(
         new Error('Invalid phone number format')
       );
       const payload: SignupPasswordOptions = {
         username: 'testUser',
         password: 'testPassword',
-        phone: 'invalidPhoneNumber',
+        phoneNumber: 'invalidPhoneNumber',
       };
 
       await expect(signupPassword.signup(payload)).rejects.toThrow(

@@ -2,7 +2,10 @@ import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
+import { ScreenOverride } from './screen-override';
+
 import type { CustomOptions } from '../../../interfaces/common';
+import type { ScreenContext } from '../../../interfaces/models/screen';
 import type {
   MfaEmailListMembers,
   ScreenMembersOnMfaEmailList as ScreenOptions,
@@ -17,10 +20,18 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
 export default class MfaEmailList extends BaseContext implements MfaEmailListMembers {
   static screenIdentifier: string = ScreenIds.MFA_EMAIL_LIST;
   /**
+   * The screen object for the mfa-email-list screen
+   */
+  public screen: ScreenOptions;
+
+  /**
    * Creates an instance of MfaEmailList screen manager
    */
+
   constructor() {
-    super();
+    super(); // Calls BaseContext constructor for global context initialization and validation.
+    const screenContext = this.getContext('screen') as ScreenContext;
+    this.screen = new ScreenOverride(screenContext);
   }
 
   /**

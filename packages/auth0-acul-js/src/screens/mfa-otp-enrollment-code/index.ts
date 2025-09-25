@@ -1,4 +1,4 @@
-import { FormActions } from '../../../src/constants';
+import { FormActions, ScreenIds } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
@@ -19,6 +19,10 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * This screen is displayed when the user needs to enter the OTP code received during MFA enrollment.
  */
 export default class MfaOtpEnrollmentCode extends BaseContext implements MfaOtpEnrollmentCodeMembers {
+  /**
+   * Screen identifier for validation and telemetry
+   */
+  static screenIdentifier: string = ScreenIds.MFA_OTP_ENROLLMENT_CODE;
   /**
    * The screen properties for the mfa-otp-enrollment-code screen.
    */

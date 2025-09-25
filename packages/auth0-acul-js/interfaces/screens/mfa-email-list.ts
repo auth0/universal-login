@@ -29,6 +29,7 @@ export interface SelectMfaEmailOptions {
  * Interface defining the available methods and properties for the mfa-email-list screen
  */
 export interface MfaEmailListMembers extends BaseMembers {
+  screen: ScreenMembersOnMfaEmailList;
   /**
    * Selects an enrolled email address from the list
    * @param payload The options containing the selection action

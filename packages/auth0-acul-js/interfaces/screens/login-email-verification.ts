@@ -1,5 +1,6 @@
 import type { CustomOptions } from '../common';
 import type { BaseMembers } from '../models/base-context';
+import type { StartResendOptions, ResendControl } from '../utils/resend-control';
 
 /**
  * @interface ContinueWithCodeOptions
@@ -130,4 +131,10 @@ export interface LoginEmailVerificationMembers extends BaseMembers {
    * ```
    */
   resendCode(payload?: ResendCodeOptions): Promise<void>;
+
+  /**
+   * Gets resend functionality with timeout management for this screen
+   * @param options Configuration options for resend functionality
+   */
+  resendManager(options?: StartResendOptions): ResendControl;
 }

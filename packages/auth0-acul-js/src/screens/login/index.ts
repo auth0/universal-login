@@ -1,6 +1,8 @@
+
 import { ScreenIds } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
+import { getLoginIdentifiers as _getLoginIdentifiers} from '../../utils/login-identifiers';
 
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
@@ -15,6 +17,7 @@ import type {
   FederatedLoginOptions,
 } from '../../../interfaces/screens/login';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import type { IdentifierType } from 'interfaces/utils';
 
 /**
  * Login screen implementation class
@@ -68,6 +71,21 @@ export default class Login extends BaseContext implements LoginMembers {
   async federatedLogin(payload: FederatedLoginOptions): Promise<void> {
     const options: FormOptions = { state: this.transaction.state, telemetry: [Login.screenIdentifier, 'federatedLogin'] };
     await new FormHandler(options).submitData<FederatedLoginOptions>(payload);
+  }
+
+  /**
+   * Gets the active identifier types for the login screen
+   * @returns An array of active identifier types or null if none are active
+   * @example
+   * ```typescript
+   * import Login from "@auth0/auth0-acul-js/login";
+   * const loginManager = new Login();
+   * loginManager.getLoginIdentifiers();
+   * ```
+   * @utilityFeature
+   */
+  getLoginIdentifiers(): IdentifierType[] | null {
+    return _getLoginIdentifiers(this.transaction.allowedIdentifiers);
   }
 }
 

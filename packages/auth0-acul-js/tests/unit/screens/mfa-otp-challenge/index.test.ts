@@ -1,4 +1,4 @@
-import { ScreenIds } from '../../../../src//constants';
+import { ScreenIds } from '../../../../src/constants';
 import { FormActions } from '../../../../src/constants';
 import MfaOtpChallenge from '../../../../src/screens/mfa-otp-challenge';
 import { FormHandler } from '../../../../src/utils/form-handler';

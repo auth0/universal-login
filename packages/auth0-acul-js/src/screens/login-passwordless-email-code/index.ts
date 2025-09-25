@@ -1,6 +1,7 @@
 import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
+import { createResendControl } from '../../utils/resend-control';
 
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
@@ -15,6 +16,7 @@ import type {
   SubmitCodeOptions,
 } from '../../../interfaces/screens/login-passwordless-email-code';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import type { StartResendOptions, ResendControl } from  '../../../interfaces/utils/resend-control';
 
 export default class LoginPasswordlessEmailCode extends BaseContext implements LoginPasswordlessEmailCodeMembers {
   static screenIdentifier: string = ScreenIds.LOGIN_PASSWORDLESS_EMAIL_CODE;
@@ -66,6 +68,40 @@ export default class LoginPasswordlessEmailCode extends BaseContext implements L
     };
 
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.RESEND });
+  }
+
+  /**
+   * Creates a resend control manager for handling email code resend operations.
+   * 
+   * @param options Configuration options for the resend control
+   * @returns A ResendControl object with resend functionality and state management
+   * @utilityFeature
+   * 
+   * @example
+   * ```typescript
+   * import LoginPasswordlessEmailCode from '@auth0/auth0-acul-js/login-passwordless-email-code';
+   * 
+   * const loginPasswordlessEmailCode = new LoginPasswordlessEmailCode();
+   * const { startResend } = loginPasswordlessEmailCode.resendManager({
+   *   timeoutSeconds: 60,
+   *   onStatusChange: (remainingSeconds, isDisabled) => {
+   *     console.log(`Resend available in ${remainingSeconds}s, disabled: ${isDisabled}`);
+   *   },
+   *   onTimeout: () => {
+   *     console.log('Resend is now available');
+   *   }
+   * });
+   * 
+   * // Call startResend when user clicks resend button
+   * startResend();
+   * ```
+   */
+  resendManager(options?: StartResendOptions): ResendControl {
+    return createResendControl(
+      LoginPasswordlessEmailCode.screenIdentifier,
+      () => this.resendCode(),
+      options
+    );
   }
 }
 

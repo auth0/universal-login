@@ -1,8 +1,10 @@
+import { ScreenIds } from '../../../../src/constants';
+import { BaseContext } from '../../../../src/models/base-context';
 import ResetPasswordError from '../../../../src/screens/reset-password-error';
 import { ScreenOverride } from '../../../../src/screens/reset-password-error/screen-override';
-import { BaseContext } from '../../../../src/models/base-context';
+
 import type { ScreenContext } from '../../../../interfaces/models/screen';
-import { ScreenIds } from '../../../../src//constants';
+
 
 jest.mock('../../../../src/screens/reset-password-error/screen-override');
 jest.mock('../../../../src/models/base-context');

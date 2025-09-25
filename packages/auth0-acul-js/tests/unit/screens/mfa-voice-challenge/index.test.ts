@@ -1,12 +1,14 @@
 import { FormActions } from '../../../../src/constants';
 import MfaVoiceChallenge from '../../../../src/screens/mfa-voice-challenge';
 import { FormHandler } from '../../../../src/utils/form-handler';
+import { createResendControl } from '../../../../src/utils/resend-control';
 import { baseContextData } from '../../../data/test-data';
 
 import type { CustomOptions } from '../../../../interfaces/common';
 import type { MfaVoiceChallengeContinueOptions } from '../../../../interfaces/screens/mfa-voice-challenge';
 
 jest.mock('../../../../src/utils/form-handler');
+jest.mock('../../../../src/utils/resend-control');
 
 describe('MfaVoiceChallenge', () => {
   let mfaVoiceChallenge: MfaVoiceChallenge;
@@ -228,6 +230,80 @@ describe('MfaVoiceChallenge', () => {
       await expect(mfaVoiceChallenge.tryAnotherMethod()).rejects.toThrow(
         'Mocked reject'
       );
+    });
+  });
+
+  describe('resendManager method', () => {
+    let mockCreateResendControl: jest.Mock;
+    let mockStartResend: jest.Mock;
+    let mockResendControl: { startResend: jest.Mock };
+
+    beforeEach(() => {
+      mockStartResend = jest.fn();
+      mockResendControl = { startResend: mockStartResend };
+      mockCreateResendControl = createResendControl as jest.Mock;
+      mockCreateResendControl.mockReturnValue(mockResendControl);
+    });
+
+    it('should call createResendControl with correct screen identifier and resend function', () => {
+      mfaVoiceChallenge.resendManager();
+
+      expect(mockCreateResendControl).toHaveBeenCalledWith(
+        'mfa-voice-challenge',
+        expect.any(Function),
+        undefined
+      );
+    });
+
+    it('should call createResendControl with provided options', () => {
+      const options = {
+        timeoutSeconds: 15,
+        onStatusChange: jest.fn(),
+        onTimeout: jest.fn(),
+      };
+
+      mfaVoiceChallenge.resendManager(options);
+
+      expect(mockCreateResendControl).toHaveBeenCalledWith(
+        'mfa-voice-challenge',
+        expect.any(Function),
+        options
+      );
+    });
+
+    it('should return the resend control object', () => {
+      const result = mfaVoiceChallenge.resendManager();
+
+      expect(result).toBe(mockResendControl);
+    });
+
+   
+
+    it('should work correctly with callback options', () => {
+      const onStatusChange = jest.fn();
+      const onTimeout = jest.fn();
+      const options = {
+        timeoutSeconds: 20,
+        onStatusChange,
+        onTimeout,
+      };
+
+      const result = mfaVoiceChallenge.resendManager(options);
+
+      expect(mockCreateResendControl).toHaveBeenCalledWith(
+        'mfa-voice-challenge',
+        expect.any(Function),
+        options
+      );
+      expect(result).toBe(mockResendControl);
+    });
+
+    it('should call startResend method when returned control is used', () => {
+      const { startResend } = mfaVoiceChallenge.resendManager();
+      
+      startResend();
+
+      expect(mockStartResend).toHaveBeenCalledWith();
     });
   });
 });

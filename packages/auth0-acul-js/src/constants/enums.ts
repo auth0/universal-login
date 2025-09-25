@@ -45,6 +45,7 @@ export const ScreenIds = {
   CUSTOMIZED_CONSENT: 'customized-consent',
   MFA_PHONE_ENROLLMENT: 'mfa-phone-enrollment',
   MFA_VOICE_ENROLLMENT: 'mfa-voice-enrollment',
+  MFA_VOICE_CHALLENGE: 'mfa-voice-challenge',
   MFA_RECOVERY_CODE_CHALLENGE: 'mfa-recovery-code-challenge',
   DEVICE_CODE_ACTIVATION_ALLOWED: 'device-code-activation-allowed',
   DEVICE_CODE_ACTIVATION_DENIED: 'device-code-activation-denied',

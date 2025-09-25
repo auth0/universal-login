@@ -1,6 +1,7 @@
 import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
+import { createResendControl } from '../../utils/resend-control';
 
 import { ScreenOverride } from './screen-override';
 
@@ -12,6 +13,7 @@ import type {
   ScreenMembersOnEmailIdentifierChallenge as ScreenOptions,
 } from '../../../interfaces/screens/email-identifier-challenge';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import type { StartResendOptions, ResendControl } from  '../../../interfaces/utils/resend-control';
 
 export default class EmailIdentifierChallenge extends BaseContext implements EmailIdentifierChallengeMembers {
   screen: ScreenOptions;
@@ -68,6 +70,44 @@ export default class EmailIdentifierChallenge extends BaseContext implements Ema
       telemetry: [EmailIdentifierChallenge.screenIdentifier, 'returnToPrevious'],
     };
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.BACK });
+  }
+  /**
+   * Gets resend functionality with timeout management for this screen
+   * @param options - Configuration options for resend functionality
+   * @param options.timeoutSeconds - Number of seconds to wait before allowing resend (default: 10)
+   * @param options.onStatusChange - Callback to receive state updates (remaining seconds, disabled status)
+   * @param options.onTimeout - Callback to execute when timeout countdown reaches zero
+   * @returns ResendControl object with startResend method
+   * @utilityFeature
+   * 
+   * @example
+   * import EmailIdentifierChallenge from '@auth0/auth0-acul-js/email-identifier-challenge';
+   *   const handleStatusChange = (remainingSeconds, isDisabled) => {
+   *     setDisabled(isDisabled);
+   *     setRemaining(remainingSeconds);
+   *   };
+   * 
+   *   const handleTimeout = () => {
+   *     console.log('Timeout completed, resend is now available');
+   *   };
+   * 
+   *   const { startResend } = emailChallenge.resendManager({
+   *     timeoutSeconds: 15,
+   *     onStatusChange: handleStatusChange,
+   *     onTimeout: handleTimeout
+   *   });
+   *   
+   *   // Call startResend when user clicks resend button
+   *   await startResend();
+   * 
+   */
+  resendManager(options?: StartResendOptions): ResendControl {
+    return createResendControl(
+      EmailIdentifierChallenge.screenIdentifier,
+      () => this.resendCode(),
+      options,
+      !!this.screen.data?.resendLimitReached
+    );
   }
 }
 

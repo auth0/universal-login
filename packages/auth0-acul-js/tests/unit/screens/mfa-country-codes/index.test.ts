@@ -1,10 +1,11 @@
-import MfaCountryCodes from '../../../../src/screens/mfa-country-codes';
-import { baseContextData } from '../../../data/test-data';
-import { FormHandler } from '../../../../src/utils/form-handler';
-import { CustomOptions } from '../../../../interfaces/common';
-import { SelectCountryCodeOptions } from '../../../../interfaces/screens/mfa-country-codes';
-import { ScreenIds } from '../../../../src//constants';
+import { ScreenIds } from '../../../../src/constants';
 import { FormActions } from '../../../../src/constants';
+import MfaCountryCodes from '../../../../src/screens/mfa-country-codes';
+import { FormHandler } from '../../../../src/utils/form-handler';
+import { baseContextData } from '../../../data/test-data';
+
+import type { CustomOptions } from '../../../../interfaces/common';
+import type { SelectCountryCodeOptions } from '../../../../interfaces/screens/mfa-country-codes';
 
 jest.mock('../../../../src/utils/form-handler');
 

@@ -1,4 +1,4 @@
-import { ScreenIds } from '../../../../src//constants';
+import { ScreenIds } from '../../../../src/constants';
 import LoginPassword from '../../../../src/screens/login-password';
 import { getBrowserCapabilities } from '../../../../src/utils/browser-capabilities';
 import { FormHandler } from '../../../../src/utils/form-handler';

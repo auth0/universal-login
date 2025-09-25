@@ -1,6 +1,7 @@
 import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
+import { createResendControl } from '../../utils/resend-control';
 
 import { ScreenOverride } from './screen-override';
 import { UntrustedDataOverride } from './untrusted-data-overrider';
@@ -15,6 +16,7 @@ import type {
   UntrustedDataMembersOnMfaSmsChallenge as UntrustedDataOptions,
 } from '../../../interfaces/screens/mfa-sms-challenge';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import type { StartResendOptions, ResendControl } from  '../../../interfaces/utils/resend-control';
 
 /**
  * This class provides methods to handle the mfa-sms-challenge screen.
@@ -145,6 +147,42 @@ export default class MfaSmsChallenge extends BaseContext implements MfaSmsChalle
       telemetry: [MfaSmsChallenge.screenIdentifier, 'getACall'],
     };
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.SWITCH_TO_VOICE });
+  }
+
+  /**
+   * Gets resend functionality with timeout management for this screen
+   * @param options - Configuration options for resend functionality
+   * @param options.timeoutSeconds - Number of seconds to wait before allowing resend (default: 10)
+   * @param options.onStatusChange - Callback to receive state updates (remaining seconds, disabled status)
+   * @param options.onTimeout - Callback to execute when timeout countdown reaches zero
+   * @returns ResendControl object with startResend method
+   * @utilityFeature
+   * 
+   * @example
+   * ```typescript
+   * import MfaSmsChallenge from '@auth0/auth0-acul-js/mfa-sms-challenge';
+   * 
+   * const mfaSmsChallenge = new MfaSmsChallenge();
+   * const { startResend } = mfaSmsChallenge.resendManager({
+   *   timeoutSeconds: 15,
+   *   onStatusChange: (remainingSeconds, isDisabled) => {
+   *     console.log(`Resend available in ${remainingSeconds}s, disabled: ${isDisabled}`);
+   *   },
+   *   onTimeout: () => {
+   *     console.log('Resend is now available');
+   *   }
+   * });
+   * 
+   * // Call startResend when user clicks resend button
+   * startResend();
+   * ```
+   */
+  resendManager(options?: StartResendOptions): ResendControl {
+    return createResendControl(
+      MfaSmsChallenge.screenIdentifier,
+      () => this.resendCode(),
+      options
+    );
   }
 }
 

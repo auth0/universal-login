@@ -90,4 +90,10 @@ export interface LoginMembers extends BaseMembers {
    * @param payload The social login options
    */
   federatedLogin(payload: FederatedLoginOptions): Promise<void>;
+  /**
+   * Gets the active identifier types for the login screen
+   * @returns An array of active identifier types or null if none are active
+   * @utilityFeature
+   */
+  getLoginIdentifiers(): string[] | null;
 }

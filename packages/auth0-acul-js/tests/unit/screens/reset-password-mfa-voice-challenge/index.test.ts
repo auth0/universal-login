@@ -1,16 +1,18 @@
+import { FormActions, ScreenIds } from '../../../../src/constants';
 import ResetPasswordMfaVoiceChallenge from '../../../../src/screens/reset-password-mfa-voice-challenge';
-import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
-import { ScreenIds } from '../../../../src/constants';
-import { FormActions } from '../../../../src/constants';
+import { createResendControl } from '../../../../src/utils/resend-control';
+import { baseContextData } from '../../../data/test-data';
 
 jest.mock('../../../../src/utils/form-handler');
+jest.mock('../../../../src/utils/resend-control');
 
 describe('ResetPasswordMfaVoiceChallenge', () => {
   let instance: ResetPasswordMfaVoiceChallenge;
   let mockSubmitData: jest.Mock;
 
   beforeEach(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     global.window = Object.create(window);
     baseContextData.screen.name = ScreenIds.RESET_PASSWORD_MFA_VOICE_CHALLENGE;
     window.universal_login_context = baseContextData;
@@ -97,6 +99,90 @@ describe('ResetPasswordMfaVoiceChallenge', () => {
       expect(mockSubmitData).toHaveBeenCalledWith({
         action: FormActions.PICK_AUTHENTICATOR,
       });
+    });
+  });
+
+  describe('resendManager method', () => {
+    let mockCreateResendControl: jest.Mock;
+    let mockResendControl: { startResend: jest.Mock };
+
+    beforeEach(() => {
+      mockResendControl = {
+        startResend: jest.fn(),
+      };
+      mockCreateResendControl = createResendControl as jest.Mock;
+      mockCreateResendControl.mockReturnValue(mockResendControl);
+    });
+
+    it('should call createResendControl with correct screen identifier and resend function', () => {
+      instance.resendManager();
+
+      expect(mockCreateResendControl).toHaveBeenCalledWith(
+        ScreenIds.RESET_PASSWORD_MFA_VOICE_CHALLENGE,
+        expect.any(Function),
+        undefined
+      );
+    });
+
+    it('should call createResendControl with provided options', () => {
+      const options = { timeoutSeconds: 30 };
+      instance.resendManager(options);
+
+      expect(mockCreateResendControl).toHaveBeenCalledWith(
+        ScreenIds.RESET_PASSWORD_MFA_VOICE_CHALLENGE,
+        expect.any(Function),
+        options
+      );
+    });
+
+    it('should return the result from createResendControl', () => {
+      const result = instance.resendManager();
+
+      expect(result).toBe(mockResendControl);
+    });
+
+    it('should pass resendCode method as callback to createResendControl', () => {
+      instance.resendManager();
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+      const callback = mockCreateResendControl.mock.calls[0][1];
+      expect(typeof callback).toBe('function');
+    });
+
+    it('should provide a function that calls resendCode when invoked', async () => {
+      instance.resendManager();
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+      const callback = mockCreateResendControl.mock.calls[0][1];
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      await callback();
+
+      // Verify that FormHandler.submitData was called as expected by resendCode
+      expect(mockSubmitData).toHaveBeenCalledWith({
+        action: FormActions.RESEND_CODE,
+      });
+    });
+
+    it('should pass callback options to createResendControl', () => {
+      const options = {
+        timeoutSeconds: 15,
+        onStatusChange: jest.fn(),
+        onTimeout: jest.fn()
+      };
+      instance.resendManager(options);
+
+      expect(mockCreateResendControl).toHaveBeenCalledWith(
+        ScreenIds.RESET_PASSWORD_MFA_VOICE_CHALLENGE,
+        expect.any(Function),
+        options
+      );
+    });
+
+    it('should handle startResend method from returned control object', () => {
+      const result = instance.resendManager();
+      result.startResend();
+
+      expect(mockResendControl.startResend).toHaveBeenCalledTimes(1);
     });
   });
 });
