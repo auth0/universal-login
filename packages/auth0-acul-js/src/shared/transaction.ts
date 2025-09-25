@@ -66,16 +66,30 @@ export function getUsernamePolicy(
   const connection = transaction?.connection as DBConnection;
   const validation = connection?.options?.attributes?.username?.validation;
 
-  if (!validation) return null;
+  if (validation) {
+    return {
+      maxLength: validation.max_length,
+      minLength: validation.min_length,
+      allowedFormats: {
+        usernameInEmailFormat: validation.allowed_types?.email ?? false,
+        usernameInPhoneFormat: validation.allowed_types?.phone_number ?? false,
+      },
+    };
+  }
 
-  return {
-    maxLength: validation.max_length,
-    minLength: validation.min_length,
-    allowedFormats: {
-      usernameInEmailFormat: validation.allowed_types?.email ?? false,
-      usernameInPhoneFormat: validation.allowed_types?.phone_number ?? false,
-    },
-  };
+  const legacyValidation = connection?.options?.validation?.username;
+
+  if (legacyValidation) {
+    return {
+      maxLength: legacyValidation.max_length,
+      minLength: legacyValidation.min_length,
+      // In legacy case, allowed formats are unknown / not defined
+      allowedFormats: undefined,
+    };
+  }
+
+  return null;
+
 }
 
 /**
@@ -116,7 +130,18 @@ export function getAllowedIdentifiers(
   transaction: TransactionContext
 ): TransactionMembersOnLoginId["allowedIdentifiers"] {
   const connection = transaction?.connection as DBConnection;
-  if (!connection?.options?.attributes) return null;
+
+  const attributes = connection?.options?.attributes;
+  const validation = connection?.options?.validation;
+  
+ if (!attributes || Object.keys(attributes).length === 0) {
+    if (validation?.username) {
+      return ['email', 'username'];
+    }
+    return ['email'];
+  }
+
+  if (!attributes) return null;
 
   return extractIdentifiersByStatus(connection, ["required", "optional"]);
 }
@@ -175,16 +200,25 @@ function extractIdentifiersByStatus(
   connection: DBConnection | undefined,
   statuses: ("required" | "optional")[]
 ): IdentifierType[] | null {
-  if (!connection?.options?.attributes) return null;
 
-  return Object.entries(connection.options.attributes)
+  const attributes = connection?.options?.attributes;
+  const validation = connection?.options?.validation;
+  
+ if (!attributes || Object.keys(attributes).length === 0) {
+    if (validation?.username) {
+      return ['email', 'username'];
+    }
+    return ['email'];
+  }
+
+  return Object.entries(attributes)
     .filter(
       ([, value]) =>
         value.signup_status &&
         statuses.includes(value.signup_status as "required" | "optional")
     )
     .map(([key]) => key as IdentifierType).length > 0
-    ? Object.entries(connection.options.attributes)
+    ? Object.entries(attributes)
         .filter(
           ([, value]) =>
             value.signup_status &&
