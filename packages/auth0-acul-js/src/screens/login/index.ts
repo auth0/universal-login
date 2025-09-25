@@ -74,7 +74,6 @@ export default class Login extends BaseContext implements LoginMembers {
     await new FormHandler(options).submitData<FederatedLoginOptions>(payload);
   }
 
-
   /**
    * Picks country code for phone number input
    * @param payload Optional custom options
