@@ -7,6 +7,11 @@ export interface CaptchaContext {
 export interface PasskeyRead {
   public_key: {
     challenge: string;
+    allowCredentials?: {
+      type: string;
+      id: string;
+      transports: string[];
+    }[];
   };
 }
 
@@ -31,6 +36,7 @@ export interface PasskeyCreate {
     authenticatorSelection: {
       residentKey: string;
       userVerification: string;
+      authenticatorAttachment?: string;
     };
   };
 }
