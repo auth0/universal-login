@@ -4,9 +4,19 @@ export interface CaptchaContext {
   siteKey?: string;
 }
 
+type Base64URLString = string;
+export type AuthenticatorTransport = 'usb' | 'nfc' | 'ble' | 'internal' | 'hybrid';
+
+export interface AllowCredential {
+  type: 'public-key';
+  id: Base64URLString;
+  transports?: AuthenticatorTransport[];
+}
+
 export interface PasskeyRead {
   public_key: {
-    challenge: string;
+    challenge: Base64URLString;
+    allowCredentials?: AllowCredential[];
   };
 }
 
@@ -31,6 +41,7 @@ export interface PasskeyCreate {
     authenticatorSelection: {
       residentKey: string;
       userVerification: string;
+      authenticatorAttachment?: string;
     };
   };
 }
