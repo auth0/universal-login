@@ -35,7 +35,7 @@ function decodePublicKey(
       type: "public-key",
       alg,
     })),
-    authenticatorSelection: authenticatorSelection && {
+    authenticatorSelection: authenticatorSelection ? {
       ...authenticatorSelection,
       residentKey: authenticatorSelection.residentKey as
         | "required"
@@ -50,7 +50,7 @@ function decodePublicKey(
         | "platform"
         | "cross-platform"
         | undefined,
-    }
+    } : undefined
   };
 }
 
