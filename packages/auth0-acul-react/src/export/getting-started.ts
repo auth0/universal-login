@@ -73,4 +73,15 @@
  * - Check the examples folder for complete implementation samples
  * - Refer to the Auth0 Universal Login documentation for flow configuration
  *
+ * ---
+
+* <p align="center">
+*   <picture>
+*     <source media="(prefers-color-scheme: light)" srcset="https://cdn.auth0.com/website/sdks/logos/auth0_light_mode.png"   width="150">
+*     <source media="(prefers-color-scheme: dark)" srcset="https://cdn.auth0.com/website/sdks/logos/auth0_dark_mode.png" width="150">
+*     <img alt="Auth0 Logo" src="https://cdn.auth0.com/website/sdks/logos/auth0_light_mode.png" width="150">
+*   </picture>
+* </p>
+* <p align="center">Auth0 is an easy to implement, adaptable authentication and authorization platform. To learn more checkout <a href="https://auth0.com/why-auth0">Why Auth0?</a></p>
+* <p align="center">
  */
