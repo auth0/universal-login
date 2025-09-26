@@ -13,18 +13,41 @@ Below is an example of a React component for the Login Email Verification screen
 - Display of error messages from `transaction.errors`.
 
 ```tsx
-import React, { useState, FormEvent, ChangeEvent } from 'react';
+import React, { useState, FormEvent, ChangeEvent, useMemo } from 'react';
 import LoginEmailVerification, { ContinueWithCodeOptions, ResendCodeOptions } from '@auth0/auth0-acul-js/login-email-verification'; // Adjust path as necessary
 
 const LoginEmailVerificationScreen: React.FC = () => {
   const [code, setCode] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [uiMessages, setUiMessages] = useState<{ type: 'error' | 'success', text: string }[]>([]);
+  const [disabled, setDisabled] = useState(false);
+  const [remainingSeconds, setRemainingSeconds] = useState(0);
 
   // Instantiate the SDK class for the Login Email Verification screen
   // This should be done once per component instance.
   const [loginEmailVerificationManager] = useState(() => new LoginEmailVerification());
   const { screen, transaction, client } = loginEmailVerificationManager;
+
+  function handleStatusChange(remainingSeconds: number, isDisabled: boolean) {
+    setDisabled(isDisabled);
+    setRemainingSeconds(remainingSeconds);
+  }
+
+  function handleTimeout() {
+    console.log('Resend timeout completed');
+  }
+
+  const resendManager = useMemo(
+    () =>
+      loginEmailVerificationManager.resendManager({
+        timeoutSeconds: 15,
+        onStatusChange: handleStatusChange,
+        onTimeout: handleTimeout,
+      }),
+    [loginEmailVerificationManager]
+  );
+
+  const { startResend } = resendManager;
 
   /**
    * Handles the change in the code input field.
@@ -62,18 +85,10 @@ const LoginEmailVerificationScreen: React.FC = () => {
    * Handles the request to resend the verification code.
    */
   const handleResendCode = async (): Promise<void> => {
-    setIsSubmitting(true);
-    setUiMessages([]); // Clear previous messages
-
     try {
-      const payload: ResendCodeOptions = {}; // Add custom options if needed
-      await loginEmailVerificationManager.resendCode(payload);
-      // UI can show a confirmation that the code has been resent.
-      setUiMessages([{type: 'success', text: screen.texts?.codeResentMessage || 'A new verification code has been sent to your email.'}]);
+      await startResend();
     } catch (error: any) {
       setUiMessages([{ type: 'error', text: error.message || 'Failed to resend code. Please try again.' }]);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -174,11 +189,11 @@ const LoginEmailVerificationScreen: React.FC = () => {
           <button
             type="button"
             onClick={handleResendCode}
-            disabled={isSubmitting}
+            disabled={isSubmitting || disabled}
             className="text-sm font-medium text-indigo-600 hover:text-indigo-500 
                        disabled:opacity-60 disabled:cursor-not-allowed transition duration-150 ease-in-out"
           >
-            {isSubmitting ? submittingText : resendButtonText}
+            {isSubmitting ? submittingText : disabled ? `Resend code in ${remainingSeconds}s` : resendButtonText}
           </button>
         </div>
       </div>
@@ -187,6 +202,34 @@ const LoginEmailVerificationScreen: React.FC = () => {
 };
 
 export default LoginEmailVerificationScreen;
+```
+
+## resendManager
+
+```typescript
+import LoginEmailVerification from '@auth0/auth0-acul-js/login-email-verification';
+
+const loginEmailVerification = new LoginEmailVerification();
+
+function handleStatusChange(remainingSeconds: number, isDisabled: boolean) {
+  console.log(`Resend available in ${remainingSeconds}s, disabled: ${isDisabled}`);
+}
+
+function handleTimeout() {
+  console.log('Resend timeout completed');
+}
+
+const resendManager = loginEmailVerification.resendManager({
+  timeoutSeconds: 15,
+  onStatusChange: handleStatusChange,
+  onTimeout: handleTimeout,
+});
+
+const { startResend } = resendManager;
+
+// Use startResend() to initiate the resend with cooldown
+startResend();
+
 ```
 
 ## Usage Examples

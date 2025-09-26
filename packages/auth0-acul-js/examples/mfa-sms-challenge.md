@@ -29,17 +29,68 @@ mfaSmsChallenge.tryAnotherMethod();
 // Example of getting a call
 mfaSmsChallenge.getACall();
 
+## resendManager
+
+```typescript
+import MfaSmsChallenge from '@auth0/auth0-acul-js/mfa-sms-challenge';
+
+const mfaSmsChallenge = new MfaSmsChallenge();
+
+function handleStatusChange(remainingSeconds: number, isDisabled: boolean) {
+  console.log(`Resend available in ${remainingSeconds}s, disabled: ${isDisabled}`);
+}
+
+function handleTimeout() {
+  console.log('Resend timeout completed');
+}
+
+const resendManager = mfaSmsChallenge.resendManager({
+  timeoutSeconds: 15,
+  onStatusChange: handleStatusChange,
+  onTimeout: handleTimeout,
+});
+
+const { startResend } = resendManager;
+
+// Use startResend() to initiate the resend with cooldown
+startResend();
+
+```
+
 ## React Component Example with TailwindCSS
 
 ```jsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import MfaSmsChallenge from '@auth0/auth0-acul-js/mfa-sms-challenge';
 
 const MfaSmsChallengeScreen = () => {
-  const mfaSmsChallenge = new MfaSmsChallenge();
+  const mfaSmsChallenge = useMemo(() => new MfaSmsChallenge(), []);
   const [code, setCode] = useState('');
   const [rememberDevice, setRememberDevice] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+  const [remainingSeconds, setRemainingSeconds] = useState(0);
   const { phoneNumber, showRememberDevice, showLinkVoice } = mfaSmsChallenge.screen.data || {};
+
+  function handleStatusChange(remainingSeconds: number, isDisabled: boolean) {
+    setDisabled(isDisabled);
+    setRemainingSeconds(remainingSeconds);
+  }
+
+  function handleTimeout() {
+    console.log('Resend timeout completed');
+  }
+
+  const resendManager = useMemo(
+    () =>
+      mfaSmsChallenge.resendManager({
+        timeoutSeconds: 15,
+        onStatusChange: handleStatusChange,
+        onTimeout: handleTimeout,
+      }),
+    [mfaSmsChallenge]
+  );
+
+  const { startResend } = resendManager;
   
   // Initialize form values from untrustedData
   useEffect(() => {
@@ -48,7 +99,7 @@ const MfaSmsChallengeScreen = () => {
     if (savedFormData?.rememberDevice !== undefined) {
       setRememberDevice(savedFormData.rememberDevice);
     }
-  }, []);
+  }, [mfaSmsChallenge]);
 
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
@@ -72,7 +123,7 @@ const MfaSmsChallengeScreen = () => {
 
   const handleResendCode = async () => {
     try {
-      await mfaSmsChallenge.resendCode();
+      await startResend();
     } catch (error) {
       console.error('Resend code failed:', error);
     }
@@ -168,9 +219,14 @@ const MfaSmsChallengeScreen = () => {
             </button>
             <button
               onClick={handleResendCode}
-              className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 mt-2"
+              disabled={disabled}
+              className={`w-full flex justify-center py-2 px-4 border rounded-md shadow-sm text-sm font-medium mt-2 ${
+                disabled 
+                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed border-gray-300' 
+                  : 'border-gray-300 text-gray-700 bg-white hover:bg-gray-50'
+              }`}
             >
-              Resend Code
+              {disabled ? `Resend code in ${remainingSeconds}s` : 'Resend Code'}
             </button>
             <button
               onClick={handleTryAnotherMethod}

@@ -27,10 +27,38 @@ loginPasswordlessSmsOtp.resendOTP();
 ```
 
 
+## resendManager
+
+```typescript
+import LoginPasswordlessSmsOtp from '@auth0/auth0-acul-js/login-passwordless-sms-otp';
+
+const loginPasswordlessSmsOtp = new LoginPasswordlessSmsOtp();
+
+function handleStatusChange(remainingSeconds: number, isDisabled: boolean) {
+  console.log(`Resend available in ${remainingSeconds}s, disabled: ${isDisabled}`);
+}
+
+function handleTimeout() {
+  console.log('Resend timeout completed');
+}
+
+const resendManager = loginPasswordlessSmsOtp.resendManager({
+  timeoutSeconds: 15,
+  onStatusChange: handleStatusChange,
+  onTimeout: handleTimeout,
+});
+
+const { startResend } = resendManager;
+
+// Use startResend() to initiate the resend with cooldown
+startResend();
+
+```
+
 ## LoginPasswordlessSmsOtp React Example
 
 ```typescript
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import LoginPasswordlessSmsOtp from '@auth0/auth0-acul-js/login-passwordless-sms-otp';
 
 const LoginPasswordlessSmsOtpScreen: React.FC = () => {
@@ -38,15 +66,36 @@ const LoginPasswordlessSmsOtpScreen: React.FC = () => {
   const [otp, setOtp] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
-  const [resent, setResent] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+  const [remainingSeconds, setRemainingSeconds] = useState(0);
 
-  const loginPasswordlessSmsOtp = new LoginPasswordlessSmsOtp();
+  const loginPasswordlessSmsOtp = useMemo(() => new LoginPasswordlessSmsOtp(), []);
+
+  function handleStatusChange(remainingSeconds: number, isDisabled: boolean) {
+    setDisabled(isDisabled);
+    setRemainingSeconds(remainingSeconds);
+  }
+
+  function handleTimeout() {
+    console.log('Resend timeout completed');
+  }
+
+  const resendManager = useMemo(
+    () =>
+      loginPasswordlessSmsOtp.resendManager({
+        timeoutSeconds: 15,
+        onStatusChange: handleStatusChange,
+        onTimeout: handleTimeout,
+      }),
+    [loginPasswordlessSmsOtp]
+  );
+
+  const { startResend } = resendManager;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setSuccess(false);
-    setResent(false);
 
     if (!username || !otp) {
       setError('Username and OTP are required.');
@@ -62,12 +111,8 @@ const LoginPasswordlessSmsOtpScreen: React.FC = () => {
   };
 
   const handleResend = async () => {
-    setError('');
-    setSuccess(false);
-    setResent(false);
     try {
-      await loginPasswordlessSmsOtp.resendOTP();
-      setResent(true);
+      await startResend();
     } catch (err) {
       setError('Failed to resend OTP. Please try again later.');
     }
@@ -117,7 +162,6 @@ const LoginPasswordlessSmsOtpScreen: React.FC = () => {
             </div>
             {error && <div className="text-red-600 text-sm">{error}</div>}
             {success && <div className="text-green-600 text-sm">Login successful!</div>}
-            {resent && <div className="text-blue-600 text-sm">OTP resent to your phone.</div>}
             <div className="flex items-center justify-between">
               <button
                 type="submit"
@@ -128,9 +172,14 @@ const LoginPasswordlessSmsOtpScreen: React.FC = () => {
               <button
                 type="button"
                 onClick={handleResend}
-                className="flex-1 ml-2 py-2 px-4 border border-blue-600 rounded-md shadow-sm text-sm font-medium text-blue-600 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                disabled={disabled}
+                className={`flex-1 ml-2 py-2 px-4 border rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
+                  disabled 
+                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed border-gray-300' 
+                    : 'border-blue-600 text-blue-600 bg-white hover:bg-blue-50'
+                }`}
               >
-                Resend OTP
+                {disabled ? `Resend OTP in ${remainingSeconds}s` : 'Resend OTP'}
               </button>
             </div>
           </form>
