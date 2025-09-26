@@ -14,6 +14,12 @@
     "docs": "typedoc --options typedoc.js",
     "postbuild": "npm run docs"
   },
+  "author": "Auth0",
+  "license": "MIT",
+  "description": "The Auth0 ACUL React SDK enables you to build Advanced Customization for Universal Login with React hooks and components.",
+  "repository": {
+    "type": "git"
+  },
   "peerDependencies": {
     "react": "^18.3.1"
   },

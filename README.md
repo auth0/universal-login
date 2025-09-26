@@ -1,16 +1,18 @@
 
-![ACUL JS SDK](https://cdn.auth0.com/website/sdks/banners/auth0-acul-sdk-banner.png)
+![ACUL SDK](https://cdn.auth0.com/website/sdks/banners/auth0-acul-sdk-banner.png)
 
-[![NPM Version](https://img.shields.io/npm/v/@auth0/auth0-acul-js)](https://www.npmjs.com/package/@auth0/auth0-acul-js)
-[![Downloads](https://img.shields.io/npm/dw/@auth0/auth0-acul-js)](https://www.npmjs.com/package/@auth0/auth0-acul-js)
+[![NPM Version - JS SDK](https://img.shields.io/npm/v/@auth0/auth0-acul-js?label=JS%20SDK)](https://www.npmjs.com/package/@auth0/auth0-acul-js)
+[![NPM Version - React SDK](https://img.shields.io/npm/v/@auth0/auth0-acul-react?label=React%20SDK)](https://www.npmjs.com/package/@auth0/auth0-acul-react)
+[![Downloads - JS SDK](https://img.shields.io/npm/dw/@auth0/auth0-acul-js?label=JS%20Downloads)](https://www.npmjs.com/package/@auth0/auth0-acul-js)
+[![Downloads - React SDK](https://img.shields.io/npm/dw/@auth0/auth0-acul-react?label=React%20Downloads)](https://www.npmjs.com/package/@auth0/auth0-acul-react)
 [![codecov](https://codecov.io/gh/auth0/auth0-acul-js/branch/main/graph/badge.svg)](https://codecov.io/gh/auth0/auth0-acul-js)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat)](https://opensource.org/licenses/MIT)
 
  📚 [Documentation](#documentation) - 🚀 [Getting Started](#getting-started) - 💻 [API Reference](#api-reference) - 💬 [Feedback](#feedback)
 
-The **Auth0 ACUL JS SDK** enables you to work with Advanced Customization for Universal Login.
+The **Auth0 ACUL SDKs** enable you to work with Advanced Customization for Universal Login.
 
-It simplifies integrating authentication screens (login, signup, passwordless, passkey enrollment, etc.) into your web applications, providing the necessary tools for seamless implementation.
+They simplify integrating authentication screens (login, signup, passwordless, passkey enrollment, etc.) into your web applications, providing the necessary tools for seamless implementation.
 
 > [!CAUTION]
 >
@@ -19,6 +21,7 @@ It simplifies integrating authentication screens (login, signup, passwordless, p
 
 ### SDKs
 - [auth0-acul-js](packages/auth0-acul-js/)
+- [auth0-acul-react](packages/auth0-acul-react/) - React hooks and components wrapper
 
 ## Documentation
 
@@ -31,9 +34,6 @@ It simplifies integrating authentication screens (login, signup, passwordless, p
 ## ACUL Overview
 ![ACUL Overview](https://cdn.auth0.com/website/sdks/assets/auth0-acul-overview.png) 
 
-
-
-
 ##  Getting started
 
 ### Prerequisites
@@ -45,16 +45,28 @@ Before starting, ensure that you have the following setup:
 
 ### Installation
 
-You can easily install the SDK via [npm](https://npmjs.org):
+You can easily install the SDKs via [npm](https://npmjs.org):
+
+#### For vanilla JavaScript/TypeScript projects:
 
 ```sh
 npm install @auth0/auth0-acul-js
 ```
 
+#### For React projects:
+
+```sh
+npm install @auth0/auth0-acul-react
+```
+
+> **Note:** The React SDK requires React 18.3.1 or higher as a peer dependency.
+
 
 After installing the SDK, you can import the relevant screen module, which you want to configure
 
 ### Importing Screens
+
+#### For JavaScript/TypeScript:
 
 ```js
 // Default import of any particular screen, eg: login-id screen
@@ -67,7 +79,22 @@ import  { LoginId }  from '@auth0/auth0-acul-js';
 import  * as Screens  from '@auth0/auth0-acul-js'; 
 
 ```
-Note: For more details on import paths for all screens, refer to the [FAQ's](FAQ.md).
+
+#### For React:
+
+```tsx
+// Partial imports (recommended for tree-shaking)
+import { 
+  useLoginId, 
+  Auth0AculProvider, 
+  useCurrentScreen 
+} from '@auth0/auth0-acul-react/login-id';
+
+// Or full import with utilities
+import { getCurrentScreen, useAculScreen } from '@auth0/auth0-acul-react';
+```
+
+Note: For more details on import paths for all screens, refer to the [FAQ's](packages/auth0-acul-js/FAQ.md).
 
 ## Usage
 
