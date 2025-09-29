@@ -82,9 +82,7 @@ export function getUsernamePolicy(
   if (legacyValidation) {
     return {
       maxLength: legacyValidation.max_length,
-      minLength: legacyValidation.min_length,
-      // In legacy case, allowed formats are unknown / not defined
-      allowedFormats: undefined,
+      minLength: legacyValidation.min_length
     };
   }
 
@@ -128,22 +126,22 @@ export function getPasswordPolicy(
  */
 export function getAllowedIdentifiers(
   transaction: TransactionContext
-): TransactionMembersOnLoginId["allowedIdentifiers"] {
-  const connection = transaction?.connection as DBConnection;
+): TransactionMembersOnLoginId["allowedIdentifiers"] | null {
+  const connection = transaction?.connection as DBConnection | undefined;
 
-  const attributes = connection?.options?.attributes;
-  const validation = connection?.options?.validation;
-  
- if (!attributes || Object.keys(attributes).length === 0) {
-    if (validation?.username) {
-      return ['email', 'username'];
-    }
-    return ['email'];
+  if (!connection) return null;
+
+  const { attributes, username_required } = connection.options || {};
+
+  if (attributes && Object.keys(attributes).length > 0) {
+    return extractIdentifiersByStatus(connection, ["required", "optional"]);
   }
 
-  if (!attributes) return null;
+  if (username_required) {
+    return ['email', 'username'];
+  }
 
-  return extractIdentifiersByStatus(connection, ["required", "optional"]);
+  return ['email'];
 }
 
 /**
@@ -200,30 +198,22 @@ function extractIdentifiersByStatus(
   connection: DBConnection | undefined,
   statuses: ("required" | "optional")[]
 ): IdentifierType[] | null {
+  if (!connection) return null;
 
-  const attributes = connection?.options?.attributes;
-  const validation = connection?.options?.validation;
-  
- if (!attributes || Object.keys(attributes).length === 0) {
-    if (validation?.username) {
-      return ['email', 'username'];
-    }
-    return ['email'];
+  const { attributes, username_required } = connection.options || {};
+
+  if (!attributes || Object.keys(attributes).length === 0) {
+    return username_required ? ['email', 'username'] : ['email'];
   }
 
-  return Object.entries(attributes)
+  const filteredIdentifiers = Object.entries(attributes)
     .filter(
       ([, value]) =>
         value.signup_status &&
         statuses.includes(value.signup_status as "required" | "optional")
     )
-    .map(([key]) => key as IdentifierType).length > 0
-    ? Object.entries(attributes)
-        .filter(
-          ([, value]) =>
-            value.signup_status &&
-            statuses.includes(value.signup_status as "required" | "optional")
-        )
-        .map(([key]) => key as IdentifierType)
-    : null;
+    .map(([key]) => key as IdentifierType);
+
+  return filteredIdentifiers.length > 0 ? filteredIdentifiers : null;
 }
+
