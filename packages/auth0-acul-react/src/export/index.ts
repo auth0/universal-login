@@ -1,4 +1,5 @@
 /**
+ * @module Getting Started
  * @description
  * This module provides an overview of how to get started with the Auth0 SDK.
  *
@@ -320,8 +321,9 @@
  *</p>
  *
  * This project is licensed under the MIT license. See the [LICENSE](https://github.com/auth0/universal-login/blob/master/LICENSE) file for more info.
- *
- *
+ */
+
+/**
  * @module API Reference
  */
 export * as Screens from './screens';
