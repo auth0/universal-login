@@ -18,11 +18,11 @@
  *
  * ## Features
  *
- * - ✅ **React Hooks**: Custom hooks for all authentication screens
- * - ✅ **TypeScript Support**: Full TypeScript definitions and IntelliSense
- * - ✅ **Context Management**: Automatic screen context and state management
- * - ✅ **Error Handling**: Built-in error boundaries and handling
- * - ✅ **Polling Hooks**: MFA push notification polling with React state
+ * - **React Hooks**: Custom hooks for all authentication screens
+ * - **TypeScript Support**: Full TypeScript definitions and IntelliSense
+ * - **Context Management**: Automatic screen context and state management
+ * - **Error Handling**: Built-in error boundaries and handling
+ * - **Polling Hooks**: MFA push notification polling with React state
  *
  * ## Installation
  *
@@ -148,15 +148,15 @@
  *       <p>Please approve the notification on your device</p>
  *
  *       {status === 'waiting' && isRunning && (
- *         <p>🔄 Waiting for approval...</p>
+ *         <p>Waiting for approval...</p>
  *       )}
  *
  *       {status === 'approved' && (
- *         <p>✅ Approved! Redirecting...</p>
+ *         <p>Approved! Redirecting...</p>
  *       )}
  *
  *       {status === 'error' && (
- *         <p>❌ Something went wrong. Please try again.</p>
+ *         <p>Something went wrong. Please try again.</p>
  *       )}
  *
  *       <button onClick={handleResend} disabled={isRunning}>
@@ -254,11 +254,9 @@
  *
  * ### 1. **Use Screen-Specific Imports**
  * ```tsx
- * // ✅ Good - only imports what you need
+ * // Good - only imports what you need
  * import { useUser, loginMethod } from '@auth0/auth0-acul-react/login-id';
  *
- * // ❌ Avoid - imports entire package
- * import * as Auth0React from '@auth0/auth0-acul-react';
  * ```
  *
  * ### 2. **Handle Loading States**
