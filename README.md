@@ -80,22 +80,6 @@ import  * as Screens  from '@auth0/auth0-acul-js';
 
 ```
 
-#### For React:
-
-```tsx
-// Partial imports (recommended for tree-shaking)
-import { 
-  useLoginId, 
-  Auth0AculProvider, 
-  useCurrentScreen 
-} from '@auth0/auth0-acul-react/login-id';
-
-// Or full import with utilities
-import { getCurrentScreen, useAculScreen } from '@auth0/auth0-acul-react';
-```
-
-Note: For more details on import paths for all screens, refer to the [FAQ's](packages/auth0-acul-js/FAQ.md).
-
 ## Usage
 
 ### Adding Functionality to Your Screens
