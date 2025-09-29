@@ -13,61 +13,22 @@ import { ErrorMessages } from './components/ErrorMessages';
 import Button from '../../components/Button';
 
 const SignupScreen: React.FC = () => {
+  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
+  const [phone, setPhone] = useState('');
+  const [ email, setEmail] = useState('');
+  const [captcha, setCaptcha] = useState('');
+
   // Initialize signupManager once
   const [signupManager] = useState(() => new LoginInstance());
-  withWindowDebug(signupManager, 'signup');
 
-  // Refs for form inputs
-  const usernameRef = useRef<HTMLInputElement>(null);
-  const phoneNumberRef = useRef<HTMLInputElement>(null);
-  const emailRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
-  const captchaRef = useRef<HTMLInputElement>(null);
-
-  // Validation & error states
-  const [isValid, setIsValid] = useState(true);
-  const [errors, setErrors] = useState<Array<{ code: string; message: string }>>([]);
-  const [passwordValidation, setPasswordValidation] = useState<
-    Array<{ code: string; policy: string; isValid: boolean }>
-  >([]);
-  const [hasTypedPassword, setHasTypedPassword] = useState(false);
-
-  // Extract enabled identifiers from signupManager
   const identifiers = signupManager.getEnabledIdentifiers();
 
-  // Helper to get all form values at once
-  const getFormValues = () => ({
-    username: usernameRef.current?.value ?? "",
-    phoneNumber: phoneNumberRef.current?.value ?? "",
-    email: emailRef.current?.value ?? "",
-    password: passwordRef.current?.value ?? "",
-    captcha: captchaRef.current?.value ?? "",
-  });
-
-  // Password input change handler
-  const onPasswordChange = (password: string) => {
-    if (!hasTypedPassword && password.length > 0) setHasTypedPassword(true);
-
-    const results = signupManager.validatePassword(password);
-    setPasswordValidation(results);
-
-    const failedRules = results.filter((r) => !r.isValid);
-    setIsValid(failedRules.length === 0);
-    setErrors(failedRules.map((r) => ({ code: r.code, message: r.policy })));
-  };
+  const {isValid, results} = signupManager.validatePassword(password);
 
   // Signup button click handler
   const onSignupClick = () => {
-    const { username, email, phoneNumber, password, captcha } = getFormValues();
-
-    const results = signupManager.validatePassword(password);
-    const failed = results.filter((rule) => !rule.isValid);
-    const valid = failed.length === 0;
-
-    setIsValid(valid);
-    setErrors(failed.map((rule) => ({ code: rule.code, message: rule.policy })));
-
-    if (!valid) return;
+    if (!isValid) return;
 
     const options = {
       username,
@@ -110,7 +71,8 @@ const SignupScreen: React.FC = () => {
             <input
               type="email"
               id="email"
-              ref={emailRef}
+              value={email}
+              onChange = {(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
               required={identifiers.find((id) => id.type === 'email')?.required}
             />
@@ -131,7 +93,8 @@ const SignupScreen: React.FC = () => {
             <input
               type="text"
               id="username"
-              ref={usernameRef}
+              value={username}
+              onChange = {(e) => setUsername(e.target.value)}
               placeholder="Enter your username"
               required={identifiers.find((id) => id.type === 'username')?.required}
             />
@@ -152,7 +115,8 @@ const SignupScreen: React.FC = () => {
             <input
               type="tel"
               id="phoneNumber"
-              ref={phoneNumberRef}
+              value={phone}
+              onChange = {(e) => setPhone(e.target.value)}
               placeholder="Enter your phone number"
               required={identifiers.find((id) => id.type === 'phone')?.required}
             />
@@ -166,71 +130,44 @@ const SignupScreen: React.FC = () => {
         <input
           type="password"
           id="password"
-          ref={passwordRef}
+          value={password}
           placeholder="Enter your password"
           aria-invalid={!isValid}
           required
           className={`input w-full border px-4 py-2 rounded ${
             !isValid ? 'border-red-500' : 'border-gray-300'
           }`}
-          onChange={(e) => onPasswordChange(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
         />
 
         {/* Password validation hints */}
-        {hasTypedPassword && passwordValidation.length > 0 && (
-          <div className="mt-2 border border-gray-300 rounded p-3 text-sm">
-            <p className="mb-1 text-gray-700">Your password must contain:</p>
-            <ul className="list-disc list-inside space-y-1">
-              {passwordValidation
-                .filter(
-                  (rule) =>
-                    ![
-                      'password-policy-lower-case',
-                      'password-policy-upper-case',
-                      'password-policy-numbers',
-                      'password-policy-special-characters'
-                    ].includes(rule.code)
-                )
-                .map((rule) => (
-                  <li key={rule.code} className={rule.isValid ? 'text-green-600' : 'text-gray-700'}>
-                    {rule.policy}
-                  </li>
-                ))}
-
-              {passwordValidation.some((rule) =>
-                [
-                  'password-policy-lower-case',
-                  'password-policy-upper-case',
-                  'password-policy-numbers',
-                  'password-policy-special-characters'
-                ].includes(rule.code)
-              ) && (
-                <li className="text-gray-700">
-                  At least 3 of the following:
-                  <ul className="list-disc list-inside ml-5 mt-1 space-y-1">
-                    {passwordValidation
-                      .filter((rule) =>
-                        [
-                          'password-policy-lower-case',
-                          'password-policy-upper-case',
-                          'password-policy-numbers',
-                          'password-policy-special-characters'
-                        ].includes(rule.code)
-                      )
-                      .map((rule) => (
-                        <li
-                          key={rule.code}
-                          className={rule.isValid ? 'text-green-600' : 'text-gray-700'}
-                        >
-                          {rule.policy}
-                        </li>
-                      ))}
+        {password.length > 0 && results.length > 0 && (
+        <div className="mt-2 border border-gray-300 rounded p-2 text-sm">
+          <p className="text-gray-700 mb-1">Your password must contain:</p>
+          <ul className="list-disc ml-4">
+            {results.map((rule) => (
+              <li
+                key={rule.code}
+                className={rule.status === 'valid' ? 'text-green-600' : 'text-gray-700'}
+              >
+                {rule.label}
+                {rule.items && rule.items.length > 0 && (
+                  <ul className="ml-5 list-disc">
+                    {rule.items.map((sub) => (
+                      <li
+                        key={sub.code}
+                        className={sub.status === 'valid' ? 'text-green-600' : 'text-gray-700'}
+                      >
+                        {sub.label}
+                      </li>
+                    ))}
                   </ul>
-                </li>
-              )}
-            </ul>
-          </div>
-        )}
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
         {/* Captcha input */}
         {signupManager.screen.isCaptchaAvailable && (
