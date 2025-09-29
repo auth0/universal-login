@@ -64,7 +64,7 @@ interface WithResendManager {
  *
  * @example
  * ```tsx
- * import { useResend } from '@auth0/auth0-acul-react';
+ * import { useResend } from '@auth0/auth0-acul-react/mfa-sms-challenge';
  *
  * export function ResendButton() {
  *   const { remaining, disabled, startResend } = useResend({

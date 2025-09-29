@@ -107,7 +107,7 @@ describe('ContextHooks', () => {
   describe('useUser', () => {
     it('should return user data from instance', () => {
       const user = contextHooks.useUser();
-      
+
       expect(user).toEqual(mockInstance.user);
       expect(user.id).toBe('user123');
       expect(user.email).toBe('test@example.com');
@@ -122,7 +122,7 @@ describe('ContextHooks', () => {
   describe('useTenant', () => {
     it('should return tenant data from instance', () => {
       const tenant = contextHooks.useTenant();
-      
+
       expect(tenant).toEqual(mockInstance.tenant);
       expect(tenant.name).toBe('Test Tenant');
       expect(tenant.enabledLocales).toEqual(['en', 'es']);
@@ -137,7 +137,7 @@ describe('ContextHooks', () => {
   describe('useBranding', () => {
     it('should return branding data from instance', () => {
       const branding = contextHooks.useBranding();
-      
+
       expect(branding).toEqual(mockInstance.branding);
       expect(branding.themes?.default?.colors?.primary).toBe('#007bff');
     });
@@ -151,7 +151,7 @@ describe('ContextHooks', () => {
   describe('useClient', () => {
     it('should return client data from instance', () => {
       const client = contextHooks.useClient();
-      
+
       expect(client).toEqual(mockInstance.client);
       expect(client.id).toBe('client123');
       expect(client.name).toBe('Test App');
@@ -166,7 +166,7 @@ describe('ContextHooks', () => {
   describe('useOrganization', () => {
     it('should return organization data from instance', () => {
       const organization = contextHooks.useOrganization();
-      
+
       expect(organization).toEqual(mockInstance.organization);
       expect(organization.id).toBe('org123');
       expect(organization.displayName).toBe('Test Organization');
@@ -181,7 +181,7 @@ describe('ContextHooks', () => {
   describe('usePrompt', () => {
     it('should return prompt data from instance', () => {
       const prompt = contextHooks.usePrompt();
-      
+
       expect(prompt).toEqual(mockInstance.prompt);
       expect(prompt.name).toBe('login');
     });
@@ -195,7 +195,7 @@ describe('ContextHooks', () => {
   describe('useUntrustedData', () => {
     it('should return untrusted data from instance', () => {
       const untrustedData = contextHooks.useUntrustedData();
-      
+
       expect(untrustedData).toEqual(mockInstance.untrustedData);
       expect(untrustedData.authorizationParams?.login_hint).toBe('test@example.com');
     });
@@ -209,7 +209,7 @@ describe('ContextHooks', () => {
   describe('useScreen', () => {
     it('should return screen data from instance', () => {
       const screen = contextHooks.useScreen();
-      
+
       expect(screen).toEqual(mockInstance.screen);
       expect(screen.name).toBe('login');
       expect(screen.texts?.title).toBe('Welcome back');
@@ -224,7 +224,7 @@ describe('ContextHooks', () => {
   describe('useTransaction', () => {
     it('should return transaction data from instance', () => {
       const transaction = contextHooks.useTransaction();
-      
+
       expect(transaction).toEqual(mockInstance.transaction);
       expect(transaction.state).toBe('active');
       expect(transaction.locale).toBe('en');

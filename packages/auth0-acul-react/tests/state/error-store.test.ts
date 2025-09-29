@@ -1,4 +1,4 @@
-import { errorStore, ERROR_KINDS, ErrorKind } from '../../src/state/error-store';
+import { errorStore, ERROR_KINDS } from '../../src/state/error-store';
 import type { ErrorItem } from '../../src/state/error-store';
 
 describe('error-store', () => {
@@ -20,20 +20,20 @@ describe('error-store', () => {
 
       // Add an error to trigger notification
       errorStore.push('client', { code: 'test', message: 'test', field: 'test' });
-      
+
       expect(listener).toHaveBeenCalledTimes(1);
 
       // Unsubscribe and verify listener is not called again
       unsubscribe();
       errorStore.push('client', { code: 'test2', message: 'test2', field: 'test2' });
-      
+
       expect(listener).toHaveBeenCalledTimes(1);
     });
 
     it('should notify multiple listeners', () => {
       const listener1 = jest.fn();
       const listener2 = jest.fn();
-      
+
       errorStore.subscribe(listener1);
       errorStore.subscribe(listener2);
 
@@ -47,7 +47,7 @@ describe('error-store', () => {
   describe('snapshot', () => {
     it('should return current bucket state', () => {
       const snapshot = errorStore.snapshot();
-      
+
       expect(snapshot).toHaveProperty('server');
       expect(snapshot).toHaveProperty('client');
       expect(snapshot).toHaveProperty('developer');
@@ -58,7 +58,7 @@ describe('error-store', () => {
 
     it('should return readonly snapshot', () => {
       const snapshot = errorStore.snapshot();
-      
+
       // Should be frozen
       expect(Object.isFrozen(snapshot)).toBe(true);
       expect(Object.isFrozen(snapshot.server)).toBe(true);
@@ -115,13 +115,13 @@ describe('error-store', () => {
 
       // First replace to set initial state
       errorStore.replace('client', errors);
-      
+
       // Subscribe after initial state is set
       errorStore.subscribe(listener);
-      
+
       // Replace with same errors (should not notify because they're equal)
       errorStore.replace('client', errors);
-      
+
       expect(listener).not.toHaveBeenCalled();
     });
 
@@ -152,10 +152,10 @@ describe('error-store', () => {
 
       const snapshot = errorStore.snapshot();
       expect(snapshot.client).toHaveLength(2);
-      
+
       const field1Errors = snapshot.client.filter(e => e.field === 'field1');
       const field2Errors = snapshot.client.filter(e => e.field === 'field2');
-      
+
       expect(field1Errors).toHaveLength(1);
       expect(field1Errors[0].code).toBe('new_field1_error');
       expect(field2Errors).toHaveLength(1);
@@ -177,14 +177,14 @@ describe('error-store', () => {
 
     it('should not notify if resulting list is equal', () => {
       const listener = jest.fn();
-      
+
       const initialErrors = [
         { id: 'initial-id', code: 'initial', message: 'Initial', field: 'test_field' }
       ];
 
       // Set initial state
       errorStore.replace('client', initialErrors);
-      
+
       // Subscribe after setting initial state
       errorStore.subscribe(listener);
 
@@ -312,7 +312,7 @@ describe('error-store', () => {
 
     it('should notify if changes made', () => {
       const listener = jest.fn();
-      
+
       errorStore.push('client', { code: 'will_clear', message: 'Will clear', field: undefined });
       errorStore.subscribe(listener);
 

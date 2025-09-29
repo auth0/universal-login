@@ -69,7 +69,7 @@ export interface MfaPollingResult {
  *
  * @example
  * ```tsx
- * import { useMfaPolling } from '@auth0/auth0-acul-react';
+ * import { useMfaPolling } from '@auth0/auth0-acul-react/mfa-push-challenge-push';
  *
  * export function MfaPushStatus() {
  *   const { isRunning, startPolling, stopPolling } = useMfaPolling({

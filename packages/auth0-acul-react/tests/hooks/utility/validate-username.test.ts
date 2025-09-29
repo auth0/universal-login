@@ -1,4 +1,3 @@
-import React from 'react';
 import { renderHook } from '@testing-library/react';
 import { useUsernameValidation } from '../../../src/hooks/utility/validate-username';
 import { getScreen } from '../../../src/state/instance-store';
@@ -312,41 +311,7 @@ describe('useUsernameValidation', () => {
     });
   });
 
-  describe('error handling', () => {
-    it.skip('should handle screen initialization errors', () => {
-      mockGetScreen.mockImplementation(() => {
-        throw new Error('Screen not available');
-      });
 
-      const { result } = renderHook(() => useUsernameValidation('user'));
-      
-      // The hook should return a default state when screen initialization fails
-      expect(result.current.isValid).toBe(false);
-      expect(result.current.errors).toEqual({});
-    });
-
-    it.skip('should handle validation function errors', () => {
-      mockValidateUsername.mockImplementation(() => {
-        throw new Error('Validation failed');
-      });
-
-      const { result } = renderHook(() => useUsernameValidation('user'));
-      
-      // The hook should return a default state when validation fails
-      expect(result.current.isValid).toBe(false);
-      expect(result.current.errors).toEqual({});
-    });
-
-    it.skip('should handle malformed validation results', () => {
-      mockValidateUsername.mockReturnValue(null as any);
-
-      const { result } = renderHook(() => useUsernameValidation('user'));
-      
-      // The hook should return a default state when validation result is malformed
-      expect(result.current.isValid).toBe(false);
-      expect(result.current.errors).toEqual({});
-    });
-  });
 
   describe('edge cases', () => {
     it('should handle very long usernames', () => {

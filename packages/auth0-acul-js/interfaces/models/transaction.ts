@@ -47,9 +47,9 @@ interface CountryCode {
 export interface UsernamePolicy {
   maxLength: number;
   minLength: number;
-  allowedFormats: {
-    usernameInEmailFormat: boolean;
-    usernameInPhoneFormat: boolean;
+  allowedFormats?: {
+    usernameInEmailFormat?: boolean;
+    usernameInPhoneFormat?: boolean;
   };
 }
 
