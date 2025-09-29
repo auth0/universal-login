@@ -11,5 +11,7 @@ export default {
   excludeExternals: true,
   includeVersion: true,
   categorizeByGroup: true,
-  json: 'docs/index.json'
+  json: 'docs/index.json',
+  sort: ['source-order'],
+  highlightLanguages: ['javascript', 'typescript', 'jsx', 'tsx', 'bash']
 };
