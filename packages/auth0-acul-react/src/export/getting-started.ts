@@ -1,6 +1,6 @@
 /**
  * @module Getting Started
- * @summary
+ * @description
  * This module provides an overview of how to get started with the Auth0 SDK.
  *
  * # Auth0 ACUL React SDK
@@ -13,12 +13,9 @@
  *
  * 📚 [Documentation](#documentation) - 🚀 [Getting Started](#getting-started) - 💻 [API Reference](#api-reference) - 💬 [Feedback](#feedback)
  *
- * The **Auth0 ACUL React SDK** provides React hooks and components for Advanced Customization of Universal Login.
+ * The **Auth0 ACUL React SDK** provides React hooks for Advanced Customization of Universal Login.
  *
  * It simplifies integrating authentication screens (login, signup, passwordless, MFA, etc.) into your React applications with hooks-based architecture and TypeScript support.
- *
- * > **Note**
- * > This feature is still in **Early Access**.
  *
  * ## Features
  *
@@ -27,7 +24,6 @@
  * - ✅ **Context Management**: Automatic screen context and state management
  * - ✅ **Error Handling**: Built-in error boundaries and handling
  * - ✅ **Polling Hooks**: MFA push notification polling with React state
- * - ✅ **Form Management**: React-optimized form handling utilities
  *
  * ## Installation
  *
@@ -222,99 +218,6 @@
  * import { useUser, loginMethod } from '@auth0/auth0-acul-react/login-id';
  * import { useMfaPollingManager } from '@auth0/auth0-acul-react/mfa-push-challenge-push';
  * ```
- *
- * ### Named Imports from Main Package
- * ```tsx
- * // Import from main package (includes all screens)
- * import { LoginId, MfaPushChallengePush } from '@auth0/auth0-acul-react';
- * ```
- *
- * ### Default Imports
- * ```tsx
- * // Import entire screen modules
- * import LoginId from '@auth0/auth0-acul-react/login-id';
- * import MfaScreen from '@auth0/auth0-acul-react/mfa-push-challenge-push';
- * ```
- *
- * ## Advanced Usage
- *
- * ### Error Handling with React Error Boundaries
- *
- * ```tsx
- * import React from 'react';
- * import { ErrorBoundary } from 'react-error-boundary';
- * import { loginMethod } from '@auth0/auth0-acul-react/login-id';
- *
- * function ErrorFallback({ error, resetErrorBoundary }) {
- *   return (
- *     <div role="alert">
- *       <h2>Authentication Error</h2>
- *       <p>{error.message}</p>
- *       <button onClick={resetErrorBoundary}>Try again</button>
- *     </div>
- *   );
- * }
- *
- * function App() {
- *   return (
- *     <ErrorBoundary FallbackComponent={ErrorFallback}>
- *       <LoginScreen />
- *     </ErrorBoundary>
- *   );
- * }
- * ```
- *
- * ### Custom Hook for Form Handling
- *
- * ```tsx
- * import { useState } from 'react';
- * import { loginMethod } from '@auth0/auth0-acul-react/login-id';
- *
- * function useAuthForm() {
- *   const [isLoading, setIsLoading] = useState(false);
- *   const [error, setError] = useState(null);
- *
- *   const handleSubmit = async (formData) => {
- *     setIsLoading(true);
- *     setError(null);
- *
- *     try {
- *       await loginMethod(formData);
- *     } catch (err) {
- *       setError(err.message);
- *     } finally {
- *       setIsLoading(false);
- *     }
- *   };
- *
- *   return { handleSubmit, isLoading, error };
- * }
- * ```
- *
- * ## TypeScript Support
- *
- * The React SDK includes comprehensive TypeScript definitions:
- *
- * ```tsx
- * import type {
- *   UserMembers,
- *   TenantMembers,
- *   ScreenMembers,
- *   MfaPushPollingOptions
- * } from '@auth0/auth0-acul-react/login-id';
- *
- * // Fully typed hook usage
- * const user: UserMembers = useUser();
- * const screen: ScreenMembers = useScreen();
- *
- * // Typed polling options
- * const pollingOptions: MfaPushPollingOptions = {
- *   intervalMs: 3000,
- *   onComplete: () => console.log('Completed'),
- *   onError: (error) => console.error(error)
- * };
- * ```
- *
  * ## Available Screen Modules
  *
  * | Screen Module | Import Path | Description |
@@ -381,39 +284,12 @@
  * }
  * ```
  *
- * ### 3. **Cleanup Effects**
- * ```tsx
- * function MfaScreen() {
- *   const { startPolling, stopPolling } = useMfaPollingManager(options);
- *
- *   useEffect(() => {
- *     startPolling();
- *     return () => stopPolling(); // Always cleanup
- *   }, []);
- * }
- * ```
- *
  * ## Examples and Resources
  *
  * - [React Examples](https://github.com/auth0/universal-login/tree/master/packages/auth0-acul-react/examples) - Complete React component examples
  * - [TypeScript Examples](https://github.com/auth0/universal-login/tree/master/packages/auth0-acul-react/examples/typescript) - TypeScript integration examples
  * - [React Boilerplate](https://github.com/auth0/auth0-acul-react-boilerplate) - Full React application template
  * - [Hook Patterns](https://github.com/auth0/universal-login/tree/master/packages/auth0-acul-react/examples/hooks) - Custom hook patterns and utilities
- *
- * ## Migration from JS SDK
- *
- * If you're migrating from the vanilla JS SDK to React:
- *
- * ```tsx
- * // Before (JS SDK)
- * import LoginId from '@auth0/auth0-acul-js/login-id';
- * const loginManager = new LoginId();
- * await loginManager.login({ username });
- *
- * // After (React SDK)
- * import { loginMethod } from '@auth0/auth0-acul-react/login-id';
- * await loginMethod({ username });
- * ```
  *
  * ## Feedback and Support
  *

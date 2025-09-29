@@ -1,3 +1,8 @@
+/**
+ * @module Screens
+ * @summary
+ * This module provides a guide on various screens available in the Auth0 SDK.
+ */
 export * as 'accept-invitation' from '../screens/accept-invitation';
 export * as 'consent' from '../screens/consent';
 export * as 'customized-consent' from '../screens/customized-consent';
