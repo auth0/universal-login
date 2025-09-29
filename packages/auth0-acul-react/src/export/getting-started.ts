@@ -18,11 +18,11 @@
  *
  * ## Features
  *
- * - **React Hooks**: Custom hooks for all authentication screens
- * - **TypeScript Support**: Full TypeScript definitions and IntelliSense
- * - **Context Management**: Automatic screen context and state management
- * - **Error Handling**: Built-in error boundaries and handling
- * - **Polling Hooks**: MFA push notification polling with React state
+ * -  **React Hooks**: Custom hooks for all authentication screens
+ * -  **TypeScript Support**: Full TypeScript definitions and IntelliSense
+ * -  **Context Management**: Automatic screen context and state management
+ * -  **Error Handling**: Built-in error boundaries and handling
+ * -  **Polling Hooks**: MFA push notification polling with React state
  *
  * ## Installation
  *
@@ -151,7 +151,7 @@
  *         <p>Waiting for approval...</p>
  *       )}
  *
- *       {status === 'approved' && (
+ *       {status === 'approved' || status === 'denied' && (
  *         <p>Approved! Redirecting...</p>
  *       )}
  *
@@ -228,34 +228,24 @@
  * | Signup ID | `@auth0/auth0-acul-react/signup-id` | User registration |
  * | Signup Password | `@auth0/auth0-acul-react/signup-password` | Password setup during registration |
  *
- * ## React-Specific Features
- *
- * ### 1. **State Management**
- * - Automatic React state synchronization
- * - Optimized re-renders with useMemo and useCallback
- * - Context-aware state updates
- *
- * ### 2. **Lifecycle Integration**
- * - Automatic cleanup on component unmount
- * - Effect hooks for side effects
- * - Proper dependency management
- *
- * ### 3. **Polling Management**
- * - React-aware polling with `useMfaPollingManager`
- * - Automatic pause/resume on tab visibility
- * - State-driven polling controls
- *
- * ### 4. **Error Boundaries**
- * - Built-in error handling for authentication flows
- * - React Error Boundary compatibility
- * - Graceful error recovery
- *
  * ## Best Practices
  *
  * ### 1. **Use Screen-Specific Imports**
  * ```tsx
- * // Good - only imports what you need
- * import { useUser, loginMethod } from '@auth0/auth0-acul-react/login-id';
+ * // Partial import - recommended
+ * import { useSignup } from '@auth0/auth0-acul-react';
+ * // Root import
+ * import * as Auth0React from '@auth0/auth0-acul-react';
+ *
+ * const MyComponent = () => {
+ *   const signupInstance = useSignup();
+ *   // Use methods or other properties using the instance
+ *   return (
+ *     <button onClick={() => signupInstance.signup({ username: 'user', password: 'pass' })}>
+ *       Sign Up
+ *     </button>
+ *   );
+ * };
  *
  * ```
  *
