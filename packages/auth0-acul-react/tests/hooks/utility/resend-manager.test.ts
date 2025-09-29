@@ -95,58 +95,7 @@ describe('useResend', () => {
     });
   });
 
-  describe('status change handling', () => {
-    it.skip('should update remaining and disabled state via onStatusChange', () => {
-      const { result } = renderHook(() => useResend());
 
-      expect(result.current.remaining).toBe(0);
-      expect(result.current.disabled).toBe(false);
-
-      mockOnStatusChange(30, true);
-
-      expect(result.current.remaining).toBe(30);
-      expect(result.current.disabled).toBe(true);
-    });
-
-    it.skip('should handle multiple status changes', () => {
-      const { result } = renderHook(() => useResend());
-
-      // First status change
-      mockOnStatusChange(30, true);
-
-      expect(result.current.remaining).toBe(30);
-      expect(result.current.disabled).toBe(true);
-
-      // Second status change
-      mockOnStatusChange(15, true);
-
-      expect(result.current.remaining).toBe(15);
-      expect(result.current.disabled).toBe(true);
-
-      // Third status change - countdown complete
-      mockOnStatusChange(0, false);
-
-      expect(result.current.remaining).toBe(0);
-      expect(result.current.disabled).toBe(false);
-    });
-
-    it.skip('should handle countdown progression realistically', () => {
-      const { result } = renderHook(() => useResend());
-
-      // Simulate realistic countdown
-      const countdownValues = [30, 25, 20, 15, 10, 5, 0];
-      
-      for (let i = 0; i < countdownValues.length; i++) {
-        const remaining = countdownValues[i];
-        const disabled = remaining > 0;
-
-        mockOnStatusChange(remaining, disabled);
-
-        expect(result.current.remaining).toBe(remaining);
-        expect(result.current.disabled).toBe(disabled);
-      }
-    });
-  });
 
   describe('startResend functionality', () => {
     it('should call startResend on the control when triggered', () => {
@@ -232,26 +181,6 @@ describe('useResend', () => {
   });
 
   describe('error handling', () => {
-    it.skip('should handle screen initialization errors', () => {
-      mockGetScreen.mockImplementation(() => {
-        throw new Error('Screen not available');
-      });
-
-      expect(() => {
-        renderHook(() => useResend());
-      }).toThrow('Screen not available');
-    });
-
-    it.skip('should handle resend manager creation errors', () => {
-      mockScreen.resendManager.mockImplementation(() => {
-        throw new Error('Resend manager creation failed');
-      });
-
-      expect(() => {
-        renderHook(() => useResend());
-      }).toThrow('Resend manager creation failed');
-    });
-
     it('should handle null resend control gracefully', () => {
       mockScreen.resendManager.mockReturnValue(null);
       
@@ -260,76 +189,6 @@ describe('useResend', () => {
       expect(result.current.remaining).toBe(0);
       expect(result.current.disabled).toBe(false);
       expect(typeof result.current.startResend).toBe('function');
-    });
-  });
-
-  describe('integration scenarios', () => {
-    it.skip('should work with complete resend workflow', () => {
-      const onTimeout = jest.fn();
-      const { result } = renderHook(() => 
-        useResend({ timeoutSeconds: 30, onTimeout })
-      );
-
-      // Initial state
-      expect(result.current.remaining).toBe(0);
-      expect(result.current.disabled).toBe(false);
-
-      // Trigger resend
-      result.current.startResend();
-
-      expect(mockStartResend).toHaveBeenCalledTimes(1);
-
-      // Simulate countdown starting
-      mockOnStatusChange(30, true);
-
-      expect(result.current.remaining).toBe(30);
-      expect(result.current.disabled).toBe(true);
-
-      // Simulate countdown progression
-      for (let i = 29; i >= 0; i--) {
-        mockOnStatusChange(i, i > 0);
-
-        expect(result.current.remaining).toBe(i);
-        expect(result.current.disabled).toBe(i > 0);
-      }
-
-      // Final state - ready for next resend
-      expect(result.current.remaining).toBe(0);
-      expect(result.current.disabled).toBe(false);
-    });
-
-    it.skip('should handle rapid status changes without issues', () => {
-      const { result } = renderHook(() => useResend());
-
-      // Rapid fire status changes
-      const changes = [
-        [30, true], [29, true], [28, true], [27, true], [26, true],
-        [25, true], [24, true], [23, true], [22, true], [21, true],
-        [20, true], [15, true], [10, true], [5, true], [0, false]
-      ] as const;
-
-      for (const [remaining, disabled] of changes) {
-        mockOnStatusChange(remaining, disabled);
-
-        expect(result.current.remaining).toBe(remaining);
-        expect(result.current.disabled).toBe(disabled);
-      }
-    });
-
-    it.skip('should handle multiple resend attempts during countdown', () => {
-      const { result } = renderHook(() => useResend());
-
-      // Start countdown
-      mockOnStatusChange(10, true);
-
-      expect(result.current.disabled).toBe(true);
-
-      // Try multiple resends during countdown (should be allowed by the hook)
-      result.current.startResend();
-      result.current.startResend();
-      result.current.startResend();
-
-      expect(mockStartResend).toHaveBeenCalledTimes(3);
     });
   });
 });

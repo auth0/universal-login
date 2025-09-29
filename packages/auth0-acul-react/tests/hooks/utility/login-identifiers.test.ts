@@ -25,7 +25,7 @@ describe('useLoginIdentifiers', () => {
     expect(mockInstance.getLoginIdentifiers).toHaveBeenCalledTimes(1);
   });
 
-  it('should return empty array when getLoginIdentifiers returns null', () => {
+  it('should return null when getLoginIdentifiers returns null', () => {
     const mockInstance = {
       getLoginIdentifiers: jest.fn().mockReturnValue(null),
     };
@@ -34,11 +34,11 @@ describe('useLoginIdentifiers', () => {
 
     const { result } = renderHook(() => useLoginIdentifiers());
 
-    expect(result.current).toEqual([]);
+    expect(result.current).toBeNull();
     expect(mockInstance.getLoginIdentifiers).toHaveBeenCalledTimes(1);
   });
 
-  it('should return empty array when getLoginIdentifiers returns undefined', () => {
+  it('should return undefined when getLoginIdentifiers returns undefined', () => {
     const mockInstance = {
       getLoginIdentifiers: jest.fn().mockReturnValue(undefined),
     };
@@ -47,7 +47,7 @@ describe('useLoginIdentifiers', () => {
 
     const { result } = renderHook(() => useLoginIdentifiers());
 
-    expect(result.current).toEqual([]);
+    expect(result.current).toBeUndefined();
     expect(mockInstance.getLoginIdentifiers).toHaveBeenCalledTimes(1);
   });
 

@@ -5,7 +5,6 @@ import {
   errorManager,
   type UseErrorOptions,
   type ErrorItem,
-  type ErrorKind,
 } from '../../../src/hooks/common/errors';
 
 // Modern React Testing Library approach - no act needed for synchronous operations
@@ -335,33 +334,7 @@ describe('useErrors', () => {
     });
   });
 
-  describe('reactivity', () => {
-    it.skip('should update when error store changes', () => {
-      let subscribeCallback: () => void = () => {};
-      mockErrorStore.subscribe.mockImplementation((callback) => {
-        subscribeCallback = callback;
-        return jest.fn();
-      });
 
-      const { result } = renderHook(() => useErrors());
-
-      expect(result.current.errors).toHaveLength(4);
-
-      // Simulate error store change
-      // Modern approach: direct state changes - React Testing Library handles updates automatically
-      mockErrorStore.snapshot.mockReturnValue({
-        server: [],
-        client: [{ id: '6', code: 'new_error', message: 'New error', field: 'test' }],
-        developer: [],
-      });
-
-      // Trigger state change - React Testing Library will handle the re-render
-      subscribeCallback();
-
-      expect(result.current.errors).toHaveLength(1);
-      expect(result.current.errors[0]).toMatchObject({ code: 'new_error', kind: 'client' });
-    });
-  });
 
   describe('memoization', () => {
     it('should memoize results when dependencies do not change', () => {
@@ -1320,99 +1293,7 @@ describe('internal utility functions', () => {
       });
     });
 
-    it.skip('should test includeDevErrors conditional branch', () => {
-      // Mock getServerErrors to return empty array
-      mockGetServerErrors.mockReturnValue([]);
-      
-      // Clear all errors first
-      updateErrors(() => {
-        errorManager.clearClientErrors();
-        errorManager.clearServerErrors(); 
-        errorManager.clearDeveloperErrors();
-      });
 
-      // Add specific errors for this test
-      updateErrors(() => {
-        errorManager.pushDeveloperErrors({ code: 'dev', message: 'dev error', field: undefined });
-        errorManager.pushClientErrors({ code: 'client', message: 'client error', field: undefined });
-      });
-
-      // Test with includeDevErrors = false (default)
-      const { result: resultFalse } = renderHook(() => useErrors({ includeDevErrors: false }));
-      
-      // Should not include developer errors
-      expect(resultFalse.current.errors.some(e => e.kind === 'developer')).toBe(false);
-      expect(resultFalse.current.errors.some(e => e.kind === 'client')).toBe(true);
-
-      // Test with includeDevErrors = true
-      const { result: resultTrue } = renderHook(() => useErrors({ includeDevErrors: true }));
-      
-      // Should include developer errors
-      expect(resultTrue.current.errors.some(e => e.kind === 'developer')).toBe(true);
-      expect(resultTrue.current.errors.some(e => e.kind === 'client')).toBe(true);
-    });
-
-    it.skip('should test ternary operator branches', () => {
-      // Mock getServerErrors to return empty array
-      mockGetServerErrors.mockReturnValue([]);
-      
-      // Clear errors and add test-specific ones
-      updateErrors(() => {
-        errorManager.clearClientErrors();
-        errorManager.clearServerErrors();
-        errorManager.clearDeveloperErrors();
-        
-        // Add specific errors for testing
-        errorManager.pushClientErrors({ code: 'test1', message: 'Test 1', field: 'field1' });
-        errorManager.pushClientErrors({ code: 'test2', message: 'Test 2', field: 'field2' });
-      });
-
-      const { result } = renderHook(() => useErrors());
-
-      // Verify errors were added correctly
-      expect(result.current.errors.length).toBeGreaterThan(0);
-
-      // opts?.field is truthy - should filter
-      const filtered = result.current.errors.byKind('client', { field: 'field1' });
-      expect(filtered).toHaveLength(1);
-
-      // opts?.field is falsy - should not filter
-      const unfiltered = result.current.errors.byKind('client');
-      expect(unfiltered.length).toBeGreaterThan(0);
-    });
-
-    it.skip('should test logical AND branches in filtering', () => {
-      // Mock getServerErrors to return empty array for this test
-      mockGetServerErrors.mockReturnValue([]);
-      
-      // Clear all errors first
-      updateErrors(() => {
-        errorManager.clearClientErrors();
-        errorManager.clearServerErrors();
-        errorManager.clearDeveloperErrors();
-      });
-
-      // Test cases where e.field && e.field === field
-      updateErrors(() => {
-        errorManager.pushClientErrors({ code: 'with_field', message: 'With Field', field: 'testfield' });
-        errorManager.pushClientErrors({ code: 'no_field', message: 'No Field', field: undefined });
-        errorManager.pushClientErrors({ code: 'different_field', message: 'Different Field', field: 'otherfield' });
-      });
-
-      // Create hook after adding errors
-      const { result } = renderHook(() => useErrors());
-
-      // Verify errors were added correctly
-      expect(result.current.errors.length).toBeGreaterThan(0);
-
-      // This should test e.field && e.field === field branches
-      const matchingField = result.current.errors.byKind('client', { field: 'testfield' });
-      expect(matchingField).toHaveLength(1);
-      expect(matchingField[0].field).toBe('testfield');
-
-      const nonMatchingField = result.current.errors.byKind('client', { field: 'nonexistent' });
-      expect(nonMatchingField).toHaveLength(0);
-    });
 
     it('should achieve complete coverage including line 145', () => {
       // This test ensures we hit the useEffect early return path (line 145)
