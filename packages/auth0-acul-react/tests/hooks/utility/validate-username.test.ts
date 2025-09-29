@@ -1,4 +1,3 @@
-import React from 'react';
 import { renderHook } from '@testing-library/react';
 import { useUsernameValidation } from '../../../src/hooks/utility/validate-username';
 import { getScreen } from '../../../src/state/instance-store';

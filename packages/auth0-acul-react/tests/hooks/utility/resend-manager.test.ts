@@ -1,4 +1,3 @@
-import React from 'react';
 import { renderHook } from '@testing-library/react';
 import { useResend, UseResendOptions } from '../../../src/hooks/utility/resend-manager';
 import { getScreen } from '../../../src/state/instance-store';
@@ -28,11 +27,11 @@ describe('useResend', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockGetScreen.mockReturnValue(mockScreen);
-    
+
     // Reset mock functions
     mockStartResend.mockClear();
     mockScreen.resendManager.mockClear();
-    
+
     // Capture the onStatusChange callback
     mockScreen.resendManager.mockImplementation((options: any) => {
       mockOnStatusChange = options.onStatusChange;
@@ -62,7 +61,7 @@ describe('useResend', () => {
 
     it('should create resend manager with custom timeoutSeconds', () => {
       const options: UseResendOptions = { timeoutSeconds: 30 };
-      
+
       renderHook(() => useResend(options));
 
       expect(mockScreen.resendManager).toHaveBeenCalledWith(
@@ -76,7 +75,7 @@ describe('useResend', () => {
     it('should create resend manager with onTimeout callback', () => {
       const onTimeout = jest.fn();
       const options: UseResendOptions = { onTimeout };
-      
+
       renderHook(() => useResend(options));
 
       expect(mockScreen.resendManager).toHaveBeenCalledWith(
@@ -127,7 +126,7 @@ describe('useResend', () => {
 
     it('should handle startResend when control is null', () => {
       mockScreen.resendManager.mockReturnValue(null);
-      
+
       const { result } = renderHook(() => useResend());
 
       // Should not throw
@@ -183,7 +182,7 @@ describe('useResend', () => {
   describe('error handling', () => {
     it('should handle null resend control gracefully', () => {
       mockScreen.resendManager.mockReturnValue(null);
-      
+
       const { result } = renderHook(() => useResend());
 
       expect(result.current.remaining).toBe(0);

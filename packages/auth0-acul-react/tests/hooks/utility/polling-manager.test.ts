@@ -1,4 +1,3 @@
-import React from 'react';
 import { renderHook, act } from '@testing-library/react';
 import { useMfaPolling } from '../../../src/hooks/utility/polling-manager';
 import { getScreen } from '../../../src/state/instance-store';
@@ -30,7 +29,7 @@ describe('useMfaPolling', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockGetScreen.mockReturnValue(mockScreen as any);
-    
+
     // Reset polling control state
     mockPollingControl.isRunning.mockReturnValue(false);
     mockPollingControl.startPolling.mockClear();
@@ -100,7 +99,7 @@ describe('useMfaPolling', () => {
 
     it('should reflect running state from polling control', () => {
       mockPollingControl.isRunning.mockReturnValue(true);
-      
+
       const { result } = renderHook(() => useMfaPolling());
 
       expect(result.current.isRunning).toBe(true);
@@ -128,7 +127,7 @@ describe('useMfaPolling', () => {
 
       // Get the wrapped callback that was passed to pollingManager
       const wrappedOptions = mockScreen.pollingManager.mock.calls[0][0];
-      
+
       // Simulate completion
       act(() => {
         wrappedOptions.onCompleted();
@@ -145,9 +144,9 @@ describe('useMfaPolling', () => {
 
       // Get the wrapped callback that was passed to pollingManager
       const wrappedOptions = mockScreen.pollingManager.mock.calls[0][0];
-      
+
       const error = { status: 500, responseText: 'Server Error' };
-      
+
       // Simulate error
       act(() => {
         wrappedOptions.onError(error);
@@ -162,9 +161,9 @@ describe('useMfaPolling', () => {
 
       // Get the wrapped callback that was passed to pollingManager
       const wrappedOptions = mockScreen.pollingManager.mock.calls[0][0];
-      
+
       const error = { status: 429, responseText: 'Rate Limited' };
-      
+
       // Should not throw when no onError callback provided
       expect(() => {
         act(() => {
