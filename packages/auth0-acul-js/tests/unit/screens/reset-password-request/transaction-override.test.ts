@@ -1,5 +1,5 @@
 import { TransactionOverride } from '../../../../src/screens/reset-password-request/transaction-override';
-import { getAllowedIdentifiers, getRequiredIdentifiers, hasFlexibleIdentifier } from '../../../../src/shared/transaction';
+import { getActiveIdentifiers, getRequiredIdentifiers, hasFlexibleIdentifier } from '../../../../src/shared/transaction';
 import { Transaction } from '../../../../src/models/transaction';
 import type { TransactionContext } from '../../../../interfaces/models/transaction';
 
@@ -14,7 +14,7 @@ describe('TransactionOverride', () => {
       // Mock required properties if needed
     } as TransactionContext;
 
-    (getAllowedIdentifiers as jest.Mock).mockReturnValue(['email']);
+    (getActiveIdentifiers as jest.Mock).mockReturnValue(['email']);
     (getRequiredIdentifiers as jest.Mock).mockReturnValue(['email']);
     (hasFlexibleIdentifier as jest.Mock).mockReturnValue(true);
 
