@@ -48,7 +48,7 @@ export interface MfaPollingResult {
  * This hook sets up and controls a long-running polling loop that repeatedly checks
  * the MFA push challenge endpoint until one of the following occurs:
  *
- * - The challenge is **approved** by the user, triggering `options.onCompleted`.
+ * - The challenge is **approved or denied** by the user, triggering `options.onCompleted`.
  * - An **error** occurs (network error, non-200/429 response), triggering `options.onError`.
  * - The **component unmounts** or `stopPolling()` is called, which cancels polling.
  *
@@ -61,6 +61,10 @@ export interface MfaPollingResult {
  *
  * @param options - {@link MfaPollingOptions} specifying the polling interval,
  *                  success callback (`onCompleted`), and optional error handler (`onError`).
+ *
+ *@supportedScreens
+ * - `mfa-push-challenge-push`
+ * - `reset-password-mfa-push-challenge-push`
  *
  * @returns {@link MfaPollingResult} containing:
  * - `isRunning` — `true` while polling is active.
