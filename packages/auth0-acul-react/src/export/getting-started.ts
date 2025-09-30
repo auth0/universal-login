@@ -212,8 +212,6 @@
  *   - Filter by field name for form-specific errors
  *   - Dismiss individual or all errors
  *
- * ```
- *
  * ### Screen-Specific Action Methods
  * Each screen module exports methods for screen actions:
  *
