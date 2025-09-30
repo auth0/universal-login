@@ -184,6 +184,36 @@
  * - `usePrompt()` - Current authentication prompt
  * - `useUntrustedData()` - Untrusted data from the authentication flow
  *
+ * ### Utility Hooks
+ * Specialized hooks for form validation, polling, and identifier management:
+ *
+ * #### Identifier Management
+ * - `useLoginIdentifiers()` - Get available login identifier types (email, phone, username)
+ * - `useSignupIdentifiers()` - Get available signup identifier types
+ *
+ * #### Form Validation
+ * - `usePasswordValidation(password, rules)` - Real-time password strength validation
+ * - `useUsernameValidation(username)` - Username format and availability validation
+ *
+ * #### MFA & Polling
+ * - `useMfaPolling(options)` - Manage MFA push notification polling lifecycle
+ * - `useResend(options)` - Handle resend operations with cooldown timers
+ *
+ * ### Common Hooks
+ * General-purpose hooks available across all screens:
+ *
+ * #### Screen Management
+ * - `useCurrentScreen()` - Get complete current screen context data
+ * - `useAuth0Themes()` - Access tenant branding and theme configuration
+ *
+ * #### Error Handling
+ * - `useErrors(options)` - Comprehensive error management with categorization
+ *   - Filter by error kind: `'client'`, `'server'`, `'dev'`
+ *   - Filter by field name for form-specific errors
+ *   - Dismiss individual or all errors
+ *
+ * ```
+ *
  * ### Screen-Specific Action Methods
  * Each screen module exports methods for screen actions:
  *
