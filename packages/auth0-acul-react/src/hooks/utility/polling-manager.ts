@@ -66,7 +66,7 @@ export interface MfaPollingResult {
  * - `mfa-push-challenge-push`
  * - `reset-password-mfa-push-challenge-push`
  *
- * @returns {@link MfaPollingResult} containing:
+ * @returns object {@link MfaPollingResult} containing:
  * - `isRunning` — `true` while polling is active.
  * - `startPolling()` — starts or resumes polling.
  * - `stopPolling()` — stops polling immediately.

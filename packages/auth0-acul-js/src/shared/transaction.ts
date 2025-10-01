@@ -64,10 +64,11 @@ export function getUsernamePolicy(
   transaction: TransactionContext
 ): UsernamePolicy | null {
   const connection = transaction?.connection as DBConnection;
-  const validation = connection?.options?.attributes?.username?.validation;
+  const { signup_status: signupStatus, validation } = connection?.options?.attributes?.username ?? {};
 
   if (validation) {
     return {
+      isActive: ['optional', 'required'].includes(signupStatus as string),
       maxLength: validation.max_length,
       minLength: validation.min_length,
       allowedFormats: {
@@ -77,17 +78,19 @@ export function getUsernamePolicy(
     };
   }
 
-  const legacyValidation = connection?.options?.validation?.username;
+  const { validation: legacyValidation, username_required: usernameRequired} = connection?.options ?? {};
+  const rules = legacyValidation?.username;
 
-  if (legacyValidation) {
+  if (rules) {
     return {
-      maxLength: legacyValidation.max_length,
-      minLength: legacyValidation.min_length
+      isActive: usernameRequired === true,
+      maxLength: rules.max_length,
+      minLength: rules.min_length
     };
   }
 
   return null;
-
+  
 }
 
 /**

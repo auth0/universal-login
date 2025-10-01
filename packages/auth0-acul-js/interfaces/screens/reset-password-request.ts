@@ -29,4 +29,5 @@ export interface ResetPasswordRequestMembers extends BaseMembers {
   transaction: TransactionMembersOnResetPasswordRequest;
   resetPassword(payload: ResetPasswordRequestOptions): Promise<void>;
   backToLogin(payload?: CustomOptions): Promise<void>;
+  getLoginIdentifiers(): IdentifierType[] | null;
 }

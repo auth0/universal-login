@@ -7,6 +7,7 @@ const getFailedCodes = (result: ReturnType<typeof validateUsername>) =>
 
 describe('validateUsername', () => {
   const basePolicy: UsernamePolicy = {
+    isActive: true,
     minLength: 3,
     maxLength: 15,
     allowedFormats: {
@@ -15,10 +16,10 @@ describe('validateUsername', () => {
     },
   };
 
-  it('returns error when username is empty and no policy', () => {
+  it('returns empty errors when username is empty and no policy', () => {
     const result = validateUsername('', null);
     const failed = getFailedCodes(result);
-    expect(failed).toContain('username-required');
+    expect(failed).toEqual([]);
   });
 
   it('passes validation when username is non-empty and no policy', () => {
@@ -84,6 +85,7 @@ describe('validateUsername', () => {
 
   it('fails multiple rules at once', () => {
     const result = validateUsername('a@b.c', {
+      isActive: true,
       minLength: 10,
       maxLength: 12,
       allowedFormats: {
