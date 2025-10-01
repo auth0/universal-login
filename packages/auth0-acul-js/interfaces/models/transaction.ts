@@ -45,6 +45,7 @@ interface CountryCode {
 }
 
 export interface UsernamePolicy {
+  isActive?: boolean
   maxLength: number;
   minLength: number;
   allowedFormats?: {

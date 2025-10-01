@@ -62,6 +62,7 @@ describe('Transaction Context Functions', () => {
 
   it('should return the correct username policy', () => {
     const expectedPolicy = {
+      isActive: true,
       maxLength: 20,
       minLength: 5,
       allowedFormats: {

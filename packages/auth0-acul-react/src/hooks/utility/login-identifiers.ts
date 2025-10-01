@@ -8,7 +8,7 @@ interface WithLoginIdentifiers {
 
 /**
  * Returns a list of active identifier types (such as `'email'`, `'phone'`, or `'username'`)
- * currently in use in the authentication flow or signup process.
+ * currently in use in the authentication flow or login process.
  *
  * @supportedScreens
  * - `login`
