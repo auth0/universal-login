@@ -13,6 +13,7 @@ interface WithLoginIdentifiers {
  * @supportedScreens
  * - `login`
  * - `login-id`
+ * - `reset-password-request`
  *
  * @returns An array of {@link IdentifierType} representing active identifiers.
  *

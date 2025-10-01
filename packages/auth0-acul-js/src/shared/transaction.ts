@@ -118,6 +118,39 @@ export function getPasswordPolicy(
 }
 
 /**
+ * Returns the active identifiers (email, username, phone) based on the connection settings.
+ * Active identifiers are those that can be used for login.
+ *
+ * @param transaction - The transaction context from Universal Login
+ * @returns An array of active identifier types or null if none are defined
+ */
+
+export function getActiveIdentifiers(transaction: TransactionContext): IdentifierType[] | null {
+  const connection = transaction?.connection as DBConnection | undefined;
+
+  if (!connection) return null;
+
+  const { attributes, username_required } = connection.options || {};
+
+  if (attributes && Object.keys(attributes).length > 0) {
+    const filteredIdentifiers = Object.entries(attributes)
+      .filter(
+        ([, value]) =>
+          value.identifier_active
+      )
+      .map(([key]) => key as IdentifierType);
+
+    return filteredIdentifiers.length > 0 ? filteredIdentifiers : null;
+  }
+
+  if (username_required) {
+    return ['email', 'username'];
+  }
+
+  return ['email'];
+}
+
+/**
  * Returns the allowed identifiers (email, username, phone) based on the connection settings.
  * This includes both required and optional identifier types.
  *

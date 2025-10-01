@@ -1,6 +1,7 @@
 import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
+import { getLoginIdentifiers as _getLoginIdentifiers } from '../../utils/login-identifiers';
 
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
@@ -15,6 +16,7 @@ import type {
   TransactionMembersOnResetPasswordRequest as TransactionOptions,
 } from '../../../interfaces/screens/reset-password-request';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import type { IdentifierType } from 'interfaces/utils';
 
 export default class ResetPasswordRequest extends BaseContext implements ResetPasswordRequestMembers {
   static screenIdentifier: string = ScreenIds.RESET_PASSWORD_REQUEST;
@@ -59,6 +61,21 @@ export default class ResetPasswordRequest extends BaseContext implements ResetPa
     };
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.BACK_TO_LOGIN });
   }
+
+  /**
+     * Gets the active identifier types for the reset-password-request screen
+     * @returns An array of active identifier types or null if none are active
+     * @example
+     * ```typescript
+     * import ResetPasswordRequest from "@auth0/auth0-acul-js/reset-password-request";
+     * const resetPasswordRequest = new ResetPasswordRequest();
+     * resetPasswordRequest.getLoginIdentifiers();
+     * ```
+     * @utilityFeature
+     */
+    getLoginIdentifiers(): IdentifierType[] | null {
+      return _getLoginIdentifiers(this.transaction.allowedIdentifiers);
+    }
 }
 
 /**
