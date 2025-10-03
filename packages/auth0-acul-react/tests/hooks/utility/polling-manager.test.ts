@@ -184,5 +184,33 @@ describe('useMfaPolling', () => {
       expect(mockPollingControl.stopPolling).toHaveBeenCalledTimes(1);
     });
 
+    it('should handle requestAnimationFrame callback after unmount', () => {
+      // Mock requestAnimationFrame to capture the callback
+      let rafCallback: (() => void) | null = null;
+      const mockRaf = jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+        rafCallback = cb as () => void;
+        return 1;
+      });
+
+      // Set polling to running state
+      mockPollingControl.isRunning.mockReturnValue(true);
+
+      const { unmount } = renderHook(() => useMfaPolling());
+
+      // Unmount should set mounted = false
+      unmount();
+
+      // Now trigger the RAF callback that was scheduled before unmount
+      if (rafCallback) {
+        act(() => {
+          rafCallback!();
+        });
+      }
+
+      // Should not throw and should have handled the unmounted state gracefully
+      expect(mockPollingControl.isRunning).toHaveBeenCalled();
+
+      mockRaf.mockRestore();
+    });
   });
 });

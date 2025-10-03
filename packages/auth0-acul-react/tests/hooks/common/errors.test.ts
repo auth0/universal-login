@@ -428,6 +428,14 @@ describe('errorManager', () => {
         { code: 'server_error', message: 'Server error', field: undefined },
       ]);
     });
+
+    it('should handle syncServerErrors when getServerErrors returns undefined (line 296 branch)', () => {
+      
+      mockGetServerErrors.mockReturnValueOnce(undefined as any);
+      errorManager.syncServerErrors();
+
+      expect(mockErrorStore.replace).toHaveBeenCalledWith('server', []);
+    });
   });
 
   describe('developer error management', () => {
@@ -573,6 +581,45 @@ describe('internal utility functions', () => {
     it('should handle error with no code or message', () => {
       const emptyError = {};
       expect(typeof emptyError).toBe('object');
+    });
+
+    it('should handle non-Error objects without instanceof Error (line 43 branch)', () => {
+      
+      const plainObject = { someProperty: 'value' };
+      
+      // Trigger error handling with this non-Error object
+      const throwingFunction = () => {
+        throw plainObject;
+      };
+
+      const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+
+      try {
+        errorManager.withError(throwingFunction);
+      } catch (e) {
+        // Expected to throw since it's unclassified
+      }
+
+      expect(consoleSpy).toHaveBeenCalled();
+      consoleSpy.mockRestore();
+    });
+
+    it('should handle error objects with partial properties (line 43 branches)', () => {
+      const partialError = { message: 'Some message' };
+      const throwingFunction = () => {
+        throw partialError;
+      };
+
+      const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+
+      try {
+        errorManager.withError(throwingFunction);
+      } catch (e) {
+        // Expected to throw
+      }
+
+      expect(consoleSpy).toHaveBeenCalledWith('[auth0-acul-react] Unhandled error:', partialError);
+      consoleSpy.mockRestore();
     });
   });
 
@@ -734,9 +781,6 @@ describe('internal utility functions', () => {
         { code: 'line54test', message: 'Line 54 test', field: 'testfield' }
       ]);
 
-      // This should trigger filterByField with no field parameter (line 54)
-      // byField internally calls filterByField, and when called without opts.kind,
-      // it uses the 'all' array which goes through filterByField with field parameter
       const result1 = result.current.errors.byField('testfield'); // with field
       const result2 = result.current.errors.byField(''); // empty field
 
@@ -772,23 +816,17 @@ describe('internal utility functions', () => {
         { code: 'init_error', message: 'Init error', field: undefined }
       ]);
 
-      // Clear the mocks to track subsequent calls
       jest.clearAllMocks();
 
-      // Re-render the hook - this should trigger the early return on line 145
-      // because didInit.current is already true
       rerender();
 
-      // getServerErrors should NOT be called again due to the early return
       expect(mockGetServerErrors).not.toHaveBeenCalled();
       expect(mockErrorStore.replace).not.toHaveBeenCalled();
 
-      // The hook should still work normally
       expect(Array.isArray(result.current.errors)).toBe(true);
     });
 
     it('should definitely cover line 145: force useEffect early return', () => {
-      // This test will specifically trigger the early return in useEffect
       jest.clearAllMocks();
 
       let renderCount = 0;
@@ -969,8 +1007,6 @@ describe('internal utility functions', () => {
     it('should test toErrorObject with different error scenarios', () => {
       const { result } = renderHook(() => useErrors());
 
-      // Test with Auth0Error-like object with all properties
-      // Modern approach: direct errorManager calls for synchronous operations
       const auth0LikeError = {
         code: 'auth0_code',
         message: 'Auth0 message',
@@ -1313,13 +1349,25 @@ describe('internal utility functions', () => {
       // Force a re-render - this should trigger the early return (line 145)
       rerender();
 
-      // getServerErrors should still be called only once because of the early return
-      // This proves line 145 (the early return) was executed
       expect(mockGetServerErrors).toHaveBeenCalledTimes(1);
 
       // Hook should still work after re-render
       expect(result.current).toBeDefined();
       expect(typeof result.current.hasError).toBe('boolean');
+    });
+
+    it('should cover line 145 with StrictMode double-invoke', () => {
+      jest.clearAllMocks();
+      mockGetServerErrors.mockReturnValue([{ code: 'strict_test', message: 'StrictMode test' }]);
+
+      const { result } = renderHook(() => useErrors(), {
+        wrapper: ({ children }) => React.createElement(React.StrictMode, null, children),
+      });
+   
+      expect(result.current).toBeDefined();
+      expect(typeof result.current.hasError).toBe('boolean');
+      
+      expect(mockGetServerErrors).toHaveBeenCalled();
     });
   });
 });
