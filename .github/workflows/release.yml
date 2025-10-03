@@ -38,15 +38,15 @@ jobs:
           REF="${{ github.head_ref || github.ref_name }}"
           echo "REF=$REF"
 
-          # Extract DIR_NAME and VERSION correctly
-          DIR_NAME=$(echo "$REF" | sed -E 's|^release/([^/]+)-[0-9]+\.[0-9]+\.[0-9]+.*$|\1|')
-          VERSION=$(echo "$REF" | sed -E 's|^release/[^/]+-([0-9]+\.[0-9]+\.[0-9]+.*)$|\1|')
+          # Extract DIR_NAME from branch name (not version)
+          DIR_NAME=$(echo "$REF" | sed -E 's|^release/([a-zA-Z0-9-]+)-[0-9]+\.[0-9]+\.[0-9]+.*$|\1|')
 
           PACKAGE_JSON_PATH="packages/$DIR_NAME/package.json"
           PACKAGE_NAME=$(jq -r .name "$PACKAGE_JSON_PATH")
           PACKAGE_NAME_UNSCOPED=$(echo "$PACKAGE_NAME" | sed 's/^@[^/]*\///')
+          PACKAGE_VERSION=$(jq -r .version "$PACKAGE_JSON_PATH")
 
-          if [ -z "$PACKAGE_NAME" ] || [ -z "$VERSION" ]; then
+          if [ -z "$PACKAGE_NAME" ] || [ -z "$PACKAGE_VERSION" ]; then
             echo "ERROR: Could not parse package name or version."
             exit 1
           fi
@@ -54,7 +54,8 @@ jobs:
           echo "name=$PACKAGE_NAME" >> $GITHUB_OUTPUT
           echo "name_unscoped=$PACKAGE_NAME_UNSCOPED" >> $GITHUB_OUTPUT
           echo "dir=$DIR_NAME" >> $GITHUB_OUTPUT
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "version=$PACKAGE_VERSION" >> $GITHUB_OUTPUT
+          echo "tag_name=$PACKAGE_NAME_UNSCOPED@$PACKAGE_VERSION" >> $GITHUB_OUTPUT
 
       - name: Install rimraf globally
         run: npm install -g rimraf
@@ -80,6 +81,16 @@ jobs:
       - name: Create GitHub Release
         uses: ./.github/actions/release-create
         with:
-          tag: ${{ steps.meta.outputs.name_unscoped }}@${{ steps.meta.outputs.version }}
-          name: ${{ steps.meta.outputs.name_unscoped }}@${{ steps.meta.outputs.version }}
+          tag: ${{ steps.meta.outputs.tag_name }}
+          name: ${{ steps.meta.outputs.tag_name }}
           version: ${{ steps.meta.outputs.version }}
+
+      - name: Generate documentation for released package only
+        run: npm run docs:unified ${{ steps.meta.outputs.dir }}
+
+      - name: Deploy updated documentation
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
+          keep_files: true
