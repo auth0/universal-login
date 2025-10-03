@@ -1,0 +1,61 @@
+import { renderHook } from '@testing-library/react';
+import * as AcceptInvitationScreen from '../../src/screens/accept-invitation';
+
+// Mock the core SDK class
+jest.mock('@auth0/auth0-acul-js/accept-invitation', () => {
+  return jest.fn().mockImplementation(() => ({
+    // Mock methods will be defined per test
+  }));
+}, { virtual: true });
+
+// Mock the instance store
+jest.mock('../../src/state/instance-store', () => ({
+  registerScreen: jest.fn((Screen) => new Screen()),
+}));
+
+// Mock error manager and hooks
+jest.mock('../../src/hooks', () => ({
+  errorManager: {
+    withError: jest.fn((promise) => promise),
+  },
+  ContextHooks: jest.fn().mockImplementation(() => ({
+    useUser: jest.fn(),
+    useTenant: jest.fn(),
+    useBranding: jest.fn(),
+    useClient: jest.fn(),
+    useOrganization: jest.fn(),
+    usePrompt: jest.fn(),
+    useScreen: jest.fn(),
+    useTransaction: jest.fn(),
+    useUntrustedData: jest.fn(),
+  })),
+  useCurrentScreen: jest.fn(),
+  useErrors: jest.fn(),
+  useAuth0Themes: jest.fn(),
+}));
+
+describe('AcceptInvitation Screen', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  describe('exports', () => {
+    it('should export all context hooks', () => {
+      expect(AcceptInvitationScreen.useUser).toBeDefined();
+      expect(AcceptInvitationScreen.useTenant).toBeDefined();
+      expect(AcceptInvitationScreen.useBranding).toBeDefined();
+      expect(AcceptInvitationScreen.useClient).toBeDefined();
+      expect(AcceptInvitationScreen.useOrganization).toBeDefined();
+      expect(AcceptInvitationScreen.usePrompt).toBeDefined();
+      expect(AcceptInvitationScreen.useScreen).toBeDefined();
+      expect(AcceptInvitationScreen.useTransaction).toBeDefined();
+      expect(AcceptInvitationScreen.useUntrustedData).toBeDefined();
+    });
+
+    it('should export common hooks', () => {
+      expect(AcceptInvitationScreen.useCurrentScreen).toBeDefined();
+      expect(AcceptInvitationScreen.useErrors).toBeDefined();
+      expect(AcceptInvitationScreen.useAuth0Themes).toBeDefined();
+    });
+  });
+});
