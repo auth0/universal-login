@@ -17,9 +17,10 @@ jobs:
         with:
           node-version: 22
           cache: 'npm'
+          registry-url: 'https://npm.pkg.github.com'
 
       - name: Install dependencies at root
-        run: npm install --registry https://registry.npmjs.org
+        run: npm install
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
