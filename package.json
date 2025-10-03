@@ -14,6 +14,7 @@
     "test": "npm test --workspaces",
     "build": "npm run build --workspaces",
     "docs": "npm run docs --workspaces",
+    "docs:unified": "node ./scripts/docs-unified.js",
     "format": "npm run format --workspaces",
     "preinstall": "node ./scripts/check-node-version.js && node ./scripts/block-local-install.js"
   },
@@ -55,5 +56,8 @@
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.29.1",
     "yaml": "^2.6.1"
+  },
+  "dependencies": {
+    "marked": "^16.3.0"
   }
 }

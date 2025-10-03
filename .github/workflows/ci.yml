@@ -20,9 +20,7 @@ jobs:
           registry-url: 'https://npm.pkg.github.com'
 
       - name: Install dependencies at root
-        run: npm install
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm install --registry https://registry.npmjs.org
 
       - name: Build all workspaces
         run: npm run build
