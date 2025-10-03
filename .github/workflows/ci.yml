@@ -20,11 +20,8 @@ jobs:
 
       - name: Install dependencies at root
         run: npm install --registry https://registry.npmjs.org
-
-
-      - name: Generate SDK files
-        run: npm run generate:sdk
-        working-directory: packages/auth0-acul-react
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build all workspaces
         run: npm run build
