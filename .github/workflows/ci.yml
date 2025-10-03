@@ -19,7 +19,7 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies at root
-        run: npm install
+        run: npm install --registry https://registry.npmjs.org
 
 
       - name: Generate SDK files
