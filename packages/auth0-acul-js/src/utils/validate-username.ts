@@ -37,28 +37,20 @@ const field = Fields.USERNAME;
  */
 export function validateUsername(
   username: string,
-  policy?: UsernamePolicy | null
+  policy: UsernamePolicy | null
 ): UsernameValidationResult {
   const errors: UsernameValidationError[] = [];
 
-  if (!policy) {
+  if (!policy || !policy.isActive) {
     return {
-      isValid: username.trim().length > 0,
-      errors: username.trim().length > 0
-        ? []
-        : [
-            {
-              code: USERNAME_ERROR_CODES.REQUIRED,
-              message: USERNAME_ERROR_MESSAGES.REQUIRED,
-              field
-            },
-          ],
+      isValid: true,
+      errors: []
     };
   }
 
   const {
-    minLength = 1,
-    maxLength = 30,
+    minLength,
+    maxLength,
     allowedFormats: userAllowedFormats = {} as AllowedFormats,
   } = policy;
 

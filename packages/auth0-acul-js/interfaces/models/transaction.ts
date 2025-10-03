@@ -45,11 +45,12 @@ interface CountryCode {
 }
 
 export interface UsernamePolicy {
+  isActive?: boolean
   maxLength: number;
   minLength: number;
-  allowedFormats: {
-    usernameInEmailFormat: boolean;
-    usernameInPhoneFormat: boolean;
+  allowedFormats?: {
+    usernameInEmailFormat?: boolean;
+    usernameInPhoneFormat?: boolean;
   };
 }
 

@@ -1,5 +1,6 @@
 import { ScreenIds } from '../../constants';
 import { BaseContext } from '../../models/base-context';
+import { getBrowserCapabilities } from '../../utils/browser-capabilities';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
@@ -44,7 +45,11 @@ export default class LoginPassword extends BaseContext implements LoginPasswordM
    */
   async login(payload: LoginPasswordOptions): Promise<void> {
     const options: FormOptions = { state: this.transaction.state, telemetry: [LoginPassword.screenIdentifier, 'login'] };
-    await new FormHandler(options).submitData<LoginPasswordOptions>(payload);
+    const browserCapabilities = await getBrowserCapabilities();
+    await new FormHandler(options).submitData<LoginPasswordOptions>({
+      ...payload,
+      ...browserCapabilities,
+    });
   }
 
   /**

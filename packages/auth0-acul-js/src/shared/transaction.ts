@@ -64,18 +64,33 @@ export function getUsernamePolicy(
   transaction: TransactionContext
 ): UsernamePolicy | null {
   const connection = transaction?.connection as DBConnection;
-  const validation = connection?.options?.attributes?.username?.validation;
+  const { signup_status: signupStatus, validation } = connection?.options?.attributes?.username ?? {};
 
-  if (!validation) return null;
+  if (validation) {
+    return {
+      isActive: ['optional', 'required'].includes(signupStatus as string),
+      maxLength: validation.max_length,
+      minLength: validation.min_length,
+      allowedFormats: {
+        usernameInEmailFormat: validation.allowed_types?.email ?? false,
+        usernameInPhoneFormat: validation.allowed_types?.phone_number ?? false,
+      },
+    };
+  }
 
-  return {
-    maxLength: validation.max_length,
-    minLength: validation.min_length,
-    allowedFormats: {
-      usernameInEmailFormat: validation.allowed_types?.email ?? false,
-      usernameInPhoneFormat: validation.allowed_types?.phone_number ?? false,
-    },
-  };
+  const { validation: legacyValidation, username_required: usernameRequired} = connection?.options ?? {};
+  const rules = legacyValidation?.username;
+
+  if (rules) {
+    return {
+      isActive: usernameRequired === true,
+      maxLength: rules.max_length,
+      minLength: rules.min_length
+    };
+  }
+
+  return null;
+  
 }
 
 /**
@@ -106,6 +121,39 @@ export function getPasswordPolicy(
 }
 
 /**
+ * Returns the active identifiers (email, username, phone) based on the connection settings.
+ * Active identifiers are those that can be used for login.
+ *
+ * @param transaction - The transaction context from Universal Login
+ * @returns An array of active identifier types or null if none are defined
+ */
+
+export function getActiveIdentifiers(transaction: TransactionContext): IdentifierType[] | null {
+  const connection = transaction?.connection as DBConnection | undefined;
+
+  if (!connection) return null;
+
+  const { attributes, username_required } = connection.options || {};
+
+  if (attributes && Object.keys(attributes).length > 0) {
+    const filteredIdentifiers = Object.entries(attributes)
+      .filter(
+        ([, value]) =>
+          value.identifier_active
+      )
+      .map(([key]) => key as IdentifierType);
+
+    return filteredIdentifiers.length > 0 ? filteredIdentifiers : null;
+  }
+
+  if (username_required) {
+    return ['email', 'username'];
+  }
+
+  return ['email'];
+}
+
+/**
  * Returns the allowed identifiers (email, username, phone) based on the connection settings.
  * This includes both required and optional identifier types.
  *
@@ -114,11 +162,22 @@ export function getPasswordPolicy(
  */
 export function getAllowedIdentifiers(
   transaction: TransactionContext
-): TransactionMembersOnLoginId["allowedIdentifiers"] {
-  const connection = transaction?.connection as DBConnection;
-  if (!connection?.options?.attributes) return null;
+): TransactionMembersOnLoginId["allowedIdentifiers"] | null {
+  const connection = transaction?.connection as DBConnection | undefined;
 
-  return extractIdentifiersByStatus(connection, ["required", "optional"]);
+  if (!connection) return null;
+
+  const { attributes, username_required } = connection.options || {};
+
+  if (attributes && Object.keys(attributes).length > 0) {
+    return extractIdentifiersByStatus(connection, ["required", "optional"]);
+  }
+
+  if (username_required) {
+    return ['email', 'username'];
+  }
+
+  return ['email'];
 }
 
 /**
@@ -175,21 +234,22 @@ function extractIdentifiersByStatus(
   connection: DBConnection | undefined,
   statuses: ("required" | "optional")[]
 ): IdentifierType[] | null {
-  if (!connection?.options?.attributes) return null;
+  if (!connection) return null;
 
-  return Object.entries(connection.options.attributes)
+  const { attributes, username_required } = connection.options || {};
+
+  if (!attributes || Object.keys(attributes).length === 0) {
+    return username_required ? ['email', 'username'] : ['email'];
+  }
+
+  const filteredIdentifiers = Object.entries(attributes)
     .filter(
       ([, value]) =>
         value.signup_status &&
         statuses.includes(value.signup_status as "required" | "optional")
     )
-    .map(([key]) => key as IdentifierType).length > 0
-    ? Object.entries(connection.options.attributes)
-        .filter(
-          ([, value]) =>
-            value.signup_status &&
-            statuses.includes(value.signup_status as "required" | "optional")
-        )
-        .map(([key]) => key as IdentifierType)
-    : null;
+    .map(([key]) => key as IdentifierType);
+
+  return filteredIdentifiers.length > 0 ? filteredIdentifiers : null;
 }
+

@@ -36,6 +36,9 @@ export const resetPassword = (payload: ResetPasswordRequestOptions) =>
   withError(instance.resetPassword(payload));
 export const backToLogin = (payload?: CustomOptions) => withError(instance.backToLogin(payload));
 
+// Utility Hooks
+export { useLoginIdentifiers } from '../hooks/utility/login-identifiers';
+
 // Common hooks
 export {
   useCurrentScreen,

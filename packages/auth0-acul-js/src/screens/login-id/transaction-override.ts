@@ -3,10 +3,10 @@ import { Transaction } from '../../../src/models/transaction';
 import {
   isUsernameRequired,
   getUsernamePolicy,
-  getAllowedIdentifiers,
   isSignupEnabled,
   isForgotPasswordEnabled,
   isPasskeyEnabled,
+  getActiveIdentifiers,
 } from '../../shared/transaction';
 
 import type { TransactionContext } from '../../../interfaces/models/transaction';
@@ -33,6 +33,6 @@ export class TransactionOverride extends Transaction implements OverrideMembers 
   static getAllowedIdentifiers(transactionContext: TransactionContext, connectionStrategy: string | null): OverrideMembers['allowedIdentifiers'] {
     if (connectionStrategy === ConnectionStrategy.SMS) return [Identifiers.PHONE];
     if (connectionStrategy === ConnectionStrategy.EMAIL) return [Identifiers.EMAIL];
-    return getAllowedIdentifiers(transactionContext);
+    return getActiveIdentifiers(transactionContext);
   }
 }

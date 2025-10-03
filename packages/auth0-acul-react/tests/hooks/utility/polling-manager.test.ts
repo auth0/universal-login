@@ -1,4 +1,3 @@
-import React from 'react';
 import { renderHook, act } from '@testing-library/react';
 import { useMfaPolling } from '../../../src/hooks/utility/polling-manager';
 import { getScreen } from '../../../src/state/instance-store';
@@ -30,7 +29,7 @@ describe('useMfaPolling', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockGetScreen.mockReturnValue(mockScreen as any);
-    
+
     // Reset polling control state
     mockPollingControl.isRunning.mockReturnValue(false);
     mockPollingControl.startPolling.mockClear();
@@ -100,7 +99,7 @@ describe('useMfaPolling', () => {
 
     it('should reflect running state from polling control', () => {
       mockPollingControl.isRunning.mockReturnValue(true);
-      
+
       const { result } = renderHook(() => useMfaPolling());
 
       expect(result.current.isRunning).toBe(true);
@@ -128,7 +127,7 @@ describe('useMfaPolling', () => {
 
       // Get the wrapped callback that was passed to pollingManager
       const wrappedOptions = mockScreen.pollingManager.mock.calls[0][0];
-      
+
       // Simulate completion
       act(() => {
         wrappedOptions.onCompleted();
@@ -145,9 +144,9 @@ describe('useMfaPolling', () => {
 
       // Get the wrapped callback that was passed to pollingManager
       const wrappedOptions = mockScreen.pollingManager.mock.calls[0][0];
-      
+
       const error = { status: 500, responseText: 'Server Error' };
-      
+
       // Simulate error
       act(() => {
         wrappedOptions.onError(error);
@@ -162,9 +161,9 @@ describe('useMfaPolling', () => {
 
       // Get the wrapped callback that was passed to pollingManager
       const wrappedOptions = mockScreen.pollingManager.mock.calls[0][0];
-      
+
       const error = { status: 429, responseText: 'Rate Limited' };
-      
+
       // Should not throw when no onError callback provided
       expect(() => {
         act(() => {
@@ -185,91 +184,5 @@ describe('useMfaPolling', () => {
       expect(mockPollingControl.stopPolling).toHaveBeenCalledTimes(1);
     });
 
-    it.skip('should handle cleanup when polling control is null', () => {
-      mockScreen.pollingManager.mockReturnValue(null as any);
-
-      const { unmount } = renderHook(() => useMfaPolling());
-
-      // Should not throw
-      expect(() => unmount()).not.toThrow();
-    });
-  });
-
-  describe('state synchronization', () => {
-    it.skip('should sync isRunning state with polling control', () => {
-      // Start with not running
-      mockPollingControl.isRunning.mockReturnValue(false);
-      
-      const { result } = renderHook(() => useMfaPolling());
-
-      expect(result.current.isRunning).toBe(false);
-
-      // Change to running
-      mockPollingControl.isRunning.mockReturnValue(true);
-
-      expect(result.current.isRunning).toBe(true);
-    });
-
-    it.skip('should maintain stable references for callback functions', () => {
-      const { result, rerender } = renderHook(() => useMfaPolling());
-
-      const firstStartPolling = result.current.startPolling;
-      const firstStopPolling = result.current.stopPolling;
-
-      rerender();
-
-      expect(result.current.startPolling).toBe(firstStartPolling);
-      expect(result.current.stopPolling).toBe(firstStopPolling);
-    });
-  });
-
-  describe('error scenarios', () => {
-    it.skip('should handle screen initialization errors', () => {
-      mockGetScreen.mockImplementation(() => {
-        throw new Error('Screen not available');
-      });
-
-      expect(() => {
-        renderHook(() => useMfaPolling());
-      }).toThrow('Screen not available');
-    });
-
-    it.skip('should handle polling control creation errors', () => {
-      mockScreen.pollingManager.mockImplementation(() => {
-        throw new Error('Polling manager unavailable');
-      });
-
-      expect(() => {
-        renderHook(() => useMfaPolling());
-      }).toThrow('Polling manager unavailable');
-    });
-  });
-
-  describe('integration scenarios', () => {
-    it.skip('should work with realistic polling workflow', () => {
-      const onCompleted = jest.fn();
-      const onError = jest.fn();
-      
-      const { result } = renderHook(() => 
-        useMfaPolling({ intervalMs: 1000, onCompleted, onError })
-      );
-
-      // Initial state
-      expect(result.current.isRunning).toBe(false);
-
-      // Start polling
-      result.current.startPolling();
-      expect(mockPollingControl.startPolling).toHaveBeenCalledTimes(1);
-
-      // Simulate completion
-      const wrappedOptions = mockScreen.pollingManager.mock.calls[0][0];
-      wrappedOptions.onCompleted();
-
-      expect(onCompleted).toHaveBeenCalledTimes(1);
-
-      // Stop polling
-      result.current.stopPolling();
-      expect(mockPollingControl.stopPolling).toHaveBeenCalledTimes(1);
-    });
   });
 });

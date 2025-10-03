@@ -5,7 +5,12 @@ import { ContextHooks } from '../hooks';
 import { errorManager } from '../hooks';
 import { registerScreen } from '../state/instance-store';
 
-import type { LoginMembers, LoginOptions, FederatedLoginOptions } from '@auth0/auth0-acul-js/login';
+import type {
+  LoginMembers,
+  LoginOptions,
+  FederatedLoginOptions,
+  CustomOptions,
+} from '@auth0/auth0-acul-js/login';
 
 // Register the singleton instance of Login
 const instance = registerScreen<LoginMembers>(Login)!;
@@ -31,6 +36,8 @@ export const {
 export const login = (payload: LoginOptions) => withError(instance.login(payload));
 export const federatedLogin = (payload: FederatedLoginOptions) =>
   withError(instance.federatedLogin(payload));
+export const pickCountryCode = (payload?: CustomOptions) =>
+  withError(instance.pickCountryCode(payload));
 
 // Utility Hooks
 export { useLoginIdentifiers } from '../hooks/utility/login-identifiers';

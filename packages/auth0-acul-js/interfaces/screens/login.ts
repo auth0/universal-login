@@ -100,5 +100,5 @@ export interface LoginMembers extends BaseMembers {
    * @returns An array of active identifier types or null if none are active
    * @utilityFeature
    */
-  getLoginIdentifiers(): string[] | null;
+  getLoginIdentifiers(): IdentifierType[] | null;
 }

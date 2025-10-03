@@ -10,33 +10,26 @@ import { getCurrentScreenOptions, type CurrentScreenOptions } from '@auth0/auth0
  * import React from 'react';
  * import { useCurrentScreen } from '@auth0/auth0-acul-react';
  *
- * const MyComponent: React.FC = () => {
+ * const App: React.FC = () => {
  *   const screenOptions = useCurrentScreen();
+ *   const screen = screenOptions?.screen?.name || "login-id";
  *
- *   if (!screenOptions) {
- *     return <div>Loading...</div>;
- *   }
+ *   const renderScreen = () => {
+ *     switch (screen) {
+ *       case "login-id":
+ *         return <LoginIdScreen />;
+ *       case "login-password":
+ *         return <LoginPasswordScreen />;
+ *       case "login":
+ *         return <Login />;
+ *       case "login-passwordless-email-code":
+ *         return <LoginPasswordlessEmailCodeScreen />;
+ *       default:
+ *         return null;
+ *     }
+ *   };
  *
- *   return (
- *     <div>
- *       <h1>Current Screen: {screenOptions.screen?.name}</h1>
- *       <p>Tenant ID: {screenOptions.tenant?.enabledLocales?.join(', ')}</p>
- *       <p>Transaction State: {screenOptions.transaction?.state}</p>
- *       {screenOptions.organization && (
- *         <p>Organization: {screenOptions.organization.id}</p>
- *       )}
- *       {screenOptions.transaction?.errors && (
- *         <div>
- *           <h3>Errors:</h3>
- *           {screenOptions.transaction.errors.map((error, index) => (
- *             <p key={index} style={{ color: 'red' }}>
- *               {error.code}: {error.description}
- *             </p>
- *           ))}
- *         </div>
- *       )}
- *     </div>
- *   );
+ *   return <div>{renderScreen()}</div>;
  * };
  * ```
  */

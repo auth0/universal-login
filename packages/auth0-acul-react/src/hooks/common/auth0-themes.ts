@@ -20,50 +20,33 @@ import { getCurrentThemeOptions, type FlattenedTheme } from '@auth0/auth0-acul-j
  *   return (
  *     <div
  *       style={{
- *         backgroundColor: theme.colors?.primary,
- *         color: theme.colors?.primaryText,
- *         fontFamily: theme.fonts?.bodyFont?.name,
- *         borderRadius: theme.borders?.buttonBorderRadius,
- *         padding: '16px'
+ *         backgroundColor: theme.colors.primary_button,
+ *         color: theme.colors.primary_button_label,
+ *         borderRadius: theme.borders.button_border_radius,
  *       }}
  *     >
- *       <h1 style={{ fontFamily: theme.fonts?.titleFont?.name }}>
+ *       <h1
+ *         style={{
+ *           fontWeight: theme.fonts.title.bold ? 'bold' : 'normal',
+ *           fontSize: `${theme.fonts.title.size}%`,
+ *         }}
+ *       >
  *         Styled with Auth0 Theme
  *       </h1>
- *       <p>Primary Color: {theme.colors?.primary}</p>
- *       <p>Font Family: {theme.fonts?.bodyFont?.name}</p>
+ *       <button
+ *         style={{
+ *           backgroundColor: theme.colors.primary_button,
+ *           borderRadius: theme.borders.button_border_radius,
+ *         }}
+ *       >
+ *         Primary Button
+ *       </button>
+ *       <p>Body text color: {theme.colors.body_text}</p>
  *     </div>
  *   );
  * };
- * ```
- *
- * @example
- * ```tsx
- * // Using theme for conditional styling
- * import React from 'react';
- * import { useAuth0Themes } from '@auth0/auth0-acul-react';
- *
- * const LoginButton: React.FC = () => {
- *   const theme = useAuth0Themes();
- *
- *   const buttonStyle = {
- *     backgroundColor: theme?.colors?.primary || '#007bff',
- *     color: theme?.colors?.primaryText || '#ffffff',
- *     border: `1px solid ${theme?.colors?.primaryBorder || 'transparent'}`,
- *     borderRadius: theme?.borders?.buttonBorderRadius || '4px',
- *     padding: '12px 24px',
- *     fontFamily: theme?.fonts?.bodyFont?.name || 'inherit',
- *     cursor: 'pointer'
- *   };
- *
- *   return (
- *     <button style={buttonStyle}>
- *       Login
- *     </button>
- *   );
- * };
- * ```
  */
+
 export const useAuth0Themes = (): FlattenedTheme | null => {
   return getCurrentThemeOptions();
 };

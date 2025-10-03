@@ -5,7 +5,6 @@ import {
   errorManager,
   type UseErrorOptions,
   type ErrorItem,
-  type ErrorKind,
 } from '../../../src/hooks/common/errors';
 
 // Modern React Testing Library approach - no act needed for synchronous operations
@@ -29,14 +28,14 @@ jest.mock('@auth0/auth0-acul-js', () => {
     Object.setPrototypeOf(error, SDKUsageError.prototype);
     return error;
   }
-  
+
   function UserInputError(message: string) {
     const error = new Error(message);
     error.name = 'UserInputError';
     Object.setPrototypeOf(error, UserInputError.prototype);
     return error;
   }
-  
+
   function Auth0ServerError(message: string) {
     const error = new Error(message);
     error.name = 'Auth0ServerError';
@@ -79,14 +78,14 @@ describe('useErrors', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    
+
     // Store callbacks for triggering re-renders
     let callbacks: Set<Function> = new Set();
-    
+
     // Reset all mocks and set up dynamic behavior
     let currentState = {
       server: [...mockServerErrors],
-      client: [...mockClientErrors], 
+      client: [...mockClientErrors],
       developer: [...mockDeveloperErrors],
     };
 
@@ -97,13 +96,13 @@ describe('useErrors', () => {
 
     // Create proper spies on the actual error store but override its behavior
     mockErrorStore = errorStore as jest.Mocked<typeof errorStore>;
-    
+
     jest.spyOn(mockErrorStore, 'subscribe').mockImplementation((callback) => {
       callbacks.add(callback);
       return () => callbacks.delete(callback);
     });
     jest.spyOn(mockErrorStore, 'snapshot').mockImplementation(() => currentState);
-    
+
     jest.spyOn(mockErrorStore, 'clear').mockImplementation((kinds?: any) => {
       if (!kinds || kinds.length === 0) {
         currentState = { server: [], client: [], developer: [] };
@@ -114,33 +113,33 @@ describe('useErrors', () => {
       }
       notifyCallbacks();
     });
-    
+
     jest.spyOn(mockErrorStore, 'push').mockImplementation((kind: any, errors: any) => {
       const errorsArray = Array.isArray(errors) ? errors : [errors];
-      const errorsWithIds = errorsArray.map((err: any) => ({ 
-        ...err, 
+      const errorsWithIds = errorsArray.map((err: any) => ({
+        ...err,
         id: ('id' in err) ? err.id : `mock-${Date.now()}-${Math.random()}`,
         kind
       }));
       (currentState as any)[kind] = [...(currentState as any)[kind], ...errorsWithIds];
       notifyCallbacks();
     });
-    
+
     jest.spyOn(mockErrorStore, 'replace').mockImplementation((kind: any, errors: any) => {
       const errorsArray = Array.isArray(errors) ? errors : [errors];
-      const errorsWithIds = errorsArray.map((err: any) => ({ 
-        ...err, 
+      const errorsWithIds = errorsArray.map((err: any) => ({
+        ...err,
         id: ('id' in err) ? err.id : `mock-${Date.now()}-${Math.random()}`,
         kind
       }));
       (currentState as any)[kind] = errorsWithIds;
       notifyCallbacks();
     });
-    
+
     jest.spyOn(mockErrorStore, 'replacePartial').mockImplementation((kind: any, errors: any, field: any) => {
       const errorsArray = Array.isArray(errors) ? errors : [errors];
-      const errorsWithIds = errorsArray.map((err: any) => ({ 
-        ...err, 
+      const errorsWithIds = errorsArray.map((err: any) => ({
+        ...err,
         id: ('id' in err) ? err.id : `mock-${Date.now()}-${Math.random()}`,
         kind,
         field
@@ -149,7 +148,7 @@ describe('useErrors', () => {
       (currentState as any)[kind] = [...(currentState as any)[kind], ...errorsWithIds];
       notifyCallbacks();
     });
-    
+
     jest.spyOn(mockErrorStore, 'remove').mockImplementation((kinds: any, predicate: any) => {
       const targetKinds = Array.isArray(kinds) ? kinds : (kinds ? [kinds] : ['server', 'client', 'developer']);
       targetKinds.forEach((kind: string) => {
@@ -238,7 +237,7 @@ describe('useErrors', () => {
 
       // Total errors should not include developer errors
       expect(result.current.errors).toHaveLength(4); // 2 server + 2 client
-      
+
       const devErrors = result.current.errors.byKind('developer');
       expect(devErrors).toHaveLength(1); // byKind still returns dev errors even if not in main array
     });
@@ -335,33 +334,7 @@ describe('useErrors', () => {
     });
   });
 
-  describe('reactivity', () => {
-    it.skip('should update when error store changes', () => {
-      let subscribeCallback: () => void = () => {};
-      mockErrorStore.subscribe.mockImplementation((callback) => {
-        subscribeCallback = callback;
-        return jest.fn();
-      });
 
-      const { result } = renderHook(() => useErrors());
-
-      expect(result.current.errors).toHaveLength(4);
-
-      // Simulate error store change
-      // Modern approach: direct state changes - React Testing Library handles updates automatically
-      mockErrorStore.snapshot.mockReturnValue({
-        server: [],
-        client: [{ id: '6', code: 'new_error', message: 'New error', field: 'test' }],
-        developer: [],
-      });
-
-      // Trigger state change - React Testing Library will handle the re-render
-      subscribeCallback();
-
-      expect(result.current.errors).toHaveLength(1);
-      expect(result.current.errors[0]).toMatchObject({ code: 'new_error', kind: 'client' });
-    });
-  });
 
   describe('memoization', () => {
     it('should memoize results when dependencies do not change', () => {
@@ -373,7 +346,7 @@ describe('useErrors', () => {
       const firstResult = result.current;
       const firstErrors = firstResult.errors;
       const firstErrorsList = firstResult.errors.byKind('client');
-      
+
       rerender({ includeDevErrors: false });
       const secondResult = result.current;
       const secondErrors = secondResult.errors;
@@ -409,31 +382,31 @@ describe('errorManager', () => {
   describe('client error management', () => {
     it('should replace client errors', () => {
       const errors = [{ code: 'test_error', message: 'Test error', field: 'test' }];
-      
+
       errorManager.replaceClientErrors(errors);
-      
+
       expect(mockErrorStore.replace).toHaveBeenCalledWith('client', errors);
     });
 
     it('should replace client errors by field', () => {
       const errors = [{ code: 'test_error', message: 'Test error', field: 'test' }];
-      
+
       errorManager.replaceClientErrors(errors, { byField: 'test' });
-      
+
       expect(mockErrorStore.replacePartial).toHaveBeenCalledWith('client', errors, 'test');
     });
 
     it('should clear client errors', () => {
       errorManager.clearClientErrors();
-      
+
       expect(mockErrorStore.clear).toHaveBeenCalledWith(['client']);
     });
 
     it('should push client errors', () => {
       const error = { code: 'test_error', message: 'Test error', field: 'test' };
-      
+
       errorManager.pushClientErrors(error);
-      
+
       expect(mockErrorStore.push).toHaveBeenCalledWith('client', error);
     });
   });
@@ -441,15 +414,15 @@ describe('errorManager', () => {
   describe('server error management', () => {
     it('should replace server errors', () => {
       const errors = [{ code: 'server_error', message: 'Server error', field: undefined }];
-      
+
       errorManager.replaceServerErrors(errors);
-      
+
       expect(mockErrorStore.replace).toHaveBeenCalledWith('server', errors);
     });
 
     it('should sync server errors', () => {
       errorManager.syncServerErrors();
-      
+
       expect(mockGetServerErrors).toHaveBeenCalled();
       expect(mockErrorStore.replace).toHaveBeenCalledWith('server', [
         { code: 'server_error', message: 'Server error', field: undefined },
@@ -460,31 +433,31 @@ describe('errorManager', () => {
   describe('developer error management', () => {
     it('should replace developer errors', () => {
       const errors = [{ code: 'dev_error', message: 'Developer error', field: undefined }];
-      
+
       errorManager.replaceDeveloperErrors(errors);
-      
+
       expect(mockErrorStore.replace).toHaveBeenCalledWith('developer', errors);
     });
 
     it('should clear developer errors', () => {
       errorManager.clearDeveloperErrors();
-      
+
       expect(mockErrorStore.clear).toHaveBeenCalledWith(['developer']);
     });
 
     it('should replace developer errors by field', () => {
       const errors = [{ code: 'dev_error', message: 'Developer error', field: 'username' }];
-      
+
       errorManager.replaceDeveloperErrors(errors, { byField: 'username' });
-      
+
       expect(mockErrorStore.replacePartial).toHaveBeenCalledWith('developer', errors, 'username');
     });
 
     it('should push developer errors', () => {
       const error = { code: 'dev_error', message: 'Developer error', field: undefined };
-      
+
       errorManager.pushDeveloperErrors(error);
-      
+
       expect(mockErrorStore.push).toHaveBeenCalledWith('developer', error);
     });
 
@@ -493,9 +466,9 @@ describe('errorManager', () => {
         { code: 'dev_error_1', message: 'Developer error 1', field: undefined },
         { code: 'dev_error_2', message: 'Developer error 2', field: 'password' }
       ];
-      
+
       errorManager.pushDeveloperErrors(errors);
-      
+
       expect(mockErrorStore.push).toHaveBeenCalledWith('developer', errors);
     });
   });
@@ -503,17 +476,17 @@ describe('errorManager', () => {
   describe('server error management with byField', () => {
     it('should replace server errors by field', () => {
       const errors = [{ code: 'server_error', message: 'Server error', field: 'email' }];
-      
+
       errorManager.replaceServerErrors(errors, { byField: 'email' });
-      
+
       expect(mockErrorStore.replacePartial).toHaveBeenCalledWith('server', errors, 'email');
     });
 
     it('should push server errors', () => {
       const error = { code: 'server_error', message: 'Server error', field: undefined };
-      
+
       errorManager.pushServerErrors(error);
-      
+
       expect(mockErrorStore.push).toHaveBeenCalledWith('server', error);
     });
 
@@ -522,15 +495,15 @@ describe('errorManager', () => {
         { code: 'server_error_1', message: 'Server error 1', field: undefined },
         { code: 'server_error_2', message: 'Server error 2', field: 'username' }
       ];
-      
+
       errorManager.pushServerErrors(errors);
-      
+
       expect(mockErrorStore.push).toHaveBeenCalledWith('server', errors);
     });
 
     it('should clear server errors', () => {
       errorManager.clearServerErrors();
-      
+
       expect(mockErrorStore.clear).toHaveBeenCalledWith(['server']);
     });
   });
@@ -577,7 +550,7 @@ describe('internal utility functions', () => {
         message: 'Test message',
         field: 'test_field'
       };
-      
+
       // Test that the error object structure is preserved
       expect(mockAuth0Error.code).toBe('test_code');
       expect(mockAuth0Error.message).toBe('Test message');
@@ -587,7 +560,7 @@ describe('internal utility functions', () => {
     it('should handle regular Error objects', () => {
       const error = new Error('Test error');
       error.name = 'TestError';
-      
+
       expect(error.message).toBe('Test error');
       expect(error.name).toBe('TestError');
     });
@@ -621,45 +594,45 @@ describe('internal utility functions', () => {
       }).toThrow(testError);
 
       expect(consoleSpy).toHaveBeenCalledWith('[auth0-acul-react] Unhandled error:', testError);
-      
+
       consoleSpy.mockRestore();
     });
 
     it('should handle successful synchronous function', () => {
       const successFunction = () => 'success';
-      
+
       const result = errorManager.withError(successFunction);
-      
+
       expect(result).toBe('success');
     });
 
     it('should handle successful promise-returning function', async () => {
       const promiseFunction = () => Promise.resolve('success');
-      
+
       const result = errorManager.withError(promiseFunction);
-      
+
       await expect(result).resolves.toBe('success');
     });
 
     it('should handle direct promise that resolves', async () => {
       const promise = Promise.resolve('success');
-      
+
       const result = errorManager.withError(promise);
-      
+
       await expect(result).resolves.toBe('success');
     });
 
     it('should handle direct promise that rejects with unclassified error', async () => {
       const testError = new Error('Promise error');
       const promise = Promise.reject(testError);
-      
+
       const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
-      
+
       const result = errorManager.withError(promise);
-      
+
       await expect(result).rejects.toThrow(testError);
       expect(consoleSpy).toHaveBeenCalledWith('[auth0-acul-react] Unhandled error:', testError);
-      
+
       consoleSpy.mockRestore();
     });
   });
@@ -668,24 +641,24 @@ describe('internal utility functions', () => {
     it('should test filtering behavior', () => {
       // This test covers the filterByField function indirectly
       // by testing that byField works correctly with different scenarios
-      
+
       // Test that byField is callable with different parameters
       const { result } = renderHook(() => useErrors());
-      
+
       // These calls exercise the filterByField function internally
       const allErrors = result.current.errors;
       const fieldFilteredEmpty = result.current.errors.byField('nonexistent_field');
       const kindFiltered = result.current.errors.byKind('client');
-      
+
       // Basic assertions to ensure the methods work
       expect(Array.isArray(allErrors)).toBe(true);
       expect(Array.isArray(fieldFilteredEmpty)).toBe(true);
       expect(Array.isArray(kindFiltered)).toBe(true);
-      
+
       // Test byField with opts parameter to cover more code paths
       const fieldWithKind = result.current.errors.byField('test', { kind: 'client' });
       expect(Array.isArray(fieldWithKind)).toBe(true);
-      
+
       // Test byKind with opts parameter 
       const kindWithField = result.current.errors.byKind('server', { field: 'test' });
       expect(Array.isArray(kindWithField)).toBe(true);
@@ -723,11 +696,11 @@ describe('internal utility functions', () => {
     it('should test filterByField with no field parameter (line 54)', () => {
       // This test specifically targets the filterByField function's early return when !field
       const { result } = renderHook(() => useErrors());
-      
+
       // Modern approach: direct calls to errorManager - these are synchronous operations
       errorManager.clearClientErrors();
       errorManager.clearServerErrors();
-      
+
       errorManager.replaceClientErrors([
         { code: 'test1', message: 'Test 1', field: 'field1' },
         { code: 'test2', message: 'Test 2', field: 'field2' }
@@ -737,11 +710,11 @@ describe('internal utility functions', () => {
       // which triggers the early return on line 54: if (!field) return list;
       const allClientErrors = result.current.errors.byKind('client');
       expect(allClientErrors.length).toBeGreaterThanOrEqual(1);
-      
+
       // This specifically tests the filterByField function when field is undefined
       const serverErrorsNoField = result.current.errors.byKind('server'); // no opts, so field is undefined
       expect(Array.isArray(serverErrorsNoField)).toBe(true);
-      
+
       // Additional test to ensure we cover the byField method calling filterByField
       const byFieldAll = result.current.errors.byField('nonexistent');
       expect(Array.isArray(byFieldAll)).toBe(true);
@@ -750,7 +723,7 @@ describe('internal utility functions', () => {
     it('should cover the remaining uncovered lines (54, 145)', () => {
       // Test line 54: filterByField early return when !field
       const { result } = renderHook(() => useErrors());
-      
+
       // Clear state - direct calls without act
       errorManager.clearClientErrors();
       errorManager.clearServerErrors();
@@ -766,17 +739,17 @@ describe('internal utility functions', () => {
       // it uses the 'all' array which goes through filterByField with field parameter
       const result1 = result.current.errors.byField('testfield'); // with field
       const result2 = result.current.errors.byField(''); // empty field
-      
+
       expect(Array.isArray(result1)).toBe(true);
       expect(Array.isArray(result2)).toBe(true);
 
       // Test line 145: getServerErrors returns undefined scenario
       jest.clearAllMocks();
       (mockGetServerErrors as jest.Mock).mockReturnValueOnce(undefined);
-      
+
       // Force re-initialization by creating new hook instance
       const { result: newResult } = renderHook(() => useErrors());
-      
+
       // Verify getServerErrors was called and handled undefined properly
       expect(mockGetServerErrors).toHaveBeenCalled();
       expect(mockErrorStore.replace).toHaveBeenCalledWith('server', []);
@@ -785,31 +758,31 @@ describe('internal utility functions', () => {
 
     it('should cover line 145: useEffect early return on re-render', () => {
       jest.clearAllMocks();
-      
+
       // Mock getServerErrors for initial call
       (mockGetServerErrors as jest.Mock).mockReturnValue([
         { code: 'init_error', message: 'Init error', field: undefined }
       ]);
-      
+
       const { result, rerender } = renderHook(() => useErrors());
-      
+
       // Initial render should call getServerErrors
       expect(mockGetServerErrors).toHaveBeenCalledTimes(1);
       expect(mockErrorStore.replace).toHaveBeenCalledWith('server', [
         { code: 'init_error', message: 'Init error', field: undefined }
       ]);
-      
+
       // Clear the mocks to track subsequent calls
       jest.clearAllMocks();
-      
+
       // Re-render the hook - this should trigger the early return on line 145
       // because didInit.current is already true
       rerender();
-      
+
       // getServerErrors should NOT be called again due to the early return
       expect(mockGetServerErrors).not.toHaveBeenCalled();
       expect(mockErrorStore.replace).not.toHaveBeenCalled();
-      
+
       // The hook should still work normally
       expect(Array.isArray(result.current.errors)).toBe(true);
     });
@@ -817,7 +790,7 @@ describe('internal utility functions', () => {
     it('should definitely cover line 145: force useEffect early return', () => {
       // This test will specifically trigger the early return in useEffect
       jest.clearAllMocks();
-      
+
       let renderCount = 0;
       const TestComponent = () => {
         renderCount++;
@@ -826,20 +799,20 @@ describe('internal utility functions', () => {
       };
 
       const { result, rerender } = renderHook(() => TestComponent());
-      
+
       // First render - should initialize
       expect(renderCount).toBe(1);
-      
+
       // Force multiple re-renders to ensure the useEffect runs and then hits early return
       rerender();
       expect(renderCount).toBe(2);
-      
-      rerender(); 
+
+      rerender();
       expect(renderCount).toBe(3);
-      
+
       rerender();
       expect(renderCount).toBe(4);
-      
+
       // The useEffect should have run on first render and then hit early returns
       expect(result.current).toBeDefined();
       expect(Array.isArray(result.current.errors)).toBe(true);
@@ -847,22 +820,22 @@ describe('internal utility functions', () => {
 
     it('should hit line 145 by testing initialization pattern', () => {
       // Create a test that forces the specific scenario
-      jest.clearAllMocks(); 
-      
+      jest.clearAllMocks();
+
       const HookWrapper = () => {
         const [, forceUpdate] = React.useState({});
         const errors = useErrors();
-        
+
         // Force a re-render on mount
         React.useEffect(() => {
           forceUpdate({});
         }, []);
-        
+
         return errors;
       };
 
       const { result } = renderHook(() => HookWrapper());
-      
+
       // This should ensure both the initial render and the re-render happen
       expect(result.current).toBeDefined();
       expect(typeof result.current.hasError).toBe('boolean');
@@ -933,14 +906,14 @@ describe('internal utility functions', () => {
 
     it('should test withError promise rejection paths (lines 235, 241)', async () => {
       const userInputError = new UserInputError('Async client error');
-      Object.defineProperty(userInputError, 'code', { 
-        value: 'async_validation_error', 
-        writable: false 
+      Object.defineProperty(userInputError, 'code', {
+        value: 'async_validation_error',
+        writable: false
       });
 
       // Test promise-returning function that rejects - line 235
       const rejectingPromiseFunction = () => Promise.reject(userInputError);
-      
+
       try {
         await errorManager.withError(rejectingPromiseFunction);
         fail('Should have thrown an error');
@@ -959,7 +932,7 @@ describe('internal utility functions', () => {
 
       // Test direct promise that rejects - line 241
       const directRejectedPromise = Promise.reject(userInputError);
-      
+
       try {
         await errorManager.withError(directRejectedPromise);
         fail('Should have thrown an error');
@@ -978,17 +951,17 @@ describe('internal utility functions', () => {
     it('should test getServerErrors undefined scenario (line 145)', () => {
       // Clear all mocks and setup fresh state
       jest.clearAllMocks();
-      
+
       // Mock getServerErrors to return undefined for this specific test
       (mockGetServerErrors as jest.Mock).mockReturnValueOnce(undefined);
-      
+
       // Create a fresh hook instance
       const { result } = renderHook(() => useErrors());
-      
+
       // The hook should handle undefined getServerErrors gracefully
       expect(mockGetServerErrors).toHaveBeenCalled();
       expect(mockErrorStore.replace).toHaveBeenCalledWith('server', []);
-      
+
       // Verify the hook works normally
       expect(Array.isArray(result.current.errors)).toBe(true);
     });
@@ -1030,7 +1003,7 @@ describe('internal utility functions', () => {
     it('should test classifyKind with actual instanceof checks (lines 30, 33, 36)', () => {
       // This test ensures the actual instanceof checks in classifyKind are covered
       // by using the withError function which calls classifyKind internally
-      
+
       const createMockError = (Constructor: any, message: string) => {
         const error = Object.create(Constructor.prototype);
         error.name = Constructor.name;
@@ -1049,7 +1022,7 @@ describe('internal utility functions', () => {
       // Test each error type to cover all instanceof branches
       errors.forEach((error, index) => {
         jest.clearAllMocks();
-        
+
         expect(() => {
           errorManager.withError(() => {
             throw error;
@@ -1070,13 +1043,13 @@ describe('internal utility functions', () => {
     it('should test cache mechanism and complex error scenarios', () => {
       // Clear all existing state first
       jest.clearAllMocks();
-      
+
       const { result } = renderHook(() => useErrors());
-      
+
       // Clear any existing errors - direct calls
       errorManager.clearClientErrors();
       errorManager.clearServerErrors();
-      
+
       // Add specific test errors
       const testErrors = [
         { code: 'cache_test', message: 'Cache test', field: undefined }
@@ -1085,12 +1058,12 @@ describe('internal utility functions', () => {
       errorManager.replaceClientErrors(testErrors);
 
       const firstCall = result.current.errors.byKind('client');
-      
+
       // Replace with same errors to potentially hit cache
       errorManager.replaceClientErrors(testErrors);
 
       const secondCall = result.current.errors.byKind('client');
-      
+
       // Both calls should return arrays (testing the cache mechanism indirectly)
       expect(Array.isArray(firstCall)).toBe(true);
       expect(Array.isArray(secondCall)).toBe(true);
@@ -1104,11 +1077,11 @@ describe('internal utility functions', () => {
       // This exercises various code paths in the filtering logic
       const serverByField = result.current.errors.byKind('server', { field: 'field1' });
       const fieldByKind = result.current.errors.byField('field2', { kind: 'server' });
-      
+
       // Verify we have the expected server errors
       const allServerErrors = result.current.errors.byKind('server');
       expect(allServerErrors.length).toBeGreaterThanOrEqual(1);
-      
+
       expect(Array.isArray(serverByField)).toBe(true);
       expect(Array.isArray(fieldByKind)).toBe(true);
     });
@@ -1222,17 +1195,17 @@ describe('internal utility functions', () => {
       // Call byKind multiple times to test cache hits
       const firstClientCall = result.current.errors.byKind('client');
       const secondClientCall = result.current.errors.byKind('client');
-      
+
       // Cache should return the same reference for the same kind
       expect(firstClientCall).toBe(secondClientCall);
 
       // Test different kinds to ensure separate caches
       const serverResult = result.current.errors.byKind('server');
       const devResult = result.current.errors.byKind('developer');
-      
+
       expect(Array.isArray(serverResult)).toBe(true);
       expect(Array.isArray(devResult)).toBe(true);
-      
+
       // Verify cache works by calling again and checking references
       expect(result.current.errors.byKind('server')).toBe(serverResult);
       expect(result.current.errors.byKind('developer')).toBe(devResult);
@@ -1243,7 +1216,7 @@ describe('internal utility functions', () => {
       errorManager.replaceClientErrors([
         { code: 'test1', message: 'Test 1', field: 'field1' }
       ], { byField: 'field1' });
-      
+
       expect(mockErrorStore.replacePartial).toHaveBeenCalledWith('client', [
         { code: 'test1', message: 'Test 1', field: 'field1' }
       ], 'field1');
@@ -1254,7 +1227,7 @@ describe('internal utility functions', () => {
       errorManager.replaceClientErrors([
         { code: 'test2', message: 'Test 2', field: undefined }
       ]);
-      
+
       expect(mockErrorStore.replace).toHaveBeenCalledWith('client', [
         { code: 'test2', message: 'Test 2', field: undefined }
       ]);
@@ -1263,7 +1236,7 @@ describe('internal utility functions', () => {
       errorManager.replaceDeveloperErrors([
         { code: 'dev1', message: 'Dev 1', field: 'devfield' }
       ], { byField: 'devfield' });
-      
+
       expect(mockErrorStore.replacePartial).toHaveBeenCalledWith('developer', [
         { code: 'dev1', message: 'Dev 1', field: 'devfield' }
       ], 'devfield');
@@ -1272,7 +1245,7 @@ describe('internal utility functions', () => {
       errorManager.replaceServerErrors([
         { code: 'server1', message: 'Server 1', field: 'serverfield' }
       ], { byField: 'serverfield' });
-      
+
       expect(mockErrorStore.replacePartial).toHaveBeenCalledWith('server', [
         { code: 'server1', message: 'Server 1', field: 'serverfield' }
       ], 'serverfield');
@@ -1281,7 +1254,7 @@ describe('internal utility functions', () => {
     it('should test hasError boolean branch', async () => {
       // Mock getServerErrors to return empty array for clean state
       mockGetServerErrors.mockReturnValue([]);
-      
+
       // Clear all errors first for clean slate - modern approach with single act for state changes
       updateErrors(() => {
         errorManager.clearClientErrors();
@@ -1290,14 +1263,14 @@ describe('internal utility functions', () => {
       });
 
       const { result } = renderHook(() => useErrors());
-      
+
       // Should have no errors (hasError = false)
       expect(result.current.hasError).toBe(false);
       expect(result.current.errors.length).toBe(0);
 
       // Now add an error directly to the mock store and trigger notification
       const testError = { id: 'test-id', code: 'test', message: 'Test Error', kind: 'client' as const };
-      
+
       updateErrors(() => {
         // Mock the store to return our test error
         mockErrorStore.snapshot.mockReturnValue({
@@ -1305,14 +1278,14 @@ describe('internal utility functions', () => {
           server: [],
           developer: []
         });
-        
+
         // Trigger the store's listeners to simulate the state change
         const callbacks = (mockErrorStore.subscribe as jest.Mock).mock.calls.map(call => call[0]);
         act(() => {
           callbacks.forEach(callback => callback());
         });
       });
-      
+
       // Modern approach: use waitFor for async state updates when needed
       await waitFor(() => {
         expect(result.current.hasError).toBe(true);
@@ -1320,99 +1293,7 @@ describe('internal utility functions', () => {
       });
     });
 
-    it.skip('should test includeDevErrors conditional branch', () => {
-      // Mock getServerErrors to return empty array
-      mockGetServerErrors.mockReturnValue([]);
-      
-      // Clear all errors first
-      updateErrors(() => {
-        errorManager.clearClientErrors();
-        errorManager.clearServerErrors(); 
-        errorManager.clearDeveloperErrors();
-      });
 
-      // Add specific errors for this test
-      updateErrors(() => {
-        errorManager.pushDeveloperErrors({ code: 'dev', message: 'dev error', field: undefined });
-        errorManager.pushClientErrors({ code: 'client', message: 'client error', field: undefined });
-      });
-
-      // Test with includeDevErrors = false (default)
-      const { result: resultFalse } = renderHook(() => useErrors({ includeDevErrors: false }));
-      
-      // Should not include developer errors
-      expect(resultFalse.current.errors.some(e => e.kind === 'developer')).toBe(false);
-      expect(resultFalse.current.errors.some(e => e.kind === 'client')).toBe(true);
-
-      // Test with includeDevErrors = true
-      const { result: resultTrue } = renderHook(() => useErrors({ includeDevErrors: true }));
-      
-      // Should include developer errors
-      expect(resultTrue.current.errors.some(e => e.kind === 'developer')).toBe(true);
-      expect(resultTrue.current.errors.some(e => e.kind === 'client')).toBe(true);
-    });
-
-    it.skip('should test ternary operator branches', () => {
-      // Mock getServerErrors to return empty array
-      mockGetServerErrors.mockReturnValue([]);
-      
-      // Clear errors and add test-specific ones
-      updateErrors(() => {
-        errorManager.clearClientErrors();
-        errorManager.clearServerErrors();
-        errorManager.clearDeveloperErrors();
-        
-        // Add specific errors for testing
-        errorManager.pushClientErrors({ code: 'test1', message: 'Test 1', field: 'field1' });
-        errorManager.pushClientErrors({ code: 'test2', message: 'Test 2', field: 'field2' });
-      });
-
-      const { result } = renderHook(() => useErrors());
-
-      // Verify errors were added correctly
-      expect(result.current.errors.length).toBeGreaterThan(0);
-
-      // opts?.field is truthy - should filter
-      const filtered = result.current.errors.byKind('client', { field: 'field1' });
-      expect(filtered).toHaveLength(1);
-
-      // opts?.field is falsy - should not filter
-      const unfiltered = result.current.errors.byKind('client');
-      expect(unfiltered.length).toBeGreaterThan(0);
-    });
-
-    it.skip('should test logical AND branches in filtering', () => {
-      // Mock getServerErrors to return empty array for this test
-      mockGetServerErrors.mockReturnValue([]);
-      
-      // Clear all errors first
-      updateErrors(() => {
-        errorManager.clearClientErrors();
-        errorManager.clearServerErrors();
-        errorManager.clearDeveloperErrors();
-      });
-
-      // Test cases where e.field && e.field === field
-      updateErrors(() => {
-        errorManager.pushClientErrors({ code: 'with_field', message: 'With Field', field: 'testfield' });
-        errorManager.pushClientErrors({ code: 'no_field', message: 'No Field', field: undefined });
-        errorManager.pushClientErrors({ code: 'different_field', message: 'Different Field', field: 'otherfield' });
-      });
-
-      // Create hook after adding errors
-      const { result } = renderHook(() => useErrors());
-
-      // Verify errors were added correctly
-      expect(result.current.errors.length).toBeGreaterThan(0);
-
-      // This should test e.field && e.field === field branches
-      const matchingField = result.current.errors.byKind('client', { field: 'testfield' });
-      expect(matchingField).toHaveLength(1);
-      expect(matchingField[0].field).toBe('testfield');
-
-      const nonMatchingField = result.current.errors.byKind('client', { field: 'nonexistent' });
-      expect(nonMatchingField).toHaveLength(0);
-    });
 
     it('should achieve complete coverage including line 145', () => {
       // This test ensures we hit the useEffect early return path (line 145)
@@ -1421,21 +1302,21 @@ describe('internal utility functions', () => {
 
       // Create a hook that will re-render
       const { result, rerender } = renderHook(() => useErrors());
-      
+
       // Verify the hook works on first render
       expect(result.current).toBeDefined();
       expect(typeof result.current.hasError).toBe('boolean');
-      
+
       // getServerErrors should be called once on first render
       expect(mockGetServerErrors).toHaveBeenCalledTimes(1);
-      
+
       // Force a re-render - this should trigger the early return (line 145)
       rerender();
-      
+
       // getServerErrors should still be called only once because of the early return
       // This proves line 145 (the early return) was executed
       expect(mockGetServerErrors).toHaveBeenCalledTimes(1);
-      
+
       // Hook should still work after re-render
       expect(result.current).toBeDefined();
       expect(typeof result.current.hasError).toBe('boolean');

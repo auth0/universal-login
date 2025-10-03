@@ -1,5 +1,5 @@
 import { TransactionOverride } from '../../../../src/screens/login/transaction-override';
-import { isSignupEnabled, isForgotPasswordEnabled, isPasskeyEnabled, getPasswordPolicy, getAllowedIdentifiers } from '../../../../src/shared/transaction';
+import { isSignupEnabled, isForgotPasswordEnabled, isPasskeyEnabled, getPasswordPolicy, getActiveIdentifiers } from '../../../../src/shared/transaction';
 import { Transaction } from '../../../../src/models/transaction';
 import type { TransactionContext } from '../../../../interfaces/models/transaction';
 
@@ -19,7 +19,7 @@ describe('TransactionOverride', () => {
     (isForgotPasswordEnabled as jest.Mock).mockReturnValue(false);
     (isPasskeyEnabled as jest.Mock).mockReturnValue(true);
     (getPasswordPolicy as jest.Mock).mockReturnValue('strong');
-    (getAllowedIdentifiers as jest.Mock).mockReturnValue(['email', 'phone']);
+    (getActiveIdentifiers as jest.Mock).mockReturnValue(['email', 'phone']);
 
     transactionOverride = new TransactionOverride(transactionContext);
   });
@@ -56,8 +56,8 @@ describe('TransactionOverride', () => {
     expect(getPasswordPolicy).toHaveBeenCalledWith(transactionContext);
   });
 
-  it('should call getAllowedIdentifiers with transactionContext', () => {
-    expect(getAllowedIdentifiers).toHaveBeenCalledWith(transactionContext);
+  it('should call getActiveIdentifiers with transactionContext', () => {
+    expect(getActiveIdentifiers).toHaveBeenCalledWith(transactionContext);
   });
 
   describe('getAllowedIdentifiers', () => {
@@ -93,7 +93,7 @@ describe('TransactionOverride', () => {
     (isForgotPasswordEnabled as jest.Mock).mockReturnValue(undefined);
     (isPasskeyEnabled as jest.Mock).mockReturnValue(undefined);
     (getPasswordPolicy as jest.Mock).mockReturnValue(undefined);
-    (getAllowedIdentifiers as jest.Mock).mockReturnValue(undefined);
+    (getActiveIdentifiers as jest.Mock).mockReturnValue(undefined);
   
     const emptyTransactionOverride = new TransactionOverride({} as TransactionContext);
   

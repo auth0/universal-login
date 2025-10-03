@@ -94,7 +94,7 @@ describe('instance-store', () => {
       class LoginScreen {
         static screenIdentifier = 'login-screen';
         public data: LoginData = { email: '', password: '' };
-        
+
         setEmail(email: string) {
           this.data.email = email;
         }
@@ -104,7 +104,7 @@ describe('instance-store', () => {
 
       expect(instance).toBeInstanceOf(LoginScreen);
       expect(instance?.data).toEqual({ email: '', password: '' });
-      
+
       instance?.setEmail('test@example.com');
       expect(instance?.data.email).toBe('test@example.com');
     });
@@ -186,7 +186,7 @@ describe('instance-store', () => {
       }
 
       registerScreen(ClearTestScreen);
-      
+
       // Verify instance exists
       expect(() => getScreen()).not.toThrow();
 
@@ -250,7 +250,7 @@ describe('instance-store', () => {
 
       class ErrorScreen {
         static screenIdentifier = 'error-screen';
-        
+
         constructor() {
           throw new Error('Constructor error');
         }
@@ -264,7 +264,7 @@ describe('instance-store', () => {
     it('should handle screen identifier comparison edge cases', () => {
       // Clear any existing instance first
       clearScreen();
-      
+
       // Test with null screen name - should return null for any identifier
       mockGetCurrentScreenOptions.mockReturnValue(createMockScreenOptions(null));
 
@@ -277,7 +277,7 @@ describe('instance-store', () => {
 
       // Clear for next test
       clearScreen();
-      
+
       // Test with special characters  
       mockGetCurrentScreenOptions.mockReturnValue(createMockScreenOptions('special-chars-@#$%'));
 
@@ -300,7 +300,7 @@ describe('instance-store', () => {
 
       const instance = registerScreen(IsolationScreen);
       expect(instance).toBeInstanceOf(IsolationScreen);
-      
+
       clearScreen();
 
       // Switch to different screen - note the constructor still expects 'different-screen' to match
@@ -349,7 +349,7 @@ describe('instance-store', () => {
       expect(instance?.initTime).toBeLessThanOrEqual(Date.now());
       expect(instance?.config).toEqual({ theme: 'dark', locale: 'en' });
       expect(instance?.handlers.size).toBe(2);
-      
+
       const clickHandler = instance?.getHandler('click');
       expect(clickHandler?.()).toBe('clicked');
     });
@@ -387,7 +387,7 @@ describe('instance-store', () => {
 
       class BaseScreen {
         public baseProperty = 'base';
-        
+
         baseMethod() {
           return 'base method';
         }
@@ -396,7 +396,7 @@ describe('instance-store', () => {
       class ChildScreen extends BaseScreen {
         static screenIdentifier = 'child-screen';
         public childProperty = 'child';
-        
+
         childMethod() {
           return 'child method';
         }
@@ -473,7 +473,7 @@ describe('instance-store', () => {
 
       testCases.forEach((mockOptions, index) => {
         clearScreen();
-        
+
         const fullOptions: CurrentScreenOptions = {
           client: { id: 'test-client', metadata: null },
           organization: null,
@@ -492,7 +492,7 @@ describe('instance-store', () => {
         }
 
         const instance = registerScreen(TestScreen);
-        
+
         if (mockOptions.screen?.name === 'test') {
           expect(instance).toBeInstanceOf(TestScreen);
           expect(instance?.index).toBe(index);

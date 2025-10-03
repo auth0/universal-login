@@ -2,7 +2,7 @@ import { TransactionOverride } from '../../../../src/screens/login-id/transactio
 import {
   isUsernameRequired,
   getUsernamePolicy,
-  getAllowedIdentifiers,
+  getActiveIdentifiers,
   isSignupEnabled,
   isForgotPasswordEnabled,
   isPasskeyEnabled,
@@ -25,7 +25,7 @@ describe('TransactionOverride', () => {
     (isPasskeyEnabled as jest.Mock).mockReturnValue(true);
     (isUsernameRequired as jest.Mock).mockReturnValue(true);
     (getUsernamePolicy as jest.Mock).mockReturnValue('strict');
-    (getAllowedIdentifiers as jest.Mock).mockReturnValue(['email', 'phone']);
+    (getActiveIdentifiers as jest.Mock).mockReturnValue(['email', 'phone']);
 
     transactionOverride = new TransactionOverride(transactionContext);
   });
@@ -60,7 +60,7 @@ describe('TransactionOverride', () => {
     expect(isPasskeyEnabled).toHaveBeenCalledWith(transactionContext);
     expect(isUsernameRequired).toHaveBeenCalledWith(transactionContext);
     expect(getUsernamePolicy).toHaveBeenCalledWith(transactionContext);
-    expect(getAllowedIdentifiers).toHaveBeenCalledWith(transactionContext);
+    expect(getActiveIdentifiers).toHaveBeenCalledWith(transactionContext);
   });
 
   describe('getAllowedIdentifiers', () => {
@@ -87,7 +87,7 @@ describe('TransactionOverride', () => {
     (isPasskeyEnabled as jest.Mock).mockReturnValue(undefined);
     (isUsernameRequired as jest.Mock).mockReturnValue(undefined);
     (getUsernamePolicy as jest.Mock).mockReturnValue(undefined);
-    (getAllowedIdentifiers as jest.Mock).mockReturnValue(undefined);
+    (getActiveIdentifiers as jest.Mock).mockReturnValue(undefined);
 
     const emptyTransactionOverride = new TransactionOverride({} as TransactionContext);
 
