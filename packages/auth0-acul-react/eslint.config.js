@@ -12,12 +12,12 @@ export default [
   ...tseslint.configs.recommendedTypeChecked,
   prettier,
   {
-    files: ['src/**/*.{ts,tsx}'],
+    files: ['**/*.{ts,tsx}'],
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
-        project: ['./tsconfig.json'],
-        tsconfigRootDir: process.cwd(),
+        project: true,
+        tsconfigRootDir: __dirname,
       },
     },
     plugins: { import: importPlugin, prettier: eslintPluginPrettier },
