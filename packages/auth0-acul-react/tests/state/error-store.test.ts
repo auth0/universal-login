@@ -445,6 +445,30 @@ describe('error-store', () => {
   });
 
   describe('listsEqual utility function', () => {
+    it('should hit reference equality optimization branch via internal manipulation', () => {
+  
+      errorStore.clear();
+      
+      const currentSnapshot = errorStore.snapshot();
+      const currentClientArray = currentSnapshot.client;
+      
+      // Spy on the private normalize method through the errorStore instance
+      const normalizeSpy = jest.spyOn(errorStore as any, 'normalize');
+      
+      // Make normalize return the exact same array reference from the bucket
+      normalizeSpy.mockReturnValueOnce(currentClientArray);
+      
+      const listener = jest.fn();
+      errorStore.subscribe(listener);
+      
+      errorStore.replace('client', []);
+      
+      expect(listener).not.toHaveBeenCalled();
+      
+      // Restore the spy
+      normalizeSpy.mockRestore();
+    });
+
     it('should detect equal lists', () => {
       const list1 = [
         { id: '1', code: 'error1', message: 'Error 1', field: undefined },

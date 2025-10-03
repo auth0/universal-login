@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react';
+import { renderHook, waitFor, act } from '@testing-library/react';
 import { useResend, UseResendOptions } from '../../../src/hooks/utility/resend-manager';
 import { getScreen } from '../../../src/state/instance-store';
 
@@ -133,6 +133,75 @@ describe('useResend', () => {
       result.current.startResend();
 
       expect(mockStartResend).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('onStatusChange callback', () => {
+    it('should update remaining and disabled state when onStatusChange is called', async () => {
+      const { result } = renderHook(() => useResend());
+      
+      act(() => {
+        mockOnStatusChange(30, true);
+      });
+      
+      await waitFor(() => {
+        expect(result.current.remaining).toBe(30);
+        expect(result.current.disabled).toBe(true);
+      });
+    });
+
+    it('should update state multiple times when onStatusChange is called', async () => {
+      const { result } = renderHook(() => useResend());
+
+      // Simulate countdown
+      act(() => {
+        mockOnStatusChange(10, true);
+      });
+      
+      await waitFor(() => {
+        expect(result.current.remaining).toBe(10);
+        expect(result.current.disabled).toBe(true);
+      });
+
+      act(() => {
+        mockOnStatusChange(5, true);
+      });
+      
+      await waitFor(() => {
+        expect(result.current.remaining).toBe(5);
+        expect(result.current.disabled).toBe(true);
+      });
+
+      act(() => {
+        mockOnStatusChange(0, false);
+      });
+      
+      await waitFor(() => {
+        expect(result.current.remaining).toBe(0);
+        expect(result.current.disabled).toBe(false);
+      });
+    });
+
+    it('should handle onStatusChange with different values', async () => {
+      const { result } = renderHook(() => useResend());
+
+      act(() => {
+        mockOnStatusChange(100, true);
+      });
+      
+      await waitFor(() => {
+        expect(result.current.remaining).toBe(100);
+        expect(result.current.disabled).toBe(true);
+      });
+
+      act(() => {
+        mockOnStatusChange(0, false);
+      });
+      
+      await waitFor(() => {
+        expect(result.current.remaining).toBe(0);
+        expect(result.current.disabled).toBe(false);
+      });
     });
   });
 
