@@ -19,7 +19,62 @@ function generateTestFile(screenFileName: string): string {
   const screenName = screenFileName.replace('.tsx', '');
   const pascalName = toPascalCase(screenName);
   const jsImportPath = `@auth0/auth0-acul-js/${screenName}`;
-  const instanceHookName = `use${pascalName}`;
+  
+  // Read the screen file to detect which utility hooks it exports
+  const screenFilePath = path.join(SCREENS_PATH, screenFileName);
+  const screenContent = fs.readFileSync(screenFilePath, 'utf8');
+  
+  // Detect which utility hooks are exported
+  const utilityHookMocks: { hookName: string; modulePath: string }[] = [];
+  
+  if (screenContent.includes("from '../hooks/utility/login-identifiers'")) {
+    utilityHookMocks.push({
+      hookName: 'useLoginIdentifiers',
+      modulePath: '../../src/hooks/utility/login-identifiers'
+    });
+  }
+  
+  if (screenContent.includes("from '../hooks/utility/signup-identifiers'")) {
+    utilityHookMocks.push({
+      hookName: 'useSignupIdentifiers',
+      modulePath: '../../src/hooks/utility/signup-identifiers'
+    });
+  }
+  
+  if (screenContent.includes("from '../hooks/utility/validate-password'")) {
+    utilityHookMocks.push({
+      hookName: 'usePasswordValidation',
+      modulePath: '../../src/hooks/utility/validate-password'
+    });
+  }
+  
+  if (screenContent.includes("from '../hooks/utility/validate-username'")) {
+    utilityHookMocks.push({
+      hookName: 'useUsernameValidation',
+      modulePath: '../../src/hooks/utility/validate-username'
+    });
+  }
+  
+  if (screenContent.includes("from '../hooks/utility/resend-manager'")) {
+    utilityHookMocks.push({
+      hookName: 'useResend',
+      modulePath: '../../src/hooks/utility/resend-manager'
+    });
+  }
+  
+  if (screenContent.includes("from '../hooks/utility/polling-manager'")) {
+    utilityHookMocks.push({
+      hookName: 'useMfaPolling',
+      modulePath: '../../src/hooks/utility/polling-manager'
+    });
+  }
+  
+  // Generate utility hook mocks section
+  const utilityMocksSection = utilityHookMocks.length > 0
+    ? '\n' + utilityHookMocks.map(({ hookName, modulePath }) => 
+        `// Mock utility hook: ${hookName}\njest.mock('${modulePath}', () => ({\n  ${hookName}: jest.fn(),\n}));`
+      ).join('\n\n')
+    : '';
   
   return `import { renderHook } from '@testing-library/react';
 import * as ${pascalName}Screen from '../../src/screens/${screenName}';
@@ -36,9 +91,7 @@ jest.mock('@auth0/auth0-acul-js', () => ({
 
 // Mock the core SDK class
 jest.mock('${jsImportPath}', () => {
-  return jest.fn().mockImplementation(() => ({
-    // Mock methods will be defined per test
-  }));
+  return jest.fn().mockImplementation(() => {});
 }, { virtual: true });
 
 // Mock the instance store
@@ -65,32 +118,7 @@ jest.mock('../../src/hooks', () => ({
   useCurrentScreen: jest.fn(),
   useErrors: jest.fn(),
   useAuth0Themes: jest.fn(),
-}));
-
-// Mock utility hooks based on screen type
-jest.mock('../../src/hooks/utility/login-identifiers', () => ({
-  useLoginIdentifiers: jest.fn(),
-}));
-
-jest.mock('../../src/hooks/utility/signup-identifiers', () => ({
-  useSignupIdentifiers: jest.fn(),
-}));
-
-jest.mock('../../src/hooks/utility/validate-password', () => ({
-  usePasswordValidation: jest.fn(),
-}));
-
-jest.mock('../../src/hooks/utility/validate-username', () => ({
-  useUsernameValidation: jest.fn(),
-}));
-
-jest.mock('../../src/hooks/utility/resend-manager', () => ({
-  useResend: jest.fn(),
-}));
-
-jest.mock('../../src/hooks/utility/polling-manager', () => ({
-  useMfaPolling: jest.fn(),
-}));
+}));${utilityMocksSection}
 
 describe('${pascalName} Screen', () => {
   beforeEach(() => {

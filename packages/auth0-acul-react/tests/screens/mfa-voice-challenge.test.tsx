@@ -13,9 +13,7 @@ jest.mock('@auth0/auth0-acul-js', () => ({
 
 // Mock the core SDK class
 jest.mock('@auth0/auth0-acul-js/mfa-voice-challenge', () => {
-  return jest.fn().mockImplementation(() => ({
-    // Mock methods will be defined per test
-  }));
+  return jest.fn().mockImplementation(() => {});
 }, { virtual: true });
 
 // Mock the instance store
@@ -43,30 +41,9 @@ jest.mock('../../src/hooks', () => ({
   useErrors: jest.fn(),
   useAuth0Themes: jest.fn(),
 }));
-
-// Mock utility hooks based on screen type
-jest.mock('../../src/hooks/utility/login-identifiers', () => ({
-  useLoginIdentifiers: jest.fn(),
-}));
-
-jest.mock('../../src/hooks/utility/signup-identifiers', () => ({
-  useSignupIdentifiers: jest.fn(),
-}));
-
-jest.mock('../../src/hooks/utility/validate-password', () => ({
-  usePasswordValidation: jest.fn(),
-}));
-
-jest.mock('../../src/hooks/utility/validate-username', () => ({
-  useUsernameValidation: jest.fn(),
-}));
-
+// Mock utility hook: useResend
 jest.mock('../../src/hooks/utility/resend-manager', () => ({
   useResend: jest.fn(),
-}));
-
-jest.mock('../../src/hooks/utility/polling-manager', () => ({
-  useMfaPolling: jest.fn(),
 }));
 
 describe('MfaVoiceChallenge Screen', () => {
