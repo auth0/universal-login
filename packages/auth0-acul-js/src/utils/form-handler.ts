@@ -39,8 +39,15 @@ export class FormHandler {
 
   private addTelemetryField(form: HTMLFormElement): HTMLFormElement {
     const input = document.createElement('input');
-    const sdkName = __SDK_NAME__;
-    const sdkVersion = __SDK_VERSION__;
+    
+    // Check for runtime override first (allows wrapper SDKs like React to override)
+    // Falls back to build-time constants if not overridden
+    // Use string concatenation to avoid replacement by rollup plugin
+    const SDK_NAME_KEY = '_' + '_SDK' + '_NAME_' + '_';
+    const SDK_VERSION_KEY = '_' + '_SDK' + '_VERSION_' + '_';
+    const sdkName = (typeof globalThis !== 'undefined' && (globalThis as any)[SDK_NAME_KEY]) || __SDK_NAME__;
+    const sdkVersion = (typeof globalThis !== 'undefined' && (globalThis as any)[SDK_VERSION_KEY]) || __SDK_VERSION__;
+    
     input.type = 'hidden';
     input.name = 'acul-sdk';
     input.value = `${sdkName}@${sdkVersion}`;

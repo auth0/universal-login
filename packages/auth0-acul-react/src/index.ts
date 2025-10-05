@@ -1,3 +1,13 @@
+/**
+ * Initialize React SDK Telemetry
+ * This must be imported FIRST before any other modules to ensure
+ * the telemetry override is set before Core JS SDK code executes
+ */
+import './telemetry';
+
+/**
+ * Export all screens
+ */
 export { useLoginId } from './screens/login-id';
 export { useLoginPassword } from './screens/login-password';
 export { useSignupId } from './screens/signup-id';
