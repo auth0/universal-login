@@ -45,7 +45,11 @@ export class FormHandler {
     // Use string concatenation to avoid replacement by rollup plugin
     const SDK_NAME_KEY = '_' + '_SDK' + '_NAME_' + '_';
     const SDK_VERSION_KEY = '_' + '_SDK' + '_VERSION_' + '_';
+    
+    // Type-safe access to globalThis with runtime override check
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
     const sdkName = (typeof globalThis !== 'undefined' && (globalThis as any)[SDK_NAME_KEY]) || __SDK_NAME__;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
     const sdkVersion = (typeof globalThis !== 'undefined' && (globalThis as any)[SDK_VERSION_KEY]) || __SDK_VERSION__;
     
     input.type = 'hidden';
