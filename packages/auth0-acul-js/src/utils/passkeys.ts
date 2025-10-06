@@ -89,3 +89,100 @@ export async function createPasskeyCredentials(publicKey: PasskeyCreate['public_
     },
   };
 }
+
+/**
+ * Registers the browser’s **Conditional UI for Passkeys** (autocomplete experience).
+ *
+ * This method sets up a passive WebAuthn `navigator.credentials.get()` request
+ * with `mediation: "conditional"`, allowing the browser to show saved passkeys
+ * directly inside the username input’s autocomplete dropdown.
+ *
+ * ---
+ * 🧠 **Behavior**
+ * - Call this **once** when initializing your login screen or page.
+ * - The function registers an idle credential request in the background.
+ * - When the user focuses a field with `autocomplete="webauthn username"`,
+ *   the browser will display matching passkeys as suggestions.
+ * - Selecting a passkey automatically resolves the challenge.
+ *
+ * ---
+ * ⚠️ **Usage guidelines**
+ * - Must be invoked only **once per page load**.
+ * - Safe to call even if Conditional UI is not supported; it will no-op.
+ * - Use `onResolve` to handle successful credential selection.
+ * - Use `onReject` to handle errors or unsupported browsers.
+ *
+ * ---
+ * @param params.publicKey - Public key challenge options returned by Auth0.
+ * @param params.onResolve - Called when a credential is selected and resolved.
+ * @param params.onReject - Called on errors or unsupported browsers.
+ *
+ * @example
+ * ```ts
+ * import { registerPasskeyAutocomplete } from "@auth0/auth0-acul-js/utils/passkeys";
+ * import LoginId from "@auth0/auth0-acul-js/login-id";
+ *
+ * const loginId = new LoginId();
+ * await registerPasskeyAutocomplete({
+ *   publicKey: loginId.screen.publicKey!,
+ *   onResolve: async (cred) => {
+ *     await loginId.passkeyLogin({ passkey: JSON.stringify(cred) });
+ *   }
+ * });
+ * ```
+ *
+ * @remarks
+ * Uses the W3C WebAuthn Conditional Mediation API
+ * (`navigator.credentials.get({ mediation: "conditional" })`).
+ * Supported in Chrome 108+, Edge, and Safari 17+.
+ *
+ * @category Passkeys
+ */
+export async function registerPasskeyAutocomplete({
+  publicKey,
+  onResolve,
+  onReject
+}: {
+  publicKey: PasskeyRead['public_key'];
+  onResolve: (credential: Credential) => void | Promise<void>;
+  onReject?: (error: unknown) => void;
+}): Promise<void> {
+  if (!publicKey?.challenge) {
+    throw new Error(Errors.PASSKEY_PUBLIC_KEY_UNAVAILABLE);
+  }
+
+  /**
+   * Some browsers (Chrome 108+, Edge, Safari 17+) expose a static method
+   * `PublicKeyCredential.isConditionalMediationAvailable()`.
+   * This is not yet part of the standard TypeScript DOM typings, so we
+   * extend the interface locally and perform a runtime check.
+   */
+  interface ConditionalMediationCapable {
+    isConditionalMediationAvailable?: () => Promise<boolean>;
+  }
+
+  const pkc = PublicKeyCredential as unknown as ConditionalMediationCapable;
+  const supportsConditionalMediation = typeof pkc.isConditionalMediationAvailable === 'function'
+    ? await pkc.isConditionalMediationAvailable()
+    : false;
+
+  if (!supportsConditionalMediation) {
+    onReject?.(new Error('Conditional mediation not supported by this browser.'));
+    return;
+  }
+
+  try {
+    const challenge = base64UrlToUint8Array(publicKey.challenge);
+    const credential = (await navigator.credentials.get({
+      publicKey: { challenge },
+      mediation: 'conditional'
+    }));
+
+    if (credential) {
+      await onResolve(credential);
+    }
+  } catch (err) {
+    onReject?.(err);
+  }
+}
+

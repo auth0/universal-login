@@ -62,11 +62,11 @@ export interface MfaPollingResult {
  * @param options - {@link MfaPollingOptions} specifying the polling interval,
  *                  success callback (`onCompleted`), and optional error handler (`onError`).
  *
- *@supportedScreens
+ * @supportedScreens
  * - `mfa-push-challenge-push`
  * - `reset-password-mfa-push-challenge-push`
  *
- * @returns object {@link MfaPollingResult} containing:
+ * @returns An object of type {@link MfaPollingResult} containing:
  * - `isRunning` — `true` while polling is active.
  * - `startPolling()` — starts or resumes polling.
  * - `stopPolling()` — stops polling immediately.

@@ -1,10 +1,9 @@
-
 import { ScreenIds, FormActions, Errors } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { getBrowserCapabilities } from '../../utils/browser-capabilities';
 import { FormHandler } from '../../utils/form-handler';
-import { getLoginIdentifiers as _getLoginIdentifiers} from '../../utils/login-identifiers';
-import { getPasskeyCredentials } from '../../utils/passkeys';
+import { getLoginIdentifiers as _getLoginIdentifiers } from '../../utils/login-identifiers';
+import { registerPasskeyAutocomplete, getPasskeyCredentials } from '../../utils/passkeys';
 
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
@@ -34,7 +33,9 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
     super();
 
     const screenContext = this.getContext('screen') as ScreenContext;
-    const transactionContext = this.getContext('transaction') as TransactionContext;
+    const transactionContext = this.getContext(
+      'transaction'
+    ) as TransactionContext;
 
     // Add the properties specific to the prompt.
     this.screen = new ScreenOverride(screenContext);
@@ -44,7 +45,7 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
   /**
    * @example
    *
-   * import LoginId from "@auth0/auth0-acul-js/login-id";
+   * import LoginId from '@auth0/auth0-acul-js/login-id';
    *
    * const loginIdManager = new LoginId();
    *
@@ -61,13 +62,13 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
     const browserCapabilities = await getBrowserCapabilities();
     await new FormHandler(options).submitData<LoginOptions>({
       ...payload,
-      ...browserCapabilities
+      ...browserCapabilities,
     });
   }
 
   /**
    * @example
-   * import LoginId from "@auth0/auth0-acul-js/login-id";
+   * import LoginId from '@auth0/auth0-acul-js/login-id';
    * const loginIdManager = new LoginId();
    *
    * // Check if alternateConnections is available and has at least one item
@@ -97,7 +98,7 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
 
   /**
    * @example
-   * import LoginId from "@auth0/auth0-acul-js/login-id";
+   * import LoginId from '@auth0/auth0-acul-js/login-id';
    * const loginIdManager = new LoginId();
    *
    * // It internally maps users available passkey config provided from auth0 server
@@ -121,7 +122,7 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
 
   /**
    * @example
-   * import LoginId from "@auth0/auth0-acul-js/login-id";
+   * import LoginId from '@auth0/auth0-acul-js/login-id';
    * const loginIdManager = new LoginId();
    *
    * loginIdManager.pickCountryCode();
@@ -143,14 +144,87 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
    * @returns An array of active identifier types or null if none are active
    * @example
    * ```typescript
-   * import LoginId from "@auth0/auth0-acul-js/login";
+   * import LoginId from '@auth0/auth0-acul-js/login';
    * const loginIdManager = new LoginId();
    * loginIdManager.getLoginIdentifiers();
    * ```
    * @utilityFeature
    */
-  getLoginIdentifiers(): IdentifierType[] | null{
+  getLoginIdentifiers(): IdentifierType[] | null {
     return _getLoginIdentifiers(this.transaction.allowedIdentifiers);
+  }
+
+  /**
+   * Initializes the browser’s **Conditional UI for Passkeys** (autocomplete experience).
+   *
+   * This method registers a passive WebAuthn credential request with
+   * `mediation: 'conditional'` that allows browsers to display passkey
+   * options directly inside the username input’s autocomplete dropdown.
+   *
+   * ---
+   * 🧠 **How it works**
+   * - The method should be called **once** during page or screen initialization
+   *   (e.g., when rendering the Login screen).
+   * - It does **not** show a modal or block the main thread.
+   * - If the browser supports Conditional Mediation, it keeps an internal
+   *   request “armed” until the user focuses an eligible input field
+   *   (with `autocomplete='webauthn username'`).
+   * - When the user selects a passkey from the dropdown, the browser performs
+   *   the passkey challenge and this SDK automatically submits the result to
+   *   the Auth0 Universal Login transaction.
+   *
+   * ---
+   * ⚠️ **Usage guidelines**
+   * - Call this **only once per page load or screen render**.
+   * - Do **not** call inside click handlers or repeatedly in loops.
+   * - Safe to call even if the browser does not support Conditional UI —
+   *   unsupported browsers will simply skip silently.
+   * - The `<input>` element used for username must include
+   *   `autocomplete='webauthn username'`.
+   *
+   * ---
+   * @example
+   * ```typescript
+   * import LoginId from '@auth0/auth0-acul-js/login-id';
+   *
+   * const loginId = new LoginId();
+   *
+   * // Call once when the login screen initializes
+   * await loginId.registerPasskeyAutocomplete();
+   *
+   * // The browser will now display available passkeys in the username
+   * // field’s autocomplete dropdown. Selecting a passkey triggers the
+   * // full authentication flow automatically.
+   * ```
+   *
+   * @remarks
+   * This method leverages the W3C WebAuthn Conditional Mediation API
+   * (`navigator.credentials.get({ mediation: 'conditional' })`).
+   * Supported in modern Chromium browsers (Chrome, Edge) and Safari 17+.
+   *
+   * @see https://w3c.github.io/webappsec-credential-management/#dom-credentialmediationrequirement
+   * @category Passkeys
+   */
+  async registerPasskeyAutocomplete(): Promise<void> {
+    const publicKey = this.screen.publicKey;
+    if (!publicKey) throw new Error(Errors.PASSKEY_DATA_UNAVAILABLE);
+
+    await registerPasskeyAutocomplete({
+      publicKey,
+      onResolve: async (cred) => {
+        const options = {
+          state: this.transaction.state,
+          telemetry: [LoginId.screenIdentifier, 'registerPasskeyAutocomplete'],
+        };
+
+        await new FormHandler(options).submitData({
+          passkey: JSON.stringify(cred),
+        });
+      },
+      onReject: (err) => {
+        console.warn('Passkey autocomplete initialization failed:', err);
+      },
+    });
   }
 }
 
@@ -161,6 +235,7 @@ export {
   ScreenOptions as ScreenMembersOnLoginId,
   TransactionOptions as TransactionMembersOnLoginId,
 };
+
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';
-export * from '../../utils/errors'
+export * from '../../utils/errors';
