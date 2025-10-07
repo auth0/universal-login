@@ -15,6 +15,7 @@ export class ContextHooks<T extends BaseMembers> {
    * import { useUser } from '@auth0/auth0-acul-react/login-id';
    * function UserProfile() {
    *   const user = useUser();
+   * }
    * ```
    */
   useUser = () => this.instance.user as T['user'];

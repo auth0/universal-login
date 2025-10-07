@@ -6,6 +6,10 @@
       {
           "tagName": "@supportedScreens",
           "syntaxKind": "block"
+      },
+      {
+          "tagName": "@description",
+          "syntaxKind": "block"
       }
   ]
 }
