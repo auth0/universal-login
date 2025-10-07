@@ -288,7 +288,7 @@ for (const symbol of screenSymbols) {
   );
 
   screenLines.push(`\n// Export all types from the core SDK for this screen`);
-  // screenLines.push(`export type * from '@auth0/auth0-acul-js/${kebab}';`);
+  screenLines.push(`export type * from '@auth0/auth0-acul-js/${kebab}';`);
 
   fs.writeFileSync(path.join(SCREENS_OUTPUT_PATH, `${kebab}.tsx`), screenLines.join('\n'), 'utf8');
 
@@ -300,7 +300,7 @@ for (const symbol of screenSymbols) {
 
 // Add common types from core SDK
 indexTypes.push('\n// Common types from core SDK');
-// indexTypes.push(`export type * from '@auth0/auth0-acul-js';`);
+indexTypes.push(`export type * from './types';`);
 
 indexExports.push(`export { useCurrentScreen, useErrors, useAuth0Themes } from './hooks';`);
 

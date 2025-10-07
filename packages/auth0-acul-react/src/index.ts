@@ -77,3 +77,4 @@ export { useResetPasswordMfaWebAuthnRoamingChallenge } from './screens/reset-pas
 export { useCurrentScreen, useErrors, useAuth0Themes } from './hooks';
 
 // Common types from core SDK
+export type * from './types';
