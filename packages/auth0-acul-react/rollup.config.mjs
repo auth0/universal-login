@@ -1,8 +1,12 @@
 import typescript from '@rollup/plugin-typescript';
 import terser from '@rollup/plugin-terser';
 import json from '@rollup/plugin-json';
+import replace from '@rollup/plugin-replace';
 import fs from 'fs';
 import path from 'path';
+
+// Read package.json for SDK name and version
+const pkg = JSON.parse(fs.readFileSync('./package.json', 'utf-8'));
 
 const screensDir = 'src/screens';
 const screenFiles = fs.readdirSync(screensDir).filter(file => file.endsWith('.ts') || file.endsWith('.tsx'));
@@ -33,6 +37,11 @@ export default {
     json(),
     typescript({
       tsconfig: './tsconfig.json',
+    }),
+    replace({
+      preventAssignment: true,
+      __SDK_NAME__: JSON.stringify(pkg.name),
+      __SDK_VERSION__: JSON.stringify(pkg.version),
     }),
     ...commonPlugins,
   ],
