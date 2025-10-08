@@ -39,7 +39,7 @@
  *
  * ## Quick Start
  *
- * ### Basic Login Screen with React Hooks
+ * ### Basic Login-Id Screen with React Hooks
  *
  * ```tsx
  * import React from 'react';
@@ -51,7 +51,7 @@
  *   continueWithFederatedLogin
  * } from '@auth0/auth0-acul-react/login-id';
  *
- * function LoginScreen() {
+ * function LoginIdScreen() {
  *   const user = useUser();
  *   const tenant = useTenant();
  *   const screen = useScreen();
@@ -175,7 +175,7 @@
  *
  * ### Context Hooks (Available in all screens)
  * - `useUser()` - Current user information
- * - `useTenant()` - Tenant configuration and branding
+ * - `useTenant()` - Tenant configuration
  * - `useClient()` - Application client information
  * - `useScreen()` - Current screen data and configuration
  * - `useTransaction()` - Transaction state and methods
@@ -189,7 +189,7 @@
  *
  * #### Identifier Management
  * - `useLoginIdentifiers()` - Get available login identifier types (email, phone, username)
- * - `useSignupIdentifiers()` - Get available signup identifier types
+ * - `useSignupIdentifiers()` - Get available signup identifier types, each with its `required` status
  *
  * #### Form Validation
  * - `usePasswordValidation(password, rules)` - Real-time password strength validation
@@ -219,8 +219,7 @@
  * // Login ID Screen
  * import {
  *   loginMethod,
- *   continueWithFederatedLogin,
- *   signupMethod
+ *   continueWithFederatedLogin
  * } from '@auth0/auth0-acul-react/login-id';
  *
  * // Password Screen
@@ -261,7 +260,7 @@
  * ### 1. **Use Screen-Specific Imports**
  * ```tsx
  * // Partial import - recommended
- * import { useSignup } from '@auth0/auth0-acul-react';
+ * import { useSignup } from '@auth0/auth0-acul-react/signup';
  * // Root import
  * import * as Auth0React from '@auth0/auth0-acul-react';
  *
@@ -302,10 +301,8 @@
  * ## Examples and Resources
  *
  * - [React Examples](https://github.com/auth0/universal-login/tree/master/packages/auth0-acul-react/examples) - Complete React component examples
- * - [TypeScript Examples](https://github.com/auth0/universal-login/tree/master/packages/auth0-acul-react/examples/typescript) - TypeScript integration examples
  * - [React Boilerplate](https://github.com/auth0/auth0-acul-react-boilerplate) - Full React application template
- * - [Hook Patterns](https://github.com/auth0/universal-login/tree/master/packages/auth0-acul-react/examples/hooks) - Custom hook patterns and utilities
- *
+ * 
  * ## Feedback and Support
  *
  * ### Contributing
