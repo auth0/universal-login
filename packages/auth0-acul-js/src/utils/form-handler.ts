@@ -39,8 +39,11 @@ export class FormHandler {
 
   private addTelemetryField(form: HTMLFormElement): HTMLFormElement {
     const input = document.createElement('input');
-    const sdkName = __SDK_NAME__;
-    const sdkVersion = __SDK_VERSION__;
+    // Allow wrapper SDKs (like React) to override telemetry
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const sdkName = (globalThis as any).__ACUL_SDK_NAME__ || __SDK_NAME__;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const sdkVersion = (globalThis as any).__ACUL_SDK_VERSION__ || __SDK_VERSION__;
     input.type = 'hidden';
     input.name = 'acul-sdk';
     input.value = `${sdkName}@${sdkVersion}`;
