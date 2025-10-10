@@ -7,7 +7,10 @@ import path from 'path';
 
 const pkg = JSON.parse(fs.readFileSync(path.resolve('./package.json'), 'utf-8'));
 
-const commonPlugins = [terser()];
+// Skip minification for faster builds in development
+const nodeEnv = process.env.NODE_ENV || 'production';
+const isDev = nodeEnv !== 'production';
+const commonPlugins = isDev ? [] : [terser()];
 
 export default {
   input: 'src/index.ts',
@@ -29,6 +32,7 @@ export default {
       preventAssignment: true,
       __SDK_NAME__: JSON.stringify(pkg.name),
       __SDK_VERSION__: JSON.stringify(pkg.version),
+      'process.env.NODE_ENV': JSON.stringify(nodeEnv),
     }),
     ...commonPlugins,
   ],
