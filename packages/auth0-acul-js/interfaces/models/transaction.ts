@@ -104,6 +104,9 @@ export interface DBConnection extends Connection {
         enabled: boolean;
       };
     };
+    password_options?: {
+      complexity: any // TODO, this should be added to auth0-server https://github.com/atko-cic/auth0-server/blob/b957b6eaac93b69bc72a836e4774c6184a5e2a92/packages/%40types/types/packages/Acul.ts#L181
+    }
   };
 }
 

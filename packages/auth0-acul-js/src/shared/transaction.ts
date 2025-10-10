@@ -1,7 +1,12 @@
-import type { DBConnection, UsernamePolicy, PasswordPolicy, TransactionContext } from '../../interfaces/models/transaction';
-import type { TransactionMembersOnLoginId } from '../../interfaces/screens/login-id';
-import type { TransactionMembersOnSignupId } from '../../interfaces/screens/signup-id';
-import type { IdentifierType } from '../../src/constants';
+import type {
+  DBConnection,
+  UsernamePolicy,
+  PasswordPolicy,
+  TransactionContext,
+} from "../../interfaces/models/transaction";
+import type { TransactionMembersOnLoginId } from "../../interfaces/screens/login-id";
+import type { TransactionMembersOnSignupId } from "../../interfaces/screens/signup-id";
+import type { IdentifierType } from "../../src/constants";
 
 /**
  * Checks if signup is enabled for the current connection.
@@ -19,7 +24,9 @@ export function isSignupEnabled(transaction: TransactionContext): boolean {
  * @param transaction - The transaction context from Universal Login
  * @returns True if forgot password is enabled, false otherwise
  */
-export function isForgotPasswordEnabled(transaction: TransactionContext): boolean {
+export function isForgotPasswordEnabled(
+  transaction: TransactionContext
+): boolean {
   const connection = transaction?.connection as DBConnection;
   return connection?.options?.forgot_password_enabled === true;
 }
@@ -53,7 +60,9 @@ export function isUsernameRequired(transaction: TransactionContext): boolean {
  * @param transaction - The transaction context from Universal Login
  * @returns The username policy object or null if not defined
  */
-export function getUsernamePolicy(transaction: TransactionContext): UsernamePolicy | null {
+export function getUsernamePolicy(
+  transaction: TransactionContext
+): UsernamePolicy | null {
   const connection = transaction?.connection as DBConnection;
   const validation = connection?.options?.attributes?.username?.validation;
 
@@ -76,17 +85,32 @@ export function getUsernamePolicy(transaction: TransactionContext): UsernamePoli
  * @param transaction - The transaction context from Universal Login
  * @returns The password policy object or null if not defined
  */
-export function getPasswordPolicy(transaction: TransactionContext): PasswordPolicy | null {
+export function getPasswordPolicy(
+  transaction: TransactionContext
+): PasswordPolicy | null {
   const connection = transaction?.connection as DBConnection;
   const passwordPolicy = connection?.options?.authentication_methods?.password;
-
   if (!passwordPolicy) return null;
 
   return {
     minLength: passwordPolicy.min_length,
-    policy: passwordPolicy.policy as PasswordPolicy['policy'],
+    policy: passwordPolicy.policy as PasswordPolicy["policy"],
     passwordSecurityInfo: passwordPolicy.password_security_info,
   };
+}
+
+/**
+ * Retrieves the password complexity configuration from the transaction context.
+ * This includes properties like required character types and length requirements.
+ *
+ * @param transaction - The transaction context from Universal Login
+ * @returns The password complexity object or null if not defined`
+ */
+export function getPasswordComplexity(
+  transaction: TransactionContext
+): any | null {
+  const connection = transaction?.connection as DBConnection;
+  return connection?.options?.password_options?.complexity || null;
 }
 
 /**
@@ -96,11 +120,13 @@ export function getPasswordPolicy(transaction: TransactionContext): PasswordPoli
  * @param transaction - The transaction context from Universal Login
  * @returns An array of allowed identifier types or null if none are defined
  */
-export function getAllowedIdentifiers(transaction: TransactionContext): TransactionMembersOnLoginId['allowedIdentifiers'] {
+export function getAllowedIdentifiers(
+  transaction: TransactionContext
+): TransactionMembersOnLoginId["allowedIdentifiers"] {
   const connection = transaction?.connection as DBConnection;
   if (!connection?.options?.attributes) return null;
 
-  return extractIdentifiersByStatus(connection, ['required', 'optional']);
+  return extractIdentifiersByStatus(connection, ["required", "optional"]);
 }
 
 /**
@@ -109,8 +135,12 @@ export function getAllowedIdentifiers(transaction: TransactionContext): Transact
  * @param transaction - The transaction context from Universal Login
  * @returns An array of required identifier types or null if none are defined
  */
-export function getRequiredIdentifiers(transaction: TransactionContext): TransactionMembersOnSignupId['requiredIdentifiers'] {
-  return extractIdentifiersByStatus(transaction?.connection as DBConnection, ['required']);
+export function getRequiredIdentifiers(
+  transaction: TransactionContext
+): TransactionMembersOnSignupId["requiredIdentifiers"] {
+  return extractIdentifiersByStatus(transaction?.connection as DBConnection, [
+    "required",
+  ]);
 }
 
 /**
@@ -119,8 +149,12 @@ export function getRequiredIdentifiers(transaction: TransactionContext): Transac
  * @param transaction - The transaction context from Universal Login
  * @returns An array of optional identifier types or null if none are defined
  */
-export function getOptionalIdentifiers(transaction: TransactionContext): TransactionMembersOnSignupId['optionalIdentifiers'] {
-  return extractIdentifiersByStatus(transaction?.connection as DBConnection, ['optional']);
+export function getOptionalIdentifiers(
+  transaction: TransactionContext
+): TransactionMembersOnSignupId["optionalIdentifiers"] {
+  return extractIdentifiersByStatus(transaction?.connection as DBConnection, [
+    "optional",
+  ]);
 }
 
 /**
@@ -130,7 +164,9 @@ export function getOptionalIdentifiers(transaction: TransactionContext): Transac
  * @param transaction - The transaction context from Universal Login
  * @returns True if flexible identifiers are supported, false otherwise
  */
-export function hasFlexibleIdentifier(transaction: TransactionContext): boolean {
+export function hasFlexibleIdentifier(
+  transaction: TransactionContext
+): boolean {
   const connection = transaction.connection as DBConnection;
   return connection?.options?.attributes ? true : false;
 }
@@ -143,14 +179,25 @@ export function hasFlexibleIdentifier(transaction: TransactionContext): boolean 
  * @param statuses - Array of statuses to filter by ('required' or 'optional')
  * @returns Array of matching identifier types or null if none are found
  */
-function extractIdentifiersByStatus(connection: DBConnection | undefined, statuses: ('required' | 'optional')[]): IdentifierType[] | null {
+function extractIdentifiersByStatus(
+  connection: DBConnection | undefined,
+  statuses: ("required" | "optional")[]
+): IdentifierType[] | null {
   if (!connection?.options?.attributes) return null;
 
   return Object.entries(connection.options.attributes)
-    .filter(([, value]) => value.signup_status && statuses.includes(value.signup_status as 'required' | 'optional'))
+    .filter(
+      ([, value]) =>
+        value.signup_status &&
+        statuses.includes(value.signup_status as "required" | "optional")
+    )
     .map(([key]) => key as IdentifierType).length > 0
     ? Object.entries(connection.options.attributes)
-        .filter(([, value]) => value.signup_status && statuses.includes(value.signup_status as 'required' | 'optional'))
+        .filter(
+          ([, value]) =>
+            value.signup_status &&
+            statuses.includes(value.signup_status as "required" | "optional")
+        )
         .map(([key]) => key as IdentifierType)
     : null;
 }
