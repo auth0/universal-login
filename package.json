@@ -13,6 +13,7 @@
     "lint": "npm run lint --workspaces",
     "test": "npm test --workspaces",
     "build": "npm run build --workspaces",
+    "dev:acul": "npm run dev --workspace @auth0/auth0-acul-js",
     "docs": "npm run docs --workspaces",
     "format": "npm run format --workspaces",
     "preinstall": "node ./scripts/check-node-version.js && node ./scripts/block-local-install.js"
