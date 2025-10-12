@@ -7,14 +7,37 @@ This screen is displayed when the user needs to enter the code sent to their ema
 ## React Component Example with TailwindCSS
 
 ```tsx
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import ResetPasswordMfaEmailChallenge from '@auth0/auth0-acul-js/reset-password-mfa-email-challenge';
 
 const ResetPasswordMfaEmailChallengeScreen: React.FC = () => {
   const [code, setCode] = useState('');
+  const [disabled, setDisabled] = useState(false);
+  const [remainingSeconds, setRemainingSeconds] = useState(0);
 
-  const resetPasswordMfaEmailChallenge = new ResetPasswordMfaEmailChallenge();
+  const resetPasswordMfaEmailChallenge = useMemo(() => new ResetPasswordMfaEmailChallenge(), []);
   const { screen, transaction } = resetPasswordMfaEmailChallenge;
+
+  function handleStatusChange(remainingSeconds: number, isDisabled: boolean) {
+    setDisabled(isDisabled);
+    setRemainingSeconds(remainingSeconds);
+  }
+
+  function handleTimeout() {
+    console.log('Resend timeout completed');
+  }
+
+  const resendManager = useMemo(
+    () =>
+      resetPasswordMfaEmailChallenge.resendManager({
+        timeoutSeconds: 15,
+        onStatusChange: handleStatusChange,
+        onTimeout: handleTimeout,
+      }),
+    [resetPasswordMfaEmailChallenge]
+  );
+
+  const { startResend } = resendManager;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,7 +47,11 @@ const ResetPasswordMfaEmailChallengeScreen: React.FC = () => {
   };
 
   const handleResendCode = async () => {
-    await resetPasswordMfaEmailChallenge.resendCode();
+    try {
+      await startResend();
+    } catch (error) {
+      console.error('Failed to resend code:', error);
+    }
   };
 
   const handleTryAnotherMethod = async () => {
@@ -86,9 +113,17 @@ const ResetPasswordMfaEmailChallengeScreen: React.FC = () => {
             <div className="flex justify-between">
               <button
                 onClick={handleResendCode}
-                className="text-sm text-blue-600 hover:text-blue-500"
+                disabled={disabled}
+                className={`text-sm ${
+                  disabled
+                    ? "text-gray-400 cursor-not-allowed"
+                    : "text-blue-600 hover:text-blue-500"
+                }`}
               >
-                { screen?.texts?.resendActionText ?? 'Resend Code' }
+                {disabled 
+                  ? `${screen?.texts?.resendActionText ?? 'Resend Code'} (${remainingSeconds}s)`
+                  : screen?.texts?.resendActionText ?? 'Resend Code'
+                }
               </button>
               <button
                 onClick={handleTryAnotherMethod}

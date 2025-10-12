@@ -55,11 +55,40 @@ const mfaVoiceChallenge = new MfaVoiceChallenge();
 // Navigate to the screen for selecting an alternative MFA method
 mfaVoiceChallenge.tryAnotherMethod();
 ```
+
+## resendManager
+
+```typescript
+import MfaVoiceChallenge from '@auth0/auth0-acul-js/mfa-voice-challenge';
+
+const mfaVoiceChallenge = new MfaVoiceChallenge();
+
+function handleStatusChange(remainingSeconds: number, isDisabled: boolean) {
+  console.log(`Resend available in ${remainingSeconds}s, disabled: ${isDisabled}`);
+}
+
+function handleTimeout() {
+  console.log('Resend timeout completed');
+}
+
+const resendManager = mfaVoiceChallenge.resendManager({
+  timeoutSeconds: 15,
+  onStatusChange: handleStatusChange,
+  onTimeout: handleTimeout,
+});
+
+const { startResend } = resendManager;
+
+// Use startResend() to initiate the resend with cooldown
+startResend();
+
+```
+
 ## React Component Example with TailwindCSS
 ### Below is a complete React component implementing the MFA Voice Challenge screen with TailwindCSS:
 
 ```typescript
-import React, { useState, useEffect, FormEvent, ChangeEvent } from 'react';
+import React, { useState, useEffect, FormEvent, ChangeEvent, useMemo } from 'react';
 import MfaVoiceChallenge from '@auth0/auth0-acul-js/mfa-voice-challenge';
 
 /**
@@ -79,9 +108,32 @@ const MfaVoiceChallengeScreen: React.FC = () => {
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [showRememberDevice, setShowRememberDevice] = useState<boolean>(false);
   const [showLinkSms, setShowLinkSms] = useState<boolean>(false);
+  const [disabled, setDisabled] = useState(false);
+  const [remainingSeconds, setRemainingSeconds] = useState(0);
 
   // Initialize MFA Voice Challenge SDK
-  const mfaVoiceChallenge = new MfaVoiceChallenge();
+  const mfaVoiceChallenge = useMemo(() => new MfaVoiceChallenge(), []);
+
+  function handleStatusChange(remainingSeconds: number, isDisabled: boolean) {
+    setDisabled(isDisabled);
+    setRemainingSeconds(remainingSeconds);
+  }
+
+  function handleTimeout() {
+    console.log('Resend timeout completed');
+  }
+
+  const resendManager = useMemo(
+    () =>
+      mfaVoiceChallenge.resendManager({
+        timeoutSeconds: 15,
+        onStatusChange: handleStatusChange,
+        onTimeout: handleTimeout,
+      }),
+    [mfaVoiceChallenge]
+  );
+
+  const { startResend } = resendManager;
 
   useEffect(() => {
     // Get data from the screen when component mounts
@@ -102,7 +154,7 @@ const MfaVoiceChallengeScreen: React.FC = () => {
     if (savedFormData?.rememberDevice !== undefined) {
       setRememberDevice(savedFormData.rememberDevice);
     }
-  }, []);
+  }, [mfaVoiceChallenge]);
 
   /**
    * Handles the form submission to verify the voice code
@@ -128,16 +180,10 @@ const MfaVoiceChallengeScreen: React.FC = () => {
    * Handles the resend code action
    */
   const handleResendCode = async (): Promise<void> => {
-    setIsLoading(true);
-    setError(null);
-
     try {
-      await mfaVoiceChallenge.resendCode();
-      // Could set a success message here if needed
+      await startResend();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to resend code');
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -307,11 +353,15 @@ const MfaVoiceChallengeScreen: React.FC = () => {
             <div className="mt-6 grid grid-cols-1 gap-3">
               <button
                 onClick={handleResendCode}
-                disabled={isLoading}
+                disabled={isLoading || disabled}
                 type="button"
-                className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+                className={`w-full inline-flex justify-center py-2 px-4 border rounded-md shadow-sm text-sm font-medium ${
+                  isLoading || disabled 
+                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed border-gray-300' 
+                    : 'border-gray-300 bg-white text-gray-500 hover:bg-gray-50'
+                }`}
               >
-                Resend code
+                {disabled ? `Resend code in ${remainingSeconds}s` : 'Resend code'}
               </button>
 
               {showLinkSms && (
