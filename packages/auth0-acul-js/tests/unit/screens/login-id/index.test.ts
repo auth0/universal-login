@@ -2,10 +2,11 @@
 import { ScreenIds, Errors, FormActions } from '../../../../src/constants';
 import { BaseContext } from '../../../../src/models/base-context';
 import LoginId from '../../../../src/screens/login-id';
+import { SDKUsageError } from '../../../../src/screens/login-id';
 import { ScreenOverride } from '../../../../src/screens/login-id/screen-override';
 import { TransactionOverride } from '../../../../src/screens/login-id/transaction-override';
 import { FormHandler } from '../../../../src/utils/form-handler';
-import { getPasskeyCredentials } from '../../../../src/utils/passkeys';
+import { getPasskeyCredentials, registerPasskeyAutocomplete } from '../../../../src/utils/passkeys';
 
 import type { ScreenContext } from '../../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../../interfaces/models/transaction';
@@ -14,7 +15,12 @@ import type { LoginOptions, FederatedLoginOptions } from '../../../../interfaces
 jest.mock('../../../../src/screens/login-id/screen-override');
 jest.mock('../../../../src/screens/login-id/transaction-override');
 jest.mock('../../../../src/utils/form-handler');
-jest.mock('../../../../src/utils/passkeys');
+jest.mock('../../../../src/utils/passkeys', (): unknown => ({
+  ...jest.requireActual('../../../../src/utils/passkeys'),
+  getPasskeyCredentials: jest.fn(),
+  registerPasskeyAutocomplete: jest.fn(),
+}));
+
 jest.mock('../../../../src/models/base-context');
 
 describe('LoginId', () => {
@@ -144,4 +150,67 @@ describe('LoginId', () => {
       expect(loginId.getLoginIdentifiers()).toEqual([]);
     });
   });
+
+  describe('registerPasskeyAutocomplete', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+      (ScreenOverride as unknown as jest.Mock).mockImplementation(() => ({
+        publicKey: 'mockPublicKey',
+      }));
+      loginId = new LoginId();
+    });
+  
+    it('throws when publicKey is missing', async () => {
+      (ScreenOverride as unknown as jest.Mock).mockImplementation(() => ({ publicKey: undefined }));
+      loginId = new LoginId();
+  
+      await expect(loginId.registerPasskeyAutocomplete()).rejects.toThrow(Errors.PASSKEY_DATA_UNAVAILABLE);
+    });
+  
+    it('calls registerPasskeyAutocomplete utility with correct params and sets internal state', async () => {
+      const mockController = new AbortController();
+      const mockCredential = { id: 'mock-credential' };
+  
+      (registerPasskeyAutocomplete as jest.Mock).mockResolvedValue(mockController);
+  
+      const submitSpy = jest.spyOn(FormHandler.prototype, 'submitData').mockResolvedValue(undefined);
+  
+      await loginId.registerPasskeyAutocomplete('username-input');
+  
+      // Expect the passkeys utility called with correct shape
+      expect(registerPasskeyAutocomplete).toHaveBeenCalledWith({
+        publicKey: 'mockPublicKey',
+        inputId: 'username-input',
+        onResolve: expect.any(Function),
+        onReject: expect.any(Function),
+      });
+  
+      // We can't access private fields directly, but we can verify behavior
+      expect(registerPasskeyAutocomplete).toHaveBeenCalledTimes(1);
+
+      // Ensure the promise resolved without throwing and controller was returned by mock
+      expect(registerPasskeyAutocomplete).toHaveReturnedWith(Promise.resolve(mockController));
+
+      // Indirect check: the function ran fully without throwing and subsequent logic (onResolve) executed.
+      expect(FormHandler.prototype.submitData).not.toHaveBeenCalled(); // before onResolve
+  
+      // Simulate the onResolve callback
+      const callArgs = (registerPasskeyAutocomplete as jest.Mock).mock.calls[0][0];
+      await callArgs.onResolve(mockCredential);
+  
+      expect(submitSpy).toHaveBeenCalledWith({
+        passkey: JSON.stringify(mockCredential),
+      });
+    });
+  
+    it('handles onReject by throwing SDKUsageError', async () => {
+      (registerPasskeyAutocomplete as jest.Mock).mockImplementationOnce(async ({ onReject }) => {
+        onReject(new Error('fail'));
+        return new AbortController();
+      });
+  
+      await expect(loginId.registerPasskeyAutocomplete('some-id')).rejects.toThrow(SDKUsageError);
+    });
+  });
+  
 });

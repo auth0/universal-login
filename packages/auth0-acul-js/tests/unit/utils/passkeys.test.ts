@@ -1,21 +1,19 @@
-import {
-  getPasskeyCredentials,
-  createPasskeyCredentials,
-} from '../../../src/utils/passkeys';
+import { Errors } from '../../../src/constants';
+import { isWebAuthPlatformAvailable } from '../../../src/utils/browser-capabilities';
 import {
   base64UrlToUint8Array,
   uint8ArrayToBase64Url,
 } from '../../../src/utils/codec';
-import { isWebAuthPlatformAvailable } from '../../../src/utils/browser-capabilities';
-import { Errors } from '../../../src/constants';
+import {
+  getPasskeyCredentials,
+  createPasskeyCredentials,
+  registerPasskeyAutocomplete
+} from '../../../src/utils/passkeys';
+
 import type {
   PasskeyRead,
   PasskeyCreate,
 } from '../../../interfaces/models/screen';
-import type {
-  PasskeyCreateResponse,
-  PasskeyCredentialResponse,
-} from '../../../interfaces/utils/passkeys';
 
 jest.mock('../../../src/utils/browser-capabilities', () => ({
   isWebAuthPlatformAvailable: jest.fn(),
@@ -222,4 +220,167 @@ describe('createPasskeyCredentials', () => {
   
     expect(result.response.transports).toBeUndefined();
   });  
+});
+
+describe('registerPasskeyAutocomplete', () => {
+  let mockGet: jest.Mock;
+  let originalPublicKeyCredential: unknown;
+  let onResolve: jest.Mock;
+  let onReject: jest.Mock;
+
+  beforeEach(() => {
+    jest.restoreAllMocks();
+    jest.resetAllMocks();
+  
+    mockGet = jest.fn().mockResolvedValue({ id: 'mock-credential' }); // default safe mock
+  
+    Object.defineProperty(navigator, 'credentials', {
+      configurable: true,
+      writable: true,
+      value: { get: mockGet },
+    });
+  
+    document.body.innerHTML = '';
+    onResolve = jest.fn();
+    onReject = jest.fn();
+  
+    originalPublicKeyCredential = (global as any).PublicKeyCredential;
+    (global as any).PublicKeyCredential = {
+      isConditionalMediationAvailable: jest.fn().mockResolvedValue(true),
+    };
+  
+    (base64UrlToUint8Array as jest.Mock).mockReturnValue(new Uint8Array([1, 2, 3]));
+  });
+
+  afterEach(() => {
+    (global as any).PublicKeyCredential = originalPublicKeyCredential;
+  });
+
+  it('should throw if publicKey.challenge is missing', async () => {
+    await expect(
+      registerPasskeyAutocomplete({
+        publicKey: {} as any,
+        onResolve,
+      })
+    ).rejects.toThrow(Errors.PASSKEY_PUBLIC_KEY_UNAVAILABLE);
+  });
+
+  it('should reject if conditional mediation is not supported', async () => {
+    (global as any).PublicKeyCredential.isConditionalMediationAvailable = jest.fn().mockResolvedValue(false);
+
+    await registerPasskeyAutocomplete({
+      publicKey: { challenge: 'mock-challenge' },
+      onResolve,
+      onReject,
+    });
+
+    expect(onReject).toHaveBeenCalledWith(
+      expect.objectContaining({
+        message: 'Conditional mediation not supported by this browser.',
+      })
+    );
+  });
+
+  it('should reject if WebAuthn is not supported', async () => {
+    delete (navigator as any).credentials; // remove credentials to simulate unsupported
+    await registerPasskeyAutocomplete({
+      publicKey: { challenge: 'mock-challenge' },
+      onResolve,
+      onReject,
+    });
+
+    expect(onReject).toHaveBeenCalledWith(
+      expect.objectContaining({
+        message: 'WebAuthn is not supported in this environment.',
+      })
+    );
+  });
+
+  it('should update autocomplete attribute on valid input', async () => {
+    const input = document.createElement('input');
+    input.id = 'login-input';
+    document.body.appendChild(input);
+
+    mockGet.mockResolvedValue({ id: 'mock-credential' });
+
+    const controller = await registerPasskeyAutocomplete({
+      publicKey: { challenge: 'mock-challenge' },
+      inputId: 'login-input',
+      onResolve,
+      onReject,
+    });
+
+    expect(input.getAttribute('autocomplete')).toBe('username webauthn');
+    expect(controller).toHaveProperty('abort');
+    expect(controller).toHaveProperty('signal');
+  });
+
+  it('should warn if element id is invalid or not input', async () => {
+    const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+    const div = document.createElement('div');
+    div.id = 'non-input';
+    document.body.appendChild(div);
+
+    await registerPasskeyAutocomplete({
+      publicKey: { challenge: 'mock-challenge' },
+      inputId: 'non-input',
+      onResolve,
+    });
+
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('No valid <input> found with id="non-input"')
+    );
+
+    warnSpy.mockRestore();
+  });
+
+  it('should call onResolve when credentials.get resolves successfully', async () => {
+    const mockCredential = { id: 'mock-credential' };
+    mockGet.mockResolvedValue(mockCredential);
+
+    const controller = await registerPasskeyAutocomplete({
+      publicKey: { challenge: 'mock-challenge' },
+      onResolve,
+      onReject,
+    });
+
+    // Simulate async resolution
+    await Promise.resolve();
+
+    expect(onResolve).toHaveBeenCalledWith(mockCredential);
+    expect(onReject).not.toHaveBeenCalled();
+    expect(controller).toHaveProperty('abort');
+    expect(controller).toHaveProperty('signal');
+  });
+
+  it('should call onReject when credentials.get throws an error', async () => {
+    const error = new Error('Some WebAuthn failure');
+    mockGet.mockRejectedValue(error);
+
+    await registerPasskeyAutocomplete({
+      publicKey: { challenge: 'mock-challenge' },
+      onResolve,
+      onReject,
+    });
+
+    await Promise.resolve(); // allow promise to resolve
+
+    expect(onReject).toHaveBeenCalledWith(error);
+  });
+
+  it('should ignore AbortError exceptions', async () => {
+    const abortError = new DOMException('Aborted', 'AbortError');
+    mockGet.mockRejectedValue(abortError);
+
+    await registerPasskeyAutocomplete({
+      publicKey: { challenge: 'mock-challenge' },
+      onResolve,
+      onReject,
+    });
+
+    await Promise.resolve();
+
+    // AbortError should not trigger onReject
+    expect(onReject).not.toHaveBeenCalled();
+  });
 });
