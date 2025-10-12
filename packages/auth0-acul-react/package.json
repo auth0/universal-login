@@ -10,6 +10,7 @@
     "test": "jest --verbose tests/**/* --coverage",
     "generate:sdk": "tsx ./scripts/generate-sdk/index.ts",
     "generate:examples": "tsx ./scripts/generate-examples.ts",
+    "generate:screen-tests": "tsx ./scripts/generate-screen-tests.ts",
     "lint": "eslint src --ext .ts,.tsx",
     "lint:fix": "eslint src --ext .ts,.tsx --fix",
     "docs": "typedoc --options typedoc.js",
