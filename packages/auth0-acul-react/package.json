@@ -5,7 +5,8 @@
   "type": "module",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc && npm run test",
+    "build": "npm run clean && npm run test && rollup -c rollup.config.mjs",
+    "clean": "rm -rf dist",
     "test": "jest --verbose tests/**/* --coverage",
     "generate:sdk": "tsx ./scripts/generate-sdk/index.ts",
     "generate:examples": "tsx ./scripts/generate-examples.ts",
@@ -37,6 +38,7 @@
     }
   },
   "devDependencies": {
+    "@rollup/plugin-replace": "^6.0.2",
     "@testing-library/jest-dom": "^6.0.0",
     "@testing-library/react": "^14.0.0",
     "@types/react": "^18.3.24",

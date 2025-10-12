@@ -1,3 +1,6 @@
+// Initialize telemetry FIRST, before any Core SDK imports
+import './telemetry';
+
 export { useLoginId } from './screens/login-id';
 export { useLoginPassword } from './screens/login-password';
 export { useSignupId } from './screens/signup-id';
