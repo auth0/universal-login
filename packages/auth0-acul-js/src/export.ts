@@ -1,2 +1,2 @@
-export * as Classes from '../src';
-export * as Interfaces from '../interfaces/index';
+export * as Screens from '../src';
+export * as Types from '../interfaces/export';

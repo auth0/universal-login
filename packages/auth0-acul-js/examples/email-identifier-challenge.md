@@ -36,10 +36,39 @@ emailIdentifierChallenge.returnToPrevious();
 ```
 
 
+## resendManager
+
+```typescript
+import EmailIdentifierChallenge from '@auth0/auth0-acul-js/email-identifier-challenge';
+
+const emailIdentifierChallenge = new EmailIdentifierChallenge();
+
+function handleStatusChange(remainingSeconds: number) {
+  console.log('Remaining seconds:', remainingSeconds);
+}
+
+function handleTimeout() {
+  console.log('Resend timeout completed');
+}
+
+const resendManager = emailIdentifierChallenge.resendManager({
+  timeoutSeconds: 15,
+  onStatusChange: handleStatusChange,
+  onTimeout: handleTimeout,
+});
+
+const { startResend } = resendManager;
+
+// Use startResend() to initiate the resend with cooldown
+startResend();
+
+```
+
+
 ## EmailIdentifierChallenge React Example
 
 ```typescript
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import EmailIdentifierChallenge from '@auth0/auth0-acul-js/email-identifier-challenge';
 
 const EmailIdentifierChallengeScreen: React.FC = () => {
@@ -48,15 +77,37 @@ const EmailIdentifierChallengeScreen: React.FC = () => {
   const [success, setSuccess] = useState(false);
   const [resent, setResent] = useState(false);
   const [returned, setReturned] = useState(false);
+  const [disabled, setDisabled] = useState(false);
 
-  const emailIdentifierChallenge = new EmailIdentifierChallenge();
+  const emailIdentifierChallenge = useMemo(() => new EmailIdentifierChallenge(), []);
 
-  const handleSubmit = async (e) => {
+  function handleStatusChange(remainingSeconds: number) {
+    setDisabled(remainingSeconds > 0);
+  }
+
+  function handleonTimeout() {
+    console.log('Resend timeout completed');
+  }
+
+  const resendManager = useMemo(
+    () =>
+      emailIdentifierChallenge.resendManager({
+        timeoutSeconds: 15,
+        onStatusChange: handleStatusChange,
+        onTimeout: handleonTimeout,
+      }),
+    [emailIdentifierChallenge]
+  );
+
+  const { startResend } = resendManager;
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setSuccess(false);
     setResent(false);
     setReturned(false);
+
     if (!code) {
       setError('Code is required.');
       return;
@@ -64,35 +115,32 @@ const EmailIdentifierChallengeScreen: React.FC = () => {
     try {
       await emailIdentifierChallenge.submitEmailChallenge({ code });
       setSuccess(true);
-    } catch (err) {
+    } catch {
       setError('Invalid code. Please try again.');
     }
   };
 
-  const handleResend = async (e) => {
+  const handleResend = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-    setSuccess(false);
-    setResent(false);
-    setReturned(false);
     try {
-      await emailIdentifierChallenge.resendCode();
+      await startResend();
       setResent(true);
-    } catch (err) {
-      setError('Failed to resend code. Please try again later.');
+    } catch (err: any) {
+      setError(err.message || 'Failed to resend code.');
     }
   };
 
-  const handleReturn = async (e) => {
+  const handleReturn = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setSuccess(false);
     setResent(false);
     setReturned(false);
+
     try {
       await emailIdentifierChallenge.returnToPrevious();
       setReturned(true);
-    } catch (err) {
+    } catch {
       setError('Failed to return to previous step. Please try again later.');
     }
   };
@@ -130,12 +178,16 @@ const EmailIdentifierChallengeScreen: React.FC = () => {
               Submit Challenge
             </button>
           </form>
+          {/* ✅ Resend with cooldown */}
           <form className="space-y-6 mt-4" onSubmit={handleResend}>
             <button
               type="submit"
-              className="w-full py-2 px-4 border border-blue-600 rounded-md shadow-sm text-sm font-medium text-blue-600 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              disabled={disabled}
+              className={`w-full py-2 px-4 border rounded-md shadow-sm text-sm font-medium 
+                ${disabled ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-white text-blue-600 border-blue-600 hover:bg-blue-50'}
+              `}
             >
-              Resend Code
+              {disabled ? `Resend limit has been reached` : 'Resend Code'}
             </button>
           </form>
           <form className="space-y-6 mt-4" onSubmit={handleReturn}>

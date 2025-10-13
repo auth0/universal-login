@@ -1,7 +1,11 @@
-import type { CustomOptions } from '../common';
-import type { BaseMembers } from '../models/base-context';
-import type { ScreenMembers } from '../models/screen';
-import type { UntrustedDataMembers } from '../models/untrusted-data';
+import type { CustomOptions } from "../common";
+import type { BaseMembers } from "../models/base-context";
+import type { ScreenMembers } from "../models/screen";
+import type { UntrustedDataMembers } from "../models/untrusted-data";
+import type {
+  MfaPollingOptions,
+  MfaPushPollingControl,
+} from "../utils/polling-control.ts";
 
 /**
  * Interface for the screen data specific to mfa-push-challenge-push screen
@@ -18,7 +22,8 @@ export interface ScreenMembersOnMfaPushChallengePush extends ScreenMembers {
 /**
  * Interface for untrusted data specific to mfa-push-challenge-push screen
  */
-export interface UntrustedDataMembersOnMfaPushChallengePush extends UntrustedDataMembers {
+export interface UntrustedDataMembersOnMfaPushChallengePush
+  extends UntrustedDataMembers {
   submittedFormData: {
     rememberDevice: boolean;
   } | null;
@@ -58,4 +63,11 @@ export interface MfaPushChallengePushMembers extends BaseMembers {
    * @param payload Optional custom options to include with the request
    */
   tryAnotherMethod(payload?: CustomOptions): Promise<void>;
+
+  /** 
+   * Manages polling for MFA push challenge status
+   * @param options Configuration options for polling of type {@link MfaPollingOptions}
+   * @returns An object to control the polling process
+  */
+  pollingManager(options: MfaPollingOptions): MfaPushPollingControl;
 }

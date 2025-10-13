@@ -1,6 +1,6 @@
 import { ConnectionStrategy, Identifiers } from '../../../src/constants';
 import { Transaction } from '../../../src/models/transaction';
-import { getAllowedIdentifiers, getRequiredIdentifiers, hasFlexibleIdentifier } from '../../shared/transaction';
+import { getActiveIdentifiers, getRequiredIdentifiers, hasFlexibleIdentifier } from '../../shared/transaction';
 
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type { TransactionMembersOnResetPasswordRequest as OverrideMembers } from '../../../interfaces/screens/reset-password-request';
@@ -20,7 +20,7 @@ export class TransactionOverride extends Transaction implements OverrideMembers 
   static getAllowedIdentifiers(transactionContext: TransactionContext, connectionStrategy: string | null): OverrideMembers['allowedIdentifiers'] {
     if (connectionStrategy === ConnectionStrategy.SMS) return [Identifiers.PHONE];
     if (connectionStrategy === ConnectionStrategy.EMAIL) return [Identifiers.EMAIL];
-    return getAllowedIdentifiers(transactionContext);
+    return getActiveIdentifiers(transactionContext);
   }
 
   static getRequiredIdentifiers(transactionContext: TransactionContext, connectionStrategy: string | null): OverrideMembers['requiredIdentifiers'] {

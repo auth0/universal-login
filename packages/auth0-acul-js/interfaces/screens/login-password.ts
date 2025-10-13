@@ -52,6 +52,7 @@ export interface FederatedLoginOptions {
 
 export interface LoginPasswordMembers extends BaseMembers {
   screen: ScreenMembersOnLoginPassword;
+  transaction: TransactionMembersOnLoginPassword;
   login(payload: LoginPasswordOptions): Promise<void>;
   federatedLogin(payload: FederatedLoginOptions): Promise<void>;
 }

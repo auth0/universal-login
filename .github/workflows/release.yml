@@ -85,8 +85,12 @@ jobs:
           name: ${{ steps.meta.outputs.tag_name }}
           version: ${{ steps.meta.outputs.version }}
 
-      - name: Generate documentation
-        run: npm run docs --workspace=${{ steps.meta.outputs.name }}
+      - name: Generate documentation for released package only
+        run: npm run docs:unified ${{ steps.meta.outputs.dir }}
 
-      - name: Upload documentation
-        run: gh-pages -d packages/${{ steps.meta.outputs.dir }}/docs
+      - name: Deploy updated documentation
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
+          keep_files: true

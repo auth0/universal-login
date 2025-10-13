@@ -96,7 +96,7 @@ export class BaseContext implements BaseMembers {
   * Retrieves the array of transaction errors from the context, or an empty array if none exist.
   * @returns {TransactionError[]} An array of error objects from the transaction context.
   */
-  getError(): TransactionError[] {
+  getErrors(): TransactionError[] {
     return this.transaction?.errors ?? [];
   }
 }

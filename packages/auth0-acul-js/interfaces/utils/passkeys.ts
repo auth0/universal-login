@@ -25,3 +25,7 @@ export interface PasskeyCreateResponse {
   authenticatorAttachment: string | null;
   response: CredentialResponse;
 }
+
+export interface ConditionalMediationCapable {
+  isConditionalMediationAvailable?: () => Promise<boolean>;
+}

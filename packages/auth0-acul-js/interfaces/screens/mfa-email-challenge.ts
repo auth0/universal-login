@@ -1,6 +1,7 @@
 import type { BaseMembers } from '../models/base-context';
 import type { ScreenMembers } from '../models/screen';
 import type { UntrustedDataMembers } from '../models/untrusted-data';
+import type { StartResendOptions, ResendControl } from '../utils/resend-control';
 
 /**
  * Interface for the screen data specific to mfa-email-challenge screen
@@ -73,4 +74,10 @@ export interface MfaEmailChallengeMembers extends BaseMembers {
    * @param payload Optional custom options to include with the request
    */
   tryAnotherMethod(payload?: TryAnotherMethodOptions): Promise<void>;
+
+  /**
+   * Gets resend functionality with timeout management for this screen
+   * @param options Configuration options for resend functionality
+   */
+  resendManager(options?: StartResendOptions): ResendControl;
 }

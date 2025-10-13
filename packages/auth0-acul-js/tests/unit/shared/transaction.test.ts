@@ -62,6 +62,7 @@ describe('Transaction Context Functions', () => {
 
   it('should return the correct username policy', () => {
     const expectedPolicy = {
+      isActive: true,
       maxLength: 20,
       minLength: 5,
       allowedFormats: {
@@ -145,15 +146,15 @@ describe('Transaction Context Functions - Edge Cases', () => {
   });
 
   it('should return null if allowed identifiers are missing', () => {
-    expect(getAllowedIdentifiers(transactionWithMissingFields)).toBeNull();
+    expect(getAllowedIdentifiers(transactionWithMissingFields)).toEqual(["email"]);
   });
 
   it('should return null if required identifiers are missing', () => {
-    expect(getRequiredIdentifiers(transactionWithMissingFields)).toBeNull();
+    expect(getRequiredIdentifiers(transactionWithMissingFields)).toEqual(["email"]);
   });
 
   it('should return null if optional identifiers are missing', () => {
-    expect(getOptionalIdentifiers(transactionWithMissingFields)).toBeNull();
+    expect(getOptionalIdentifiers(transactionWithMissingFields)).toEqual(["email"]);
   });
 });
 

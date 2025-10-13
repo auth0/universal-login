@@ -1,6 +1,7 @@
 import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
+import { createResendControl } from '../../utils/resend-control';
 
 import { ScreenOverride } from './screen-override';
 import { UntrustedDataOverride } from './untrusted-data-overrider';
@@ -17,6 +18,7 @@ import type {
   UntrustedDataMembersOnMfaEmailChallenge as UntrustedDataOptions,
 } from '../../../interfaces/screens/mfa-email-challenge';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import type { StartResendOptions, ResendControl } from  '../../../interfaces/utils/resend-control';
 
 /**
  * Class implementing the mfa-email-challenge screen functionality
@@ -127,6 +129,42 @@ export default class MfaEmailChallenge extends BaseContext implements MfaEmailCh
       telemetry: [MfaEmailChallenge.screenIdentifier, 'pickEmail'],
     };
     await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.PICK_EMAIL });
+  }
+
+  /**
+   * Gets resend functionality with timeout management for this screen
+   * @param options - Configuration options for resend functionality
+   * @param options.timeoutSeconds - Number of seconds to wait before allowing resend (default: 10)
+   * @param options.onStatusChange - Callback to receive state updates (remaining seconds, disabled status)
+   * @param options.onTimeout - Callback to execute when timeout countdown reaches zero
+   * @returns ResendControl object with startResend method
+   * @utilityFeature
+   * 
+   * @example
+   * ```typescript
+   * import MfaEmailChallenge from '@auth0/auth0-acul-js/mfa-email-challenge';
+   * 
+   * const mfaEmailChallenge = new MfaEmailChallenge();
+   * const { startResend } = mfaEmailChallenge.resendManager({
+   *   timeoutSeconds: 15,
+   *   onStatusChange: (remainingSeconds, isDisabled) => {
+   *     console.log(`Resend available in ${remainingSeconds}s, disabled: ${isDisabled}`);
+   *   },
+   *   onTimeout: () => {
+   *     console.log('Resend is now available');
+   *   }
+   * });
+   * 
+   * // Call startResend when user clicks resend button
+   * startResend();
+   * ```
+   */
+  resendManager(options?: StartResendOptions): ResendControl {
+    return createResendControl(
+      MfaEmailChallenge.screenIdentifier,
+      () => this.resendCode(),
+      options
+    );
   }
 }
 

@@ -1,8 +1,11 @@
+import type { PasswordValidationResult } from '../../interfaces/utils/validate-password';
+import type { UsernameValidationResult } from '../../interfaces/utils/validate-username';
 import type { IdentifierType } from '../../src/constants';
+import type { CustomOptions } from '../common';
 import type { BaseMembers } from '../models/base-context';
 import type { ScreenMembers } from '../models/screen';
 import type { TransactionMembers, UsernamePolicy, PasswordPolicy } from '../models/transaction';
-
+import type { Identifier } from '../utils/signup-identifiers';
 export interface SignupOptions {
   email?: string;
   username?: string;
@@ -33,4 +36,30 @@ export interface SignupMembers extends BaseMembers {
   screen: ScreenMembersOnSignup;
   transaction: TransactionMembersOnSignup;
   signup(payload: SignupOptions): Promise<void>;
+  federatedSignup(payload: FederatedSignupOptions): Promise<void>;
+  pickCountryCode(payload?: CustomOptions): Promise<void>;
+  validatePassword(password: string): PasswordValidationResult;
+  /**
+ * Returns a list of enabled identifiers (e.g. email, phone, username)
+ * based on the current transaction state.
+ *
+ * Identifiers may be required or optional depending on the connection strategy
+ * and configuration provided during the authentication or signup flow.
+ *
+ * @returns An array of enabled {@link Identifier} objects, or `null` if the transaction is not initialized.
+ *
+ * @example
+ * ```ts
+ * const identifiers = authClient.getSignupIdentifiers();
+ * if (identifiers) {
+ *   identifiers.forEach(({ type, required }) => {
+ *     console.log(`${type} is ${required ? 'required' : 'optional'}`);
+ *   });
+ * }
+ * ```
+ * @utilityFeature
+ * @see Identifier
+ */
+  getSignupIdentifiers(): Identifier[] | null;
+  validateUsername(username: string): UsernameValidationResult;
 }

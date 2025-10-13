@@ -1,5 +1,6 @@
 import type { BaseMembers } from '../models/base-context';
 import type { ScreenMembers } from '../models/screen';
+import type { StartResendOptions, ResendControl } from '../utils/resend-control';
 
 /**
  * Interface for the screen data specific to reset-password-mfa-email-challenge screen
@@ -61,4 +62,10 @@ export interface ResetPasswordMfaEmailChallengeMembers extends BaseMembers {
    * @param payload Optional custom options to include with the request.
    */
   tryAnotherMethod(payload?: TryAnotherMethodOptions): Promise<void>;
+
+  /**
+   * Gets resend functionality with timeout management for this screen
+   * @param options Configuration options for resend functionality
+   */
+  resendManager(options?: StartResendOptions): ResendControl;
 }

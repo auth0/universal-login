@@ -1,0 +1,53 @@
+{
+  "name": "@auth0/auth0-acul-react",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "npm run clean && npm run test && rollup -c rollup.config.mjs",
+    "clean": "rm -rf dist",
+    "test": "jest --verbose tests/**/* --coverage",
+    "generate:sdk": "tsx ./scripts/generate-sdk/index.ts",
+    "generate:examples": "tsx ./scripts/generate-examples.ts",
+    "generate:screen-tests": "tsx ./scripts/generate-screen-tests.ts",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "docs": "typedoc --options typedoc.js",
+    "postbuild": "npm run docs"
+  },
+  "author": "Auth0",
+  "license": "MIT",
+  "description": "The Auth0 ACUL React SDK enables you to build Advanced Customization for Universal Login with React hooks and components.",
+  "repository": {
+    "type": "git"
+  },
+  "peerDependencies": {
+    "react": "^18.3.1"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./types": {
+      "types": "./dist/types/index.d.ts"
+    },
+    "./*": {
+      "import": "./dist/screens/*.js",
+      "types": "./dist/screens/*.d.ts"
+    }
+  },
+  "devDependencies": {
+    "@rollup/plugin-replace": "^6.0.2",
+    "@testing-library/jest-dom": "^6.0.0",
+    "@testing-library/react": "^14.0.0",
+    "@types/react": "^18.3.24",
+    "chalk": "^5.6.2",
+    "eslint-plugin-react": "^7.37.5",
+    "ts-node": "^10.9.2"
+  },
+  "dependencies": {
+    "@auth0/auth0-acul-js": "^0.1.0-beta.8"
+  }
+}

@@ -15,6 +15,7 @@
     "build": "npm run build --workspaces",
     "dev:acul": "npm run dev --workspace @auth0/auth0-acul-js",
     "docs": "npm run docs --workspaces",
+    "docs:unified": "node ./scripts/docs-unified.js",
     "format": "npm run format --workspaces",
     "preinstall": "node ./scripts/check-node-version.js && node ./scripts/block-local-install.js"
   },
@@ -50,10 +51,14 @@
     "rollup": "^4.24.0",
     "ts-jest": "^29.2.5",
     "ts-morph": "^25.0.1",
+    "tslib": "^2.8.1",
     "tsx": "^4.19.3",
     "typedoc": "^0.28.2",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.29.1",
     "yaml": "^2.6.1"
+  },
+  "dependencies": {
+    "marked": "^16.3.0"
   }
 }

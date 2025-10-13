@@ -57,13 +57,13 @@ import MfaEmailList from '@auth0/auth0-acul-js/mfa-email-list';
 The SDK provides multiple ways to detect and view errors during the process:
 
 1. **`getErrors` method for screen specofic error**  
-   A top-level getter function, `getError`, can be used to retrieve detailed authentication errors when backend validation fails.
+   A top-level getter function, `getErrors`, can be used to retrieve detailed authentication errors when backend validation fails.
    ```javascript
       import Login from "@auth0/auth0-acul-js/login";
 
       const loginIdManager = new Login();
 
-      const errors = loginIdManager.getError();
+      const errors = loginIdManager.getErrors();
       if (errors) {
       console.error("Login failed:", errors);
    }

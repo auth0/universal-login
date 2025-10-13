@@ -45,18 +45,20 @@ interface CountryCode {
 }
 
 export interface UsernamePolicy {
+  isActive?: boolean
   maxLength: number;
   minLength: number;
-  allowedFormats: {
-    usernameInEmailFormat: boolean;
-    usernameInPhoneFormat: boolean;
+  allowedFormats?: {
+    usernameInEmailFormat?: boolean;
+    usernameInPhoneFormat?: boolean;
   };
 }
 
 export interface PasswordPolicy {
+  enabled?: boolean;
   minLength?: number;
-  policy: 'low' | 'fair' | 'good' | 'excellent';
-  passwordSecurityInfo?: PasswordComplexityRule;
+  policy: 'none' | 'low' | 'fair' | 'good' | 'excellent';
+  passwordSecurityInfo?: PasswordComplexityRule[];
 }
 
 export interface DBConnection extends Connection {
@@ -98,7 +100,7 @@ export interface DBConnection extends Connection {
         enabled: boolean;
         policy: string;
         min_length: number;
-        password_security_info?: PasswordComplexityRule;
+        password_security_info?: PasswordComplexityRule[];
       };
       passkey: {
         enabled: boolean;
@@ -135,6 +137,7 @@ export interface PasswordComplexityRule {
   code: string;
   label: string;
   status: 'valid' | 'error';
+  isValid: boolean;
   args?: {
     count: number;
     total?: number;

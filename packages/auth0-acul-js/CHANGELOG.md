@@ -34,13 +34,13 @@
 
 ### ✨ What’s new ?
 
-- **Added** `getError` method to the SDK, allowing developers to retrieve detailed authentication errors in the sample app.
+- **Added** `getErrors` method to the SDK, allowing developers to retrieve detailed authentication errors in the sample app.
 ```javascript
   import Login from "@auth0/auth0-acul-js/login";
 
   const loginIdManager = new Login();
 
-  const errors = loginIdManager.getError();
+  const errors = loginIdManager.getErrors();
   if (errors) {
     console.error("Login failed:", errors);
   }

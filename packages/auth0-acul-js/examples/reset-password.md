@@ -1,108 +1,128 @@
 ## resetPassword
 
 ```typescript
-import React, { useState } from 'react';
-import ResetPassword from '@auth0/auth0-acul-js/reset-password';
+import React, { useRef, useState } from "react";
+import { useResetPasswordManager } from './hooks/useResetPasswordManager';
+import { Logo } from "../../components/Logo";
+import { Title } from './components/Title';
+import { ErrorMessages } from './components/ErrorMessages';
+import Button from '../../components/Button'; // Adjust the path if needed
 
-const ResetPasswordScreen = () => {
-  const [password, setPassword] = useState('');
-  const [reEnterPassword, setReEnterPassword] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
+const ResetPasswordScreen: React.FC = () => {
+  const { resetPasswordManager, handleResetPassword } = useResetPasswordManager();
 
-  const resetPasswordManager = new ResetPassword();
-  const handleResetPassword = async (e) => {
-    e.preventDefault();
-    setError('');
-    setSuccess(false);
+  const newPasswordRef = useRef<HTMLInputElement>(null);
+  const confirmPasswordRef = useRef<HTMLInputElement>(null);
+  const captchaRef = useRef<HTMLInputElement>(null);
 
-    if (password !== reEnterPassword) {
-      setError('Passwords do not match. Please try again.');
+  const [isValid, setIsValid] = useState(true);
+  const [errors, setErrors] = useState<Array<{ code: string; message: string }>>([]);
+  const [isValidConfirmPassword, setIsValidConfirmPassword] = useState(true);
+  const [confirmPasswordErrors, setConfirmPasswordErrors] = useState<Array<{ code: string; message: string }>>([]);
+
+  const getFormValues = () => ({
+    newPassword: newPasswordRef.current?.value || '',
+    confirmPassword: confirmPasswordRef.current?.value || '',
+    captcha: captchaRef.current?.value || '',
+  });
+
+  const onLoginClick = () => {
+    const { newPassword, confirmPassword, captcha } = getFormValues();
+
+    const { isValid, errors } = resetPasswordManager.validatePassword(newPassword);
+    const { isValid: isValidConfirmPassword, errors: confirmPasswordErrors } =
+      resetPasswordManager.validatePassword(confirmPassword);
+
+    setIsValid(isValid);
+    setErrors(errors);
+    setIsValidConfirmPassword(isValidConfirmPassword);
+    setConfirmPasswordErrors(confirmPasswordErrors);
+
+    if (!isValid || !isValidConfirmPassword) {
       return;
     }
 
-    try {
-      await resetPasswordManager.resetPassword({
-        'password-reset': password,
-        're-enter-password': reEnterPassword,
-      });
-      setSuccess(true);
-    } catch (error) {
-      setError('Failed to reset password. Please try again later.');
-    }
+    handleResetPassword(newPassword, confirmPassword, captcha);
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Reset your password
-        </h2>
-      </div>
+    <div className="prompt-container">
+      <Logo />
+      <Title screenTexts={resetPasswordManager.screen.texts!} />
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleResetPassword}>
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                New Password
-              </label>
-              <div className="mt-1">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-            </div>
+      <div className="input-container">
+        {/* New Password */}
+        <label>Enter your new password</label>
+        <input
+          type="password"
+          id="newPassword"
+          ref={newPasswordRef}
+          aria-invalid={!isValid}
+          placeholder="Enter your password"
+          required
+          className={`input w-full border px-4 py-2 rounded ${
+            !isValid ? 'border-red-500' : 'border-gray-300'
+          }`}
+        />
+        {!isValid && (
+          <ul className="text-red-500 text-sm list-disc list-inside">
+            {errors.map((err) => (
+              <li key={err.code}>{err.message}</li>
+            ))}
+          </ul>
+        )}
 
-            <div>
-              <label htmlFor="re-enter-password" className="block text-sm font-medium text-gray-700">
-                Re-enter Password
-              </label>
-              <div className="mt-1">
-                <input
-                  id="re-enter-password"
-                  name="re-enter-password"
-                  type="password"
-                  required
-                  value={reEnterPassword}
-                  onChange={(e) => setReEnterPassword(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-            </div>
+        {/* Confirm Password */}
+        <label>Confirm your new password</label>
+        <input
+          type="password"
+          id="password"
+          ref={confirmPasswordRef}
+          aria-invalid={!isValidConfirmPassword}
+          placeholder="Re-enter your password"
+          required
+          className={`input w-full border px-4 py-2 rounded ${
+            !isValidConfirmPassword ? 'border-red-500' : 'border-gray-300'
+          }`}
+        />
+        {!isValidConfirmPassword && (
+          <ul className="text-red-500 text-sm list-disc list-inside">
+            {confirmPasswordErrors.map((err) => (
+              <li key={err.code}>{err.message}</li>
+            ))}
+          </ul>
+        )}
 
-            {error && (
-              <div className="text-red-600 text-sm">
-                {error}
-              </div>
-            )}
+        {/* Captcha */}
+        {resetPasswordManager.screen.isCaptchaAvailable && (
+          <div className="captcha-container">
+            <img src={resetPasswordManager.screen.captchaImage ?? ""} alt="Captcha" />
+            <label>Enter the captcha</label>
+            <input
+              type="text"
+              id="captcha"
+              ref={captchaRef}
+              placeholder="Enter the captcha"
+            />
+          </div>
+        )}
 
-            {success && (
-              <div className="text-green-600 text-sm">
-                Password reset successful! You can now log in with your new password.
-              </div>
-            )}
-
-            <div>
-              <button
-                type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                Reset Password
-              </button>
-            </div>
-          </form>
+        {/* Submit Button */}
+        <div className="button-container">
+          <Button id="continue" onClick={onLoginClick}>
+            Continue
+          </Button>
         </div>
       </div>
+
+      {/* Transaction Errors */}
+      {resetPasswordManager.transaction.hasErrors && resetPasswordManager.transaction.errors && (
+        <ErrorMessages errors={resetPasswordManager.transaction.errors!} />
+      )}
     </div>
   );
 };
 
 export default ResetPasswordScreen;
+
 ```

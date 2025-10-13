@@ -9,7 +9,6 @@ import React, {
   useState,
   useEffect,
   useRef,
-  useCallback,
   useMemo,
 } from 'react';
 import MfaPushChallengePush from '@auth0/auth0-acul-js/mfa-push-challenge-push';
@@ -17,20 +16,19 @@ import MfaPushChallengePush from '@auth0/auth0-acul-js/mfa-push-challenge-push';
 const MfaPushChallengePushScreen: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [rememberDevice, setRememberDevice] = useState(false);
-  const pollInterval: React.MutableRefObject<number> = useRef(0);
+  const [isPolling, setIsPolling] = useState(false);
   const mfaPushChallengePush = useMemo(() => new MfaPushChallengePush(), []);
   const { screen, transaction } = mfaPushChallengePush;
   const { deviceName, showRememberDevice } =
     mfaPushChallengePush.screen.data || {};
-    
-  // Initialize form values from untrustedData
+  const pollingControl = useRef<ReturnType<typeof mfaPushChallengePush.pollingManager> | null>(null); 
+
   useEffect(() => {
-    // Use untrustedData to prepopulate form fields if available
     const savedFormData = mfaPushChallengePush.untrustedData.submittedFormData;
     if (savedFormData?.rememberDevice !== undefined) {
       setRememberDevice(savedFormData.rememberDevice);
     }
-  }, []);
+  }, [mfaPushChallengePush.untrustedData.submittedFormData]);
 
   const screenText = {
     title: screen.texts?.title ?? 'Push Notification Sent',
@@ -51,18 +49,14 @@ const MfaPushChallengePushScreen: React.FC = () => {
       'Failed to switch authentication method. Please try again.',
   };
 
-  const startPolling = useCallback(async () => {
-    mfaPushChallengePush.continue({ rememberDevice });
-  }, [mfaPushChallengePush, rememberDevice]);
-
   useEffect(() => {
-    clearInterval(pollInterval.current);
-    pollInterval.current = setInterval(startPolling, 5000);
-
     return () => {
-      clearInterval(pollInterval.current);
+      if (pollingControl.current) {
+        pollingControl.current?.stopPolling();
+      }
+      setIsPolling(false);
     };
-  }, [startPolling]);
+  }, []);
 
   const handleResend = async () => {
     setIsLoading(true);
@@ -97,6 +91,27 @@ const MfaPushChallengePushScreen: React.FC = () => {
     }
   };
 
+  const handleStartPolling = () => {
+    if (!isPolling) {
+      pollingControl.current = mfaPushChallengePush.pollingManager(
+        5000,
+        () => {
+          mfaPushChallengePush.continue({ rememberDevice });
+          setIsPolling(false);
+        }
+      );
+      pollingControl.current?.startPolling();
+      setIsPolling(true);
+    }
+  };
+
+  const handleStopPolling = () => {
+  if (pollingControl.current) {
+    pollingControl.current?.stopPolling();
+    setIsPolling(false);
+  }
+};
+
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -117,7 +132,7 @@ const MfaPushChallengePushScreen: React.FC = () => {
             </div>
 
             <p className="text-center text-sm text-gray-500">
-              {screenText.waiting}
+              {isPolling ? screenText.waiting : 'Polling stopped.'}
             </p>
 
             {showRememberDevice && (
@@ -157,6 +172,21 @@ const MfaPushChallengePushScreen: React.FC = () => {
             </button>
 
             <button
+              onClick={handleStopPolling}
+              disabled={!isPolling}
+              className="w-full flex justify-center py-2 px-4 border border-red-500 rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50"
+            >
+              Stop Polling
+            </button>
+
+            <button
+              onClick={handleStartPolling}
+              className="w-full flex justify-center py-2 px-4 border border-green-500 rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
+            >
+              Start Polling
+            </button>
+
+            <button
               onClick={handleEnterCodeManually}
               disabled={isLoading}
               className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
@@ -180,7 +210,92 @@ const MfaPushChallengePushScreen: React.FC = () => {
 
 export default MfaPushChallengePushScreen;
 
+
 ```
+
+## Polling Usage Example (with stop/start)
+
+```tsx
+import React, { useEffect, useRef } from 'react';
+import MfaPushChallengePush from '@auth0/auth0-acul-js/mfa-push-challenge-push';
+
+const mfaPushChallengePush = new MfaPushChallengePush();
+const pollerRef = useRef(null);
+
+useEffect(() => {
+  // Start polling for push notification acceptance
+  pollerRef.current = mfaPushChallengePush.pollingManager(5000, () => {
+    mfaPushChallengePush.continue();
+  });
+
+  // To stop polling when component unmounts
+  return () => {
+    if (pollerRef.current) pollerRef.current.stopPolling();
+  };
+}, []);
+
+// To manually stop polling
+// pollerRef.current.stopPolling();
+
+// To restart polling:
+// pollerRef.current.startPolling();
+
+// To check if polling is running:
+// const isPolling = pollerRef.current.isRunning();
+```
+
+---
+
+## Polling Control Example (start/stop/running)
+
+### Plain JavaScript Usage
+
+```javascript
+import MfaPushChallengePush from '@auth0/auth0-acul-js/mfa-push-challenge-push';
+
+const mfaPushChallengePush = new MfaPushChallengePush();
+
+// Get polling object
+const polling = mfaPushChallengePush.pollingManager(5000, async () => {
+  await mfaPushChallengePush.continue();
+});
+
+// Start polling
+polling.startPolling();
+
+polling.stopPolling();
+
+console.log(polling.isRunning()); // true or false
+```
+
+### React Usage Example
+
+```tsx
+import React, { useEffect, useRef } from 'react';
+import MfaPushChallengePush from '@auth0/auth0-acul-js/mfa-push-challenge-push';
+
+const MfaPushChallengePushScreen: React.FC = () => {
+  const mfaPushChallengePush = React.useMemo(() => new MfaPushChallengePush(), []);
+  const pollingRef = useRef<any>(null);
+
+  useEffect(() => {
+    // Get polling object
+    pollingRef.current = mfaPushChallengePush.pollingManager(5000, async () => {
+      await mfaPushChallengePush.continue();
+    });
+    // Start polling
+    pollingRef.current.startPolling();
+    return () => {
+      pollingRef.current?.stopPolling();
+    };
+  }, [mfaPushChallengePush]);
+
+
+  return <div>...</div>;
+};
+```
+
+---
 
 ## Individual Method Examples
 
@@ -195,10 +310,9 @@ const mfaPushChallengePush = new MfaPushChallengePush();
 const pollInterval = setInterval(async () => {
   try {
     await mfaPushChallengePush.continue();
-    // If successful, the page will redirect
     clearInterval(pollInterval);
   } catch (error) {
-    // Ignore polling errors
+    
   }
 }, 5000);
 ```

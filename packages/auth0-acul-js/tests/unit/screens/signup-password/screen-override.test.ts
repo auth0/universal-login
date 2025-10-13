@@ -1,6 +1,7 @@
+import { Screen } from '../../../../src/models/screen';
 import { ScreenOverride } from '../../../../src/screens/signup-password/screen-override';
 import { getLoginLink, getEditIdentifierLink } from '../../../../src/shared/screen';
-import { Screen } from '../../../../src/models/screen';
+
 import type { ScreenContextOnSignupPassword } from '../../../../interfaces/screens/signup-password';
 
 jest.mock('../../../../src/shared/screen');
@@ -14,12 +15,15 @@ describe('ScreenOverride', () => {
     screenContext = {
       name: 'signup-password',
       links: { login: 'mockLoginLink', edit_identifier: 'mockEditLink' },
-      data: { mockKey: 'mockValue' },
+      data: { 
+        email: 'test@example.com',
+        phone_number: '+1234567890',
+        username: 'testuser'
+      },
     } as ScreenContextOnSignupPassword;
 
     (getLoginLink as jest.Mock).mockReturnValue('mockLoginLink');
     (getEditIdentifierLink as jest.Mock).mockReturnValue('mockEditLink');
-    (Screen.getScreenData as jest.Mock).mockReturnValue({ mockKey: 'mockValue' });
 
     screenOverride = new ScreenOverride(screenContext);
   });
@@ -32,8 +36,12 @@ describe('ScreenOverride', () => {
     expect(screenOverride.editLink).toBe('mockEditLink');
   });
 
-  it('should initialize data correctly', () => {
-    expect(screenOverride.data).toEqual({ mockKey: 'mockValue' });
+  it('should initialize data correctly with phoneNumber transformation', () => {
+    expect(screenOverride.data).toEqual({
+      email: 'test@example.com',
+      phoneNumber: '+1234567890',
+      username: 'testuser'
+    });
   });
 
   it('should call getLoginLink with screenContext', () => {
@@ -44,8 +52,42 @@ describe('ScreenOverride', () => {
     expect(getEditIdentifierLink).toHaveBeenCalledWith(screenContext);
   });
 
-  it('should call Screen.getScreenData with screenContext', () => {
-    expect(Screen.getScreenData).toHaveBeenCalledWith(screenContext);
+  describe('getScreenData', () => {
+    it('should transform phone_number to phoneNumber', () => {
+      const result = ScreenOverride.getScreenData(screenContext);
+      expect(result).toEqual({
+        email: 'test@example.com',
+        phoneNumber: '+1234567890',
+        username: 'testuser'
+      });
+    });
+
+    it('should return null when no data is provided', () => {
+      const contextWithoutData = {
+        ...screenContext,
+        data: null
+      } as unknown as ScreenContextOnSignupPassword;
+      
+      const result = ScreenOverride.getScreenData(contextWithoutData);
+      expect(result).toBeNull();
+    });
+
+    it('should handle missing phone_number field', () => {
+      const contextWithoutPhone = {
+        ...screenContext,
+        data: {
+          email: 'test@example.com',
+          username: 'testuser'
+        }
+      } as ScreenContextOnSignupPassword;
+      
+      const result = ScreenOverride.getScreenData(contextWithoutPhone);
+      expect(result).toEqual({
+        email: 'test@example.com',
+        phoneNumber: undefined,
+        username: 'testuser'
+      });
+    });
   });
 
   it('should extend Screen class', () => {

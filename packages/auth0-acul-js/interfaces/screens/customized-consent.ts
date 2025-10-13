@@ -1,6 +1,6 @@
-import type { CustomOptions } from '../../interfaces/common';
-import type { BaseMembers } from '../../interfaces/models/base-context';
-import type { Scope, AuthorizationDetail, ScreenMembers } from '../../interfaces/models/screen';
+import type { CustomOptions } from '../common';
+import type { BaseMembers } from '../models/base-context';
+import type { AuthorizationDetail, Scope, ScreenMembers } from '../models/screen';
 
 /**
  * @interface ScreenMembersOnCustomizedConsent
@@ -8,30 +8,28 @@ import type { Scope, AuthorizationDetail, ScreenMembers } from '../../interfaces
  * description Defines the specific properties available on the `screen` object for the 'customized-consent' screen.
  * This screen is presented when a user needs to consent to specific scopes and potentially detailed authorization requests.
  *
- * @property {object | null} data - Screen-specific data.
- * @property {Scope[]} data.scopes - An array of {@link Scope} objects detailing each permission (scope) being requested.
- *                                   These are typically high-level permissions like 'read:profile' or 'openid'.
- * @property {AuthorizationDetail[]} data.authorization_details - An array of {@link AuthorizationDetail} objects.
- *                                                              Each object provides granular details about specific data or
- *                                                              actions the application wants to perform, potentially related to
- *                                                              Rich Authorization Requests (RAR).
+ * @property data - Screen-specific data.
+ * @property data.scopes - An array of `Scope` objects detailing each permission (scope) being requested.
+ *                         These are typically high-level permissions like 'read:profile' or 'openid'.
+ * @property data.authorization_details - An array of `AuthorizationDetail` objects.
+ *                                       Each object provides granular details about specific data or
+ *                                       actions the application wants to perform, potentially related to
+ *                                       Rich Authorization Requests (RAR).
  */
 export interface ScreenMembersOnCustomizedConsent extends ScreenMembers {
   /**
-   * An array of {@link Scope} objects detailing each permission (scope) being requested.
+   * An array of `Scope` objects detailing each permission (scope) being requested.
    * These are typically high-level permissions like 'read:profile' or 'openid'.
    * This list should be displayed to the user for their review.
-   * @type {Scope[]}
    */
   scopes: Scope[];
 
   /**
-   * An array of {@link AuthorizationDetail} objects.
+   * An array of `AuthorizationDetail` objects.
    * Each object provides granular details about specific data or
    * actions the application wants to perform, potentially related to
    * Rich Authorization Requests (RAR) or other fine-grained permission models.
    * This list should be displayed to the user for their review.
-   * @type {AuthorizationDetail[]}
    */
   authorizationDetails: AuthorizationDetail[];
 }

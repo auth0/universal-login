@@ -1,8 +1,10 @@
+
+import { ScreenIds } from '../../../../src/constants';
 import InterstitialCaptcha from '../../../../src/screens/interstitial-captcha';
-import { baseContextData } from '../../../data/test-data';
 import { FormHandler } from '../../../../src/utils/form-handler';
-import { SubmitCaptchaOptions } from 'interfaces/screens/interstitial-captcha';
-import { ScreenIds } from '../../../../src//constants';
+import { baseContextData } from '../../../data/test-data';
+
+import type { SubmitCaptchaOptions } from 'interfaces/screens/interstitial-captcha';
 
 jest.mock('../../../../src/utils/form-handler');
 

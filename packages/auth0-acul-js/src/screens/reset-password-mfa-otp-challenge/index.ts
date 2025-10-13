@@ -1,4 +1,4 @@
-import { FormActions } from '../../../src/constants';
+import { FormActions, ScreenIds } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
@@ -14,6 +14,10 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * Class implementing the reset-password-mfa-otp-challenge screen functionality
  */
 export default class ResetPasswordMfaOtpChallenge extends BaseContext implements ResetPasswordMfaOtpChallengeMembers {
+  /**
+   * Screen identifier for validation and telemetry
+   */
+  static screenIdentifier: string = ScreenIds.RESET_PASSWORD_MFA_OTP_CHALLENGE;
   /**
    * Creates an instance of ResetPasswordMfaOtpChallenge screen manager
    */

@@ -1,10 +1,18 @@
-import ResetPassword from '../../../../src/screens/reset-password';
-import { baseContextData } from '../../../data/test-data';
-import { FormHandler } from '../../../../src/utils/form-handler';
-import { ResetPasswordOptions } from 'interfaces/screens/reset-password';
-import { ScreenIds } from '../../../../src//constants';
 
+import { ScreenIds } from '../../../../src/constants';
+import ResetPassword from '../../../../src/screens/reset-password';
+import { FormHandler } from '../../../../src/utils/form-handler';
+import { validatePassword as _validatePassword } from '../../../../src/utils/validate-password';
+import { baseContextData } from '../../../data/test-data';
+
+import type { PasswordPolicy } from '../../../../interfaces/models/transaction';
+import type { ResetPasswordOptions } from 'interfaces/screens/reset-password';
 jest.mock('../../../../src/utils/form-handler');
+jest.mock('../../../../src/utils/validate-password', () => ({
+  validatePassword: jest.fn(),
+}));
+
+
 describe('ResetPassword', () => {
   let resetPassword: ResetPassword;
   let mockFormHandler: { submitData: jest.Mock };
@@ -57,6 +65,35 @@ describe('ResetPassword', () => {
       await expect(resetPassword.resetPassword(payload)).rejects.toThrow(
         'Invalid re-enter password'
       );
+    });
+  });
+
+  describe('validatePassword', () => {
+    it('should call _validatePassword with password and transaction.passwordPolicy', () => {
+      const mockPolicy = { policy: "low", minLength: 8,  };
+      resetPassword.transaction.passwordPolicy = mockPolicy as PasswordPolicy;
+
+      const mockResult = { isValid: true, errors: [] };
+      (_validatePassword as jest.Mock).mockReturnValue(mockResult);
+
+      const password = 'MyP@ssw0rd';
+      const result = resetPassword.validatePassword(password);
+
+      expect(_validatePassword).toHaveBeenCalledWith(password, mockPolicy);
+      expect(result).toBe(mockResult);
+    });
+
+    it('should call _validatePassword with null policy if none in transaction', () => {
+      resetPassword.transaction.passwordPolicy = null;
+
+      const mockResult = { isValid: false, errors: [{ code: 'password_required', message: 'Password is required.' }] };
+      (_validatePassword as jest.Mock).mockReturnValue(mockResult);
+
+      const password = 'anyPassword';
+      const result = resetPassword.validatePassword(password);
+
+      expect(_validatePassword).toHaveBeenCalledWith(password, null);
+      expect(result).toBe(mockResult);
     });
   });
 });

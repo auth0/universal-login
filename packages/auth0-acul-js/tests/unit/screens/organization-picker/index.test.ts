@@ -1,7 +1,10 @@
-import { baseContextData } from '../../../data/test-data';
-import { FormHandler } from '../../../../src/utils/form-handler';
-import { CustomOptions } from 'interfaces/common';
+
+import { ScreenIds } from '../../../../src/constants';
 import OrganizationPicker from '../../../../src/screens/organization-picker';
+import { FormHandler } from '../../../../src/utils/form-handler';
+import { baseContextData } from '../../../data/test-data';
+
+import type { CustomOptions } from 'interfaces/common';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -11,12 +14,22 @@ describe('OrganizationPicker', () => {
 
   beforeEach(() => {
     global.window = Object.create(window);
-    window.universal_login_context = baseContextData;
+    window.universal_login_context = {
+      ...baseContextData,
+      screen: {
+        ...baseContextData.screen,
+        name: 'organization-picker',
+      }
+    };
     organizationPicker = new OrganizationPicker();
     mockFormHandler = {
       submitData: jest.fn(),
     };
     (FormHandler as jest.Mock).mockImplementation(() => mockFormHandler);
+  });
+
+  it('should have the correct screenIdentifier', () => {
+    expect(OrganizationPicker.screenIdentifier).toBe(ScreenIds.ORGANIZATION_PICKER);
   });
 
   describe('selectOrganization method', () => {

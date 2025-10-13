@@ -1,10 +1,11 @@
-import MfaEmailList from '../../../../src/screens/mfa-email-list';
-import { baseContextData } from '../../../data/test-data';
-import { FormHandler } from '../../../../src/utils/form-handler';
-import { CustomOptions } from '../../../../interfaces/common';
-import { SelectMfaEmailOptions } from '../../../../interfaces/screens/mfa-email-list';
-import { ScreenIds } from '../../../../src//constants';
+import { ScreenIds } from '../../../../src/constants';
 import { FormActions } from '../../../../src/constants';
+import MfaEmailList from '../../../../src/screens/mfa-email-list';
+import { FormHandler } from '../../../../src/utils/form-handler';
+import { baseContextData } from '../../../data/test-data';
+
+import type { CustomOptions } from '../../../../interfaces/common';
+import type { SelectMfaEmailOptions } from '../../../../interfaces/screens/mfa-email-list';
 
 jest.mock('../../../../src/utils/form-handler');
 
