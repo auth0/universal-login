@@ -7,6 +7,7 @@ export const Errors = {
   PASSKEY_CREDENTIALS_UNAVAILABLE: 'Unable to retrieve the credential. No credentials found or multiple options detected.',
   PASSKEY_CREATE_FAILED: 'Failed to create credentials',
   PASSKEY_EXPECTED_ASSERTION_RESPONSE: 'Expected AuthenticatorAssertionResponse',
+  PASSKEY_AUTOCOMPLETE_REGISTRATION_FAILED: 'Passkey autocomplete registration failed',
 };
 
 export const USERNAME_ERROR_MESSAGES = {

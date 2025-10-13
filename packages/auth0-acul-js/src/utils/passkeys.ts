@@ -4,7 +4,7 @@ import { isWebAuthPlatformAvailable } from './browser-capabilities';
 import { base64UrlToUint8Array, uint8ArrayToBase64Url } from './codec';
 
 import type { PasskeyRead, PasskeyCreate } from '../../interfaces/models/screen';
-import type { PasskeyCreateResponse, PasskeyCredentialResponse } from '../../interfaces/utils/passkeys';
+import type { PasskeyCreateResponse, PasskeyCredentialResponse, ConditionalMediationCapable } from '../../interfaces/utils/passkeys';
 
 function safeBase64Url(buffer: ArrayBuffer | null): string | null {
   return buffer ? uint8ArrayToBase64Url(buffer) : null;
@@ -88,4 +88,73 @@ export async function createPasskeyCredentials(publicKey: PasskeyCreate['public_
       transports: typeof credentialResponse?.getTransports === 'function' ? credentialResponse.getTransports() : undefined,
     },
   };
+}
+
+export async function registerPasskeyAutofill({
+  publicKey,
+  inputId,
+  onResolve,
+  onReject,
+}: {
+  publicKey: PasskeyRead['public_key'];
+  inputId?: string;
+  onResolve: (credential: Credential) => void | Promise<void>;
+  onReject?: (error: unknown) => void;
+}): Promise<AbortController | void> {
+  if (!publicKey?.challenge) throw new Error(Errors.PASSKEY_PUBLIC_KEY_UNAVAILABLE);
+  const DEFAULT_TIMEOUT = 300_000; // 5 minutes
+
+  const pkc = PublicKeyCredential as unknown as ConditionalMediationCapable;
+  const supportsConditional =
+    typeof pkc.isConditionalMediationAvailable === 'function'
+      ? await pkc.isConditionalMediationAvailable()
+      : false;
+
+  if (!supportsConditional) {
+    onReject?.(new Error('Conditional mediation not supported by this browser.'));
+    return;
+  }
+
+  if (!('credentials' in navigator) || !('PublicKeyCredential' in window)) {
+    onReject?.(new Error('WebAuthn is not supported in this environment.'));
+    return;
+  }
+
+  // Overwrite the autocomplete attribute to ensure it has the required values.
+  if (typeof document !== 'undefined' && inputId) {
+    const el = document.getElementById(inputId);
+    if (el && el.tagName?.toUpperCase() === 'INPUT') {
+      const input = el as HTMLInputElement;
+      input.setAttribute('autocomplete', 'username webauthn');
+    } else {
+      console.warn(`[Auth0 ACUL] No valid <input> found with id="${inputId}". Passkey autocomplete may not work.`);
+    }
+  }
+
+  const challenge = base64UrlToUint8Array(publicKey.challenge);
+  const controller = new AbortController();
+  const request: CredentialRequestOptions = {
+    publicKey: {
+      challenge,
+      rpId: window.location.hostname,
+      allowCredentials: [],
+      userVerification: 'preferred',
+      timeout: DEFAULT_TIMEOUT
+    },
+    mediation: 'conditional',
+    signal: controller.signal,
+  };
+
+  // Keep the promise open to allow the user to interact with the UI.
+  navigator.credentials.get(request)
+    .then((credential) => credential && onResolve(credential))
+    .catch((err: unknown) => {
+      if (err instanceof DOMException && err.name === 'AbortError') {
+        // Aborted, no action needed
+        return;
+      }
+      onReject?.(err);
+    });
+
+  return controller;
 }
