@@ -1,5 +1,12 @@
 # Change Log
 
+## [auth0-acul-js-1.0.0-alpha.0](https://github.com/auth0/universal-login/tree/auth0-acul-js-1.0.0-alpha.0) (2025-10-13)
+
+**Added**
+- Adding `auth0-acul-react` package [\#218](https://github.com/auth0/universal-login/pull/218) ([nandan-bhat](https://github.com/nandan-bhat))
+- chore: add dev script [\#213](https://github.com/auth0/universal-login/pull/213) ([joel-hamilton](https://github.com/joel-hamilton))
+- feat: add Claude Code PR Review workflow [\#206](https://github.com/auth0/universal-login/pull/206) ([amitsingh05667](https://github.com/amitsingh05667))
+
 ## [auth0-acul-js@0.1.0-beta.9](https://github.com/auth0/universal-login/tree/auth0-acul-js-0.1.0-beta.9) (2025-09-26)
 
 **Fixed**
