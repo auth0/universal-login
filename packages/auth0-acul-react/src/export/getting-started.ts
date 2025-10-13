@@ -302,7 +302,7 @@
  *
  * - [React Examples](https://github.com/auth0/universal-login/tree/master/packages/auth0-acul-react/examples) - Complete React component examples
  * - [React Boilerplate](https://github.com/auth0/auth0-acul-react-boilerplate) - Full React application template
- * 
+ *
  * ## Feedback and Support
  *
  * ### Contributing

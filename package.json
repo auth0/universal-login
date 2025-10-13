@@ -56,7 +56,8 @@
     "typedoc": "^0.28.2",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.29.1",
-    "yaml": "^2.6.1"
+    "yaml": "^2.6.1",
+    "chalk": "^5.6.2"
   },
   "dependencies": {
     "marked": "^16.3.0"
