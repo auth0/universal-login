@@ -1,3 +1,11 @@
+# Change Log
+
+## [auth0-acul-js@0.1.0-beta.9](https://github.com/auth0/universal-login/tree/auth0-acul-js-0.1.0-beta.9) (2025-09-26)
+
+**Fixed**
+- Fix “No access keys” and Android registration [\#196](https://github.com/auth0/universal-login/pull/196) ([nandan-bhat](https://github.com/nandan-bhat))
+- Add pickCountryCode method to SignupId class [\#151](https://github.com/auth0/universal-login/pull/151) ([amitsingh05667](https://github.com/amitsingh05667))
+
 ## [auth0-acul-js@0.1.0-beta.8](https://github.com/auth0/universal-login/tree/auth0-acul-js%400.1.0-beta.8) (2025-08-01)
 
 **Added**

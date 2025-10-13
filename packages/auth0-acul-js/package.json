@@ -1,6 +1,6 @@
 {
   "name": "@auth0/auth0-acul-js",
-  "version": "0.1.0-beta.8",
+  "version": "0.1.0-beta.9",
   "type": "module",
   "module": "dist/index.js",
   "exports": {
@@ -18,8 +18,10 @@
   },
   "scripts": {
     "clean": "rimraf dist",
-    "build": "npm run clean && npm run lint && npm run test && npm run docs && rollup -c rollup.config.mjs",
-    "build:local": "rollup -c rollup.config.mjs",
+    "build": "NODE_ENV=production npm run clean && npm run lint && npm run test && npm run docs && rollup -c rollup.config.mjs",
+    "build:local": "NODE_ENV=production rollup -c rollup.config.mjs",
+    "dev": "NODE_ENV=development rollup -c rollup.config.mjs -w",
+    "dev:prod": "NODE_ENV=production rollup -c rollup.config.mjs -w",
     "test": "jest --verbose tests/unit/**/* --coverage",
     "test:e2e": "cypress open",
     "docs": "typedoc --options typedoc.js",

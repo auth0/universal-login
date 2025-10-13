@@ -31,14 +31,3 @@ jobs:
             echo "Scanning $dir"
             snyk test --all-projects --file=$dir/package.json || true
           done
-
-  semgrep:
-    name: Semgrep Scan
-    runs-on: ubuntu-latest
-    container:
-      image: returntocorp/semgrep
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Run Semgrep
-        run: semgrep scan --config auto --exclude node_modules

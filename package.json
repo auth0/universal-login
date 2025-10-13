@@ -13,6 +13,7 @@
     "lint": "npm run lint --workspaces",
     "test": "npm test --workspaces",
     "build": "npm run build --workspaces",
+    "dev:acul": "npm run dev --workspace @auth0/auth0-acul-js",
     "docs": "npm run docs --workspaces",
     "docs:unified": "node ./scripts/docs-unified.js",
     "format": "npm run format --workspaces",

@@ -38,9 +38,9 @@ jobs:
           REF="${{ github.head_ref || github.ref_name }}"
           echo "REF=$REF"
 
-          # Extract DIR_NAME from branch name (not version)
+          # Extract DIR_NAME from branch name - extract package name before version
           DIR_NAME=$(echo "$REF" | sed -E 's|^release/([a-zA-Z0-9-]+)-[0-9]+\.[0-9]+\.[0-9]+.*$|\1|')
-
+          
           PACKAGE_JSON_PATH="packages/$DIR_NAME/package.json"
           PACKAGE_NAME=$(jq -r .name "$PACKAGE_JSON_PATH")
           PACKAGE_NAME_UNSCOPED=$(echo "$PACKAGE_NAME" | sed 's/^@[^/]*\///')
