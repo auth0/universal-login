@@ -37,7 +37,7 @@ runs:
       if: inputs.require-build == 'true'
       shell: bash
       working-directory: packages/${{ inputs.package }}
-      run: npm run build
+      run: npm run build --workspaces --include-workspace-root
 
     - name: Publish release to NPM
       working-directory: packages/${{ inputs.release-directory }}
