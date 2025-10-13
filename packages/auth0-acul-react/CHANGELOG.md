@@ -4,3 +4,7 @@
 
 **Added**
 - New package release | Updated the version of auth0-acul-react files [\#220](https://github.com/auth0/universal-login/pull/220) ([nandan-bhat](https://github.com/nandan-bhat))
+
+**Fixed**
+- fix: change the pipeline lint sequence [\#223](https://github.com/auth0/universal-login/pull/223) ([aks96](https://github.com/aks96))
+- fix: Fixing linter issues [\#222](https://github.com/auth0/universal-login/pull/222) ([nandan-bhat](https://github.com/nandan-bhat))
