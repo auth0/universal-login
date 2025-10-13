@@ -1,28 +1,31 @@
 # @auth0/auth0-acul-react
+Developers using Auth0’s Universal Login can use this React SDK to customize screens like login, signup, or reset password. It provides hooks, context, and utilities to build flexible, type-safe experiences that match your brand and deliver a seamless user experience.
 
-> A React wrapper SDK for building custom [Auth0 Universal Login](https://auth0.com/docs/customize/universal-login-pages) pages using `auth0-acul-js`.
+<div align="center">
 
-This package provides **typed React hooks**, **providers**, and **interfaces** for customizing individual screens like `login-id`, `signup-id`, `reset-password`, and more — all powered by the vanilla SDK: [`@auth0/auth0-acul-js`](https://www.npmjs.com/package/@auth0/auth0-acul-js).
+[![NPM Version](https://img.shields.io/npm/v/@auth0/auth0-acul-react)](https://www.npmjs.com/package/@auth0/auth0-acul-react)
+[![Downloads](https://img.shields.io/npm/dw/@auth0/auth0-acul-react)](https://www.npmjs.com/package/@auth0/auth0-acul-react)
+[![codecov](https://codecov.io/gh/auth0/auth0-acul-react/branch/main/graph/badge.svg)](https://codecov.io/gh/auth0/auth0-acul-react)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat)](https://opensource.org/licenses/MIT)
 
+</div>
+
+<div align='center'>
+
+📚 [Documentation](#-documentation) | 🚀 [Getting Started](#-getting-started) | 💻 [API Reference](#-api-reference) | 💬 [Feedback](#-feedback)
+
+</div>
+
+## Table of Contents
+- [Installation](#installation)
+- [Importing the SDK](#importing-the-sdk)
+  - [Partial Imports](#partial-imports)
+  - [Root Imports](#root-imports)
+  - [Types / Interfaces](#types--interfaces)
+- [Examples](#examples)
 ---
 
-## ✨ Why this SDK?
-
-While [`@auth0/auth0-acul-js`](https://www.npmjs.com/package/@auth0/auth0-acul-js) provides the **core ACUL logic**, it is a **vanilla JavaScript SDK**.
-
-This SDK brings that core power into a familiar React environment:
-
-- ✅ **Hooks-first API** (`useLoginId`, `useSignupPassword`, etc.)
-- ✅ **Per-screen Providers** (`Auth0AculProvider`) with `useCurrentScreen`
-- ✅ **Typed interfaces** with full IntelliSense and dev safety
-- ✅ **Partial imports** for tree-shakable bundles
-- ✅ Clean integration with Universal Login via CDN upload
-
-In short: **you write React — we handle the rest.**
-
----
-
-## 🚀 Installation
+## Installation
 
 ```bash
 npm install @auth0/auth0-acul-react
@@ -32,141 +35,87 @@ Peer dependency:
 ```bash
 npm install react
 ```
-
 ---
+## Importing the SDK
+The SDK supports `partial imports` for each screen, allowing you to include only the code you need for your specific use case. This helps keep your bundle size small and improves performance.
+Also, you can use a `root import` to load all screens from a single bundle if your app requires it.
+### Partial Imports
+Each screen has its own set of hooks and methods. You can import only what you need for the screen you're building.
 
-## 🧱 SDK Structure
-
-| Feature                      | Description                                          |
-|------------------------------|------------------------------------------------------|
-| 🧩 **Partial Imports**         | Tree-shakable per-screen modules (✅ recommended)     |
-| 📦 **Full Import**            | Lightweight helper utilities (optional)             |
-| 🎯 **Screen Hooks**           | Instantiates screen classes (e.g. `useLoginId`)     |
-| 🧪 **Providers**              | Shares instance via context (e.g. `Auth0AculProvider`) |
-| 📚 **Typed Interfaces**       | Provides types for screen props, data, options      |
-
----
-
-## 🏗 Architecture
-![Architecture Diagram](./assets/architecture.png)
-
-This diagram provides an overview of how the `@auth0/auth0-acul-react` SDK integrates with the core `@auth0/auth0-acul-js` library and your React application. Each screen is modular, allowing for partial imports and seamless customization.
-
-## 🧭 How to Use
-
-### ✅ **Recommended: Partial Imports (per screen)**
-
-Each screen has its own hook, provider, and types.
-
-#### Example: `login-id`
-
+The following example shows how to import and use SDK to build `login-id` screen.
 ```tsx
-import {
-  useLoginId,
-  Auth0AculProvider,
-  useCurrentScreen
+import { 
+  // Context hooks
+  useUser,
+  useTenant,
+  useBranding,
+  useClient,
+  useOrganization,
+  usePrompt,
+  useScreen,
+  useTenant,
+  useTransaction,
+  useUser,
+  useUntrustedData,
+  // Common hooks
+  useErrors,
+  useTexts,
+  // Utility hooks
+  useUsernameValidation,
+  usePasswordValidation,
+  useLoginIdentifiers,
+  // Submit methods
+  login,
+  passkeyLogin,
+  federatedLogin,
 } from '@auth0/auth0-acul-react/login-id';
-
-// ✅ Option 1: Hook-only
-const screen = useLoginId();
-screen.login({ identifier: 'john@example.com', password: '1234' });
-
-// ✅ Option 2: Provider + context hook
-<Auth0AculProvider>
-  <LoginForm />
-</Auth0AculProvider>
-
-const screen = useCurrentScreen(); // typed as LoginId
 ```
 
-#### ✅ Interfaces for Type Safety
+---
+
+### Root Imports
+
+The SDK also supports a root import, which lets you load all screens from a single bundle.
+This is useful if your app dynamically renders different screens at runtime based on the current Auth0 flow, for example, when you want one unified build that can handle all possible screens.
+
+However, root imports aren’t ideal for most projects since they can increase bundle size.
+If you only need specific screens, use partial imports instead for better performance.
 
 ```ts
+import {
+  // Common hooks
+  useCurrentScreen,
+  useAuth0Themes,
+  useErrors,
+
+  // Screen-specific hooks for multiple screens
+  useLoginId,
+  useSignupId,
+  useResetPassword
+} from '@auth0/auth0-acul-react';
+```
+---
+
+### Types / Interfaces
+Typescript types and interfaces can be imported from `@auth0/auth0-acul-react/types` for type safety and better DX.
+```tsx
 import type {
-  LoginIdOptions,
-  LoginIdProperties,
-  LoginIdScreenData
-} from '@auth0/auth0-acul-js/login-id';
+  Connection,
+  CustomOptions,
+  IdentifierType,
+  Organizations,
+  EnrolledDevice
+  // ...other types
+} from '@auth0/auth0-acul-react/types';
 ```
+Refer to our [API Reference](#-api-reference) for the full list of available types and interfaces.
 
 ---
 
-### ⚠️ Full Import (optional utilities only)
-
-```ts
-import { getCurrentScreen, useAculScreen } from '@auth0/auth0-acul-react';
-
-const screenKey = getCurrentScreen(); // e.g. "login-id"
-const instance = useAculScreen(screenKey); // not typed!
-```
-
-> Use only if you're dynamically determining screen type at runtime.
-> Prefer partial imports for better typing and smaller bundles.
+## Examples
+Check out the [`examples/`](https://github.com/auth0/universal-login/tree/main/packages/auth0-acul-react/examples) directory for complete, working examples of how to use this SDK to build custom Universal Login screens.
 
 ---
-
-## 📊 Full vs Partial Imports
-
-| Feature                     | Full Import                      | ✅ Partial Import                  |
-|----------------------------|----------------------------------|------------------------------------|
-| Tree-shaking               | ❌ Includes all screens           | ✅ Only what you use               |
-| Type Inference             | ❌ Not typed                      | ✅ Fully typed                     |
-| DX / IntelliSense          | ❌ Limited                        | ✅ Rich completion + hints        |
-| Bundle Size                | ❌ Larger                         | ✅ Minimal                         |
-| Use Case                   | Rare fallback or util-only use   | ✅ Day-to-day development          |
-
-✅ **Partial import is the default and recommended pattern.**
-
----
-
-## 📁 File Structure (Simplified)
-
-```
-src/
-  hooks/
-    login-id.tsx
-    signup-id.tsx
-    ...
-  index.ts               # full import entry
-  utils/
-docs/
-  screens/               # autogenerated markdown docs
-```
-
----
-
-## 🛠️ Customizing Screens
-
-To customize a screen:
-
-1. Know your screen type: `login-id`, `signup-id`, `reset-password`, etc.
-2. Use the matching hook + types
-3. Build and deploy to CDN
-4. Update Auth0 with your custom asset URLs
-
----
-
-## 📚 Docs
-
-Per-screen usage documentation is available in [`examples/`](https://github.com/auth0/universal-login/tree/main/packages/auth0-acul-react/examples) and is auto-generated. <!-- typedoc-disable -->
-
-Example:
-- [`examples/login-id.md`](./examples/login-id.md)
-
----
-
-## 📦 Related Packages
-
-| Package                     | Description                            |
-|-----------------------------|----------------------------------------|
-| [`@auth0/auth0-acul-js`](https://npmjs.com/package/@auth0/auth0-acul-js) | Core JS SDK (framework-agnostic)    |
-| `@auth0/auth0-acul-react`   | ✅ This React wrapper SDK               |
-| `@auth0/auth0-acul-vue`     | Vue wrapper (coming soon)              |
-| `@auth0/auth0-acul-angular` | Angular wrapper (coming soon)          |
-| `@auth0/auth0-acul-svelte`  | Svelte wrapper (coming soon)           |
-
----
-
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: light)" srcset="https://cdn.auth0.com/website/sdks/logos/auth0_light_mode.png"   width="150">
