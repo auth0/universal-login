@@ -48,6 +48,6 @@
     "ts-node": "^10.9.2"
   },
   "dependencies": {
-    "@auth0/auth0-acul-js": "^0.1.0-beta.8"
+    "@auth0/auth0-acul-js": "../auth0-acul-js"
   }
 }
