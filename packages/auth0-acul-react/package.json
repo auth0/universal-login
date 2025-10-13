@@ -48,5 +48,14 @@
   },
   "dependencies": {
     "@auth0/auth0-acul-js": "1.0.0-alpha.0"
+  },
+  "files": [
+    "dist",
+    "package.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
   }
 }
