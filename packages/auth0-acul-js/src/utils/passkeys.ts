@@ -90,7 +90,7 @@ export async function createPasskeyCredentials(publicKey: PasskeyCreate['public_
   };
 }
 
-export async function registerPasskeyAutocomplete({
+export async function registerPasskeyAutofill({
   publicKey,
   inputId,
   onResolve,

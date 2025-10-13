@@ -5,7 +5,7 @@ import { SDKUsageError } from '../../utils/errors';
 import { FormHandler } from '../../utils/form-handler';
 import { getLoginIdentifiers as _getLoginIdentifiers} from '../../utils/login-identifiers';
 import { getPasskeyCredentials } from '../../utils/passkeys';
-import { registerPasskeyAutocomplete } from '../../utils/passkeys';
+import { registerPasskeyAutofill } from '../../utils/passkeys';
 
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
@@ -129,7 +129,7 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
         // User cancelled or timed out the prompt
         if (this.#isConditionalUIRegistered) {
           try {
-            await this.registerPasskeyAutocomplete();
+            await this.registerPasskeyAutofill();
           } catch (e) {
             console.warn('Conditional UI restart failed', e);
           }
@@ -225,24 +225,25 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
    *   // Make sure associated HTML input exists:
    *   // <input id="username" autocomplete="webauthn username" />
    *   // Conditional UI registration.
-   *   await loginId.registerPasskeyAutocomplete('username');
+   *   await loginId.registerPasskeyAutofill('username');
    * }
    *
    * initializeLogin().catch(console.error);
    * ```
    *
    * @remarks
-   * This method delegates to the internal `registerPasskeyAutocomplete()` utility,
+   * This method delegates to the internal `registerPasskeyAutofill()` utility,
    * returning a background `AbortController` to manage request lifetime. It should
    * only be invoked once per page lifecycle.
    *
    * @category Passkeys
+   * @utilityFeature
    */
-  async registerPasskeyAutocomplete(inputId?: string): Promise<void> {
+  async registerPasskeyAutofill(inputId?: string): Promise<void> {
     const publicKey = this.screen.publicKey;
     if (!publicKey) throw new Error(Errors.PASSKEY_DATA_UNAVAILABLE);
 
-    this.#passkeyController = await registerPasskeyAutocomplete({
+    this.#passkeyController = await registerPasskeyAutofill({
       publicKey,
       inputId,
       onResolve: async (cred) => {

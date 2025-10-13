@@ -7,7 +7,7 @@ import {
 import {
   getPasskeyCredentials,
   createPasskeyCredentials,
-  registerPasskeyAutocomplete
+  registerPasskeyAutofill
 } from '../../../src/utils/passkeys';
 
 import type {
@@ -222,7 +222,7 @@ describe('createPasskeyCredentials', () => {
   });  
 });
 
-describe('registerPasskeyAutocomplete', () => {
+describe('registerPasskeyAutofill', () => {
   let mockGet: jest.Mock;
   let originalPublicKeyCredential: unknown;
   let onResolve: jest.Mock;
@@ -258,7 +258,7 @@ describe('registerPasskeyAutocomplete', () => {
 
   it('should throw if publicKey.challenge is missing', async () => {
     await expect(
-      registerPasskeyAutocomplete({
+      registerPasskeyAutofill({
         publicKey: {} as any,
         onResolve,
       })
@@ -268,7 +268,7 @@ describe('registerPasskeyAutocomplete', () => {
   it('should reject if conditional mediation is not supported', async () => {
     (global as any).PublicKeyCredential.isConditionalMediationAvailable = jest.fn().mockResolvedValue(false);
 
-    await registerPasskeyAutocomplete({
+    await registerPasskeyAutofill({
       publicKey: { challenge: 'mock-challenge' },
       onResolve,
       onReject,
@@ -283,7 +283,7 @@ describe('registerPasskeyAutocomplete', () => {
 
   it('should reject if WebAuthn is not supported', async () => {
     delete (navigator as any).credentials; // remove credentials to simulate unsupported
-    await registerPasskeyAutocomplete({
+    await registerPasskeyAutofill({
       publicKey: { challenge: 'mock-challenge' },
       onResolve,
       onReject,
@@ -303,7 +303,7 @@ describe('registerPasskeyAutocomplete', () => {
 
     mockGet.mockResolvedValue({ id: 'mock-credential' });
 
-    const controller = await registerPasskeyAutocomplete({
+    const controller = await registerPasskeyAutofill({
       publicKey: { challenge: 'mock-challenge' },
       inputId: 'login-input',
       onResolve,
@@ -321,7 +321,7 @@ describe('registerPasskeyAutocomplete', () => {
     div.id = 'non-input';
     document.body.appendChild(div);
 
-    await registerPasskeyAutocomplete({
+    await registerPasskeyAutofill({
       publicKey: { challenge: 'mock-challenge' },
       inputId: 'non-input',
       onResolve,
@@ -338,7 +338,7 @@ describe('registerPasskeyAutocomplete', () => {
     const mockCredential = { id: 'mock-credential' };
     mockGet.mockResolvedValue(mockCredential);
 
-    const controller = await registerPasskeyAutocomplete({
+    const controller = await registerPasskeyAutofill({
       publicKey: { challenge: 'mock-challenge' },
       onResolve,
       onReject,
@@ -357,7 +357,7 @@ describe('registerPasskeyAutocomplete', () => {
     const error = new Error('Some WebAuthn failure');
     mockGet.mockRejectedValue(error);
 
-    await registerPasskeyAutocomplete({
+    await registerPasskeyAutofill({
       publicKey: { challenge: 'mock-challenge' },
       onResolve,
       onReject,
@@ -372,7 +372,7 @@ describe('registerPasskeyAutocomplete', () => {
     const abortError = new DOMException('Aborted', 'AbortError');
     mockGet.mockRejectedValue(abortError);
 
-    await registerPasskeyAutocomplete({
+    await registerPasskeyAutofill({
       publicKey: { challenge: 'mock-challenge' },
       onResolve,
       onReject,
