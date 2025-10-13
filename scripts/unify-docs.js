@@ -528,17 +528,17 @@ async function generateMainIndex(updatedPackages) {
 </head>
 <body>
     <div class="header">
-        <h1>🚀 Universal Login SDK Documentation</h1>
+        <h1>Universal Login SDK Documentation</h1>
         <p>Comprehensive documentation for all packages</p>
     </div>
     
     <div class="packages-section">
-        <h2>📚 Package Documentation</h2>
+        <h2>Package Documentation</h2>
         <p style="text-align: center; color: #666;">Browse individual package documentation</p>
         <div class="package-links">
             ${allPackages.map(pkg => `
                 <div class="package-card">
-                    <div class="package-title">📦 ${pkg.displayName}</div>
+                    <div class="package-title">${pkg.displayName}</div>
                     <div class="package-version">v${pkg.version}</div>
                     ${pkg.description ? `<div class="package-description">${pkg.description}</div>` : ''}
                     <a href="${pkg.name}/index.html" class="package-link">
@@ -579,7 +579,7 @@ async function generateMainIndex(updatedPackages) {
  * Main function to unify all documentation (async)
  */
 async function unifyDocumentation() {
-  console.log('🚀 Starting documentation unification...\n');
+  console.log('Starting documentation unification...\n');
 
   // Ensure unified docs directory exists
   try {
@@ -588,21 +588,25 @@ async function unifyDocumentation() {
       await fs.mkdir(UNIFIED_DOCS_DIR, { recursive: true });
       console.log(`📁 Created unified docs directory: ${UNIFIED_DOCS_DIR}`);
     } else {
-      // Clean existing unified docs (except README.md if it exists)
-      console.log('🧹 Cleaning existing unified docs directory...');
-      const items = await fs.readdir(UNIFIED_DOCS_DIR);
-      await Promise.all(items.map(async (item) => {
-        if (item !== 'README.md') {
-          const itemPath = path.join(UNIFIED_DOCS_DIR, item);
-          const stat = await fs.stat(itemPath);
-          if (stat.isDirectory()) {
-            await fs.rm(itemPath, { recursive: true, force: true });
-          } else {
-            await fs.unlink(itemPath);
+      // Only perform a full wipe when doing a full rebuild ( --all ) OR no filters supplied (legacy full mode)
+      if (forceAll || (!packageFilter && !packagesFilter)) {
+        console.log('🧹 Performing full clean of unified docs directory (full rebuild mode)...');
+        const items = await fs.readdir(UNIFIED_DOCS_DIR);
+        await Promise.all(items.map(async (item) => {
+          if (item !== 'README.md') {
+            const itemPath = path.join(UNIFIED_DOCS_DIR, item);
+            const stat = await fs.stat(itemPath);
+            if (stat.isDirectory()) {
+              await fs.rm(itemPath, { recursive: true, force: true });
+            } else {
+              await fs.unlink(itemPath);
+            }
           }
-        }
-      }));
-      console.log('   ✅ Cleaned existing unified docs directory');
+        }));
+        console.log('   ✅ Full clean complete');
+      } else {
+        console.log('ℹ️ Incremental mode detected: preserving existing unified docs (will replace only selected packages).');
+      }
     }
   } catch (error) {
     console.error('Error managing unified docs directory:', error.message);
@@ -618,14 +622,14 @@ async function unifyDocumentation() {
     return;
   }
 
-  console.log(`\n📦 Found ${packages.length} package(s) with documentation:`);
+  console.log(`\nFound ${packages.length} package(s) with documentation:`);
   packages.forEach(pkg => {
     console.log(`   • ${pkg.displayName} (v${pkg.version})`);
   });
 
   // Clean existing unified docs (only for packages we're updating)
   if (packages.length > 0) {
-    console.log('\n🧹 Cleaning unified docs for selected packages...');
+    console.log('\nCleaning unified docs for selected packages...');
     const items = await fs.readdir(UNIFIED_DOCS_DIR).catch(() => []);
     const packageNames = packages.map(pkg => pkg.name);
     
@@ -673,9 +677,9 @@ async function unifyDocumentation() {
     
     try {
       await copyDirectory(sourceDir, targetDir, pkg.displayName);
-      console.log(`\n   ✅ Successfully copied ${pkg.displayName} documentation\n`);
+      console.log(`\n Successfully copied ${pkg.displayName} documentation\n`);
     } catch (error) {
-      console.error(`\n   ❌ Failed to copy ${pkg.displayName} documentation:`, error.message);
+      console.error(`\n Failed to copy ${pkg.displayName} documentation:`, error.message);
     }
   }
 
@@ -687,14 +691,14 @@ async function unifyDocumentation() {
   console.log('📝 Creating .nojekyll file for GitHub Pages...');
   const nojekyllPath = path.join(UNIFIED_DOCS_DIR, '.nojekyll');
   await fs.writeFile(nojekyllPath, '', 'utf8');
-  console.log('✅ Created .nojekyll file for GitHub Pages');
+  console.log(' Created .nojekyll file for GitHub Pages');
 }
 
 // Run the script
 const isMainModule = import.meta.url === `file://${process.argv[1]}`;
 if (isMainModule) {
   unifyDocumentation().catch(error => {
-    console.error('❌ Documentation unification failed:', error.message);
+    console.error('Documentation unification failed:', error.message);
     process.exit(1);
   });
 }

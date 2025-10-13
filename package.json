@@ -15,6 +15,7 @@
     "build": "npm run build --workspaces",
     "docs": "npm run docs --workspaces",
     "docs:unified": "node ./scripts/docs-unified.js",
+    "docs:unified:all": "npm run build --workspaces && npm run docs --workspaces && node ./scripts/unify-docs.js --all",
     "format": "npm run format --workspaces",
     "preinstall": "node ./scripts/check-node-version.js && node ./scripts/block-local-install.js"
   },
