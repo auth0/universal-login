@@ -85,25 +85,23 @@ export const LoginId: React.FC = () => {
     *   The core SDK will handle the API request and subsequent redirection on success.
     *   Errors are caught and can be displayed to the user.
 
-### Examaple using utility hooks - useLoginIdentifiers
+### Examaple using utility hooks - useLoginIdentifiers and error handling
 
 ``` tsx
-import React, { useRef, useState, useMemo } from 'react';
-import { useScreen, useTransaction, login, federatedLogin, passkeyLogin, useLoginIdentifiers } from '@auth0/auth0-acul-react/login-id';
+import React, { useState, useMemo } from 'react';
+import { useScreen, useTransaction, login, federatedLogin, passkeyLogin, useLoginIdentifiers, useErrors } from '@auth0/auth0-acul-react/login-id';
 import { Logo } from '../../components/Logo';
 
 // pickCountryCode
 const LoginIdScreen: React.FC = () => {
   const screen = useScreen();
   const transaction = useTransaction();
-  const usernameRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
-  const captchaRef = useRef<HTMLInputElement>(null);
+  const [username, setUsername] = useState('');
+  const [captcha, setCaptcha] = useState('');
 
-  // const errors: AculError[] = useErrors({ type: 'server' });
+  const {hasError, errors } = useErrors();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessages, setErrorMessages] = useState<string[]>([]);
   const activeIdentifiers = useLoginIdentifiers();
 
   const identifierLabel = useMemo(() => {
@@ -112,37 +110,30 @@ const LoginIdScreen: React.FC = () => {
   }, [activeIdentifiers]);
 
   const handleLoginClick = async () => {
-    const username = usernameRef.current?.value ?? '';
-    const password = passwordRef.current?.value ?? '';
-    const captcha = captchaRef.current?.value ?? '';
-
     setIsLoading(true);
-    setErrorMessages([]);
 
     try {
-      await login({ username, password, captcha });
+      await login({ username, captcha });
     } catch (err: any) {
-      setErrorMessages([err?.message || 'Login failed']);
+      console.log([err?.message || 'Login failed']);
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleFederatedLogin = async (connection: string) => {
-    setErrorMessages([]);
     try {
       await federatedLogin({ connection });
     } catch (err: any) {
-      setErrorMessages([err?.message || 'Federated login failed']);
+      console.log([err?.message || 'Federated login failed']);
     }
   };
 
   const handlePasskeyLogin = async () => {
-    setErrorMessages([]);
     try {
       await passkeyLogin({});
     } catch (err: any) {
-      setErrorMessages([err.message || 'Passkey login failed']);
+      console.log([err.message || 'Passkey login failed']);
     }
   };
 
@@ -153,13 +144,6 @@ const LoginIdScreen: React.FC = () => {
   return (
     <div className="min-h-screen bg-black flex items-center justify-center px-4">
       <div className="bg-white rounded-lg shadow-lg w-full max-w-sm p-8">
-        {/* Logo */}
-        <div className="flex justify-center">
-          <div className="w-20 h-20">
-            <Logo />
-          </div>
-        </div>
-
         {/* Title */}
         <h2 className="mt-6 text-center text-xl font-semibold text-gray-900">
           {screen.texts?.title || 'Welcome'}
@@ -188,7 +172,8 @@ const LoginIdScreen: React.FC = () => {
                 autoComplete="username"
                 required
                 placeholder={identifierLabel}
-                ref={usernameRef}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
@@ -205,7 +190,8 @@ const LoginIdScreen: React.FC = () => {
                   name="captcha"
                   type="text"
                   placeholder={screen.texts?.captchaCodePlaceholder || 'Enter captcha'}
-                  ref={captchaRef}
+                  value={captcha}
+                  onChange={(e) => setCaptcha(e.target.value)}
                   required
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
@@ -281,10 +267,10 @@ const LoginIdScreen: React.FC = () => {
         )}
 
 
-        {transaction.hasErrors && errorMessages.length > 0 && (
+        {hasErros && errors.length > 0 && (
           <div className="mt-4 text-red-600 text-center text-sm">
-            {errorMessages.map((msg, i) => (
-              <p key={i}>{msg}</p>
+            {errors.map((error, i) => (
+              <p key={i}>{error.message}</p>
             ))}
           </div>
         )}

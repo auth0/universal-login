@@ -1,6 +1,6 @@
 /**
  * @module Getting Started
- * @description This module provides an overview of how to get started with the Auth0 SDK.
+ * @description This module provides an overview of how to get started with the Auth0 ACUL React SDK.
  *
  * # Auth0 ACUL React SDK
  *
@@ -104,7 +104,7 @@
  * import {
  *   useScreen,
  *   useTransaction,
- *   useMfaPollingManager,
+ *   useMfaPolling,
  *   continueMethod,
  *   resendPushNotification
  * } from '@auth0/auth0-acul-react/mfa-push-challenge-push';
@@ -114,7 +114,7 @@
  *   const transaction = useTransaction();
  *   const [status, setStatus] = useState('waiting');
  *
- *   const { isRunning, startPolling, stopPolling } = useMfaPollingManager({
+ *   const { isRunning, startPolling, stopPolling } = useMfaPolling({
  *     intervalMs: 5000,
  *     onComplete: async () => {
  *       setStatus('approved');
@@ -171,7 +171,7 @@
  * }
  * ```
  *
- * ## Available Hooks by Screen
+ * ## Available Hooks
  *
  * ### Context Hooks (Available in all screens)
  * - `useUser()` - Current user information
@@ -232,71 +232,17 @@
  * import {
  *   continueMethod,
  *   resendPushNotification,
- *   useMfaPollingManager
+ *   useMfaPolling
  * } from '@auth0/auth0-acul-react/mfa-push-challenge-push';
  * ```
  *
- * ## Import Patterns
- *
- * ### Screen-Specific Imports (Recommended)
- * ```tsx
- * // Import from specific screen modules
- * import { useUser, loginMethod } from '@auth0/auth0-acul-react/login-id';
- * import { useMfaPollingManager } from '@auth0/auth0-acul-react/mfa-push-challenge-push';
- * ```
- * ## Available Screen Modules
- *
- * | Screen Module | Import Path | Description |
- * |---------------|-------------|-------------|
- * | Login ID | `@auth0/auth0-acul-react/login-id` | Username/email identification |
- * | Login Password | `@auth0/auth0-acul-react/login-password` | Password entry screen |
- * | MFA Push Challenge | `@auth0/auth0-acul-react/mfa-push-challenge-push` | Push notification MFA |
- * | Reset Password MFA Push | `@auth0/auth0-acul-react/reset-password-mfa-push-challenge-push` | Reset password with MFA |
- * | Signup ID | `@auth0/auth0-acul-react/signup-id` | User registration |
- * | Signup Password | `@auth0/auth0-acul-react/signup-password` | Password setup during registration |
- *
  * ## Best Practices
  *
- * ### 1. **Use Screen-Specific Imports**
- * ```tsx
- * // Partial import - recommended
- * import { useSignup } from '@auth0/auth0-acul-react/signup';
- * // Root import
- * import * as Auth0React from '@auth0/auth0-acul-react';
+ * - Use **screen-specific modules**
+ * - Handle errors using `useErrors()`
+ * - Use context hooks (like `useTenant`, `useScreen`) for dynamic branding, layout, or behavior
  *
- * const MyComponent = () => {
- *   const signupInstance = useSignup();
- *   // Use methods or other properties using the instance
- *   return (
- *     <button onClick={() => signupInstance.signup({ username: 'user', password: 'pass' })}>
- *       Sign Up
- *     </button>
- *   );
- * };
  *
- * ```
- *
- * ### 2. **Handle Loading States**
- * ```tsx
- * function LoginForm() {
- *   const [isLoading, setIsLoading] = useState(false);
- *
- *   const handleSubmit = async (data) => {
- *     setIsLoading(true);
- *     try {
- *       await loginMethod(data);
- *     } finally {
- *       setIsLoading(false);
- *     }
- *   };
- *
- *   return (
- *     <button disabled={isLoading}>
- *       {isLoading ? 'Signing in...' : 'Sign In'}
- *     </button>
- *   );
- * }
- * ```
  *
  * ## Examples and Resources
  *

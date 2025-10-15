@@ -14,7 +14,7 @@
     const optionalIdentifiers = transaction.getOptionalIdentifiers() //eg: phone
     
     //get signup data submitted on previous screen from previous screen
-    const data = transaction.screen.getScreenData(); //eg: email, phone
+    const data = screen.data; //eg: email, phone
     
     
     const signupParams = {
