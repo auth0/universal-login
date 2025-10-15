@@ -1,4 +1,4 @@
-# @auth0/auth0-acul-react
+# Auth0 ACUL React SDK
 Developers using Auth0’s Universal Login can use this React SDK to customize screens like login, signup, or reset password. It provides hooks, context, and utilities to build flexible, type-safe experiences that match your brand and deliver a seamless user experience.
 
 <div align="center">

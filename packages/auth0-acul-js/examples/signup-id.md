@@ -32,7 +32,7 @@ It allows to signup new users via different identifiers
     const { transaction } = signupIdManager;
     
     //get social connections
-    const socialConnection = transaction.getAlternateConnections(); //eg: "google-oauth2"
+    const socialConnection = transaction.alternateConnections; //eg: "google-oauth2"
     const signupParams = {
      connection : socialConnection[0].name, // "google-oauth2"
     };

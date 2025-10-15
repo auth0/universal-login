@@ -85,10 +85,10 @@ export const Login: React.FC = () => {
     *   The core SDK will handle the API request and subsequent redirection on success.
     *   Errors are caught and can be displayed to the user.
 
-### Examaple using utility hooks - useLoginIdentifiers
+### Examaple using utility hooks - useLoginIdentifiers and error handling
 
 ``` tsx
-import React, { useRef, useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { Logo } from "../../components/Logo";
 import {
   useScreen,
@@ -96,17 +96,18 @@ import {
   login,
   federatedLogin,
   useLoginIdentifiers,
+  useErrors
 } from "@auth0/auth0-acul-react/login";
 
 const LoginScreen: React.FC = () => {
   const screen = useScreen();
   const transaction = useTransaction();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [captcha, setCaptcha] = useState('');
+   // error-handling
+  const { hasError, errors, dismiss } = useErrors();
 
-  const usernameRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
-  const captchaRef = useRef<HTMLInputElement>(null);
-
-  const [errorMessages, setErrorMessages] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
   const activeIdentifiers = useLoginIdentifiers();
@@ -118,10 +119,6 @@ const LoginScreen: React.FC = () => {
   }, [activeIdentifiers]);
 
   const handleLogin = async () => {
-    const username = usernameRef.current?.value ?? "";
-    const password = passwordRef.current?.value ?? "";
-    const captcha = captchaRef.current?.value ?? "";
-    setErrorMessages([]);
     setLoading(true);
 
     try {
@@ -131,30 +128,23 @@ const LoginScreen: React.FC = () => {
         captcha: screen.isCaptchaAvailable ? captcha : "",
       });
     } catch (err: any) {
-      setErrorMessages([err?.message || "Login failed"]);
+      console.log("Error")
     } finally {
       setLoading(false);
     }
   };
 
   const handleFederatedLogin = async (connection: string) => {
-    setErrorMessages([]);
     try {
       await federatedLogin({ connection });
     } catch (err: any) {
-      setErrorMessages([err?.message || "Federated login failed"]);
+      console.log([err?.message || "Federated login failed"]);
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-900 flex items-center justify-center px-4">
       <div className="bg-white rounded-lg shadow-md w-full max-w-sm p-8">
-        {/* Logo (optional) */}
-        <div className="flex justify-center mb-6">
-          <div className="w-20 h-20">
-            <Logo/>
-          </div>
-        </div>
 
         {/* Title */}
         <h1 className="text-2xl font-bold text-center text-gray-800">
@@ -183,7 +173,8 @@ const LoginScreen: React.FC = () => {
               type="text"
               autoComplete="username"
               placeholder={identifierLabel}
-              ref={usernameRef}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)} 
               required
               className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
@@ -200,7 +191,8 @@ const LoginScreen: React.FC = () => {
               type="password"
               autoComplete="current-password"
               placeholder="Enter your password"
-              ref={passwordRef}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
               className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
@@ -219,7 +211,8 @@ const LoginScreen: React.FC = () => {
                 name="captcha"
                 type="text"
                 placeholder="Enter captcha"
-                ref={captchaRef}
+                value={captcha}
+                onChange={(e) => setCaptcha(e.target.value)}
                 required
                 className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
@@ -279,10 +272,10 @@ const LoginScreen: React.FC = () => {
         </div>
 
         {/* Errors */}
-        {transaction.hasErrors && errorMessages.length > 0 && (
+        { hasError && errors.length > 0 && (
           <div className="mt-4 text-sm text-red-600 text-center">
-            {errorMessages.map((msg, idx) => (
-              <p key={idx}>{msg}</p>
+            {errors.map((error, idx) => (
+              <p key={idx}>{error.message}</p>
             ))}
           </div>
         )}

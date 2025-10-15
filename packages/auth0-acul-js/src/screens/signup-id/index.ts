@@ -94,7 +94,7 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
    * const { transaction } = signupIdManager;
    *
    * //get social connections
-   * const socialConnection = transaction.getAlternateConnections(); //eg: "google-oauth2"
+   * const socialConnection = transaction.alternateConnections; //eg: "google-oauth2"
    *
    * const signupParams = {
    *  connection : socialConnection[0].name, // "google-oauth2"

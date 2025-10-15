@@ -99,7 +99,7 @@ import  LoginId  from "@auth0/auth0-acul-js/login-id";
 const loginIdManager = new LoginId();
 
 // Check if alternateConnections is available and has at least one item
-if (!loginIdManager.transaction.getAlternateConnections()) {
+if (!loginIdManager.transaction.alternateConnections) {
   console.error('No alternate connections available.');
 }
 
