@@ -1,3 +1,4 @@
+import type { CustomOptions } from '../common';
 import type { BaseMembers } from '../models/base-context';
 import type { ScreenMembers } from '../models/screen';
 import type { UntrustedDataMembers } from '../models/untrusted-data';
@@ -74,6 +75,12 @@ export interface MfaEmailChallengeMembers extends BaseMembers {
    * @param payload Optional custom options to include with the request
    */
   tryAnotherMethod(payload?: TryAnotherMethodOptions): Promise<void>;
+
+  /**
+   * Submits the action to pick a different Email configuration, if available
+   * @param payload Optional custom options to include with the request
+   */
+  pickEmail(payload?: CustomOptions): Promise<void>;
 
   /**
    * Gets resend functionality with timeout management for this screen

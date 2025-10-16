@@ -10,6 +10,7 @@ import type {
   ContinueOptions,
   ResendCodeOptions,
   TryAnotherMethodOptions,
+  CustomOptions,
 } from '@auth0/auth0-acul-js/mfa-email-challenge';
 
 // Register the singleton instance of MfaEmailChallenge
@@ -37,6 +38,7 @@ export const continueMethod = (payload: ContinueOptions) => withError(instance.c
 export const resendCode = (payload?: ResendCodeOptions) => withError(instance.resendCode(payload));
 export const tryAnotherMethod = (payload?: TryAnotherMethodOptions) =>
   withError(instance.tryAnotherMethod(payload));
+export const pickEmail = (payload?: CustomOptions) => withError(instance.pickEmail(payload));
 
 // Utility Hooks
 export { useResend } from '../hooks/utility/resend-manager';
