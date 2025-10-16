@@ -1,6 +1,6 @@
 # Change Log
 
-## [auth0-acul-react-0.0.1-alpha.0](https://github.com/auth0/universal-login/tree/auth0-acul-react-0.0.1-alpha.0) (2025-10-16)
+## [auth0-acul-react-1.0.0-alpha.1](https://github.com/auth0/universal-login/tree/auth0-acul-react-1.0.0-alpha.1) (2025-10-16)
 
 **Added**
 - fix: update peerDependencies for React compatibility [\#231](https://github.com/auth0/universal-login/pull/231) ([amitsingh05667](https://github.com/amitsingh05667))
