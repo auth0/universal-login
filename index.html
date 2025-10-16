@@ -1,551 +1,318 @@
-<!DOCTYPE html><html class="default" lang="en" data-base="./"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>@auth0/auth0-acul-js - v0.1.0-beta.9</title><meta name="description" content="Documentation for @auth0/auth0-acul-js"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script defer src="assets/main.js"></script><script async src="assets/icons.js" id="tsd-icons-script"></script><script async src="assets/search.js" id="tsd-search-script"></script><script async src="assets/navigation.js" id="tsd-nav-script"></script><script async src="assets/hierarchy.js" id="tsd-hierarchy-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => window.app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar"><div class="tsd-toolbar-contents container"><a href="index.html" class="title">@auth0/auth0-acul-js - v0.1.0-beta.9</a><div id="tsd-toolbar-links"></div><button id="tsd-search-trigger" class="tsd-widget" aria-label="Search"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-search"></use></svg></button><dialog id="tsd-search" aria-label="Search"><input role="combobox" id="tsd-search-input" aria-controls="tsd-search-results" aria-autocomplete="list" aria-expanded="true" autocapitalize="off" autocomplete="off" placeholder="Search the docs" maxLength="100"/><ul role="listbox" id="tsd-search-results"></ul><div id="tsd-search-status" aria-live="polite" aria-atomic="true"><div>Preparing search index...</div></div></dialog><a href="#" class="tsd-widget menu" id="tsd-toolbar-menu-trigger" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-menu"></use></svg></a></div></header><div class="container container-main"><div class="col-content"><div class="tsd-page-title"><h1>@auth0/auth0-acul-js - v0.1.0-beta.9</h1></div><div class="tsd-panel tsd-typography"><h1 id="auth0-acul-js-sdk" class="tsd-anchor-link">Auth0 ACUL JS SDK<a href="#auth0-acul-js-sdk" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h1><p><img src="https://cdn.auth0.com/website/sdks/banners/auth0-acul-js-banner.png" alt="ACUL JS SDK"></p>
-<div align="center">
-<p><a href="https://www.npmjs.com/package/@auth0/auth0-acul-js"><img src="https://img.shields.io/npm/v/@auth0/auth0-acul-js" alt="NPM Version"></a>
-<a href="https://www.npmjs.com/package/@auth0/auth0-acul-js"><img src="https://img.shields.io/npm/dw/@auth0/auth0-acul-js" alt="Downloads"></a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Login SDK Documentation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        .header p {
+            margin: 0.5rem 0 0 0;
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        .readme-content {
+            background: white;
+            padding: 3rem;
+            margin: 2rem 0;
+            border-radius: 12px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        }
+        .packages-section {
+            background: white;
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 12px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        }
+        .packages-section h2 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            text-align: center;
+        }
+        .package-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .package-card {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .package-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        .package-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+        .package-version {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+        .package-description {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+        .package-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+        }
+        .package-link:hover {
+            background: #0056b3;
+            text-decoration: none;
+            color: white;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        /* Style README content */
+        .readme-content img {
+            max-width: 100%;
+            height: auto;
+        }
+        .readme-content h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 0.5rem;
+        }
+        .readme-content h2 {
+            color: #34495e;
+            margin-top: 2rem;
+        }
+        .readme-content code {
+            background: #f1f3f4;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Consolas', monospace;
+        }
+        .readme-content pre {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            border-left: 4px solid #007bff;
+        }
+        .readme-content blockquote {
+            border-left: 4px solid #ffc107;
+            background: #fff3cd;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        .readme-content a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .readme-content a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🚀 Universal Login SDK Documentation</h1>
+        <p>Comprehensive documentation for all packages</p>
+    </div>
+    
+    <div class="packages-section">
+        <h2>📚 Package Documentation</h2>
+        <p style="text-align: center; color: #666;">Browse individual package documentation</p>
+        <div class="package-links">
+            
+                <div class="package-card">
+                    <div class="package-title">📦 @auth0/auth0-acul-js</div>
+                    <div class="package-version">v1.0.0-alpha.1</div>
+                    <div class="package-description">The Auth0 ACUL JS SDK enables you to work with Advanced Customization for Universal Login.</div>
+                    <a href="auth0-acul-js/index.html" class="package-link">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+                        </svg>
+                        View Documentation
+                    </a>
+                </div>
+            
+                <div class="package-card">
+                    <div class="package-title">📦 @auth0/auth0-acul-react</div>
+                    <div class="package-version">v1.0.0-alpha.0</div>
+                    <div class="package-description">The Auth0 ACUL React SDK enables you to build Advanced Customization for Universal Login with React hooks and components.</div>
+                    <a href="auth0-acul-react/index.html" class="package-link">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+                        </svg>
+                        View Documentation
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="readme-content">
+        <p><img src="https://cdn.auth0.com/website/sdks/banners/auth0-acul-sdk-banner.png" alt="ACUL SDK"></p>
+<p><a href="https://www.npmjs.com/package/@auth0/auth0-acul-js"><img src="https://img.shields.io/npm/v/@auth0/auth0-acul-js?label=JS%20SDK" alt="NPM Version - JS SDK"></a>
+<a href="https://www.npmjs.com/package/@auth0/auth0-acul-react"><img src="https://img.shields.io/npm/v/@auth0/auth0-acul-react?label=React%20SDK" alt="NPM Version - React SDK"></a>
+<a href="https://www.npmjs.com/package/@auth0/auth0-acul-js"><img src="https://img.shields.io/npm/dw/@auth0/auth0-acul-js?label=JS%20Downloads" alt="Downloads - JS SDK"></a>
+<a href="https://www.npmjs.com/package/@auth0/auth0-acul-react"><img src="https://img.shields.io/npm/dw/@auth0/auth0-acul-react?label=React%20Downloads" alt="Downloads - React SDK"></a>
 <a href="https://codecov.io/gh/auth0/auth0-acul-js"><img src="https://codecov.io/gh/auth0/auth0-acul-js/branch/main/graph/badge.svg" alt="codecov"></a>
 <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat" alt="License"></a></p>
-</div>
-<div align='center'>
-<p>📚 <a href="#-documentation">Documentation</a> - 🚀 <a href="#-getting-started">Getting Started</a> - 💻 <a href="#-api-reference">API Reference</a> - 💬 <a href="#-feedback">Feedback</a></p>
-</div>
-<p>The <strong>Auth0 ACUL JS SDK</strong> enables you to work with Advanced Customization for Universal Login.</p>
-<p>It simplifies integrating authentication screens (login, signup, passwordless, passkey enrollment, etc.) into your web applications, providing the necessary tools for seamless implementation.</p>
-<div class="tsd-alert tsd-alert-caution"><div class="tsd-alert-title"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><use href="assets/icons.svg#icon-alertCaution"></use></svg><span>Caution</span></div><p></p>
+<p> 📚 <a href="#documentation">Documentation</a> - 🚀 <a href="#getting-started">Getting Started</a> - 💻 <a href="#api-reference">API Reference</a> - 💬 <a href="#feedback">Feedback</a></p>
+<p>The <strong>Auth0 ACUL SDKs</strong> enable you to work with Advanced Customization for Universal Login.</p>
+<p>They simplify integrating authentication screens (login, signup, passwordless, passkey enrollment, etc.) into your web applications, providing the necessary tools for seamless implementation.</p>
+<blockquote>
+<p>[!CAUTION]</p>
 <p>This feature is still in <strong>Early Access</strong>.</p>
-</div>
-<h2 id="📚-documentation" class="tsd-anchor-link">📚 Documentation<a href="#📚-documentation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><ul>
+</blockquote>
+<h3>SDKs</h3>
+<ul>
+<li><a href="packages/auth0-acul-js/">auth0-acul-js</a></li>
+<li><a href="packages/auth0-acul-react/">auth0-acul-react</a> - React hooks and components wrapper</li>
+</ul>
+<h2>Documentation</h2>
+<ul>
 <li><a href="https://auth0.com/docs/customize/login-pages/advanced-customizations/getting-started/sdk-quickstart">Quickstart</a> - our guide for setting up the SDK on your app.</li>
 <li><a href="https://auth0.com/docs/customize/login-pages/advanced-customizations/screens">Guides</a> - more guides for common use cases</li>
-<li><a href="https://github.com/auth0/universal-login/tree/master/packages/auth0-acul-js/examples">Examples</a> - code snippets for different customization use cases.</li>
-<li><a href="media/FAQ.md">FAQs</a> - Find answers to frequently asked questions about the Auth0 ACUL JS SDK.</li>
+<li><a href="packages/auth0-acul-js/examples/">Examples</a> - code snippets for different customization use cases.</li>
+<li><a href="packages/auth0-acul-js/FAQ.md">FAQs</a> - Find answers to frequently asked questions about the Auth0 ACUL JS SDK.</li>
+<li><a href="https://github.com/auth0/auth0-acul-react-boilerplate">Boilerplate app</a> - Get up and running quickly with our boilerplate starter template</li>
 </ul>
-<h2 id="🚀-getting-started" class="tsd-anchor-link">🚀 Getting started<a href="#🚀-getting-started" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><h3 id="prerequisites" class="tsd-anchor-link">Prerequisites<a href="#prerequisites" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>Before starting, ensure that you have the following setup:</p>
+<h2>ACUL Overview</h2>
+<p><img src="https://cdn.auth0.com/website/sdks/assets/auth0-acul-overview.png" alt="ACUL Overview"> </p>
+<h2>Getting started</h2>
+<h3>Prerequisites</h3>
+<p>Before starting, ensure that you have the following setup:</p>
 <ol>
 <li><strong>Custom Domain</strong>: Ensure that a custom domain is configured for your Auth0 tenant.</li>
-<li><strong>Screen Configuration</strong>: Set up the required authentication screens within your Auth0 flow.<br>
-For detailed steps, refer to the <a href="https://auth0.com/docs/customize/login-pages/advanced-customizations/getting-started/configure-acul-screens">Configure ACUL Screens</a>.</li>
+<li><strong>Screen Configuration</strong>: Set up the required authentication screens within your Auth0 flow.<br>For detailed steps, refer to the <a href="https://auth0.com/docs/customize/login-pages/advanced-customizations/getting-started/configure-acul-screens">Configure ACUL Screens</a>.</li>
 </ol>
-<h3 id="installation" class="tsd-anchor-link">Installation<a href="#installation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>You can easily install the SDK via <a href="https://npmjs.org">npm</a>:</p>
-<pre><code class="sh"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">install</span><span class="hl-1"> </span><span class="hl-2">@auth0/auth0-acul-js</span>
-</code><button type="button">Copy</button></pre>
-
+<h3>Installation</h3>
+<p>You can easily install the SDKs via <a href="https://npmjs.org">npm</a>:</p>
+<h4>For vanilla JavaScript/TypeScript projects:</h4>
+<pre><code class="language-sh">npm install @auth0/auth0-acul-js
+</code></pre>
+<h4>For React projects:</h4>
+<pre><code class="language-sh">npm install @auth0/auth0-acul-react
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong> The React SDK requires React 18.3.1 or higher as a peer dependency.</p>
+</blockquote>
 <p>After installing the SDK, you can import the relevant screen module, which you want to configure</p>
-<h3 id="importing-screens" class="tsd-anchor-link">Importing Screens<a href="#importing-screens" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><pre><code class="js"><span class="hl-3">// Default import of any particular screen, eg: login-id screen</span><br/><span class="hl-4">import</span><span class="hl-1">  </span><span class="hl-5">LoginId</span><span class="hl-1">  </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&#39;@auth0/auth0-acul-js/login-id&#39;</span><span class="hl-1">; </span><br/><br/><span class="hl-3">// Named import of any screen</span><br/><span class="hl-4">import</span><span class="hl-1">  { </span><span class="hl-5">LoginId</span><span class="hl-1"> }  </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&#39;@auth0/auth0-acul-js&#39;</span><span class="hl-1">; </span><br/><br/><span class="hl-3">// Default import of all screens</span><br/><span class="hl-4">import</span><span class="hl-1">  </span><span class="hl-6">*</span><span class="hl-1"> </span><span class="hl-4">as</span><span class="hl-1"> </span><span class="hl-5">Screens</span><span class="hl-1">  </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&#39;@auth0/auth0-acul-js&#39;</span><span class="hl-1">; </span><br/>
-</code><button type="button">Copy</button></pre>
+<h3>Importing Screens</h3>
+<h4>For JavaScript/TypeScript:</h4>
+<pre><code class="language-js">// Default import of any particular screen, eg: login-id screen
+import  LoginId  from &#39;@auth0/auth0-acul-js/login-id&#39;; 
 
-<p>Note: For more details on import paths for all screens, refer to the <a href="media/FAQ.md">FAQ's</a>.</p>
-<h2 id="👨💻-usage" class="tsd-anchor-link">👨‍💻 Usage<a href="#👨💻-usage" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><h3 id="adding-functionality-to-your-screens" class="tsd-anchor-link">Adding Functionality to Your Screens<a href="#adding-functionality-to-your-screens" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>Let’s look at an example for adding logic to the <code>login-id</code> screen.</p>
-<h4 id="example-add-logic-to-login-button" class="tsd-anchor-link">Example: Add Logic to Login Button<a href="#example-add-logic-to-login-button" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4><pre><code class="typescript"><span class="hl-1">  </span><span class="hl-4">import</span><span class="hl-1">  </span><span class="hl-5">LoginId</span><span class="hl-1">  </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&#39;@auth0/auth0-acul-js/login-id&#39;</span><span class="hl-1">;</span><br/><br/><span class="hl-1">  </span><span class="hl-6">const</span><span class="hl-1"> </span><span class="hl-7">loginIdManager</span><span class="hl-1"> = </span><span class="hl-6">new</span><span class="hl-1"> </span><span class="hl-0">LoginId</span><span class="hl-1">();</span><br/><br/><span class="hl-1">  </span><span class="hl-3">// Trigger the login method on button click</span><br/><span class="hl-1">  </span><span class="hl-5">loginIdManager</span><span class="hl-1">.</span><span class="hl-0">login</span><span class="hl-1">({</span><br/><span class="hl-1">    </span><span class="hl-5">username:</span><span class="hl-1"> </span><span class="hl-2">&quot;testUser&quot;</span><br/><span class="hl-1">  });</span>
-</code><button type="button">Copy</button></pre>
+// Named import of any screen
+import  { LoginId }  from &#39;@auth0/auth0-acul-js&#39;; 
 
-<h4 id="get-list-of-mandatory-fields-for-login" class="tsd-anchor-link">Get List of Mandatory Fields for Login<a href="#get-list-of-mandatory-fields-for-login" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4><pre><code class="typescript"><span class="hl-6">const</span><span class="hl-1"> { </span><span class="hl-7">transaction</span><span class="hl-1"> } = </span><span class="hl-5">loginIdManager</span><br/><span class="hl-6">const</span><span class="hl-1"> </span><span class="hl-7">requiredFields</span><span class="hl-1"> = </span><span class="hl-5">transaction</span><span class="hl-1">.</span><span class="hl-0">getActiveIdentifiers</span><span class="hl-1">();</span>
-</code><button type="button">Copy</button></pre>
+// Default import of all screens
+import  * as Screens  from &#39;@auth0/auth0-acul-js&#39;; 
+</code></pre>
+<h2>Usage</h2>
+<h3>Adding Functionality to Your Screens</h3>
+<p>Let’s look at an example for adding logic to the <code>login-id</code> screen.</p>
+<h4>Example: Add Logic to Login Button</h4>
+<pre><code class="language-typescript">  import  LoginId  from &#39;@auth0/auth0-acul-js/login-id&#39;;
 
-<h4 id="integrating-social-connections-for-login" class="tsd-anchor-link">Integrating Social Connections for Login<a href="#integrating-social-connections-for-login" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4><p>To allow users to login via social connections (e.g., Google, Facebook), use the following snippet</p>
-<pre><code class="typescript"><span class="hl-4">import</span><span class="hl-1">  </span><span class="hl-5">LoginId</span><span class="hl-1">  </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&quot;@auth0/auth0-acul-js/login-id&quot;</span><span class="hl-1">;</span><br/><span class="hl-6">const</span><span class="hl-1"> </span><span class="hl-7">loginIdManager</span><span class="hl-1"> = </span><span class="hl-6">new</span><span class="hl-1"> </span><span class="hl-0">LoginId</span><span class="hl-1">();</span><br/><br/><span class="hl-3">// Check if alternateConnections is available and has at least one item</span><br/><span class="hl-4">if</span><span class="hl-1"> (!</span><span class="hl-5">loginIdManager</span><span class="hl-1">.</span><span class="hl-5">transaction</span><span class="hl-1">.</span><span class="hl-0">getAlternateConnections</span><span class="hl-1">()) {</span><br/><span class="hl-1">  </span><span class="hl-5">console</span><span class="hl-1">.</span><span class="hl-0">error</span><span class="hl-1">(</span><span class="hl-2">&#39;No alternate connections available.&#39;</span><span class="hl-1">);</span><br/><span class="hl-1">}</span><br/><br/><span class="hl-3">// Select the first available connection (users can select any available connection)</span><br/><span class="hl-6">const</span><span class="hl-1"> </span><span class="hl-7">selectedConnection</span><span class="hl-1"> = </span><span class="hl-5">alternateConnections</span><span class="hl-1">[</span><span class="hl-8">0</span><span class="hl-1">];</span><br/><br/><span class="hl-3">// Log the chosen connection for debugging or informational purposes</span><br/><span class="hl-5">console</span><span class="hl-1">.</span><span class="hl-0">log</span><span class="hl-1">(</span><span class="hl-2">`Selected connection: </span><span class="hl-6">${</span><span class="hl-5">selectedConnection</span><span class="hl-9">.</span><span class="hl-5">name</span><span class="hl-6">}</span><span class="hl-2">`</span><span class="hl-1">);</span><br/><br/><span class="hl-3">// Proceed with social login using the selected connection</span><br/><span class="hl-5">loginIdManager</span><span class="hl-1">.</span><span class="hl-0">socialLogin</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-5">connection:</span><span class="hl-1"> </span><span class="hl-5">selectedConnection</span><span class="hl-1">.</span><span class="hl-5">name</span><span class="hl-1">,</span><br/><span class="hl-1">})</span>
-</code><button type="button">Copy</button></pre>
+  const loginIdManager = new LoginId();
 
-<h4 id="error-handling-for-login" class="tsd-anchor-link">Error handling for Login<a href="#error-handling-for-login" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4><p>A top-level getter function, <code>getError</code>, can be used to retrieve detailed authentication errors when backend validation fails.</p>
-<pre><code class="javascript"><span class="hl-4">import</span><span class="hl-1"> </span><span class="hl-5">Login</span><span class="hl-1"> </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&quot;@auth0/auth0-acul-js/login&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-6">const</span><span class="hl-1"> </span><span class="hl-7">loginIdManager</span><span class="hl-1"> = </span><span class="hl-6">new</span><span class="hl-1"> </span><span class="hl-0">Login</span><span class="hl-1">();</span><br/><br/><span class="hl-6">const</span><span class="hl-1"> </span><span class="hl-7">errors</span><span class="hl-1"> = </span><span class="hl-5">loginIdManager</span><span class="hl-1">.</span><span class="hl-0">getError</span><span class="hl-1">();</span><br/><span class="hl-4">if</span><span class="hl-1"> (</span><span class="hl-5">errors</span><span class="hl-1">) {</span><br/><span class="hl-1">  </span><span class="hl-5">console</span><span class="hl-1">.</span><span class="hl-0">error</span><span class="hl-1">(</span><span class="hl-2">&quot;Login failed:&quot;</span><span class="hl-1">, </span><span class="hl-5">errors</span><span class="hl-1">);</span><br/><span class="hl-1">}</span>
-</code><button type="button">Copy</button></pre>
+  // Trigger the login method on button click
+  loginIdManager.login({
+    username: &lt;USERNAME_FIELD_VALUE&gt;
+  });
+</code></pre>
+<h4>Get List of Mandatory Fields for Login</h4>
+<pre><code class="language-typescript">const { transaction } = loginIdManager
+const requiredFields = transaction.getActiveIdentifiers();
+</code></pre>
+<h4>Integrating Social Connections for Login</h4>
+<p>To allow users to login via social connections (e.g., Google, Facebook), use the following snippet</p>
+<pre><code class="language-typescript">import  LoginId  from &quot;@auth0/auth0-acul-js/login-id&quot;;
+const loginIdManager = new LoginId();
 
-<p>Same can also be achieved using the <code>transaction.errors</code> available directly on the screen context for each screen.</p>
-<pre><code class="javascript"><span class="hl-4">import</span><span class="hl-1"> </span><span class="hl-5">Login</span><span class="hl-1"> </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&quot;@auth0/auth0-acul-js/login&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-6">const</span><span class="hl-1"> </span><span class="hl-7">loginIdManager</span><span class="hl-1"> = </span><span class="hl-6">new</span><span class="hl-1"> </span><span class="hl-0">Login</span><span class="hl-1">();</span><br/><br/><span class="hl-6">const</span><span class="hl-1"> </span><span class="hl-7">errors</span><span class="hl-1"> = </span><span class="hl-5">loginIdManager</span><span class="hl-1">.</span><span class="hl-5">transaction</span><span class="hl-1">?.</span><span class="hl-5">errors</span><span class="hl-1"> ?? [];</span><br/><span class="hl-4">if</span><span class="hl-1"> (</span><span class="hl-5">errors</span><span class="hl-1">) {</span><br/><span class="hl-1">  </span><span class="hl-5">console</span><span class="hl-1">.</span><span class="hl-0">error</span><span class="hl-1">(</span><span class="hl-2">&quot;Login failed:&quot;</span><span class="hl-1">, </span><span class="hl-5">errors</span><span class="hl-1">);</span><br/><span class="hl-1">}</span>
-</code><button type="button">Copy</button></pre>
+// Check if alternateConnections is available and has at least one item
+if (!loginIdManager.transaction.alternateConnections) {
+  console.error(&#39;No alternate connections available.&#39;);
+}
 
+// Select the first available connection (users can select any available connection)
+const selectedConnection = alternateConnections[0];
+
+// Log the chosen connection for debugging or informational purposes
+console.log(`Selected connection: ${selectedConnection.name}`);
+
+// Proceed with social login using the selected connection
+loginIdManager.continueWithFederatedLogin({
+  connection: selectedConnection.name,
+})
+</code></pre>
 <p>For more examples, visit our <a href="https://github.com/auth0/universal-login/blob/master/packages/auth0-acul-js/examples/login-id.md">examples</a></p>
-<h2 id="quick-start-with-boilerplate-app" class="tsd-anchor-link">Quick Start with Boilerplate App<a href="#quick-start-with-boilerplate-app" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>Get up and running quickly with our boilerplate starter template: <a href="https://github.com/auth0/auth0-acul-react-boilerplate">Link</a></p>
-<h2 id="💻-api-reference" class="tsd-anchor-link">💻 API reference<a href="#💻-api-reference" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><h3 id="screens" class="tsd-anchor-link">Screens<a href="#screens" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><table>
-<thead>
-<tr>
-<th>No.</th>
-<th>Prompt</th>
-<th>Screen Name</th>
-<th>Documentation Link</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>login</td>
-<td>login</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.Login.html">Link</a></td>
-</tr>
-<tr>
-<td>2</td>
-<td>loginId</td>
-<td>login-id</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.LoginId.html">Link</a></td>
-</tr>
-<tr>
-<td>3</td>
-<td>login-password</td>
-<td>login-password</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.LoginPassword.html">Link</a></td>
-</tr>
-<tr>
-<td>4</td>
-<td>signup-id</td>
-<td>signup-id</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.SignupId.html">Link</a></td>
-</tr>
-<tr>
-<td>5</td>
-<td>signup-password</td>
-<td>signup-password</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.SignupPassword.html">Link</a></td>
-</tr>
-</tbody>
-</table>
-<details>
-  <summary>Explore more screens...</summary>
-<table>
-<thead>
-<tr>
-<th>No.</th>
-<th>Prompt</th>
-<th>Screen Name</th>
-<th>Documentation Link</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>6</td>
-<td>login-passwordless</td>
-<td>login-passwordless-email-code</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.LoginPasswordlessEmailCode.html">Link</a></td>
-</tr>
-<tr>
-<td>7</td>
-<td>login-passwordless</td>
-<td>login-passwordless-sms-otp</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.LoginPasswordlessSmsOtp.html">Link</a></td>
-</tr>
-<tr>
-<td>8</td>
-<td>passkeys</td>
-<td>passkey-enrollment</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.PasskeyEnrollment.html">Link</a></td>
-</tr>
-<tr>
-<td>9</td>
-<td>passkeys</td>
-<td>passkey-enrollment-local</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.PasskeyEnrollmentLocal.html">Link</a></td>
-</tr>
-<tr>
-<td>10</td>
-<td>phone-identifier-enrollment</td>
-<td>phone-identifier-enrollment</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.PhoneIdentifierEnrollment.html">Link</a></td>
-</tr>
-<tr>
-<td>11</td>
-<td>phone-identifier-challenge</td>
-<td>phone-identifier-challenge</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.PhoneIdentifierChallenge.html">Link</a></td>
-</tr>
-<tr>
-<td>12</td>
-<td>email-identifier-challenge</td>
-<td>email-identifier-challenge</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.EmailIdentifierChallenge.html">Link</a></td>
-</tr>
-<tr>
-<td>13</td>
-<td>captcha</td>
-<td>interstitial-captcha</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.InterstitialCaptcha.html">Link</a></td>
-</tr>
-<tr>
-<td>14</td>
-<td>reset-password</td>
-<td>reset-password-email</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.ResetPasswordEmail.html">Link</a></td>
-</tr>
-<tr>
-<td>15</td>
-<td>reset-password</td>
-<td>reset-password-request</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.ResetPasswordRequest.html">Link</a></td>
-</tr>
-<tr>
-<td>16</td>
-<td>reset-password</td>
-<td>reset-password</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.ResetPassword.html">Link</a></td>
-</tr>
-<tr>
-<td>17</td>
-<td>reset-password</td>
-<td>reset-password-error</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.ResetPasswordError.html">Link</a></td>
-</tr>
-<tr>
-<td>18</td>
-<td>reset-password</td>
-<td>reset-password-success</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.ResetPasswordSuccess.html">Link</a></td>
-</tr>
-<tr>
-<td>19</td>
-<td>signup</td>
-<td>signup</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.Signup.html">Link</a></td>
-</tr>
-<tr>
-<td>20</td>
-<td>mfa</td>
-<td>mfa-detect-browser-capabilities</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.MfaDetectBrowserCapabilities.html">Link</a></td>
-</tr>
-<tr>
-<td>21</td>
-<td>mfa</td>
-<td>mfa-enroll-result</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.MfaEnrollResult.html">Link</a></td>
-</tr>
-<tr>
-<td>22</td>
-<td>mfa</td>
-<td>mfa-begin-enroll-options</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.MfaBeginEnrollOptions.html">Link</a></td>
-</tr>
-<tr>
-<td>23</td>
-<td>mfa</td>
-<td>mfa-login-options</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.MfaLoginOptions.html">Link</a></td>
-</tr>
-<tr>
-<td>24</td>
-<td>mfa-push</td>
-<td>mfa-push-enrollment-qr</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.MfaPushEnrollmentQr.html">Link</a></td>
-</tr>
-<tr>
-<td>25</td>
-<td>mfa-push</td>
-<td>mfa-push-welcome</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.MfaPushWelcome.html">Link</a></td>
-</tr>
-<tr>
-<td>26</td>
-<td>mfa-push</td>
-<td>mfa-push-challenge-push</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.MfaPushChallengePush.html">Link</a></td>
-</tr>
-<tr>
-<td>27</td>
-<td>mfa-push</td>
-<td>mfa-push-list</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.MfaPushList.html">Link</a></td>
-</tr>
-<tr>
-<td>28</td>
-<td>mfa-sms</td>
-<td>mfa-country-codes</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.MfaCountryCodes.html">Link</a></td>
-</tr>
-<tr>
-<td>29</td>
-<td>mfa-sms</td>
-<td>mfa-sms-challenge</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.MfaSmsChallenge.html">Link</a></td>
-</tr>
-<tr>
-<td>30</td>
-<td>mfa-sms</td>
-<td>mfa-sms-enrollment</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.MfaSmsEnrollment.html">Link</a></td>
-</tr>
-<tr>
-<td>31</td>
-<td>mfa-sms</td>
-<td>mfa-sms-list</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.MfaSmsList.html">Link</a></td>
-</tr>
-<tr>
-<td>32</td>
-<td>mfa-email</td>
-<td>mfa-email-challenge</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.MfaEmailChallenge.html">Link</a></td>
-</tr>
-<tr>
-<td>33</td>
-<td>mfa-email</td>
-<td>mfa-email-list</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.MfaEmailList.html">Link</a></td>
-</tr>
-<tr>
-<td>34</td>
-<td>invitatino</td>
-<td>accept-invitation</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.AcceptInvitation.html">Link</a></td>
-</tr>
-<tr>
-<td>35</td>
-<td>organizations</td>
-<td>organization-picker</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.OrganizationPicker.html">Link</a></td>
-</tr>
-<tr>
-<td>36</td>
-<td>organizations</td>
-<td>organization-selection</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.OrganizationSelection.html">Link</a></td>
-</tr>
-<tr>
-<td>37</td>
-<td>reset-password</td>
-<td>mfa-otp-challenge</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.MfaOtpChallenge.html">Link</a></td>
-</tr>
-<tr>
-<td>38</td>
-<td>mfa-otp</td>
-<td>mfa-otp-enrollment-code</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.MfaOtpEnrollmentCode.html">Link</a></td>
-</tr>
-<tr>
-<td>39</td>
-<td>mfa-otp</td>
-<td>mfa-otp-enrollment-qr</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.MfaOtpEnrollmentQr.html">Link</a></td>
-</tr>
-<tr>
-<td>40</td>
-<td>reset-password</td>
-<td>reset-password-mfa-email-challenge</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaEmailChallenge.html">Link</a></td>
-</tr>
-<tr>
-<td>41</td>
-<td>reset-password</td>
-<td>reset-password-mfa-push-challenge-push</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaPushChallengePush.html">Link</a></td>
-</tr>
-<tr>
-<td>42</td>
-<td>reset-password</td>
-<td>mfa-sms-challenge</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaSmsChallenge.html">Link</a></td>
-</tr>
-<tr>
-<td>43</td>
-<td>reset-password</td>
-<td>reset-password-mfa-otp-challenge</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.OrganizationSelection.html">Link</a></td>
-</tr>
-<tr>
-<td>44</td>
-<td>mfa-phone</td>
-<td>mfa-phone-enrollment</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.MfaPhoneEnrollment.html">Link</a></td>
-</tr>
-<tr>
-<td>45</td>
-<td>mfa-voice</td>
-<td>mfa-voice-enrollment</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.MfaVoiceEnrollment.html">Link</a></td>
-</tr>
-<tr>
-<td>46</td>
-<td>mfa-recovery-code</td>
-<td>mfa-recovery-code-challenge</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.MfaRecoveryCodeChallenge.html">Link</a></td>
-</tr>
-<tr>
-<td>47</td>
-<td>device-flow</td>
-<td>device-code-activation-allowed</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.DeviceCodeActivationAllowed.html">Link</a></td>
-</tr>
-<tr>
-<td>48</td>
-<td>device-flow</td>
-<td>device-code-activation-denied</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.DeviceCodeActivationDenied.html">Link</a></td>
-</tr>
-<tr>
-<td>49</td>
-<td>device-flow</td>
-<td>device-code-activation</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.DeviceCodeActivation.html">Link</a></td>
-</tr>
-<tr>
-<td>50</td>
-<td>reset-password</td>
-<td>reset-password-mfa-recovery-code-challenge</td>
-<td><a href="https://auth0.github.io/universallogin/classes/Classes.ResetPasswordMfaRecoveryCodeChallenge.html">Link</a></td>
-</tr>
-<tr>
-<td>51</td>
-<td>reset-password</td>
-<td>reset-password-mfa-voice</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaVoiceChallenge.html">Link</a></td>
-</tr>
-<tr>
-<td>52</td>
-<td>common</td>
-<td>redeem-ticket</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.RedeemTicket.html">Link</a></td>
-</tr>
-<tr>
-<td>53</td>
-<td>device-flow</td>
-<td>device-code-confirmation</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.DeviceCodeConfirmation.html">Link</a></td>
-</tr>
-<tr>
-<td>54</td>
-<td>mfa-phone</td>
-<td>mfa-phone-challenge</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.MfaPhoneChallenge.html">Link</a></td>
-</tr>
-<tr>
-<td>55</td>
-<td>mfa-voice</td>
-<td>mfa-voice-challenge</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.MfaVoiceChallenge.html">Link</a></td>
-</tr>
-<tr>
-<td>56</td>
-<td>mfa-recovery-code</td>
-<td>mfa-recovery-code-enrollment</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.MfaRecoveryCodeEnrollment.html">Link</a></td>
-</tr>
-<tr>
-<td>57</td>
-<td>reset-password</td>
-<td>reset-password-mfa-phone-challenge</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaPhoneChallenge.html">Link</a></td>
-</tr>
-<tr>
-<td>58</td>
-<td>mfa-recovery-code</td>
-<td>mfa-recovery-code-challenge-new-code</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.MfaRecoveryCodeChallengeNewCode.html">Link</a></td>
-</tr>
-<tr>
-<td>59</td>
-<td>logout</td>
-<td>logout</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.Logout.html">Link</a></td>
-</tr>
-<tr>
-<td>60</td>
-<td>logout</td>
-<td>logout-aborted</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.LogoutAborted.html">Link</a></td>
-</tr>
-<tr>
-<td>61</td>
-<td>logout</td>
-<td>logout-complete</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.LogoutComplete.html">Link</a></td>
-</tr>
-<tr>
-<td>62</td>
-<td>email-verification</td>
-<td>email-verification-result</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.EmailVerificationResult.html">Link</a></td>
-</tr>
-<tr>
-<td>63</td>
-<td>login-email-verification</td>
-<td>login-email-verification</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.LoginEmailVerification.html">Link</a></td>
-</tr>
-<tr>
-<td>64</td>
-<td>mfa-webauthn</td>
-<td>mfa-webauthn-platform-enrollment</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnPlatformEnrollment.html">Link</a></td>
-</tr>
-<tr>
-<td>65</td>
-<td>mfa-webauthn</td>
-<td>mfa-webauthn-error</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnError.html">Link</a></td>
-</tr>
-<tr>
-<td>66</td>
-<td>mfa-webauthn</td>
-<td>mfa-webauthn-roaming-enrollment</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnRoamingEnrollment.html">Link</a></td>
-</tr>
-<tr>
-<td>67</td>
-<td>mfa-webauthn</td>
-<td>mfa-webauthn-roaming-challenge</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnRoamingChallenge.html">Link</a></td>
-</tr>
-<tr>
-<td>68</td>
-<td>mfa-webauthn</td>
-<td>mfa-webauthn-platform-challenge</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnPlatformChallenge.html">Link</a></td>
-</tr>
-<tr>
-<td>69</td>
-<td>mfa-webauthn</td>
-<td>mfa-webauthn-enrollment-success</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnEnrollmentSuccess.html">Link</a></td>
-</tr>
-<tr>
-<td>70</td>
-<td>mfa-webauthn</td>
-<td>mfa-webauthn-change-key-nickname</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnChangeKeyNickname.html">Link</a></td>
-</tr>
-<tr>
-<td>71</td>
-<td>mfa-webauthn</td>
-<td>mfa-webauthn-not-available-error</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.MfaWebAuthnNotAvailableError.html">Link</a></td>
-</tr>
-<tr>
-<td>72</td>
-<td>reset-password</td>
-<td>reset-password-mfa-webauthn-platform-challenge</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaWebAuthnPlatformChallenge.html">Link</a></td>
-</tr>
-<tr>
-<td>73</td>
-<td>reset-password</td>
-<td>reset-password-mfa-webauthn-roaming-challenge</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaWebAuthnRoamingChallenge.html">Link</a></td>
-</tr>
-<tr>
-<td>74</td>
-<td>consent</td>
-<td>consent</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.consent.html">Link</a></td>
-</tr>
-<tr>
-<td>75</td>
-<td>customized-consent</td>
-<td>customized-consent</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.CustomizedConsent.html">Link</a></td>
-</tr>
-<tr>
-<td>76</td>
-<td>email-otp-challenge</td>
-<td>email-otp-challenge</td>
-<td><a href="https://auth0.github.io/universal-login/classes/Classes.EmailOTPChallenge.html">Link</a></td>
-</tr>
-</tbody>
-</table>
-</details>
-<h2 id="💬-feedback" class="tsd-anchor-link">💬 Feedback<a href="#💬-feedback" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><h3 id="contributing" class="tsd-anchor-link">Contributing<a href="#contributing" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>We appreciate feedback and contribution to this repo! Before you get started, please see the following:</p>
+<h2>Quick Start with Boilerplate App</h2>
+<p>Get up and running quickly with our boilerplate starter template: <a href="https://github.com/auth0/auth0-acul-react-boilerplate">Link</a></p>
+<h2>API reference</h2>
+<h3>Screens</h3>
+<p><a href="https://github.com/auth0/universal-login/tree/master/packages/auth0-acul-js#api-reference">Refer @auth0-acul-js API reference</a> </p>
+<h2>Feedback</h2>
+<h3>Contributing</h3>
+<p>We appreciate feedback and contribution to this repo! Before you get started, please see the following:</p>
 <ul>
-<li><a href="https://github.com/auth0/open-source-template/blob/master/GENERAL-CONTRIBUTING.md">Auth0's general contribution guidelines</a></li>
-<li><a href="https://github.com/auth0/open-source-template/blob/master/CODE-OF-CONDUCT.md">Auth0's code of conduct guidelines</a></li>
+<li><a href="https://github.com/auth0/open-source-template/blob/master/GENERAL-CONTRIBUTING.md">Auth0&#39;s general contribution guidelines</a></li>
+<li><a href="https://github.com/auth0/open-source-template/blob/master/CODE-OF-CONDUCT.md">Auth0&#39;s code of conduct guidelines</a></li>
 </ul>
-<h3 id="raise-an-issue" class="tsd-anchor-link">Raise an issue<a href="#raise-an-issue" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>To provide feedback or report a bug, please <a href="https://github.com/auth0/universal-login/issues">raise an issue on our issue tracker</a>.</p>
-<h3 id="vulnerability-reporting" class="tsd-anchor-link">Vulnerability Reporting<a href="#vulnerability-reporting" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>Please do not report security vulnerabilities on the public GitHub issue tracker. The <a href="https://auth0.com/responsible-disclosure-policy">Responsible Disclosure Program</a> details the procedure for disclosing security issues.</p>
-<h3 id="legal" class="tsd-anchor-link">Legal<a href="#legal" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p><strong>Early Access.</strong> This SDK and its associated product are made available only in Early Access (&quot;EA&quot;) format and are governed by the Free Trial terms of the <a href="https://www.okta.com/agreements/#mastersubscriptionagreement">Okta Master Subscription Agreement</a>. If Okta elects to make a version of this SDK and its associated product Generally Available (&quot;GA&quot;), such GA version may have different pricing, product and feature configurations, and use of the GA product and SDK will be subject to the standard terms of the Agreement (or other such titled written or electronic agreement addressing the same subject matter) between Okta and Customer.&quot;</p>
+<h3>Raise an issue</h3>
+<p>To provide feedback or report a bug, please <a href="https://github.com/auth0/universal-login/issues">raise an issue on our issue tracker</a>.</p>
+<h3>Vulnerability Reporting</h3>
+<p>Please do not report security vulnerabilities on the public GitHub issue tracker. The <a href="https://auth0.com/responsible-disclosure-policy">Responsible Disclosure Program</a> details the procedure for disclosing security issues.</p>
+<h3>Legal</h3>
+<p><strong>Early Access.</strong> This SDK and its associated product are made available only in Early Access (“EA”) format and are governed by the Free Trial terms of the <a href="https://www.okta.com/agreements/#mastersubscriptionagreement">Okta Master Subscription Agreement</a>. If Okta elects to make a version of this SDK and its associated product Generally Available (“GA”), such GA version may have different pricing, product and feature configurations, and use of the GA product and SDK will be subject to the standard terms of the Agreement (or other such titled written or electronic agreement addressing the same subject matter) between Okta and Customer.&quot;</p>
 <hr>
 <p align="center">
   <picture>
@@ -556,4 +323,14 @@ For detailed steps, refer to the <a href="https://auth0.com/docs/customize/login
 </p>
 <p align="center">Auth0 is an easy to implement, adaptable authentication and authorization platform. To learn more checkout <a href="https://auth0.com/why-auth0">Why Auth0?</a></p>
 <p align="center">
-This project is licensed under the MIT license. See the <a href="https://github.com/auth0/auth0.js/blob/master/LICENSE"> LICENSE</a> file for more info.</p></div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-accordion"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-chevronDown"></use></svg><h3>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><span class="settings-label">Member Visibility</span><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li></ul></div><div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-chevronDown"></use></svg><h3>On This Page</h3></summary><div class="tsd-accordion-details"><a href="#auth0-acul-js-sdk"><span>Auth0 <wbr/>ACUL <wbr/>JS <wbr/>SDK</span></a><ul><li><a href="#📚-documentation"><span>📚 <wbr/>Documentation</span></a></li><li><a href="#🚀-getting-started"><span>🚀 <wbr/>Getting started</span></a></li><li><ul><li><a href="#prerequisites"><span>Prerequisites</span></a></li><li><a href="#installation"><span>Installation</span></a></li><li><a href="#importing-screens"><span>Importing <wbr/>Screens</span></a></li></ul></li><li><a href="#👨💻-usage"><span>👨‍💻 <wbr/>Usage</span></a></li><li><ul><li><a href="#adding-functionality-to-your-screens"><span>Adding <wbr/>Functionality to <wbr/>Your <wbr/>Screens</span></a></li><li><ul><li><a href="#example-add-logic-to-login-button"><span>Example: <wbr/>Add <wbr/>Logic to <wbr/>Login <wbr/>Button</span></a></li><li><a href="#get-list-of-mandatory-fields-for-login"><span>Get <wbr/>List of <wbr/>Mandatory <wbr/>Fields for <wbr/>Login</span></a></li><li><a href="#integrating-social-connections-for-login"><span>Integrating <wbr/>Social <wbr/>Connections for <wbr/>Login</span></a></li><li><a href="#error-handling-for-login"><span>Error handling for <wbr/>Login</span></a></li></ul></li></ul></li><li><a href="#quick-start-with-boilerplate-app"><span>Quick <wbr/>Start with <wbr/>Boilerplate <wbr/>App</span></a></li><li><a href="#💻-api-reference"><span>💻 <wbr/>API reference</span></a></li><li><ul><li><a href="#screens"><span>Screens</span></a></li></ul></li><li><a href="#💬-feedback"><span>💬 <wbr/>Feedback</span></a></li><li><ul><li><a href="#contributing"><span>Contributing</span></a></li><li><a href="#raise-an-issue"><span>Raise an issue</span></a></li><li><a href="#vulnerability-reporting"><span>Vulnerability <wbr/>Reporting</span></a></li><li><a href="#legal"><span>Legal</span></a></li></ul></li></ul></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="modules.html">@auth0/auth0-acul-js - v0.1.0-beta.9</a><ul class="tsd-small-nested-navigation" id="tsd-nav-container"><li>Loading...</li></ul></nav></div></div></div><footer></footer><div class="overlay"></div></body></html>
+This project is licensed under the MIT license. See the <a href="https://github.com/auth0/auth0.js/blob/master/LICENSE"> LICENSE</a> file for more info.</p>
+
+    </div>
+
+    <div class="footer">
+        <p>Generated on October 16, 2025 at 11:28 AM</p>
+        <p>🔗 <a href="https://auth0.com" style="color: #007bff;">Auth0</a> | 
+           📚 <a href="https://github.com/auth0/universal-login" style="color: #007bff;">GitHub</a></p>
+    </div>
+</body>
+</html>
