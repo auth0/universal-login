@@ -8,6 +8,7 @@ import { registerScreen } from '../state/instance-store';
 import type {
   MfaLoginOptionsMembers,
   LoginEnrollOptions,
+  CustomOptions,
 } from '@auth0/auth0-acul-js/mfa-login-options';
 
 // Register the singleton instance of MfaLoginOptions
@@ -32,6 +33,8 @@ export const {
 
 // Submit functions
 export const enroll = (payload: LoginEnrollOptions) => withError(instance.enroll(payload));
+export const returnToPrevious = (payload?: CustomOptions) =>
+  withError(instance.returnToPrevious(payload));
 
 // Common hooks
 export {
