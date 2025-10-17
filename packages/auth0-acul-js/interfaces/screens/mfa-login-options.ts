@@ -1,4 +1,5 @@
 import type { MfaLoginFactorType } from '../../src/constants';
+import type { CustomOptions } from '../common';
 import type { BaseMembers } from '../models/base-context';
 import type { ScreenMembers } from '../models/screen';
 
@@ -39,4 +40,14 @@ export interface MfaLoginOptionsMembers extends BaseMembers {
    * ```
    */
   enroll(payload: LoginEnrollOptions): Promise<void>;
+  /**
+   * Returns to the previous screen in the authentication flow
+   * @param payload Optional custom options
+   * @example
+   * ```typescript
+   * const mfaLoginOptions = new MfaLoginOptions();
+   * await mfaLoginOptions.returnToPrevious();
+   * ```
+   */
+  returnToPrevious(payload?: CustomOptions): Promise<void>;
 }

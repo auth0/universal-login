@@ -1,9 +1,10 @@
-import { type MfaLoginFactorType, ScreenIds } from '../../constants';
+import { type MfaLoginFactorType, ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
 import { ScreenOverride } from './screen-override';
 
+import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { MfaLoginOptionsMembers, LoginEnrollOptions, ScreenMembersOnMfaLoginOptions } from '../../../interfaces/screens/mfa-login-options';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
@@ -45,6 +46,21 @@ export default class MfaLoginOptions extends BaseContext implements MfaLoginOpti
       telemetry: [MfaLoginOptions.screenIdentifier, 'enroll'],
     };
     await new FormHandler(options).submitData<LoginEnrollOptions>(payload);
+  }
+
+  /**
+   * @example
+   * import MfaLoginOptions from '@auth0/auth0-acul-js/mfa-login-options';
+   *
+   * const mfaLoginOptions = new MfaLoginOptions();
+   * mfaLoginOptions.returnToPrevious();
+   */
+  async returnToPrevious(payload?: CustomOptions): Promise<void> {
+    const options: FormOptions = {
+      state: this.transaction.state,
+      telemetry: [MfaLoginOptions.screenIdentifier, 'returnToPrevious'],
+    };
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.BACK });
   }
 }
 
