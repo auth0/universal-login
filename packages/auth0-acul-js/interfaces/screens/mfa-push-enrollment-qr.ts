@@ -1,6 +1,11 @@
 import type { CustomOptions } from '../common';
 import type { BaseMembers } from '../models/base-context';
 import type { ScreenMembers } from '../models/screen';
+import type {
+  MfaPollingOptions,
+  MfaPushPollingControl,
+} from "../utils/polling-control.ts";
+
 
 /**
  * Interface for the screen data specific to mfa-push-enrollment-qr screen
@@ -23,4 +28,7 @@ export interface MfaPushEnrollmentQrMembers extends BaseMembers {
    * @param payload Optional custom options to include with the request
    */
   pickAuthenticator(payload?: CustomOptions): Promise<void>;
+
+  pollingManager(options: MfaPollingOptions): MfaPushPollingControl;
+  
 }
