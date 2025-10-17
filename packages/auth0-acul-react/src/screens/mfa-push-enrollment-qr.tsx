@@ -30,12 +30,12 @@ export const {
   useUntrustedData,
 } = factory;
 
-// Utility Hooks
-export { useMfaPolling } from '../hooks/utility/polling-manager';
-
 // Submit functions
 export const pickAuthenticator = (payload?: CustomOptions) =>
   withError(instance.pickAuthenticator(payload));
+
+// Utility Hooks
+export { useMfaPolling } from '../hooks/utility/polling-manager';
 
 // Common hooks
 export {
