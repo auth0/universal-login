@@ -65,6 +65,7 @@ export interface MfaPollingResult {
  *@supportedScreens
  * - `mfa-push-challenge-push`
  * - `reset-password-mfa-push-challenge-push`
+ * - `mfa-push-enrollment-qr`
  *
  * @returns object {@link MfaPollingResult} containing:
  * - `isRunning` — `true` while polling is active.

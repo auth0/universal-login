@@ -34,6 +34,9 @@ export const {
 export const pickAuthenticator = (payload?: CustomOptions) =>
   withError(instance.pickAuthenticator(payload));
 
+// Utility Hooks
+export { useMfaPolling } from '../hooks/utility/polling-manager';
+
 // Common hooks
 export {
   useCurrentScreen,
