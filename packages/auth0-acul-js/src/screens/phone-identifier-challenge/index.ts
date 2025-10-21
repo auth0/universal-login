@@ -70,7 +70,22 @@ export default class PhoneIdentifierChallenge extends BaseContext implements Pho
       state: this.transaction.state,
       telemetry: [PhoneIdentifierChallenge.screenIdentifier, 'returnToPrevious'],
     };
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.BACK });
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.BACK});
+  }
+
+   /**
+   * @example
+   * import PhoneIdentifierChallenge from '@auth0/auth0-acul-js/phone-identifier-challenge';
+   *
+   * const phoneIdentifierChallenge = new PhoneIdentifierChallenge();
+   * phoneIdentifierChallenge.switchToVoiceOrText();
+   */
+  async switchToVoiceOrText(payload?: CustomOptions): Promise<void> {
+    const options: FormOptions = {
+      state: this.transaction.state,
+      telemetry: [PhoneIdentifierChallenge.screenIdentifier, 'switchToVoiceOrText'],
+    };
+    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.SWITCH_TO_VOICE });
   }
 
   /**
