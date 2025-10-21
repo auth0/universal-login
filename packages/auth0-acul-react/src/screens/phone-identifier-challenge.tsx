@@ -37,8 +37,9 @@ export const submitPhoneChallenge = (payload: PhoneChallengeOptions) =>
 export const resendCode = (payload?: CustomOptions) => withError(instance.resendCode(payload));
 export const returnToPrevious = (payload?: CustomOptions) =>
   withError(instance.returnToPrevious(payload));
-export const switchToVoiceOrText = (payload?: CustomOptions) =>
-  withError(instance.switchToVoiceOrText(payload));
+export const switchToVoice = (payload?: CustomOptions) =>
+  withError(instance.switchToVoice(payload));
+export const switchToText = (payload?: CustomOptions) => withError(instance.switchToText(payload));
 
 // Utility Hooks
 export { useResend } from '../hooks/utility/resend-manager';

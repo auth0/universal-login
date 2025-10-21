@@ -13,8 +13,6 @@ export interface ScreenDataOptions extends ScreenData {
   messageType?: 'text' | 'voice';
   phone?: 'string';
   resendLimitReached?: boolean;
-  showLinkSms?: boolean;
-  showLinkVoice?: boolean;
 }
 
 export interface ExtendedScreenContext extends ScreenContext {
@@ -22,8 +20,6 @@ export interface ExtendedScreenContext extends ScreenContext {
     message_type: 'text' | 'voice';
     phone: string;
     resendLimitReached?: boolean;
-    showLinkSms?: boolean;
-    showLinkVoice?: boolean;
   };
 }
 
@@ -43,5 +39,6 @@ export interface PhoneIdentifierChallengeMembers extends BaseMembers {
   resendCode(payload?: CustomOptions): Promise<void>;
   resendManager(options?: StartResendOptions): ResendControl;
   returnToPrevious(payload?: CustomOptions): Promise<void>;
-  switchToVoiceOrText(payload?: CustomOptions): Promise<void>;
+  switchToVoice(payload?: CustomOptions): Promise<void>;
+  switchToText(payload?: CustomOptions): Promise<void>;
 }
