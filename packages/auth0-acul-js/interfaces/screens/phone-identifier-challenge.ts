@@ -28,6 +28,8 @@ export interface ScreenMembersOnPhoneIdentifierChallenge extends ScreenMembers {
     messageType?: 'text' | 'voice';
     phone?: string;
     resendLimitReached?: boolean;
+    showLinkSms?: boolean;
+    showLinkVoice?: boolean;
   } | null;
 }
 
@@ -37,4 +39,6 @@ export interface PhoneIdentifierChallengeMembers extends BaseMembers {
   resendCode(payload?: CustomOptions): Promise<void>;
   resendManager(options?: StartResendOptions): ResendControl;
   returnToPrevious(payload?: CustomOptions): Promise<void>;
+  switchToVoice(payload?: CustomOptions): Promise<void>;
+  switchToText(payload?: CustomOptions): Promise<void>;
 }

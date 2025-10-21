@@ -11,6 +11,7 @@ export const FormActions = {
   TOGGLE_VIEW: 'toggle-view' as const,
   ENTER_OTP_CODE: 'enter-otp-code' as const,
   SWITCH_TO_VOICE: 'switch-to-voice' as const,
+  SWITCH_TO_TEXT: 'switch-to-text' as const,
   ABORT_PASSKEY_ENROLLMENT: 'abort-passkey-enrollment' as const,
   BACK_TO_LOGIN: 'back-to-login' as const,
   ACCEPT: 'accept' as const,
