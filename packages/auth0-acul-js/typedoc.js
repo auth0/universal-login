@@ -11,8 +11,4 @@ export default {
   includeVersion: true,
   categorizeByGroup: true,
   json: 'docs/index.json',
-  plugin: ["typedoc-plugin-markdown"],
-  theme: 'markdown',
-  outputFileStrategy: 'modules',
-  entryFileName: 'index.md',
 };

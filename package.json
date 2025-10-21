@@ -55,6 +55,7 @@
     "tslib": "^2.8.1",
     "tsx": "^4.19.3",
     "typedoc": "^0.28.2",
+    "typedoc-docusaurus-theme": "^1.4.2",
     "typedoc-plugin-markdown": "^4.9.0",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.29.1",
