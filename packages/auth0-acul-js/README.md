@@ -13,7 +13,7 @@
 
 <div align='center'>
 
-📚 [Documentation](#-documentation) - 🚀 [Getting Started](#-getting-started) - 💻 [API Reference](#-api-reference) - 💬 [Feedback](#-feedback)
+📚 [Documentation](#documentation) - 🚀 [Getting Started](#getting-started) - 💻 [API Reference](#api-reference) - 💬 [Feedback](#feedback)
 
 </div>
 
@@ -25,6 +25,7 @@ It simplifies integrating authentication screens (login, signup, passwordless, p
 >
 > This feature is still in **Early Access**.
 
+<a id="documentation"></a>
 ## 📚 Documentation
 
 - [Quickstart](https://auth0.com/docs/customize/login-pages/advanced-customizations/getting-started/sdk-quickstart) - our guide for setting up the SDK on your app.
@@ -32,6 +33,7 @@ It simplifies integrating authentication screens (login, signup, passwordless, p
 - [Examples](https://github.com/auth0/universal-login/tree/master/packages/auth0-acul-js/examples) - code snippets for different customization use cases.
 - [FAQs](FAQ.md) - Find answers to frequently asked questions about the Auth0 ACUL JS SDK.
 
+<a id="getting-started"></a>
 ## 🚀 Getting started
 
 ### Prerequisites
@@ -146,6 +148,7 @@ For more examples, visit our [examples](https://github.com/auth0/universal-login
 ## Quick Start with Boilerplate App
 Get up and running quickly with our boilerplate starter template: [Link](https://github.com/auth0/auth0-acul-react-boilerplate)
 
+<a id="api-reference"></a>
 ## 💻 API reference
 ### Screens
 
@@ -235,7 +238,7 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 | 76     |email-otp-challenge                   | email-otp-challenge | [Link](https://auth0.github.io/universal-login/classes/Classes.EmailOTPChallenge.html)   |
 </details>
 
-
+<a id="feedback"></a>
 ## 💬 Feedback
 
 ### Contributing
