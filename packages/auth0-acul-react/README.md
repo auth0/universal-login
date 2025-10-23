@@ -29,7 +29,6 @@ Developers using Auth0’s Universal Login can use this React SDK to customize s
 - [Quickstart](https://auth0.com/docs/customize/login-pages/advanced-customizations/getting-started/sdk-quickstart) - our guide for setting up the SDK on your app.
 - [Guides](https://auth0.com/docs/customize/login-pages/advanced-customizations/screens) - more guides for common use cases
 - [Examples](https://github.com/auth0/universal-login/tree/master/packages/auth0-acul-react/examples) - code snippets for different customization use cases.
-- [FAQs](FAQ.md) - Find answers to frequently asked questions about the Auth0 ACUL JS SDK.
 
 <a id="getting-started"></a>
 ## 🚀 Getting started
