@@ -13,7 +13,7 @@
 
 <div align='center'>
 
-📚 [Documentation](#-documentation) - 🚀 [Getting Started](#-getting-started) - 💻 [API Reference](#-api-reference) - 💬 [Feedback](#-feedback)
+📚 [Documentation](#documentation) - 🚀 [Getting Started](#getting-started) - 💻 [API Reference](#api-reference) - [Helper Functions](#helper-functions) - 💬 [Feedback](#feedback)
 
 </div>
 
@@ -25,6 +25,7 @@ It simplifies integrating authentication screens (login, signup, passwordless, p
 >
 > This feature is still in **Early Access**.
 
+<a id="documentation"></a>
 ## 📚 Documentation
 
 - [Quickstart](https://auth0.com/docs/customize/login-pages/advanced-customizations/getting-started/sdk-quickstart) - our guide for setting up the SDK on your app.
@@ -32,6 +33,7 @@ It simplifies integrating authentication screens (login, signup, passwordless, p
 - [Examples](https://github.com/auth0/universal-login/tree/master/packages/auth0-acul-js/examples) - code snippets for different customization use cases.
 - [FAQs](FAQ.md) - Find answers to frequently asked questions about the Auth0 ACUL JS SDK.
 
+<a id="getting-started"></a>
 ## 🚀 Getting started
 
 ### Prerequisites
@@ -146,6 +148,7 @@ For more examples, visit our [examples](https://github.com/auth0/universal-login
 ## Quick Start with Boilerplate App
 Get up and running quickly with our boilerplate starter template: [Link](https://github.com/auth0/auth0-acul-react-boilerplate)
 
+<a id="api-reference"></a>
 ## 💻 API reference
 ### Screens
 
@@ -236,6 +239,57 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 </details>
 
 
+## Helper Functions
+This section documents the helper methods and properties exposed by the screen instance in auth0-acul-js.
+
+### Context properties
+- `user`- Current user/profile data for the active transaction.
+
+- `tenant`- Tenant configuration and metadata (domain, region, settings).
+
+- `branding`- Branding/theme config (colors, logos, fonts, visual tokens).
+
+- `client`- Application client metadata and settings.
+
+- `organization`- Organization context when applicable.
+
+- `prompt`- Current prompt / flow configuration.
+
+- `untrustedData`- Untrusted inputs (URL params, prefilled form values).
+
+- `screen`- Current screen metadata and configuration.
+
+- `transaction`- Transaction / flow state, session identifiers and related data.
+
+### Identifier management
+- `getLoginIdentifiers()`: 
+  Get available login identifier types (email, phone, username)
+
+- `getSignupIdentifiers()`: Get available signup identifier types, each with its `required` status
+
+### Form validation
+- `validatePassword(password: string)`: 
+  Real-time password strength validation
+- `validateUsername(username: string)`: Username format and availability validation
+
+### MFA / Push polling & resend
+- `pollingManager()`: Starts and manages polling for an MFA push challenge.
+
+- `resendManager()` 
+  Gets resend functionality with timeout management for this screen.
+ 
+### Common helpers
+- `getCurrentScreen()`  
+  Return the current screen context data.
+
+- `getCurrentThemeOptions()` 
+  Gets the current theme options with flattened configuration from branding context.
+
+- `getErrors()`
+   Gets the current errors from the transaction context
+
+
+<a id="feedback"></a>
 ## 💬 Feedback
 
 ### Contributing
