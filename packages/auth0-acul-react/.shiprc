@@ -1,12 +1,6 @@
 {
     "files": {
         "CHANGELOG.md": [],
-        ".version": [
-            "v{MAJOR}.{MINOR}.{PATCH}",
-            "v{MAJOR}.{MINOR}.{PATCH}-{PRERELEASE_LABEL}.{PRERELEASE_COUNTER}"
-        ]
-    },
-    "prefixVersion": false,
-    "packageLabel": "auth0-acul-react",
-    "packagePath": "auth0-acul-react"
+        ".version": []
+    }
 }
