@@ -36,8 +36,14 @@ runs:
     - name: Build package
       if: inputs.require-build == 'true'
       shell: bash
-      working-directory: packages/${{ inputs.package }}
-      run: npm run build --workspaces --include-workspace-root
+      run: |
+        # Build dependency first when releasing React SDK
+        if [ "${{ inputs.package }}" = "auth0-acul-react" ]; then
+          echo "Building core JS dependency (@auth0/auth0-acul-js) first..."
+          npm run build --workspace=@auth0/auth0-acul-js
+        fi
+        echo "Building target package @auth0/${{ inputs.package }} only..."
+        npm run build --workspace=@auth0/${{ inputs.package }}
 
     - name: Publish release to NPM
       working-directory: packages/${{ inputs.release-directory }}
