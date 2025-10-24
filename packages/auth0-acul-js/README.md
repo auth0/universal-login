@@ -13,7 +13,7 @@
 
 <div align='center'>
 
-📚 [Documentation](#documentation) - 🚀 [Getting Started](#getting-started) - 💻 [API Reference](#api-reference) - [Helper Functions](#helper-fucntions) - 💬 [Feedback](#feedback)
+📚 [Documentation](#documentation) - 🚀 [Getting Started](#getting-started) - 💻 [API Reference](#api-reference) - [Helper Functions](#helper-functions) - 💬 [Feedback](#feedback)
 
 </div>
 
@@ -238,77 +238,56 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 | 76     |email-otp-challenge                   | email-otp-challenge | [Link](https://auth0.github.io/universal-login/classes/Classes.EmailOTPChallenge.html)   |
 </details>
 
+
 ## Helper Functions
-This section documents the helper methods and properties exposed by the screen instance in auth0-acul-js. These are the low-level, platform-agnostic primitives used to implement screen logic, validation, polling and actions.
+This section documents the helper methods and properties exposed by the screen instance in auth0-acul-js.
 
 ### Context properties
-- `user` 
+- `user`- Current user/profile data for the active transaction.
 
-  Current user/profile data for the active transaction.
+- `tenant`- Tenant configuration and metadata (domain, region, settings).
 
-- `tenant` 
+- `branding`- Branding/theme config (colors, logos, fonts, visual tokens).
 
-  Tenant configuration and metadata (domain, region, settings).
+- `client`- Application client metadata and settings.
 
-- `branding` 
+- `organization`- Organization context when applicable.
 
-  Branding/theme config (colors, logos, fonts, visual tokens).
+- `prompt`- Current prompt / flow configuration.
 
-- `client` 
+- `untrustedData`- Untrusted inputs (URL params, prefilled form values).
 
-  Application client metadata and settings.
+- `screen`- Current screen metadata and configuration.
 
-- `organization` 
-
-  Organization context when applicable.
-
-- `prompt` 
-
-  Current prompt / flow configuration.
-
-- `untrustedData` 
-
-  Untrusted inputs (URL params, prefilled form values).
-
-- `screen` 
-
-  Current screen metadata and configuration.
-
-- `transaction` 
-
-  Transaction / flow state, session identifiers and related data.
+- `transaction`- Transaction / flow state, session identifiers and related data.
 
 ### Identifier management
 - `getLoginIdentifiers()`: 
   Get available login identifier types (email, phone, username)
 
-- `getSignupIdentifiers()` - Get available signup identifier types, each with its `required` status
+- `getSignupIdentifiers()`: Get available signup identifier types, each with its `required` status
 
 ### Form validation
 - `validatePassword(password: string)`: 
   Real-time password strength validation
-- `validateUsername(username: string)` - Username format and availability validation
+- `validateUsername(username: string)`: Username format and availability validation
 
 ### MFA / Push polling & resend
-- `pollPushStatus(txId: string)`
-  Check current push challenge status for a transaction (synchronous status retrieval).
+- `pollingManager()`: Starts and manages polling for an MFA push challenge.
 
-- `startPushPolling(txId: string, opts?: { intervalMs?: number })`
-  Start an internal polling loop (managed by the implementation). Returns immediately.
-
-- `resendPush(txId: string) ` 
-  Trigger resend of push notification for the given transaction.
+- `resendManager()` 
+  Gets resend functionality with timeout management for this screen.
  
 ### Common helpers
 - `getCurrentScreen()`  
-  Return the full resolved screen payload (metadata + data).
+  Return the current screen context data.
 
-- `getThemes()` 
-  Return resolved theme/branding tokens used for rendering.
+- `getCurrentThemeOptions()` 
+  Gets the current theme options with flattened configuration from branding context.
 
-### Notes
-- All helpers are exposed on the active ScreenInstance (BaseMembers). Implementations should keep logic here pure and testable.
-- Helpers are designed to be small, composable primitives — UI layers or framework-specific wrappers should call these and manage lifecycle/state as needed.
+- `getErrors()`
+   Gets the current errors from the transaction context
+
 
 <a id="feedback"></a>
 ## 💬 Feedback
