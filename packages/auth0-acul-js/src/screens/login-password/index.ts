@@ -1,4 +1,4 @@
-import { ScreenIds } from '../../constants';
+import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { getBrowserCapabilities } from '../../utils/browser-capabilities';
 import { FormHandler } from '../../utils/form-handler';
@@ -13,6 +13,8 @@ import type {
   LoginPasswordOptions,
   LoginPasswordMembers,
   FederatedLoginOptions,
+  SwitchConnectionOptions,
+  ChangeLanguageOptions,
   TransactionMembersOnLoginPassword as TransactionOptions,
 } from '../../../interfaces/screens/login-password';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
@@ -81,12 +83,91 @@ export default class LoginPassword extends BaseContext implements LoginPasswordM
 
     await new FormHandler(options).submitData<FederatedLoginOptions>(payload);
   }
+
+  /**
+   * @remarks
+   * This method handles switching between DB connection (password) and Passwordless connection (Email/SMS OTP).
+   * The connection parameter should be one of: 'email', 'sms', or a DB connection name.
+   *
+   * @example
+   * import LoginPassword from "@auth0/auth0-acul-js/login-password";
+   *
+   * const loginPasswordManager = new LoginPassword();
+   *
+   * // Switch to passwordless email
+   * loginPasswordManager.switchConnection({
+   *   connection: "email"
+   * });
+   *
+   * // Switch to passwordless SMS
+   * loginPasswordManager.switchConnection({
+   *   connection: "sms"
+   * });
+   */
+  async switchConnection(payload: SwitchConnectionOptions): Promise<void> {
+    const options: FormOptions = {
+      state: this.transaction.state,
+      telemetry: [LoginPassword.screenIdentifier, 'switchConnection'],
+    };
+
+    await new FormHandler(options).submitData<SwitchConnectionOptions>(payload);
+  }
+
+  /**
+   * @remarks
+   * This method handles language change with prompt re-render or auto-submission.
+   * When action is "change-language", the prompt is re-rendered with the new language.
+   * When action is "default", the form is submitted with the new language preference.
+   * Username and password are optional and may be required depending on the authentication context.
+   *
+   * @example
+   * import LoginPassword from "@auth0/auth0-acul-js/login-password";
+   *
+   * const loginPasswordManager = new LoginPassword();
+   *
+   * // Change language with prompt re-render (with credentials)
+   * await loginPasswordManager.changeLanguage({
+   *   username: "user@auth0.com",
+   *   password: "Password123!",
+   *   language: "fr",
+   *   persist: "session",
+   *   action: "change-language"
+   * });
+   *
+   * // Or submit form with language change (auto-submission)
+   * await loginPasswordManager.changeLanguage({
+   *   username: "user@auth0.com",
+   *   password: "Password123!",
+   *   language: "en",
+   *   persist: "session",
+   *   action: "default"
+   * });
+   *
+   * // Change language without credentials
+   * await loginPasswordManager.changeLanguage({
+   *   language: "es",
+   *   persist: "session"
+   * });
+   */
+  async changeLanguage(payload: ChangeLanguageOptions): Promise<void> {
+    const options: FormOptions = {
+      state: this.transaction.state,
+      telemetry: [LoginPassword.screenIdentifier, 'changeLanguage'],
+    };
+
+    await new FormHandler(options).submitData<ChangeLanguageOptions>({
+      ...payload,
+      action: FormActions.CHANGE_LANGUAGE,
+    });
+  }
 }
 
 export {
   LoginPasswordMembers,
   LoginPasswordOptions,
   FederatedLoginOptions,
+  SwitchConnectionOptions,
+  ChangeLanguageOptions,
   ScreenOptions as ScreenMembersOnLoginPassword,
   TransactionOptions as TransactionMembersOnLoginPassword,
 };

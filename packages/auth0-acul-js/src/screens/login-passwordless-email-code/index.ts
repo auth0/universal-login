@@ -14,6 +14,7 @@ import type {
   ScreenMembersOnLoginPasswordlessEmailCode as ScreenOptions,
   TransactionMembersOnLoginPasswordlessEmailCode as TransactionOptions,
   SubmitCodeOptions,
+  SwitchConnectionOptions,
 } from '../../../interfaces/screens/login-passwordless-email-code';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 import type { StartResendOptions, ResendControl } from  '../../../interfaces/utils/resend-control';
@@ -71,6 +72,22 @@ export default class LoginPasswordlessEmailCode extends BaseContext implements L
   }
 
   /**
+   * @example
+   * import LoginPasswordlessEmailCode from '@auth0/auth0-acul-js/login-passwordless-email-code';
+   *
+   * const loginPasswordlessEmailCode = new LoginPasswordlessEmailCode();
+   * loginPasswordlessEmailCode.switchConnection({ connection: "sms" });
+   */
+  async switchConnection(payload: SwitchConnectionOptions): Promise<void> {
+    const options: FormOptions = {
+      state: this.transaction.state,
+      telemetry: [LoginPasswordlessEmailCode.screenIdentifier, 'switchConnection'],
+    };
+
+    await new FormHandler(options).submitData<SwitchConnectionOptions>(payload);
+  }
+
+  /**
    * Creates a resend control manager for handling email code resend operations.
    * 
    * @param options Configuration options for the resend control
@@ -108,6 +125,7 @@ export default class LoginPasswordlessEmailCode extends BaseContext implements L
 export {
   LoginPasswordlessEmailCodeMembers,
   SubmitCodeOptions,
+  SwitchConnectionOptions,
   ScreenOptions as ScreenMembersOnLoginPasswordlessEmailCode,
   TransactionOptions as TransactionMembersOnLoginPasswordlessEmailCode,
 };

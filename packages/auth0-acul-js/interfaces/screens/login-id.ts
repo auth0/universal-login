@@ -46,6 +46,12 @@ export interface TransactionMembersOnLoginId extends TransactionMembers {
 export interface LoginOptions {
   username: string;
   captcha?: string;
+  /** Optional language code for locale change with auto-submission */
+  language?: string;
+  /** Optional persistence scope for language preference */
+  persist?: 'session';
+  /** Optional password field (for third-party captcha scenarios) */
+  password?: string;
   [key: string]: string | number | boolean | undefined;
 }
 
@@ -54,12 +60,47 @@ export interface FederatedLoginOptions {
   [key: string]: string | number | boolean;
 }
 
+/**
+ * Options for changing language with prompt re-render on login-id screen
+ */
+export interface ChangeLanguageOptions {
+  /** The username/email/phone identifier */
+  username?: string;
+  /** Optional password field (for third-party captcha scenarios) */
+  password?: string;
+  /** The language code to change to */
+  language: string;
+  /** Persistence scope for language preference */
+  persist?: 'session';
+  /** Optional captcha value if required */
+  captcha?: string;
+  /** Any additional custom options */
+  [key: string]: string | number | boolean | undefined;
+}
+
+/**
+ * Options for passkey authentication with language support
+ */
+export interface PasskeyLoginOptions {
+  /** Optional language code for locale change with auto-submission */
+  language?: string;
+  /** Optional persistence scope for language preference */
+  persist?: 'session';
+  /** Any additional custom options */
+  [key: string]: string | number | boolean | undefined;
+}
+
 export interface LoginIdMembers extends BaseMembers {
   screen: ScreenMembersOnLoginId;
   transaction: TransactionMembersOnLoginId;
   login(payload: LoginOptions): Promise<void>;
   federatedLogin(payload: FederatedLoginOptions): Promise<void>;
-  passkeyLogin(payload?: CustomOptions): Promise<void>;
+  passkeyLogin(payload?: PasskeyLoginOptions): Promise<void>;
   pickCountryCode(payload?: CustomOptions): Promise<void>;
+  /**
+   * Changes the language with prompt re-render
+   * @param payload The language change options
+   */
+  changeLanguage(payload: ChangeLanguageOptions): Promise<void>;
   getLoginIdentifiers(): IdentifierType[] | null;
 }

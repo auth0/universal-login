@@ -19,6 +19,8 @@ import type {
   LoginIdMembers,
   LoginOptions,
   FederatedLoginOptions,
+  ChangeLanguageOptions,
+  PasskeyLoginOptions,
 } from '../../../interfaces/screens/login-id';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 import type { IdentifierType } from 'interfaces/utils';
@@ -106,7 +108,7 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
    * // It internally maps users available passkey config provided from auth0 server
    * loginIdManager.passkeyLogin();
    */
-  async passkeyLogin(payload?: CustomOptions): Promise<void> {
+  async passkeyLogin(payload?: PasskeyLoginOptions): Promise<void> {
     this.#passkeyController?.abort();
     this.#passkeyController = undefined;
 
@@ -120,7 +122,7 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
         telemetry: [LoginId.screenIdentifier, 'passkeyLogin'],
       };
 
-      await new FormHandler(options).submitData<CustomOptions>({
+      await new FormHandler(options).submitData<PasskeyLoginOptions>({
         ...payload,
         passkey: JSON.stringify(passkey),
       });
@@ -156,6 +158,32 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
       action: FormActions.PICK_COUNTRY_CODE,
+    });
+  }
+
+  /**
+   * Changes the language with prompt re-render
+   * @param payload The language change options containing username and language
+   * @example
+   * ```typescript
+   * import LoginId from "@auth0/auth0-acul-js/login-id";
+   * const loginIdManager = new LoginId();
+   * loginIdManager.changeLanguage({
+   *   username: "test@test.com",
+   *   language: "fr",
+   *   persist: "session"
+   * });
+   * ```
+   */
+  async changeLanguage(payload: ChangeLanguageOptions): Promise<void> {
+    const options: FormOptions = {
+      state: this.transaction.state,
+      telemetry: [LoginId.screenIdentifier, 'changeLanguage'],
+    };
+
+    await new FormHandler(options).submitData<ChangeLanguageOptions>({
+      ...payload,
+      action: FormActions.CHANGE_LANGUAGE,
     });
   }
 
@@ -269,6 +297,8 @@ export {
   LoginIdMembers,
   LoginOptions,
   FederatedLoginOptions,
+  ChangeLanguageOptions,
+  PasskeyLoginOptions,
   ScreenOptions as ScreenMembersOnLoginId,
   TransactionOptions as TransactionMembersOnLoginId,
 };

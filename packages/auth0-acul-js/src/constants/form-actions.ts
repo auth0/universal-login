@@ -29,4 +29,5 @@ export const FormActions = {
   // actions for MFA WebAuthn Error
   TRY_AGAIN: 'tryagain' as const,
   USE_PASSWORD: 'use-password' as const,
+  CHANGE_LANGUAGE: 'change-language' as const,
 } as const;

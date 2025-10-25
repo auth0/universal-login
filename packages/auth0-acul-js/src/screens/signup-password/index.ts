@@ -1,7 +1,7 @@
-import { ScreenIds } from '../../constants';
+import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
-import { validatePassword as _validatePassword} from '../../utils/validate-password';
+import { validatePassword as _validatePassword } from '../../utils/validate-password';
 
 
 import { ScreenOverride } from './screen-override';
@@ -14,7 +14,9 @@ import type {
   ScreenMembersOnSignupPassword as ScreenOptions,
   TransactionMembersOnSignupPassword as TransactionOptions,
   SignupPasswordOptions,
-  FederatedSignupOptions
+  FederatedSignupOptions,
+  SwitchConnectionOptions,
+  ChangeLanguageOptions
 } from '../../../interfaces/screens/signup-password';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 import type { PasswordValidationResult } from '../../../interfaces/utils/validate-password';
@@ -99,6 +101,77 @@ export default class SignupPassword extends BaseContext implements SignupPasswor
   }
 
   /**
+   * @remarks
+   * This method handles switching between different database connections.
+   * It allows users to switch to a different connection during the signup process.
+   *
+   * @example
+   * import SignupPassword from "@auth0/auth0-acul-js/signup-password";
+   *
+   * const signupPasswordManager = new SignupPassword();
+   * const { transaction } = signupPasswordManager;
+   *
+   * // Get available alternate connections
+   * const alternateConnections = transaction.alternateConnections;
+   *
+   * // Switch to a different connection
+   * const switchParams = {
+   *   connection: alternateConnections[0].name, // e.g., "Username-Password-Authentication"
+   * };
+   *
+   * signupPasswordManager.switchConnection(switchParams);
+   */
+  async switchConnection(payload: SwitchConnectionOptions): Promise<void> {
+    const options: FormOptions = {
+      state: this.transaction.state,
+      telemetry: [SignupPassword.screenIdentifier, 'switchConnection'],
+    };
+
+    await new FormHandler(options).submitData<SwitchConnectionOptions>(payload);
+  }
+
+  /**
+   * @remarks
+   * This method handles language change with prompt re-render or auto-submission.
+   * When action is "change-language", the prompt is re-rendered with the new language.
+   * When action is "default", the form is submitted with the new language preference.
+   *
+   * @example
+   * import SignupPassword from "@auth0/auth0-acul-js/signup-password";
+   *
+   * const signupPasswordManager = new SignupPassword();
+   *
+   * // Change language with prompt re-render
+   * await signupPasswordManager.changeLanguage({
+   *   email: "user@auth0.com",
+   *   password: "Password123!",
+   *   language: "fr",
+   *   persist: "session",
+   *   action: "change-language"
+   * });
+   *
+   * // Or submit form with language change (auto-submission)
+   * await signupPasswordManager.changeLanguage({
+   *   email: "user@auth0.com",
+   *   password: "Password123!",
+   *   language: "en",
+   *   persist: "session",
+   *   action: "default"
+   * });
+   */
+  async changeLanguage(payload: ChangeLanguageOptions): Promise<void> {
+    const options: FormOptions = {
+      state: this.transaction.state,
+      telemetry: [SignupPassword.screenIdentifier, 'changeLanguage'],
+    };
+
+    await new FormHandler(options).submitData<ChangeLanguageOptions>({
+      ...payload,
+      action: FormActions.CHANGE_LANGUAGE,
+    });
+  }
+
+  /**
   * Validates a password string against the current transaction's password policy.
   *
   * This method retrieves the password policy from the current transaction context
@@ -136,6 +209,8 @@ export {
   SignupPasswordMembers,
   SignupPasswordOptions,
   FederatedSignupOptions,
+  SwitchConnectionOptions,
+  ChangeLanguageOptions,
   ScreenOptions as ScreenMembersOnSignupPassword,
   TransactionOptions as TransactionMembersOnSignupPassword,
 };
