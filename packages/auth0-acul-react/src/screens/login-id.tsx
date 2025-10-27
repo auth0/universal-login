@@ -43,6 +43,9 @@ export const pickCountryCode = (payload?: CustomOptions) =>
 // Utility Hooks
 export { useLoginIdentifiers } from '../hooks/utility/login-identifiers';
 
+// Utility Hooks
+export { usePasskeyAutofill } from '../hooks/utility/passkey-autofill';
+
 // Common hooks
 export {
   useCurrentScreen,
