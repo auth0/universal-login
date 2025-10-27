@@ -25,6 +25,8 @@
     "test": "jest --verbose tests/unit/**/* --coverage",
     "test:e2e": "cypress open",
     "docs": "typedoc --options typedoc.js",
+    "docs:mintlify": "node scripts/generate-mintlify-docs.js",
+    "docs:mintlify:custom": "node scripts/generate-mintlify-docs.js --output docs/mintlify",
     "lint": "npm run lint:interfaces && npm run lint:src",
     "lint:fix": "npm run lint:src:fix && npm run lint:interfaces:fix",
     "lint:interfaces": "eslint 'interfaces/**/*.ts' --no-ignore",
