@@ -9,6 +9,7 @@ import type {
   LoginPasswordMembers,
   LoginPasswordOptions,
   FederatedLoginOptions,
+  SwitchConnectionOptions,
 } from '@auth0/auth0-acul-js/login-password';
 
 // Register the singleton instance of LoginPassword
@@ -35,6 +36,8 @@ export const {
 export const login = (payload: LoginPasswordOptions) => withError(instance.login(payload));
 export const federatedLogin = (payload: FederatedLoginOptions) =>
   withError(instance.federatedLogin(payload));
+export const switchConnection = (payload: SwitchConnectionOptions) =>
+  withError(instance.switchConnection(payload));
 
 // Common hooks
 export {
