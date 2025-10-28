@@ -108,17 +108,15 @@ export default class SignupPassword extends BaseContext implements SignupPasswor
    * import SignupPassword from "@auth0/auth0-acul-js/signup-password";
    *
    * const signupPasswordManager = new SignupPassword();
-   * const { transaction } = signupPasswordManager;
    *
-   * // Get available alternate connections
-   * const alternateConnections = transaction.alternateConnections;
-   *
-   * // Switch to a different connection
-   * const switchParams = {
-   *   connection: alternateConnections[0].name, // e.g., "Username-Password-Authentication"
+   * // Function to handle connection switching
+   * const handleSwitchConnection = (connectionName: string) => {
+   *   signupPasswordManager.switchConnection({ connection: connectionName });
    * };
    *
-   * signupPasswordManager.switchConnection(switchParams);
+   * // Switch to different connection strategies
+   * handleSwitchConnection('email'); // Switch to email-based authentication
+   * handleSwitchConnection('sms');   // Switch to SMS-based authentication
    */
   async switchConnection(payload: SwitchConnectionOptions): Promise<void> {
     const options: FormOptions = {

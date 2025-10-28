@@ -93,15 +93,14 @@ export default class LoginPassword extends BaseContext implements LoginPasswordM
    *
    * const loginPasswordManager = new LoginPassword();
    *
-   * // Switch to passwordless email
-   * loginPasswordManager.switchConnection({
-   *   connection: "email"
-   * });
+   * // Function to handle connection switching
+   * const handleSwitchConnection = (connectionName: string) => {
+   *   loginPasswordManager.switchConnection({ connection: connectionName });
+   * };
    *
-   * // Switch to passwordless SMS
-   * loginPasswordManager.switchConnection({
-   *   connection: "sms"
-   * });
+   * // Switch to different connection strategies
+   * handleSwitchConnection('email'); // Switch to email-based authentication
+   * handleSwitchConnection('sms');   // Switch to SMS-based authentication
    */
   async switchConnection(payload: SwitchConnectionOptions): Promise<void> {
     const options: FormOptions = {
