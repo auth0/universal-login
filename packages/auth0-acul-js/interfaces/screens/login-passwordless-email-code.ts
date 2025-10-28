@@ -24,16 +24,10 @@ export interface SubmitCodeOptions {
   [key: string]: string | number | boolean | undefined;
 }
 
-export interface SwitchConnectionOptions {
-  connection: string;
-  [key: string]: string | number | boolean | undefined;
-}
-
 export interface LoginPasswordlessEmailCodeMembers extends BaseMembers {
   screen: ScreenMembersOnLoginPasswordlessEmailCode;
   transaction: TransactionMembersOnLoginPasswordlessEmailCode;
   submitCode(payload: SubmitCodeOptions): Promise<void>;
   resendCode(payload?: CustomOptions): Promise<void>;
-  switchConnection(payload: SwitchConnectionOptions): Promise<void>;
   resendManager(options?: StartResendOptions): ResendControl;
 }
