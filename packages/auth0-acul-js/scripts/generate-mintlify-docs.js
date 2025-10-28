@@ -6,7 +6,7 @@
  *
  * Usage: node scripts/generate-mintlify-docs.js [options]
  * Options:
- *   --output, -o   Output directory (default: docs/markdown_output)
+ *   --output, -o   Output directory (default: docs)
  *   --src           Source directory (default: src)
  *   --interfaces    Interfaces directory (default: interfaces)
  *   --help          Show this help message
@@ -22,7 +22,7 @@ const projectRoot = path.resolve(__dirname, '..');
 
 // Configuration
 const config = {
-  outputDir: path.resolve(projectRoot, 'docs/markdown_output'),
+  outputDir: path.resolve(projectRoot, 'docs'),
   srcDir: path.resolve(projectRoot, 'src'),
   interfacesDir: path.resolve(projectRoot, 'interfaces'),
   examplesDir: path.resolve(projectRoot, 'examples'),
@@ -45,7 +45,7 @@ Generate Mintlify-compatible markdown documentation
 Usage: node scripts/generate-mintlify-docs.js [options]
 
 Options:
-  --output, -o PATH    Output directory (default: docs/markdown_output)
+  --output, -o PATH    Output directory (default: docs)
   --src PATH          Source directory (default: src)
   --interfaces PATH   Interfaces directory (default: interfaces)
   --help              Show this help message
