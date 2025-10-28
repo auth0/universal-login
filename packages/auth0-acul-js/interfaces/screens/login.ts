@@ -60,10 +60,6 @@ export interface LoginOptions {
   password: string;
   /** Optional captcha value if required */
   captcha?: string;
-  /** Optional language code for locale change with auto-submission */
-  language?: string;
-  /** Optional persistence scope for language preference */
-  persist?: 'session';
   /** Any additional custom options */
   [key: string]: string | number | boolean | undefined;
 }
@@ -76,24 +72,6 @@ export interface FederatedLoginOptions {
   connection: string;
   /** Any additional custom options */
   [key: string]: string | number | boolean;
-}
-
-/**
- * Options for changing language with prompt re-render
- */
-export interface ChangeLanguageOptions {
-  /** The username/email */
-  username?: string;
-  /** The password for authentication */
-  password?: string;
-  /** The language code to change to */
-  language: string;
-  /** Persistence scope for language preference */
-  persist?: 'session';
-  /** Optional captcha value if required */
-  captcha?: string;
-  /** Any additional custom options */
-  [key: string]: string | number | boolean | undefined;
 }
 
 /**
@@ -117,11 +95,6 @@ export interface LoginMembers extends BaseMembers {
    * @param payload Optional custom options
    */
   pickCountryCode(payload?: CustomOptions): Promise<void>;
-  /**
-   * Changes the language with prompt re-render
-   * @param payload The language change options
-   */
-  changeLanguage(payload: ChangeLanguageOptions): Promise<void>;
   /**
    * Gets the active identifier types for the login screen
    * @returns An array of active identifier types or null if none are active

@@ -1,4 +1,3 @@
-
 import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
@@ -16,7 +15,6 @@ import type {
   LoginMembers,
   TransactionMembersOnLogin as TransactionOptions,
   FederatedLoginOptions,
-  ChangeLanguageOptions,
 } from '../../../interfaces/screens/login';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 import type { IdentifierType } from 'interfaces/utils';
@@ -101,33 +99,6 @@ export default class Login extends BaseContext implements LoginMembers {
   }
 
   /**
-   * Changes the language with prompt re-render
-   * @param payload The language change options containing username, password, and language
-   * @example
-   * ```typescript
-   * import Login from "@auth0/auth0-acul-js/login";
-   * const loginManager = new Login();
-   * loginManager.changeLanguage({
-   *   username: "testUser",
-   *   password: "testPassword",
-   *   language: "fr",
-   *   persist: "session"
-   * });
-   * ```
-   */
-  async changeLanguage(payload: ChangeLanguageOptions): Promise<void> {
-    const options: FormOptions = {
-      state: this.transaction.state,
-      telemetry: [Login.screenIdentifier, 'changeLanguage'],
-    };
-
-    await new FormHandler(options).submitData<ChangeLanguageOptions>({
-      ...payload,
-      action: FormActions.CHANGE_LANGUAGE,
-    });
-  }
-
-  /**
    * Gets the active identifier types for the login screen
    * @returns An array of active identifier types or null if none are active
    * @example
@@ -143,6 +114,6 @@ export default class Login extends BaseContext implements LoginMembers {
   }
 }
 
-export { LoginMembers, LoginOptions, FederatedLoginOptions, ChangeLanguageOptions, ScreenOptions as ScreenMembersOnLogin, TransactionOptions as TransactionMembersOnLogin };
+export { LoginMembers, LoginOptions, FederatedLoginOptions, ScreenOptions as ScreenMembersOnLogin, TransactionOptions as TransactionMembersOnLogin };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';
