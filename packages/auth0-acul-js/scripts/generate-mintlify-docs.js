@@ -25,6 +25,7 @@ const config = {
   outputDir: path.resolve(projectRoot, 'docs/markdown_output'),
   srcDir: path.resolve(projectRoot, 'src'),
   interfacesDir: path.resolve(projectRoot, 'interfaces'),
+  examplesDir: path.resolve(projectRoot, 'examples'),
   tsconfigPath: path.resolve(projectRoot, 'tsconfig.json'),
 };
 
@@ -87,6 +88,67 @@ function getFiles(dir, ext = '.ts') {
 
   walk(dir);
   return files;
+}
+
+function extractCodeBlocksFromExample(name) {
+  // Convert name to kebab-case and find matching example file
+  const kebabName = name
+    .replace(/([a-z])([A-Z])/g, '$1-$2')
+    .toLowerCase();
+
+  const examplePath = path.join(config.examplesDir, `${kebabName}.md`);
+
+  if (!fs.existsSync(examplePath)) {
+    return [];
+  }
+
+  try {
+    const content = fs.readFileSync(examplePath, 'utf-8');
+    const codeBlocks = [];
+
+    // Split by lines to track headers
+    const lines = content.split('\n');
+    let lastHeader = '';
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+
+      // Track headers (### or ## level)
+      if (line.match(/^#+\s/)) {
+        lastHeader = line.replace(/^#+\s/, '').trim();
+        continue;
+      }
+
+      // Match code blocks
+      if (line.startsWith('```')) {
+        const match = line.match(/^```(\w+)/);
+        if (match) {
+          const language = match[1];
+          const title = lastHeader || language;
+          let code = '';
+          let j = i + 1;
+
+          // Collect all lines until closing ```
+          while (j < lines.length && !lines[j].startsWith('```')) {
+            code += (code ? '\n' : '') + lines[j];
+            j++;
+          }
+
+          codeBlocks.push({
+            language,
+            title,
+            code: code.trim(),
+          });
+
+          i = j; // Skip to the closing ```
+        }
+      }
+    }
+
+    return codeBlocks;
+  } catch (error) {
+    return [];
+  }
 }
 
 function extractJSDoc(sourceFile, node) {
@@ -367,6 +429,16 @@ description: "${frontmatter.description.replace(/"/g, '\\"')}"
 
   // Add type-specific content
   if (type === 'class') {
+    // Add examples from the examples folder
+    const codeBlocks = extractCodeBlocksFromExample(item.name);
+    if (codeBlocks.length > 0) {
+      mdx += `<RequestExample>\n\n`;
+      for (const block of codeBlocks) {
+        mdx += `\`\`\`${block.language} ${block.title}\n${block.code}\n\`\`\`\n\n`;
+      }
+      mdx += `</RequestExample>\n\n`;
+    }
+
     // Combine all members (own and inherited) into a single Properties section
     if (item.members && item.members.length > 0) {
       mdx += '## Properties\n\n';
@@ -384,10 +456,23 @@ description: "${frontmatter.description.replace(/"/g, '\\"')}"
       }
     }
   } else if (type === 'interface') {
-    // Add interface definition at the top wrapped in RequestExample
-    if (item.definition) {
+    // Add interface definition and examples wrapped in RequestExample
+    const codeBlocks = extractCodeBlocksFromExample(item.name);
+    const hasDefinitionOrExamples = item.definition || codeBlocks.length > 0;
+
+    if (hasDefinitionOrExamples) {
       mdx += `<RequestExample>\n\n`;
-      mdx += `\`\`\`typescript Interface\n${item.definition}\n\`\`\`\n\n`;
+
+      // Add interface definition first
+      if (item.definition) {
+        mdx += `\`\`\`typescript Interface\n${item.definition}\n\`\`\`\n\n`;
+      }
+
+      // Add example code blocks
+      for (const block of codeBlocks) {
+        mdx += `\`\`\`${block.language} ${block.title}\n${block.code}\n\`\`\`\n\n`;
+      }
+
       mdx += `</RequestExample>\n\n`;
     }
 
