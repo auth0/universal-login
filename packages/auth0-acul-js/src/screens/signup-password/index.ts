@@ -16,7 +16,6 @@ import type {
   SignupPasswordOptions,
   FederatedSignupOptions,
   SwitchConnectionOptions,
-  ChangeLanguageOptions
 } from '../../../interfaces/screens/signup-password';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 import type { PasswordValidationResult } from '../../../interfaces/utils/validate-password';
@@ -131,47 +130,6 @@ export default class SignupPassword extends BaseContext implements SignupPasswor
   }
 
   /**
-   * @remarks
-   * This method handles language change with prompt re-render or auto-submission.
-   * When action is "change-language", the prompt is re-rendered with the new language.
-   * When action is "default", the form is submitted with the new language preference.
-   *
-   * @example
-   * import SignupPassword from "@auth0/auth0-acul-js/signup-password";
-   *
-   * const signupPasswordManager = new SignupPassword();
-   *
-   * // Change language with prompt re-render
-   * await signupPasswordManager.changeLanguage({
-   *   email: "user@auth0.com",
-   *   password: "Password123!",
-   *   language: "fr",
-   *   persist: "session",
-   *   action: "change-language"
-   * });
-   *
-   * // Or submit form with language change (auto-submission)
-   * await signupPasswordManager.changeLanguage({
-   *   email: "user@auth0.com",
-   *   password: "Password123!",
-   *   language: "en",
-   *   persist: "session",
-   *   action: "default"
-   * });
-   */
-  async changeLanguage(payload: ChangeLanguageOptions): Promise<void> {
-    const options: FormOptions = {
-      state: this.transaction.state,
-      telemetry: [SignupPassword.screenIdentifier, 'changeLanguage'],
-    };
-
-    await new FormHandler(options).submitData<ChangeLanguageOptions>({
-      ...payload,
-      action: FormActions.CHANGE_LANGUAGE,
-    });
-  }
-
-  /**
   * Validates a password string against the current transaction's password policy.
   *
   * This method retrieves the password policy from the current transaction context
@@ -210,7 +168,6 @@ export {
   SignupPasswordOptions,
   FederatedSignupOptions,
   SwitchConnectionOptions,
-  ChangeLanguageOptions,
   ScreenOptions as ScreenMembersOnSignupPassword,
   TransactionOptions as TransactionMembersOnSignupPassword,
 };
