@@ -101,7 +101,8 @@ function extractJSDoc(sourceFile, node) {
   // Find the last /** ... */ comment that appears immediately before this node
   // by looking only in the section after the previous non-whitespace token
   const lines = beforeText.split('\n');
-  const lineWithNode = beforeText.substring(0, actualStart).split('\n').length - 1;
+  const lineWithNode =
+    beforeText.substring(0, actualStart).split('\n').length - 1;
 
   // Search upward from current line to find JSDoc
   for (let i = lines.length - 1; i >= 0; i--) {
@@ -128,7 +129,10 @@ function extractJSDoc(sourceFile, node) {
           let cleaned = firstParagraph.trim();
 
           // Remove JSDoc syntax patterns
-          cleaned = cleaned.replace(/\/\*\*\s*/, '').replace(/\*\/\s*$/, '').trim();
+          cleaned = cleaned
+            .replace(/\/\*\*\s*/, '')
+            .replace(/\*\/\s*$/, '')
+            .trim();
           cleaned = cleaned.replace(/\{[^}]+\}\s*/g, ''); // Remove type annotations {Type}
           cleaned = cleaned.replace(/@\w+\s+\S+\s*-?\s*/g, ''); // Remove @tag patterns
           cleaned = cleaned.replace(/\/\*\*[\s\S]*?\*\//g, ''); // Remove nested comments
@@ -137,7 +141,11 @@ function extractJSDoc(sourceFile, node) {
         }
       }
       break;
-    } else if (!line.includes('/**') && line.trim() && !line.trim().startsWith('//')) {
+    } else if (
+      !line.includes('/**') &&
+      line.trim() &&
+      !line.trim().startsWith('//')
+    ) {
       // Hit a non-comment line, stop searching
       break;
     }
@@ -148,7 +156,12 @@ function extractJSDoc(sourceFile, node) {
 
 function parseTypeScriptFile(filePath) {
   const source = fs.readFileSync(filePath, 'utf-8');
-  const sourceFile = ts.createSourceFile(filePath, source, ts.ScriptTarget.Latest, true);
+  const sourceFile = ts.createSourceFile(
+    filePath,
+    source,
+    ts.ScriptTarget.Latest,
+    true,
+  );
 
   const classes = [];
   const interfaces = [];
@@ -172,7 +185,10 @@ function parseTypeScriptFile(filePath) {
       }
 
       for (const member of node.members) {
-        if (ts.isPropertyDeclaration(member) || ts.isMethodDeclaration(member)) {
+        if (
+          ts.isPropertyDeclaration(member) ||
+          ts.isMethodDeclaration(member)
+        ) {
           const memberJsDoc = extractJSDoc(sourceFile, member);
           const memberName = member.name?.getText() || 'unknown';
           // Check if property is optional (has ? modifier)
@@ -211,11 +227,15 @@ function parseTypeScriptFile(filePath) {
         });
       }
 
+      // Get the interface definition text
+      const interfaceText = node.getText(sourceFile);
+
       interfaces.push({
         name: node.name.getText(),
         description: jsDoc || '',
         members,
         filePath,
+        definition: interfaceText,
       });
     } else if (ts.isTypeAliasDeclaration(node) && node.name) {
       const jsDoc = extractJSDoc(sourceFile, node);
@@ -294,7 +314,9 @@ function resolveClassInheritance(classItem, allClasses) {
 
   // Don't duplicate members - own members override inherited
   const ownMemberNames = new Set(classItem.members.map((m) => m.name));
-  const uniqueInheritedMembers = inheritedMembers.filter((m) => !ownMemberNames.has(m.name));
+  const uniqueInheritedMembers = inheritedMembers.filter(
+    (m) => !ownMemberNames.has(m.name),
+  );
 
   return {
     ...classItem,
@@ -336,7 +358,10 @@ description: "${frontmatter.description.replace(/"/g, '\\"')}"
 
   // Add description only if it exists and is different from frontmatter description
   // This avoids duplicating the same text in both frontmatter and body
-  if (item.description && cleanDescription(item.description) !== frontmatter.description) {
+  if (
+    item.description &&
+    cleanDescription(item.description) !== frontmatter.description
+  ) {
     mdx += `${cleanDescription(item.description)}\n\n`;
   }
 
@@ -346,7 +371,9 @@ description: "${frontmatter.description.replace(/"/g, '\\"')}"
     if (item.members && item.members.length > 0) {
       mdx += '## Properties\n\n';
       for (const member of item.members) {
-        const desc = member.description ? cleanDescription(member.description) : '';
+        const desc = member.description
+          ? cleanDescription(member.description)
+          : '';
         const required = !member.isOptional ? ' required' : '';
         const normalizedType = normalizeType(member.type);
         mdx += `<ParamField path="${member.name}" type="${normalizedType}"${required}>\n`;
@@ -357,10 +384,19 @@ description: "${frontmatter.description.replace(/"/g, '\\"')}"
       }
     }
   } else if (type === 'interface') {
+    // Add interface definition at the top wrapped in RequestExample
+    if (item.definition) {
+      mdx += `<RequestExample>\n\n`;
+      mdx += `\`\`\`typescript Interface\n${item.definition}\n\`\`\`\n\n`;
+      mdx += `</RequestExample>\n\n`;
+    }
+
     mdx += '## Properties\n\n';
     if (item.members && item.members.length > 0) {
       for (const member of item.members) {
-        const desc = member.description ? cleanDescription(member.description.replace(/\n/g, ' ')) : '';
+        const desc = member.description
+          ? cleanDescription(member.description.replace(/\n/g, ' '))
+          : '';
         const required = !member.isOptional ? ' required' : '';
         const normalizedType = normalizeType(member.type);
         mdx += `<ParamField path="${member.name}" type="${normalizedType}"${required}>\n`;
@@ -434,7 +470,9 @@ async function generateDocumentation() {
   const allEnums = [];
   const allTypes = [];
 
-  console.log(`📁 Found ${srcFiles.length} source files and ${interfaceFiles.length} interface files\n`);
+  console.log(
+    `📁 Found ${srcFiles.length} source files and ${interfaceFiles.length} interface files\n`,
+  );
 
   // First pass: Parse all files and collect classes
   console.log('📝 Parsing source files...');
@@ -476,7 +514,10 @@ async function generateDocumentation() {
       navStructure.functions.push(func.name);
       totalItems++;
     } catch (error) {
-      console.error(`⚠️  Error generating function ${func.name}:`, error.message);
+      console.error(
+        `⚠️  Error generating function ${func.name}:`,
+        error.message,
+      );
     }
   }
 
@@ -518,7 +559,10 @@ async function generateDocumentation() {
       navStructure.interfaces.push(iface.name);
       totalItems++;
     } catch (error) {
-      console.error(`⚠️  Error generating interface ${iface.name}:`, error.message);
+      console.error(
+        `⚠️  Error generating interface ${iface.name}:`,
+        error.message,
+      );
     }
   }
 
@@ -546,7 +590,10 @@ async function generateDocumentation() {
     generatedAt: new Date().toISOString(),
   };
 
-  writeFile(path.join(config.outputDir, 'navigation.json'), JSON.stringify(navJson, null, 2));
+  writeFile(
+    path.join(config.outputDir, 'navigation.json'),
+    JSON.stringify(navJson, null, 2),
+  );
 
   // Generate index
   console.log('📇 Generating documentation index...');
