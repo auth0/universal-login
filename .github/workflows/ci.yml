@@ -14,20 +14,20 @@ concurrency:
 
 jobs:
   build:
-    name: Build (Lint + Test + Build + Docs) (Monorepo Root)
+    name: Lint + Test + Quick Build (Monorepo Root)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - name: Use Node.js 22.x
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: 'npm'
-
-      - name: Install dependencies at root
-        run: npm install --registry https://registry.npmjs.org
-
-      - name: Build all workspaces
-        run: npm run build
-        
+      - name: Install dependencies
+        run: npm ci --workspaces --include-workspace-root
+      - name: Lint all workspaces
+        run: npm run lint --workspaces
+      - name: Test all workspaces
+        run: npm test --workspaces
+      - name: Quick build (skip lint/test/docs)
+        run: npm run build:quick
