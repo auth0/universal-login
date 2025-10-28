@@ -342,32 +342,10 @@ description: "${frontmatter.description.replace(/"/g, '\\"')}"
 
   // Add type-specific content
   if (type === 'class') {
-    // Separate own and inherited members
-    const ownMembers = item.members.filter((m) => !m.isInherited);
-    const inheritedMembers = item.members.filter((m) => m.isInherited);
-
-    // Own members section
-    if (ownMembers.length > 0) {
+    // Combine all members (own and inherited) into a single Properties section
+    if (item.members && item.members.length > 0) {
       mdx += '## Properties\n\n';
-      for (const member of ownMembers) {
-        const desc = member.description ? cleanDescription(member.description) : '';
-        const required = !member.isOptional ? ' required' : '';
-        const normalizedType = normalizeType(member.type);
-        mdx += `<ParamField path="${member.name}" type="${normalizedType}"${required}>\n`;
-        if (desc) {
-          mdx += `  ${desc}\n`;
-        }
-        mdx += `</ParamField>\n\n`;
-      }
-    }
-
-    // Inherited members section
-    if (inheritedMembers.length > 0) {
-      mdx += '## Inherited Properties\n\n';
-      if (item.extendsClass) {
-        mdx += `Inherits from [\`${item.extendsClass}\`](#)\n\n`;
-      }
-      for (const member of inheritedMembers) {
+      for (const member of item.members) {
         const desc = member.description ? cleanDescription(member.description) : '';
         const required = !member.isOptional ? ' required' : '';
         const normalizedType = normalizeType(member.type);
@@ -423,7 +401,9 @@ description: "${frontmatter.description.replace(/"/g, '\\"')}"
 
   // Add metadata
   mdx += '---\n\n';
-  mdx += `**File:** \`${path.relative(projectRoot, item.filePath)}\`\n`;
+  const relativePath = path.relative(projectRoot, item.filePath);
+  const githubUrl = `https://github.com/auth0/universal-login/blob/master/packages/auth0-acul-js/${relativePath}`;
+  mdx += `**File:** [${relativePath}](${githubUrl})\n`;
 
   return mdx;
 }
