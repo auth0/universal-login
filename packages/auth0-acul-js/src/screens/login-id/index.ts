@@ -3,7 +3,7 @@ import { BaseContext } from '../../models/base-context';
 import { getBrowserCapabilities } from '../../utils/browser-capabilities';
 import { SDKUsageError } from '../../utils/errors';
 import { FormHandler } from '../../utils/form-handler';
-import { getLoginIdentifiers as _getLoginIdentifiers} from '../../utils/login-identifiers';
+import { getLoginIdentifiers as _getLoginIdentifiers } from '../../utils/login-identifiers';
 import { getPasskeyCredentials } from '../../utils/passkeys';
 import { registerPasskeyAutofill } from '../../utils/passkeys';
 
@@ -19,8 +19,6 @@ import type {
   LoginIdMembers,
   LoginOptions,
   FederatedLoginOptions,
-  ChangeLanguageOptions,
-  PasskeyLoginOptions,
 } from '../../../interfaces/screens/login-id';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 import type { IdentifierType } from 'interfaces/utils';
@@ -28,7 +26,7 @@ import type { IdentifierType } from 'interfaces/utils';
 export default class LoginId extends BaseContext implements LoginIdMembers {
   static screenIdentifier: string = ScreenIds.LOGIN_ID;
   #passkeyController?: AbortController;
-  #isConditionalUIRegistered = false; 
+  #isConditionalUIRegistered = false;
   screen: ScreenOptions;
   transaction: TransactionOptions;
 
@@ -108,7 +106,7 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
    * // It internally maps users available passkey config provided from auth0 server
    * loginIdManager.passkeyLogin();
    */
-  async passkeyLogin(payload?: PasskeyLoginOptions): Promise<void> {
+  async passkeyLogin(payload?: CustomOptions): Promise<void> {
     this.#passkeyController?.abort();
     this.#passkeyController = undefined;
 
@@ -122,7 +120,7 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
         telemetry: [LoginId.screenIdentifier, 'passkeyLogin'],
       };
 
-      await new FormHandler(options).submitData<PasskeyLoginOptions>({
+      await new FormHandler(options).submitData<CustomOptions>({
         ...payload,
         passkey: JSON.stringify(passkey),
       });
@@ -162,32 +160,6 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
   }
 
   /**
-   * Changes the language with prompt re-render
-   * @param payload The language change options containing username and language
-   * @example
-   * ```typescript
-   * import LoginId from "@auth0/auth0-acul-js/login-id";
-   * const loginIdManager = new LoginId();
-   * loginIdManager.changeLanguage({
-   *   username: "test@test.com",
-   *   language: "fr",
-   *   persist: "session"
-   * });
-   * ```
-   */
-  async changeLanguage(payload: ChangeLanguageOptions): Promise<void> {
-    const options: FormOptions = {
-      state: this.transaction.state,
-      telemetry: [LoginId.screenIdentifier, 'changeLanguage'],
-    };
-
-    await new FormHandler(options).submitData<ChangeLanguageOptions>({
-      ...payload,
-      action: FormActions.CHANGE_LANGUAGE,
-    });
-  }
-
-  /**
    * Gets the active identifier types for the login screen
    * @returns An array of active identifier types or null if none are active
    * @example
@@ -198,7 +170,7 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
    * ```
    * @utilityFeature
    */
-  getLoginIdentifiers(): IdentifierType[] | null{
+  getLoginIdentifiers(): IdentifierType[] | null {
     return _getLoginIdentifiers(this.transaction.allowedIdentifiers);
   }
 
@@ -297,8 +269,6 @@ export {
   LoginIdMembers,
   LoginOptions,
   FederatedLoginOptions,
-  ChangeLanguageOptions,
-  PasskeyLoginOptions,
   ScreenOptions as ScreenMembersOnLoginId,
   TransactionOptions as TransactionMembersOnLoginId,
 };
