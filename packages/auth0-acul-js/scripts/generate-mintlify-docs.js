@@ -403,7 +403,9 @@ function resolveInterfaceInheritance(interfaceItem, allInterfaces) {
   }
 
   const parentInterfaceName = interfaceItem.extendsInterface;
-  const parentInterface = allInterfaces.find((i) => i.name === parentInterfaceName);
+  const parentInterface = allInterfaces.find(
+    (i) => i.name === parentInterfaceName,
+  );
 
   if (!parentInterface) {
     // Parent not found in parsed files, return as-is
@@ -411,7 +413,10 @@ function resolveInterfaceInheritance(interfaceItem, allInterfaces) {
   }
 
   // Recursively resolve parent inheritance
-  const resolvedParent = resolveInterfaceInheritance(parentInterface, allInterfaces);
+  const resolvedParent = resolveInterfaceInheritance(
+    parentInterface,
+    allInterfaces,
+  );
 
   // Merge parent members with current members
   const inheritedMembers = resolvedParent.members.map((m) => ({
@@ -461,16 +466,16 @@ function escapeGenericBrackets(type) {
   // - A slash: </
   // - An equal sign (attribute): =
   // - Whitespace followed by a known tag name
-  const parts = type.split(/(<\s*\/\s*[a-zA-Z][a-zA-Z0-9]*\s*>|<\s*[a-z][a-zA-Z0-9]*(?:\s+[^>]*)?=.*?>)/g);
+  const parts = type.split(
+    /(<\s*\/\s*[a-zA-Z][a-zA-Z0-9]*\s*>|<\s*[a-z][a-zA-Z0-9]*(?:\s+[^>]*)?=.*?>)/g,
+  );
 
   return parts
     .map((part, index) => {
       // Even indices are non-tag parts, odd indices are HTML tags
       if (index % 2 === 0) {
         // This is not an HTML tag - escape angle brackets
-        return part
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;');
+        return part.replace(/</g, '&lt;').replace(/>/g, '&gt;');
       } else {
         // This is an HTML tag - leave it as is
         return part;
@@ -496,7 +501,12 @@ function extractTypeNames(fullType) {
   return [...new Set(typeNames)]; // Remove duplicates
 }
 
-function generateTypeWithLinks(fullType, allClassNames, allInterfaceNames, normalizedType) {
+function generateTypeWithLinks(
+  fullType,
+  allClassNames,
+  allInterfaceNames,
+  normalizedType,
+) {
   if (!fullType) {
     return { type: normalizedType, hasLinks: false };
   }
@@ -543,7 +553,9 @@ function isArrayOfObjects(type) {
   if (!type) return false;
   // Check if type is like [ { ... }, ] or Array< { ... } >
   // Match patterns like: [ { ... } ], [ { ... }, ], or Array<{ ... }>
-  return /^\s*\[[\s\S]*\{[\s\S]*:[\s\S]*\}[\s\S]*\]|^\s*Array\s*<[\s\S]*\{[\s\S]*:[\s\S]*\}[\s\S]*>/.test(type);
+  return /^\s*\[[\s\S]*\{[\s\S]*:[\s\S]*\}[\s\S]*\]|^\s*Array\s*<[\s\S]*\{[\s\S]*:[\s\S]*\}[\s\S]*>/.test(
+    type,
+  );
 }
 
 function extractObjectFromArray(type) {
@@ -639,8 +651,8 @@ function getTypeWithoutObject(type) {
   // Clean up pipes and whitespace
   const result = output
     .split('|')
-    .map(s => s.trim())
-    .filter(s => s && s !== '') // Filter out empty strings and standalone braces
+    .map((s) => s.trim())
+    .filter((s) => s && s !== '') // Filter out empty strings and standalone braces
     .join(' | ');
 
   return result || 'object';
@@ -686,25 +698,32 @@ function parseObjectTypeProperties(typeStr) {
   }
 
   // Parse each property into name, optional flag, and type
-  return properties.map(prop => {
-    // Match: name with optional colon, followed by type
-    // Handle patterns like: "colors?: { ... }" or "primary?: string"
-    const match = prop.match(/^(\w+)(\?)?\s*:\s*(.+)$/);
-    if (!match) return null;
+  return properties
+    .map((prop) => {
+      // Match: name with optional colon, followed by type
+      // Handle patterns like: "colors?: { ... }" or "primary?: string"
+      const match = prop.match(/^(\w+)(\?)?\s*:\s*(.+)$/);
+      if (!match) return null;
 
-    let type = match[3].trim();
-    // Remove leading pipes from union types that start with |
-    type = type.replace(/^\|\s*/, '');
+      let type = match[3].trim();
+      // Remove leading pipes from union types that start with |
+      type = type.replace(/^\|\s*/, '');
 
-    return {
-      name: match[1],
-      isOptional: !!match[2],
-      type: type,
-    };
-  }).filter(Boolean);
+      return {
+        name: match[1],
+        isOptional: !!match[2],
+        type: type,
+      };
+    })
+    .filter(Boolean);
 }
 
-function generateNestedParamFields(properties, allClassNames, allInterfaceNames, indentLevel = 1) {
+function generateNestedParamFields(
+  properties,
+  allClassNames,
+  allInterfaceNames,
+  indentLevel = 1,
+) {
   // Generate nested ParamField elements for object properties
   const indent = '  '.repeat(indentLevel);
   const nextIndent = '  '.repeat(indentLevel + 1);
@@ -720,17 +739,27 @@ function generateNestedParamFields(properties, allClassNames, allInterfaceNames,
     const isObjectProp = isInlineObjectType(prop.type);
 
     // Check if this is an array of objects
-    const isArrayOfObjectsProp = !isObjectProp ? isArrayOfObjects(prop.type) : false;
+    const isArrayOfObjectsProp = !isObjectProp
+      ? isArrayOfObjects(prop.type)
+      : false;
 
     // Check if this is a union type that contains an object
-    const objectInUnion = !isObjectProp && !isArrayOfObjectsProp ? extractObjectFromUnionType(prop.type) : null;
+    const objectInUnion =
+      !isObjectProp && !isArrayOfObjectsProp
+        ? extractObjectFromUnionType(prop.type)
+        : null;
 
     if (isObjectProp) {
       // Pure object type
       const nestedProps = parseObjectTypeProperties(prop.type);
       mdx += `${indent}<ParamField path="${prop.name}" type="object"${required}>\n`;
       mdx += `${nextIndent}<Expandable title="properties">\n`;
-      mdx += generateNestedParamFields(nestedProps, allClassNames, allInterfaceNames, indentLevel + 2);
+      mdx += generateNestedParamFields(
+        nestedProps,
+        allClassNames,
+        allInterfaceNames,
+        indentLevel + 2,
+      );
       mdx += `${nextIndent}</Expandable>\n`;
       mdx += `${indent}</ParamField>\n`;
     } else if (isArrayOfObjectsProp) {
@@ -739,25 +768,47 @@ function generateNestedParamFields(properties, allClassNames, allInterfaceNames,
       const nestedProps = parseObjectTypeProperties(objectType);
       mdx += `${indent}<ParamField path="${prop.name}" type={<span>array of objects</span>}${required}>\n`;
       mdx += `${nextIndent}<Expandable title="properties">\n`;
-      mdx += generateNestedParamFields(nestedProps, allClassNames, allInterfaceNames, indentLevel + 2);
+      mdx += generateNestedParamFields(
+        nestedProps,
+        allClassNames,
+        allInterfaceNames,
+        indentLevel + 2,
+      );
       mdx += `${nextIndent}</Expandable>\n`;
       mdx += `${indent}</ParamField>\n`;
     } else if (objectInUnion) {
       // Union type containing an object (e.g., "string | { ... }")
       const typeWithoutObj = getTypeWithoutObject(prop.type);
       const nestedProps = parseObjectTypeProperties(objectInUnion);
-      const baseNormalizedType = escapeGenericBrackets(normalizeType(typeWithoutObj));
-      const { type: typeValue, hasLinks } = generateTypeWithLinks(typeWithoutObj, allClassNames, allInterfaceNames, baseNormalizedType);
+      const baseNormalizedType = escapeGenericBrackets(
+        normalizeType(typeWithoutObj),
+      );
+      const { type: typeValue, hasLinks } = generateTypeWithLinks(
+        typeWithoutObj,
+        allClassNames,
+        allInterfaceNames,
+        baseNormalizedType,
+      );
       const typeAttr = `{<span>${typeValue} | object</span>}`;
 
       mdx += `${indent}<ParamField path="${prop.name}" type=${typeAttr}${required}>\n`;
       mdx += `${nextIndent}<Expandable title="properties">\n`;
-      mdx += generateNestedParamFields(nestedProps, allClassNames, allInterfaceNames, indentLevel + 2);
+      mdx += generateNestedParamFields(
+        nestedProps,
+        allClassNames,
+        allInterfaceNames,
+        indentLevel + 2,
+      );
       mdx += `${nextIndent}</Expandable>\n`;
       mdx += `${indent}</ParamField>\n`;
     } else {
       // Regular type
-      const { type: typeValue, hasLinks } = generateTypeWithLinks(prop.type, allClassNames, allInterfaceNames, normalizedType);
+      const { type: typeValue, hasLinks } = generateTypeWithLinks(
+        prop.type,
+        allClassNames,
+        allInterfaceNames,
+        normalizedType,
+      );
       const typeAttr = `{<span>${typeValue}</span>}`;
       mdx += `${indent}<ParamField path="${prop.name}" type=${typeAttr}${required}>\n`;
       mdx += `${indent}</ParamField>\n`;
@@ -767,7 +818,12 @@ function generateNestedParamFields(properties, allClassNames, allInterfaceNames,
   return mdx;
 }
 
-function generateMintlifyMarkdown(item, type, allClassNames = new Set(), allInterfaceNames = new Set()) {
+function generateMintlifyMarkdown(
+  item,
+  type,
+  allClassNames = new Set(),
+  allInterfaceNames = new Set(),
+) {
   // Create frontmatter
   const frontmatter = {
     title: item.name,
@@ -811,22 +867,34 @@ description: "${frontmatter.description.replace(/"/g, '\\"')}"
           : '';
         const isNullable = isTypeOptionalByNullable(member.type);
         const required = !member.isOptional && !isNullable ? ' required' : '';
-        const normalizedType = escapeGenericBrackets(normalizeType(member.type));
+        const normalizedType = escapeGenericBrackets(
+          normalizeType(member.type),
+        );
 
         // Check if this is an inline object type
         const isObjectType = isInlineObjectType(member.type);
 
         // Check if this is an array of objects
-        const isArrayOfObjectsType = !isObjectType ? isArrayOfObjects(member.type) : false;
+        const isArrayOfObjectsType = !isObjectType
+          ? isArrayOfObjects(member.type)
+          : false;
 
         // Check if this is a union type that contains an object
-        const objectInUnion = !isObjectType && !isArrayOfObjectsType ? extractObjectFromUnionType(member.type) : null;
+        const objectInUnion =
+          !isObjectType && !isArrayOfObjectsType
+            ? extractObjectFromUnionType(member.type)
+            : null;
 
         if (isObjectType) {
           const nestedProps = parseObjectTypeProperties(member.type);
           mdx += `<ParamField path="${member.name}" type="object"${required}>\n`;
           mdx += `  <Expandable title="properties">\n`;
-          mdx += generateNestedParamFields(nestedProps, allClassNames, allInterfaceNames, 2);
+          mdx += generateNestedParamFields(
+            nestedProps,
+            allClassNames,
+            allInterfaceNames,
+            2,
+          );
           mdx += `  </Expandable>\n`;
           mdx += `</ParamField>\n\n`;
         } else if (isArrayOfObjectsType) {
@@ -835,24 +903,46 @@ description: "${frontmatter.description.replace(/"/g, '\\"')}"
           const nestedProps = parseObjectTypeProperties(objectType);
           mdx += `<ParamField path="${member.name}" type={<span>array of objects</span>}${required}>\n`;
           mdx += `  <Expandable title="properties">\n`;
-          mdx += generateNestedParamFields(nestedProps, allClassNames, allInterfaceNames, 2);
+          mdx += generateNestedParamFields(
+            nestedProps,
+            allClassNames,
+            allInterfaceNames,
+            2,
+          );
           mdx += `  </Expandable>\n`;
           mdx += `</ParamField>\n\n`;
         } else if (objectInUnion) {
           // Union type containing an object (e.g., "Interface | { ... }")
           const typeWithoutObj = getTypeWithoutObject(member.type);
           const nestedProps = parseObjectTypeProperties(objectInUnion);
-          const baseNormalizedType = escapeGenericBrackets(normalizeType(typeWithoutObj));
-          const { type: typeValue, hasLinks } = generateTypeWithLinks(typeWithoutObj, allClassNames, allInterfaceNames, baseNormalizedType);
+          const baseNormalizedType = escapeGenericBrackets(
+            normalizeType(typeWithoutObj),
+          );
+          const { type: typeValue, hasLinks } = generateTypeWithLinks(
+            typeWithoutObj,
+            allClassNames,
+            allInterfaceNames,
+            baseNormalizedType,
+          );
           const typeAttr = `{<span>${typeValue} | object</span>}`;
 
           mdx += `<ParamField path="${member.name}" type=${typeAttr}${required}>\n`;
           mdx += `  <Expandable title="properties">\n`;
-          mdx += generateNestedParamFields(nestedProps, allClassNames, allInterfaceNames, 2);
+          mdx += generateNestedParamFields(
+            nestedProps,
+            allClassNames,
+            allInterfaceNames,
+            2,
+          );
           mdx += `  </Expandable>\n`;
           mdx += `</ParamField>\n\n`;
         } else {
-          const { type: typeValue, hasLinks } = generateTypeWithLinks(member.type, allClassNames, allInterfaceNames, normalizedType);
+          const { type: typeValue, hasLinks } = generateTypeWithLinks(
+            member.type,
+            allClassNames,
+            allInterfaceNames,
+            normalizedType,
+          );
           const typeAttr = `{<span>${typeValue}</span>}`;
           mdx += `<ParamField path="${member.name}" type=${typeAttr}${required}>\n`;
           if (desc) {
@@ -872,7 +962,7 @@ description: "${frontmatter.description.replace(/"/g, '\\"')}"
 
       // Add interface definition first
       if (item.definition) {
-        mdx += `\`\`\`typescript Interface\n${item.definition}\n\`\`\`\n\n`;
+        mdx += `\`\`\`typescript Interface lines\n${item.definition}\n\`\`\`\n\n`;
       }
 
       // Add example code blocks
@@ -891,22 +981,34 @@ description: "${frontmatter.description.replace(/"/g, '\\"')}"
           : '';
         const isNullable = isTypeOptionalByNullable(member.type);
         const required = !member.isOptional && !isNullable ? ' required' : '';
-        const normalizedType = escapeGenericBrackets(normalizeType(member.type));
+        const normalizedType = escapeGenericBrackets(
+          normalizeType(member.type),
+        );
 
         // Check if this is an inline object type
         const isObjectType = isInlineObjectType(member.type);
 
         // Check if this is an array of objects
-        const isArrayOfObjectsType = !isObjectType ? isArrayOfObjects(member.type) : false;
+        const isArrayOfObjectsType = !isObjectType
+          ? isArrayOfObjects(member.type)
+          : false;
 
         // Check if this is a union type that contains an object
-        const objectInUnion = !isObjectType && !isArrayOfObjectsType ? extractObjectFromUnionType(member.type) : null;
+        const objectInUnion =
+          !isObjectType && !isArrayOfObjectsType
+            ? extractObjectFromUnionType(member.type)
+            : null;
 
         if (isObjectType) {
           const nestedProps = parseObjectTypeProperties(member.type);
           mdx += `<ParamField path="${member.name}" type="object"${required}>\n`;
           mdx += `  <Expandable title="properties">\n`;
-          mdx += generateNestedParamFields(nestedProps, allClassNames, allInterfaceNames, 2);
+          mdx += generateNestedParamFields(
+            nestedProps,
+            allClassNames,
+            allInterfaceNames,
+            2,
+          );
           mdx += `  </Expandable>\n`;
           mdx += `</ParamField>\n\n`;
         } else if (isArrayOfObjectsType) {
@@ -915,7 +1017,12 @@ description: "${frontmatter.description.replace(/"/g, '\\"')}"
           const nestedProps = parseObjectTypeProperties(objectType);
           mdx += `<ParamField path="${member.name}" type={<span>array of objects</span>}${required}>\n`;
           mdx += `  <Expandable title="properties">\n`;
-          mdx += generateNestedParamFields(nestedProps, allClassNames, allInterfaceNames, 2);
+          mdx += generateNestedParamFields(
+            nestedProps,
+            allClassNames,
+            allInterfaceNames,
+            2,
+          );
           mdx += `  </Expandable>\n`;
           if (desc) {
             mdx += `  ${desc}\n`;
@@ -925,20 +1032,37 @@ description: "${frontmatter.description.replace(/"/g, '\\"')}"
           // Union type containing an object (e.g., "Interface | { ... }")
           const typeWithoutObj = getTypeWithoutObject(member.type);
           const nestedProps = parseObjectTypeProperties(objectInUnion);
-          const baseNormalizedType = escapeGenericBrackets(normalizeType(typeWithoutObj));
-          const { type: typeValue, hasLinks } = generateTypeWithLinks(typeWithoutObj, allClassNames, allInterfaceNames, baseNormalizedType);
+          const baseNormalizedType = escapeGenericBrackets(
+            normalizeType(typeWithoutObj),
+          );
+          const { type: typeValue, hasLinks } = generateTypeWithLinks(
+            typeWithoutObj,
+            allClassNames,
+            allInterfaceNames,
+            baseNormalizedType,
+          );
           const typeAttr = `{<span>${typeValue} | object</span>}`;
 
           mdx += `<ParamField path="${member.name}" type=${typeAttr}${required}>\n`;
           mdx += `  <Expandable title="properties">\n`;
-          mdx += generateNestedParamFields(nestedProps, allClassNames, allInterfaceNames, 2);
+          mdx += generateNestedParamFields(
+            nestedProps,
+            allClassNames,
+            allInterfaceNames,
+            2,
+          );
           mdx += `  </Expandable>\n`;
           if (desc) {
             mdx += `  ${desc}\n`;
           }
           mdx += `</ParamField>\n\n`;
         } else {
-          const { type: typeValue, hasLinks } = generateTypeWithLinks(member.type, allClassNames, allInterfaceNames, normalizedType);
+          const { type: typeValue, hasLinks } = generateTypeWithLinks(
+            member.type,
+            allClassNames,
+            allInterfaceNames,
+            normalizedType,
+          );
           const typeAttr = `{<span>${typeValue}</span>}`;
           mdx += `<ParamField path="${member.name}" type=${typeAttr}${required}>\n`;
           if (desc) {
@@ -963,16 +1087,26 @@ description: "${frontmatter.description.replace(/"/g, '\\"')}"
         const isObjectType = isInlineObjectType(param.type);
 
         // Check if this is an array of objects
-        const isArrayOfObjectsType = !isObjectType ? isArrayOfObjects(param.type) : false;
+        const isArrayOfObjectsType = !isObjectType
+          ? isArrayOfObjects(param.type)
+          : false;
 
         // Check if this is a union type that contains an object
-        const objectInUnion = !isObjectType && !isArrayOfObjectsType ? extractObjectFromUnionType(param.type) : null;
+        const objectInUnion =
+          !isObjectType && !isArrayOfObjectsType
+            ? extractObjectFromUnionType(param.type)
+            : null;
 
         if (isObjectType) {
           const nestedProps = parseObjectTypeProperties(param.type);
           mdx += `<ParamField path="${param.name}" type="object"${required}>\n`;
           mdx += `  <Expandable title="properties">\n`;
-          mdx += generateNestedParamFields(nestedProps, allClassNames, allInterfaceNames, 2);
+          mdx += generateNestedParamFields(
+            nestedProps,
+            allClassNames,
+            allInterfaceNames,
+            2,
+          );
           mdx += `  </Expandable>\n`;
           mdx += `</ParamField>\n\n`;
         } else if (isArrayOfObjectsType) {
@@ -981,24 +1115,46 @@ description: "${frontmatter.description.replace(/"/g, '\\"')}"
           const nestedProps = parseObjectTypeProperties(objectType);
           mdx += `<ParamField path="${param.name}" type={<span>array of objects</span>}${required}>\n`;
           mdx += `  <Expandable title="properties">\n`;
-          mdx += generateNestedParamFields(nestedProps, allClassNames, allInterfaceNames, 2);
+          mdx += generateNestedParamFields(
+            nestedProps,
+            allClassNames,
+            allInterfaceNames,
+            2,
+          );
           mdx += `  </Expandable>\n`;
           mdx += `</ParamField>\n\n`;
         } else if (objectInUnion) {
           // Union type containing an object (e.g., "Interface | { ... }")
           const typeWithoutObj = getTypeWithoutObject(param.type);
           const nestedProps = parseObjectTypeProperties(objectInUnion);
-          const baseNormalizedType = escapeGenericBrackets(normalizeType(typeWithoutObj));
-          const { type: typeValue, hasLinks } = generateTypeWithLinks(typeWithoutObj, allClassNames, allInterfaceNames, baseNormalizedType);
+          const baseNormalizedType = escapeGenericBrackets(
+            normalizeType(typeWithoutObj),
+          );
+          const { type: typeValue, hasLinks } = generateTypeWithLinks(
+            typeWithoutObj,
+            allClassNames,
+            allInterfaceNames,
+            baseNormalizedType,
+          );
           const typeAttr = `{<span>${typeValue} | object</span>}`;
 
           mdx += `<ParamField path="${param.name}" type=${typeAttr}${required}>\n`;
           mdx += `  <Expandable title="properties">\n`;
-          mdx += generateNestedParamFields(nestedProps, allClassNames, allInterfaceNames, 2);
+          mdx += generateNestedParamFields(
+            nestedProps,
+            allClassNames,
+            allInterfaceNames,
+            2,
+          );
           mdx += `  </Expandable>\n`;
           mdx += `</ParamField>\n\n`;
         } else {
-          const { type: typeValue, hasLinks } = generateTypeWithLinks(param.type, allClassNames, allInterfaceNames, normalizedType);
+          const { type: typeValue, hasLinks } = generateTypeWithLinks(
+            param.type,
+            allClassNames,
+            allInterfaceNames,
+            normalizedType,
+          );
           const typeAttr = `{<span>${typeValue}</span>}`;
           mdx += `<ParamField path="${param.name}" type=${typeAttr}${required}>\n`;
           mdx += `</ParamField>\n\n`;
@@ -1006,16 +1162,28 @@ description: "${frontmatter.description.replace(/"/g, '\\"')}"
       }
     }
     mdx += `## Returns\n\n`;
-    const normalizedReturns = escapeGenericBrackets(normalizeType(item.returns));
+    const normalizedReturns = escapeGenericBrackets(
+      normalizeType(item.returns),
+    );
     const isReturnObjectType = isInlineObjectType(item.returns);
-    const isReturnArrayOfObjectsType = !isReturnObjectType ? isArrayOfObjects(item.returns) : false;
-    const objectInReturnUnion = !isReturnObjectType && !isReturnArrayOfObjectsType ? extractObjectFromUnionType(item.returns) : null;
+    const isReturnArrayOfObjectsType = !isReturnObjectType
+      ? isArrayOfObjects(item.returns)
+      : false;
+    const objectInReturnUnion =
+      !isReturnObjectType && !isReturnArrayOfObjectsType
+        ? extractObjectFromUnionType(item.returns)
+        : null;
 
     if (isReturnObjectType) {
       const nestedProps = parseObjectTypeProperties(item.returns);
       mdx += `<ParamField path="response" type="object">\n`;
       mdx += `  <Expandable title="properties">\n`;
-      mdx += generateNestedParamFields(nestedProps, allClassNames, allInterfaceNames, 2);
+      mdx += generateNestedParamFields(
+        nestedProps,
+        allClassNames,
+        allInterfaceNames,
+        2,
+      );
       mdx += `  </Expandable>\n`;
       mdx += `</ParamField>\n\n`;
     } else if (isReturnArrayOfObjectsType) {
@@ -1024,24 +1192,48 @@ description: "${frontmatter.description.replace(/"/g, '\\"')}"
       const nestedProps = parseObjectTypeProperties(objectType);
       mdx += `<ParamField path="response" type={<span>array of objects</span>}>\n`;
       mdx += `  <Expandable title="properties">\n`;
-      mdx += generateNestedParamFields(nestedProps, allClassNames, allInterfaceNames, 2);
+      mdx += generateNestedParamFields(
+        nestedProps,
+        allClassNames,
+        allInterfaceNames,
+        2,
+      );
       mdx += `  </Expandable>\n`;
       mdx += `</ParamField>\n\n`;
     } else if (objectInReturnUnion) {
       // Union type containing an object (e.g., "Interface | { ... }")
       const typeWithoutObj = getTypeWithoutObject(item.returns);
       const nestedProps = parseObjectTypeProperties(objectInReturnUnion);
-      const baseNormalizedType = escapeGenericBrackets(normalizeType(typeWithoutObj));
-      const { type: returnsValue, hasLinks: returnsHasLinks } = generateTypeWithLinks(typeWithoutObj, allClassNames, allInterfaceNames, baseNormalizedType);
+      const baseNormalizedType = escapeGenericBrackets(
+        normalizeType(typeWithoutObj),
+      );
+      const { type: returnsValue, hasLinks: returnsHasLinks } =
+        generateTypeWithLinks(
+          typeWithoutObj,
+          allClassNames,
+          allInterfaceNames,
+          baseNormalizedType,
+        );
       const returnsTypeAttr = `{<span>${returnsValue} | object</span>}`;
 
       mdx += `<ParamField path="response" type=${returnsTypeAttr}>\n`;
       mdx += `  <Expandable title="properties">\n`;
-      mdx += generateNestedParamFields(nestedProps, allClassNames, allInterfaceNames, 2);
+      mdx += generateNestedParamFields(
+        nestedProps,
+        allClassNames,
+        allInterfaceNames,
+        2,
+      );
       mdx += `  </Expandable>\n`;
       mdx += `</ParamField>\n\n`;
     } else {
-      const { type: returnsValue, hasLinks: returnsHasLinks } = generateTypeWithLinks(item.returns, allClassNames, allInterfaceNames, normalizedReturns);
+      const { type: returnsValue, hasLinks: returnsHasLinks } =
+        generateTypeWithLinks(
+          item.returns,
+          allClassNames,
+          allInterfaceNames,
+          normalizedReturns,
+        );
       const returnsTypeAttr = `{<span>${returnsValue}</span>}`;
       mdx += `<ParamField path="response" type=${returnsTypeAttr}>\n`;
       mdx += `</ParamField>\n\n`;
@@ -1133,7 +1325,12 @@ async function generateDocumentation() {
       const resolvedClass = resolveClassInheritance(cls, allClasses);
       const filename = `${resolvedClass.name}.mdx`;
       const outputPath = path.join(config.outputDir, 'classes', filename);
-      const markdown = generateMintlifyMarkdown(resolvedClass, 'class', allClassNames, allInterfaceNames);
+      const markdown = generateMintlifyMarkdown(
+        resolvedClass,
+        'class',
+        allClassNames,
+        allInterfaceNames,
+      );
       writeFile(outputPath, markdown);
       navStructure.classes.push(resolvedClass.name);
       totalItems++;
@@ -1148,7 +1345,12 @@ async function generateDocumentation() {
     try {
       const filename = `${func.name}.mdx`;
       const outputPath = path.join(config.outputDir, 'functions', filename);
-      const markdown = generateMintlifyMarkdown(func, 'function', allClassNames, allInterfaceNames);
+      const markdown = generateMintlifyMarkdown(
+        func,
+        'function',
+        allClassNames,
+        allInterfaceNames,
+      );
       writeFile(outputPath, markdown);
       navStructure.functions.push(func.name);
       totalItems++;
@@ -1166,7 +1368,12 @@ async function generateDocumentation() {
     try {
       const filename = `${en.name}.mdx`;
       const outputPath = path.join(config.outputDir, 'enums', filename);
-      const markdown = generateMintlifyMarkdown(en, 'enum', allClassNames, allInterfaceNames);
+      const markdown = generateMintlifyMarkdown(
+        en,
+        'enum',
+        allClassNames,
+        allInterfaceNames,
+      );
       writeFile(outputPath, markdown);
       navStructure.enums.push(en.name);
       totalItems++;
@@ -1176,13 +1383,23 @@ async function generateDocumentation() {
   }
 
   // Generate interface markdown
-  console.log('📝 Resolving inheritance and generating interface documentation...');
+  console.log(
+    '📝 Resolving inheritance and generating interface documentation...',
+  );
   for (const iface of allInterfaces) {
     try {
-      const resolvedInterface = resolveInterfaceInheritance(iface, allInterfaces);
+      const resolvedInterface = resolveInterfaceInheritance(
+        iface,
+        allInterfaces,
+      );
       const filename = `${resolvedInterface.name}.mdx`;
       const outputPath = path.join(config.outputDir, 'interfaces', filename);
-      const markdown = generateMintlifyMarkdown(resolvedInterface, 'interface', allClassNames, allInterfaceNames);
+      const markdown = generateMintlifyMarkdown(
+        resolvedInterface,
+        'interface',
+        allClassNames,
+        allInterfaceNames,
+      );
       writeFile(outputPath, markdown);
       navStructure.interfaces.push(resolvedInterface.name);
       totalItems++;
@@ -1200,7 +1417,12 @@ async function generateDocumentation() {
     try {
       const filename = `${type.name}.mdx`;
       const outputPath = path.join(config.outputDir, 'types', filename);
-      const markdown = generateMintlifyMarkdown(type, 'type', allClassNames, allInterfaceNames);
+      const markdown = generateMintlifyMarkdown(
+        type,
+        'type',
+        allClassNames,
+        allInterfaceNames,
+      );
       writeFile(outputPath, markdown);
       navStructure.types.push(type.name);
       totalItems++;
