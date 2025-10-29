@@ -18,9 +18,9 @@ export class TransactionOverride extends Transaction implements OverrideMembers 
     this.isSignupEnabled = isSignupEnabled(transactionContext);
     this.isForgotPasswordEnabled = isForgotPasswordEnabled(transactionContext);
     this.isPasskeyEnabled = isPasskeyEnabled(transactionContext);
-    this.passwordPolicy = (): ReturnType<OverrideMembers['passwordPolicy']> => getPasswordPolicy(transactionContext);
-    this.usernamePolicy = (): ReturnType<OverrideMembers['usernamePolicy']> => getUsernamePolicy(transactionContext);
-    this.allowedIdentifiers = (): ReturnType<OverrideMembers['allowedIdentifiers']> => getAllowedIdentifiers(transactionContext);
+    this.passwordPolicy = getPasswordPolicy(transactionContext);
+    this.usernamePolicy = getUsernamePolicy(transactionContext);
+    this.allowedIdentifiers = getAllowedIdentifiers(transactionContext);
   }
 
   isSignupEnabled: boolean;
