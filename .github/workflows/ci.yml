@@ -27,7 +27,7 @@ jobs:
         run: npm ci --workspaces --include-workspace-root
 
       - name: Build
-        run: npm run build:quick
+        run: npm run build:local
 
       - name: Lint all workspaces
         run: npm run lint --workspaces

@@ -37,11 +37,9 @@ runs:
       if: inputs.require-build == 'true'
       shell: bash
       run: |
+        npm run build:local --workspace @auth0/auth0-acul-js
         if [ "${{ inputs.package }}" = "auth0-acul-react" ]; then
-          npm run build:local --workspace @auth0/auth0-acul-js
           npm run build:local --workspace @auth0/auth0-acul-react
-        else
-          npm run build:local --workspace @auth0/auth0-acul-js
         fi
 
     - name: Publish release to NPM
