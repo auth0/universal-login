@@ -43,15 +43,15 @@ describe('TransactionOverride', () => {
   });
 
   it('should return correct password policy', () => {
-    expect(transactionOverride.getPasswordPolicy()).toBe('mockPasswordPolicy');
+    expect(transactionOverride.passwordPolicy).toBe('mockPasswordPolicy');
   });
 
   it('should return correct username policy', () => {
-    expect(transactionOverride.getUsernamePolicy()).toBe('mockUsernamePolicy');
+    expect(transactionOverride.usernamePolicy).toBe('mockUsernamePolicy');
   });
 
   it('should return correct allowed identifiers', () => {
-    expect(transactionOverride.getAllowedIdentifiers()).toEqual(['email']);
+    expect(transactionOverride.allowedIdentifiers).toEqual(['email']);
   });
 
   it('should call shared functions with correct transactionContext', () => {
@@ -76,8 +76,8 @@ describe('TransactionOverride', () => {
     expect(emptyTransactionOverride.isSignupEnabled).toBeUndefined();
     expect(emptyTransactionOverride.isForgotPasswordEnabled).toBeUndefined();
     expect(emptyTransactionOverride.isPasskeyEnabled).toBeUndefined();
-    expect(emptyTransactionOverride.getPasswordPolicy()).toBeUndefined();
-    expect(emptyTransactionOverride.getUsernamePolicy()).toBeUndefined();
-    expect(emptyTransactionOverride.getAllowedIdentifiers()).toBeUndefined();
+    expect(emptyTransactionOverride.passwordPolicy).toBeUndefined();
+    expect(emptyTransactionOverride.usernamePolicy).toBeUndefined();
+    expect(emptyTransactionOverride.allowedIdentifiers).toBeUndefined();
   });
 });
