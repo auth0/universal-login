@@ -28,9 +28,9 @@ export interface TransactionMembersOnLoginPassword extends TransactionMembers {
   isSignupEnabled: boolean;
   isForgotPasswordEnabled: boolean;
   isPasskeyEnabled: boolean;
-  getPasswordPolicy(): PasswordPolicy | null;
-  getUsernamePolicy(): UsernamePolicy | null;
-  getAllowedIdentifiers(): IdentifierType[] | null;
+  passwordPolicy(): PasswordPolicy | null;
+  usernamePolicy(): UsernamePolicy | null;
+  allowedIdentifiers(): IdentifierType[] | null;
 }
 
 export interface LoginPassword extends BaseContext {
