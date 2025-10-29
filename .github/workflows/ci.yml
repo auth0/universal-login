@@ -2,25 +2,35 @@
 name: CI
 
 on:
-  push:
   pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches:
+      - master
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
-    name: Build (Lint + Test + Build + Docs) (Monorepo Root)
+    name: Lint + Test + Build (Monorepo Root)
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository }}
     steps:
       - uses: actions/checkout@v4
-
       - name: Use Node.js 22.x
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: 'npm'
+      - name: Install dependencies
+        run: npm ci --workspaces --include-workspace-root
 
-      - name: Install dependencies at root
-        run: npm install --registry https://registry.npmjs.org
+      - name: Build
+        run: npm run build:local
 
-      - name: Build all workspaces
-        run: npm run build
+      - name: Lint all workspaces
+        run: npm run lint --workspaces
+
+      - name: Test all workspaces
+        run: npm test --workspaces
