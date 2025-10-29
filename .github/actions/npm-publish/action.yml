@@ -36,8 +36,13 @@ runs:
     - name: Build package
       if: inputs.require-build == 'true'
       shell: bash
-      working-directory: packages/${{ inputs.package }}
-      run: npm run build --workspaces --include-workspace-root
+      run: |
+        if [ "${{ inputs.package }}" = "auth0-acul-react" ]; then
+          npm run build:local --workspace @auth0/auth0-acul-js
+          npm run build:local --workspace @auth0/auth0-acul-react
+        else
+          npm run build:local --workspace @auth0/auth0-acul-js
+        fi
 
     - name: Publish release to NPM
       working-directory: packages/${{ inputs.release-directory }}
@@ -54,4 +59,3 @@ runs:
         fi
         npm publish --provenance --access public --tag $TAG
       shell: bash
-
