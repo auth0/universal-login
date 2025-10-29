@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   build:
-    name: Lint + Test + Quick Build (Monorepo Root)
+    name: Lint + Test + Build (Monorepo Root)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

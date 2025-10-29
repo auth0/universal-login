@@ -6,7 +6,7 @@
             "v{MAJOR}.{MINOR}.{PATCH}-{PRERELEASE_LABEL}.{PRERELEASE_COUNTER}"
         ]
     },
-    "prefixVersion": true,
+    "prefixVersion": false,
     "packageLabel": "auth0-acul-js",
     "packagePath": "auth0-acul-js"
 }
