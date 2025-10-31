@@ -2,7 +2,7 @@
 import { ScreenIds, Errors, FormActions } from '../../../../src/constants';
 import { BaseContext } from '../../../../src/models/base-context';
 import LoginId from '../../../../src/screens/login-id';
-import { SDKUsageError } from '../../../../src/screens/login-id';
+import { ConfigurationError } from '../../../../src/screens/login-id';
 import { ScreenOverride } from '../../../../src/screens/login-id/screen-override';
 import { TransactionOverride } from '../../../../src/screens/login-id/transaction-override';
 import { FormHandler } from '../../../../src/utils/form-handler';
@@ -203,13 +203,13 @@ describe('LoginId', () => {
       });
     });
   
-    it('handles onReject by throwing SDKUsageError', async () => {
+    it('handles onReject by throwing ConfigurationError', async () => {
       (registerPasskeyAutofill as jest.Mock).mockImplementationOnce(async ({ onReject }) => {
         onReject(new Error('fail'));
         return new AbortController();
       });
   
-      await expect(loginId.registerPasskeyAutofill('some-id')).rejects.toThrow(SDKUsageError);
+      await expect(loginId.registerPasskeyAutofill('some-id')).rejects.toThrow(ConfigurationError);
     });
   });
   

@@ -21,13 +21,13 @@ export class AculError extends Error {
 }
 
 /**
- * @class UserInputError
+ * @class ValidationError
  * @extends AculError
  * @param {string} message - The error message.
  * @param {string} [field] - The optional field associated with the error.
  * @summary Error caused by invalid end-user input (e.g., bad password format).
  */
-export class UserInputError extends AculError {
+export class ValidationError extends AculError {
   public readonly code = 'USER_INPUT_ERROR';
 
   constructor(message: string, field?: string) {
@@ -37,13 +37,13 @@ export class UserInputError extends AculError {
 }
 
 /**
- * @class SDKUsageError
+ * @class ConfigurationError
  * @extends AculError
  * @param {string} message - The error message.
  * @param {string} [field] - The optional field associated with the error.
  * @summary Error caused by incorrect SDK usage by developers (e.g., missing required parameters).
  */
-export class SDKUsageError extends AculError {
+export class ConfigurationError extends AculError {
   public readonly code = 'SDK_USAGE_ERROR';
 
   constructor(message: string, field?: string) {
@@ -53,14 +53,14 @@ export class SDKUsageError extends AculError {
 }
 
 /**
- * @class Auth0ServerError
+ * @class Auth0Error
  * @extends AculError
  * @param {string} message - The error message.
  * @param {string} [field] - The optional field associated with the error.
  * @summary Error caused by server-side issues (e.g., network problems, polling errors).
  * These errors are typically not actionable by end-users.
  */
-export class Auth0ServerError extends AculError {
+export class Auth0Error extends AculError {
   public readonly code = 'AUTH0_SERVER_ERROR';
 
   constructor(message: string, field?: string) {
