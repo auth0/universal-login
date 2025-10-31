@@ -1,7 +1,7 @@
 import {
-  SDKUsageError,
-  UserInputError,
-  Auth0ServerError,
+  ConfigurationError,
+  ValidationError,
+  Auth0Error as Auth0ServerError,
   getErrors as getServerErrors,
   type Error as Auth0Error,
 } from '@auth0/auth0-acul-js';
@@ -26,10 +26,10 @@ export interface UseErrorsResult {
 }
 
 function classifyKind(e: unknown): ErrorKind | null {
-  if (e instanceof UserInputError) {
+  if (e instanceof ValidationError) {
     return 'client';
   }
-  if (e instanceof SDKUsageError) {
+  if (e instanceof ConfigurationError) {
     return 'developer';
   }
   if (e instanceof Auth0ServerError) {

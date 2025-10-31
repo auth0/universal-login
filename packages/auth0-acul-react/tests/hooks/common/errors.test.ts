@@ -12,9 +12,9 @@ const updateErrors = (fn: () => void) => {
   fn(); // Direct function call - React Testing Library handles re-renders automatically
 };
 import {
-  SDKUsageError,
-  UserInputError,
-  Auth0ServerError,
+  ConfigurationError,
+  ValidationError,
+  Auth0Error,
   getErrors as getServerErrors,
 } from '@auth0/auth0-acul-js';
 import { errorStore } from '../../../src/state/error-store';
@@ -22,31 +22,31 @@ import { errorStore } from '../../../src/state/error-store';
 // Mock the auth0-acul-js module
 jest.mock('@auth0/auth0-acul-js', () => {
   // Create proper constructor functions that can be used with instanceof
-  function SDKUsageError(message: string) {
+  function ConfigurationError(message: string) {
     const error = new Error(message);
-    error.name = 'SDKUsageError';
-    Object.setPrototypeOf(error, SDKUsageError.prototype);
+    error.name = 'ConfigurationError';
+    Object.setPrototypeOf(error, ConfigurationError.prototype);
     return error;
   }
 
-  function UserInputError(message: string) {
+  function ValidationError(message: string) {
     const error = new Error(message);
-    error.name = 'UserInputError';
-    Object.setPrototypeOf(error, UserInputError.prototype);
+    error.name = 'ValidationError';
+    Object.setPrototypeOf(error, ValidationError.prototype);
     return error;
   }
 
-  function Auth0ServerError(message: string) {
+  function Auth0Error(message: string) {
     const error = new Error(message);
-    error.name = 'Auth0ServerError';
-    Object.setPrototypeOf(error, Auth0ServerError.prototype);
+    error.name = 'Auth0Error';
+    Object.setPrototypeOf(error, Auth0Error.prototype);
     return error;
   }
 
   return {
-    SDKUsageError,
-    UserInputError,
-    Auth0ServerError,
+    ConfigurationError,
+    ValidationError,
+    Auth0Error,
     getErrors: jest.fn(),
   };
 }, { virtual: true });
@@ -525,29 +525,29 @@ describe('internal utility functions', () => {
 
   describe('classifyKind function', () => {
     it('should classify UserInputError as client', () => {
-      const error = new UserInputError('Invalid input');
+      const error = new ValidationError('Invalid input');
       // Since mocks create different class instances, test the behavior indirectly
-      expect(error.name).toBe('UserInputError');
+      expect(error.name).toBe('ValidationError');
       expect(error.message).toBe('Invalid input');
     });
 
-    it('should classify SDKUsageError as developer', () => {
-      const error = new SDKUsageError('SDK misuse');
-      expect(error.name).toBe('SDKUsageError');
+    it('should classify ConfigurationError as developer', () => {
+      const error = new ConfigurationError('SDK misuse');
+      expect(error.name).toBe('ConfigurationError');
       expect(error.message).toBe('SDK misuse');
     });
 
-    it('should classify Auth0ServerError as server', () => {
-      const error = new Auth0ServerError('Server error');
-      expect(error.name).toBe('Auth0ServerError');
+    it('should classify Auth0Error as server', () => {
+      const error = new Auth0Error('Server error');
+      expect(error.name).toBe('Auth0Error');
       expect(error.message).toBe('Server error');
     });
 
     it('should return null for unknown error types', () => {
       const error = new Error('Generic error');
-      expect(error instanceof UserInputError).toBe(false);
-      expect(error instanceof SDKUsageError).toBe(false);
-      expect(error instanceof Auth0ServerError).toBe(false);
+      expect(error instanceof ValidationError).toBe(false);
+      expect(error instanceof ConfigurationError).toBe(false);
+      expect(error instanceof Auth0Error).toBe(false);
     });
   });
 
@@ -890,9 +890,9 @@ describe('internal utility functions', () => {
         return error;
       };
 
-      const userInputError = createMockError(UserInputError, 'Client validation error', 'validation_error', 'email');
-      const sdkUsageError = createMockError(SDKUsageError, 'SDK misuse error', 'sdk_error');
-      const auth0ServerError = createMockError(Auth0ServerError, 'Server error', 'server_error');
+      const userInputError = createMockError(ValidationError, 'Client validation error', 'validation_error', 'email');
+      const sdkUsageError = createMockError(ConfigurationError, 'SDK misuse error', 'sdk_error');
+      const auth0ServerError = createMockError(Auth0Error, 'Server error', 'server_error');
 
       // Test sync function with UserInputError
       expect(() => {
@@ -943,7 +943,7 @@ describe('internal utility functions', () => {
     });
 
     it('should test withError promise rejection paths (lines 235, 241)', async () => {
-      const userInputError = new UserInputError('Async client error');
+      const userInputError = new ValidationError('Async client error');
       Object.defineProperty(userInputError, 'code', {
         value: 'async_validation_error',
         writable: false
@@ -1050,9 +1050,9 @@ describe('internal utility functions', () => {
 
       // Create errors that will pass instanceof checks
       const errors = [
-        createMockError(UserInputError, 'User input error'),
-        createMockError(SDKUsageError, 'SDK usage error'),
-        createMockError(Auth0ServerError, 'Auth0 server error')
+        createMockError(ValidationError, 'User input error'),
+        createMockError(ConfigurationError, 'SDK usage error'),
+        createMockError(Auth0Error, 'Auth0 server error')
       ];
 
       // Test each error type to cover all instanceof branches
