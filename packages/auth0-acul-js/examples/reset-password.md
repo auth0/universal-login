@@ -1,99 +1,106 @@
 ## resetPassword
 
 ```typescript
-import React, { useRef, useState } from "react";
-import { useResetPasswordManager } from './hooks/useResetPasswordManager';
-import { Logo } from "../../components/Logo";
-import { Title } from './components/Title';
-import { ErrorMessages } from './components/ErrorMessages';
-import Button from '../../components/Button'; // Adjust the path if needed
+import React, { useState, useRef } from "react";
+import ResetPassword from "@auth0/auth0-acul-js/reset-password";
 
 const ResetPasswordScreen: React.FC = () => {
-  const { resetPasswordManager, handleResetPassword } = useResetPasswordManager();
-
+  // Manager setup
+  const resetPasswordManager =  new ResetPassword();
+  
+  // Form refs and state
   const newPasswordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
   const captchaRef = useRef<HTMLInputElement>(null);
+  const [password, setPassword] = useState('');
 
-  const [isValid, setIsValid] = useState(true);
-  const [errors, setErrors] = useState<Array<{ code: string; message: string }>>([]);
-  const [isValidConfirmPassword, setIsValidConfirmPassword] = useState(true);
-  const [confirmPasswordErrors, setConfirmPasswordErrors] = useState<Array<{ code: string; message: string }>>([]);
+  // Password validation
+  const passwordValidation = resetPasswordManager.validatePassword(password);
 
-  const getFormValues = () => ({
-    newPassword: newPasswordRef.current?.value || '',
-    confirmPassword: confirmPasswordRef.current?.value || '',
-    captcha: captchaRef.current?.value || '',
-  });
-
+  // Handle form submission
   const onLoginClick = () => {
-    const { newPassword, confirmPassword, captcha } = getFormValues();
+    const newPassword = newPasswordRef.current?.value ?? "";
+    const confirmPassword = confirmPasswordRef.current?.value ?? "";
+    const captcha = captchaRef.current?.value ?? "";
 
-    const { isValid, errors } = resetPasswordManager.validatePassword(newPassword);
-    const { isValid: isValidConfirmPassword, errors: confirmPasswordErrors } =
-      resetPasswordManager.validatePassword(confirmPassword);
-
-    setIsValid(isValid);
-    setErrors(errors);
-    setIsValidConfirmPassword(isValidConfirmPassword);
-    setConfirmPasswordErrors(confirmPasswordErrors);
-
-    if (!isValid || !isValidConfirmPassword) {
+    if (!passwordValidation.isValid) {
+      // Handle password validation errors
       return;
     }
 
-    handleResetPassword(newPassword, confirmPassword, captcha);
+    const options = {
+      'password-reset': newPassword,
+      're-enter-password': confirmPassword,
+      captcha: resetPasswordManager.screen.isCaptchaAvailable ? captcha : "",
+    };
+
+    resetPasswordManager.resetPassword(options);
   };
+
+  const isValid = passwordValidation.isValid;
+  const results = passwordValidation;
 
   return (
     <div className="prompt-container">
       <Logo />
-      <Title screenTexts={resetPasswordManager.screen.texts!} />
+      <div className="title-container">
+        <h1>{resetPasswordManager.screen.texts?.title}</h1>
+        {resetPasswordManager.screen.texts?.description && (
+          <p>{resetPasswordManager.screen.texts.description}</p>
+        )}
+      </div>
 
       <div className="input-container">
-        {/* New Password */}
         <label>Enter your new password</label>
         <input
           type="password"
           id="newPassword"
           ref={newPasswordRef}
+          value={password}
           aria-invalid={!isValid}
           placeholder="Enter your password"
+          onChange={(e) => setPassword(e.target.value)}
           required
-          className={`input w-full border px-4 py-2 rounded ${
-            !isValid ? 'border-red-500' : 'border-gray-300'
-          }`}
+          className={`input w-full border px-4 py-2 rounded ${!isValid ? 'border-red-500' : 'border-gray-300'}`}
         />
-        {!isValid && (
-          <ul className="text-red-500 text-sm list-disc list-inside">
-            {errors.map((err) => (
-              <li key={err.code}>{err.message}</li>
-            ))}
-          </ul>
-        )}
 
-        {/* Confirm Password */}
         <label>Confirm your new password</label>
         <input
           type="password"
-          id="password"
+          id="confirmPassword"
           ref={confirmPasswordRef}
-          aria-invalid={!isValidConfirmPassword}
           placeholder="Re-enter your password"
           required
-          className={`input w-full border px-4 py-2 rounded ${
-            !isValidConfirmPassword ? 'border-red-500' : 'border-gray-300'
-          }`}
         />
-        {!isValidConfirmPassword && (
-          <ul className="text-red-500 text-sm list-disc list-inside">
-            {confirmPasswordErrors.map((err) => (
-              <li key={err.code}>{err.message}</li>
-            ))}
-          </ul>
+
+        {password && password.length > 0 && results.results.length > 0 && (
+          <div className="mt-2 border border-gray-300 rounded p-2 text-sm">
+            <p className="text-gray-700 mb-1">Your password must contain:</p>
+            <ul className="list-disc ml-4">
+              {results.results.map((rule) => (
+                <li
+                  key={rule.code}
+                  className={rule.status === 'valid' ? 'text-green-600' : 'text-gray-700'}
+                >
+                  {rule.label}
+                  {rule.items && rule.items.length > 0 && (
+                    <ul className="ml-5 list-disc">
+                      {rule.items.map((sub) => (
+                        <li
+                          key={sub.code}
+                          className={sub.status === 'valid' ? 'text-green-600' : 'text-gray-700'}
+                        >
+                          {sub.label}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
         )}
 
-        {/* Captcha */}
         {resetPasswordManager.screen.isCaptchaAvailable && (
           <div className="captcha-container">
             <img src={resetPasswordManager.screen.captchaImage ?? ""} alt="Captcha" />
@@ -107,15 +114,11 @@ const ResetPasswordScreen: React.FC = () => {
           </div>
         )}
 
-        {/* Submit Button */}
         <div className="button-container">
-          <Button id="continue" onClick={onLoginClick}>
-            Continue
-          </Button>
+          <Button id="continue" onClick={onLoginClick}>Continue</Button>
         </div>
       </div>
 
-      {/* Transaction Errors */}
       {resetPasswordManager.transaction.hasErrors && resetPasswordManager.transaction.errors && (
         <ErrorMessages errors={resetPasswordManager.transaction.errors!} />
       )}
