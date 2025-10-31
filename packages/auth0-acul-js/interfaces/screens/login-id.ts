@@ -62,4 +62,5 @@ export interface LoginIdMembers extends BaseMembers {
   passkeyLogin(payload?: CustomOptions): Promise<void>;
   pickCountryCode(payload?: CustomOptions): Promise<void>;
   getLoginIdentifiers(): IdentifierType[] | null;
+  registerPasskeyAutofill(inputId?: string): Promise<void>;
 }

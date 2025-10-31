@@ -191,7 +191,7 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
    * ### Input configuration
    * If an `inputId` is provided, the SDK will:
    * - Validate that the element exists and is an `<input>`.
-   * - Overwrite its `autocomplete` attribute with `"webauthn username"`.
+   * - Overwrite its `autocomplete` attribute with `"username webauthn"`.
    *
    * This ensures full compatibility with the Conditional Mediation API.
    *
@@ -199,12 +199,12 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
    * the input element manually with the correct attributes:
    *
    * ```html
-   * <input id="username" autocomplete="webauthn username" />
+   * <input id="username" autocomplete="username webauthn" />
    * ```
    *
    * ---
    * ### Gotchas
-   * - The `autocomplete` attribute **must exactly** contain `"webauthn username"`.
+   * - The `autocomplete` attribute **must exactly** contain `"username webauthn"`.
    *   Including unrelated tokens such as `"email"` or `"text"` will prevent browsers
    *   from showing the passkey dropdown.
    * - Overwriting the attribute is intentional and required for consistent behavior
@@ -223,7 +223,7 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
    * async function initializeLogin() {
    *   const loginId = new LoginId();
    *   // Make sure associated HTML input exists:
-   *   // <input id="username" autocomplete="webauthn username" />
+   *   // <input id="username" autocomplete="username webauthn" />
    *   // Conditional UI registration.
    *   await loginId.registerPasskeyAutofill('username');
    * }

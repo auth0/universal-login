@@ -9,7 +9,6 @@ export {
   type ErrorKind,
   type ErrorItem,
 } from './common/errors';
-
 export { ContextHooks } from './context';
 export { useLoginIdentifiers } from './utility/login-identifiers';
 export { useSignupIdentifiers } from './utility/signup-identifiers';
@@ -25,3 +24,4 @@ export {
   type UsernameValidationResult,
   type UsernameValidationError,
 } from './utility/validate-username';
+export { usePasskeyAutofill, type UsePasskeyAutofillResult } from './utility/passkey-autofill';

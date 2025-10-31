@@ -8,4 +8,5 @@ export {
   useCurrentScreen,
   useLoginIdentifiers,
   useSignupIdentifiers,
+  usePasskeyAutofill,
 } from '../hooks';

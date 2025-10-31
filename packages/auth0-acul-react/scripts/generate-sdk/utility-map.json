@@ -29,5 +29,11 @@
     "name": "useMfaPolling",
     "path": "../hooks/utility/polling-manager",
     "types": ["MfaPollingResult"]
+  },
+
+  "registerPasskeyAutofill": {
+    "name": "usePasskeyAutofill",
+    "path": "../hooks/utility/passkey-autofill",
+    "types": ["UsePasskeyAutofillResult"]
   }
 }
