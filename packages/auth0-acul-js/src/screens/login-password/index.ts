@@ -13,6 +13,7 @@ import type {
   LoginPasswordOptions,
   LoginPasswordMembers,
   FederatedLoginOptions,
+  SwitchConnectionOptions,
   TransactionMembersOnLoginPassword as TransactionOptions,
 } from '../../../interfaces/screens/login-password';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
@@ -81,12 +82,41 @@ export default class LoginPassword extends BaseContext implements LoginPasswordM
 
     await new FormHandler(options).submitData<FederatedLoginOptions>(payload);
   }
+
+  /**
+   * @remarks
+   * This method handles switching between DB connection (password) and Passwordless connection (Email/SMS OTP).
+   * The connection parameter should be one of: 'email', 'sms', or a DB connection name.
+   *
+   * @example
+   * import LoginPassword from "@auth0/auth0-acul-js/login-password";
+   *
+   * const loginPasswordManager = new LoginPassword();
+   *
+   * // Function to handle connection switching
+   * const handleSwitchConnection = (connectionName: string) => {
+   *   loginPasswordManager.switchConnection({ connection: connectionName });
+   * };
+   *
+   * // Switch to different connection strategies
+   * handleSwitchConnection('email'); // Switch to email-based authentication
+   * handleSwitchConnection('sms');   // Switch to SMS-based authentication
+   */
+  async switchConnection(payload: SwitchConnectionOptions): Promise<void> {
+    const options: FormOptions = {
+      state: this.transaction.state,
+      telemetry: [LoginPassword.screenIdentifier, 'switchConnection'],
+    };
+
+    await new FormHandler(options).submitData<SwitchConnectionOptions>(payload);
+  }
 }
 
 export {
   LoginPasswordMembers,
   LoginPasswordOptions,
   FederatedLoginOptions,
+  SwitchConnectionOptions,
   ScreenOptions as ScreenMembersOnLoginPassword,
   TransactionOptions as TransactionMembersOnLoginPassword,
 };

@@ -1,4 +1,3 @@
-
 import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
@@ -54,7 +53,10 @@ export default class Login extends BaseContext implements LoginMembers {
    */
   async login(payload: LoginOptions): Promise<void> {
     const options: FormOptions = { state: this.transaction.state, telemetry: [Login.screenIdentifier, 'login'] };
-    await new FormHandler(options).submitData<LoginOptions>(payload);
+    await new FormHandler(options).submitData<LoginOptions>({
+      ...payload,
+      action: FormActions.DEFAULT
+    });
   }
 
   /**

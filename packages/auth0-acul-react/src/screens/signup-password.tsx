@@ -9,6 +9,7 @@ import type {
   SignupPasswordMembers,
   SignupPasswordOptions,
   FederatedSignupOptions,
+  SwitchConnectionOptions,
 } from '@auth0/auth0-acul-js/signup-password';
 
 // Register the singleton instance of SignupPassword
@@ -35,6 +36,8 @@ export const {
 export const signup = (payload: SignupPasswordOptions) => withError(instance.signup(payload));
 export const federatedSignup = (payload: FederatedSignupOptions) =>
   withError(instance.federatedSignup(payload));
+export const switchConnection = (payload: SwitchConnectionOptions) =>
+  withError(instance.switchConnection(payload));
 
 // Utility Hooks
 export { usePasswordValidation } from '../hooks/utility/validate-password';

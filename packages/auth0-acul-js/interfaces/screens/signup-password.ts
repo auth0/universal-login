@@ -52,10 +52,16 @@ export interface SignupPasswordOptions {
   [key: string]: string | number | boolean | undefined;
 }
 
+export interface SwitchConnectionOptions {
+  connection: string;
+  [key: string]: string | number | boolean;
+}
+
 export interface SignupPasswordMembers extends BaseMembers {
   screen: ScreenMembersOnSignupPassword;
   transaction: TransactionMembersOnSignupPassword;
   signup(payload: SignupPasswordOptions): Promise<void>;
   federatedSignup(payload: FederatedSignupOptions): Promise<void>;
+  switchConnection(payload: SwitchConnectionOptions): Promise<void>;
   validatePassword(password: string): PasswordValidationResult;
 }

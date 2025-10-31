@@ -1,7 +1,7 @@
 import { ScreenIds } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
-import { validatePassword as _validatePassword} from '../../utils/validate-password';
+import { validatePassword as _validatePassword } from '../../utils/validate-password';
 
 
 import { ScreenOverride } from './screen-override';
@@ -14,7 +14,8 @@ import type {
   ScreenMembersOnSignupPassword as ScreenOptions,
   TransactionMembersOnSignupPassword as TransactionOptions,
   SignupPasswordOptions,
-  FederatedSignupOptions
+  FederatedSignupOptions,
+  SwitchConnectionOptions,
 } from '../../../interfaces/screens/signup-password';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 import type { PasswordValidationResult } from '../../../interfaces/utils/validate-password';
@@ -99,6 +100,34 @@ export default class SignupPassword extends BaseContext implements SignupPasswor
   }
 
   /**
+   * @remarks
+   * This method handles switching between different database connections.
+   * It allows users to switch to a different connection during the signup process.
+   *
+   * @example
+   * import SignupPassword from "@auth0/auth0-acul-js/signup-password";
+   *
+   * const signupPasswordManager = new SignupPassword();
+   *
+   * // Function to handle connection switching
+   * const handleSwitchConnection = (connectionName: string) => {
+   *   signupPasswordManager.switchConnection({ connection: connectionName });
+   * };
+   *
+   * // Switch to different connection strategies
+   * handleSwitchConnection('email'); // Switch to email-based authentication
+   * handleSwitchConnection('sms');   // Switch to SMS-based authentication
+   */
+  async switchConnection(payload: SwitchConnectionOptions): Promise<void> {
+    const options: FormOptions = {
+      state: this.transaction.state,
+      telemetry: [SignupPassword.screenIdentifier, 'switchConnection'],
+    };
+
+    await new FormHandler(options).submitData<SwitchConnectionOptions>(payload);
+  }
+
+  /**
   * Validates a password string against the current transaction's password policy.
   *
   * This method retrieves the password policy from the current transaction context
@@ -136,6 +165,7 @@ export {
   SignupPasswordMembers,
   SignupPasswordOptions,
   FederatedSignupOptions,
+  SwitchConnectionOptions,
   ScreenOptions as ScreenMembersOnSignupPassword,
   TransactionOptions as TransactionMembersOnSignupPassword,
 };
