@@ -1,0 +1,76 @@
+{
+  "documentation": {
+    "name": "@auth0/auth0-acul-js",
+    "version": "1.0.0",
+    "description": "Auth0 Advanced Customization for Universal Login JavaScript SDK"
+  },
+  "generation": {
+    "outputDir": "markdown_output",
+    "srcDir": "src",
+    "interfacesDir": "interfaces",
+    "exclude": [
+      "**/*.test.ts",
+      "**/*.spec.ts",
+      "**/test/**",
+      "**/tests/**"
+    ]
+  },
+  "markdown": {
+    "title": "API Reference",
+    "style": "mintlify",
+    "includeMetadata": true,
+    "includeSourcePath": true,
+    "tableFormat": true,
+    "codeBlocks": true
+  },
+  "sections": {
+    "classes": {
+      "enabled": true,
+      "title": "Classes",
+      "description": "Core classes and models"
+    },
+    "interfaces": {
+      "enabled": true,
+      "title": "Interfaces",
+      "description": "Type definitions and contracts"
+    },
+    "functions": {
+      "enabled": true,
+      "title": "Functions",
+      "description": "Utility and helper functions"
+    },
+    "types": {
+      "enabled": true,
+      "title": "Types",
+      "description": "Type aliases and unions"
+    },
+    "enums": {
+      "enabled": true,
+      "title": "Enums",
+      "description": "Enumeration definitions"
+    }
+  },
+  "jsdoc": {
+    "extractTags": [
+      "description",
+      "param",
+      "returns",
+      "example",
+      "deprecated",
+      "see",
+      "throws"
+    ],
+    "includePrivate": false,
+    "includeProtected": false
+  },
+  "navigation": {
+    "generateIndex": true,
+    "generateNavJson": true,
+    "maxPreviewItems": 10
+  },
+  "formatting": {
+    "maxLineLength": 120,
+    "codeBlockLanguage": "typescript",
+    "tableMaxWidth": 100
+  }
+}
