@@ -1,6 +1,6 @@
 # Change Log
 
-## [auth0-acul-react-v0.0.1-alpha.0](https://github.com/auth0/universal-login/tree/auth0-acul-react-v0.0.1-alpha.0) (2025-11-03)
+## [auth0-acul-react@0.0.1-alpha.0](https://github.com/auth0/universal-login/tree/auth0-acul-react%400.0.1-alpha.0) (2025-11-03)
 
 **Added**
 - Update: Renamed custom errors in TS and React SDK [\#255](https://github.com/auth0/universal-login/pull/255) ([ankita10119](https://github.com/ankita10119))
@@ -13,7 +13,7 @@
 - Refactor: Simplify reset password logic and enhance password  [\#254](https://github.com/auth0/universal-login/pull/254) ([amitsingh05667](https://github.com/amitsingh05667))
 - Refactor: Rename Login Password Policy Methods [\#253](https://github.com/auth0/universal-login/pull/253) ([amitsingh05667](https://github.com/amitsingh05667))
 
-## [auth0-acul-react-1.0.0-alpha.1](https://github.com/auth0/universal-login/tree/auth0-acul-react-1.0.0-alpha.1) (2025-10-16)
+## [auth0-acul-react@1.0.0-alpha.1](https://github.com/auth0/universal-login/tree/auth0-acul-react%401.0.0-alpha.1) (2025-10-16)
 
 **Added**
 - fix: update peerDependencies for React compatibility [\#231](https://github.com/auth0/universal-login/pull/231) ([amitsingh05667](https://github.com/amitsingh05667))
@@ -22,7 +22,7 @@
 **Fixed**
 - fix: Added `files` and `publishConfig` keys to the package.json [\#229](https://github.com/auth0/universal-login/pull/229) ([nandan-bhat](https://github.com/nandan-bhat))
 
-## [auth0-acul-react-1.0.0-alpha.0](https://github.com/auth0/universal-login/tree/auth0-acul-react-1.0.0-alpha.0) (2025-10-13)
+## [auth0-acul-react@1.0.0-alpha.0](https://github.com/auth0/universal-login/tree/auth0-acul-react%401.0.0-alpha.0) (2025-10-13)
 
 **Added**
 - New package release | Updated the version of auth0-acul-react files [\#220](https://github.com/auth0/universal-login/pull/220) ([nandan-bhat](https://github.com/nandan-bhat))
