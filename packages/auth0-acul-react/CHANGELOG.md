@@ -1,6 +1,6 @@
 # Change Log
 
-## [auth0-acul-react@0.0.1-alpha.0](https://github.com/auth0/universal-login/tree/auth0-acul-react%400.0.1-alpha.0) (2025-11-03)
+## [auth0-acul-react@1.0.0-alpha.2](https://github.com/auth0/universal-login/tree/auth0-acul-react%401.0.0-alpha.2) (2025-11-03)
 
 **Added**
 - Update: Renamed custom errors in TS and React SDK [\#255](https://github.com/auth0/universal-login/pull/255) ([ankita10119](https://github.com/ankita10119))
