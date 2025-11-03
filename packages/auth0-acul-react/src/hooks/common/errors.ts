@@ -27,13 +27,13 @@ export interface UseErrorsResult {
 
 function classifyKind(e: unknown): ErrorKind | null {
   if (e instanceof ValidationError) {
-    return 'client';
+    return 'validation';
   }
   if (e instanceof ConfigurationError) {
-    return 'developer';
+    return 'configuration';
   }
   if (e instanceof Auth0ServerError) {
-    return 'server';
+    return 'auth0';
   }
   return null;
 }
@@ -58,11 +58,11 @@ function filterByField<T extends { field?: string }>(
 
 // caches for tagging
 const cacheServer = new WeakMap<ReadonlyArray<ErrorItem>, ReadonlyArray<ErrorItem>>();
-const cacheClient = new WeakMap<ReadonlyArray<ErrorItem>, ReadonlyArray<ErrorItem>>();
+const cacheValidation = new WeakMap<ReadonlyArray<ErrorItem>, ReadonlyArray<ErrorItem>>();
 const cacheDev = new WeakMap<ReadonlyArray<ErrorItem>, ReadonlyArray<ErrorItem>>();
 
 const tag = (kind: ErrorKind, arr: ReadonlyArray<ErrorItem>): ReadonlyArray<ErrorItem> => {
-  const cache = kind === 'server' ? cacheServer : kind === 'client' ? cacheClient : cacheDev;
+  const cache = kind === 'auth0' ? cacheServer : kind === 'validation' ? cacheValidation : cacheDev;
   const hit = cache.get(arr);
   if (hit) {
     return hit;
@@ -75,14 +75,14 @@ const tag = (kind: ErrorKind, arr: ReadonlyArray<ErrorItem>): ReadonlyArray<Erro
 /**
  * React hook for reading and managing errors in ACUL (Advanced Customization of Universal Login).
  * With all validation and server-side errors. It groups errors into three kinds:
- * - `server` — errors returned by Auth0 or your own backend.
- * - `client` — errors from client-side validation (e.g., invalid form input).
- * - `developer` — errors caused by incorrect integration or SDK misuse.
+ * - `auth0` — errors returned by Auth0 or your own backend.
+ * - `validation` — errors from client-side validation (e.g., invalid form input).
+ * - `configuration` — errors caused by incorrect integration or SDK misuse.
  *
  * @supportedScreens
  * - The `useErrors` hook is available on every ACUL screen.
  *
- * @param options.includeDevErrors - When `true`, developer errors are included in
+ * @param options.includeDevErrors - When `true`, configuration errors are included in
  *   the returned list. Defaults to `false`.
  *
  * @returns An object of type {@link UseErrorsResult}, containing:
@@ -107,7 +107,7 @@ const tag = (kind: ErrorKind, arr: ReadonlyArray<ErrorItem>): ReadonlyArray<Erro
  *     <div>
  *       {hasError && (
  *         <div className="mb-4">
- *           {errors.byKind("server").map(err => (
+ *           {errors.byKind("auth0").map(err => (
  *             <div key={err.id} className="text-red-600">
  *               {err.message}
  *               <button onClick={() => dismiss(err.id)}>Dismiss</button>
@@ -124,10 +124,10 @@ const tag = (kind: ErrorKind, arr: ReadonlyArray<ErrorItem>): ReadonlyArray<Erro
  *
  * In addition to rendering messages, you can filter by field or kind:
  * ```ts
- * console.log(errors.byKind('client')); // all client errors
- * console.log(errors.byKind('client', { field: 'username' })); // client errors for field 'username'
+ * console.log(errors.byKind('validation')); // all validation errors
+ * console.log(errors.byKind('validation', { field: 'username' })); // validation errors for field 'username'
  * console.log(errors.byField('username')); // all errors for field 'username'
- * console.log(errors.byField('username', { kind: 'server' })); // server errors for field 'username'
+ * console.log(errors.byField('username', { kind: 'auth0' })); // auth0 errors for field 'username'
  * ```
  */
 
@@ -148,12 +148,12 @@ export function useErrors(options: UseErrorOptions = {}): UseErrorsResult {
 
     // Get server errors directly from TS SDK on first render.
     const server = (getServerErrors?.() ?? []) as Array<Omit<ErrorItem, 'id'>>;
-    errorStore.replace('server', server);
+    errorStore.replace('auth0', server);
   }, []);
 
-  const serverTagged = useMemo(() => tag('server', snap.server), [snap.server]);
-  const clientTagged = useMemo(() => tag('client', snap.client), [snap.client]);
-  const devTagged = useMemo(() => tag('developer', snap.developer), [snap.developer]);
+  const serverTagged = useMemo(() => tag('auth0', snap.auth0), [snap.auth0]);
+  const clientTagged = useMemo(() => tag('validation', snap.validation), [snap.validation]);
+  const devTagged = useMemo(() => tag('configuration', snap.configuration), [snap.configuration]);
 
   const all = useMemo<ReadonlyArray<ErrorItem>>(
     () => Object.freeze([...(includeDevErrors ? devTagged : []), ...clientTagged, ...serverTagged]),
@@ -163,9 +163,18 @@ export function useErrors(options: UseErrorOptions = {}): UseErrorsResult {
   const errors: ErrorsResult = useMemo(() => {
     const arr = Object.assign([...all], {
       byKind(kind: ErrorKind, opts?: { field?: string }): ReadonlyArray<ErrorItem> {
-        const base =
-          kind === 'client' ? clientTagged : kind === 'developer' ? devTagged : serverTagged;
-        return opts?.field ? Object.freeze(filterByField(base, opts.field)) : base;
+        let base: ReadonlyArray<ErrorItem>;
+        if (kind === 'validation') {
+          base = clientTagged;
+        } else if (kind === 'configuration') {
+          base = devTagged;
+        } else {
+          base = serverTagged;
+        }
+        if (opts?.field) {
+          return Object.freeze(filterByField(base, opts.field));
+        }
+        return base;
       },
       byField(field: string, opts?: { kind?: ErrorKind }): ReadonlyArray<ErrorItem> {
         if (opts?.kind) {
@@ -205,13 +214,13 @@ function withError<T>(actionOrPromise: (() => T | Promise<T>) | Promise<T>): T |
     const kind = classifyKind(e);
     const normalized = toErrorObject(e);
     switch (kind) {
-      case 'client':
-        errorManager.replaceClientErrors([normalized]);
+      case 'validation':
+        errorManager.replaceValidationErrors([normalized]);
         break;
-      case 'developer':
+      case 'configuration':
         errorManager.replaceDeveloperErrors([normalized]);
         break;
-      case 'server':
+      case 'auth0':
         errorManager.replaceServerErrors([normalized]);
         break;
       default: {
@@ -250,51 +259,51 @@ function withError<T>(actionOrPromise: (() => T | Promise<T>) | Promise<T>): T |
 export const errorManager = {
   withError,
 
-  replaceClientErrors(list: Array<Omit<ErrorItem, 'id'>>, opts?: { byField?: string }) {
+  replaceValidationErrors(list: Array<Omit<ErrorItem, 'id'>>, opts?: { byField?: string }) {
     if (opts?.byField) {
-      errorStore.replacePartial('client', list, opts.byField);
+      errorStore.replacePartial('validation', list, opts.byField);
     } else {
-      errorStore.replace('client', list);
+      errorStore.replace('validation', list);
     }
   },
-  clearClientErrors() {
-    errorStore.clear(['client']);
+  clearValidationErrors() {
+    errorStore.clear(['validation']);
   },
-  pushClientErrors(list: Omit<ErrorItem, 'id'> | Array<Omit<ErrorItem, 'id'>>) {
-    errorStore.push('client', list);
+  pushValidationErrors(list: Omit<ErrorItem, 'id'> | Array<Omit<ErrorItem, 'id'>>) {
+    errorStore.push('validation', list);
   },
 
   replaceDeveloperErrors(list: Array<Omit<ErrorItem, 'id'>>, opts?: { byField?: string }) {
     if (opts?.byField) {
-      errorStore.replacePartial('developer', list, opts.byField);
+      errorStore.replacePartial('configuration', list, opts.byField);
     } else {
-      errorStore.replace('developer', list);
+      errorStore.replace('configuration', list);
     }
   },
   clearDeveloperErrors() {
-    errorStore.clear(['developer']);
+    errorStore.clear(['configuration']);
   },
   pushDeveloperErrors(list: Omit<ErrorItem, 'id'> | Array<Omit<ErrorItem, 'id'>>) {
-    errorStore.push('developer', list);
+    errorStore.push('configuration', list);
   },
 
   replaceServerErrors(list: Array<Omit<ErrorItem, 'id'>>, opts?: { byField?: string }) {
     if (opts?.byField) {
-      errorStore.replacePartial('server', list, opts.byField);
+      errorStore.replacePartial('auth0', list, opts.byField);
     } else {
-      errorStore.replace('server', list);
+      errorStore.replace('auth0', list);
     }
   },
   clearServerErrors() {
-    errorStore.clear(['server']);
+    errorStore.clear(['auth0']);
   },
   pushServerErrors(list: Omit<ErrorItem, 'id'> | Array<Omit<ErrorItem, 'id'>>) {
-    errorStore.push('server', list);
+    errorStore.push('auth0', list);
   },
 
   syncServerErrors() {
     const server = (getServerErrors?.() ?? []) as Array<Omit<ErrorItem, 'id'>>;
-    errorStore.replace('server', server);
+    errorStore.replace('auth0', server);
   },
 };
 

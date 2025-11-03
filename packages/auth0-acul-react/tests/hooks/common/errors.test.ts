@@ -67,7 +67,7 @@ describe('useErrors', () => {
     { id: '2', code: 'user_not_found', message: 'User not found', field: 'email' },
   ];
 
-  const mockClientErrors: ErrorItem[] = [
+  const mockValidationErrors: ErrorItem[] = [
     { id: '3', code: 'required_field', message: 'This field is required', field: 'username' },
     { id: '4', code: 'invalid_email', message: 'Please enter a valid email', field: 'email' },
   ];
@@ -84,9 +84,9 @@ describe('useErrors', () => {
 
     // Reset all mocks and set up dynamic behavior
     let currentState = {
-      server: [...mockServerErrors],
-      client: [...mockClientErrors],
-      developer: [...mockDeveloperErrors],
+      auth0: [...mockServerErrors],
+      validation: [...mockValidationErrors],
+      configuration: [...mockDeveloperErrors],
     };
 
     // Helper to notify all callbacks when state changes
@@ -105,7 +105,7 @@ describe('useErrors', () => {
 
     jest.spyOn(mockErrorStore, 'clear').mockImplementation((kinds?: any) => {
       if (!kinds || kinds.length === 0) {
-        currentState = { server: [], client: [], developer: [] };
+        currentState = { auth0: [], validation: [], configuration: [] };
       } else {
         (kinds as string[]).forEach((kind: string) => {
           (currentState as any)[kind] = [];
@@ -150,7 +150,7 @@ describe('useErrors', () => {
     });
 
     jest.spyOn(mockErrorStore, 'remove').mockImplementation((kinds: any, predicate: any) => {
-      const targetKinds = Array.isArray(kinds) ? kinds : (kinds ? [kinds] : ['server', 'client', 'developer']);
+      const targetKinds = Array.isArray(kinds) ? kinds : (kinds ? [kinds] : ['auth0', 'validation', 'configuration']);
       targetKinds.forEach((kind: string) => {
         if (typeof predicate === 'string') {
           (currentState as any)[kind] = (currentState as any)[kind].filter((err: any) => err.id !== predicate);
@@ -194,9 +194,9 @@ describe('useErrors', () => {
 
     it('should indicate no error when no errors exist', () => {
       mockErrorStore.snapshot.mockReturnValue({
-        server: [],
-        client: [],
-        developer: [],
+        auth0: [],
+        validation: [],
+        configuration: [],
       });
 
       const { result } = renderHook(() => useErrors());
@@ -209,27 +209,27 @@ describe('useErrors', () => {
     it('should filter errors by server kind', () => {
       const { result } = renderHook(() => useErrors());
 
-      const serverErrors = result.current.errors.byKind('server');
+      const serverErrors = result.current.errors.byKind('auth0');
       expect(serverErrors).toHaveLength(2);
-      expect(serverErrors[0]).toMatchObject({ code: 'invalid_credentials', kind: 'server' });
-      expect(serverErrors[1]).toMatchObject({ code: 'user_not_found', kind: 'server' });
+      expect(serverErrors[0]).toMatchObject({ code: 'invalid_credentials', kind: 'auth0' });
+      expect(serverErrors[1]).toMatchObject({ code: 'user_not_found', kind: 'auth0' });
     });
 
     it('should filter errors by client kind', () => {
       const { result } = renderHook(() => useErrors());
 
-      const clientErrors = result.current.errors.byKind('client');
+      const clientErrors = result.current.errors.byKind('validation');
       expect(clientErrors).toHaveLength(2);
-      expect(clientErrors[0]).toMatchObject({ code: 'required_field', kind: 'client' });
-      expect(clientErrors[1]).toMatchObject({ code: 'invalid_email', kind: 'client' });
+      expect(clientErrors[0]).toMatchObject({ code: 'required_field', kind: 'validation' });
+      expect(clientErrors[1]).toMatchObject({ code: 'invalid_email', kind: 'validation' });
     });
 
     it('should filter errors by developer kind when includeDevErrors is true', () => {
       const { result } = renderHook(() => useErrors({ includeDevErrors: true }));
 
-      const devErrors = result.current.errors.byKind('developer');
+      const devErrors = result.current.errors.byKind('configuration');
       expect(devErrors).toHaveLength(1);
-      expect(devErrors[0]).toMatchObject({ code: 'sdk_error', kind: 'developer' });
+      expect(devErrors[0]).toMatchObject({ code: 'sdk_error', kind: 'configuration' });
     });
 
     it('should exclude developer errors by default', () => {
@@ -238,7 +238,7 @@ describe('useErrors', () => {
       // Total errors should not include developer errors
       expect(result.current.errors).toHaveLength(4); // 2 server + 2 client
 
-      const devErrors = result.current.errors.byKind('developer');
+      const devErrors = result.current.errors.byKind('configuration');
       expect(devErrors).toHaveLength(1); // byKind still returns dev errors even if not in main array
     });
   });
@@ -256,17 +256,17 @@ describe('useErrors', () => {
     it('should filter errors by field and kind', () => {
       const { result } = renderHook(() => useErrors());
 
-      const serverEmailErrors = result.current.errors.byField('email', { kind: 'server' });
+      const serverEmailErrors = result.current.errors.byField('email', { kind: 'auth0' });
       expect(serverEmailErrors).toHaveLength(1);
-      expect(serverEmailErrors[0]).toMatchObject({ code: 'user_not_found', kind: 'server' });
+      expect(serverEmailErrors[0]).toMatchObject({ code: 'user_not_found', kind: 'auth0' });
     });
 
     it('should filter errors by kind and field', () => {
       const { result } = renderHook(() => useErrors());
 
-      const clientEmailErrors = result.current.errors.byKind('client', { field: 'email' });
+      const clientEmailErrors = result.current.errors.byKind('validation', { field: 'email' });
       expect(clientEmailErrors).toHaveLength(1);
-      expect(clientEmailErrors[0]).toMatchObject({ code: 'invalid_email', kind: 'client' });
+      expect(clientEmailErrors[0]).toMatchObject({ code: 'invalid_email', kind: 'validation' });
     });
   });
 
@@ -277,7 +277,7 @@ describe('useErrors', () => {
       // Modern approach: direct function call without act for synchronous operations
       result.current.dismiss('1');
 
-      expect(mockErrorStore.remove).toHaveBeenCalledWith(['server', 'client', 'developer'], '1');
+      expect(mockErrorStore.remove).toHaveBeenCalledWith(['auth0', 'validation', 'configuration'], '1');
     });
 
     it('should dismiss all errors', () => {
@@ -286,7 +286,7 @@ describe('useErrors', () => {
       // Modern approach: direct function call without act for synchronous operations
       result.current.dismissAll();
 
-      expect(mockErrorStore.clear).toHaveBeenCalledWith(['server', 'client', 'developer']);
+      expect(mockErrorStore.clear).toHaveBeenCalledWith(['auth0', 'validation', 'configuration']);
     });
   });
 
@@ -295,7 +295,7 @@ describe('useErrors', () => {
       renderHook(() => useErrors());
 
       expect(mockGetServerErrors).toHaveBeenCalled();
-      expect(mockErrorStore.replace).toHaveBeenCalledWith('server', [
+      expect(mockErrorStore.replace).toHaveBeenCalledWith('auth0', [
         { code: 'server_error', message: 'Server error', field: undefined },
       ]);
     });
@@ -316,21 +316,21 @@ describe('useErrors', () => {
       const { result } = renderHook(() => useErrors({ includeDevErrors: true }));
 
       expect(result.current.errors).toHaveLength(5); // 2 server + 2 client + 1 developer
-      expect(result.current.errors.some(e => e.kind === 'developer')).toBe(true);
+      expect(result.current.errors.some(e => e.kind === 'configuration')).toBe(true);
     });
 
     it('should exclude developer errors when includeDevErrors is false', () => {
       const { result } = renderHook(() => useErrors({ includeDevErrors: false }));
 
       expect(result.current.errors).toHaveLength(4); // 2 server + 2 client
-      expect(result.current.errors.some(e => e.kind === 'developer')).toBe(false);
+      expect(result.current.errors.some(e => e.kind === 'configuration')).toBe(false);
     });
 
     it('should exclude developer errors by default', () => {
       const { result } = renderHook(() => useErrors());
 
       expect(result.current.errors).toHaveLength(4); // 2 server + 2 client
-      expect(result.current.errors.some(e => e.kind === 'developer')).toBe(false);
+      expect(result.current.errors.some(e => e.kind === 'configuration')).toBe(false);
     });
   });
 
@@ -345,12 +345,12 @@ describe('useErrors', () => {
 
       const firstResult = result.current;
       const firstErrors = firstResult.errors;
-      const firstErrorsList = firstResult.errors.byKind('client');
+      const firstErrorsList = firstResult.errors.byKind('validation');
 
       rerender({ includeDevErrors: false });
       const secondResult = result.current;
       const secondErrors = secondResult.errors;
-      const secondErrorsList = secondResult.errors.byKind('client');
+      const secondErrorsList = secondResult.errors.byKind('validation');
 
       // The results should remain consistent when dependencies don't change
       expect(firstResult.hasError).toBe(secondResult.hasError);
@@ -383,31 +383,31 @@ describe('errorManager', () => {
     it('should replace client errors', () => {
       const errors = [{ code: 'test_error', message: 'Test error', field: 'test' }];
 
-      errorManager.replaceClientErrors(errors);
+      errorManager.replaceValidationErrors(errors);
 
-      expect(mockErrorStore.replace).toHaveBeenCalledWith('client', errors);
+      expect(mockErrorStore.replace).toHaveBeenCalledWith('validation', errors);
     });
 
     it('should replace client errors by field', () => {
       const errors = [{ code: 'test_error', message: 'Test error', field: 'test' }];
 
-      errorManager.replaceClientErrors(errors, { byField: 'test' });
+      errorManager.replaceValidationErrors(errors, { byField: 'test' });
 
-      expect(mockErrorStore.replacePartial).toHaveBeenCalledWith('client', errors, 'test');
+      expect(mockErrorStore.replacePartial).toHaveBeenCalledWith('validation', errors, 'test');
     });
 
     it('should clear client errors', () => {
-      errorManager.clearClientErrors();
+      errorManager.clearValidationErrors();
 
-      expect(mockErrorStore.clear).toHaveBeenCalledWith(['client']);
+      expect(mockErrorStore.clear).toHaveBeenCalledWith(['validation']);
     });
 
     it('should push client errors', () => {
       const error = { code: 'test_error', message: 'Test error', field: 'test' };
 
-      errorManager.pushClientErrors(error);
+      errorManager.pushValidationErrors(error);
 
-      expect(mockErrorStore.push).toHaveBeenCalledWith('client', error);
+      expect(mockErrorStore.push).toHaveBeenCalledWith('validation', error);
     });
   });
 
@@ -417,14 +417,14 @@ describe('errorManager', () => {
 
       errorManager.replaceServerErrors(errors);
 
-      expect(mockErrorStore.replace).toHaveBeenCalledWith('server', errors);
+      expect(mockErrorStore.replace).toHaveBeenCalledWith('auth0', errors);
     });
 
     it('should sync server errors', () => {
       errorManager.syncServerErrors();
 
       expect(mockGetServerErrors).toHaveBeenCalled();
-      expect(mockErrorStore.replace).toHaveBeenCalledWith('server', [
+      expect(mockErrorStore.replace).toHaveBeenCalledWith('auth0', [
         { code: 'server_error', message: 'Server error', field: undefined },
       ]);
     });
@@ -434,7 +434,7 @@ describe('errorManager', () => {
       mockGetServerErrors.mockReturnValueOnce(undefined as any);
       errorManager.syncServerErrors();
 
-      expect(mockErrorStore.replace).toHaveBeenCalledWith('server', []);
+      expect(mockErrorStore.replace).toHaveBeenCalledWith('auth0', []);
     });
   });
 
@@ -444,13 +444,13 @@ describe('errorManager', () => {
 
       errorManager.replaceDeveloperErrors(errors);
 
-      expect(mockErrorStore.replace).toHaveBeenCalledWith('developer', errors);
+      expect(mockErrorStore.replace).toHaveBeenCalledWith('configuration', errors);
     });
 
     it('should clear developer errors', () => {
       errorManager.clearDeveloperErrors();
 
-      expect(mockErrorStore.clear).toHaveBeenCalledWith(['developer']);
+      expect(mockErrorStore.clear).toHaveBeenCalledWith(['configuration']);
     });
 
     it('should replace developer errors by field', () => {
@@ -458,7 +458,7 @@ describe('errorManager', () => {
 
       errorManager.replaceDeveloperErrors(errors, { byField: 'username' });
 
-      expect(mockErrorStore.replacePartial).toHaveBeenCalledWith('developer', errors, 'username');
+      expect(mockErrorStore.replacePartial).toHaveBeenCalledWith('configuration', errors, 'username');
     });
 
     it('should push developer errors', () => {
@@ -466,7 +466,7 @@ describe('errorManager', () => {
 
       errorManager.pushDeveloperErrors(error);
 
-      expect(mockErrorStore.push).toHaveBeenCalledWith('developer', error);
+      expect(mockErrorStore.push).toHaveBeenCalledWith('configuration', error);
     });
 
     it('should push multiple developer errors', () => {
@@ -477,7 +477,7 @@ describe('errorManager', () => {
 
       errorManager.pushDeveloperErrors(errors);
 
-      expect(mockErrorStore.push).toHaveBeenCalledWith('developer', errors);
+      expect(mockErrorStore.push).toHaveBeenCalledWith('configuration', errors);
     });
   });
 
@@ -487,7 +487,7 @@ describe('errorManager', () => {
 
       errorManager.replaceServerErrors(errors, { byField: 'email' });
 
-      expect(mockErrorStore.replacePartial).toHaveBeenCalledWith('server', errors, 'email');
+      expect(mockErrorStore.replacePartial).toHaveBeenCalledWith('auth0', errors, 'email');
     });
 
     it('should push server errors', () => {
@@ -495,7 +495,7 @@ describe('errorManager', () => {
 
       errorManager.pushServerErrors(error);
 
-      expect(mockErrorStore.push).toHaveBeenCalledWith('server', error);
+      expect(mockErrorStore.push).toHaveBeenCalledWith('auth0', error);
     });
 
     it('should push multiple server errors', () => {
@@ -506,13 +506,13 @@ describe('errorManager', () => {
 
       errorManager.pushServerErrors(errors);
 
-      expect(mockErrorStore.push).toHaveBeenCalledWith('server', errors);
+      expect(mockErrorStore.push).toHaveBeenCalledWith('auth0', errors);
     });
 
     it('should clear server errors', () => {
       errorManager.clearServerErrors();
 
-      expect(mockErrorStore.clear).toHaveBeenCalledWith(['server']);
+      expect(mockErrorStore.clear).toHaveBeenCalledWith(['auth0']);
     });
   });
 });
@@ -695,7 +695,7 @@ describe('internal utility functions', () => {
       // These calls exercise the filterByField function internally
       const allErrors = result.current.errors;
       const fieldFilteredEmpty = result.current.errors.byField('nonexistent_field');
-      const kindFiltered = result.current.errors.byKind('client');
+      const kindFiltered = result.current.errors.byKind('validation');
 
       // Basic assertions to ensure the methods work
       expect(Array.isArray(allErrors)).toBe(true);
@@ -703,11 +703,11 @@ describe('internal utility functions', () => {
       expect(Array.isArray(kindFiltered)).toBe(true);
 
       // Test byField with opts parameter to cover more code paths
-      const fieldWithKind = result.current.errors.byField('test', { kind: 'client' });
+      const fieldWithKind = result.current.errors.byField('test', { kind: 'validation' });
       expect(Array.isArray(fieldWithKind)).toBe(true);
 
       // Test byKind with opts parameter 
-      const kindWithField = result.current.errors.byKind('server', { field: 'test' });
+      const kindWithField = result.current.errors.byKind('auth0', { field: 'test' });
       expect(Array.isArray(kindWithField)).toBe(true);
     });
   });
@@ -745,21 +745,21 @@ describe('internal utility functions', () => {
       const { result } = renderHook(() => useErrors());
 
       // Modern approach: direct calls to errorManager - these are synchronous operations
-      errorManager.clearClientErrors();
+      errorManager.clearValidationErrors();
       errorManager.clearServerErrors();
 
-      errorManager.replaceClientErrors([
+      errorManager.replaceValidationErrors([
         { code: 'test1', message: 'Test 1', field: 'field1' },
         { code: 'test2', message: 'Test 2', field: 'field2' }
       ]);
 
       // This call to byKind without opts.field will call filterByField with undefined field
       // which triggers the early return on line 54: if (!field) return list;
-      const allClientErrors = result.current.errors.byKind('client');
-      expect(allClientErrors.length).toBeGreaterThanOrEqual(1);
+      const allValidationErrors = result.current.errors.byKind('validation');
+      expect(allValidationErrors.length).toBeGreaterThanOrEqual(1);
 
       // This specifically tests the filterByField function when field is undefined
-      const serverErrorsNoField = result.current.errors.byKind('server'); // no opts, so field is undefined
+      const serverErrorsNoField = result.current.errors.byKind('auth0'); // no opts, so field is undefined
       expect(Array.isArray(serverErrorsNoField)).toBe(true);
 
       // Additional test to ensure we cover the byField method calling filterByField
@@ -772,12 +772,12 @@ describe('internal utility functions', () => {
       const { result } = renderHook(() => useErrors());
 
       // Clear state - direct calls without act
-      errorManager.clearClientErrors();
+      errorManager.clearValidationErrors();
       errorManager.clearServerErrors();
       errorManager.clearDeveloperErrors();
 
       // Add test data - direct call without act
-      errorManager.replaceClientErrors([
+      errorManager.replaceValidationErrors([
         { code: 'line54test', message: 'Line 54 test', field: 'testfield' }
       ]);
 
@@ -796,7 +796,7 @@ describe('internal utility functions', () => {
 
       // Verify getServerErrors was called and handled undefined properly
       expect(mockGetServerErrors).toHaveBeenCalled();
-      expect(mockErrorStore.replace).toHaveBeenCalledWith('server', []);
+      expect(mockErrorStore.replace).toHaveBeenCalledWith('auth0', []);
       expect(Array.isArray(newResult.current.errors)).toBe(true);
     });
 
@@ -812,7 +812,7 @@ describe('internal utility functions', () => {
 
       // Initial render should call getServerErrors
       expect(mockGetServerErrors).toHaveBeenCalledTimes(1);
-      expect(mockErrorStore.replace).toHaveBeenCalledWith('server', [
+      expect(mockErrorStore.replace).toHaveBeenCalledWith('auth0', [
         { code: 'init_error', message: 'Init error', field: undefined }
       ]);
 
@@ -890,7 +890,7 @@ describe('internal utility functions', () => {
         return error;
       };
 
-      const userInputError = createMockError(ValidationError, 'Client validation error', 'validation_error', 'email');
+      const userInputError = createMockError(ValidationError, 'Validation validation error', 'validation_error', 'email');
       const sdkUsageError = createMockError(ConfigurationError, 'SDK misuse error', 'sdk_error');
       const auth0ServerError = createMockError(Auth0Error, 'Server error', 'server_error');
 
@@ -901,10 +901,10 @@ describe('internal utility functions', () => {
         });
       }).toThrow(userInputError);
 
-      expect(mockErrorStore.replace).toHaveBeenCalledWith('client', [
+      expect(mockErrorStore.replace).toHaveBeenCalledWith('validation', [
         expect.objectContaining({
           code: 'validation_error',
-          message: 'Client validation error',
+          message: 'Validation validation error',
           field: 'email'
         })
       ]);
@@ -918,7 +918,7 @@ describe('internal utility functions', () => {
         });
       }).toThrow(sdkUsageError);
 
-      expect(mockErrorStore.replace).toHaveBeenCalledWith('developer', [
+      expect(mockErrorStore.replace).toHaveBeenCalledWith('configuration', [
         expect.objectContaining({
           code: 'sdk_error',
           message: 'SDK misuse error'
@@ -934,7 +934,7 @@ describe('internal utility functions', () => {
         });
       }).toThrow(auth0ServerError);
 
-      expect(mockErrorStore.replace).toHaveBeenCalledWith('server', [
+      expect(mockErrorStore.replace).toHaveBeenCalledWith('auth0', [
         expect.objectContaining({
           code: 'server_error',
           message: 'Server error'
@@ -959,7 +959,7 @@ describe('internal utility functions', () => {
         expect(error).toBe(userInputError);
       }
 
-      expect(mockErrorStore.replace).toHaveBeenCalledWith('client', [
+      expect(mockErrorStore.replace).toHaveBeenCalledWith('validation', [
         expect.objectContaining({
           code: 'async_validation_error',
           message: 'Async client error'
@@ -978,7 +978,7 @@ describe('internal utility functions', () => {
         expect(error).toBe(userInputError);
       }
 
-      expect(mockErrorStore.replace).toHaveBeenCalledWith('client', [
+      expect(mockErrorStore.replace).toHaveBeenCalledWith('validation', [
         expect.objectContaining({
           code: 'async_validation_error',
           message: 'Async client error'
@@ -998,7 +998,7 @@ describe('internal utility functions', () => {
 
       // The hook should handle undefined getServerErrors gracefully
       expect(mockGetServerErrors).toHaveBeenCalled();
-      expect(mockErrorStore.replace).toHaveBeenCalledWith('server', []);
+      expect(mockErrorStore.replace).toHaveBeenCalledWith('auth0', []);
 
       // Verify the hook works normally
       expect(Array.isArray(result.current.errors)).toBe(true);
@@ -1012,13 +1012,13 @@ describe('internal utility functions', () => {
         message: 'Auth0 message',
         field: 'auth0_field'
       };
-      errorManager.pushClientErrors(auth0LikeError);
+      errorManager.pushValidationErrors(auth0LikeError);
 
       // Test with regular Error object
       const regularError = new Error('Regular error message');
       regularError.name = 'CustomError';
       // This will be processed by toErrorObject
-      errorManager.pushClientErrors({
+      errorManager.pushValidationErrors({
         code: regularError.name,
         message: regularError.message,
         field: undefined
@@ -1027,7 +1027,7 @@ describe('internal utility functions', () => {
       // Test with unknown error type
       const unknownError = 'string error';
       // This will be processed by toErrorObject  
-      errorManager.pushClientErrors({
+      errorManager.pushValidationErrors({
         code: 'unknown_error',
         message: 'Unknown error',
         field: undefined
@@ -1066,7 +1066,7 @@ describe('internal utility functions', () => {
         }).toThrow(error);
 
         // Verify the correct error manager method was called based on classification
-        const expectedType = index === 0 ? 'client' : index === 1 ? 'developer' : 'server';
+        const expectedType = index === 0 ? 'validation' : index === 1 ? 'configuration' : 'auth0';
         expect(mockErrorStore.replace).toHaveBeenCalledWith(expectedType, [
           expect.objectContaining({
             message: error.message,
@@ -1083,7 +1083,7 @@ describe('internal utility functions', () => {
       const { result } = renderHook(() => useErrors());
 
       // Clear any existing errors - direct calls
-      errorManager.clearClientErrors();
+      errorManager.clearValidationErrors();
       errorManager.clearServerErrors();
 
       // Add specific test errors
@@ -1091,14 +1091,14 @@ describe('internal utility functions', () => {
         { code: 'cache_test', message: 'Cache test', field: undefined }
       ];
 
-      errorManager.replaceClientErrors(testErrors);
+      errorManager.replaceValidationErrors(testErrors);
 
-      const firstCall = result.current.errors.byKind('client');
+      const firstCall = result.current.errors.byKind('validation');
 
       // Replace with same errors to potentially hit cache
-      errorManager.replaceClientErrors(testErrors);
+      errorManager.replaceValidationErrors(testErrors);
 
-      const secondCall = result.current.errors.byKind('client');
+      const secondCall = result.current.errors.byKind('validation');
 
       // Both calls should return arrays (testing the cache mechanism indirectly)
       expect(Array.isArray(firstCall)).toBe(true);
@@ -1111,11 +1111,11 @@ describe('internal utility functions', () => {
       ]);
 
       // This exercises various code paths in the filtering logic
-      const serverByField = result.current.errors.byKind('server', { field: 'field1' });
-      const fieldByKind = result.current.errors.byField('field2', { kind: 'server' });
+      const serverByField = result.current.errors.byKind('auth0', { field: 'field1' });
+      const fieldByKind = result.current.errors.byField('field2', { kind: 'auth0' });
 
       // Verify we have the expected server errors
-      const allServerErrors = result.current.errors.byKind('server');
+      const allServerErrors = result.current.errors.byKind('auth0');
       expect(allServerErrors.length).toBeGreaterThanOrEqual(1);
 
       expect(Array.isArray(serverByField)).toBe(true);
@@ -1132,14 +1132,14 @@ describe('internal utility functions', () => {
       // Branch 1: e has code property
       const errorWithCode = { code: 'test_code', message: 'test message', field: 'test_field' };
       updateErrors(() => {
-        errorManager.pushClientErrors(errorWithCode);
+        errorManager.pushValidationErrors(errorWithCode);
       });
 
       // Branch 2: e instanceof Error with name
       const errorWithName = new Error('error message');
       errorWithName.name = 'CustomError';
       updateErrors(() => {
-        errorManager.pushClientErrors({
+        errorManager.pushValidationErrors({
           code: errorWithName.name,
           message: errorWithName.message,
           field: undefined
@@ -1149,7 +1149,7 @@ describe('internal utility functions', () => {
       // Branch 3: e with no code, not instanceof Error (should use 'unknown_error')
       const unknownError = { message: 'unknown message' };
       updateErrors(() => {
-        errorManager.pushClientErrors({
+        errorManager.pushValidationErrors({
           code: 'unknown_error',
           message: unknownError.message,
           field: undefined
@@ -1159,7 +1159,7 @@ describe('internal utility functions', () => {
       // Branch 4: e with message property
       const errorWithMessage = { message: 'custom message' };
       updateErrors(() => {
-        errorManager.pushClientErrors({
+        errorManager.pushValidationErrors({
           code: 'unknown_error',
           message: errorWithMessage.message,
           field: undefined
@@ -1169,7 +1169,7 @@ describe('internal utility functions', () => {
       // Branch 5: e with no message (should use 'Unknown error')
       const errorWithoutMessage = { code: 'no_message_code' };
       updateErrors(() => {
-        errorManager.pushClientErrors({
+        errorManager.pushValidationErrors({
           code: 'no_message_code',
           message: 'Unknown error',
           field: undefined
@@ -1184,26 +1184,26 @@ describe('internal utility functions', () => {
       // Test byKind with existing errors from beforeEach
       const { result } = renderHook(() => useErrors({ includeDevErrors: true }));
 
-      // Test byKind branches: kind === 'client'
-      const clientErrors = result.current.errors.byKind('client');
+      // Test byKind branches: kind === 'validation'
+      const clientErrors = result.current.errors.byKind('validation');
       expect(clientErrors.length).toBeGreaterThanOrEqual(1);
-      expect(clientErrors.every(e => e.kind === 'client')).toBe(true);
+      expect(clientErrors.every(e => e.kind === 'validation')).toBe(true);
 
-      // Test byKind branches: kind === 'server'
-      const serverErrors = result.current.errors.byKind('server');
+      // Test byKind branches: kind === 'auth0'
+      const serverErrors = result.current.errors.byKind('auth0');
       expect(serverErrors.length).toBeGreaterThanOrEqual(1);
-      expect(serverErrors.every(e => e.kind === 'server')).toBe(true);
+      expect(serverErrors.every(e => e.kind === 'auth0')).toBe(true);
 
-      // Test byKind branches: kind === 'developer'
-      const devErrors = result.current.errors.byKind('developer');
+      // Test byKind branches: kind === 'configuration'
+      const devErrors = result.current.errors.byKind('configuration');
       expect(devErrors.length).toBeGreaterThanOrEqual(1);
-      expect(devErrors.every(e => e.kind === 'developer')).toBe(true);
+      expect(devErrors.every(e => e.kind === 'configuration')).toBe(true);
 
       // Test opts?.field branch in byKind - this tests the ternary operator
-      const clientWithField = result.current.errors.byKind('client', { field: 'username' });
+      const clientWithField = result.current.errors.byKind('validation', { field: 'username' });
       expect(Array.isArray(clientWithField)).toBe(true);
 
-      const clientWithoutMatchingField = result.current.errors.byKind('client', { field: 'nonexistent' });
+      const clientWithoutMatchingField = result.current.errors.byKind('validation', { field: 'nonexistent' });
       expect(clientWithoutMatchingField).toHaveLength(0);
     });
 
@@ -1212,7 +1212,7 @@ describe('internal utility functions', () => {
       const { result } = renderHook(() => useErrors());
 
       // Test byField with opts?.kind branch
-      const fieldWithKind = result.current.errors.byField('email', { kind: 'client' });
+      const fieldWithKind = result.current.errors.byField('email', { kind: 'validation' });
       expect(Array.isArray(fieldWithKind)).toBe(true);
 
       // Test byField without opts?.kind branch
@@ -1229,42 +1229,42 @@ describe('internal utility functions', () => {
       const { result } = renderHook(() => useErrors({ includeDevErrors: true }));
 
       // Call byKind multiple times to test cache hits
-      const firstClientCall = result.current.errors.byKind('client');
-      const secondClientCall = result.current.errors.byKind('client');
+      const firstValidationCall = result.current.errors.byKind('validation');
+      const secondValidationCall = result.current.errors.byKind('validation');
 
       // Cache should return the same reference for the same kind
-      expect(firstClientCall).toBe(secondClientCall);
+      expect(firstValidationCall).toBe(secondValidationCall);
 
       // Test different kinds to ensure separate caches
-      const serverResult = result.current.errors.byKind('server');
-      const devResult = result.current.errors.byKind('developer');
+      const serverResult = result.current.errors.byKind('auth0');
+      const devResult = result.current.errors.byKind('configuration');
 
       expect(Array.isArray(serverResult)).toBe(true);
       expect(Array.isArray(devResult)).toBe(true);
 
       // Verify cache works by calling again and checking references
-      expect(result.current.errors.byKind('server')).toBe(serverResult);
-      expect(result.current.errors.byKind('developer')).toBe(devResult);
+      expect(result.current.errors.byKind('auth0')).toBe(serverResult);
+      expect(result.current.errors.byKind('configuration')).toBe(devResult);
     });
 
     it('should test errorManager conditional branches', () => {
-      // Test replaceClientErrors with byField
-      errorManager.replaceClientErrors([
+      // Test replaceValidationErrors with byField
+      errorManager.replaceValidationErrors([
         { code: 'test1', message: 'Test 1', field: 'field1' }
       ], { byField: 'field1' });
 
-      expect(mockErrorStore.replacePartial).toHaveBeenCalledWith('client', [
+      expect(mockErrorStore.replacePartial).toHaveBeenCalledWith('validation', [
         { code: 'test1', message: 'Test 1', field: 'field1' }
       ], 'field1');
 
       jest.clearAllMocks();
 
-      // Test replaceClientErrors without byField
-      errorManager.replaceClientErrors([
+      // Test replaceValidationErrors without byField
+      errorManager.replaceValidationErrors([
         { code: 'test2', message: 'Test 2', field: undefined }
       ]);
 
-      expect(mockErrorStore.replace).toHaveBeenCalledWith('client', [
+      expect(mockErrorStore.replace).toHaveBeenCalledWith('validation', [
         { code: 'test2', message: 'Test 2', field: undefined }
       ]);
 
@@ -1273,7 +1273,7 @@ describe('internal utility functions', () => {
         { code: 'dev1', message: 'Dev 1', field: 'devfield' }
       ], { byField: 'devfield' });
 
-      expect(mockErrorStore.replacePartial).toHaveBeenCalledWith('developer', [
+      expect(mockErrorStore.replacePartial).toHaveBeenCalledWith('configuration', [
         { code: 'dev1', message: 'Dev 1', field: 'devfield' }
       ], 'devfield');
 
@@ -1282,7 +1282,7 @@ describe('internal utility functions', () => {
         { code: 'server1', message: 'Server 1', field: 'serverfield' }
       ], { byField: 'serverfield' });
 
-      expect(mockErrorStore.replacePartial).toHaveBeenCalledWith('server', [
+      expect(mockErrorStore.replacePartial).toHaveBeenCalledWith('auth0', [
         { code: 'server1', message: 'Server 1', field: 'serverfield' }
       ], 'serverfield');
     });
@@ -1293,7 +1293,7 @@ describe('internal utility functions', () => {
 
       // Clear all errors first for clean slate - modern approach with single act for state changes
       updateErrors(() => {
-        errorManager.clearClientErrors();
+        errorManager.clearValidationErrors();
         errorManager.clearServerErrors();
         errorManager.clearDeveloperErrors();
       });
@@ -1305,14 +1305,14 @@ describe('internal utility functions', () => {
       expect(result.current.errors.length).toBe(0);
 
       // Now add an error directly to the mock store and trigger notification
-      const testError = { id: 'test-id', code: 'test', message: 'Test Error', kind: 'client' as const };
+      const testError = { id: 'test-id', code: 'test', message: 'Test Error', kind: 'validation' as const };
 
       updateErrors(() => {
         // Mock the store to return our test error
         mockErrorStore.snapshot.mockReturnValue({
-          client: [testError],
-          server: [],
-          developer: []
+          validation: [testError],
+          auth0: [],
+          configuration: []
         });
 
         // Trigger the store's listeners to simulate the state change

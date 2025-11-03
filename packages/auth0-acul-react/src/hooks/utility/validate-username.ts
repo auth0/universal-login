@@ -71,7 +71,7 @@ export function useUsernameValidation(
     const result = instance.validateUsername(username);
 
     if (options?.includeInErrors) {
-      errorManager.replaceClientErrors(result.errors, { byField: 'username' });
+      errorManager.replaceValidationErrors(result.errors, { byField: 'username' });
     }
 
     return { isValid: result.isValid, errors: result.errors };

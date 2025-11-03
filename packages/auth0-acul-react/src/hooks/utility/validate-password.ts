@@ -49,7 +49,7 @@ export function usePasswordValidation(
     const validation = instance.validatePassword(password);
 
     if (options?.includeInErrors) {
-      errorManager.replaceClientErrors(
+      errorManager.replaceValidationErrors(
         validation.isValid
           ? []
           : [

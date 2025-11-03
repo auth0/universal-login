@@ -11,7 +11,7 @@ jest.mock('../../../src/state/instance-store', () => ({
 
 jest.mock('../../../src/hooks/common/errors', () => ({
   errorManager: {
-    replaceClientErrors: jest.fn(),
+    replaceValidationErrors: jest.fn(),
   },
 }));
 
@@ -41,7 +41,7 @@ describe('usePasswordValidation', () => {
     expect(result.current).toEqual(mockValidationResult);
     expect(result.current.isValid).toBe(true);
     expect(mockInstance.validatePassword).toHaveBeenCalledWith('validPassword123');
-    expect(mockErrorManager.replaceClientErrors).not.toHaveBeenCalled();
+    expect(mockErrorManager.replaceValidationErrors).not.toHaveBeenCalled();
   });
 
   it('should return validation result when password is invalid', () => {
@@ -64,7 +64,7 @@ describe('usePasswordValidation', () => {
     expect(result.current).toEqual(mockValidationResult);
     expect(result.current.isValid).toBe(false);
     expect(mockInstance.validatePassword).toHaveBeenCalledWith('weak');
-    expect(mockErrorManager.replaceClientErrors).not.toHaveBeenCalled();
+    expect(mockErrorManager.replaceValidationErrors).not.toHaveBeenCalled();
   });
 
   it('should include errors in error manager when includeInErrors is true and password is invalid', () => {
@@ -86,7 +86,7 @@ describe('usePasswordValidation', () => {
     );
 
     expect(result.current).toEqual(mockValidationResult);
-    expect(mockErrorManager.replaceClientErrors).toHaveBeenCalledWith(
+    expect(mockErrorManager.replaceValidationErrors).toHaveBeenCalledWith(
       [
         {
           code: 'password-policy-error',
@@ -118,7 +118,7 @@ describe('usePasswordValidation', () => {
     );
 
     expect(result.current).toEqual(mockValidationResult);
-    expect(mockErrorManager.replaceClientErrors).toHaveBeenCalledWith(
+    expect(mockErrorManager.replaceValidationErrors).toHaveBeenCalledWith(
       [],
       { byField: 'password' }
     );
