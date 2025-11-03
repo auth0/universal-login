@@ -1,7 +1,7 @@
 import { ScreenIds, FormActions, Errors } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { getBrowserCapabilities } from '../../utils/browser-capabilities';
-import { SDKUsageError } from '../../utils/errors';
+import { ConfigurationError } from '../../utils/errors';
 import { FormHandler } from '../../utils/form-handler';
 import { getLoginIdentifiers as _getLoginIdentifiers } from '../../utils/login-identifiers';
 import { getPasskeyCredentials } from '../../utils/passkeys';
@@ -257,7 +257,7 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
       },
       onReject: (err) => {
         console.warn('Passkey autocomplete registration failed', err);
-        throw new SDKUsageError(Errors.PASSKEY_AUTOCOMPLETE_REGISTRATION_FAILED);
+        throw new ConfigurationError(Errors.PASSKEY_AUTOCOMPLETE_REGISTRATION_FAILED);
       },
     }) ?? undefined;
 

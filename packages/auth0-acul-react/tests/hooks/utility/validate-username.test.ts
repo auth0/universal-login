@@ -186,7 +186,7 @@ describe('useUsernameValidation', () => {
 
       renderHook(() => useUsernameValidation('invalid'));
 
-      expect(mockErrorManager.replaceClientErrors).not.toHaveBeenCalled();
+      expect(mockErrorManager.replaceValidationErrors).not.toHaveBeenCalled();
     });
 
     it('should integrate with error manager when includeInErrors is true', () => {
@@ -199,7 +199,7 @@ describe('useUsernameValidation', () => {
 
       renderHook(() => useUsernameValidation('invalid', { includeInErrors: true }));
 
-      expect(mockErrorManager.replaceClientErrors).toHaveBeenCalledWith(
+      expect(mockErrorManager.replaceValidationErrors).toHaveBeenCalledWith(
         validationErrors,
         { byField: 'username' }
       );
@@ -213,7 +213,7 @@ describe('useUsernameValidation', () => {
 
       renderHook(() => useUsernameValidation('valid', { includeInErrors: true }));
 
-      expect(mockErrorManager.replaceClientErrors).toHaveBeenCalledWith(
+      expect(mockErrorManager.replaceValidationErrors).toHaveBeenCalledWith(
         [],
         { byField: 'username' }
       );
@@ -230,7 +230,7 @@ describe('useUsernameValidation', () => {
         { initialProps: { username: 'valid' } }
       );
 
-      expect(mockErrorManager.replaceClientErrors).toHaveBeenCalledWith(
+      expect(mockErrorManager.replaceValidationErrors).toHaveBeenCalledWith(
         [],
         { byField: 'username' }
       );
@@ -243,7 +243,7 @@ describe('useUsernameValidation', () => {
 
       rerender({ username: 'invalid' });
 
-      expect(mockErrorManager.replaceClientErrors).toHaveBeenCalledWith(
+      expect(mockErrorManager.replaceValidationErrors).toHaveBeenCalledWith(
         [{ code: 'invalid', message: 'Invalid username' }],
         { byField: 'username' }
       );
@@ -260,11 +260,11 @@ describe('useUsernameValidation', () => {
         { initialProps: { includeInErrors: false } }
       );
 
-      expect(mockErrorManager.replaceClientErrors).not.toHaveBeenCalled();
+      expect(mockErrorManager.replaceValidationErrors).not.toHaveBeenCalled();
 
       rerender({ includeInErrors: true });
 
-      expect(mockErrorManager.replaceClientErrors).toHaveBeenCalledWith(
+      expect(mockErrorManager.replaceValidationErrors).toHaveBeenCalledWith(
         [{ code: 'invalid', message: 'Invalid username' }],
         { byField: 'username' }
       );
@@ -421,7 +421,7 @@ describe('useUsernameValidation', () => {
       expect(result.current.errors).toEqual([
         { code: 'required', message: 'Username is required' }
       ]);
-      expect(mockErrorManager.replaceClientErrors).toHaveBeenCalledWith(
+      expect(mockErrorManager.replaceValidationErrors).toHaveBeenCalledWith(
         [{ code: 'required', message: 'Username is required' }],
         { byField: 'username' }
       );
@@ -449,7 +449,7 @@ describe('useUsernameValidation', () => {
 
       expect(result.current.isValid).toBe(true);
       expect(result.current.errors).toEqual([]);
-      expect(mockErrorManager.replaceClientErrors).toHaveBeenCalledWith(
+      expect(mockErrorManager.replaceValidationErrors).toHaveBeenCalledWith(
         [],
         { byField: 'username' }
       );
@@ -473,7 +473,7 @@ describe('useUsernameValidation', () => {
 
       expect(result.current.isValid).toBe(false);
       expect(result.current.errors).toEqual(multipleErrors);
-      expect(mockErrorManager.replaceClientErrors).toHaveBeenCalledWith(
+      expect(mockErrorManager.replaceValidationErrors).toHaveBeenCalledWith(
         multipleErrors,
         { byField: 'username' }
       );

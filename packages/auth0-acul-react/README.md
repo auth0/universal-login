@@ -259,7 +259,7 @@ General-purpose hooks available across all screens:
 
 #### Error Handling
 - `useErrors(options)` - Comprehensive error management with categorization
-  - Filter by error kind: `'client'`, `'server'`, `'dev'`
+  - Filter by error kind: `'validation'`, `'auth0'`, `'configuration'`
   - Filter by field name for form-specific errors
   - Dismiss individual or all errors
 

@@ -9,7 +9,7 @@ describe('error-store', () => {
 
   describe('ERROR_KINDS constant', () => {
     it('should contain all error kinds', () => {
-      expect(ERROR_KINDS).toEqual(['server', 'client', 'developer']);
+      expect(ERROR_KINDS).toEqual(['auth0', 'validation', 'configuration']);
     });
   });
 
@@ -19,13 +19,13 @@ describe('error-store', () => {
       const unsubscribe = errorStore.subscribe(listener);
 
       // Add an error to trigger notification
-      errorStore.push('client', { code: 'test', message: 'test', field: 'test' });
+      errorStore.push('validation', { code: 'test', message: 'test', field: 'test' });
 
       expect(listener).toHaveBeenCalledTimes(1);
 
       // Unsubscribe and verify listener is not called again
       unsubscribe();
-      errorStore.push('client', { code: 'test2', message: 'test2', field: 'test2' });
+      errorStore.push('validation', { code: 'test2', message: 'test2', field: 'test2' });
 
       expect(listener).toHaveBeenCalledTimes(1);
     });
@@ -37,7 +37,7 @@ describe('error-store', () => {
       errorStore.subscribe(listener1);
       errorStore.subscribe(listener2);
 
-      errorStore.push('server', { code: 'server_error', message: 'Server error', field: undefined });
+      errorStore.push('auth0', { code: 'auth0_error', message: 'auth0 error', field: undefined });
 
       expect(listener1).toHaveBeenCalledTimes(1);
       expect(listener2).toHaveBeenCalledTimes(1);
@@ -48,12 +48,12 @@ describe('error-store', () => {
     it('should return current bucket state', () => {
       const snapshot = errorStore.snapshot();
 
-      expect(snapshot).toHaveProperty('server');
-      expect(snapshot).toHaveProperty('client');
-      expect(snapshot).toHaveProperty('developer');
-      expect(Array.isArray(snapshot.server)).toBe(true);
-      expect(Array.isArray(snapshot.client)).toBe(true);
-      expect(Array.isArray(snapshot.developer)).toBe(true);
+      expect(snapshot).toHaveProperty('auth0');
+      expect(snapshot).toHaveProperty('validation');
+      expect(snapshot).toHaveProperty('configuration');
+      expect(Array.isArray(snapshot.auth0)).toBe(true);
+      expect(Array.isArray(snapshot.validation)).toBe(true);
+      expect(Array.isArray(snapshot.configuration)).toBe(true);
     });
 
     it('should return readonly snapshot', () => {
@@ -61,9 +61,9 @@ describe('error-store', () => {
 
       // Should be frozen
       expect(Object.isFrozen(snapshot)).toBe(true);
-      expect(Object.isFrozen(snapshot.server)).toBe(true);
-      expect(Object.isFrozen(snapshot.client)).toBe(true);
-      expect(Object.isFrozen(snapshot.developer)).toBe(true);
+      expect(Object.isFrozen(snapshot.auth0)).toBe(true);
+      expect(Object.isFrozen(snapshot.validation)).toBe(true);
+      expect(Object.isFrozen(snapshot.configuration)).toBe(true);
     });
   });
 
@@ -77,12 +77,12 @@ describe('error-store', () => {
         { code: 'error2', message: 'Error 2', field: 'field2' }
       ];
 
-      errorStore.replace('client', errors);
+      errorStore.replace('validation', errors);
 
       const snapshot = errorStore.snapshot();
-      expect(snapshot.client).toHaveLength(2);
-      expect(snapshot.client[0].code).toBe('error1');
-      expect(snapshot.client[1].code).toBe('error2');
+      expect(snapshot.validation).toHaveLength(2);
+      expect(snapshot.validation[0].code).toBe('error1');
+      expect(snapshot.validation[1].code).toBe('error2');
       expect(listener).toHaveBeenCalledTimes(1);
     });
 
@@ -91,11 +91,11 @@ describe('error-store', () => {
         { code: 'no_id', message: 'No ID', field: undefined }
       ];
 
-      errorStore.replace('server', errors);
+      errorStore.replace('auth0', errors);
 
       const snapshot = errorStore.snapshot();
-      expect(snapshot.server[0]).toHaveProperty('id');
-      expect(typeof snapshot.server[0].id).toBe('string');
+      expect(snapshot.auth0[0]).toHaveProperty('id');
+      expect(typeof snapshot.auth0[0].id).toBe('string');
     });
 
     it('should preserve existing ids', () => {
@@ -103,10 +103,10 @@ describe('error-store', () => {
         { id: 'existing_id', code: 'with_id', message: 'With ID', field: undefined }
       ];
 
-      errorStore.replace('developer', errors);
+      errorStore.replace('configuration', errors);
 
       const snapshot = errorStore.snapshot();
-      expect(snapshot.developer[0].id).toBe('existing_id');
+      expect(snapshot.configuration[0].id).toBe('existing_id');
     });
 
     it('should not notify if lists are equal', () => {
@@ -114,13 +114,13 @@ describe('error-store', () => {
       const errors = [{ id: 'same-id', code: 'same', message: 'Same', field: undefined }];
 
       // First replace to set initial state
-      errorStore.replace('client', errors);
+      errorStore.replace('validation', errors);
 
       // Subscribe after initial state is set
       errorStore.subscribe(listener);
 
       // Replace with same errors (should not notify because they're equal)
-      errorStore.replace('client', errors);
+      errorStore.replace('validation', errors);
 
       expect(listener).not.toHaveBeenCalled();
     });
@@ -128,17 +128,17 @@ describe('error-store', () => {
     it('should freeze the error items', () => {
       const errors = [{ code: 'freeze_test', message: 'Freeze test', field: undefined }];
 
-      errorStore.replace('client', errors);
+      errorStore.replace('validation', errors);
 
       const snapshot = errorStore.snapshot();
-      expect(Object.isFrozen(snapshot.client[0])).toBe(true);
+      expect(Object.isFrozen(snapshot.validation[0])).toBe(true);
     });
   });
 
   describe('replacePartial method', () => {
     it('should replace errors for specific field only', () => {
       // Add initial errors
-      errorStore.replace('client', [
+      errorStore.replace('validation', [
         { code: 'field1_error', message: 'Field 1 error', field: 'field1' },
         { code: 'field2_error', message: 'Field 2 error', field: 'field2' }
       ]);
@@ -148,13 +148,13 @@ describe('error-store', () => {
         { code: 'new_field1_error', message: 'New field 1 error', field: 'field1' }
       ];
 
-      errorStore.replacePartial('client', newField1Errors, 'field1');
+      errorStore.replacePartial('validation', newField1Errors, 'field1');
 
       const snapshot = errorStore.snapshot();
-      expect(snapshot.client).toHaveLength(2);
+      expect(snapshot.validation).toHaveLength(2);
 
-      const field1Errors = snapshot.client.filter(e => e.field === 'field1');
-      const field2Errors = snapshot.client.filter(e => e.field === 'field2');
+      const field1Errors = snapshot.validation.filter(e => e.field === 'field1');
+      const field2Errors = snapshot.validation.filter(e => e.field === 'field2');
 
       expect(field1Errors).toHaveLength(1);
       expect(field1Errors[0].code).toBe('new_field1_error');
@@ -163,16 +163,16 @@ describe('error-store', () => {
     });
 
     it('should add new field errors when field does not exist', () => {
-      errorStore.replace('server', [
+      errorStore.replace('auth0', [
         { code: 'existing', message: 'Existing', field: 'existing_field' }
       ]);
 
-      errorStore.replacePartial('server', [
+      errorStore.replacePartial('auth0', [
         { code: 'new_field', message: 'New field', field: 'new_field' }
       ], 'new_field');
 
       const snapshot = errorStore.snapshot();
-      expect(snapshot.server).toHaveLength(2);
+      expect(snapshot.auth0).toHaveLength(2);
     });
 
     it('should not notify if resulting list is equal', () => {
@@ -183,25 +183,25 @@ describe('error-store', () => {
       ];
 
       // Set initial state
-      errorStore.replace('client', initialErrors);
+      errorStore.replace('validation', initialErrors);
 
       // Subscribe after setting initial state
       errorStore.subscribe(listener);
 
       // Replace with same errors for same field (should result in same list)
-      errorStore.replacePartial('client', initialErrors, 'test_field');
+      errorStore.replacePartial('validation', initialErrors, 'test_field');
 
       expect(listener).not.toHaveBeenCalled();
     });
 
     it('should freeze the result', () => {
-      errorStore.replacePartial('developer', [
+      errorStore.replacePartial('configuration', [
         { code: 'partial_test', message: 'Partial test', field: 'test_field' }
       ], 'test_field');
 
       const snapshot = errorStore.snapshot();
-      expect(Object.isFrozen(snapshot.developer)).toBe(true);
-      expect(Object.isFrozen(snapshot.developer[0])).toBe(true);
+      expect(Object.isFrozen(snapshot.configuration)).toBe(true);
+      expect(Object.isFrozen(snapshot.configuration[0])).toBe(true);
     });
   });
 
@@ -209,11 +209,11 @@ describe('error-store', () => {
     it('should append single error to kind', () => {
       const error = { code: 'push_test', message: 'Push test', field: undefined };
 
-      errorStore.push('client', error);
+      errorStore.push('validation', error);
 
       const snapshot = errorStore.snapshot();
-      expect(snapshot.client).toHaveLength(1);
-      expect(snapshot.client[0].code).toBe('push_test');
+      expect(snapshot.validation).toHaveLength(1);
+      expect(snapshot.validation[0].code).toBe('push_test');
     });
 
     it('should append multiple errors to kind', () => {
@@ -222,50 +222,50 @@ describe('error-store', () => {
         { code: 'push2', message: 'Push 2', field: undefined }
       ];
 
-      errorStore.push('server', errors);
+      errorStore.push('auth0', errors);
 
       const snapshot = errorStore.snapshot();
-      expect(snapshot.server).toHaveLength(2);
-      expect(snapshot.server[0].code).toBe('push1');
-      expect(snapshot.server[1].code).toBe('push2');
+      expect(snapshot.auth0).toHaveLength(2);
+      expect(snapshot.auth0[0].code).toBe('push1');
+      expect(snapshot.auth0[1].code).toBe('push2');
     });
 
     it('should append to existing errors', () => {
-      errorStore.replace('developer', [
+      errorStore.replace('configuration', [
         { code: 'existing', message: 'Existing', field: undefined }
       ]);
 
-      errorStore.push('developer', { code: 'appended', message: 'Appended', field: undefined });
+      errorStore.push('configuration', { code: 'appended', message: 'Appended', field: undefined });
 
       const snapshot = errorStore.snapshot();
-      expect(snapshot.developer).toHaveLength(2);
-      expect(snapshot.developer[0].code).toBe('existing');
-      expect(snapshot.developer[1].code).toBe('appended');
+      expect(snapshot.configuration).toHaveLength(2);
+      expect(snapshot.configuration[0].code).toBe('existing');
+      expect(snapshot.configuration[1].code).toBe('appended');
     });
 
     it('should handle empty array', () => {
       const listener = jest.fn();
       errorStore.subscribe(listener);
 
-      errorStore.push('client', []);
+      errorStore.push('validation', []);
 
       expect(listener).not.toHaveBeenCalled();
     });
 
     it('should generate ids and freeze items', () => {
-      errorStore.push('server', { code: 'id_test', message: 'ID test', field: undefined });
+      errorStore.push('auth0', { code: 'id_test', message: 'ID test', field: undefined });
 
       const snapshot = errorStore.snapshot();
-      expect(snapshot.server[0]).toHaveProperty('id');
-      expect(typeof snapshot.server[0].id).toBe('string');
-      expect(Object.isFrozen(snapshot.server[0])).toBe(true);
+      expect(snapshot.auth0[0]).toHaveProperty('id');
+      expect(typeof snapshot.auth0[0].id).toBe('string');
+      expect(Object.isFrozen(snapshot.auth0[0])).toBe(true);
     });
 
     it('should notify listeners', () => {
       const listener = jest.fn();
       errorStore.subscribe(listener);
 
-      errorStore.push('client', { code: 'notify_test', message: 'Notify test', field: undefined });
+      errorStore.push('validation', { code: 'notify_test', message: 'Notify test', field: undefined });
 
       expect(listener).toHaveBeenCalledTimes(1);
     });
@@ -274,30 +274,30 @@ describe('error-store', () => {
   describe('clear method', () => {
     it('should clear all kinds by default', () => {
       // Add errors to all kinds
-      errorStore.push('client', { code: 'client_error', message: 'Client', field: undefined });
-      errorStore.push('server', { code: 'server_error', message: 'Server', field: undefined });
-      errorStore.push('developer', { code: 'dev_error', message: 'Developer', field: undefined });
+      errorStore.push('validation', { code: 'validation_error', message: 'validation', field: undefined });
+      errorStore.push('auth0', { code: 'auth0_error', message: 'auth0', field: undefined });
+      errorStore.push('configuration', { code: 'dev_error', message: 'configuration', field: undefined });
 
       errorStore.clear();
 
       const snapshot = errorStore.snapshot();
-      expect(snapshot.client).toHaveLength(0);
-      expect(snapshot.server).toHaveLength(0);
-      expect(snapshot.developer).toHaveLength(0);
+      expect(snapshot.validation).toHaveLength(0);
+      expect(snapshot.auth0).toHaveLength(0);
+      expect(snapshot.configuration).toHaveLength(0);
     });
 
     it('should clear specific kinds only', () => {
       // Add errors to all kinds
-      errorStore.push('client', { code: 'client_error', message: 'Client', field: undefined });
-      errorStore.push('server', { code: 'server_error', message: 'Server', field: undefined });
-      errorStore.push('developer', { code: 'dev_error', message: 'Developer', field: undefined });
+      errorStore.push('validation', { code: 'validation_error', message: 'validation', field: undefined });
+      errorStore.push('auth0', { code: 'auth0_error', message: 'auth0', field: undefined });
+      errorStore.push('configuration', { code: 'dev_error', message: 'configuration', field: undefined });
 
-      errorStore.clear(['client', 'server']);
+      errorStore.clear(['validation', 'auth0']);
 
       const snapshot = errorStore.snapshot();
-      expect(snapshot.client).toHaveLength(0);
-      expect(snapshot.server).toHaveLength(0);
-      expect(snapshot.developer).toHaveLength(1);
+      expect(snapshot.validation).toHaveLength(0);
+      expect(snapshot.auth0).toHaveLength(0);
+      expect(snapshot.configuration).toHaveLength(1);
     });
 
     it('should not notify if no changes', () => {
@@ -313,79 +313,79 @@ describe('error-store', () => {
     it('should notify if changes made', () => {
       const listener = jest.fn();
 
-      errorStore.push('client', { code: 'will_clear', message: 'Will clear', field: undefined });
+      errorStore.push('validation', { code: 'will_clear', message: 'Will clear', field: undefined });
       errorStore.subscribe(listener);
 
-      errorStore.clear(['client']);
+      errorStore.clear(['validation']);
 
       expect(listener).toHaveBeenCalledTimes(1);
     });
 
     it('should freeze cleared arrays', () => {
-      errorStore.push('server', { code: 'clear_test', message: 'Clear test', field: undefined });
-      errorStore.clear(['server']);
+      errorStore.push('auth0', { code: 'clear_test', message: 'Clear test', field: undefined });
+      errorStore.clear(['auth0']);
 
       const snapshot = errorStore.snapshot();
-      expect(Object.isFrozen(snapshot.server)).toBe(true);
+      expect(Object.isFrozen(snapshot.auth0)).toBe(true);
     });
   });
 
   describe('remove method', () => {
     beforeEach(() => {
       // Set up test data
-      errorStore.replace('client', [
+      errorStore.replace('validation', [
         { id: 'remove1', code: 'error1', message: 'Error 1', field: 'field1' },
         { id: 'remove2', code: 'error2', message: 'Error 2', field: 'field2' },
         { id: 'keep1', code: 'error3', message: 'Error 3', field: 'field1' }
       ]);
-      errorStore.replace('server', [
-        { id: 'server1', code: 'server_error', message: 'Server error', field: undefined }
+      errorStore.replace('auth0', [
+        { id: 'auth01', code: 'auth0_error', message: 'auth0 error', field: undefined }
       ]);
     });
 
     it('should remove error by id string', () => {
-      errorStore.remove(['client'], 'remove1');
+      errorStore.remove(['validation'], 'remove1');
 
       const snapshot = errorStore.snapshot();
-      expect(snapshot.client).toHaveLength(2);
-      expect(snapshot.client.find(e => e.id === 'remove1')).toBeUndefined();
-      expect(snapshot.client.find(e => e.id === 'remove2')).toBeDefined();
-      expect(snapshot.client.find(e => e.id === 'keep1')).toBeDefined();
+      expect(snapshot.validation).toHaveLength(2);
+      expect(snapshot.validation.find(e => e.id === 'remove1')).toBeUndefined();
+      expect(snapshot.validation.find(e => e.id === 'remove2')).toBeDefined();
+      expect(snapshot.validation.find(e => e.id === 'keep1')).toBeDefined();
     });
 
     it('should remove errors by predicate function', () => {
-      errorStore.remove(['client'], (e: ErrorItem) => e.field === 'field1');
+      errorStore.remove(['validation'], (e: ErrorItem) => e.field === 'field1');
 
       const snapshot = errorStore.snapshot();
-      expect(snapshot.client).toHaveLength(1);
-      expect(snapshot.client[0].field).toBe('field2');
+      expect(snapshot.validation).toHaveLength(1);
+      expect(snapshot.validation[0].field).toBe('field2');
     });
 
     it('should remove from all kinds by default', () => {
-      errorStore.remove(undefined, 'server1');
+      errorStore.remove(undefined, 'auth01');
 
       const snapshot = errorStore.snapshot();
-      expect(snapshot.server).toHaveLength(0);
-      expect(snapshot.client).toHaveLength(3); // unchanged
+      expect(snapshot.auth0).toHaveLength(0);
+      expect(snapshot.validation).toHaveLength(3); // unchanged
     });
 
     it('should remove from multiple kinds', () => {
       // Add an error with same id to multiple kinds
-      errorStore.push('server', { id: 'duplicate', code: 'dup', message: 'Duplicate', field: undefined });
-      errorStore.push('developer', { id: 'duplicate', code: 'dup', message: 'Duplicate', field: undefined });
+      errorStore.push('auth0', { id: 'duplicate', code: 'dup', message: 'Duplicate', field: undefined });
+      errorStore.push('configuration', { id: 'duplicate', code: 'dup', message: 'Duplicate', field: undefined });
 
-      errorStore.remove(['server', 'developer'], 'duplicate');
+      errorStore.remove(['auth0', 'configuration'], 'duplicate');
 
       const snapshot = errorStore.snapshot();
-      expect(snapshot.server.find(e => e.id === 'duplicate')).toBeUndefined();
-      expect(snapshot.developer.find(e => e.id === 'duplicate')).toBeUndefined();
+      expect(snapshot.auth0.find(e => e.id === 'duplicate')).toBeUndefined();
+      expect(snapshot.configuration.find(e => e.id === 'duplicate')).toBeUndefined();
     });
 
     it('should not notify if no changes', () => {
       const listener = jest.fn();
       errorStore.subscribe(listener);
 
-      errorStore.remove(['client'], 'nonexistent_id');
+      errorStore.remove(['validation'], 'nonexistent_id');
 
       expect(listener).not.toHaveBeenCalled();
     });
@@ -394,24 +394,24 @@ describe('error-store', () => {
       const listener = jest.fn();
       errorStore.subscribe(listener);
 
-      errorStore.remove(['client'], 'remove1');
+      errorStore.remove(['validation'], 'remove1');
 
       expect(listener).toHaveBeenCalledTimes(1);
     });
 
     it('should freeze result arrays', () => {
-      errorStore.remove(['client'], 'remove1');
+      errorStore.remove(['validation'], 'remove1');
 
       const snapshot = errorStore.snapshot();
-      expect(Object.isFrozen(snapshot.client)).toBe(true);
+      expect(Object.isFrozen(snapshot.validation)).toBe(true);
     });
 
     it('should handle complex predicate functions', () => {
-      errorStore.remove(['client'], (e: ErrorItem) => e.code.startsWith('error') && e.field === 'field1');
+      errorStore.remove(['validation'], (e: ErrorItem) => e.code.startsWith('error') && e.field === 'field1');
 
       const snapshot = errorStore.snapshot();
-      expect(snapshot.client).toHaveLength(1);
-      expect(snapshot.client[0].code).toBe('error2');
+      expect(snapshot.validation).toHaveLength(1);
+      expect(snapshot.validation[0].code).toBe('error2');
     });
   });
 
@@ -423,10 +423,10 @@ describe('error-store', () => {
         { code: 'id3', message: 'ID 3', field: undefined }
       ];
 
-      errorStore.replace('client', errors);
+      errorStore.replace('validation', errors);
 
       const snapshot = errorStore.snapshot();
-      const ids = snapshot.client.map(e => e.id);
+      const ids = snapshot.validation.map(e => e.id);
       const uniqueIds = new Set(ids);
 
       expect(uniqueIds.size).toBe(ids.length);
@@ -435,10 +435,10 @@ describe('error-store', () => {
     it('should generate ids that include timestamp', () => {
       const error = { code: 'timestamp_test', message: 'Timestamp test', field: undefined };
 
-      errorStore.push('server', error);
+      errorStore.push('auth0', error);
 
       const snapshot = errorStore.snapshot();
-      const id = snapshot.server[0].id;
+      const id = snapshot.auth0[0].id;
 
       expect(id).toMatch(/^\d+-\d+$/); // timestamp-counter format
     });
@@ -450,18 +450,18 @@ describe('error-store', () => {
       errorStore.clear();
       
       const currentSnapshot = errorStore.snapshot();
-      const currentClientArray = currentSnapshot.client;
+      const currentvalidationArray = currentSnapshot.validation;
       
       // Spy on the private normalize method through the errorStore instance
       const normalizeSpy = jest.spyOn(errorStore as any, 'normalize');
       
       // Make normalize return the exact same array reference from the bucket
-      normalizeSpy.mockReturnValueOnce(currentClientArray);
+      normalizeSpy.mockReturnValueOnce(currentvalidationArray);
       
       const listener = jest.fn();
       errorStore.subscribe(listener);
       
-      errorStore.replace('client', []);
+      errorStore.replace('validation', []);
       
       expect(listener).not.toHaveBeenCalled();
       
@@ -475,12 +475,12 @@ describe('error-store', () => {
         { id: '2', code: 'error2', message: 'Error 2', field: undefined }
       ];
 
-      errorStore.replace('client', list1);
+      errorStore.replace('validation', list1);
 
       // Replace with same list (should not trigger notification)
       const listener = jest.fn();
       errorStore.subscribe(listener);
-      errorStore.replace('client', list1);
+      errorStore.replace('validation', list1);
 
       expect(listener).not.toHaveBeenCalled();
     });
@@ -492,11 +492,11 @@ describe('error-store', () => {
         { code: 'error2', message: 'Error 2', field: undefined }
       ];
 
-      errorStore.replace('client', list1);
+      errorStore.replace('validation', list1);
 
       const listener = jest.fn();
       errorStore.subscribe(listener);
-      errorStore.replace('client', list2);
+      errorStore.replace('validation', list2);
 
       expect(listener).toHaveBeenCalledTimes(1);
     });
@@ -505,11 +505,11 @@ describe('error-store', () => {
       const list1 = [{ id: 'id1', code: 'error1', message: 'Error 1', field: undefined }];
       const list2 = [{ id: 'id2', code: 'error1', message: 'Error 1', field: undefined }];
 
-      errorStore.replace('client', list1);
+      errorStore.replace('validation', list1);
 
       const listener = jest.fn();
       errorStore.subscribe(listener);
-      errorStore.replace('client', list2);
+      errorStore.replace('validation', list2);
 
       expect(listener).toHaveBeenCalledTimes(1);
     });
@@ -522,13 +522,13 @@ describe('error-store', () => {
         { code: 'no_id', message: 'No ID', field: undefined }
       ];
 
-      errorStore.replace('developer', errors);
+      errorStore.replace('configuration', errors);
 
       const snapshot = errorStore.snapshot();
-      expect(snapshot.developer).toHaveLength(2);
-      expect(snapshot.developer[0].id).toBe('existing');
-      expect(snapshot.developer[1]).toHaveProperty('id');
-      expect(snapshot.developer[1].id).not.toBe('existing');
+      expect(snapshot.configuration).toHaveLength(2);
+      expect(snapshot.configuration[0].id).toBe('existing');
+      expect(snapshot.configuration[1]).toHaveProperty('id');
+      expect(snapshot.configuration[1].id).not.toBe('existing');
     });
 
     it('should handle empty field values', () => {
@@ -537,10 +537,10 @@ describe('error-store', () => {
         { code: 'undefined_field', message: 'Undefined field', field: undefined }
       ];
 
-      errorStore.replace('client', errors);
+      errorStore.replace('validation', errors);
 
       const snapshot = errorStore.snapshot();
-      expect(snapshot.client).toHaveLength(2);
+      expect(snapshot.validation).toHaveLength(2);
     });
 
     it('should handle large error lists', () => {
@@ -550,11 +550,11 @@ describe('error-store', () => {
         field: `field_${i % 10}`
       }));
 
-      errorStore.replace('server', largeList);
+      errorStore.replace('auth0', largeList);
 
       const snapshot = errorStore.snapshot();
-      expect(snapshot.server).toHaveLength(1000);
-      expect(snapshot.server.every(e => e.id)).toBe(true);
+      expect(snapshot.auth0).toHaveLength(1000);
+      expect(snapshot.auth0.every(e => e.id)).toBe(true);
     });
   });
 
@@ -563,13 +563,13 @@ describe('error-store', () => {
       const originalError = { code: 'immutable_test', message: 'Immutable test', field: 'test' };
       const originalErrorCopy = { ...originalError };
 
-      errorStore.push('client', originalError);
+      errorStore.push('validation', originalError);
 
       expect(originalError).toEqual(originalErrorCopy);
     });
 
     it('should return immutable snapshots', () => {
-      errorStore.push('server', { code: 'immutable', message: 'Immutable', field: undefined });
+      errorStore.push('auth0', { code: 'immutable', message: 'Immutable', field: undefined });
 
       const snapshot1 = errorStore.snapshot();
       const snapshot2 = errorStore.snapshot();

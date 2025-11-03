@@ -6,14 +6,14 @@ export interface ErrorItem extends Auth0Error {
   kind?: ErrorKind;
 }
 
-export type ErrorKind = 'server' | 'client' | 'developer';
+export type ErrorKind = 'auth0' | 'validation' | 'configuration';
 
-export const ERROR_KINDS: ErrorKind[] = ['server', 'client', 'developer'];
+export const ERROR_KINDS: ErrorKind[] = ['auth0', 'validation', 'configuration'];
 
 type Bucket = {
-  server: ReadonlyArray<ErrorItem>;
-  client: ReadonlyArray<ErrorItem>;
-  developer: ReadonlyArray<ErrorItem>;
+  auth0: ReadonlyArray<ErrorItem>;
+  validation: ReadonlyArray<ErrorItem>;
+  configuration: ReadonlyArray<ErrorItem>;
 };
 
 type Listener = () => void;
@@ -29,9 +29,9 @@ function listsEqual(a: ReadonlyArray<ErrorItem>, b: ReadonlyArray<ErrorItem>) {
 }
 
 const EMPTY_BUCKET: Bucket = Object.freeze({
-  server: Object.freeze([]),
-  client: Object.freeze([]),
-  developer: Object.freeze([]),
+  auth0: Object.freeze([]),
+  validation: Object.freeze([]),
+  configuration: Object.freeze([]),
 });
 
 let nextId = 0;

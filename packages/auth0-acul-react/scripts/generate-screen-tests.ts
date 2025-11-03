@@ -82,9 +82,9 @@ import { categorizeScreenExports } from './test-helpers';
 
 // Mock the base @auth0/auth0-acul-js module
 jest.mock('@auth0/auth0-acul-js', () => ({
-  SDKUsageError: class SDKUsageError extends Error {},
-  UserInputError: class UserInputError extends Error {},
-  Auth0ServerError: class Auth0ServerError extends Error {},
+  ConfigurationError: class ConfigurationError extends Error {},
+  ValidationError: class ValidationError extends Error {},
+  Auth0Error: class Auth0Error extends Error {},
   NetworkError: class NetworkError extends Error {},
   __esModule: true,
 }), { virtual: true });
