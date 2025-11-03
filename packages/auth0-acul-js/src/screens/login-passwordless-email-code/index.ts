@@ -16,7 +16,7 @@ import type {
   SubmitCodeOptions,
 } from '../../../interfaces/screens/login-passwordless-email-code';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import type { StartResendOptions, ResendControl } from  '../../../interfaces/utils/resend-control';
+import type { StartResendOptions, ResendControl } from '../../../interfaces/utils/resend-control';
 
 export default class LoginPasswordlessEmailCode extends BaseContext implements LoginPasswordlessEmailCodeMembers {
   static screenIdentifier: string = ScreenIds.LOGIN_PASSWORDLESS_EMAIL_CODE;

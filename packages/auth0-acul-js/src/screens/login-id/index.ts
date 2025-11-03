@@ -3,7 +3,7 @@ import { BaseContext } from '../../models/base-context';
 import { getBrowserCapabilities } from '../../utils/browser-capabilities';
 import { SDKUsageError } from '../../utils/errors';
 import { FormHandler } from '../../utils/form-handler';
-import { getLoginIdentifiers as _getLoginIdentifiers} from '../../utils/login-identifiers';
+import { getLoginIdentifiers as _getLoginIdentifiers } from '../../utils/login-identifiers';
 import { getPasskeyCredentials } from '../../utils/passkeys';
 import { registerPasskeyAutofill } from '../../utils/passkeys';
 
@@ -26,7 +26,7 @@ import type { IdentifierType } from 'interfaces/utils';
 export default class LoginId extends BaseContext implements LoginIdMembers {
   static screenIdentifier: string = ScreenIds.LOGIN_ID;
   #passkeyController?: AbortController;
-  #isConditionalUIRegistered = false; 
+  #isConditionalUIRegistered = false;
   screen: ScreenOptions;
   transaction: TransactionOptions;
 
@@ -170,7 +170,7 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
    * ```
    * @utilityFeature
    */
-  getLoginIdentifiers(): IdentifierType[] | null{
+  getLoginIdentifiers(): IdentifierType[] | null {
     return _getLoginIdentifiers(this.transaction.allowedIdentifiers);
   }
 
