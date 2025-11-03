@@ -37,11 +37,15 @@ export interface ScreenMembersOnResetPasswordMfaWebAuthnPlatformChallenge extend
   publicKey: PasskeyRead['public_key'] | null;
 
   /**
-   * Convenience getter for whether the "Remember this device" option should be shown.
-   * Derived from `screen.data.show_remember_device`. Defaults to `false` if not specified.
-   * @type {boolean}
+   * Screen-specific data for the reset-password-mfa-webauthn-platform-challenge screen
    */
-  showRememberDevice: boolean;
+  data: {
+    /**
+     * Indicates whether the "Remember this device" checkbox should be displayed.
+     * @type {boolean | undefined}
+     */
+    showRememberDevice?: boolean;
+  } | null;
 }
 
 /**

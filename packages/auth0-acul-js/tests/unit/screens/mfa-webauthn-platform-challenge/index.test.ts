@@ -50,24 +50,14 @@ describe('MfaWebAuthnPlatformChallenge SDK', () => {
     mockScreenOverrideInstance = {
       name: ScreenIds.MFA_WEBAUTHN_PLATFORM_CHALLENGE,
       publicKey: mockPublicKeyChallenge,
-      showRememberDevice: true,
+      data: {
+        showRememberDevice: true,
+      },
       // Mock other base ScreenMembers properties as needed by BaseContext or other parts
       captchaImage: null,
       captchaProvider: null,
       captchaSiteKey: null,
       isCaptchaAvailable: false,
-      data: { 
-        passkey: { 
-          public_key: {
-            ...mockPublicKeyChallenge,
-            user: { id: 'userId', name: 'userName', displayName: 'userDisplayName' },
-            rp: { id: 'rpId', name: 'rpName' },
-            pubKeyCredParams: [{ type: 'public-key', alg: -7 }],
-            authenticatorSelection: { residentKey: 'required', userVerification: 'preferred' }
-          } 
-        }, 
-        show_remember_device: true 
-      },
       links: null,
       texts: null,
       captcha: null,
@@ -123,8 +113,8 @@ describe('MfaWebAuthnPlatformChallenge SDK', () => {
       });
     });
 
-    it('should include rememberBrowser if options.rememberDevice is true and screen.showRememberDevice is true', async () => {
-      // Ensure screen.showRememberDevice is true (it is by default in mockScreenOverrideInstance)
+    it('should include rememberBrowser if options.rememberDevice is true and screen.data.showRememberDevice is true', async () => {
+      // Ensure screen.data.showRememberDevice is true (it is by default in mockScreenOverrideInstance)
       const options: VerifyPlatformAuthenticatorOptions = { rememberDevice: true };
       await sdkInstance.verify(options);
 
@@ -135,8 +125,10 @@ describe('MfaWebAuthnPlatformChallenge SDK', () => {
       );
     });
 
-    it('should NOT include rememberBrowser if options.rememberDevice is true BUT screen.showRememberDevice is false', async () => {
-      mockScreenOverrideInstance.showRememberDevice = false;
+    it('should NOT include rememberBrowser if options.rememberDevice is true BUT screen.data.showRememberDevice is false', async () => {
+      if (mockScreenOverrideInstance.data) {
+        mockScreenOverrideInstance.data.showRememberDevice = false;
+      }
       // Re-initialize sdkInstance because constructor uses the screen override instance
       sdkInstance = new MfaWebAuthnPlatformChallenge();
       const options: VerifyPlatformAuthenticatorOptions = { rememberDevice: true };

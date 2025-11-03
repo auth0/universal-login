@@ -37,8 +37,10 @@ describe('MfaWebAuthnRoamingChallenge SDK', () => {
     // Setup mock for ScreenOverride
     mockScreenOverrideInstance = {
       name: ScreenIds.MFA_WEBAUTHN_ROAMING_CHALLENGE,
-      showRememberDevice: true,
-      webAuthnType: 'roaming',
+      data: {
+        showRememberDevice: true,
+        webAuthnType: 'roaming',
+      },
       publicKey: mockPublicKey,
       // Add other necessary ScreenMembers properties if BaseContext or other parts rely on them
       captchaImage: null,
@@ -102,7 +104,9 @@ describe('MfaWebAuthnRoamingChallenge SDK', () => {
     });
 
     it('should NOT include rememberBrowser if options.rememberDevice is true but showRememberDevice is false', async () => {
-      mockScreenOverrideInstance.showRememberDevice = false; // Override mock for this test
+      if (mockScreenOverrideInstance.data) {
+        mockScreenOverrideInstance.data.showRememberDevice = false; // Override mock for this test
+      }
       sdkInstance = new MfaWebAuthnRoamingChallenge(); // Re-initialize to pick up new screen mock
 
       const options: VerifySecurityKeyOptions = { rememberDevice: true };

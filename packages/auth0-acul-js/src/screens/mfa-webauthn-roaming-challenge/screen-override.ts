@@ -13,8 +13,7 @@ import type { ScreenMembersOnMfaWebAuthnRoamingChallenge as OverrideOptions } fr
  * are correctly typed and accessible from the screen's data.
  */
 export class ScreenOverride extends Screen implements OverrideOptions {
-  showRememberDevice?: boolean | undefined;
-  webAuthnType: string | null;
+  data: OverrideOptions['data'];
   publicKey: PasskeyRead['public_key'] | null;
 
   /**
@@ -25,8 +24,7 @@ export class ScreenOverride extends Screen implements OverrideOptions {
   constructor(screenContext: ScreenContext) {
     super(screenContext);
     this.publicKey = ScreenOverride.getPublicKey(screenContext);
-    this.webAuthnType = ScreenOverride.getWebAuthnType(screenContext)
-    this.showRememberDevice = ScreenOverride.getShowRememberDevice(screenContext)
+    this.data = ScreenOverride.getScreenData(screenContext);
   }
 
 
@@ -35,15 +33,22 @@ export class ScreenOverride extends Screen implements OverrideOptions {
   };
 
   /**
-   * Retrieves the WebAuthn type from the screen context.
-   * @param screenContext The screen context containing the data.
-   * @returns The WebAuthn type (e.g., 'roaming') or null if not available.
+   * Extracts and transforms the screen data from the context
+   * @param screenContext The screen context containing the data
+   * @returns The transformed screen data
    */
-  static getWebAuthnType = (screenContext: ScreenContext): string | null => {
-    return getWebAuthnType(screenContext);
-  };
+  static getScreenData = (screenContext: ScreenContext): OverrideOptions['data'] => {
+    const data = screenContext.data;
+    if (!data) {
+      return null;
+    }
 
-  static getShowRememberDevice = (screenContext: ScreenContext): boolean => {
-    return getShowRememberDevice(screenContext)
-  }
+    const showRememberDevice = getShowRememberDevice(screenContext);
+    const webAuthnType = getWebAuthnType(screenContext);
+
+    return {
+      showRememberDevice: typeof showRememberDevice === 'boolean' ? showRememberDevice : undefined,
+      webAuthnType: typeof webAuthnType === 'string' ? webAuthnType : undefined,
+    };
+  };
 }

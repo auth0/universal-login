@@ -61,7 +61,7 @@ export default class MfaWebAuthnPlatformChallenge extends BaseContext implements
    * and then submits the resulting credential assertion to the Auth0 server.
    *
    * @param {VerifyPlatformAuthenticatorOptions} [options] - Optional parameters for the verification.
-   * This can include `rememberDevice` if `this.screen.showRememberDevice` is true,
+   * This can include `rememberDevice` if `this.screen.data.showRememberDevice` is true,
    * and any other custom key-value pairs to be sent in the form submission.
    * @returns {Promise<void>} A promise that resolves when the credential submission is initiated.
    * A successful operation typically results in a server-side redirect.
@@ -99,7 +99,7 @@ export default class MfaWebAuthnPlatformChallenge extends BaseContext implements
       response: JSON.stringify(credential), // The PublicKeyCredential response as a JSON string
     };
 
-    if (this.screen.showRememberDevice && rememberDevice) {
+    if (this.screen.data?.showRememberDevice && rememberDevice) {
       payloadToSubmit.rememberBrowser = true;
     }
 

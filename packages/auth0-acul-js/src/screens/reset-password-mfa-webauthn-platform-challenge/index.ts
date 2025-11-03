@@ -36,8 +36,7 @@ import type { PasskeyCredentialResponse } from '../../../interfaces/utils/passke
  */
 export default class ResetPasswordMfaWebAuthnPlatformChallenge
   extends BaseContext
-  implements ResetPasswordMfaWebAuthnPlatformChallengeMembers
-{
+  implements ResetPasswordMfaWebAuthnPlatformChallengeMembers {
   /**
    * static
    * @property {string} screenIdentifier - The unique identifier for the 'reset-password-mfa-webauthn-platform-challenge' screen.
@@ -73,7 +72,7 @@ export default class ResetPasswordMfaWebAuthnPlatformChallenge
    * If successful, it submits the resulting credential assertion to Auth0 with `action: "default"`.
    *
    * @param {ContinueWithPasskeyOptions} [options] - Optional parameters for the verification process,
-   * such as `rememberDevice` (if `screen.showRememberDevice` is true) and other custom options.
+   * such as `rememberDevice` (if `screen.data?.showRememberDevice` is true) and other custom options.
    * @returns {Promise<void>} A promise that resolves when the verification attempt is submitted.
    *                          A successful operation typically results in a redirect.
    * @throws {Error} Throws an error if `screen.publicKey` is missing,
@@ -86,7 +85,7 @@ export default class ResetPasswordMfaWebAuthnPlatformChallenge
    * // Assuming 'sdk' is an instance of ResetPasswordMfaWebAuthnPlatformChallenge
    * try {
    *   await sdk.continueWithPasskey({
-   *     rememberDevice: true // if user checked the box and sdk.screen.showRememberDevice is true
+   *     rememberDevice: true // if user checked the box and sdk.screen.data?.showRememberDevice is true
    *   });
    *   // On success, Auth0 handles redirection.
    * } catch (error) {
@@ -131,7 +130,7 @@ export default class ResetPasswordMfaWebAuthnPlatformChallenge
       response: JSON.stringify(credential), // The PublicKeyCredential response as a JSON string
     };
 
-    if (this.screen.showRememberDevice && rememberDevice) {
+    if (this.screen.data?.showRememberDevice && rememberDevice) {
       payloadToSubmit.rememberBrowser = 'true'; // Server expects 'true' as a string or boolean
     }
 

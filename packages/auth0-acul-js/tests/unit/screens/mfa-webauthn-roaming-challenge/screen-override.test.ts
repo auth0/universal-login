@@ -21,8 +21,8 @@ describe('MfaWebAuthnRoamingChallenge ScreenOverride', () => {
     const screenOverride = new ScreenOverride(screenContext);
 
     expect(screenOverride).toBeInstanceOf(Screen);
-    expect(screenOverride.showRememberDevice).toBe(true);
-    expect(screenOverride.webAuthnType).toBe('roaming');
+    expect(screenOverride.data?.showRememberDevice).toBe(true);
+    expect(screenOverride.data?.webAuthnType).toBe('roaming');
     expect(screenOverride.publicKey).toEqual(mockPublicKey);
   });
 
@@ -36,7 +36,7 @@ describe('MfaWebAuthnRoamingChallenge ScreenOverride', () => {
       },
     };
     const screenOverride = new ScreenOverride(screenContext);
-    expect(screenOverride.showRememberDevice).toBe(false);
+    expect(screenOverride.data?.showRememberDevice).toBe(false);
   });
 
   it('should handle show_remember_device being undefined', () => {
@@ -49,7 +49,10 @@ describe('MfaWebAuthnRoamingChallenge ScreenOverride', () => {
       },
     };
     const screenOverride = new ScreenOverride(screenContext);
-    expect(screenOverride.showRememberDevice).toBeFalsy();
+    // When show_remember_device is not present, getShowRememberDevice returns false
+    // So our code sets it to undefined only if it's not a boolean, but getShowRememberDevice always returns boolean
+    // Therefore, showRememberDevice will be false (the default from getShowRememberDevice)
+    expect(screenOverride.data?.showRememberDevice).toBe(false);
   });
 
   describe('static methods', () => {
@@ -86,48 +89,53 @@ describe('MfaWebAuthnRoamingChallenge ScreenOverride', () => {
       expect(result).toBeNull();
     });
 
-    it('should extract webauthnType correctly', () => {
+    it('should extract screen data with webAuthnType and showRememberDevice correctly', () => {
       const screenContext: ScreenContext = {
         name: 'mfa-webauthn-roaming-challenge',
         data: {
           webauthnType: 'roaming',
+          show_remember_device: true,
         },
       };
-      const result = ScreenOverride.getWebAuthnType(screenContext);
-      expect(result).toBe('roaming');
+      const result = ScreenOverride.getScreenData(screenContext);
+      expect(result?.webAuthnType).toBe('roaming');
+      expect(result?.showRememberDevice).toBe(true);
     });
 
-    it('should return null for webauthnType if it is missing', () => {
+    it('should return undefined for webAuthnType if it is missing', () => {
       const screenContext: ScreenContext = {
         name: 'mfa-webauthn-roaming-challenge',
         data: {
           // webauthnType is missing
-        },
-      };
-      const result = ScreenOverride.getWebAuthnType(screenContext);
-      expect(result).toBeNull();
-    });
-
-    it('should extract showRememberDevice correctly', () => {
-      const screenContext: ScreenContext = {
-        name: 'mfa-webauthn-roaming-challenge',
-        data: {
           show_remember_device: true,
         },
       };
-      const result = ScreenOverride.getShowRememberDevice(screenContext);
-      expect(result).toBe(true);
+      const result = ScreenOverride.getScreenData(screenContext);
+      expect(result?.webAuthnType).toBeUndefined();
+      expect(result?.showRememberDevice).toBe(true);
     });
 
-    it('should handle showRememberDevice when it is missing', () => {
+    it('should return false for showRememberDevice when it is missing', () => {
       const screenContext: ScreenContext = {
         name: 'mfa-webauthn-roaming-challenge',
         data: {
+          webauthnType: 'roaming',
           // show_remember_device is missing
         },
       };
-      const result = ScreenOverride.getShowRememberDevice(screenContext);
-      expect(result).toBe(false);
+      const result = ScreenOverride.getScreenData(screenContext);
+      expect(result?.webAuthnType).toBe('roaming');
+      // getShowRememberDevice returns false when missing
+      expect(result?.showRememberDevice).toBe(false);
+    });
+
+    it('should return null for screen data if data is missing', () => {
+      const screenContext: ScreenContext = {
+        name: 'mfa-webauthn-roaming-challenge',
+        data: undefined,
+      };
+      const result = ScreenOverride.getScreenData(screenContext);
+      expect(result).toBeNull();
     });
   });
 });

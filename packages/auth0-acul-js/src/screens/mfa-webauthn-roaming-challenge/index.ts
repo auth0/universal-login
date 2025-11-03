@@ -78,7 +78,7 @@ export default class MfaWebAuthnRoamingChallenge extends BaseContext implements 
       response: JSON.stringify(credential),
     };
 
-    if (this.screen.showRememberDevice && rememberDevice) {
+    if (this.screen.data?.showRememberDevice && rememberDevice) {
       payloadToSubmit.rememberBrowser = true;
     }
 

@@ -39,7 +39,7 @@ describe('ResetPasswordMfaWebAuthnRoamingChallenge ScreenOverride', () => {
     expect(sharedScreen.getPublicKey).toHaveBeenCalledWith(screenContext);
     expect(sharedScreen.getShowRememberDevice).toHaveBeenCalledWith(screenContext);
     expect(screenOverride.publicKey).toEqual(mockPublicKeyData);
-    expect(screenOverride.showRememberDevice).toBe(true);
+    expect(screenOverride.data?.showRememberDevice).toBe(true);
   });
 
   it('should handle show_remember_device being false', () => {
@@ -56,7 +56,7 @@ describe('ResetPasswordMfaWebAuthnRoamingChallenge ScreenOverride', () => {
     (sharedScreen.getShowRememberDevice as jest.Mock).mockReturnValue(false);
 
     const screenOverride = new ScreenOverride(screenContext);
-    expect(screenOverride.showRememberDevice).toBe(false);
+    expect(screenOverride.data?.showRememberDevice).toBe(false);
   });
 
   it('should default showRememberDevice to false if show_remember_device is undefined in context', () => {
@@ -73,7 +73,7 @@ describe('ResetPasswordMfaWebAuthnRoamingChallenge ScreenOverride', () => {
     (sharedScreen.getShowRememberDevice as jest.Mock).mockReturnValue(false); // Default behavior
 
     const screenOverride = new ScreenOverride(screenContext);
-    expect(screenOverride.showRememberDevice).toBe(false);
+    expect(screenOverride.data?.showRememberDevice).toBe(false);
   });
 
   it('should set publicKey to null if passkey data is missing', () => {
@@ -122,7 +122,7 @@ describe('ResetPasswordMfaWebAuthnRoamingChallenge ScreenOverride', () => {
 
     const screenOverride = new ScreenOverride(screenContext);
     expect(screenOverride.publicKey).toBeNull();
-    expect(screenOverride.showRememberDevice).toBe(false);
+    expect(screenOverride.data).toBeNull();
   });
 
   describe('static methods', () => {
@@ -136,14 +136,26 @@ describe('ResetPasswordMfaWebAuthnRoamingChallenge ScreenOverride', () => {
       expect(sharedScreen.getPublicKey).toHaveBeenCalledWith(screenContext);
     });
 
-    it('should call getShowRememberDevice from shared/screen', () => {
+    it('getScreenData should extract and transform screen data correctly', () => {
       const screenContext: ScreenContext = {
         name: 'test-screen',
         data: { show_remember_device: true },
       } as ScreenContext;
 
-      ScreenOverride.getShowRememberDevice(screenContext);
+      (sharedScreen.getShowRememberDevice as jest.Mock).mockReturnValue(true);
+      const result = ScreenOverride.getScreenData(screenContext);
       expect(sharedScreen.getShowRememberDevice).toHaveBeenCalledWith(screenContext);
+      expect(result?.showRememberDevice).toBe(true);
+    });
+
+    it('getScreenData should return null when data is missing', () => {
+      const screenContext: ScreenContext = {
+        name: 'test-screen',
+        data: undefined,
+      } as ScreenContext;
+
+      const result = ScreenOverride.getScreenData(screenContext);
+      expect(result).toBeNull();
     });
   });
 });

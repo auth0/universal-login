@@ -18,16 +18,20 @@ export interface ScreenMembersOnMfaWebAuthnRoamingChallenge extends ScreenMember
   publicKey: PasskeyRead['public_key'] | null;
 
   /**
-   * Indicates whether the "Remember this device" checkbox should be displayed.
-   * @type {boolean | undefined}
+   * Screen-specific data for the mfa-webauthn-roaming-challenge screen
    */
-  showRememberDevice?: boolean;
-
-  /**
-   * The type of WebAuthn authenticator involved, expected to be "roaming" for this screen.
-   * @type {string | null}
-   */
-  webAuthnType: string | null;
+  data: {
+    /**
+     * The type of WebAuthn authenticator involved, expected to be "roaming" for this screen.
+     * @type {string | undefined}
+     */
+    webAuthnType?: string;
+    /**
+     * Indicates whether the "Remember this device" checkbox should be displayed.
+     * @type {boolean | undefined}
+     */
+    showRememberDevice?: boolean;
+  } | null;
 }
 
 /**

@@ -53,23 +53,13 @@ describe('ResetPasswordMfaWebAuthnPlatformChallenge SDK', () => {
     mockScreenOverrideInstance = {
       name: ScreenIds.RESET_PASSWORD_MFA_WEBAUTHN_PLATFORM_CHALLENGE,
       publicKey: mockPublicKeyChallengeOptions,
-      showRememberDevice: true,
       texts: { title: 'Verify Your Identity' },
       captchaImage: null,
       captchaProvider: null,
       captchaSiteKey: null,
       isCaptchaAvailable: false,
       data: {
-        passkey: { 
-          public_key: {
-            ...mockPublicKeyChallengeOptions,
-            user: { id: 'user-id', name: 'user-name', displayName: 'User Display Name' },
-            rp: { id: 'rp-id', name: 'RP Name' },
-            pubKeyCredParams: [{ type: 'public-key', alg: -7 }],
-            authenticatorSelection: { residentKey: 'required', userVerification: 'preferred' },
-          },
-        },
-        show_remember_device: true,
+        showRememberDevice: true,
       },
       links: null,
       captcha: null,
@@ -121,8 +111,8 @@ describe('ResetPasswordMfaWebAuthnPlatformChallenge SDK', () => {
       });
     });
 
-    it('should include rememberBrowser=true if options.rememberDevice is true and screen.showRememberDevice is true', async () => {
-      mockScreenOverrideInstance.showRememberDevice = true;
+    it('should include rememberBrowser=true if options.rememberDevice is true and screen.data.showRememberDevice is true', async () => {
+      mockScreenOverrideInstance.data = { showRememberDevice: true };
       sdkInstance = new ResetPasswordMfaWebAuthnPlatformChallenge(); // Re-initialize
 
       const options: ContinueWithPasskeyOptions = { rememberDevice: true };
@@ -136,8 +126,8 @@ describe('ResetPasswordMfaWebAuthnPlatformChallenge SDK', () => {
       );
     });
 
-    it('should NOT include rememberBrowser if options.rememberDevice is true BUT screen.showRememberDevice is false', async () => {
-      mockScreenOverrideInstance.showRememberDevice = false;
+    it('should NOT include rememberBrowser if options.rememberDevice is true BUT screen.data.showRememberDevice is false', async () => {
+      mockScreenOverrideInstance.data = { showRememberDevice: false };
       sdkInstance = new ResetPasswordMfaWebAuthnPlatformChallenge(); // Re-initialize
 
       const options: ContinueWithPasskeyOptions = { rememberDevice: true };
@@ -147,7 +137,7 @@ describe('ResetPasswordMfaWebAuthnPlatformChallenge SDK', () => {
       expect(submittedData.rememberBrowser).toBeUndefined();
       expect(submittedData.response).toBe(JSON.stringify(mockSuccessfulCredentialResponse));
     });
-    
+
     it('should throw error if screen.publicKey is null', async () => {
       mockScreenOverrideInstance.publicKey = null;
       sdkInstance = new ResetPasswordMfaWebAuthnPlatformChallenge(); // Re-initialize to pick up new mock
@@ -192,7 +182,7 @@ describe('ResetPasswordMfaWebAuthnPlatformChallenge SDK', () => {
         'The `error` property in options, with `name` and `message` strings, is required.',
       );
       // @ts-expect-error Testing invalid input
-      await expect(sdkInstance.reportBrowserError({ error: { name: 'Test' }})).rejects.toThrow(
+      await expect(sdkInstance.reportBrowserError({ error: { name: 'Test' } })).rejects.toThrow(
         'The `error` property in options, with `name` and `message` strings, is required.',
       );
     });

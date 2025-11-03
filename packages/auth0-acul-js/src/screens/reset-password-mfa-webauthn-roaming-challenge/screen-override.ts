@@ -21,18 +21,14 @@ export class ScreenOverride extends Screen implements OverrideOptions {
    * Provides the challenge and related options for `navigator.credentials.get()`.
    * It is `null` if the `passkey.public_key` data is not available in the screen context.
    * @type {PasskeyRead['public_key'] | null}
-   * @public
    */
-  public publicKey: PasskeyRead['public_key'] | null;
+  publicKey: PasskeyRead['public_key'] | null;
 
   /**
-   * A convenience accessor for `this.data.show_remember_device`.
-   * Indicates if the "Remember this device" option should be displayed to the user.
-   * Defaults to `false` if not present in the screen context data.
-   * @type {boolean}
-   * @public
+   * Screen-specific data containing showRememberDevice flag.
+   * @type {object | null}
    */
-  public showRememberDevice: boolean;
+  data: OverrideOptions['data'];
 
   /**
    * Initializes a new instance of the `ScreenOverride` class for the 'reset-password-mfa-webauthn-roaming-challenge' screen.
@@ -44,14 +40,30 @@ export class ScreenOverride extends Screen implements OverrideOptions {
   constructor(screenContext: ScreenContext) {
     super(screenContext); // Initialize the base Screen class
     this.publicKey = ScreenOverride.getPublicKey(screenContext);
-    this.showRememberDevice = ScreenOverride.getShowRememberDevice(screenContext)
+    this.data = ScreenOverride.getScreenData(screenContext);
   }
 
   static getPublicKey = (screenContext: ScreenContext): OverrideOptions['publicKey'] => {
     return getPublicKey(screenContext) as OverrideOptions['publicKey'];
   };
 
-  static getShowRememberDevice = (screenContext: ScreenContext): boolean => {
-    return getShowRememberDevice(screenContext)
-  }
+  /**
+   * @static
+   * @method getScreenData
+   * @description Extracts and transforms the screen data from the context
+   * @param {ScreenContext} screenContext - The screen context containing the raw data.
+   * @returns {object | null} The transformed screen data with showRememberDevice
+   */
+  static getScreenData = (screenContext: ScreenContext): OverrideOptions['data'] => {
+    const data = screenContext.data;
+    if (!data) {
+      return null;
+    }
+
+    const showRememberDevice = getShowRememberDevice(screenContext);
+
+    return {
+      showRememberDevice: typeof showRememberDevice === 'boolean' ? showRememberDevice : undefined,
+    };
+  };
 }

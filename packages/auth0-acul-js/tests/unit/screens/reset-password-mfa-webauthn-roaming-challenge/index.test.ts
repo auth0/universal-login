@@ -48,7 +48,9 @@ describe('ResetPasswordMfaWebAuthnRoamingChallenge SDK', () => {
     mockScreenOverrideInstance = {
       name: ScreenIds.RESET_PASSWORD_MFA_WEBAUTHN_ROAMING_CHALLENGE,
       publicKey: mockPublicKeyChallenge,
-      showRememberDevice: true, // Default to true for testing rememberDevice logic
+      data: {
+        showRememberDevice: true, // Default to true for testing rememberDevice logic
+      },
       links: null,
       texts: null,
       captcha: null,
@@ -119,8 +121,8 @@ describe('ResetPasswordMfaWebAuthnRoamingChallenge SDK', () => {
       );
     });
 
-    it('should NOT include rememberBrowser if options.rememberDevice is true BUT screen.showRememberDevice is false', async () => {
-      mockScreenOverrideInstance.showRememberDevice = false;
+    it('should NOT include rememberBrowser if options.rememberDevice is true BUT screen.data.showRememberDevice is false', async () => {
+      mockScreenOverrideInstance.data = { showRememberDevice: false };
       sdkInstance = new ResetPasswordMfaWebAuthnRoamingChallenge(); // Re-initialize
       const options: UseSecurityKeyOptions = { rememberDevice: true };
       await sdkInstance.useSecurityKey(options);
