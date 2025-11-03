@@ -1,5 +1,18 @@
 # Change Log
 
+## [auth0-acul-react-v0.0.1-alpha.0](https://github.com/auth0/universal-login/tree/auth0-acul-react-v0.0.1-alpha.0) (2025-11-03)
+
+**Added**
+- Update: Renamed custom errors in TS and React SDK [\#255](https://github.com/auth0/universal-login/pull/255) ([ankita10119](https://github.com/ankita10119))
+- feat: flexible connection switching [\#250](https://github.com/auth0/universal-login/pull/250) ([amitsingh05667](https://github.com/amitsingh05667))
+- Added support for passkey autofill on react SDK [\#249](https://github.com/auth0/universal-login/pull/249) ([nandan-bhat](https://github.com/nandan-bhat))
+- feat(mfa-login-options): add returnToPrevious for back navigation  [\#238](https://github.com/auth0/universal-login/pull/238) ([amitsingh05667](https://github.com/amitsingh05667))
+- added: Polling for the mfa-push-enrollment-qr screen [\#240](https://github.com/auth0/universal-login/pull/240) ([aks96](https://github.com/aks96))
+
+**Fixed**
+- Refactor: Simplify reset password logic and enhance password  [\#254](https://github.com/auth0/universal-login/pull/254) ([amitsingh05667](https://github.com/amitsingh05667))
+- Refactor: Rename Login Password Policy Methods [\#253](https://github.com/auth0/universal-login/pull/253) ([amitsingh05667](https://github.com/amitsingh05667))
+
 ## [auth0-acul-react-1.0.0-alpha.1](https://github.com/auth0/universal-login/tree/auth0-acul-react-1.0.0-alpha.1) (2025-10-16)
 
 **Added**
