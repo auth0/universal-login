@@ -9,12 +9,12 @@ import type { ScreenMembersOnMfaWebAuthnRoamingChallenge as OverrideOptions } fr
  * @extends Screen
  * @implements OverrideOptions
  * @description Provides specific data accessors for the 'mfa-webauthn-roaming-challenge' screen context.
- * It ensures that `showRememberDevice`, `webauthnType`, and `publicKeyChallengeOptions`
+ * It ensures that `showRememberDevice`, `webAuthnType`, and `publicKeyChallengeOptions`
  * are correctly typed and accessible from the screen's data.
  */
 export class ScreenOverride extends Screen implements OverrideOptions {
   showRememberDevice?: boolean | undefined;
-  webauthnType: string | null;
+  webAuthnType: string | null;
   publicKey: PasskeyRead['public_key'] | null;
 
   /**
@@ -25,25 +25,25 @@ export class ScreenOverride extends Screen implements OverrideOptions {
   constructor(screenContext: ScreenContext) {
     super(screenContext);
     this.publicKey = ScreenOverride.getPublicKey(screenContext);
-    this.webauthnType = ScreenOverride.getWebAuthnType(screenContext)
+    this.webAuthnType = ScreenOverride.getWebAuthnType(screenContext)
     this.showRememberDevice = ScreenOverride.getShowRememberDevice(screenContext)
   }
 
-  
-    static getPublicKey = (screenContext: ScreenContext): OverrideOptions['publicKey'] => {
-      return getPublicKey(screenContext) as OverrideOptions['publicKey'];
-    };
-    
-    /**
-     * Retrieves the WebAuthn type from the screen context.
-     * @param screenContext The screen context containing the data.
-     * @returns The WebAuthn type (e.g., 'roaming') or null if not available.
-     */
-    static getWebAuthnType = (screenContext: ScreenContext): string | null => {
-      return getWebAuthnType(screenContext);
-    };
 
-    static getShowRememberDevice = (screenContext: ScreenContext): boolean => {
-      return getShowRememberDevice(screenContext)
-    }
+  static getPublicKey = (screenContext: ScreenContext): OverrideOptions['publicKey'] => {
+    return getPublicKey(screenContext) as OverrideOptions['publicKey'];
+  };
+
+  /**
+   * Retrieves the WebAuthn type from the screen context.
+   * @param screenContext The screen context containing the data.
+   * @returns The WebAuthn type (e.g., 'roaming') or null if not available.
+   */
+  static getWebAuthnType = (screenContext: ScreenContext): string | null => {
+    return getWebAuthnType(screenContext);
+  };
+
+  static getShowRememberDevice = (screenContext: ScreenContext): boolean => {
+    return getShowRememberDevice(screenContext)
+  }
 }

@@ -7,17 +7,27 @@ import type { ScreenMembers, PasskeyRead } from '../models/screen';
  * @extends ScreenMembers
  * description Describes the specific properties available on the `screen` object for the
  * 'mfa-webauthn-roaming-challenge' screen.
- *
- * @property {object | null} data - Screen-specific data.
- * @property {boolean} [data.show_remember_device] - Optional flag indicating whether to show the "Remember this device" option.
- * @property {string} data.webauthnType - The type of WebAuthn authenticator involved, expected to be "roaming" for this screen.
- * @property {PasskeyRead['public_key'] | null} data.publicKeyChallengeOptions - The public key credential request options (specifically the challenge)
- * needed to call `navigator.credentials.get()`. This is derived from `universal_login_context.screen.data.passkey.public_key`.
  */
 export interface ScreenMembersOnMfaWebAuthnRoamingChallenge extends ScreenMembers {
-    showRememberDevice?: boolean;
-    webauthnType: string | null;
-    publicKey: PasskeyRead['public_key'] | null;
+  /**
+   * Direct access to the `PublicKeyCredentialRequestOptions` (specifically the challenge part)
+   * needed for `navigator.credentials.get()`.
+   * This is a convenience accessor for `data?.passkey?.public_key`.
+   * @type {PasskeyRead['public_key'] | null}
+   */
+  publicKey: PasskeyRead['public_key'] | null;
+
+  /**
+   * Indicates whether the "Remember this device" checkbox should be displayed.
+   * @type {boolean | undefined}
+   */
+  showRememberDevice?: boolean;
+
+  /**
+   * The type of WebAuthn authenticator involved, expected to be "roaming" for this screen.
+   * @type {string | null}
+   */
+  webAuthnType: string | null;
 }
 
 /**
@@ -49,7 +59,7 @@ export interface ReportWebAuthnErrorOptions {
  * description Defines the options for the `tryAnotherMethod` method.
  * Currently, it only supports `CustomOptions` for extensibility.
  */
-export interface TryAnotherMethodOptions extends CustomOptions {}
+export interface TryAnotherMethodOptions extends CustomOptions { }
 
 /**
  * @interface MfaWebAuthnRoamingChallengeMembers

@@ -22,7 +22,7 @@ describe('MfaWebAuthnRoamingChallenge ScreenOverride', () => {
 
     expect(screenOverride).toBeInstanceOf(Screen);
     expect(screenOverride.showRememberDevice).toBe(true);
-    expect(screenOverride.webauthnType).toBe('roaming');
+    expect(screenOverride.webAuthnType).toBe('roaming');
     expect(screenOverride.publicKey).toEqual(mockPublicKey);
   });
 
