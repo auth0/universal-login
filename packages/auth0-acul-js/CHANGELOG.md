@@ -13,7 +13,7 @@
 **Fixed**
 - Refactor: Simplify reset password logic and enhance password  [\#254](https://github.com/auth0/universal-login/pull/254) ([amitsingh05667](https://github.com/amitsingh05667))
 
-## [auth0-acul-j@1.0.0-alpha.1](https://github.com/auth0/universal-login/tree/auth0-acul-js%401.0.0-alpha.1) (2025-10-16)
+## [auth0-acul-js@1.0.0-alpha.1](https://github.com/auth0/universal-login/tree/auth0-acul-js%401.0.0-alpha.1) (2025-10-16)
 
 **Added**
 - Update: Updated examples and type doc [\#230](https://github.com/auth0/universal-login/pull/230) ([ankita10119](https://github.com/ankita10119))
