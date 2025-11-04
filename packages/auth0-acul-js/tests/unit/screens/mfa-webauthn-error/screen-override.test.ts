@@ -17,7 +17,7 @@ describe('MfaWebAuthnError ScreenOverride', () => {
 
     expect(screenOverride.data).toBeDefined();
     expect(screenOverride.data?.errorType).toBe('NotAllowedError');
-    expect(screenOverride.data?.webauthnType).toBe('webauthn-platform');
+    expect(screenOverride.data?.webAuthnType).toBe('webauthn-platform');
   });
 
   it('should parse webauthn-roaming type correctly', () => {
@@ -30,7 +30,7 @@ describe('MfaWebAuthnError ScreenOverride', () => {
     } as ScreenContext;
 
     const screenOverride = new ScreenOverride(screenContext);
-    expect(screenOverride.data?.webauthnType).toBe('webauthn-roaming');
+    expect(screenOverride.data?.webAuthnType).toBe('webauthn-roaming');
   });
 
   it('should return null for data if screenContext.data is undefined', () => {
@@ -54,7 +54,7 @@ describe('MfaWebAuthnError ScreenOverride', () => {
     expect(screenOverride.data).toBeNull();
   });
 
-  it('should return null if webauthnType is missing', () => {
+  it('should return null if webAuthnType is missing', () => {
     const screenContext: ScreenContext = {
       name: 'mfa-webauthn-error',
       data: {
@@ -65,7 +65,7 @@ describe('MfaWebAuthnError ScreenOverride', () => {
     expect(screenOverride.data).toBeNull();
   });
 
-  it('should return null if webauthnType is invalid', () => {
+  it('should return null if webAuthnType is invalid', () => {
     const screenContext: ScreenContext = {
       name: 'mfa-webauthn-error',
       data: {
@@ -93,7 +93,7 @@ describe('MfaWebAuthnError ScreenOverride', () => {
         data: { errorType: 'Error', webauthnType: 'webauthn-roaming' },
       } as ScreenContext;
       const result = ScreenOverride.getScreenData(screenContext);
-      expect(result).toEqual({ errorType: 'Error', webauthnType: 'webauthn-roaming' });
+      expect(result).toEqual({ errorType: 'Error', webAuthnType: 'webauthn-roaming' });
     });
 
     it('should return null if data is missing', () => {

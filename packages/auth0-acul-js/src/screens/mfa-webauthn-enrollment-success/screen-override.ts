@@ -9,14 +9,14 @@ import type { WebAuthnType } from '../../../interfaces/screens/mfa-webauthn-erro
  * @extends Screen
  * @implements OverrideOptions
  * @description Provides specific data accessors for the 'mfa-webauthn-enrollment-success' screen context.
- * It ensures that `nickname` and `webauthnType` are correctly parsed and typed from the
+ * It ensures that `nickname` and `webAuthnType` are correctly parsed and typed from the
  * `screen.data` object provided by the Universal Login context.
  */
 export class ScreenOverride extends Screen implements OverrideOptions {
   /**
    * @property {object | null} data - Screen-specific data.
    * @property {string} data.nickname - The nickname of the enrolled WebAuthn authenticator.
-   * @property {WebAuthnType} data.webauthnType - The type of the enrolled WebAuthn authenticator.
+   * @property {WebAuthnType} data.webAuthnType - The type of the enrolled WebAuthn authenticator.
    */
   public data: OverrideOptions['data'];
 
@@ -35,11 +35,11 @@ export class ScreenOverride extends Screen implements OverrideOptions {
    * @static
    * @method getScreenData
    * @description Extracts and transforms the screen-specific data from the provided `ScreenContext`.
-   * Specifically, it retrieves `nickname` and `webauthnType` from `screenContext.data`.
+   * Specifically, it retrieves `nickname` and `webAuthnType` from `screenContext.data`.
    *
    * @param {ScreenContext} screenContext - The screen context containing the raw data.
-   * @returns {OverrideOptions['data']} A structured object containing `nickname` and `webauthnType`.
-   * Returns `null` if the essential data (`nickname` or `webauthnType`) is missing or invalid in type.
+   * @returns {OverrideOptions['data']} A structured object containing `nickname` and `webAuthnType`.
+   * Returns `null` if the essential data (`nickname` or `webAuthnType`) is missing or invalid in type.
    */
   static getScreenData = (screenContext: ScreenContext): OverrideOptions['data'] => {
     const rawData = screenContext.data;
@@ -58,7 +58,7 @@ export class ScreenOverride extends Screen implements OverrideOptions {
     // Return the structured data object with validated and typed properties.
     return {
       nickname: rawData.nickname,
-      webauthnType: rawData.webauthnType as WebAuthnType,
+      webAuthnType: rawData.webauthnType as WebAuthnType,
     };
   };
 }

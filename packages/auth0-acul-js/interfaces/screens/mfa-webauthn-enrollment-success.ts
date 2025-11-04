@@ -11,13 +11,13 @@ import type { ScreenMembers } from '../models/screen';
  *
  * @property {object | null} data - Screen-specific data.
  * @property {string} data.nickname - The nickname assigned to the newly enrolled WebAuthn authenticator.
- * @property {WebAuthnType} data.webauthnType - The type of WebAuthn authenticator that was enrolled
+ * @property {WebAuthnType} data.webAuthnType - The type of WebAuthn authenticator that was enrolled
  * (either 'webauthn-roaming' or 'webauthn-platform').
  */
 export interface ScreenMembersOnMfaWebAuthnEnrollmentSuccess extends ScreenMembers {
   /**
    * Screen-specific data containing details about the successful WebAuthn enrollment.
-   * @type {{ nickname: string; webauthnType: WebAuthnType; } | null}
+   * @type {{ nickname: string; webAuthnType: WebAuthnType; } | null}
    */
   data: {
     /**
@@ -34,7 +34,7 @@ export interface ScreenMembersOnMfaWebAuthnEnrollmentSuccess extends ScreenMembe
      * - `'webauthn-platform'`: Indicates a platform authenticator like Touch ID or Windows Hello.
      * @type {WebAuthnType}
      */
-    webauthnType: WebAuthnType;
+    webAuthnType: WebAuthnType;
   } | null;
 }
 
@@ -58,7 +58,7 @@ export interface ContinueOptions extends CustomOptions {
 export interface MfaWebAuthnEnrollmentSuccessMembers extends BaseMembers {
   /**
    * Access to the specific properties and data of the 'mfa-webauthn-enrollment-success' screen.
-   * Includes the `nickname` of the enrolled authenticator and its `webauthnType`.
+   * Includes the `nickname` of the enrolled authenticator and its `webAuthnType`.
    * @type {ScreenMembersOnMfaWebAuthnEnrollmentSuccess}
    */
   screen: ScreenMembersOnMfaWebAuthnEnrollmentSuccess;

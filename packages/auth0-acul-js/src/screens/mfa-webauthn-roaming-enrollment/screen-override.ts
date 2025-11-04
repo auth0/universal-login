@@ -8,7 +8,7 @@ import type { ScreenMembersOnMfaWebAuthnRoamingEnrollment as OverrideOptions } f
  * Provides specific data parsing for this screen.
  */
 export class ScreenOverride extends Screen implements OverrideOptions {
-  webauthnType: string | null
+  webAuthnType: string | null
   publicKey: OverrideOptions['publicKey'];
   /**
    * Creates an instance of ScreenOverride for mfa-webauthn-roaming-enrollment.
@@ -17,13 +17,13 @@ export class ScreenOverride extends Screen implements OverrideOptions {
   constructor(screenContext: ScreenContext) {
     super(screenContext);
     this.publicKey = ScreenOverride.getPublicKey(screenContext);
-    this.webauthnType = ScreenOverride.getWebAuthnType(screenContext)
+    this.webAuthnType = ScreenOverride.getWebAuthnType(screenContext)
   }
 
   static getPublicKey = (screenContext: ScreenContext): OverrideOptions['publicKey'] => {
     return getPublicKey(screenContext) as OverrideOptions['publicKey'];
   };
-  
+
   /**
    * Retrieves the WebAuthn type from the screen context.
    * @param screenContext The screen context containing the data.

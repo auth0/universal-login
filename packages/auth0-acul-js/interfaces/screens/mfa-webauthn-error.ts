@@ -22,7 +22,7 @@ export interface ScreenMembersOnMfaWebAuthnError extends ScreenMembers {
    * @property {object | null} data - Screen-specific data detailing the WebAuthn error.
    * @property {string} data.errorType - A string code or message describing the nature of the WebAuthn error
    * (e.g., "NotAllowedError", "TimeoutError", "InvalidStateError").
-   * @property {WebAuthnType} data.webauthnType - Indicates whether the error occurred with a 'webauthn-roaming'
+   * @property {WebAuthnType} data.webAuthnType - Indicates whether the error occurred with a 'webauthn-roaming'
    * or 'webauthn-platform' authenticator.
    */
   data: {
@@ -33,7 +33,7 @@ export interface ScreenMembersOnMfaWebAuthnError extends ScreenMembers {
     /**
      * The type of WebAuthn authenticator involved.
      */
-    webauthnType: WebAuthnType;
+    webAuthnType: WebAuthnType;
   } | null;
 }
 
@@ -48,7 +48,7 @@ export interface MfaWebAuthnErrorMembers extends BaseMembers {
    * The screen object with MFA WebAuthn Error specific data structure.
    */
   screen: ScreenMembersOnMfaWebAuthnError;
-  
+
   /**
    * Allows the user to attempt the previous WebAuthn operation again.
    * This typically redirects the user back to the screen where the WebAuthn operation was initiated.
