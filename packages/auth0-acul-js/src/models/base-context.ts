@@ -1,5 +1,8 @@
+import { FormActions } from '../constants';
 import { Branding, Client, Prompt, Screen, Organization, User, Transaction, Tenant, UntrustedData } from '../models';
+import { FormHandler } from '../utils/form-handler';
 
+import type { LanguageChangeOptions } from '../../interfaces/common';
 import type {
   ClientMembers,
   PromptMembers,
@@ -13,6 +16,7 @@ import type {
 } from '../../interfaces/models';
 import type { BaseContext as UniversalLoginContext, BaseMembers } from '../../interfaces/models/base-context';
 import type { Error as TransactionError } from '../../interfaces/models/transaction';
+import type { FormOptions } from '../../interfaces/utils/form-handler';
 
 /**
  * @class BaseContext
@@ -98,5 +102,67 @@ export class BaseContext implements BaseMembers {
   */
   getErrors(): TransactionError[] {
     return this.transaction?.errors ?? [];
+  }
+
+  /**
+   * Changes the language/locale for the current authentication flow.
+   * 
+   * This method triggers a language change by submitting the new locale preference
+   * to the server with the 'change-language' action. The language change will cause
+   * the current screen to re-render with the new locale.
+   * 
+   * @param options - Language change options including the target language code
+   * @param options.language - Short language name (locale code) to be set (e.g., 'en', 'fr', 'es')
+   * @param options.persist - Persistence scope for the language preference (defaults to 'session')
+   * 
+   * @returns A promise that resolves when the form submission is complete
+   * 
+   * @example
+   * ```typescript
+   * import LoginId from "@auth0/auth0-acul-js/login-id";
+   * 
+   * const loginManager = new LoginId();
+   * 
+   * // Change language to French
+   * await loginManager.changeLanguage({
+   *   language: 'fr',
+   *   persist: 'session'
+   * });
+   * ```
+   * 
+   * @example
+   * ```typescript
+   * import LoginPassword from "@auth0/auth0-acul-js/login-password";
+   * 
+   * const loginPasswordManager = new LoginPassword();
+   * 
+   * // Change language to Spanish with additional custom data
+   * await loginPasswordManager.changeLanguage({
+   *   language: 'es',
+   *   persist: 'session',
+   *   'ulp-custom-field': 'custom-value'
+   * });
+   * ```
+   * 
+   * @remarks
+   * - This method is available on all screen instances that extend BaseContext
+   * - The language must be one of the enabled locales configured in your Auth0 tenant
+   * - The screen will automatically re-render with the new language after submission
+   * - Custom fields can be included and will be accessible in the Post Login Trigger
+   * 
+   * @category Language
+   * @utilityFeature
+   */
+  async changeLanguage(options: LanguageChangeOptions): Promise<void> {
+    const screenIdentifier = (this.constructor as typeof BaseContext).screenIdentifier || 'base';
+    const formOptions: FormOptions = {
+      state: this.transaction.state,
+      telemetry: [screenIdentifier, 'changeLanguage'],
+    };
+
+    await new FormHandler(formOptions).submitData<LanguageChangeOptions>({
+      ...options,
+      action: FormActions.CHANGE_LANGUAGE,
+    });
   }
 }
