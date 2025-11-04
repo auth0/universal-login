@@ -2,18 +2,20 @@ import { Screen } from '../../../../src/models/screen';
 import { ScreenOverride } from '../../../../src/screens/mfa-webauthn-roaming-challenge/screen-override';
 
 import type { ScreenContext } from '../../../../interfaces/models/screen';
+import type { WebAuthnType } from '../../../../interfaces/screens/mfa-webauthn-error';
 
 describe('MfaWebAuthnRoamingChallenge ScreenOverride', () => {
   const mockPublicKey = {
     challenge: 'mockChallengeStringBase64Url',
   };
+  const validWebauthnTypeRoaming: WebAuthnType = 'webauthn-roaming';
 
   it('should correctly initialize with valid screen context data', () => {
     const screenContext: ScreenContext = {
       name: 'mfa-webauthn-roaming-challenge',
       data: {
         show_remember_device: true,
-        webauthnType: 'roaming',
+        webauthnType: validWebauthnTypeRoaming,
         passkey: { public_key: mockPublicKey },
       },
     };
@@ -22,7 +24,7 @@ describe('MfaWebAuthnRoamingChallenge ScreenOverride', () => {
 
     expect(screenOverride).toBeInstanceOf(Screen);
     expect(screenOverride.data?.showRememberDevice).toBe(true);
-    expect(screenOverride.data?.webAuthnType).toBe('roaming');
+    expect(screenOverride.data?.webAuthnType).toBe(validWebauthnTypeRoaming);
     expect(screenOverride.publicKey).toEqual(mockPublicKey);
   });
 
@@ -31,7 +33,7 @@ describe('MfaWebAuthnRoamingChallenge ScreenOverride', () => {
       name: 'mfa-webauthn-roaming-challenge',
       data: {
         show_remember_device: false,
-        webauthnType: 'roaming',
+        webauthnType: validWebauthnTypeRoaming,
         passkey: { public_key: mockPublicKey },
       },
     };
@@ -44,7 +46,7 @@ describe('MfaWebAuthnRoamingChallenge ScreenOverride', () => {
       name: 'mfa-webauthn-roaming-challenge',
       data: {
         // show_remember_device is omitted
-        webauthnType: 'roaming',
+        webauthnType: validWebauthnTypeRoaming,
         passkey: { public_key: mockPublicKey },
       },
     };
@@ -93,16 +95,16 @@ describe('MfaWebAuthnRoamingChallenge ScreenOverride', () => {
       const screenContext: ScreenContext = {
         name: 'mfa-webauthn-roaming-challenge',
         data: {
-          webauthnType: 'roaming',
+          webauthnType: validWebauthnTypeRoaming,
           show_remember_device: true,
         },
       };
       const result = ScreenOverride.getScreenData(screenContext);
-      expect(result?.webAuthnType).toBe('roaming');
+      expect(result?.webAuthnType).toBe(validWebauthnTypeRoaming);
       expect(result?.showRememberDevice).toBe(true);
     });
 
-    it('should return undefined for webAuthnType if it is missing', () => {
+    it('should return null if webAuthnType is missing', () => {
       const screenContext: ScreenContext = {
         name: 'mfa-webauthn-roaming-challenge',
         data: {
@@ -111,20 +113,20 @@ describe('MfaWebAuthnRoamingChallenge ScreenOverride', () => {
         },
       };
       const result = ScreenOverride.getScreenData(screenContext);
-      expect(result?.webAuthnType).toBeUndefined();
-      expect(result?.showRememberDevice).toBe(true);
+      // Since webAuthnType is required (non-optional), return null when missing
+      expect(result).toBeNull();
     });
 
     it('should return false for showRememberDevice when it is missing', () => {
       const screenContext: ScreenContext = {
         name: 'mfa-webauthn-roaming-challenge',
         data: {
-          webauthnType: 'roaming',
+          webauthnType: validWebauthnTypeRoaming,
           // show_remember_device is missing
         },
       };
       const result = ScreenOverride.getScreenData(screenContext);
-      expect(result?.webAuthnType).toBe('roaming');
+      expect(result?.webAuthnType).toBe(validWebauthnTypeRoaming);
       // getShowRememberDevice returns false when missing
       expect(result?.showRememberDevice).toBe(false);
     });

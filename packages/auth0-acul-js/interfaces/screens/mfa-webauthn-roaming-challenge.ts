@@ -23,9 +23,9 @@ export interface ScreenMembersOnMfaWebAuthnRoamingChallenge extends ScreenMember
   data: {
     /**
      * The type of WebAuthn authenticator involved, expected to be "roaming" for this screen.
-     * @type {string | undefined}
+     * @type {string}
      */
-    webAuthnType?: string;
+    webAuthnType: string;
     /**
      * Indicates whether the "Remember this device" checkbox should be displayed.
      * @type {boolean | undefined}

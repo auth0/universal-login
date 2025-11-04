@@ -46,9 +46,13 @@ export class ScreenOverride extends Screen implements OverrideOptions {
     const showRememberDevice = getShowRememberDevice(screenContext);
     const webAuthnType = getWebAuthnType(screenContext);
 
+    if (!webAuthnType) {
+      return null;
+    }
+
     return {
-      showRememberDevice: typeof showRememberDevice === 'boolean' ? showRememberDevice : undefined,
-      webAuthnType: typeof webAuthnType === 'string' ? webAuthnType : undefined,
+      showRememberDevice: typeof showRememberDevice === 'boolean' ? showRememberDevice : false,
+      webAuthnType: webAuthnType,
     };
   };
 }
