@@ -61,7 +61,7 @@ export interface FlattenedTheme {
 }
 
 /**
- * Options for changing the language/locale during the authentication flow.
+ * Options for changing the language/locale during the authentication flow
  */
 export interface LanguageChangeOptions {
   /**
