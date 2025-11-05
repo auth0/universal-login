@@ -448,6 +448,15 @@ function cleanDescription(text) {
   return cleaned;
 }
 
+function convertMembersToProperties(name) {
+  // Convert names ending with "Members" to "Properties"
+  // e.g., ClientMembers -> ClientProperties, BrandingMembers -> BrandingProperties
+  if (name.endsWith('Members')) {
+    return name.substring(0, name.length - 'Members'.length) + 'Properties';
+  }
+  return name;
+}
+
 function normalizeType(type) {
   if (!type) return 'any';
   // Convert double quotes to single quotes to avoid breaking JSX attributes
@@ -825,8 +834,9 @@ function generateMintlifyMarkdown(
   allInterfaceNames = new Set(),
 ) {
   // Create frontmatter
+  const displayName = convertMembersToProperties(item.name);
   const frontmatter = {
-    title: item.name,
+    title: displayName,
     description: cleanDescription(item.description || ''),
   };
 
