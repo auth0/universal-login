@@ -1,4 +1,4 @@
-import { errorStore, ERROR_KINDS } from '../../src/state/error-store';
+import { errorStore, ERROR_TYPES } from '../../src/state/error-store';
 import type { ErrorItem } from '../../src/state/error-store';
 
 describe('error-store', () => {
@@ -7,9 +7,9 @@ describe('error-store', () => {
     errorStore.clear();
   });
 
-  describe('ERROR_KINDS constant', () => {
+  describe('ERROR_TYPES constant', () => {
     it('should contain all error kinds', () => {
-      expect(ERROR_KINDS).toEqual(['auth0', 'validation', 'configuration']);
+      expect(ERROR_TYPES).toEqual(['auth0', 'validation', 'configuration']);
     });
   });
 

@@ -3,12 +3,12 @@ import type { Error as Auth0Error } from '@auth0/auth0-acul-js';
 export interface ErrorItem extends Auth0Error {
   id: string;
   label?: string;
-  kind?: ErrorKind;
+  type?: ErrorType;
 }
 
-export type ErrorKind = 'auth0' | 'validation' | 'configuration';
+export type ErrorType = 'auth0' | 'validation' | 'configuration';
 
-export const ERROR_KINDS: ErrorKind[] = ['auth0', 'validation', 'configuration'];
+export const ERROR_TYPES: ErrorType[] = ['auth0', 'validation', 'configuration'];
 
 type Bucket = {
   auth0: ReadonlyArray<ErrorItem>;
@@ -70,55 +70,55 @@ class ErrorStore {
     );
   }
 
-  /** Replace an entire kind with a new list (generating ids if needed). */
-  replace(kind: ErrorKind, list: Array<Omit<ErrorItem, 'id'> | ErrorItem>) {
+  /** Replace an entire type with a new list (generating ids if needed). */
+  replace(type: ErrorType, list: Array<Omit<ErrorItem, 'id'> | ErrorItem>) {
     const nextList = this.normalize(list);
-    if (listsEqual(this.bucket[kind], nextList)) return;
+    if (listsEqual(this.bucket[type], nextList)) return;
 
     this.bucket = Object.freeze({
       ...this.bucket,
-      [kind]: nextList,
+      [type]: nextList,
     });
     this.notify();
   }
 
   /**
-   * Replace only errors for a specific field within a kind.
+   * Replace only errors for a specific field within a type.
    * - Keeps all existing errors for other fields.
    * - Normalizes incoming errors and replaces matching field ones.
    */
-  replacePartial(kind: ErrorKind, list: Array<Omit<ErrorItem, 'id'> | ErrorItem>, field: string) {
+  replacePartial(type: ErrorType, list: Array<Omit<ErrorItem, 'id'> | ErrorItem>, field: string) {
     const incoming = this.normalize(list);
-    const existing = this.bucket[kind].filter((e) => e.field !== field);
+    const existing = this.bucket[type].filter((e) => e.field !== field);
     const nextKindList = Object.freeze([...existing, ...incoming]);
 
-    if (listsEqual(this.bucket[kind], nextKindList)) return;
+    if (listsEqual(this.bucket[type], nextKindList)) return;
 
     this.bucket = Object.freeze({
       ...this.bucket,
-      [kind]: nextKindList,
+      [type]: nextKindList,
     });
     this.notify();
   }
 
-  /** Append one or more items to a kind. */
+  /** Append one or more items to a type. */
   push(
-    kind: ErrorKind,
+    type: ErrorType,
     list: Omit<ErrorItem, 'id'> | ErrorItem | Array<Omit<ErrorItem, 'id'> | ErrorItem>
   ) {
     const arr = Array.isArray(list) ? list : [list];
     if (arr.length === 0) return;
 
-    const nextKindList = Object.freeze([...this.bucket[kind], ...this.normalize(arr)]);
+    const nextKindList = Object.freeze([...this.bucket[type], ...this.normalize(arr)]);
     this.bucket = Object.freeze({
       ...this.bucket,
-      [kind]: nextKindList,
+      [type]: nextKindList,
     });
     this.notify();
   }
 
   /** Clear one or more kinds (default: all kinds). */
-  clear(kinds: ErrorKind[] = ERROR_KINDS) {
+  clear(kinds: ErrorType[] = ERROR_TYPES) {
     let changed = false;
     const next: Bucket = { ...this.bucket };
 
@@ -137,7 +137,7 @@ class ErrorStore {
   /**
    * Remove errors that match a given id or predicate from specified kinds.
    */
-  remove(kinds: ErrorKind[] = ERROR_KINDS, test: string | ((e: ErrorItem) => boolean)) {
+  remove(kinds: ErrorType[] = ERROR_TYPES, test: string | ((e: ErrorItem) => boolean)) {
     const isMatch = typeof test === 'string' ? (e: ErrorItem) => e.id === test : test;
 
     let changed = false;

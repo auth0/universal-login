@@ -6,7 +6,7 @@ export {
   type UseErrorOptions,
   type UseErrorsResult,
   type ErrorsResult,
-  type ErrorKind,
+  type ErrorType,
   type ErrorItem,
 } from './common/errors';
 export { ContextHooks } from './context';

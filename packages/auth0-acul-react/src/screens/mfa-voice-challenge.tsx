@@ -51,7 +51,7 @@ export {
   type UseErrorOptions,
   type UseErrorsResult,
   type ErrorsResult,
-  type ErrorKind,
+  type ErrorType,
 } from '../hooks';
 
 // Main instance hook. Returns singleton instance of MfaVoiceChallenge
