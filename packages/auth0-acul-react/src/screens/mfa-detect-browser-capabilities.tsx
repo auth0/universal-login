@@ -35,18 +35,8 @@ export const detectCapabilities = (payload: CustomOptions) =>
   withError(instance.detectCapabilities(payload));
 
 // Common hooks
-export {
-  useCurrentScreen,
-  useErrors,
-  useAuth0Themes,
-  type UseErrorOptions,
-  type UseErrorsResult,
-  type ErrorsResult,
-  type ErrorType,
-} from '../hooks';
+export { useCurrentScreen, useErrors, useAuth0Themes } from '../hooks';
 
 // Main instance hook. Returns singleton instance of MfaDetectBrowserCapabilities
 export const useMfaDetectBrowserCapabilities = (): MfaDetectBrowserCapabilitiesMembers =>
   useMemo(() => instance, []);
-
-// Export all types from the core SDK for this screen

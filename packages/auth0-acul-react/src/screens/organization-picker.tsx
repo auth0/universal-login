@@ -37,17 +37,7 @@ export const skipOrganizationSelection = (payload?: CustomOptions) =>
   withError(instance.skipOrganizationSelection(payload));
 
 // Common hooks
-export {
-  useCurrentScreen,
-  useErrors,
-  useAuth0Themes,
-  type UseErrorOptions,
-  type UseErrorsResult,
-  type ErrorsResult,
-  type ErrorType,
-} from '../hooks';
+export { useCurrentScreen, useErrors, useAuth0Themes } from '../hooks';
 
 // Main instance hook. Returns singleton instance of OrganizationPicker
 export const useOrganizationPicker = (): OrganizationPickerMembers => useMemo(() => instance, []);
-
-// Export all types from the core SDK for this screen

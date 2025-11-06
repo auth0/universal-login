@@ -34,18 +34,8 @@ export const {
 export const enroll = (payload: MfaEnrollOptions) => withError(instance.enroll(payload));
 
 // Common hooks
-export {
-  useCurrentScreen,
-  useErrors,
-  useAuth0Themes,
-  type UseErrorOptions,
-  type UseErrorsResult,
-  type ErrorsResult,
-  type ErrorType,
-} from '../hooks';
+export { useCurrentScreen, useErrors, useAuth0Themes } from '../hooks';
 
 // Main instance hook. Returns singleton instance of MfaBeginEnrollOptions
 export const useMfaBeginEnrollOptions = (): MfaBeginEnrollOptionsMembers =>
   useMemo(() => instance, []);
-
-// Export all types from the core SDK for this screen

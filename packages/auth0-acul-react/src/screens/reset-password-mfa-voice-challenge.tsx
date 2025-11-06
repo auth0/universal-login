@@ -44,18 +44,8 @@ export const tryAnotherMethod = (payload?: CustomOptions) =>
 export { useResend } from '../hooks/utility/resend-manager';
 
 // Common hooks
-export {
-  useCurrentScreen,
-  useErrors,
-  useAuth0Themes,
-  type UseErrorOptions,
-  type UseErrorsResult,
-  type ErrorsResult,
-  type ErrorType,
-} from '../hooks';
+export { useCurrentScreen, useErrors, useAuth0Themes } from '../hooks';
 
 // Main instance hook. Returns singleton instance of ResetPasswordMfaVoiceChallenge
 export const useResetPasswordMfaVoiceChallenge = (): ResetPasswordMfaVoiceChallengeMembers =>
   useMemo(() => instance, []);
-
-// Export all types from the core SDK for this screen

@@ -40,18 +40,8 @@ export const resendCode = (payload?: ResendCodeOptions) => withError(instance.re
 export { useResend } from '../hooks/utility/resend-manager';
 
 // Common hooks
-export {
-  useCurrentScreen,
-  useErrors,
-  useAuth0Themes,
-  type UseErrorOptions,
-  type UseErrorsResult,
-  type ErrorsResult,
-  type ErrorType,
-} from '../hooks';
+export { useCurrentScreen, useErrors, useAuth0Themes } from '../hooks';
 
 // Main instance hook. Returns singleton instance of LoginEmailVerification
 export const useLoginEmailVerification = (): LoginEmailVerificationMembers =>
   useMemo(() => instance, []);
-
-// Export all types from the core SDK for this screen

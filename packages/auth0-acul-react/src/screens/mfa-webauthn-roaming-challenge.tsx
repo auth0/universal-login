@@ -40,18 +40,8 @@ export const tryAnotherMethod = (options?: TryAnotherMethodOptions) =>
   withError(instance.tryAnotherMethod(options));
 
 // Common hooks
-export {
-  useCurrentScreen,
-  useErrors,
-  useAuth0Themes,
-  type UseErrorOptions,
-  type UseErrorsResult,
-  type ErrorsResult,
-  type ErrorType,
-} from '../hooks';
+export { useCurrentScreen, useErrors, useAuth0Themes } from '../hooks';
 
 // Main instance hook. Returns singleton instance of MfaWebAuthnRoamingChallenge
 export const useMfaWebAuthnRoamingChallenge = (): MfaWebAuthnRoamingChallengeMembers =>
   useMemo(() => instance, []);
-
-// Export all types from the core SDK for this screen

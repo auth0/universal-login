@@ -37,17 +37,7 @@ export const selectMfaPushDevice = (payload: SelectMfaPushDeviceOptions) =>
 export const goBack = (payload?: CustomOptions) => withError(instance.goBack(payload));
 
 // Common hooks
-export {
-  useCurrentScreen,
-  useErrors,
-  useAuth0Themes,
-  type UseErrorOptions,
-  type UseErrorsResult,
-  type ErrorsResult,
-  type ErrorType,
-} from '../hooks';
+export { useCurrentScreen, useErrors, useAuth0Themes } from '../hooks';
 
 // Main instance hook. Returns singleton instance of MfaPushList
 export const useMfaPushList = (): MfaPushListMembers => useMemo(() => instance, []);
-
-// Export all types from the core SDK for this screen

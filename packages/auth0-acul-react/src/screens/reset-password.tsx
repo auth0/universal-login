@@ -38,17 +38,7 @@ export const resetPassword = (payload: ResetPasswordOptions) =>
 export { usePasswordValidation } from '../hooks/utility/validate-password';
 
 // Common hooks
-export {
-  useCurrentScreen,
-  useErrors,
-  useAuth0Themes,
-  type UseErrorOptions,
-  type UseErrorsResult,
-  type ErrorsResult,
-  type ErrorType,
-} from '../hooks';
+export { useCurrentScreen, useErrors, useAuth0Themes } from '../hooks';
 
 // Main instance hook. Returns singleton instance of ResetPassword
 export const useResetPassword = (): ResetPasswordMembers => useMemo(() => instance, []);
-
-// Export all types from the core SDK for this screen
