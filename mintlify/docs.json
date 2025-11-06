@@ -1,0 +1,27 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Universal Login Documentation",
+  "description": "Auth0 documentation",
+  "colors": {
+    "primary": "#000",
+    "dark": "#fff",
+    "light": "#fff"
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Home",
+        "pages": [
+          "index"
+        ]
+      }
+    ]
+  },
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg",
+    "href": "https://auth0-migration.mintlify.app/"
+  },
+  "favicon": "/logo/favicon.svg"
+}

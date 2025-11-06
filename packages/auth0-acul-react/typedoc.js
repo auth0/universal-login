@@ -13,5 +13,5 @@ export default {
   categorizeByGroup: true,
   json: 'docs/index.json',
   sort: ['source-order'],
-  highlightLanguages: ['javascript', 'typescript', 'jsx', 'tsx', 'bash']
+  highlightLanguages: ['javascript', 'typescript', 'jsx', 'tsx', 'bash'],
 };
