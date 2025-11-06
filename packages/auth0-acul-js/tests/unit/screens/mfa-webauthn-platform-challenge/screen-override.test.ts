@@ -26,7 +26,7 @@ describe('MfaWebAuthnPlatformChallenge ScreenOverride', () => {
 
     expect(screenOverride).toBeInstanceOf(Screen); // Check inheritance
     expect(screenOverride.publicKey).toEqual(mockPublicKeyChallenge);
-    expect(screenOverride.showRememberDevice).toBe(true);
+    expect(screenOverride.data?.showRememberDevice).toBe(true);
   });
 
   it('should set showRememberDevice to false if show_remember_device is missing in data', () => {
@@ -38,7 +38,8 @@ describe('MfaWebAuthnPlatformChallenge ScreenOverride', () => {
       },
     } as ScreenContext; // Cast for test, as other ScreenContext props are missing
     const screenOverride = new ScreenOverride(screenContext);
-    expect(screenOverride.showRememberDevice).toBe(false);
+    // getShowRememberDevice returns false when missing
+    expect(screenOverride.data?.showRememberDevice).toBe(false);
   });
 
   it('should set publicKey to null if passkey data is missing', () => {
@@ -72,7 +73,7 @@ describe('MfaWebAuthnPlatformChallenge ScreenOverride', () => {
     } as ScreenContext;
     const screenOverride = new ScreenOverride(screenContext);
     expect(screenOverride.publicKey).toBeNull();
-    expect(screenOverride.showRememberDevice).toBe(false);
+    expect(screenOverride.data).toBeNull();
   });
 
 
@@ -100,25 +101,30 @@ describe('MfaWebAuthnPlatformChallenge ScreenOverride', () => {
     });
   });
 
-  describe('static getShowRememberDevice method', () => {
+  describe('static getScreenData method', () => {
     it('should extract showRememberDevice correctly when true', () => {
       const screenContext: ScreenContext = { name: 'test-screen', data: { show_remember_device: true } } as ScreenContext;
-      expect(ScreenOverride.getShowRememberDevice(screenContext)).toBe(true);
+      const result = ScreenOverride.getScreenData(screenContext);
+      expect(result?.showRememberDevice).toBe(true);
     });
 
     it('should extract showRememberDevice correctly when false', () => {
       const screenContext: ScreenContext = { name: 'test-screen', data: { show_remember_device: false } } as ScreenContext;
-      expect(ScreenOverride.getShowRememberDevice(screenContext)).toBe(false);
+      const result = ScreenOverride.getScreenData(screenContext);
+      expect(result?.showRememberDevice).toBe(false);
     });
 
-    it('should return false if show_remember_device is missing', () => {
+    it('should return false for showRememberDevice if show_remember_device is missing', () => {
       const screenContext: ScreenContext = { name: 'test-screen', data: {} } as ScreenContext;
-      expect(ScreenOverride.getShowRememberDevice(screenContext)).toBe(false);
+      const result = ScreenOverride.getScreenData(screenContext);
+      // getShowRememberDevice returns false when missing
+      expect(result?.showRememberDevice).toBe(false);
     });
 
-    it('should return false if data is missing', () => {
+    it('should return null if data is missing', () => {
       const screenContext: ScreenContext = { name: 'test-screen' } as ScreenContext;
-      expect(ScreenOverride.getShowRememberDevice(screenContext)).toBe(false);
+      const result = ScreenOverride.getScreenData(screenContext);
+      expect(result).toBeNull();
     });
   });
 });

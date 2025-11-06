@@ -37,8 +37,10 @@ describe('MfaWebAuthnRoamingChallenge SDK', () => {
     // Setup mock for ScreenOverride
     mockScreenOverrideInstance = {
       name: ScreenIds.MFA_WEBAUTHN_ROAMING_CHALLENGE,
-      showRememberDevice: true,
-      webauthnType: 'roaming',
+      data: {
+        showRememberDevice: true,
+        webAuthnType: 'roaming',
+      },
       publicKey: mockPublicKey,
       // Add other necessary ScreenMembers properties if BaseContext or other parts rely on them
       captchaImage: null,
@@ -102,9 +104,11 @@ describe('MfaWebAuthnRoamingChallenge SDK', () => {
     });
 
     it('should NOT include rememberBrowser if options.rememberDevice is true but showRememberDevice is false', async () => {
-      mockScreenOverrideInstance.showRememberDevice = false; // Override mock for this test
+      if (mockScreenOverrideInstance.data) {
+        mockScreenOverrideInstance.data.showRememberDevice = false; // Override mock for this test
+      }
       sdkInstance = new MfaWebAuthnRoamingChallenge(); // Re-initialize to pick up new screen mock
-      
+
       const options: VerifySecurityKeyOptions = { rememberDevice: true };
       await sdkInstance.verify(options);
 
@@ -112,7 +116,7 @@ describe('MfaWebAuthnRoamingChallenge SDK', () => {
         rememberBrowser: true,
       }));
     });
-    
+
     it('should NOT include rememberBrowser if options.rememberDevice is false', async () => {
       const options: VerifySecurityKeyOptions = { rememberDevice: false };
       await sdkInstance.verify(options);
@@ -121,7 +125,7 @@ describe('MfaWebAuthnRoamingChallenge SDK', () => {
         rememberBrowser: true,
       }));
     });
-    
+
     it('should re-throw unknown errors from getPasskeyCredentials', async () => {
       const unknownError = new Error("Something went wrong.");
       (getPasskeyCredentials as jest.Mock).mockRejectedValueOnce(unknownError);
@@ -134,14 +138,14 @@ describe('MfaWebAuthnRoamingChallenge SDK', () => {
     it('should throw an error if publicKey is missing', async () => {
       mockScreenOverrideInstance.publicKey = null;
       sdkInstance = new MfaWebAuthnRoamingChallenge(); // Re-initialize with the new mock
-      
+
       await expect(sdkInstance.verify()).rejects.toThrow(Errors.PASSKEY_PUBLIC_KEY_UNAVAILABLE);
     });
   });
 
   describe('reportWebAuthnError method', () => {
     const errorDetails = { name: 'TestError', message: 'This is a test error.' };
-    
+
     it('should submit with showError action and stringified error details', async () => {
       const options: ReportWebAuthnErrorOptions = { error: errorDetails };
       await sdkInstance.reportWebAuthnError(options);

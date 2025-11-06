@@ -5,7 +5,7 @@ import { getPasskeyCredentials } from '../../utils/passkeys';
 
 import { ScreenOverride } from './screen-override';
 
-import type {CustomOptions, WebAuthnErrorDetails } from '../../../interfaces/common';
+import type { CustomOptions, WebAuthnErrorDetails } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type {
   ResetPasswordMfaWebAuthnRoamingChallengeMembers,
@@ -69,7 +69,7 @@ export default class ResetPasswordMfaWebAuthnRoamingChallenge
    * `PublicKeyCredential` is stringified and submitted to Auth0 with `action: "default"`.
    *
    * @param {UseSecurityKeyOptions} [options] - Optional parameters for the operation.
-   * This can include `rememberDevice` (if `this.screen.showRememberDevice` is true) and
+   * This can include `rememberDevice` (if `this.screen.data?.showRememberDevice` is true) and
    * any other custom key-value pairs to be sent in the form submission.
    * The `response` field (the WebAuthn credential) is handled internally by this method.
    * @returns {Promise<void>} A promise that resolves when the verification attempt is submitted.
@@ -88,7 +88,7 @@ export default class ResetPasswordMfaWebAuthnRoamingChallenge
    * async function handleSecurityKeyAuth() {
    *   try {
    *     const userWantsToRemember = document.getElementById('remember-device-checkbox')?.checked || false;
-   *     await sdk.useSecurityKey({ rememberDevice: sdk.screen.showRememberDevice && userWantsToRemember });
+   *     await sdk.useSecurityKey({ rememberDevice: sdk.screen.data?.showRememberDevice && userWantsToRemember });
    *     // On success, Auth0 typically handles redirection.
    *   } catch (err) {
    *     console.error("Security key authentication failed:", err);
@@ -108,7 +108,7 @@ export default class ResetPasswordMfaWebAuthnRoamingChallenge
    */
   public async useSecurityKey(options?: UseSecurityKeyOptions): Promise<void> {
     const publicKeyOpts = this.screen.publicKey;
-    
+
     if (!publicKeyOpts) {
       throw new Error(Errors.PASSKEY_PUBLIC_KEY_UNAVAILABLE);
     }
@@ -136,7 +136,7 @@ export default class ResetPasswordMfaWebAuthnRoamingChallenge
       response: JSON.stringify(credential),
     };
 
-    if (this.screen.showRememberDevice && rememberDevice) {
+    if (this.screen.data?.showRememberDevice && rememberDevice) {
       payloadToSubmit.rememberBrowser = true;
     }
 
@@ -190,7 +190,7 @@ export default class ResetPasswordMfaWebAuthnRoamingChallenge
       response: '', // Response is empty for showError actions
     };
 
-    if (this.screen.showRememberDevice && rememberDevice) {
+    if (this.screen.data?.showRememberDevice && rememberDevice) {
       payloadToSubmit.rememberBrowser = true;
     }
 
@@ -203,7 +203,7 @@ export default class ResetPasswordMfaWebAuthnRoamingChallenge
    * the user to an MFA factor selection screen.
    *
    * @param {TryAnotherMethodOptions} [options] - Optional. Parameters for the operation,
-   * such as `rememberDevice` (if `this.screen.showRememberDevice` is true) and other custom options.
+   * such as `rememberDevice` (if `this.screen.data?.showRememberDevice` is true) and other custom options.
    * @returns {Promise<void>} A promise that resolves when the 'pick-authenticator' action is submitted.
    * @throws {Error} Throws an error if the form submission fails (e.g., network error, invalid state).
    *
@@ -227,7 +227,7 @@ export default class ResetPasswordMfaWebAuthnRoamingChallenge
       action: FormActions.PICK_AUTHENTICATOR,
     };
 
-    if (this.screen.showRememberDevice && rememberDevice) {
+    if (this.screen.data?.showRememberDevice && rememberDevice) {
       payloadToSubmit.rememberBrowser = true;
     }
 

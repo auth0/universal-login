@@ -5,7 +5,7 @@ import type { ScreenMembers, PasskeyCreate } from '../models/screen';
  * Interface for screen data specific to mfa-webauthn-roaming-enrollment screen.
  */
 export interface ScreenMembersOnMfaWebAuthnRoamingEnrollment extends ScreenMembers {
-  webauthnType: string | null;
+  webAuthnType: string | null;
   publicKey: PasskeyCreate['public_key'] | null;
 }
 /**

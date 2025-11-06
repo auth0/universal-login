@@ -45,7 +45,7 @@ describe('MfaWebAuthnError', () => {
     it('should initialize screen properties via ScreenOverride', () => {
       expect(sdk.screen).toBeDefined();
       expect(sdk.screen.data?.errorType).toBe('NotAllowedError');
-      expect(sdk.screen.data?.webauthnType).toBe('webauthn-platform');
+      expect(sdk.screen.data?.webAuthnType).toBe('webauthn-platform');
     });
   });
 

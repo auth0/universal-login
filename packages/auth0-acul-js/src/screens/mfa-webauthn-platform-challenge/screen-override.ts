@@ -18,24 +18,22 @@ export class ScreenOverride extends Screen implements OverrideOptions {
    * @property {PasskeyRead['public_key'] | null} publicKey - The challenge options required for
    * `navigator.credentials.get()`. Extracted from `screenContext.data.passkey.public_key`.
    */
-  public publicKey: OverrideOptions['publicKey'];
+  publicKey: OverrideOptions['publicKey'];
 
   /**
-   * @property {boolean} showRememberDevice - Flag indicating whether the "Remember this device"
-   * option should be shown to the user. Extracted from `screenContext.data.show_remember_device`.
-   * Defaults to `false` if not present.
+   * @property {object | null} data - Screen-specific data containing showRememberDevice flag.
    */
-  public showRememberDevice: OverrideOptions['showRememberDevice'];
+  data: OverrideOptions['data'];
 
   /**
    * Initializes a new instance of the `ScreenOverride` class for the 'mfa-webauthn-platform-challenge' screen.
-   * Parses the screen context to extract `publicKey` and `showRememberDevice`.
+   * Parses the screen context to extract `publicKey` and screen data.
    * @param {ScreenContext} screenContext - The screen context provided by Universal Login.
    */
   constructor(screenContext: ScreenContext) {
     super(screenContext); // Initialize the base Screen class
     this.publicKey = ScreenOverride.getPublicKey(screenContext);
-    this.showRememberDevice = ScreenOverride.getShowRememberDevice(screenContext);
+    this.data = ScreenOverride.getScreenData(screenContext);
   }
 
   /**
@@ -52,12 +50,21 @@ export class ScreenOverride extends Screen implements OverrideOptions {
 
   /**
    * @static
-   * @method getShowRememberDevice
-   * @description Extracts the `show_remember_device` flag from the screen context's `data` object.
+   * @method getScreenData
+   * @description Extracts and transforms the screen data from the context
    * @param {ScreenContext} screenContext - The screen context containing the raw data.
-   * @returns {boolean} The value of `show_remember_device`, or `false` if not present or not a boolean.
+   * @returns {object | null} The transformed screen data with showRememberDevice
    */
-  static getShowRememberDevice = (screenContext: ScreenContext): OverrideOptions['showRememberDevice'] => {
-    return getShowRememberDevice(screenContext)
+  static getScreenData = (screenContext: ScreenContext): OverrideOptions['data'] => {
+    const data = screenContext.data;
+    if (!data) {
+      return null;
+    }
+
+    const showRememberDevice = getShowRememberDevice(screenContext);
+
+    return {
+      showRememberDevice: typeof showRememberDevice === 'boolean' ? showRememberDevice : undefined,
+    };
   };
 }

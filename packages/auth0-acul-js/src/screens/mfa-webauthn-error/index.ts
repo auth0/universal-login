@@ -30,7 +30,7 @@ export default class MfaWebAuthnError extends BaseContext implements MfaWebAuthn
   /**
    * @property {ScreenOptions} screen - Holds the specific screen data and properties,
    * processed by `ScreenOverride` for the MFA WebAuthn Error screen. This includes details
-   * like `errorType` and `webauthnType`.
+   * like `errorType` and `webAuthnType`.
    */
   public screen: ScreenOptions;
 

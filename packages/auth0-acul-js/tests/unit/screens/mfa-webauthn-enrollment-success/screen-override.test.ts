@@ -23,7 +23,7 @@ describe('MfaWebAuthnEnrollmentSuccess ScreenOverride', () => {
     expect(screenOverride).toBeInstanceOf(Screen); // Check inheritance
     expect(screenOverride.data).toEqual({
       nickname: validNickname,
-      webauthnType: validWebauthnTypePlatform,
+      webAuthnType: validWebauthnTypePlatform,
     });
   });
 
@@ -40,7 +40,7 @@ describe('MfaWebAuthnEnrollmentSuccess ScreenOverride', () => {
 
     expect(screenOverride.data).toEqual({
       nickname: "YubiKey",
-      webauthnType: validWebauthnTypeRoaming,
+      webAuthnType: validWebauthnTypeRoaming,
     });
   });
 
@@ -57,7 +57,7 @@ describe('MfaWebAuthnEnrollmentSuccess ScreenOverride', () => {
   it('should return null for data if screenContext.data is null', () => {
     const screenContext: ScreenContext = {
       name: 'mfa-webauthn-enrollment-success',
-      data: null as any, 
+      data: null as any,
     } as ScreenContext;
     const screenOverride = new ScreenOverride(screenContext);
     expect(screenOverride.data).toBeNull();
@@ -116,7 +116,7 @@ describe('MfaWebAuthnEnrollmentSuccess ScreenOverride', () => {
         data: { nickname: validNickname, webauthnType: validWebauthnTypeRoaming },
       } as ScreenContext;
       const data = ScreenOverride.getScreenData(screenContext);
-      expect(data).toEqual({ nickname: validNickname, webauthnType: validWebauthnTypeRoaming });
+      expect(data).toEqual({ nickname: validNickname, webAuthnType: validWebauthnTypeRoaming });
     });
 
     it('should return null if rawData is missing', () => {
@@ -133,7 +133,7 @@ describe('MfaWebAuthnEnrollmentSuccess ScreenOverride', () => {
       const data = ScreenOverride.getScreenData(screenContext);
       expect(data).toBeNull();
     });
-    
+
     it('should return null if webauthnType is missing', () => {
       const screenContext: ScreenContext = {
         name: 'mfa-webauthn-enrollment-success',

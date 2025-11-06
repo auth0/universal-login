@@ -28,7 +28,7 @@ describe('ResetPasswordMfaWebAuthnPlatformChallenge ScreenOverride', () => {
 
     expect(screenOverride).toBeInstanceOf(Screen);
     expect(screenOverride.publicKey).toEqual(mockPublicKeyChallenge);
-    expect(screenOverride.showRememberDevice).toBe(true);
+    expect(screenOverride.data?.showRememberDevice).toBe(true);
   });
 
   it('should set showRememberDevice to false if show_remember_device is missing in data', () => {
@@ -40,7 +40,7 @@ describe('ResetPasswordMfaWebAuthnPlatformChallenge ScreenOverride', () => {
       },
     } as ScreenContext;
     const screenOverride = new ScreenOverride(screenContext);
-    expect(screenOverride.showRememberDevice).toBe(false);
+    expect(screenOverride.data?.showRememberDevice).toBe(false);
   });
 
   it('should set showRememberDevice to false if show_remember_device is undefined in data', () => {
@@ -52,7 +52,7 @@ describe('ResetPasswordMfaWebAuthnPlatformChallenge ScreenOverride', () => {
       },
     } as ScreenContext;
     const screenOverride = new ScreenOverride(screenContext);
-    expect(screenOverride.showRememberDevice).toBe(false);
+    expect(screenOverride.data?.showRememberDevice).toBe(false);
   });
 
   it('should set publicKey to null if passkey data is missing', () => {
@@ -86,7 +86,7 @@ describe('ResetPasswordMfaWebAuthnPlatformChallenge ScreenOverride', () => {
     } as ScreenContext;
     const screenOverride = new ScreenOverride(screenContext);
     expect(screenOverride.publicKey).toBeNull();
-    expect(screenOverride.showRememberDevice).toBe(false);
+    expect(screenOverride.data).toBeNull();
   });
 
   describe('static getPublicKeyChallenge method', () => {
@@ -104,9 +104,9 @@ describe('ResetPasswordMfaWebAuthnPlatformChallenge ScreenOverride', () => {
     });
 
     it('should return null if data.passkey.public_key is missing', () => {
-        const screenContext: ScreenContext = { name: 'test-screen', data: { passkey: {} } } as unknown as ScreenContext;
-        expect(ScreenOverride.getPublicKeyChallenge(screenContext)).toBeNull();
-      });
+      const screenContext: ScreenContext = { name: 'test-screen', data: { passkey: {} } } as unknown as ScreenContext;
+      expect(ScreenOverride.getPublicKeyChallenge(screenContext)).toBeNull();
+    });
 
     it('should return null if data itself is missing', () => {
       const screenContext: ScreenContext = { name: 'test-screen' } as ScreenContext;
@@ -114,25 +114,25 @@ describe('ResetPasswordMfaWebAuthnPlatformChallenge ScreenOverride', () => {
     });
   });
 
-  describe('static getShowRememberDeviceFlag method', () => {
+  describe('static getScreenData method', () => {
     it('should extract showRememberDevice correctly when true', () => {
       const screenContext: ScreenContext = { name: 'test-screen', data: { show_remember_device: true } } as ScreenContext;
-      expect(ScreenOverride.getShowRememberDeviceFlag(screenContext)).toBe(true);
+      expect(ScreenOverride.getScreenData(screenContext)?.showRememberDevice).toBe(true);
     });
 
     it('should extract showRememberDevice correctly when false', () => {
       const screenContext: ScreenContext = { name: 'test-screen', data: { show_remember_device: false } } as ScreenContext;
-      expect(ScreenOverride.getShowRememberDeviceFlag(screenContext)).toBe(false);
+      expect(ScreenOverride.getScreenData(screenContext)?.showRememberDevice).toBe(false);
     });
 
-    it('should return false if show_remember_device is missing', () => {
+    it('should return data with showRememberDevice as false if show_remember_device is missing', () => {
       const screenContext: ScreenContext = { name: 'test-screen', data: {} } as ScreenContext;
-      expect(ScreenOverride.getShowRememberDeviceFlag(screenContext)).toBe(false);
+      expect(ScreenOverride.getScreenData(screenContext)?.showRememberDevice).toBe(false);
     });
 
-    it('should return false if data is missing', () => {
+    it('should return null if data is missing', () => {
       const screenContext: ScreenContext = { name: 'test-screen' } as ScreenContext;
-      expect(ScreenOverride.getShowRememberDeviceFlag(screenContext)).toBe(false);
+      expect(ScreenOverride.getScreenData(screenContext)).toBeNull();
     });
   });
 });

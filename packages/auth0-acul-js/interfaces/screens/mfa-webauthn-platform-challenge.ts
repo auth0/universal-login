@@ -23,10 +23,15 @@ export interface ScreenMembersOnMfaWebAuthnPlatformChallenge extends ScreenMembe
   publicKey: PasskeyRead['public_key'] | null;
 
   /**
-   * Indicates whether the "Remember this device" checkbox should be displayed.
-   * @type {boolean}
+   * Screen-specific data for the mfa-webauthn-platform-challenge screen
    */
-  showRememberDevice: boolean;
+  data: {
+    /**
+     * Indicates whether the "Remember this device" checkbox should be displayed.
+     * @type {boolean | undefined}
+     */
+    showRememberDevice?: boolean;
+  } | null;
 }
 
 /**
@@ -69,7 +74,7 @@ export interface ReportBrowserErrorOptions {
  * Currently, it only supports `CustomOptions` for extensibility if any custom parameters
  * need to be sent with the 'pick-authenticator' action.
  */
-export interface TryAnotherMethodOptions extends CustomOptions {}
+export interface TryAnotherMethodOptions extends CustomOptions { }
 
 /**
  * @interface MfaWebAuthnPlatformChallengeMembers

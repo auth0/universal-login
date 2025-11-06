@@ -32,7 +32,7 @@ export default class MfaWebAuthnEnrollmentSuccess extends BaseContext implements
 
   /**
    * @property {ScreenOptions} screen - Holds the specific screen data and properties for this screen,
-   * processed by `ScreenOverride`. This includes the enrolled authenticator's `nickname` and `webauthnType`.
+   * processed by `ScreenOverride`. This includes the enrolled authenticator's `nickname` and `webAuthnType`.
    */
   public screen: ScreenOptions;
 

@@ -28,7 +28,7 @@ describe('MfaWebAuthnEnrollmentSuccess SDK', () => {
       name: ScreenIds.MFA_WEBAUTHN_ENROLLMENT_SUCCESS,
       data: {
         nickname: mockNickname,
-        webauthnType: mockWebauthnType,
+        webAuthnType: mockWebauthnType,
       },
       // Mock other base ScreenMembers properties as needed
       texts: { title: 'Success!', description: 'Authenticator added.' },
@@ -65,7 +65,7 @@ describe('MfaWebAuthnEnrollmentSuccess SDK', () => {
     // Check if the mocked ScreenOverride instance is used and has the correct data
     expect(sdkInstance.screen).toBe(mockScreenOverrideInstance);
     expect(sdkInstance.screen.data?.nickname).toBe(mockNickname);
-    expect(sdkInstance.screen.data?.webauthnType).toBe(mockWebauthnType);
+    expect(sdkInstance.screen.data?.webAuthnType).toBe(mockWebauthnType);
     expect(sdkInstance.screen.texts?.title).toBe('Success!');
     expect(ScreenOverride).toHaveBeenCalledWith(window.universal_login_context.screen);
   });

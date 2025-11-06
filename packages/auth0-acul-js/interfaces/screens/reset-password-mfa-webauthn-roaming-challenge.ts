@@ -33,12 +33,11 @@ export interface ScreenDataOnResetPasswordMfaWebAuthnRoamingChallenge {
  * description Defines the specific properties available on the `screen` object for the
  * `reset-password-mfa-webauthn-roaming-challenge` screen.
  *
- * @property {ScreenDataOnResetPasswordMfaWebAuthnRoamingChallenge | null} data - Screen-specific data,
- * including WebAuthn challenge options and the "show remember device" flag.
+ * @property {object | null} data - Screen-specific data.
+ * @property {boolean} [data.showRememberDevice] - Indicates if the "Remember this device" option
+ *                                                 should be displayed. Defaults to `false` if not present.
  * @property {PasskeyRead['public_key'] | null} publicKey - A convenience accessor for `screen.data.passkey.public_key`.
  * Provides the challenge and related options for `navigator.credentials.get()`.
- * @property {boolean} showRememberDevice - A convenience accessor for `screen.data.show_remember_device`.
- * Indicates if the "Remember this device" option should be displayed. Defaults to `false` if not present.
  */
 export interface ScreenMembersOnResetPasswordMfaWebAuthnRoamingChallenge extends ScreenMembers {
   /**
@@ -47,18 +46,19 @@ export interface ScreenMembersOnResetPasswordMfaWebAuthnRoamingChallenge extends
    * `navigator.credentials.get()` WebAuthn API call.
    * It is `null` if `screen.data.passkey.public_key` is not available.
    * @type {PasskeyRead['public_key'] | null}
-   * @public
    */
   publicKey: PasskeyRead['public_key'] | null;
 
   /**
-   * A direct accessor for the `show_remember_device` flag from `screen.data`.
-   * Indicates whether the UI should present an option to the user to remember this device/browser
-   * to potentially bypass MFA on future logins. Defaults to `false` if not set in `screen.data`.
-   * @type {boolean}
-   * @public
+   * Screen-specific data for the reset-password-mfa-webauthn-roaming-challenge screen
    */
-  showRememberDevice: boolean;
+  data: {
+    /**
+     * Indicates whether the "Remember this device" checkbox should be displayed.
+     * @type {boolean | undefined}
+     */
+    showRememberDevice?: boolean;
+  } | null;
 }
 
 /**
