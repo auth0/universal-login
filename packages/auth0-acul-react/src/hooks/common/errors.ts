@@ -7,11 +7,11 @@ import {
 } from '@auth0/auth0-acul-js';
 import { useEffect, useMemo, useRef, useSyncExternalStore, useCallback } from 'react';
 
-import { errorStore, ERROR_KINDS, type ErrorItem, type ErrorKind } from '../../state/error-store';
+import { errorStore, ERROR_TYPES, type ErrorItem, type ErrorType } from '../../state/error-store';
 
 export interface ErrorsResult extends ReadonlyArray<ErrorItem> {
-  byKind(kind: ErrorKind, opts?: { field?: string }): ReadonlyArray<ErrorItem>;
-  byField(field: string, opts?: { kind?: ErrorKind }): ReadonlyArray<ErrorItem>;
+  byType(type: ErrorType, opts?: { field?: string }): ReadonlyArray<ErrorItem>;
+  byField(field: string, opts?: { type?: ErrorType }): ReadonlyArray<ErrorItem>;
 }
 
 export interface UseErrorOptions {
@@ -25,7 +25,7 @@ export interface UseErrorsResult {
   dismissAll: () => void;
 }
 
-function classifyKind(e: unknown): ErrorKind | null {
+function classifyType(e: unknown): ErrorType | null {
   if (e instanceof ValidationError) {
     return 'validation';
   }
@@ -61,20 +61,20 @@ const cacheServer = new WeakMap<ReadonlyArray<ErrorItem>, ReadonlyArray<ErrorIte
 const cacheValidation = new WeakMap<ReadonlyArray<ErrorItem>, ReadonlyArray<ErrorItem>>();
 const cacheDev = new WeakMap<ReadonlyArray<ErrorItem>, ReadonlyArray<ErrorItem>>();
 
-const tag = (kind: ErrorKind, arr: ReadonlyArray<ErrorItem>): ReadonlyArray<ErrorItem> => {
-  const cache = kind === 'auth0' ? cacheServer : kind === 'validation' ? cacheValidation : cacheDev;
+const tag = (type: ErrorType, arr: ReadonlyArray<ErrorItem>): ReadonlyArray<ErrorItem> => {
+  const cache = type === 'auth0' ? cacheServer : type === 'validation' ? cacheValidation : cacheDev;
   const hit = cache.get(arr);
   if (hit) {
     return hit;
   }
-  const out = Object.freeze(arr.map((e) => Object.freeze({ ...e, kind })));
+  const out = Object.freeze(arr.map((e) => Object.freeze({ ...e, type })));
   cache.set(arr, out);
   return out;
 };
 
 /**
  * React hook for reading and managing errors in ACUL (Advanced Customization of Universal Login).
- * With all validation and server-side errors. It groups errors into three kinds:
+ * With all validation and server-side errors. It groups errors into three types:
  * - `auth0` — errors returned by Auth0 or your own backend.
  * - `validation` — errors from client-side validation (e.g., invalid form input).
  * - `configuration` — errors caused by incorrect integration or SDK misuse.
@@ -87,8 +87,8 @@ const tag = (kind: ErrorKind, arr: ReadonlyArray<ErrorItem>): ReadonlyArray<Erro
  *
  * @returns An object of type {@link UseErrorsResult}, containing:
  * - `errors` — the full error list of type {@link ErrorsResult}, with helpers:
- *   - `errors.byKind(kind, filter?)` — filter by error kind and optionally by field.
- *   - `errors.byField(field, filter?)` — filter by field and optionally by kind.
+ *   - `errors.byType(type, filter?)` — filter by error type and optionally by field.
+ *   - `errors.byField(field, filter?)` — filter by field and optionally by type.
  * - `hasError` — `true` if any error is currently present.
  * - `dismiss(id)` — remove a specific error by its ID.
  * - `dismissAll()` — clear all tracked errors.
@@ -107,7 +107,7 @@ const tag = (kind: ErrorKind, arr: ReadonlyArray<ErrorItem>): ReadonlyArray<Erro
  *     <div>
  *       {hasError && (
  *         <div className="mb-4">
- *           {errors.byKind("auth0").map(err => (
+ *           {errors.byType("auth0").map(err => (
  *             <div key={err.id} className="text-red-600">
  *               {err.message}
  *               <button onClick={() => dismiss(err.id)}>Dismiss</button>
@@ -122,12 +122,12 @@ const tag = (kind: ErrorKind, arr: ReadonlyArray<ErrorItem>): ReadonlyArray<Erro
  * }
  * ```
  *
- * In addition to rendering messages, you can filter by field or kind:
+ * In addition to rendering messages, you can filter by field or type:
  * ```ts
- * console.log(errors.byKind('validation')); // all validation errors
- * console.log(errors.byKind('validation', { field: 'username' })); // validation errors for field 'username'
+ * console.log(errors.byType('validation')); // all validation errors
+ * console.log(errors.byType('validation', { field: 'username' })); // validation errors for field 'username'
  * console.log(errors.byField('username')); // all errors for field 'username'
- * console.log(errors.byField('username', { kind: 'auth0' })); // auth0 errors for field 'username'
+ * console.log(errors.byField('username', { type: 'auth0' })); // auth0 errors for field 'username'
  * ```
  */
 
@@ -162,11 +162,11 @@ export function useErrors(options: UseErrorOptions = {}): UseErrorsResult {
 
   const errors: ErrorsResult = useMemo(() => {
     const arr = Object.assign([...all], {
-      byKind(kind: ErrorKind, opts?: { field?: string }): ReadonlyArray<ErrorItem> {
+      byType(type: ErrorType, opts?: { field?: string }): ReadonlyArray<ErrorItem> {
         let base: ReadonlyArray<ErrorItem>;
-        if (kind === 'validation') {
+        if (type === 'validation') {
           base = clientTagged;
-        } else if (kind === 'configuration') {
+        } else if (type === 'configuration') {
           base = devTagged;
         } else {
           base = serverTagged;
@@ -176,9 +176,9 @@ export function useErrors(options: UseErrorOptions = {}): UseErrorsResult {
         }
         return base;
       },
-      byField(field: string, opts?: { kind?: ErrorKind }): ReadonlyArray<ErrorItem> {
-        if (opts?.kind) {
-          return arr.byKind(opts.kind, { field });
+      byField(field: string, opts?: { type?: ErrorType }): ReadonlyArray<ErrorItem> {
+        if (opts?.type) {
+          return arr.byType(opts.type, { field });
         }
         return Object.freeze(filterByField(all, field));
       },
@@ -189,11 +189,11 @@ export function useErrors(options: UseErrorOptions = {}): UseErrorsResult {
   const hasError = all.length > 0;
 
   const dismiss = useCallback((id: string) => {
-    errorStore.remove(ERROR_KINDS, id);
+    errorStore.remove(ERROR_TYPES, id);
   }, []);
 
   const dismissAll = useCallback(() => {
-    errorStore.clear(ERROR_KINDS);
+    errorStore.clear(ERROR_TYPES);
   }, []);
 
   return useMemo(
@@ -211,9 +211,9 @@ const isPromise = (v: unknown): v is Promise<unknown> =>
 
 function withError<T>(actionOrPromise: (() => T | Promise<T>) | Promise<T>): T | Promise<T> {
   const handle = (e: unknown) => {
-    const kind = classifyKind(e);
+    const type = classifyType(e);
     const normalized = toErrorObject(e);
-    switch (kind) {
+    switch (type) {
       case 'validation':
         errorManager.replaceValidationErrors([normalized]);
         break;
@@ -307,4 +307,4 @@ export const errorManager = {
   },
 };
 
-export { ErrorItem, ErrorKind };
+export { ErrorItem, ErrorType };

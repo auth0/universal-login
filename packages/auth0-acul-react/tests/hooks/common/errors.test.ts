@@ -103,59 +103,59 @@ describe('useErrors', () => {
     });
     jest.spyOn(mockErrorStore, 'snapshot').mockImplementation(() => currentState);
 
-    jest.spyOn(mockErrorStore, 'clear').mockImplementation((kinds?: any) => {
-      if (!kinds || kinds.length === 0) {
+    jest.spyOn(mockErrorStore, 'clear').mockImplementation((types?: any) => {
+      if (!types || types.length === 0) {
         currentState = { auth0: [], validation: [], configuration: [] };
       } else {
-        (kinds as string[]).forEach((kind: string) => {
-          (currentState as any)[kind] = [];
+        (types as string[]).forEach((type: string) => {
+          (currentState as any)[type] = [];
         });
       }
       notifyCallbacks();
     });
 
-    jest.spyOn(mockErrorStore, 'push').mockImplementation((kind: any, errors: any) => {
+    jest.spyOn(mockErrorStore, 'push').mockImplementation((type: any, errors: any) => {
       const errorsArray = Array.isArray(errors) ? errors : [errors];
       const errorsWithIds = errorsArray.map((err: any) => ({
         ...err,
         id: ('id' in err) ? err.id : `mock-${Date.now()}-${Math.random()}`,
-        kind
+        type
       }));
-      (currentState as any)[kind] = [...(currentState as any)[kind], ...errorsWithIds];
+      (currentState as any)[type] = [...(currentState as any)[type], ...errorsWithIds];
       notifyCallbacks();
     });
 
-    jest.spyOn(mockErrorStore, 'replace').mockImplementation((kind: any, errors: any) => {
+    jest.spyOn(mockErrorStore, 'replace').mockImplementation((type: any, errors: any) => {
       const errorsArray = Array.isArray(errors) ? errors : [errors];
       const errorsWithIds = errorsArray.map((err: any) => ({
         ...err,
         id: ('id' in err) ? err.id : `mock-${Date.now()}-${Math.random()}`,
-        kind
+        type
       }));
-      (currentState as any)[kind] = errorsWithIds;
+      (currentState as any)[type] = errorsWithIds;
       notifyCallbacks();
     });
 
-    jest.spyOn(mockErrorStore, 'replacePartial').mockImplementation((kind: any, errors: any, field: any) => {
+    jest.spyOn(mockErrorStore, 'replacePartial').mockImplementation((type: any, errors: any, field: any) => {
       const errorsArray = Array.isArray(errors) ? errors : [errors];
       const errorsWithIds = errorsArray.map((err: any) => ({
         ...err,
         id: ('id' in err) ? err.id : `mock-${Date.now()}-${Math.random()}`,
-        kind,
+        type,
         field
       }));
-      (currentState as any)[kind] = (currentState as any)[kind].filter((err: any) => err.field !== field);
-      (currentState as any)[kind] = [...(currentState as any)[kind], ...errorsWithIds];
+      (currentState as any)[type] = (currentState as any)[type].filter((err: any) => err.field !== field);
+      (currentState as any)[type] = [...(currentState as any)[type], ...errorsWithIds];
       notifyCallbacks();
     });
 
-    jest.spyOn(mockErrorStore, 'remove').mockImplementation((kinds: any, predicate: any) => {
-      const targetKinds = Array.isArray(kinds) ? kinds : (kinds ? [kinds] : ['auth0', 'validation', 'configuration']);
-      targetKinds.forEach((kind: string) => {
+    jest.spyOn(mockErrorStore, 'remove').mockImplementation((types: any, predicate: any) => {
+      const targetTypes = Array.isArray(types) ? types : (types ? [types] : ['auth0', 'validation', 'configuration']);
+      targetTypes.forEach((type: string) => {
         if (typeof predicate === 'string') {
-          (currentState as any)[kind] = (currentState as any)[kind].filter((err: any) => err.id !== predicate);
+          (currentState as any)[type] = (currentState as any)[type].filter((err: any) => err.id !== predicate);
         } else if (typeof predicate === 'function') {
-          (currentState as any)[kind] = (currentState as any)[kind].filter((err: any) => !predicate(err));
+          (currentState as any)[type] = (currentState as any)[type].filter((err: any) => !predicate(err));
         }
       });
       notifyCallbacks();
@@ -205,31 +205,31 @@ describe('useErrors', () => {
     });
   });
 
-  describe('error filtering by kind', () => {
-    it('should filter errors by server kind', () => {
+  describe('error filtering by type', () => {
+    it('should filter errors by server type', () => {
       const { result } = renderHook(() => useErrors());
 
-      const serverErrors = result.current.errors.byKind('auth0');
+      const serverErrors = result.current.errors.byType('auth0');
       expect(serverErrors).toHaveLength(2);
-      expect(serverErrors[0]).toMatchObject({ code: 'invalid_credentials', kind: 'auth0' });
-      expect(serverErrors[1]).toMatchObject({ code: 'user_not_found', kind: 'auth0' });
+      expect(serverErrors[0]).toMatchObject({ code: 'invalid_credentials', type: 'auth0' });
+      expect(serverErrors[1]).toMatchObject({ code: 'user_not_found', type: 'auth0' });
     });
 
-    it('should filter errors by client kind', () => {
+    it('should filter errors by client type', () => {
       const { result } = renderHook(() => useErrors());
 
-      const clientErrors = result.current.errors.byKind('validation');
+      const clientErrors = result.current.errors.byType('validation');
       expect(clientErrors).toHaveLength(2);
-      expect(clientErrors[0]).toMatchObject({ code: 'required_field', kind: 'validation' });
-      expect(clientErrors[1]).toMatchObject({ code: 'invalid_email', kind: 'validation' });
+      expect(clientErrors[0]).toMatchObject({ code: 'required_field', type: 'validation' });
+      expect(clientErrors[1]).toMatchObject({ code: 'invalid_email', type: 'validation' });
     });
 
-    it('should filter errors by developer kind when includeDevErrors is true', () => {
+    it('should filter errors by developer type when includeDevErrors is true', () => {
       const { result } = renderHook(() => useErrors({ includeDevErrors: true }));
 
-      const devErrors = result.current.errors.byKind('configuration');
+      const devErrors = result.current.errors.byType('configuration');
       expect(devErrors).toHaveLength(1);
-      expect(devErrors[0]).toMatchObject({ code: 'sdk_error', kind: 'configuration' });
+      expect(devErrors[0]).toMatchObject({ code: 'sdk_error', type: 'configuration' });
     });
 
     it('should exclude developer errors by default', () => {
@@ -238,8 +238,8 @@ describe('useErrors', () => {
       // Total errors should not include developer errors
       expect(result.current.errors).toHaveLength(4); // 2 server + 2 client
 
-      const devErrors = result.current.errors.byKind('configuration');
-      expect(devErrors).toHaveLength(1); // byKind still returns dev errors even if not in main array
+      const devErrors = result.current.errors.byType('configuration');
+      expect(devErrors).toHaveLength(1); // byType still returns dev errors even if not in main array
     });
   });
 
@@ -253,20 +253,20 @@ describe('useErrors', () => {
       expect(emailErrors.some(e => e.code === 'invalid_email')).toBe(true);
     });
 
-    it('should filter errors by field and kind', () => {
+    it('should filter errors by field and type', () => {
       const { result } = renderHook(() => useErrors());
 
-      const serverEmailErrors = result.current.errors.byField('email', { kind: 'auth0' });
+      const serverEmailErrors = result.current.errors.byField('email', { type: 'auth0' });
       expect(serverEmailErrors).toHaveLength(1);
-      expect(serverEmailErrors[0]).toMatchObject({ code: 'user_not_found', kind: 'auth0' });
+      expect(serverEmailErrors[0]).toMatchObject({ code: 'user_not_found', type: 'auth0' });
     });
 
-    it('should filter errors by kind and field', () => {
+    it('should filter errors by type and field', () => {
       const { result } = renderHook(() => useErrors());
 
-      const clientEmailErrors = result.current.errors.byKind('validation', { field: 'email' });
+      const clientEmailErrors = result.current.errors.byType('validation', { field: 'email' });
       expect(clientEmailErrors).toHaveLength(1);
-      expect(clientEmailErrors[0]).toMatchObject({ code: 'invalid_email', kind: 'validation' });
+      expect(clientEmailErrors[0]).toMatchObject({ code: 'invalid_email', type: 'validation' });
     });
   });
 
@@ -316,21 +316,21 @@ describe('useErrors', () => {
       const { result } = renderHook(() => useErrors({ includeDevErrors: true }));
 
       expect(result.current.errors).toHaveLength(5); // 2 server + 2 client + 1 developer
-      expect(result.current.errors.some(e => e.kind === 'configuration')).toBe(true);
+      expect(result.current.errors.some(e => e.type === 'configuration')).toBe(true);
     });
 
     it('should exclude developer errors when includeDevErrors is false', () => {
       const { result } = renderHook(() => useErrors({ includeDevErrors: false }));
 
       expect(result.current.errors).toHaveLength(4); // 2 server + 2 client
-      expect(result.current.errors.some(e => e.kind === 'configuration')).toBe(false);
+      expect(result.current.errors.some(e => e.type === 'configuration')).toBe(false);
     });
 
     it('should exclude developer errors by default', () => {
       const { result } = renderHook(() => useErrors());
 
       expect(result.current.errors).toHaveLength(4); // 2 server + 2 client
-      expect(result.current.errors.some(e => e.kind === 'configuration')).toBe(false);
+      expect(result.current.errors.some(e => e.type === 'configuration')).toBe(false);
     });
   });
 
@@ -345,12 +345,12 @@ describe('useErrors', () => {
 
       const firstResult = result.current;
       const firstErrors = firstResult.errors;
-      const firstErrorsList = firstResult.errors.byKind('validation');
+      const firstErrorsList = firstResult.errors.byType('validation');
 
       rerender({ includeDevErrors: false });
       const secondResult = result.current;
       const secondErrors = secondResult.errors;
-      const secondErrorsList = secondResult.errors.byKind('validation');
+      const secondErrorsList = secondResult.errors.byType('validation');
 
       // The results should remain consistent when dependencies don't change
       expect(firstResult.hasError).toBe(secondResult.hasError);
@@ -523,7 +523,7 @@ describe('internal utility functions', () => {
   // This requires importing the entire module and accessing internal exports
   const errorsModule = require('../../../src/hooks/common/errors');
 
-  describe('classifyKind function', () => {
+  describe('classifyType function', () => {
     it('should classify UserInputError as client', () => {
       const error = new ValidationError('Invalid input');
       // Since mocks create different class instances, test the behavior indirectly
@@ -695,20 +695,20 @@ describe('internal utility functions', () => {
       // These calls exercise the filterByField function internally
       const allErrors = result.current.errors;
       const fieldFilteredEmpty = result.current.errors.byField('nonexistent_field');
-      const kindFiltered = result.current.errors.byKind('validation');
+      const typeFiltered = result.current.errors.byType('validation');
 
       // Basic assertions to ensure the methods work
       expect(Array.isArray(allErrors)).toBe(true);
       expect(Array.isArray(fieldFilteredEmpty)).toBe(true);
-      expect(Array.isArray(kindFiltered)).toBe(true);
+      expect(Array.isArray(typeFiltered)).toBe(true);
 
       // Test byField with opts parameter to cover more code paths
-      const fieldWithKind = result.current.errors.byField('test', { kind: 'validation' });
-      expect(Array.isArray(fieldWithKind)).toBe(true);
+      const fieldWithType = result.current.errors.byField('test', { type: 'validation' });
+      expect(Array.isArray(fieldWithType)).toBe(true);
 
-      // Test byKind with opts parameter 
-      const kindWithField = result.current.errors.byKind('auth0', { field: 'test' });
-      expect(Array.isArray(kindWithField)).toBe(true);
+      // Test byType with opts parameter 
+      const typeWithField = result.current.errors.byType('auth0', { field: 'test' });
+      expect(Array.isArray(typeWithField)).toBe(true);
     });
   });
 
@@ -753,13 +753,13 @@ describe('internal utility functions', () => {
         { code: 'test2', message: 'Test 2', field: 'field2' }
       ]);
 
-      // This call to byKind without opts.field will call filterByField with undefined field
+      // This call to byType without opts.field will call filterByField with undefined field
       // which triggers the early return on line 54: if (!field) return list;
-      const allValidationErrors = result.current.errors.byKind('validation');
+      const allValidationErrors = result.current.errors.byType('validation');
       expect(allValidationErrors.length).toBeGreaterThanOrEqual(1);
 
       // This specifically tests the filterByField function when field is undefined
-      const serverErrorsNoField = result.current.errors.byKind('auth0'); // no opts, so field is undefined
+      const serverErrorsNoField = result.current.errors.byType('auth0'); // no opts, so field is undefined
       expect(Array.isArray(serverErrorsNoField)).toBe(true);
 
       // Additional test to ensure we cover the byField method calling filterByField
@@ -1036,9 +1036,9 @@ describe('internal utility functions', () => {
       expect(result.current.errors.length).toBeGreaterThan(0);
     });
 
-    it('should test classifyKind with actual instanceof checks (lines 30, 33, 36)', () => {
-      // This test ensures the actual instanceof checks in classifyKind are covered
-      // by using the withError function which calls classifyKind internally
+    it('should test classifyType with actual instanceof checks (lines 30, 33, 36)', () => {
+      // This test ensures the actual instanceof checks in classifyType are covered
+      // by using the withError function which calls classifyType internally
 
       const createMockError = (Constructor: any, message: string) => {
         const error = Object.create(Constructor.prototype);
@@ -1093,12 +1093,12 @@ describe('internal utility functions', () => {
 
       errorManager.replaceValidationErrors(testErrors);
 
-      const firstCall = result.current.errors.byKind('validation');
+      const firstCall = result.current.errors.byType('validation');
 
       // Replace with same errors to potentially hit cache
       errorManager.replaceValidationErrors(testErrors);
 
-      const secondCall = result.current.errors.byKind('validation');
+      const secondCall = result.current.errors.byType('validation');
 
       // Both calls should return arrays (testing the cache mechanism indirectly)
       expect(Array.isArray(firstCall)).toBe(true);
@@ -1111,15 +1111,15 @@ describe('internal utility functions', () => {
       ]);
 
       // This exercises various code paths in the filtering logic
-      const serverByField = result.current.errors.byKind('auth0', { field: 'field1' });
-      const fieldByKind = result.current.errors.byField('field2', { kind: 'auth0' });
+      const serverByField = result.current.errors.byType('auth0', { field: 'field1' });
+      const fieldByType = result.current.errors.byField('field2', { type: 'auth0' });
 
       // Verify we have the expected server errors
-      const allServerErrors = result.current.errors.byKind('auth0');
+      const allServerErrors = result.current.errors.byType('auth0');
       expect(allServerErrors.length).toBeGreaterThanOrEqual(1);
 
       expect(Array.isArray(serverByField)).toBe(true);
-      expect(Array.isArray(fieldByKind)).toBe(true);
+      expect(Array.isArray(fieldByType)).toBe(true);
     });
   });
 
@@ -1180,30 +1180,30 @@ describe('internal utility functions', () => {
       expect(result.current.errors.length).toBeGreaterThan(0);
     });
 
-    it('should test all byKind conditional branches', () => {
-      // Test byKind with existing errors from beforeEach
+    it('should test all byType conditional branches', () => {
+      // Test byType with existing errors from beforeEach
       const { result } = renderHook(() => useErrors({ includeDevErrors: true }));
 
-      // Test byKind branches: kind === 'validation'
-      const clientErrors = result.current.errors.byKind('validation');
+      // Test byType branches: type === 'validation'
+      const clientErrors = result.current.errors.byType('validation');
       expect(clientErrors.length).toBeGreaterThanOrEqual(1);
-      expect(clientErrors.every(e => e.kind === 'validation')).toBe(true);
+      expect(clientErrors.every(e => e.type === 'validation')).toBe(true);
 
-      // Test byKind branches: kind === 'auth0'
-      const serverErrors = result.current.errors.byKind('auth0');
+      // Test byType branches: type === 'auth0'
+      const serverErrors = result.current.errors.byType('auth0');
       expect(serverErrors.length).toBeGreaterThanOrEqual(1);
-      expect(serverErrors.every(e => e.kind === 'auth0')).toBe(true);
+      expect(serverErrors.every(e => e.type === 'auth0')).toBe(true);
 
-      // Test byKind branches: kind === 'configuration'
-      const devErrors = result.current.errors.byKind('configuration');
+      // Test byType branches: type === 'configuration'
+      const devErrors = result.current.errors.byType('configuration');
       expect(devErrors.length).toBeGreaterThanOrEqual(1);
-      expect(devErrors.every(e => e.kind === 'configuration')).toBe(true);
+      expect(devErrors.every(e => e.type === 'configuration')).toBe(true);
 
-      // Test opts?.field branch in byKind - this tests the ternary operator
-      const clientWithField = result.current.errors.byKind('validation', { field: 'username' });
+      // Test opts?.field branch in byType - this tests the ternary operator
+      const clientWithField = result.current.errors.byType('validation', { field: 'username' });
       expect(Array.isArray(clientWithField)).toBe(true);
 
-      const clientWithoutMatchingField = result.current.errors.byKind('validation', { field: 'nonexistent' });
+      const clientWithoutMatchingField = result.current.errors.byType('validation', { field: 'nonexistent' });
       expect(clientWithoutMatchingField).toHaveLength(0);
     });
 
@@ -1211,13 +1211,13 @@ describe('internal utility functions', () => {
       // Test byField with existing errors
       const { result } = renderHook(() => useErrors());
 
-      // Test byField with opts?.kind branch
-      const fieldWithKind = result.current.errors.byField('email', { kind: 'validation' });
-      expect(Array.isArray(fieldWithKind)).toBe(true);
+      // Test byField with opts?.type branch
+      const fieldWithType = result.current.errors.byField('email', { type: 'validation' });
+      expect(Array.isArray(fieldWithType)).toBe(true);
 
-      // Test byField without opts?.kind branch
-      const fieldWithoutKind = result.current.errors.byField('email');
-      expect(Array.isArray(fieldWithoutKind)).toBe(true);
+      // Test byField without opts?.type branch
+      const fieldWithoutType = result.current.errors.byField('email');
+      expect(Array.isArray(fieldWithoutType)).toBe(true);
 
       // Test byField with non-existent field
       const nonExistentField = result.current.errors.byField('nonexistent');
@@ -1228,23 +1228,23 @@ describe('internal utility functions', () => {
       // Test cache behavior with existing errors
       const { result } = renderHook(() => useErrors({ includeDevErrors: true }));
 
-      // Call byKind multiple times to test cache hits
-      const firstValidationCall = result.current.errors.byKind('validation');
-      const secondValidationCall = result.current.errors.byKind('validation');
+      // Call byType multiple times to test cache hits
+      const firstValidationCall = result.current.errors.byType('validation');
+      const secondValidationCall = result.current.errors.byType('validation');
 
-      // Cache should return the same reference for the same kind
+      // Cache should return the same reference for the same type
       expect(firstValidationCall).toBe(secondValidationCall);
 
-      // Test different kinds to ensure separate caches
-      const serverResult = result.current.errors.byKind('auth0');
-      const devResult = result.current.errors.byKind('configuration');
+      // Test different types to ensure separate caches
+      const serverResult = result.current.errors.byType('auth0');
+      const devResult = result.current.errors.byType('configuration');
 
       expect(Array.isArray(serverResult)).toBe(true);
       expect(Array.isArray(devResult)).toBe(true);
 
       // Verify cache works by calling again and checking references
-      expect(result.current.errors.byKind('auth0')).toBe(serverResult);
-      expect(result.current.errors.byKind('configuration')).toBe(devResult);
+      expect(result.current.errors.byType('auth0')).toBe(serverResult);
+      expect(result.current.errors.byType('configuration')).toBe(devResult);
     });
 
     it('should test errorManager conditional branches', () => {
@@ -1305,7 +1305,7 @@ describe('internal utility functions', () => {
       expect(result.current.errors.length).toBe(0);
 
       // Now add an error directly to the mock store and trigger notification
-      const testError = { id: 'test-id', code: 'test', message: 'Test Error', kind: 'validation' as const };
+      const testError = { id: 'test-id', code: 'test', message: 'Test Error', type: 'validation' as const };
 
       updateErrors(() => {
         // Mock the store to return our test error
