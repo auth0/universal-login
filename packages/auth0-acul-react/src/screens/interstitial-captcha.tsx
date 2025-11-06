@@ -24,17 +24,7 @@ export const {
 } = factory;
 
 // Common hooks
-export {
-  useCurrentScreen,
-  useErrors,
-  useAuth0Themes,
-  type UseErrorOptions,
-  type UseErrorsResult,
-  type ErrorsResult,
-  type ErrorKind,
-} from '../hooks';
+export { useCurrentScreen, useErrors, useAuth0Themes } from '../hooks';
 
 // Main instance hook. Returns singleton instance of InterstitialCaptcha
 export const useInterstitialCaptcha = (): InterstitialCaptchaMembers => useMemo(() => instance, []);
-
-// Export all types from the core SDK for this screen

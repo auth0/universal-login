@@ -38,17 +38,7 @@ export const tryAnotherMethod = (payload?: CustomOptions) =>
 export const noThanks = (payload?: CustomOptions) => withError(instance.noThanks(payload));
 
 // Common hooks
-export {
-  useCurrentScreen,
-  useErrors,
-  useAuth0Themes,
-  type UseErrorOptions,
-  type UseErrorsResult,
-  type ErrorsResult,
-  type ErrorKind,
-} from '../hooks';
+export { useCurrentScreen, useErrors, useAuth0Themes } from '../hooks';
 
 // Main instance hook. Returns singleton instance of MfaWebAuthnError
 export const useMfaWebAuthnError = (): MfaWebAuthnErrorMembers => useMemo(() => instance, []);
-
-// Export all types from the core SDK for this screen

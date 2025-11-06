@@ -45,18 +45,8 @@ export const refuseEnrollmentOnThisDevice = (payload?: CustomOptions) =>
   withError(instance.refuseEnrollmentOnThisDevice(payload));
 
 // Common hooks
-export {
-  useCurrentScreen,
-  useErrors,
-  useAuth0Themes,
-  type UseErrorOptions,
-  type UseErrorsResult,
-  type ErrorsResult,
-  type ErrorKind,
-} from '../hooks';
+export { useCurrentScreen, useErrors, useAuth0Themes } from '../hooks';
 
 // Main instance hook. Returns singleton instance of MfaWebAuthnPlatformEnrollment
 export const useMfaWebAuthnPlatformEnrollment = (): MfaWebAuthnPlatformEnrollmentMembers =>
   useMemo(() => instance, []);
-
-// Export all types from the core SDK for this screen

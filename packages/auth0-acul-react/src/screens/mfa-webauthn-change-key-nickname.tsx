@@ -35,18 +35,8 @@ export const continueWithNewNickname = (payload: ContinueOptions) =>
   withError(instance.continueWithNewNickname(payload));
 
 // Common hooks
-export {
-  useCurrentScreen,
-  useErrors,
-  useAuth0Themes,
-  type UseErrorOptions,
-  type UseErrorsResult,
-  type ErrorsResult,
-  type ErrorKind,
-} from '../hooks';
+export { useCurrentScreen, useErrors, useAuth0Themes } from '../hooks';
 
 // Main instance hook. Returns singleton instance of MfaWebAuthnChangeKeyNickname
 export const useMfaWebAuthnChangeKeyNickname = (): MfaWebAuthnChangeKeyNicknameMembers =>
   useMemo(() => instance, []);
-
-// Export all types from the core SDK for this screen

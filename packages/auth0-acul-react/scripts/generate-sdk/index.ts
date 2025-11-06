@@ -278,7 +278,7 @@ for (const symbol of screenSymbols) {
   }
   screenLines.push(`\n// Common hooks`);
   screenLines.push(
-    `export { useCurrentScreen, useErrors, useAuth0Themes, type UseErrorOptions, type UseErrorsResult, type ErrorsResult, type ErrorKind } from '../hooks';`
+    `export { useCurrentScreen, useErrors, useAuth0Themes } from '../hooks';`
   );
 
   // Main hook (memoized)
@@ -287,7 +287,7 @@ for (const symbol of screenSymbols) {
     `export const ${instanceHook} = (): ${baseInterface} => useMemo(() => instance, []);`
   );
 
-  screenLines.push(`\n// Export all types from the core SDK for this screen`);
+  // screenLines.push(`\n// Export all types from the core SDK for this screen`);
   // screenLines.push(`export type * from '@auth0/auth0-acul-js/${kebab}';`);
 
   fs.writeFileSync(path.join(SCREENS_OUTPUT_PATH, `${kebab}.tsx`), screenLines.join('\n'), 'utf8');

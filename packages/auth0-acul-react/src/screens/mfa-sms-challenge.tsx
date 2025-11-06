@@ -44,17 +44,7 @@ export const getACall = (payload?: CustomOptions) => withError(instance.getACall
 export { useResend } from '../hooks/utility/resend-manager';
 
 // Common hooks
-export {
-  useCurrentScreen,
-  useErrors,
-  useAuth0Themes,
-  type UseErrorOptions,
-  type UseErrorsResult,
-  type ErrorsResult,
-  type ErrorKind,
-} from '../hooks';
+export { useCurrentScreen, useErrors, useAuth0Themes } from '../hooks';
 
 // Main instance hook. Returns singleton instance of MfaSmsChallenge
 export const useMfaSmsChallenge = (): MfaSmsChallengeMembers => useMemo(() => instance, []);
-
-// Export all types from the core SDK for this screen
