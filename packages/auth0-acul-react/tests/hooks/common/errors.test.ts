@@ -103,11 +103,11 @@ describe('useErrors', () => {
     });
     jest.spyOn(mockErrorStore, 'snapshot').mockImplementation(() => currentState);
 
-    jest.spyOn(mockErrorStore, 'clear').mockImplementation((kinds?: any) => {
-      if (!kinds || kinds.length === 0) {
+    jest.spyOn(mockErrorStore, 'clear').mockImplementation((types?: any) => {
+      if (!types || types.length === 0) {
         currentState = { auth0: [], validation: [], configuration: [] };
       } else {
-        (kinds as string[]).forEach((type: string) => {
+        (types as string[]).forEach((type: string) => {
           (currentState as any)[type] = [];
         });
       }
@@ -149,9 +149,9 @@ describe('useErrors', () => {
       notifyCallbacks();
     });
 
-    jest.spyOn(mockErrorStore, 'remove').mockImplementation((kinds: any, predicate: any) => {
-      const targetKinds = Array.isArray(kinds) ? kinds : (kinds ? [kinds] : ['auth0', 'validation', 'configuration']);
-      targetKinds.forEach((type: string) => {
+    jest.spyOn(mockErrorStore, 'remove').mockImplementation((types: any, predicate: any) => {
+      const targetTypes = Array.isArray(types) ? types : (types ? [types] : ['auth0', 'validation', 'configuration']);
+      targetTypes.forEach((type: string) => {
         if (typeof predicate === 'string') {
           (currentState as any)[type] = (currentState as any)[type].filter((err: any) => err.id !== predicate);
         } else if (typeof predicate === 'function') {
@@ -523,7 +523,7 @@ describe('internal utility functions', () => {
   // This requires importing the entire module and accessing internal exports
   const errorsModule = require('../../../src/hooks/common/errors');
 
-  describe('classifyKind function', () => {
+  describe('classifyType function', () => {
     it('should classify UserInputError as client', () => {
       const error = new ValidationError('Invalid input');
       // Since mocks create different class instances, test the behavior indirectly
@@ -695,20 +695,20 @@ describe('internal utility functions', () => {
       // These calls exercise the filterByField function internally
       const allErrors = result.current.errors;
       const fieldFilteredEmpty = result.current.errors.byField('nonexistent_field');
-      const kindFiltered = result.current.errors.byType('validation');
+      const typeFiltered = result.current.errors.byType('validation');
 
       // Basic assertions to ensure the methods work
       expect(Array.isArray(allErrors)).toBe(true);
       expect(Array.isArray(fieldFilteredEmpty)).toBe(true);
-      expect(Array.isArray(kindFiltered)).toBe(true);
+      expect(Array.isArray(typeFiltered)).toBe(true);
 
       // Test byField with opts parameter to cover more code paths
-      const fieldWithKind = result.current.errors.byField('test', { type: 'validation' });
-      expect(Array.isArray(fieldWithKind)).toBe(true);
+      const fieldWithType = result.current.errors.byField('test', { type: 'validation' });
+      expect(Array.isArray(fieldWithType)).toBe(true);
 
       // Test byType with opts parameter 
-      const kindWithField = result.current.errors.byType('auth0', { field: 'test' });
-      expect(Array.isArray(kindWithField)).toBe(true);
+      const typeWithField = result.current.errors.byType('auth0', { field: 'test' });
+      expect(Array.isArray(typeWithField)).toBe(true);
     });
   });
 
@@ -1036,9 +1036,9 @@ describe('internal utility functions', () => {
       expect(result.current.errors.length).toBeGreaterThan(0);
     });
 
-    it('should test classifyKind with actual instanceof checks (lines 30, 33, 36)', () => {
-      // This test ensures the actual instanceof checks in classifyKind are covered
-      // by using the withError function which calls classifyKind internally
+    it('should test classifyType with actual instanceof checks (lines 30, 33, 36)', () => {
+      // This test ensures the actual instanceof checks in classifyType are covered
+      // by using the withError function which calls classifyType internally
 
       const createMockError = (Constructor: any, message: string) => {
         const error = Object.create(Constructor.prototype);
@@ -1112,14 +1112,14 @@ describe('internal utility functions', () => {
 
       // This exercises various code paths in the filtering logic
       const serverByField = result.current.errors.byType('auth0', { field: 'field1' });
-      const fieldByKind = result.current.errors.byField('field2', { type: 'auth0' });
+      const fieldByType = result.current.errors.byField('field2', { type: 'auth0' });
 
       // Verify we have the expected server errors
       const allServerErrors = result.current.errors.byType('auth0');
       expect(allServerErrors.length).toBeGreaterThanOrEqual(1);
 
       expect(Array.isArray(serverByField)).toBe(true);
-      expect(Array.isArray(fieldByKind)).toBe(true);
+      expect(Array.isArray(fieldByType)).toBe(true);
     });
   });
 
@@ -1212,12 +1212,12 @@ describe('internal utility functions', () => {
       const { result } = renderHook(() => useErrors());
 
       // Test byField with opts?.type branch
-      const fieldWithKind = result.current.errors.byField('email', { type: 'validation' });
-      expect(Array.isArray(fieldWithKind)).toBe(true);
+      const fieldWithType = result.current.errors.byField('email', { type: 'validation' });
+      expect(Array.isArray(fieldWithType)).toBe(true);
 
       // Test byField without opts?.type branch
-      const fieldWithoutKind = result.current.errors.byField('email');
-      expect(Array.isArray(fieldWithoutKind)).toBe(true);
+      const fieldWithoutType = result.current.errors.byField('email');
+      expect(Array.isArray(fieldWithoutType)).toBe(true);
 
       // Test byField with non-existent field
       const nonExistentField = result.current.errors.byField('nonexistent');
@@ -1235,7 +1235,7 @@ describe('internal utility functions', () => {
       // Cache should return the same reference for the same type
       expect(firstValidationCall).toBe(secondValidationCall);
 
-      // Test different kinds to ensure separate caches
+      // Test different types to ensure separate caches
       const serverResult = result.current.errors.byType('auth0');
       const devResult = result.current.errors.byType('configuration');
 
