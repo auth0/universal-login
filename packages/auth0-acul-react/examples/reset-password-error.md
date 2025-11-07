@@ -11,65 +11,37 @@ This example demonstrates how to build a React component for the `reset-password
 Create a component file (e.g., `ResetPasswordError.tsx`) and add the following code:
 
 ```tsx
-import React, { useState } from 'react';
-import {
-  useResetPasswordError,
-  useUser,
-  useTenant,
-  useBranding,
-  useClient,
-  useOrganization,
-  usePrompt,
-  useUntrustedData
-} from '@auth0/auth0-acul-react/reset-password-error';
+import React from "react";
+import { Logo } from "../../components/Logo";
+import { useScreen } from "@auth0/auth0-acul-react/reset-password-error";
 
-export const ResetPasswordError: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  // Main hook for screen logic
-  const screen = useResetPasswordError();
-
-  // Context hooks
-  const userData = useUser();
-  const tenantData = useTenant();
-  const brandingData = useBranding();
-  const clientData = useClient();
-  const organizationData = useOrganization();
-  const promptData = usePrompt();
-  const untrusteddataData = useUntrustedData();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      // TODO: Gather data from form inputs
-      const payload = {};
-      await screen.submit(payload);
-      // On success, the core SDK handles redirection.
-    } catch (err: any) {
-      setError(err.message || 'An unexpected error occurred.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+const ResetPasswordErrorScreen: React.FC = () => {
+  const screenTexts = useScreen();
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>ResetPasswordError</h1>
+    <div className="min-h-screen bg-gray-900 flex items-center justify-center px-4">
+      <div className="bg-white rounded-lg shadow-md w-full max-w-sm p-8">
+        {/* Logo */}
+        <div className="flex justify-center mb-6">
+          <div className="w-20 h-20">
+            <Logo />
+          </div>
+        </div>
 
-      {/* TODO: Add form inputs for the 'submit' payload */}
+        {/* Title */}
+        <h1 className="text-2xl font-bold text-center text-red-700">
+          {screenTexts.texts?.title || "Password Reset Error"}
+        </h1>
+        <p className="mt-2 text-sm text-center text-gray-600">
+          {screenTexts.texts?.description || "There was an error resetting your password. Please try again or contact support."}
+        </p>
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-
-      <button type="submit" disabled={isLoading}>
-        {isLoading ? 'Processing...' : 'Continue'}
-      </button>
-    </form>
+      </div>
+    </div>
   );
 };
+
+export default ResetPasswordErrorScreen;
 ```
 
 ### 2. How It Works

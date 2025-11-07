@@ -12,64 +12,128 @@ Create a component file (e.g., `MfaPhoneEnrollment.tsx`) and add the following c
 
 ```tsx
 import React, { useState } from 'react';
-import {
-  useMfaPhoneEnrollment,
-  useUser,
-  useTenant,
-  useBranding,
-  useClient,
-  useOrganization,
-  usePrompt,
-  useUntrustedData
-} from '@auth0/auth0-acul-react/mfa-phone-enrollment';
+import { useMfaPhoneEnrollment, pickCountryCode, continueEnrollment, tryAnotherMethod } from '@auth0/auth0-acul-react/mfa-phone-enrollment';
+import { Logo } from '../../components/Logo';
 
-export const MfaPhoneEnrollment: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+const MfaPhoneEnrollmentScreen: React.FC = () => {
+  const [phone, setPhone] = useState('');
+  const [type, setType] = useState<'sms' | 'voice'>('sms');
+  const mfaPhoneEnrollment = useMfaPhoneEnrollment();
+  const { screen, transaction: { errors } } = mfaPhoneEnrollment;
+  const texts = screen.texts ?? {};
 
-  // Main hook for screen logic
-  const screen = useMfaPhoneEnrollment();
+  const handlePickCountryCode = async () => {
+    await pickCountryCode();
+  };
 
-  // Context hooks
-  const userData = useUser();
-  const tenantData = useTenant();
-  const brandingData = useBranding();
-  const clientData = useClient();
-  const organizationData = useOrganization();
-  const promptData = usePrompt();
-  const untrusteddataData = useUntrustedData();
+  const handleContinueEnrollment = async () => {
+    await continueEnrollment({ phone, type });
+  };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      // TODO: Gather data from form inputs
-      const payload = {};
-      await screen.pickCountryCode(payload);
-      // On success, the core SDK handles redirection.
-    } catch (err: any) {
-      setError(err.message || 'An unexpected error occurred.');
-    } finally {
-      setIsLoading(false);
-    }
+  const handleTryAnotherMethod = async () => {
+    await tryAnotherMethod();
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>MfaPhoneEnrollment</h1>
+    <div className="min-h-screen bg-black flex items-center justify-center px-4">
+      <div className="bg-white rounded-lg shadow-lg w-full max-w-sm p-8">
+        <div className="flex justify-center">
+          <div className="w-20 h-20">
+            <Logo />
+          </div>
+        </div>
+        <h2 className="mt-6 text-center text-xl font-semibold text-gray-900">
+          {texts.title ?? 'Secure Your Account'}
+        </h2>
+        <p className="mt-2 text-center text-sm text-gray-500">
+          {texts.description ?? 'Enter your country code and phone number to which we can send a 6-digit code:'}
+        </p>
 
-      {/* TODO: Add form inputs for the 'pickCountryCode' payload */}
+        <div className="mt-6 space-y-4">
+          <button
+            className="w-full flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            type="button"
+            onClick={handlePickCountryCode}
+          >
+            {texts.pickCountryCodeButtonText ?? 'Pick Country Code'}
+          </button>
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="phone">
+              {texts.placeholder ?? 'Enter your phone number'}
+            </label>
+            <input
+              className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              id="phone"
+              type="text"
+              placeholder={texts.placeholder ?? 'Enter your phone number'}
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
+            {errors?.length ? (
+              <div className="mt-2 space-y-1" aria-live="polite">
+                {errors.map((error, idx) => (
+                  <p key={idx} className="text-red-600 text-xs">
+                    {error.message}
+                  </p>
+                ))}
+              </div>
+            ) : null}
+          </div>
 
-      <button type="submit" disabled={isLoading}>
-        {isLoading ? 'Processing...' : 'Continue'}
-      </button>
-    </form>
+          {/* Delivery Method */}
+          <fieldset className="">
+            <legend className="block text-sm font-medium text-gray-700 mb-2">
+              {texts.chooseMessageTypeText ?? 'How do you want to receive the code?'}
+            </legend>
+            <div className="flex gap-4">
+              <label className="flex items-center gap-1 text-sm text-gray-700">
+                <input
+                  type="radio"
+                  value="sms"
+                  checked={type === 'sms'}
+                  onChange={() => setType('sms')}
+                  className="h-4 w-4 text-indigo-600 border-gray-300 focus:ring-indigo-500"
+                />
+                {texts.smsButtonText ?? 'Text message'}
+              </label>
+              <label className="flex items-center gap-1 text-sm text-gray-700">
+                <input
+                  type="radio"
+                  value="voice"
+                  checked={type === 'voice'}
+                  onChange={() => setType('voice')}
+                  className="h-4 w-4 text-indigo-600 border-gray-300 focus:ring-indigo-500"
+                />
+                {texts.voiceButtonText ?? 'Voice call'}
+              </label>
+            </div>
+          </fieldset>
+
+          {/* Continue Button */}
+          <button
+            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            type="button"
+            onClick={handleContinueEnrollment}
+          >
+            {texts.continueButtonText ?? 'Continue'}
+          </button>
+
+          {/* Try Another Method */}
+          <button
+            className="w-full flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            type="button"
+            onClick={handleTryAnotherMethod}
+          >
+            {texts.pickAuthenticatorText ?? 'Try Another Method'}
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
+
+export default MfaPhoneEnrollmentScreen;
 ```
 
 ### 2. How It Works

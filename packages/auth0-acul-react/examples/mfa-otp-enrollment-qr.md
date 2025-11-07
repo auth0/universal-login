@@ -12,64 +12,134 @@ Create a component file (e.g., `MfaOtpEnrollmentQr.tsx`) and add the following c
 
 ```tsx
 import React, { useState } from 'react';
-import {
-  useMfaOtpEnrollmentQr,
-  useUser,
-  useTenant,
-  useBranding,
-  useClient,
-  useOrganization,
-  usePrompt,
-  useUntrustedData
-} from '@auth0/auth0-acul-react/mfa-otp-enrollment-qr';
+import { useMfaOtpEnrollmentQr, toggleView, tryAnotherMethod, continueMethod } from '@auth0/auth0-acul-react/mfa-otp-enrollment-qr';
+import { Logo } from '../../components/Logo';
 
-export const MfaOtpEnrollmentQr: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+const MfaOtpEnrollmentQrScreen: React.FC = () => {
+  const mfaOtpEnrollmentQr = useMfaOtpEnrollmentQr();
+  const { screen, transaction } = mfaOtpEnrollmentQr;
+  const { qr_code } = screen.data || {};
+  const texts = screen.texts || {};
 
-  // Main hook for screen logic
-  const screen = useMfaOtpEnrollmentQr();
+  const [otpCode, setOtpCode] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
 
-  // Context hooks
-  const userData = useUser();
-  const tenantData = useTenant();
-  const brandingData = useBranding();
-  const clientData = useClient();
-  const organizationData = useOrganization();
-  const promptData = usePrompt();
-  const untrusteddataData = useUntrustedData();
+  const title = texts.title ?? 'Secure Your Account';
+  const description = texts.description ?? 'Scan this QR code with your authenticator app, then enter the generated one-time code.';
+  const toggleText = texts.codeEnrollmentText ?? 'Can\'t scan the code?';
+  const buttonText = texts.buttonText ?? 'Continue';
+  const tryAnother = texts.tryAnotherMethodText ?? 'Try Another Method';
+  const placeholder = texts.placeholder ?? 'Enter OTP code';
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(null);
-
+  const handleToggleView = async () => {
     try {
-      // TODO: Gather data from form inputs
-      const payload = {};
-      await screen.continueMethod(payload);
-      // On success, the core SDK handles redirection.
+      await toggleView();
+    } catch (err) {
+      console.error('Failed to toggle view:', err);
+    }
+  };
+
+  const handleTryAnotherMethod = async () => {
+    try {
+      await tryAnotherMethod();
+    } catch (err) {
+      console.error('Failed to pick authenticator:', err);
+    }
+  };
+
+  const handleContinue = async (e?: React.FormEvent) => {
+    e?.preventDefault();
+    setError('');
+    setSubmitting(true);
+    try {
+      await continueMethod({ code: otpCode });
     } catch (err: any) {
-      setError(err.message || 'An unexpected error occurred.');
+      setError(err?.message || 'Failed to continue. Please try again.');
     } finally {
-      setIsLoading(false);
+      setSubmitting(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>MfaOtpEnrollmentQr</h1>
+    <div className="min-h-screen bg-black flex items-center justify-center px-4">
+      <div className="bg-white rounded-lg shadow-lg w-full max-w-sm p-8">
+        <div className="flex justify-center mb-4">
+          <div className="w-20 h-20">
+            <Logo />
+          </div>
+        </div>
 
-      {/* TODO: Add form inputs for the 'continueMethod' payload */}
+        <h2 className="text-center text-xl font-semibold text-gray-900">{title}</h2>
+        <p className="mt-2 text-center text-sm text-gray-500">{description}</p>
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+        <div className="mt-6 flex flex-col items-center">
+          {qr_code ? (
+            <div className="p-3 border border-gray-200 rounded-md bg-white shadow-sm">
+              <img src={qr_code} alt="Authenticator QR Code" className="h-48 w-48 object-contain" />
+            </div>
+          ) : (
+            <div className="h-48 w-48 flex items-center justify-center border border-dashed border-gray-300 rounded-md text-xs text-gray-500">
+              Loading QR Code...
+            </div>
+          )}
+          <button
+            type="button"
+            onClick={handleToggleView}
+            className="mt-3 text-xs font-medium text-indigo-600 hover:text-indigo-700 focus:outline-none focus:underline"
+          >
+            {toggleText}
+          </button>
+        </div>
 
-      <button type="submit" disabled={isLoading}>
-        {isLoading ? 'Processing...' : 'Continue'}
-      </button>
-    </form>
+        <form onSubmit={handleContinue} className="mt-6 space-y-5">
+          <div>
+            <label htmlFor="otpCode" className="block text-sm font-medium text-gray-700 mb-1">{placeholder}</label>
+            <input
+              id="otpCode"
+              type="text"
+              required
+              value={otpCode}
+              onChange={(e) => setOtpCode(e.target.value)}
+              placeholder={placeholder}
+              className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            />
+          </div>
+
+          {error && (
+            <div className="text-red-600 text-sm">{error}</div>
+          )}
+          {transaction?.errors?.length && (
+            <div className="text-red-600 text-sm space-y-1">
+              {transaction.errors.map((err, index) => (
+                <p key={index}>{err.message}</p>
+              ))}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={submitting}
+            className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-60"
+          >
+            {submitting ? 'Processing…' : buttonText}
+          </button>
+        </form>
+
+        <div className="mt-6 space-y-3">
+          <button
+            onClick={handleTryAnotherMethod}
+            className="w-full flex justify-center py-2 px-4 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            {tryAnother}
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
+
+export default MfaOtpEnrollmentQrScreen;
 ```
 
 ### 2. How It Works

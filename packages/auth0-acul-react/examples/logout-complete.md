@@ -11,65 +11,63 @@ This example demonstrates how to build a React component for the `logout-complet
 Create a component file (e.g., `LogoutComplete.tsx`) and add the following code:
 
 ```tsx
-import React, { useState } from 'react';
-import {
-  useLogoutComplete,
-  useUser,
-  useTenant,
-  useBranding,
-  useClient,
-  useOrganization,
-  usePrompt,
-  useUntrustedData
-} from '@auth0/auth0-acul-react/logout-complete';
+import React, { useEffect } from 'react';
+import { useLogoutComplete } from '@auth0/auth0-acul-react/logout-complete';
 
-export const LogoutComplete: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+const LogoutCompleteScreen: React.FC = () => {
+  const logoutComplete = useLogoutComplete();
+  const { screen, transaction: { errors } } = logoutComplete;
+  const texts = screen.texts ?? {};
 
-  // Main hook for screen logic
-  const screen = useLogoutComplete();
-
-  // Context hooks
-  const userData = useUser();
-  const tenantData = useTenant();
-  const brandingData = useBranding();
-  const clientData = useClient();
-  const organizationData = useOrganization();
-  const promptData = usePrompt();
-  const untrusteddataData = useUntrustedData();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      // TODO: Gather data from form inputs
-      const payload = {};
-      await screen.submit(payload);
-      // On success, the core SDK handles redirection.
-    } catch (err: any) {
-      setError(err.message || 'An unexpected error occurred.');
-    } finally {
-      setIsLoading(false);
+  // Update the document title if provided by the spec
+  useEffect(() => {
+    if (texts.pageTitle) {
+      document.title = texts.pageTitle;
     }
-  };
+  }, [texts.pageTitle]);
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>LogoutComplete</h1>
+    <div className="min-h-screen bg-gray-100 flex justify-center p-4">
+      <div className="w-full h-[300px] max-w-md bg-white shadow-md rounded px-8 pt-6 pb-8 text-center">
+        <h1 className="text-2xl font-bold mb-4">
+          {texts.eventTitle ?? 'You have successfully logged out.'}
+        </h1>
 
-      {/* TODO: Add form inputs for the 'submit' payload */}
+        {texts.userSalute && (
+          <p className="text-sm text-gray-600 mb-2">
+            {texts.userSalute}
+          </p>
+        )}
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+        {errors?.length && (
+          <div className="mt-2 space-y-1 text-left">
+            {errors.map((error, idx) => (
+              <p key={idx} className="text-red-600 text-sm">
+                {error.message}
+              </p>
+            ))}
+          </div>
+        )}
 
-      <button type="submit" disabled={isLoading}>
-        {isLoading ? 'Processing...' : 'Continue'}
-      </button>
-    </form>
+        {/* Auth0 badge/link */}
+        {texts.badgeUrl && (
+          <div className="mt-6">
+            <a
+              href={texts.badgeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-gray-400 hover:underline"
+            >
+              {texts.badgeAltText ?? 'Auth0'}
+            </a>
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
+
+export default LogoutCompleteScreen;
 ```
 
 ### 2. How It Works

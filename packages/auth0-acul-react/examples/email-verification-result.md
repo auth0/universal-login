@@ -11,65 +11,101 @@ This example demonstrates how to build a React component for the `email-verifica
 Create a component file (e.g., `EmailVerificationResult.tsx`) and add the following code:
 
 ```tsx
-import React, { useState } from 'react';
-import {
-  useEmailVerificationResult,
-  useUser,
-  useTenant,
-  useBranding,
-  useClient,
-  useOrganization,
-  usePrompt,
-  useUntrustedData
-} from '@auth0/auth0-acul-react/email-verification-result';
+import React from 'react';
+import { useEmailVerificationResult } from '@auth0/auth0-acul-react/email-verification-result';
+import { Logo } from '../../components/Logo';
 
-export const EmailVerificationResult: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+const EmailVerificationResultScreen: React.FC = () => {
+  const emailVerificationResultManager = useEmailVerificationResult();
+  const { screen, transaction, organization } = emailVerificationResultManager;
 
-  // Main hook for screen logic
-  const screen = useEmailVerificationResult();
+  const verificationStatus = screen.data?.status;
+  const loginLink = screen.loginLink;
 
-  // Context hooks
-  const userData = useUser();
-  const tenantData = useTenant();
-  const brandingData = useBranding();
-  const clientData = useClient();
-  const organizationData = useOrganization();
-  const promptData = usePrompt();
-  const untrusteddataData = useUntrustedData();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(null);
+  let statusMessage = 'An unexpected error occurred.';
+  let statusColor = 'text-gray-700'; // Default color
+  let title = screen.texts?.title ?? 'Email Verification'; // Default title
 
-    try {
-      // TODO: Gather data from form inputs
-      const payload = {};
-      await screen.submit(payload);
-      // On success, the core SDK handles redirection.
-    } catch (err: any) {
-      setError(err.message || 'An unexpected error occurred.');
-    } finally {
-      setIsLoading(false);
+  if (verificationStatus === 'success') {
+    statusMessage = screen.texts?.descriptionSuccess ?? 'Your email has been successfully verified.';
+    statusColor = 'text-green-600';
+    title = screen.texts?.titleSuccess ?? 'Verification Successful';
+  } else if (verificationStatus === 'failure') {
+    statusMessage = screen.texts?.descriptionFailure ?? 'There was an issue verifying your email. Please try again or contact support.';
+    statusColor = 'text-red-600';
+    title = screen.texts?.titleFailure ?? 'Verification Failed';
+  } else if (verificationStatus === 'already-verified') {
+    statusMessage = screen.texts?.descriptionAlreadyVerified ?? 'This email address has already been verified.';
+    statusColor = 'text-blue-600';
+    title = screen.texts?.titleAlreadyVerified ?? 'Email Already Verified';
+  } else {
+    // Handle unknown status
+    statusMessage = screen.texts?.description ?? `Email verification status: ${verificationStatus || 'unknown'}`;
+    statusColor = 'text-gray-700';
+    console.warn('Unknown verification status:', verificationStatus);
+  }
+
+  const handleGoToLogin = (): void => {
+    if (loginLink) {
+      window.location.href = loginLink;
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>EmailVerificationResult</h1>
+    <div className="min-h-screen bg-black flex items-center justify-center px-4">
+      <div className="bg-white rounded-lg shadow-lg w-full max-w-sm p-8">
+        {/* Logo */}
+        <div className="flex justify-center">
+          <div className="w-20 h-20">
+            <Logo />
+          </div>
+        </div>
 
-      {/* TODO: Add form inputs for the 'submit' payload */}
+        {/* Title */}
+        <h2 className="mt-6 text-center text-xl font-semibold text-gray-900">
+          {title}
+        </h2>
+        
+        {/* Status Message */}
+        <p className={`mt-2 text-center text-sm ${statusColor}`}>
+          {statusMessage}
+        </p>
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+        {/* Organization Info */}
+        {organization?.name && (
+          <p className="mt-4 text-center text-sm text-gray-500">
+            Organization: {organization.displayName || organization.name}
+          </p>
+        )}
 
-      <button type="submit" disabled={isLoading}>
-        {isLoading ? 'Processing...' : 'Continue'}
-      </button>
-    </form>
+        {/* Error Messages */}
+        {transaction.errors && transaction.errors.length > 0 && (
+          <div className="mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative text-left" role="alert">
+            <strong className="font-bold">Error(s):</strong>
+            {transaction.errors.map((err, index) => (
+              <p key={`tx-error-${index}`} className="block sm:inline ml-2">{err.message}</p>
+            ))}
+          </div>
+        )}
+
+        {/* Login Button */}
+        {loginLink && (
+          <div className="mt-6">
+            <button
+              onClick={handleGoToLogin}
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              {screen.texts?.buttonText ?? 'Proceed to Login'}
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
+
+export default EmailVerificationResultScreen;
 ```
 
 ### 2. How It Works

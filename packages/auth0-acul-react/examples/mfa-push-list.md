@@ -11,65 +11,67 @@ This example demonstrates how to build a React component for the `mfa-push-list`
 Create a component file (e.g., `MfaPushList.tsx`) and add the following code:
 
 ```tsx
-import React, { useState } from 'react';
-import {
-  useMfaPushList,
-  useUser,
-  useTenant,
-  useBranding,
-  useClient,
-  useOrganization,
-  usePrompt,
-  useUntrustedData
-} from '@auth0/auth0-acul-react/mfa-push-list';
+import React from 'react';
+import { useMfaPushList, selectMfaPushDevice, goBack } from '@auth0/auth0-acul-react/mfa-push-list';
 
-export const MfaPushList: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+const MfaPushListScreen: React.FC = () => {
+  const mfaPushList = useMfaPushList();
+  const { screen, user } = mfaPushList;
+  const { enrolledDevices } = user || {};
 
-  // Main hook for screen logic
-  const screen = useMfaPushList();
-
-  // Context hooks
-  const userData = useUser();
-  const tenantData = useTenant();
-  const brandingData = useBranding();
-  const clientData = useClient();
-  const organizationData = useOrganization();
-  const promptData = usePrompt();
-  const untrusteddataData = useUntrustedData();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(null);
-
+  const handleSelectDevice = async (deviceIndex: number) => {
     try {
-      // TODO: Gather data from form inputs
-      const payload = {};
-      await screen.selectMfaPushDevice(payload);
-      // On success, the core SDK handles redirection.
-    } catch (err: any) {
-      setError(err.message || 'An unexpected error occurred.');
-    } finally {
-      setIsLoading(false);
+      await selectMfaPushDevice({ deviceIndex });
+    } catch (error) {
+      console.error('Failed to select device:', error);
+    }
+  };
+
+  const handleGoBack = async () => {
+    try {
+      await goBack();
+    } catch (error) {
+      console.error('Failed to go back:', error);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>MfaPushList</h1>
-
-      {/* TODO: Add form inputs for the 'selectMfaPushDevice' payload */}
-
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-
-      <button type="submit" disabled={isLoading}>
-        {isLoading ? 'Processing...' : 'Continue'}
-      </button>
-    </form>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+      <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <h2 className="text-2xl font-bold mb-4">{ screen.texts?.title ?? 'Select a Device for MFA Push' } </h2>
+        <p className="mb-4"> { screen.texts?.description } </p>
+        {
+          enrolledDevices && enrolledDevices.length > 0 ? (
+            <ul className="mb-4">
+              {enrolledDevices.map(({device, id}) => (
+                <li key={id} className="mb-2">
+                  <button
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    type="button"
+                    onClick={() => handleSelectDevice(id)}
+                  >
+                    {device}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No enrolled devices found.</p>
+          )
+        }
+        <button
+          className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          type="button"
+          onClick={handleGoBack}
+        >
+          Go Back
+        </button>
+      </div>
+    </div>
   );
 };
+
+export default MfaPushListScreen;
 ```
 
 ### 2. How It Works
