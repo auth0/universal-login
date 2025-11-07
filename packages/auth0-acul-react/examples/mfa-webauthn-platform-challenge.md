@@ -11,65 +11,129 @@ This example demonstrates how to build a React component for the `mfa-webauthn-p
 Create a component file (e.g., `MfaWebAuthnPlatformChallenge.tsx`) and add the following code:
 
 ```tsx
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
+import { Logo } from '../../components/Logo';
+
 import {
   useMfaWebAuthnPlatformChallenge,
-  useUser,
-  useTenant,
-  useBranding,
+  useScreen,
   useClient,
-  useOrganization,
-  usePrompt,
-  useUntrustedData
-} from '@auth0/auth0-acul-react/mfa-webauthn-platform-challenge';
+  useTransaction,
+  verify,
+  tryAnotherMethod,
+} from '@auth0/auth0-acul-react/mfa-webauthn-platform-challenge'; 
+import { VerifyPlatformAuthenticatorOptions } from "@auth0/auth0-acul-react/types";
 
-export const MfaWebAuthnPlatformChallenge: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+const MfaWebAuthnPlatformChallengeScreen: React.FC = () => {
+  // Main singleton instance (if needed)
+  useMfaWebAuthnPlatformChallenge();
 
-  // Main hook for screen logic
-  const screen = useMfaWebAuthnPlatformChallenge();
+  const screen = useScreen();
+  const client = useClient();
+  const transaction = useTransaction();
 
-  // Context hooks
-  const userData = useUser();
-  const tenantData = useTenant();
-  const brandingData = useBranding();
-  const clientData = useClient();
-  const organizationData = useOrganization();
-  const promptData = usePrompt();
-  const untrusteddataData = useUntrustedData();
+  const texts = screen?.texts ?? {};
+  const { publicKey: publicKeyChallengeOptions, showRememberDevice } = screen ?? {};
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(null);
+  const [rememberDevice, setRememberDevice] = useState(false);
 
-    try {
-      // TODO: Gather data from form inputs
-      const payload = {};
-      await screen.verify(payload);
-      // On success, the core SDK handles redirection.
-    } catch (err: any) {
-      setError(err.message || 'An unexpected error occurred.');
-    } finally {
-      setIsLoading(false);
+  const authenticatorOptions: VerifyPlatformAuthenticatorOptions = useMemo(() => {
+    const options: VerifyPlatformAuthenticatorOptions = {};
+    if (showRememberDevice) {
+      options.rememberDevice = rememberDevice;
     }
+    return options;
+  }, [rememberDevice, showRememberDevice]);
+
+
+  const handleVerify = () => {
+    verify(authenticatorOptions);
+  };
+
+  const handleTryAnotherMethod = () => {
+    tryAnotherMethod();
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>MfaWebAuthnPlatformChallenge</h1>
+    <div className="min-h-screen bg-gray-900 flex items-center justify-center px-4">
+      <div className="bg-white rounded-lg shadow-md w-full max-w-sm p-8">
+        {/* Client Logo (if available) */}
+        {client.logoUrl && (
+          <div className="flex justify-center mb-4">
+            <img
+              src={client.logoUrl}
+              alt={client.name ?? 'Client Logo'}
+              className="h-12"
+            />
+          </div>
+        )}
 
-      {/* TODO: Add form inputs for the 'verify' payload */}
+        {/* Logo */}
+        <div className="flex justify-center mb-6">
+          <div className="w-20 h-20">
+            <Logo />
+          </div>
+        </div>
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+        {/* Title */}
+        <h1 className="text-2xl font-bold text-center text-gray-800">
+          {texts.title ?? 'Verify Your Identity'}
+        </h1>
+        <p className="mt-2 text-sm text-center text-gray-600">
+          {texts.description ?? 'Please use your device\'s screen lock (fingerprint, face, PIN) or a connected security key to continue.'}
+        </p>
 
-      <button type="submit" disabled={isLoading}>
-        {isLoading ? 'Processing...' : 'Continue'}
-      </button>
-    </form>
+        {/* Remember Device Checkbox */}
+        {showRememberDevice && (
+          <div className="mt-4 flex items-center justify-center">
+            <input
+              id="rememberDevice"
+              name="rememberDevice"
+              type="checkbox"
+              checked={rememberDevice}
+              onChange={(e) => setRememberDevice(e.target.checked)}
+              className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+            />
+            <label htmlFor="rememberDevice" className="ml-2 text-sm text-gray-700">
+              {texts.rememberMeText ?? 'Remember this device for 30 days'}
+            </label>
+          </div>
+        )}
+
+        {/* Buttons */}
+        <div className="mt-6 space-y-4">
+          <button
+            onClick={handleVerify}
+            disabled={!publicKeyChallengeOptions}
+            className={`w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white ${
+              !publicKeyChallengeOptions ? "bg-indigo-400" : "bg-indigo-600 hover:bg-indigo-700"
+            } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
+          >
+            {texts.buttonText ?? 'Verify with Device'}
+          </button>
+
+          <button
+            onClick={handleTryAnotherMethod}
+            className="w-full py-2 px-4 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            {texts.pickAuthenticatorText ?? 'Try Another Method'}
+          </button>
+        </div>
+
+        {/* Errors */}
+        {transaction.errors && transaction.errors.length > 0 && (
+          <div className="mt-4 text-sm text-red-600 text-center">
+            {transaction.errors.map((err, index) => (
+              <p key={`tx-err-${index}`}>{err.message}</p>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
+
+export default MfaWebAuthnPlatformChallengeScreen;
 ```
 
 ### 2. How It Works

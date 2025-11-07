@@ -11,65 +11,158 @@ This example demonstrates how to build a React component for the `mfa-enroll-res
 Create a component file (e.g., `MfaEnrollResult.tsx`) and add the following code:
 
 ```tsx
-import React, { useState } from 'react';
-import {
-  useMfaEnrollResult,
-  useUser,
-  useTenant,
-  useBranding,
-  useClient,
-  useOrganization,
-  usePrompt,
-  useUntrustedData
-} from '@auth0/auth0-acul-react/mfa-enroll-result';
+import React from 'react';
+import { useMfaEnrollResult } from '@auth0/auth0-acul-react/mfa-enroll-result';
 
-export const MfaEnrollResult: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+const MfaEnrollResultScreen: React.FC = () => {
+  const { screen } = useMfaEnrollResult();
 
-  // Main hook for screen logic
-  const screen = useMfaEnrollResult();
-
-  // Context hooks
-  const userData = useUser();
-  const tenantData = useTenant();
-  const brandingData = useBranding();
-  const clientData = useClient();
-  const organizationData = useOrganization();
-  const promptData = usePrompt();
-  const untrusteddataData = useUntrustedData();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      // TODO: Gather data from form inputs
-      const payload = {};
-      await screen.submit(payload);
-      // On success, the core SDK handles redirection.
-    } catch (err: any) {
-      setError(err.message || 'An unexpected error occurred.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  // Determine message and styling based on enrollment status
+  let title = screen.texts?.title ?? 'MFA Enrollment';
+  console.log(screen)
+  let description = screen.texts?.description ?? 'Your multi-factor authentication status.';
+  let iconComponent = null;
+  let textColorClass = 'text-gray-900';
+  let iconColorClass = 'text-gray-500';
+  
+  // Use data.status to determine the enrollment result
+  const enrollmentStatus = screen.data?.status;
+  
+  if (enrollmentStatus === 'success') {
+    title = screen.texts?.titleSuccess ?? 'MFA Enrollment Complete';
+    description = screen.texts?.descriptionSuccess ?? 'Your multi-factor authentication has been successfully set up.';
+    textColorClass = 'text-green-700';
+    iconColorClass = 'text-green-500';
+    iconComponent = (
+      <svg
+        className={`h-12 w-12 ${iconColorClass}`}
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M5 13l4 4L19 7"
+        />
+      </svg>
+    );
+  } else if (enrollmentStatus === 'failure') {
+    title = screen.texts?.titleFailure ?? 'MFA Enrollment Failed';
+    description = screen.texts?.descriptionFailure ?? 'There was a problem setting up your multi-factor authentication.';
+    textColorClass = 'text-red-700';
+    iconColorClass = 'text-red-500';
+    iconComponent = (
+      <svg
+        className={`h-12 w-12 ${iconColorClass}`}
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
+      </svg>
+    );
+  } else if (enrollmentStatus === 'already-enrolled') {
+    title = screen.texts?.titleAlreadyEnrolled ?? 'Already Enrolled';
+    description = screen.texts?.alreadyEnrolledDescription ?? 'Two-factor Verification has Already Been Enabled.';
+    textColorClass = 'text-blue-700';
+    iconColorClass = 'text-blue-500';
+    iconComponent = (
+      <svg
+        className={`h-12 w-12 ${iconColorClass}`}
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
+      </svg>
+    );
+  } else if (enrollmentStatus === 'already-used') {
+    title = screen.texts?.alreadyUsedTitle ?? 'Already Used';
+    description = screen.texts?.alreadyUsedDescription ?? 'This link has already been used. Please get a new link to enroll with Multi-factor Authentication.';
+    textColorClass = 'text-orange-700';
+    iconColorClass = 'text-orange-500';
+    iconComponent = (
+      <svg
+        className={`h-12 w-12 ${iconColorClass}`}
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
+      </svg>
+    );
+  } else {
+    // Default or unknown status
+    iconComponent = (
+      <svg
+        className={`h-12 w-12 ${iconColorClass}`}
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
+      </svg>
+    );
+  }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>MfaEnrollResult</h1>
+    <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <h2 className={`mt-6 text-center text-3xl font-extrabold ${textColorClass}`}>
+          {title}
+        </h2>
+        <p className="mt-2 text-center text-sm text-gray-600">
+          {description}
+        </p>
+      </div>
 
-      {/* TODO: Add form inputs for the 'submit' payload */}
-
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-
-      <button type="submit" disabled={isLoading}>
-        {isLoading ? 'Processing...' : 'Continue'}
-      </button>
-    </form>
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          <div className="flex items-center justify-center">
+            {iconComponent}
+          </div>
+          
+          <div className="mt-6 text-center">
+            <p className="text-sm text-gray-500">
+              {screen.texts?.badgeAltText && (
+                <span className="block mt-2">{screen.texts.badgeAltText}</span>
+              )}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
+
+export default MfaEnrollResultScreen;
 ```
 
 ### 2. How It Works

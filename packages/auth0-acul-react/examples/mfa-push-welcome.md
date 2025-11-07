@@ -11,65 +11,100 @@ This example demonstrates how to build a React component for the `mfa-push-welco
 Create a component file (e.g., `MfaPushWelcome.tsx`) and add the following code:
 
 ```tsx
-import React, { useState } from 'react';
-import {
-  useMfaPushWelcome,
-  useUser,
-  useTenant,
-  useBranding,
-  useClient,
-  useOrganization,
-  usePrompt,
-  useUntrustedData
-} from '@auth0/auth0-acul-react/mfa-push-welcome';
+iimport React, { useCallback } from 'react';
+import { useMfaPushWelcome, pickAuthenticator, enroll } from '@auth0/auth0-acul-react/mfa-push-welcome';
+import { Logo } from '../../components/Logo';
 
-export const MfaPushWelcome: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+const MfaPushWelcomeScreen: React.FC = () => {
+  const mfaPushWelcome = useMfaPushWelcome();
+  const { screen } = mfaPushWelcome;
 
-  // Main hook for screen logic
-  const screen = useMfaPushWelcome();
-
-  // Context hooks
-  const userData = useUser();
-  const tenantData = useTenant();
-  const brandingData = useBranding();
-  const clientData = useClient();
-  const organizationData = useOrganization();
-  const promptData = usePrompt();
-  const untrusteddataData = useUntrustedData();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(null);
-
+  /** Handle Enroll */
+  const handleEnroll = useCallback(async () => {
     try {
-      // TODO: Gather data from form inputs
-      const payload = {};
-      await screen.enroll(payload);
-      // On success, the core SDK handles redirection.
-    } catch (err: any) {
-      setError(err.message || 'An unexpected error occurred.');
-    } finally {
-      setIsLoading(false);
+      await enroll();
+    } catch (error) {
+      console.error('Failed to enroll:', error);
     }
-  };
+  }, []);
+
+  /** Handle Pick Authenticator */
+  const handlePickAuthenticator = useCallback(async () => {
+    try {
+      await pickAuthenticator();
+    } catch (error) {
+      console.error('Failed to pick authenticator:', error);
+    }
+  }, []);
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>MfaPushWelcome</h1>
+    <div className="min-h-screen bg-black flex items-center justify-center px-4">
+      <div className="bg-white rounded-lg shadow-lg w-full max-w-sm p-8">
+        {/* Logo */}
+        <div className="flex justify-center">
+          <div className="w-20 h-20">
+            <Logo />
+          </div>
+        </div>
 
-      {/* TODO: Add form inputs for the 'enroll' payload */}
+        {/* Title */}
+        <h2 className="mt-6 text-center text-xl font-semibold text-gray-900">
+          {screen.texts?.title ?? 'Secure Your Account'}
+        </h2>
+        <p className="mt-2 text-center text-sm text-gray-500">
+          {screen.texts?.description ??
+            'To continue, install the Auth0 Guardian app from your mobile device\'s app store.'}
+        </p>
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+        {/* Buttons */}
+        <div className="mt-6 space-y-4">
+          <button
+            type="button"
+            onClick={handleEnroll}
+            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            {screen.texts?.buttonText ?? 'Continue'}
+          </button>
+          
+          <button
+            type="button"
+            onClick={handlePickAuthenticator}
+            className="group relative w-full flex justify-center py-2 px-4 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            {screen.texts?.pickAuthenticatorText ?? 'Try Another Method'}
+          </button>
+        </div>
 
-      <button type="submit" disabled={isLoading}>
-        {isLoading ? 'Processing...' : 'Continue'}
-      </button>
-    </form>
+        {/* App Download Links */}
+        {(screen.links?.ios || screen.links?.android) && (
+          <div className="mt-6 pt-6 border-t border-gray-200">
+            <p className="text-center text-sm text-gray-600 mb-3">Download the app</p>
+            <div className="space-y-2">
+              {screen.links?.ios && (
+                <a
+                  href={screen.links.ios}
+                  className="block text-center text-sm text-indigo-600 hover:underline"
+                >
+                  Download for iOS
+                </a>
+              )}
+              {screen.links?.android && (
+                <a
+                  href={screen.links.android}
+                  className="block text-center text-sm text-indigo-600 hover:underline"
+                >
+                  Download for Android
+                </a>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
+
+export default MfaPushWelcomeScreen;
 ```
 
 ### 2. How It Works

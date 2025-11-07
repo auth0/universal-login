@@ -11,65 +11,63 @@ This example demonstrates how to build a React component for the `mfa-sms-list` 
 Create a component file (e.g., `MfaSmsList.tsx`) and add the following code:
 
 ```tsx
-import React, { useState } from 'react';
-import {
-  useMfaSmsList,
-  useUser,
-  useTenant,
-  useBranding,
-  useClient,
-  useOrganization,
-  usePrompt,
-  useUntrustedData
-} from '@auth0/auth0-acul-react/mfa-sms-list';
+import React from 'react';
+import { useMfaSmsList, selectPhoneNumber, backAction } from '@auth0/auth0-acul-react/mfa-sms-list';
 
-export const MfaSmsList: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+const MFASmsListScreen: React.FC = () => {
+  const mfaSmsList = useMfaSmsList();
+  const { user } = mfaSmsList;
 
-  // Main hook for screen logic
-  const screen = useMfaSmsList();
-
-  // Context hooks
-  const userData = useUser();
-  const tenantData = useTenant();
-  const brandingData = useBranding();
-  const clientData = useClient();
-  const organizationData = useOrganization();
-  const promptData = usePrompt();
-  const untrusteddataData = useUntrustedData();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(null);
-
+  const handleSelectPhoneNumber = async (index: number) => {
     try {
-      // TODO: Gather data from form inputs
-      const payload = {};
-      await screen.selectPhoneNumber(payload);
-      // On success, the core SDK handles redirection.
-    } catch (err: any) {
-      setError(err.message || 'An unexpected error occurred.');
-    } finally {
-      setIsLoading(false);
+      await selectPhoneNumber({ index });
+    } catch (error) {
+      console.error('Failed to select phone number:', error);
+    }
+  };
+
+  const handleBackAction = async () => {
+    try {
+      await backAction();
+    } catch (error) {
+      console.error('Failed to go back:', error);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>MfaSmsList</h1>
-
-      {/* TODO: Add form inputs for the 'selectPhoneNumber' payload */}
-
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-
-      <button type="submit" disabled={isLoading}>
-        {isLoading ? 'Processing...' : 'Continue'}
-      </button>
-    </form>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+      <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <h2 className="text-2xl font-bold mb-4">Select a Phone Number</h2>
+        {
+          user.enrolledPhoneNumbers ? (
+            <ul className="mb-4">
+              {user.enrolledPhoneNumbers?.map(({phoneNumber, id}) => (
+                <li key={id} className="py-2">
+                  <button
+                    onClick={() => handleSelectPhoneNumber(id)}
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  >
+                    {phoneNumber}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No phone numbers enrolled.</p>
+          )
+        }
+        <button
+          onClick={handleBackAction}
+          className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Back
+        </button>
+      </div>
+    </div>
   );
 };
+
+export default MFASmsListScreen;
 ```
 
 ### 2. How It Works

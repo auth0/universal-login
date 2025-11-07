@@ -11,65 +11,65 @@ This example demonstrates how to build a React component for the `reset-password
 Create a component file (e.g., `ResetPasswordEmail.tsx`) and add the following code:
 
 ```tsx
-import React, { useState } from 'react';
-import {
-  useResetPasswordEmail,
-  useUser,
-  useTenant,
-  useBranding,
-  useClient,
-  useOrganization,
-  usePrompt,
-  useUntrustedData
-} from '@auth0/auth0-acul-react/reset-password-email';
+import React, { useState } from "react";
+import { Logo } from '../../components/Logo';
+import { useScreen, useTransaction, resendEmail } from '@auth0/auth0-acul-react/reset-password-email';
 
-export const ResetPasswordEmail: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+const ResetPasswordEmailScreen: React.FC = () => {
+  const screenTexts = useScreen();
+  const transaction = useTransaction();
 
-  // Main hook for screen logic
-  const screen = useResetPasswordEmail();
-
-  // Context hooks
-  const userData = useUser();
-  const tenantData = useTenant();
-  const brandingData = useBranding();
-  const clientData = useClient();
-  const organizationData = useOrganization();
-  const promptData = usePrompt();
-  const untrusteddataData = useUntrustedData();
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      // TODO: Gather data from form inputs
-      const payload = {};
-      await screen.resendEmail(payload);
-      // On success, the core SDK handles redirection.
-    } catch (err: any) {
-      setError(err.message || 'An unexpected error occurred.');
-    } finally {
-      setIsLoading(false);
-    }
+    resendEmail();
   };
+  
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>ResetPasswordEmail</h1>
+    <div className="min-h-screen bg-gray-900 flex items-center justify-center px-4">
+      <div className="bg-white rounded-lg shadow-md w-full max-w-sm p-8">
+        {/* Logo */}
+        <div className="flex justify-center mb-6">
+          <div className="w-20 h-20">
+            <Logo />
+          </div>
+        </div>
 
-      {/* TODO: Add form inputs for the 'resendEmail' payload */}
+        {/* Title */}
+        <h1 className="text-2xl font-bold text-center text-gray-800">
+          {screenTexts.texts?.title || "Reset your password"}
+        </h1>
+        <p className="mt-2 text-sm text-center text-gray-600">
+          {screenTexts.texts?.emailDescription || ""}
+        </p>
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+        {/* Form */} 
+        <form
+          className="mt-6 space-y-4"
+          onSubmit={handleSubmit}
+        >
 
-      <button type="submit" disabled={isLoading}>
-        {isLoading ? 'Processing...' : 'Continue'}
-      </button>
-    </form>
+          <button
+            type="submit"
+            className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            {screenTexts.texts?.resendLinkText || "Send reset link"}
+          </button>
+        </form>
+
+        {/* Error Messages */}
+        {transaction.hasErrors && transaction.errors && (
+          <div className="mt-4 text-sm text-red-600 text-center">
+            {transaction.errors.join(", ")}
+          </div>
+        )}
+        
+      </div>
+    </div>
   );
 };
+
+export default ResetPasswordEmailScreen;
 ```
 
 ### 2. How It Works

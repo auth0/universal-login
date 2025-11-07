@@ -11,65 +11,88 @@ This example demonstrates how to build a React component for the `logout` screen
 Create a component file (e.g., `Logout.tsx`) and add the following code:
 
 ```tsx
-import React, { useState } from 'react';
-import {
-  useLogout,
-  useUser,
-  useTenant,
-  useBranding,
-  useClient,
-  useOrganization,
-  usePrompt,
-  useUntrustedData
-} from '@auth0/auth0-acul-react/logout';
+import React, {useEffect } from 'react';
+import type { ConfirmLogoutOptions} from '@auth0/auth0-acul-react/types';
+import { useLogout, confirmLogout } from '@auth0/auth0-acul-react/logout'
 
-export const Logout: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+const LogoutScreen: React.FC = () => {
+  const logout = useLogout();
+  const { screen, transaction: { errors } } = logout;
+  const texts = screen.texts ?? {};
 
-  // Main hook for screen logic
-  const screen = useLogout();
-
-  // Context hooks
-  const userData = useUser();
-  const tenantData = useTenant();
-  const brandingData = useBranding();
-  const clientData = useClient();
-  const organizationData = useOrganization();
-  const promptData = usePrompt();
-  const untrusteddataData = useUntrustedData();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      // TODO: Gather data from form inputs
-      const payload = {};
-      await screen.confirmLogout(payload);
-      // On success, the core SDK handles redirection.
-    } catch (err: any) {
-      setError(err.message || 'An unexpected error occurred.');
-    } finally {
-      setIsLoading(false);
+  // Update the document title if provided
+  useEffect(() => {
+    if (texts.pageTitle) {
+      document.title = texts.pageTitle;
     }
+  }, [texts.pageTitle]);
+
+  const handleAction = async (action: ConfirmLogoutOptions['action']) => {
+    await confirmLogout({ action } as ConfirmLogoutOptions);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>Logout</h1>
+    <div className="min-h-screen bg-gray-100 flex flex-col px-4">
+      <div className="mx-auto w-full max-w-md bg-white shadow-md rounded px-8 pt-6 pb-8">
+        <h1 className="text-2xl font-bold mb-4 text-center">
+          {texts.title ?? 'Logout'}
+        </h1>
 
-      {/* TODO: Add form inputs for the 'confirmLogout' payload */}
+        {texts.userSalute && (
+          <p className="text-sm text-gray-600 mb-2">
+            {texts.userSalute}
+          </p>
+        )}
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+        <p className="text-sm text-gray-700 mb-6">
+          {texts.description ?? 'Are you sure you want to log out?'}
+        </p>
 
-      <button type="submit" disabled={isLoading}>
-        {isLoading ? 'Processing...' : 'Continue'}
-      </button>
-    </form>
+        {errors?.length && (
+          <div className="mt-2 space-y-1 text-left">
+            {errors.map((error, idx) => (
+              <p key={idx} className="text-red-600 text-sm">
+                {error.message}
+              </p>
+            ))}
+          </div>
+        )}
+
+        <div className="flex justify-between">
+          <button
+            onClick={() => handleAction('deny')}
+            className="w-[150px] py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            {texts.declineButtonText ?? 'No'}
+          </button>
+
+          <button
+            onClick={() => handleAction('accept')}
+            className="w-[150px] px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            {texts.acceptButtonText ?? 'Yes'}
+          </button>
+        </div>
+
+        {/* Auth0 badge/link */}
+        {texts.badgeUrl && (
+          <div className="mt-6 text-center">
+            <a
+              href={texts.badgeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-gray-400 hover:underline"
+            >
+              {texts.badgeAltText ?? 'Auth0'}
+            </a>
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
+
+export default LogoutScreen;
 ```
 
 ### 2. How It Works

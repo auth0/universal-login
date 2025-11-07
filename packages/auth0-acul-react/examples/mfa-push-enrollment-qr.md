@@ -11,65 +11,94 @@ This example demonstrates how to build a React component for the `mfa-push-enrol
 Create a component file (e.g., `MfaPushEnrollmentQr.tsx`) and add the following code:
 
 ```tsx
-import React, { useState } from 'react';
-import {
-  useMfaPushEnrollmentQr,
-  useUser,
-  useTenant,
-  useBranding,
-  useClient,
-  useOrganization,
-  usePrompt,
-  useUntrustedData
-} from '@auth0/auth0-acul-react/mfa-push-enrollment-qr';
+import React from 'react';
+import { useMfaPushEnrollmentQr, pickAuthenticator } from '@auth0/auth0-acul-react/mfa-push-enrollment-qr';
+import { Logo } from '../../components/Logo';
 
-export const MfaPushEnrollmentQr: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+const MfaPushEnrollmentQrScreen: React.FC = () => {
+  const mfaPushEnrollmentQr = useMfaPushEnrollmentQr();
+  const { screen } = mfaPushEnrollmentQr;
+  const { qrCode, qrUri, showCodeCopy } = screen.data || {};
 
-  // Main hook for screen logic
-  const screen = useMfaPushEnrollmentQr();
-
-  // Context hooks
-  const userData = useUser();
-  const tenantData = useTenant();
-  const brandingData = useBranding();
-  const clientData = useClient();
-  const organizationData = useOrganization();
-  const promptData = usePrompt();
-  const untrusteddataData = useUntrustedData();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(null);
-
+  const handlePickAuthenticator = async () => {
     try {
-      // TODO: Gather data from form inputs
-      const payload = {};
-      await screen.pickAuthenticator(payload);
-      // On success, the core SDK handles redirection.
-    } catch (err: any) {
-      setError(err.message || 'An unexpected error occurred.');
-    } finally {
-      setIsLoading(false);
+      await pickAuthenticator();
+    } catch (error) {
+      console.error('Failed to pick authenticator:', error);
+    }
+  };
+
+  const handleCopyCode = () => {
+    if (qrUri) {
+      navigator.clipboard.writeText(qrUri)
+        .then(() => {
+          alert('Code copied to clipboard');
+        })
+        .catch((error) => {
+          console.error('Failed to copy code:', error);
+        });
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>MfaPushEnrollmentQr</h1>
+    <div className="min-h-screen bg-black flex items-center justify-center px-4">
+      <div className="bg-white rounded-lg shadow-lg w-full max-w-sm p-8">
+        {/* Logo */}
+        <div className="flex justify-center">
+          <div className="w-20 h-20">
+            <Logo />
+          </div>
+        </div>
 
-      {/* TODO: Add form inputs for the 'pickAuthenticator' payload */}
+        {/* Title */}
+        <h2 className="mt-6 text-center text-xl font-semibold text-gray-900">
+          {screen.texts?.title ?? 'Enroll with Push Notification'}
+        </h2>
+        <p className="mt-2 text-center text-sm text-gray-500 mb-6">
+          {screen.texts?.description ?? ''}
+        </p>
+        {/* QR Code Section */}
+        {qrCode ? (
+          <div className="mb-6">
+            <div className="flex justify-center mb-4">
+              <img src={qrCode} alt="QR Code" className="w-48 h-48" />
+            </div>
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+            {showCodeCopy && qrUri && (
+              <div className="text-center">
+                <p className="text-sm text-gray-600 mb-2">Or copy this code to your authenticator app:</p>
+                <div className="flex items-center justify-center gap-2">
+                  <button
+                    onClick={handleCopyCode}
+                    className="bg-gray-200 hover:bg-gray-300 text-gray-800 text-sm py-1 px-3 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                    aria-label="Copy code"
+                  >
+                    Copy Code
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="text-center text-gray-500 mb-6">
+            <p>Loading QR Code...</p>
+          </div>
+        )}
 
-      <button type="submit" disabled={isLoading}>
-        {isLoading ? 'Processing...' : 'Continue'}
-      </button>
-    </form>
+        {/* Button */}
+        <button
+          className="group relative w-full flex justify-center py-2 px-4 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          type="button"
+          onClick={handlePickAuthenticator}
+        >
+          Try Another Method
+        </button>
+      </div>
+    </div>
   );
 };
+
+export default MfaPushEnrollmentQrScreen;
 ```
 
 ### 2. How It Works

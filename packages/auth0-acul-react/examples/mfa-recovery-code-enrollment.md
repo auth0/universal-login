@@ -12,64 +12,72 @@ Create a component file (e.g., `MfaRecoveryCodeEnrollment.tsx`) and add the foll
 
 ```tsx
 import React, { useState } from 'react';
-import {
-  useMfaRecoveryCodeEnrollment,
-  useUser,
-  useTenant,
-  useBranding,
-  useClient,
-  useOrganization,
-  usePrompt,
-  useUntrustedData
-} from '@auth0/auth0-acul-react/mfa-recovery-code-enrollment';
+import { useMfaRecoveryCodeEnrollment, continueMethod } from '@auth0/auth0-acul-react/mfa-recovery-code-enrollment';
 
-export const MfaRecoveryCodeEnrollment: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+const MfaRecoveryCodeEnrollmentScreen: React.FC = () => {
+  const mfaRecoveryCodeEnrollment = useMfaRecoveryCodeEnrollment();
+  const { screen, transaction } = mfaRecoveryCodeEnrollment;
+  const texts = screen?.texts ?? {};
 
-  // Main hook for screen logic
-  const screen = useMfaRecoveryCodeEnrollment();
+  const [isCodeCopied, setIsCodeCopied] = useState(false);
 
-  // Context hooks
-  const userData = useUser();
-  const tenantData = useTenant();
-  const brandingData = useBranding();
-  const clientData = useClient();
-  const organizationData = useOrganization();
-  const promptData = usePrompt();
-  const untrusteddataData = useUntrustedData();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(null);
-
+  const handleContinue = async () => {
     try {
-      // TODO: Gather data from form inputs
-      const payload = {};
-      await screen.continueMethod(payload);
-      // On success, the core SDK handles redirection.
-    } catch (err: any) {
-      setError(err.message || 'An unexpected error occurred.');
-    } finally {
-      setIsLoading(false);
+      await continueMethod({ isCodeCopied });
+    } catch (error) {
+      console.error('Failed to continue:', error);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>MfaRecoveryCodeEnrollment</h1>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+      <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 w-full max-w-md">
+        <h2 className="text-2xl font-bold mb-4 text-center">
+          {texts.title ?? 'MFA Recovery Code Enrollment'}
+        </h2>
 
-      {/* TODO: Add form inputs for the 'continueMethod' payload */}
+        <p className="mb-4 text-sm text-gray-700 text-center">
+          {texts.description ?? 'Please save this recovery code in a safe place:'}
+        </p>
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+        <p className="mb-6 text-center font-mono text-lg bg-gray-100 p-3 rounded">
+          {screen?.data?.textCode ?? '******-******'}
+        </p>
 
-      <button type="submit" disabled={isLoading}>
-        {isLoading ? 'Processing...' : 'Continue'}
-      </button>
-    </form>
+        <label className="mb-4 flex items-center space-x-2 text-sm text-gray-700">
+          <input
+            type="checkbox"
+            checked={isCodeCopied}
+            onChange={(e) => setIsCodeCopied(e.target.checked)}
+            className="form-checkbox h-4 w-4 text-blue-600"
+          />
+          <span>I have saved the recovery code</span>
+        </label>
+
+        {transaction?.errors?.length && (
+          <div className="mb-4 space-y-1">
+            {transaction.errors.map((err, index) => (
+              <p key={index} className="text-red-600 text-sm text-center">
+                {err.message}
+              </p>
+            ))}
+          </div>
+        )}
+
+        <button
+          className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          type="button"
+          onClick={handleContinue}
+          disabled={!isCodeCopied}
+        >
+          {texts.buttonText ?? 'I have saved the code'}
+        </button>
+      </div>
+    </div>
   );
 };
+
+export default MfaRecoveryCodeEnrollmentScreen;
 ```
 
 ### 2. How It Works
