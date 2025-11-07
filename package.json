@@ -16,6 +16,7 @@
     "dev:acul": "npm run dev --workspace @auth0/auth0-acul-js",
     "docs": "npm run docs --workspaces",
     "docs:unified": "node ./scripts/docs-unified.js",
+    "mint": "node ./scripts/generate-all-docs.js",
     "format": "npm run format --workspaces",
     "preinstall": "node ./scripts/check-node-version.js && node ./scripts/block-local-install.js"
   },

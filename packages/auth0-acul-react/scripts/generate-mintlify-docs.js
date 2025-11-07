@@ -21,7 +21,7 @@ const projectRoot = path.resolve(__dirname, '..');
 
 // Configuration
 const config = {
-  outputDir: path.resolve(projectRoot, 'docs'),
+  outputDir: path.resolve(projectRoot, '../../docs/customize/login-pages/advanced-customizations/reference/react-sdk'),
   srcDir: path.resolve(projectRoot, 'src'),
   examplesDir: path.resolve(projectRoot, 'examples'),
   tsconfigPath: path.resolve(projectRoot, 'tsconfig.json'),
@@ -532,7 +532,7 @@ function generateTypeWithLinks(fullType, allClassNames, allInterfaceNames, norma
 
     if (isClass || isInterface) {
       hasLinks = true;
-      const path = isClass ? '/docs/classes' : '/docs/interfaces';
+      const path = isClass ? '/docs/customize/login-pages/advanced-customizations/reference/react-sdk/classes' : '/docs/customize/login-pages/advanced-customizations/reference/react-sdk/interfaces';
 
       // Pattern to match: TypeName with optional array brackets
       // This handles: TypeName, TypeName[], TypeName[][], etc.
@@ -1298,14 +1298,78 @@ async function generateDocumentation() {
     }
   }
 
-  // Generate navigation file
+  // Generate navigation file in Mintlify format
   console.log('📑 Generating navigation file...');
   const navJson = {
-    name: '@auth0/auth0-acul-react',
-    version: '1.0.0',
-    structure: navStructure,
-    generatedAt: new Date().toISOString(),
+    group: '@auth0/auth0-acul-react',
+    pages: [],
   };
+
+  // Add Classes section
+  if (navStructure.classes.length > 0) {
+    navJson.pages.push({
+      group: 'Classes',
+      pages: navStructure.classes.map(
+        (className) =>
+          `docs/customize/login-pages/advanced-customizations/reference/react-sdk/classes/${className}`,
+      ),
+    });
+  }
+
+  // Add Interfaces section
+  if (navStructure.interfaces.length > 0) {
+    navJson.pages.push({
+      group: 'Interfaces',
+      pages: navStructure.interfaces.map(
+        (ifaceName) =>
+          `docs/customize/login-pages/advanced-customizations/reference/react-sdk/interfaces/${ifaceName}`,
+      ),
+    });
+  }
+
+  // Add Types section
+  if (navStructure.types.length > 0) {
+    navJson.pages.push({
+      group: 'Types',
+      pages: navStructure.types.map(
+        (typeName) =>
+          `docs/customize/login-pages/advanced-customizations/reference/react-sdk/types/${typeName}`,
+      ),
+    });
+  }
+
+  // Add Functions section
+  if (navStructure.functions.length > 0) {
+    navJson.pages.push({
+      group: 'Functions',
+      pages: navStructure.functions.map(
+        (funcName) =>
+          `docs/customize/login-pages/advanced-customizations/reference/react-sdk/functions/${funcName}`,
+      ),
+    });
+  }
+
+  // Add Hooks section (React-specific)
+  if (navStructure.hooks && navStructure.hooks.length > 0) {
+    navJson.pages.push({
+      group: 'Hooks',
+      pages: navStructure.hooks.map(
+        (hookName) =>
+          `docs/customize/login-pages/advanced-customizations/reference/react-sdk/hooks/${hookName}`,
+      ),
+    });
+  }
+
+  // Add Enums section
+  if (navStructure.enums.length > 0) {
+    navJson.pages.push({
+      group: 'Enums',
+      pages: navStructure.enums.map(
+        (enumName) =>
+          `docs/customize/login-pages/advanced-customizations/reference/react-sdk/enums/${enumName}`,
+      ),
+    });
+  }
 
   writeFile(path.join(config.outputDir, 'navigation.json'), JSON.stringify(navJson, null, 2));
 

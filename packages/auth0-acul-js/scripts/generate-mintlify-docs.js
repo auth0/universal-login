@@ -22,7 +22,7 @@ const projectRoot = path.resolve(__dirname, '..');
 
 // Configuration
 const config = {
-  outputDir: path.resolve(projectRoot, 'docs'),
+  outputDir: path.resolve(projectRoot, '../../docs/customize/login-pages/advanced-customizations/reference/js-sdk'),
   srcDir: path.resolve(projectRoot, 'src'),
   interfacesDir: path.resolve(projectRoot, 'interfaces'),
   examplesDir: path.resolve(projectRoot, 'examples'),
@@ -448,15 +448,6 @@ function cleanDescription(text) {
   return cleaned;
 }
 
-function convertMembersToProperties(name) {
-  // Convert names ending with "Members" to "Properties"
-  // e.g., ClientMembers -> ClientProperties, BrandingMembers -> BrandingProperties
-  if (name.endsWith('Members')) {
-    return name.substring(0, name.length - 'Members'.length) + 'Properties';
-  }
-  return name;
-}
-
 function normalizeType(type) {
   if (!type) return 'any';
   // Convert double quotes to single quotes to avoid breaking JSX attributes
@@ -534,7 +525,7 @@ function generateTypeWithLinks(
 
     if (isClass || isInterface) {
       hasLinks = true;
-      const path = isClass ? '/docs/classes' : '/docs/interfaces';
+      const path = isClass ? '/docs/customize/login-pages/advanced-customizations/reference/js-sdk/classes' : '/docs/customize/login-pages/advanced-customizations/reference/js-sdk/interfaces';
 
       // Pattern to match: TypeName with optional array brackets
       // This handles: TypeName, TypeName[], TypeName[][], etc.
@@ -834,7 +825,7 @@ function generateMintlifyMarkdown(
   allInterfaceNames = new Set(),
 ) {
   // Create frontmatter
-  const displayName = convertMembersToProperties(item.name);
+  const displayName = item.name;
   const frontmatter = {
     title: displayName,
     description: cleanDescription(item.description || ''),
@@ -1441,14 +1432,67 @@ async function generateDocumentation() {
     }
   }
 
-  // Generate navigation file
+  // Generate navigation file in Mintlify format
   console.log('📑 Generating navigation file...');
   const navJson = {
-    name: '@auth0/auth0-acul-js',
-    version: '1.0.0',
-    structure: navStructure,
-    generatedAt: new Date().toISOString(),
+    group: '@auth0/auth0-acul-js',
+    pages: [],
   };
+
+  // Add Classes section
+  if (navStructure.classes.length > 0) {
+    navJson.pages.push({
+      group: 'Classes',
+      pages: navStructure.classes.map(
+        (className) =>
+          `docs/customize/login-pages/advanced-customizations/reference/js-sdk/classes/${className}`,
+      ),
+    });
+  }
+
+  // Add Interfaces section
+  if (navStructure.interfaces.length > 0) {
+    navJson.pages.push({
+      group: 'Interfaces',
+      pages: navStructure.interfaces.map(
+        (ifaceName) =>
+          `docs/customize/login-pages/advanced-customizations/reference/js-sdk/interfaces/${ifaceName}`,
+      ),
+    });
+  }
+
+  // Add Types section
+  if (navStructure.types.length > 0) {
+    navJson.pages.push({
+      group: 'Types',
+      pages: navStructure.types.map(
+        (typeName) =>
+          `docs/customize/login-pages/advanced-customizations/reference/js-sdk/types/${typeName}`,
+      ),
+    });
+  }
+
+  // Add Functions section
+  if (navStructure.functions.length > 0) {
+    navJson.pages.push({
+      group: 'Functions',
+      pages: navStructure.functions.map(
+        (funcName) =>
+          `docs/customize/login-pages/advanced-customizations/reference/js-sdk/functions/${funcName}`,
+      ),
+    });
+  }
+
+  // Add Enums section
+  if (navStructure.enums.length > 0) {
+    navJson.pages.push({
+      group: 'Enums',
+      pages: navStructure.enums.map(
+        (enumName) =>
+          `docs/customize/login-pages/advanced-customizations/reference/js-sdk/enums/${enumName}`,
+      ),
+    });
+  }
 
   writeFile(
     path.join(config.outputDir, 'navigation.json'),
