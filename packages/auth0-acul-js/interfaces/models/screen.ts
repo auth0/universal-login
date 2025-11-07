@@ -2,6 +2,7 @@ export interface CaptchaContext {
   provider: string;
   image?: string;
   siteKey?: string;
+  clientSubdomain?: string;
 }
 
 type Base64URLString = string;
