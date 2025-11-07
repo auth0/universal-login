@@ -8,6 +8,7 @@ import { registerScreen } from '../state/instance-store';
 import type {
   MfaPushEnrollmentQrMembers,
   CustomOptions,
+  WithRememberOptions,
 } from '@auth0/auth0-acul-js/mfa-push-enrollment-qr';
 
 // Register the singleton instance of MfaPushEnrollmentQr
@@ -33,6 +34,8 @@ export const {
 // Submit functions
 export const pickAuthenticator = (payload?: CustomOptions) =>
   withError(instance.pickAuthenticator(payload));
+export const continueMethod = (payload?: WithRememberOptions) =>
+  withError(instance.continue(payload));
 
 // Utility Hooks
 export { useMfaPolling } from '../hooks/utility/polling-manager';
