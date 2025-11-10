@@ -11,7 +11,7 @@ This example demonstrates how to build a React component for the `mfa-push-welco
 Create a component file (e.g., `MfaPushWelcome.tsx`) and add the following code:
 
 ```tsx
-iimport React, { useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { useMfaPushWelcome, pickAuthenticator, enroll } from '@auth0/auth0-acul-react/mfa-push-welcome';
 import { Logo } from '../../components/Logo';
 
