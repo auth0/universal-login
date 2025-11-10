@@ -9,6 +9,7 @@ import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type {
   MfaPushEnrollmentQrMembers,
+  WithRememberOptions,
   ScreenMembersOnMfaPushEnrollmentQr as ScreenOptions,
 } from '../../../interfaces/screens/mfa-push-enrollment-qr';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
@@ -27,6 +28,23 @@ export default class MfaPushEnrollmentQr extends BaseContext implements MfaPushE
     this.screen = new ScreenOverride(screenContext);
   }
 
+  async continue(payload?: WithRememberOptions): Promise<void> {
+      const options: FormOptions = {
+        state: this.transaction.state,
+        telemetry: [MfaPushEnrollmentQr.screenIdentifier, "continue"],
+      };
+  
+      const { rememberDevice, ...restPayload } = payload || {};
+      const submitPayload: Record<string, string | number | boolean> = {
+        ...restPayload,
+        action: FormActions.CONTINUE,
+      };
+  
+      if (rememberDevice) {
+        submitPayload.rememberBrowser = true;
+      }
+      await new FormHandler(options).submitData(submitPayload);
+    }
   /**
    * Navigates to the authenticator selection screen.
    * @param payload Optional custom options to include with the request
@@ -97,7 +115,8 @@ export default class MfaPushEnrollmentQr extends BaseContext implements MfaPushE
 }
 
 export { 
-  MfaPushEnrollmentQrMembers, 
+  MfaPushEnrollmentQrMembers,
+  WithRememberOptions, 
   ScreenOptions as ScreenMembersOnMfaPushEnrollmentQr, 
   MfaPollingOptions,
   MfaPushPollingControl
