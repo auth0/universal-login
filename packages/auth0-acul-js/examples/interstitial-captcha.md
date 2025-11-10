@@ -2,7 +2,7 @@
 This methods handles InterstitialCaptcha related configuration.
 
 ```typescript
-import InterstitialCaptcha from "@auth0/auth0-acul-js/intersitial-captcha";
+import InterstitialCaptcha from "@auth0/auth0-acul-js/interstitial-captcha";
 
 const interstitialCaptcha = new InterstitialCaptcha();
 interstitialCaptcha.submitCaptcha({
@@ -15,7 +15,7 @@ interstitialCaptcha.submitCaptcha({
 
 ```typescript
 import React, { useState } from 'react';
-import InterstitialCaptcha from '@auth0/auth0-acul-js/intersitial-captcha';
+import InterstitialCaptcha from '@auth0/auth0-acul-js/interstitial-captcha';
 
 const InterstitialCaptchaScreen: React.FC = () => {
   const [captcha, setCaptcha] = useState('');
