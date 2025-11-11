@@ -154,7 +154,7 @@ export class BaseContext implements BaseMembers {
    * @utilityFeature
    */
   async changeLanguage(options: LanguageChangeOptions): Promise<void> {
-    const screenIdentifier = (this.constructor as typeof BaseContext).screenIdentifier || 'base';
+    const screenIdentifier = (this.constructor as typeof BaseContext).screenIdentifier;
     const formOptions: FormOptions = {
       state: this.transaction.state,
       telemetry: [screenIdentifier, 'changeLanguage'],
