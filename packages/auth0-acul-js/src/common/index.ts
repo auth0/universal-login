@@ -2,7 +2,7 @@ import { BaseContext } from '../models/base-context';
 import { Branding } from '../models/branding';
 import { flattenColors, flattenFonts, flattenBorders, flattenPageBackground, flattenWidget } from '../utils/branding-theme';
 
-import type { CurrentScreenOptions } from '../../interfaces/common';
+import type { CurrentScreenOptions, LanguageChangeOptions } from '../../interfaces/common';
 import type { FlattenedTheme } from '../../interfaces/common';
 import type { Error as TransactionError } from '../../interfaces/models/transaction';
 
@@ -39,10 +39,10 @@ export function getCurrentScreenOptions(): CurrentScreenOptions {
     tenant: tenant ? { enabledLocales: tenant.enabled_locales ?? [] } : null,
     transaction: transaction
       ? {
-          errors: (transaction.errors as TransactionError[]) ?? null,
-          state: transaction.state,
-          locale: transaction.locale,
-        }
+        errors: (transaction.errors as TransactionError[]) ?? null,
+        state: transaction.state,
+        locale: transaction.locale,
+      }
       : null,
     untrustedData: untrustedData
       ? { authorizationParams: untrustedData.authorization_params ?? null }
@@ -89,4 +89,53 @@ export function getErrors(): TransactionError[] | null {
   const transaction = context.getContext('transaction');
 
   return (transaction?.errors as TransactionError[]) ?? null;
+}
+
+/**
+ * Changes the language/locale for the current authentication flow.
+ * 
+ * This function triggers a language change by submitting the new locale preference
+ * to the server with the 'change-language' action. The language change will cause
+ * the current screen to re-render with the new locale.
+ * 
+ * @param options - Language change options including the target language code
+ * @param options.language - Short language name (locale code) to be set (e.g., 'en', 'fr', 'es')
+ * @param options.persist - Persistence scope for the language preference (defaults to 'session')
+ * 
+ * @returns A promise that resolves when the form submission is complete
+ * 
+ * @example
+ * ```typescript
+ * import { changeLanguage } from "@auth0/auth0-acul-js";
+ * 
+ * // Change language to French
+ * await changeLanguage({
+ *   language: 'fr',
+ *   persist: 'session'
+ * });
+ * ```
+ * 
+ * @example
+ * ```typescript
+ * import { changeLanguage } from "@auth0/auth0-acul-js";
+ * 
+ * // Change language to Spanish with additional custom data
+ * await changeLanguage({
+ *   language: 'es',
+ *   persist: 'session',
+ *   'ulp-custom-field': 'custom-value'
+ * });
+ * ```
+ * 
+ * @remarks
+ * - The language must be one of the enabled locales configured in your Auth0 tenant
+ * - The screen will automatically re-render with the new language after submission
+ * - Custom fields can be included and will be accessible in the Post Login Trigger
+ * 
+ * @category Language
+ * @commonFeature
+ */
+export async function changeLanguage(options: LanguageChangeOptions): Promise<void> {
+  const context = new BaseContext();
+  await context.changeLanguage(options);
 }

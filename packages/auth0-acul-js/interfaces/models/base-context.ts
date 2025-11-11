@@ -1,10 +1,11 @@
+import type { LanguageChangeOptions } from '../common';
 import type { BrandingContext, BrandingMembers } from './branding';
 import type { ClientContext, ClientMembers } from './client';
 import type { OrganizationContext, OrganizationMembers } from './organization';
 import type { PromptContext, PromptMembers } from './prompt';
 import type { ScreenContext, ScreenMembers } from './screen';
 import type { TenantContext, TenantMembers } from './tenant';
-import type { TransactionContext, TransactionMembers } from './transaction';
+import type { TransactionContext, TransactionMembers, Error as TransactionError } from './transaction';
 import type { UntrustedDataContext, UntrustedDataMembers } from './untrusted-data';
 import type { UserContext, UserMembers } from './user';
 
@@ -30,4 +31,6 @@ export interface BaseMembers {
   transaction: TransactionMembers;
   user: UserMembers;
   untrustedData: UntrustedDataMembers;
+  getErrors(): TransactionError[];
+  changeLanguage(options: LanguageChangeOptions): Promise<void>;
 }

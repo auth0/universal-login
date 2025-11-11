@@ -59,3 +59,24 @@ export interface FlattenedTheme {
   pageBackground: Record<string, string>;
   widget: Record<string, string | number>;
 }
+
+/**
+ * Options for changing the language/locale during the authentication flow
+ */
+export interface LanguageChangeOptions {
+  /**
+   * Short language name (locale code) to be set (e.g., 'en', 'fr', 'es').
+   */
+  language: string;
+  /**
+   * Defines persistence scope for the language preference.
+   * Currently only 'session' is supported.
+   * @default 'session'
+   */
+  persist?: 'session';
+  /**
+   * Additional custom fields to be submitted along with the language change.
+   * Custom fields should be prefixed with 'ulp-'.
+   */
+  [key: string]: string | number | boolean | undefined;
+}
