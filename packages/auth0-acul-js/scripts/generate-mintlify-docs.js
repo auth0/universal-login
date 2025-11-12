@@ -184,9 +184,28 @@ function extractJSDoc(sourceFile, node) {
             .filter((l) => l && l !== '/**' && l !== '*/')
             .join('\n');
 
-          // Extract the first paragraph (before @tags)
-          const firstParagraph = extracted.split(/\n@/).shift() || '';
-          let cleaned = firstParagraph.trim();
+          // Extract description text, handling @remarks and @example tags specially
+          // First, try to extract @remarks content (text immediately after @remarks)
+          let cleaned = '';
+
+          // Look for @remarks followed by description text
+          const remarksMatch = extracted.match(/@remarks\s+([\s\S]*?)(?=\n\s*@|\n\s*$)/);
+          if (remarksMatch && remarksMatch[1]) {
+            cleaned = remarksMatch[1].trim();
+          } else {
+            // If no @remarks, get the first paragraph before any @tag
+            const parts = extracted.split(/\n\s*@/);
+            let firstParagraph = parts[0] || '';
+
+            // Also split by empty lines to get just the first paragraph
+            const paragraphs = firstParagraph.split(/\n\s*\n/);
+            cleaned = paragraphs[0].trim();
+
+            // If what we got is only @example or empty, return null (no description)
+            if (!cleaned || cleaned.toLowerCase().startsWith('@example') || cleaned.toLowerCase().startsWith('example')) {
+              return null;
+            }
+          }
 
           // Remove JSDoc syntax patterns
           cleaned = cleaned
@@ -194,7 +213,7 @@ function extractJSDoc(sourceFile, node) {
             .replace(/\*\/\s*$/, '')
             .trim();
           cleaned = cleaned.replace(/\{[^}]+\}\s*/g, ''); // Remove type annotations {Type}
-          cleaned = cleaned.replace(/@\w+\s+\S+\s*-?\s*/g, ''); // Remove @tag patterns
+          cleaned = cleaned.replace(/@property\s+\w+\s*-?\s*/g, ''); // Remove @property tag
           cleaned = cleaned.replace(/\/\*\*[\s\S]*?\*\//g, ''); // Remove nested comments
 
           return cleaned.trim() || null;
@@ -245,10 +264,7 @@ function parseTypeScriptFile(filePath) {
       }
 
       for (const member of node.members) {
-        if (
-          ts.isPropertyDeclaration(member) ||
-          ts.isMethodDeclaration(member)
-        ) {
+        if (ts.isPropertyDeclaration(member)) {
           const memberJsDoc = extractJSDoc(sourceFile, member);
           const memberName = member.name?.getText() || 'unknown';
           // Check if property is optional (has ? modifier)
@@ -259,6 +275,23 @@ function parseTypeScriptFile(filePath) {
             description: memberJsDoc || '',
             isInherited: false,
             isOptional: isOptional,
+            isMethod: false,
+          });
+        } else if (ts.isMethodDeclaration(member)) {
+          const memberJsDoc = extractJSDoc(sourceFile, member);
+          const memberName = member.name?.getText() || 'unknown';
+          const params = member.parameters.map((p) => ({
+            name: p.name?.getText() || 'unknown',
+            type: p.type?.getText() || 'any',
+            isOptional: p.questionToken !== undefined,
+          }));
+          members.push({
+            name: memberName,
+            type: member.type?.getText() || 'void',
+            description: memberJsDoc || '',
+            isInherited: false,
+            isMethod: true,
+            params: params,
           });
         }
       }
@@ -859,10 +892,14 @@ description: "${frontmatter.description.replace(/"/g, '\\"')}"
       mdx += `</RequestExample>\n\n`;
     }
 
-    // Combine all members (own and inherited) into a single Properties section
-    if (item.members && item.members.length > 0) {
+    // Separate properties and methods
+    const properties = item.members ? item.members.filter(m => !m.isMethod) : [];
+    const methods = item.members ? item.members.filter(m => m.isMethod) : [];
+
+    // Add Properties section
+    if (properties.length > 0) {
       mdx += '## Properties\n\n';
-      for (const member of item.members) {
+      for (const member of properties) {
         const desc = member.description
           ? cleanDescription(member.description)
           : '';
@@ -951,6 +988,57 @@ description: "${frontmatter.description.replace(/"/g, '\\"')}"
           }
           mdx += `</ParamField>\n\n`;
         }
+      }
+    }
+
+    // Add Methods section
+    if (methods.length > 0) {
+      mdx += '## Methods\n\n';
+      for (const method of methods) {
+        const desc = method.description
+          ? cleanDescription(method.description)
+          : '';
+
+        // Get return type - methods should return the type annotation if it exists
+        const returnType = method.type || 'void';
+        const normalizedReturnType = escapeGenericBrackets(
+          normalizeType(returnType),
+        );
+        const { type: returnTypeValue } = generateTypeWithLinks(
+          returnType,
+          allClassNames,
+          allInterfaceNames,
+          normalizedReturnType,
+        );
+
+        // Create ParamField for the method with return type
+        mdx += `<ParamField path="${method.name}" type={<span>${returnTypeValue}</span>}>\n`;
+        if (desc) {
+          mdx += `  ${desc}\n\n`;
+        }
+
+        // Add parameters if any
+        if (method.params && method.params.length > 0) {
+          mdx += `  <Expandable title="parameters">\n`;
+          for (const param of method.params) {
+            const isNullable = isTypeOptionalByNullable(param.type);
+            const required = !param.isOptional && !isNullable ? ' required' : '';
+            const normalizedType = escapeGenericBrackets(
+              normalizeType(param.type),
+            );
+            const { type: typeValue } = generateTypeWithLinks(
+              param.type,
+              allClassNames,
+              allInterfaceNames,
+              normalizedType,
+            );
+            mdx += `    <ParamField path="${param.name}" type={<span>${typeValue}</span>}${required}>\n`;
+            mdx += `    </ParamField>\n`;
+          }
+          mdx += `  </Expandable>\n`;
+        }
+
+        mdx += `</ParamField>\n\n`;
       }
     }
   } else if (type === 'interface') {
