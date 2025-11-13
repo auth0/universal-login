@@ -14,4 +14,8 @@ export default {
   json: 'docs/index.json',
   sort: ['source-order'],
   highlightLanguages: ['javascript', 'typescript', 'jsx', 'tsx', 'bash'],
+  plugin: ['typedoc-plugin-markdown'],
+  outputFileStrategy: 'members',
+  hideBreadcrumbs: false,
+  indexFormat: 'table',
 };
