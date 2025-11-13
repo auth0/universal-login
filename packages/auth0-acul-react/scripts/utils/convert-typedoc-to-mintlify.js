@@ -64,9 +64,35 @@ class TypeDocToMintlifyConverter {
   }
 
   /**
-   * Fix links: remove .md extension, remove /README, and add ./ prefix if needed
+   * Resolve relative path to absolute path
+   * @param {string} relativePath - The relative path (e.g., "../../Types/interfaces")
+   * @param {string} currentFileDir - The directory of the current file being processed
+   * @returns {string} Absolute path from root (e.g., "/docs/customize/login-pages/.../Types/interfaces")
    */
-  fixLinks(content) {
+  resolvePathToAbsolute(relativePath, currentFileDir) {
+    // Resolve the relative path from the current file's directory
+    const resolvedPath = path.resolve(currentFileDir, relativePath);
+
+    // Get the base path of the output directory (docs/customize/login-pages/...)
+    const basePath = this.outputDir.split(path.sep).join('/');
+
+    // Convert to path relative to output root
+    const relativeParts = path.relative(this.outputDir, resolvedPath).split(path.sep);
+
+    // Build the absolute documentation path including the base path
+    const docPath = '/' + basePath + '/' + relativeParts.join('/');
+
+    return docPath;
+  }
+
+  /**
+   * Fix links: convert to full absolute paths
+   * @param {string} content - The markdown content
+   * @param {string} outputFilePath - The output file path (where this content will be written)
+   */
+  fixLinks(content, outputFilePath) {
+    const currentFileDir = path.dirname(outputFilePath);
+
     // Match markdown links like [text](path)
     return content.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, text, link) => {
       // Skip external links (http, https, #)
@@ -74,15 +100,29 @@ class TypeDocToMintlifyConverter {
         return match;
       }
 
-      // Remove .md extension
-      let fixedLink = link.replace(/\.md$/, '');
+      let fixedLink = link;
 
-      // Remove /README from end of path (since README becomes index.mdx)
-      fixedLink = fixedLink.replace(/\/README$/, '');
+      // Process relative links
+      if (fixedLink.startsWith('.')) {
+        // Remove .md extension
+        fixedLink = fixedLink.replace(/\.md$/, '');
 
-      // Add ./ prefix if it doesn't start with . or /
-      if (!fixedLink.startsWith('.') && !fixedLink.startsWith('/')) {
+        // Remove /README from end of path (since README becomes index.mdx)
+        fixedLink = fixedLink.replace(/\/README$/, '');
+
+        // Resolve relative path to absolute
+        fixedLink = this.resolvePathToAbsolute(fixedLink, currentFileDir);
+      } else if (!fixedLink.startsWith('/')) {
+        // For paths that don't start with . or /, treat as relative
+        // Remove .md extension
+        fixedLink = fixedLink.replace(/\.md$/, '');
+
+        // Remove /README from end of path
+        fixedLink = fixedLink.replace(/\/README$/, '');
+
+        // Make it relative and resolve
         fixedLink = './' + fixedLink;
+        fixedLink = this.resolvePathToAbsolute(fixedLink, currentFileDir);
       }
 
       return `[${text}](${fixedLink})`;
@@ -176,19 +216,7 @@ class TypeDocToMintlifyConverter {
       // Extract title and remove H1
       const { title, content: contentWithoutH1 } = this.extractTitle(content);
 
-      // Convert tables to lists
-      let processedContent = this.convertTableToList(contentWithoutH1);
-
-      // Fix links
-      processedContent = this.fixLinks(processedContent);
-
-      // Create frontmatter
-      const frontmatter = this.createFrontmatter(title);
-
-      // Final MDX content
-      const mdxContent = frontmatter + processedContent;
-
-      // Determine output path
+      // Determine output path first (before processing content)
       let outputPath = path.join(this.outputDir, relativePath);
 
       // Convert README.md to index.mdx
@@ -198,6 +226,18 @@ class TypeDocToMintlifyConverter {
         // Change .md to .mdx
         outputPath = outputPath.replace(/\.md$/, '.mdx');
       }
+
+      // Convert tables to lists
+      let processedContent = this.convertTableToList(contentWithoutH1);
+
+      // Fix links - pass output path so we know where the file will be located
+      processedContent = this.fixLinks(processedContent, outputPath);
+
+      // Create frontmatter
+      const frontmatter = this.createFrontmatter(title);
+
+      // Final MDX content
+      const mdxContent = frontmatter + processedContent;
 
       // Create output directory
       const outputDirPath = path.dirname(outputPath);

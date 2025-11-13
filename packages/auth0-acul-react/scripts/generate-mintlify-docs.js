@@ -43,6 +43,10 @@ const scripts = [
     description: 'Flattening directory structure...'
   },
   {
+    name: 'fix-links-after-flatten.js',
+    description: 'Fixing links after directory flattening...'
+  },
+  {
     name: 'generate-navigation.js',
     description: 'Generating navigation.json structure...'
   }

@@ -24,6 +24,14 @@ class TypesConsolidator {
   }
 
   /**
+   * Convert markdown links to HTML links for use in JSX attributes
+   * E.g., [Text](url) → <a href="url">Text</a>
+   */
+  markdownLinkToHtml(text) {
+    return text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+  }
+
+  /**
    * Convert headers inside content (like in ParamField) to bold text
    */
   normalizeHeadersForParamField(content) {
@@ -79,7 +87,15 @@ class TypesConsolidator {
           .replace(/\\/g, '');      // Remove escape characters
       }
 
-      const paramField = `<ParamField body='${paramName}' type='${paramType}'>
+      // Convert markdown links to HTML links in type
+      const formattedType = this.markdownLinkToHtml(paramType);
+
+      // Use JSX syntax for type attribute if it contains HTML tags
+      const typeAttr = formattedType.includes('<a')
+        ? `type={${formattedType}}`
+        : `type='${formattedType}'`;
+
+      const paramField = `<ParamField body='${paramName}' ${typeAttr}>
 </ParamField>`;
 
       paramBlocks.push(paramField);
@@ -144,7 +160,15 @@ class TypesConsolidator {
               .replace(/\\/g, '');      // Remove escape characters
           }
 
-          const methodField = `<ParamField body='${currentMethod}' type='${methodType}'>
+          // Convert markdown links to HTML links in type
+          const formattedType = this.markdownLinkToHtml(methodType);
+
+          // Use JSX syntax for type attribute if it contains HTML tags
+          const typeAttr = formattedType.includes('<a')
+            ? `type={${formattedType}}`
+            : `type='${formattedType}'`;
+
+          const methodField = `<ParamField body='${currentMethod}' ${typeAttr}>
 ${methodBody}
 </ParamField>`;
 
@@ -184,7 +208,15 @@ ${methodBody}
           .replace(/\\/g, '');      // Remove escape characters
       }
 
-      const methodField = `<ParamField body='${currentMethod}' type='${methodType}'>
+      // Convert markdown links to HTML links in type
+      const formattedType = this.markdownLinkToHtml(methodType);
+
+      // Use JSX syntax for type attribute if it contains HTML tags
+      const typeAttr = formattedType.includes('<a')
+        ? `type={${formattedType}}`
+        : `type='${formattedType}'`;
+
+      const methodField = `<ParamField body='${currentMethod}' ${typeAttr}>
 ${methodBody}
 </ParamField>`;
 

@@ -25,6 +25,14 @@ class InterfacesConsolidator {
   }
 
   /**
+   * Convert markdown links to HTML links for use in JSX attributes
+   * E.g., [Text](url) → <a href="url">Text</a>
+   */
+  markdownLinkToHtml(text) {
+    return text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+  }
+
+  /**
    * Convert headers inside ParamField content to bold text
    */
   normalizeHeadersForParamField(content) {
@@ -81,7 +89,15 @@ class InterfacesConsolidator {
               .replace(/\|.*$/, '');    // Remove union types, keep first type
           }
 
-          const propertyField = `<ParamField body='${currentProperty}' type='${propertyType}'>
+          // Convert markdown links to HTML links in type
+          const formattedType = this.markdownLinkToHtml(propertyType);
+
+          // Use JSX syntax for type attribute if it contains HTML tags
+          const typeAttr = formattedType.includes('<a')
+            ? `type={${formattedType}}`
+            : `type='${formattedType}'`;
+
+          const propertyField = `<ParamField body='${currentProperty}' ${typeAttr}>
 ${propertyBody}
 </ParamField>`;
 
@@ -120,7 +136,15 @@ ${propertyBody}
           .replace(/\|.*$/, '');    // Remove union types, keep first type
       }
 
-      const propertyField = `<ParamField body='${currentProperty}' type='${propertyType}'>
+      // Convert markdown links to HTML links in type
+      const formattedType = this.markdownLinkToHtml(propertyType);
+
+      // Use JSX syntax for type attribute if it contains HTML tags
+      const typeAttr = formattedType.includes('<a')
+        ? `type={${formattedType}}`
+        : `type='${formattedType}'`;
+
+      const propertyField = `<ParamField body='${currentProperty}' ${typeAttr}>
 ${propertyBody}
 </ParamField>`;
 

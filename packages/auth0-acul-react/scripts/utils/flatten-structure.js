@@ -71,34 +71,52 @@ class StructureFlattener {
 
   /**
    * Flatten Screens structure: namespaces/Screens/namespaces/* → Screens/*
+   * Also preserves index.mdx from namespaces/Screens/
    */
   flattenScreens() {
     console.log('  Processing Screens...');
-    const oldScreensPath = path.join(API_REF_PATH, 'namespaces', 'Screens', 'namespaces');
+    const oldScreensNamespacePath = path.join(API_REF_PATH, 'namespaces', 'Screens');
+    const oldScreensPath = path.join(oldScreensNamespacePath, 'namespaces');
     const newScreensPath = path.join(API_REF_PATH, 'Screens');
 
-    if (!fs.existsSync(oldScreensPath)) {
+    if (!fs.existsSync(oldScreensNamespacePath)) {
       console.log('    ℹ Screens directory not found');
       return;
     }
 
+    // Create Screens directory if it doesn't exist
+    if (!fs.existsSync(newScreensPath)) {
+      fs.mkdirSync(newScreensPath, { recursive: true });
+    }
+
+    // Move index.mdx from namespace level
+    const oldIndexPath = path.join(oldScreensNamespacePath, 'index.mdx');
+    const newIndexPath = path.join(newScreensPath, 'index.mdx');
+    if (fs.existsSync(oldIndexPath) && !fs.existsSync(newIndexPath)) {
+      fs.renameSync(oldIndexPath, newIndexPath);
+      console.log(`    ✓ Moved: index.mdx`);
+      this.moved++;
+    }
+
     // Get all screen directories
-    const screenDirs = fs.readdirSync(oldScreensPath);
+    if (fs.existsSync(oldScreensPath)) {
+      const screenDirs = fs.readdirSync(oldScreensPath);
 
-    for (const screenName of screenDirs) {
-      const srcPath = path.join(oldScreensPath, screenName);
-      const destPath = path.join(newScreensPath, screenName);
+      for (const screenName of screenDirs) {
+        const srcPath = path.join(oldScreensPath, screenName);
+        const destPath = path.join(newScreensPath, screenName);
 
-      if (fs.statSync(srcPath).isDirectory()) {
-        // Move directory
-        if (fs.existsSync(destPath)) {
-          // If destination exists, just remove source
-          this.removeEmptyDirs(srcPath);
-        } else {
-          fs.mkdirSync(path.dirname(destPath), { recursive: true });
-          fs.renameSync(srcPath, destPath);
-          console.log(`    ✓ Moved: ${screenName}/`);
-          this.moved++;
+        if (fs.statSync(srcPath).isDirectory()) {
+          // Move directory
+          if (fs.existsSync(destPath)) {
+            // If destination exists, just remove source
+            this.removeEmptyDirs(srcPath);
+          } else {
+            fs.mkdirSync(path.dirname(destPath), { recursive: true });
+            fs.renameSync(srcPath, destPath);
+            console.log(`    ✓ Moved: ${screenName}/`);
+            this.moved++;
+          }
         }
       }
     }
@@ -106,40 +124,54 @@ class StructureFlattener {
 
   /**
    * Flatten Hooks structure: namespaces/Hooks/functions/* → Hooks/*
+   * Also preserves index.mdx from namespaces/Hooks/
    */
   flattenHooks() {
     console.log('  Processing Hooks...');
-    const oldHooksPath = path.join(API_REF_PATH, 'namespaces', 'Hooks', 'functions');
+    const oldHooksNamespacePath = path.join(API_REF_PATH, 'namespaces', 'Hooks');
+    const oldHooksFunctionsPath = path.join(oldHooksNamespacePath, 'functions');
     const newHooksPath = path.join(API_REF_PATH, 'Hooks');
 
-    if (!fs.existsSync(oldHooksPath)) {
+    if (!fs.existsSync(oldHooksNamespacePath)) {
       console.log('    ℹ Hooks directory not found');
       return;
     }
 
-    // Get all hook files
-    const hookFiles = fs.readdirSync(oldHooksPath);
+    // Create Hooks directory if it doesn't exist
+    if (!fs.existsSync(newHooksPath)) {
+      fs.mkdirSync(newHooksPath, { recursive: true });
+    }
 
-    for (const hookFile of hookFiles) {
-      const srcPath = path.join(oldHooksPath, hookFile);
-      const destPath = path.join(newHooksPath, hookFile);
+    // Move index.mdx from namespace level
+    const oldIndexPath = path.join(oldHooksNamespacePath, 'index.mdx');
+    const newIndexPath = path.join(newHooksPath, 'index.mdx');
+    if (fs.existsSync(oldIndexPath) && !fs.existsSync(newIndexPath)) {
+      fs.renameSync(oldIndexPath, newIndexPath);
+      console.log(`    ✓ Moved: index.mdx`);
+      this.moved++;
+    }
 
-      if (fs.existsSync(srcPath)) {
-        // Create Hooks directory if it doesn't exist
-        if (!fs.existsSync(newHooksPath)) {
-          fs.mkdirSync(newHooksPath, { recursive: true });
+    // Get all hook files from functions subdirectory
+    if (fs.existsSync(oldHooksFunctionsPath)) {
+      const hookFiles = fs.readdirSync(oldHooksFunctionsPath);
+
+      for (const hookFile of hookFiles) {
+        const srcPath = path.join(oldHooksFunctionsPath, hookFile);
+        const destPath = path.join(newHooksPath, hookFile);
+
+        if (fs.existsSync(srcPath)) {
+          // Move file or directory
+          fs.renameSync(srcPath, destPath);
+          console.log(`    ✓ Moved: ${hookFile}`);
+          this.moved++;
         }
-
-        // Move file or directory
-        fs.renameSync(srcPath, destPath);
-        console.log(`    ✓ Moved: ${hookFile}`);
-        this.moved++;
       }
     }
   }
 
   /**
    * Flatten Types structure: namespaces/Types/* → Types/*
+   * Preserves index.mdx and moves classes, interfaces, etc.
    */
   flattenTypes() {
     console.log('  Processing Types...');
@@ -151,19 +183,33 @@ class StructureFlattener {
       return;
     }
 
-    // Get all type directories (classes, interfaces, type-aliases, index.mdx)
+    // Create Types directory if it doesn't exist
+    if (!fs.existsSync(newTypesPath)) {
+      fs.mkdirSync(newTypesPath, { recursive: true });
+    }
+
+    // Move index.mdx from namespace level
+    const oldIndexPath = path.join(oldTypesPath, 'index.mdx');
+    const newIndexPath = path.join(newTypesPath, 'index.mdx');
+    if (fs.existsSync(oldIndexPath) && !fs.existsSync(newIndexPath)) {
+      fs.renameSync(oldIndexPath, newIndexPath);
+      console.log(`    ✓ Moved: index.mdx`);
+      this.moved++;
+    }
+
+    // Get all type directories (classes, interfaces, type-aliases)
     const typeItems = fs.readdirSync(oldTypesPath);
 
     for (const item of typeItems) {
       const srcPath = path.join(oldTypesPath, item);
       const destPath = path.join(newTypesPath, item);
 
-      if (fs.existsSync(srcPath) && !fs.existsSync(destPath)) {
-        // Create Types directory if it doesn't exist
-        if (!fs.existsSync(newTypesPath)) {
-          fs.mkdirSync(newTypesPath, { recursive: true });
-        }
+      // Skip index.mdx as we already handled it
+      if (item === 'index.mdx') {
+        continue;
+      }
 
+      if (fs.existsSync(srcPath) && !fs.existsSync(destPath)) {
         // Move file or directory
         fs.renameSync(srcPath, destPath);
         console.log(`    ✓ Moved: ${item}`);
