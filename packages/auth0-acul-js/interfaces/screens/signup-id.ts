@@ -14,7 +14,7 @@ interface ExtendedScreenContext extends ScreenContext {
 
 interface ExtendedUntrustedDataContext extends UntrustedDataContext {
   submitted_form_data?: {
-    /* this object is opt-in */ 
+    /* this object is opt-in */
     email?: string;
     phone?: string;
     username?: string;
@@ -28,6 +28,8 @@ export interface ScreenMembersOnSignupId extends ScreenMembers {
 
 export interface TransactionMembersOnSignupId extends TransactionMembers {
   isPasskeyEnabled: boolean;
+  showPasskeyAutofill: boolean;
+  alwaysShowPasskeyButton: boolean;
   usernamePolicy: UsernamePolicy | null;
   requiredIdentifiers: IdentifierType[] | null;
   optionalIdentifiers: IdentifierType[] | null;

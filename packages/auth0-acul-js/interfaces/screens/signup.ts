@@ -26,6 +26,8 @@ export interface ScreenMembersOnSignup extends ScreenMembers {
 
 export interface TransactionMembersOnSignup extends TransactionMembers {
   isPasskeyEnabled: boolean;
+  showPasskeyAutofill: boolean;
+  alwaysShowPasskeyButton: boolean;
   usernamePolicy: UsernamePolicy | null;
   requiredIdentifiers: IdentifierType[] | null;
   optionalIdentifiers: IdentifierType[] | null;

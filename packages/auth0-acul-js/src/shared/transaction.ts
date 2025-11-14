@@ -43,6 +43,30 @@ export function isPasskeyEnabled(transaction: TransactionContext): boolean {
 }
 
 /**
+ * Checks if passkey autofill feature should be displayed in the login form.
+ * When enabled, passkeys can be suggested in the browser's autocomplete UI.
+ *
+ * @param transaction - The transaction context from Universal Login
+ * @returns True if passkey autofill should be shown, false otherwise
+ */
+export function showPasskeyAutofill(transaction: TransactionContext): boolean {
+  const connection = transaction?.connection as DBConnection;
+  return connection?.options?.authentication_methods?.passkey?.showPasskeyAutofill ?? false;
+}
+
+/**
+ * Checks if the passkey button should always be displayed in the login form.
+ * When enabled, the passkey authentication button is shown regardless of other conditions.
+ *
+ * @param transaction - The transaction context from Universal Login
+ * @returns True if the passkey button should always be shown, false otherwise
+ */
+export function alwaysShowPasskeyButton(transaction: TransactionContext): boolean {
+  const connection = transaction?.connection as DBConnection;
+  return connection?.options?.authentication_methods?.passkey?.alwaysShowPasskeyButton ?? false;
+}
+
+/**
  * Determines if a username is required for authentication based on connection settings.
  *
  * @param transaction - The transaction context from Universal Login
@@ -78,7 +102,7 @@ export function getUsernamePolicy(
     };
   }
 
-  const { validation: legacyValidation, username_required: usernameRequired} = connection?.options ?? {};
+  const { validation: legacyValidation, username_required: usernameRequired } = connection?.options ?? {};
   const rules = legacyValidation?.username;
 
   if (rules) {
@@ -90,7 +114,7 @@ export function getUsernamePolicy(
   }
 
   return null;
-  
+
 }
 
 /**
