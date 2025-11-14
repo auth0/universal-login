@@ -37,6 +37,7 @@ export interface ScreenMembersOnLoginId extends ScreenMembers {
 export interface TransactionMembersOnLoginId extends TransactionMembers {
   isSignupEnabled: boolean;
   isPasskeyEnabled: boolean;
+  showPasskeyAutofill: boolean;
   isForgotPasswordEnabled: boolean;
   isUsernameRequired: boolean;
   usernamePolicy: UsernamePolicy | null;

@@ -104,6 +104,7 @@ export interface DBConnection extends Connection {
       };
       passkey: {
         enabled: boolean;
+        showPasskeyAutofill?: boolean;
       };
     };
   };
@@ -131,7 +132,7 @@ export interface EnterpriseConnection extends Connection {
   };
 }
 
-export interface SocialConnection extends Connection {}
+export interface SocialConnection extends Connection { }
 
 export interface PasswordComplexityRule {
   code: string;
