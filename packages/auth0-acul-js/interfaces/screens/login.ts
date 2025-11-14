@@ -38,8 +38,6 @@ export interface TransactionMembersOnLogin extends TransactionMembers {
   isSignupEnabled: boolean;
   isForgotPasswordEnabled: boolean;
   isPasskeyEnabled: boolean;
-  showPasskeyAutofill: boolean;
-  alwaysShowPasskeyButton: boolean;
   passwordPolicy: PasswordPolicy | null;
   allowedIdentifiers: IdentifierType[] | null;
 }

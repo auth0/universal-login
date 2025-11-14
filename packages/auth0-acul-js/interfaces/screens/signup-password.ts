@@ -38,8 +38,6 @@ export interface ScreenMembersOnSignupPassword extends ScreenMembers {
 
 export interface TransactionMembersOnSignupPassword extends TransactionMembers {
   isPasskeyEnabled: boolean;
-  showPasskeyAutofill: boolean;
-  alwaysShowPasskeyButton: boolean;
   passwordPolicy: PasswordPolicy | null;
   requiredIdentifiers: IdentifierType[] | null;
   optionalIdentifiers: IdentifierType[] | null;

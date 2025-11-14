@@ -104,8 +104,7 @@ export interface DBConnection extends Connection {
       };
       passkey: {
         enabled: boolean;
-        showPasskeyAutofill: boolean;
-        alwaysShowPasskeyButton: boolean;
+        showPasskeyAutofill?: boolean;
       };
     };
   };
