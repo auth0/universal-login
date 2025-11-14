@@ -110,7 +110,47 @@ class ScreenConsolidator {
       // Remove backticks from link text
       let linkText = linkMatch[1].replace(/`/g, '');
       const linkHref = linkMatch[2];
-      return `<a href="${linkHref}">${linkText}</a>`;
+      const linkHtml = `<a href="${linkHref}">${linkText}</a>`;
+
+      // Check what comes after the link (array notation, parentheses, etc.)
+      const typeAfterLink = typeStr.substring(linkMatch[0].length);
+      const typeBeforeLink = typeStr.substring(0, linkMatch.index);
+
+      // Check if there's array notation after the link
+      const arrayMatch = typeAfterLink.match(/^(\[\])+/);
+      const hasArrayAfter = arrayMatch ? arrayMatch[0] : '';
+
+      // Check if there are other characters before or after the link
+      const hasOtherChars = typeBeforeLink.trim().length > 0 || typeAfterLink.replace(/^(\[\])+/, '').trim().length > 0;
+
+      // If there are other characters or array notation, wrap in span
+      if (hasOtherChars || hasArrayAfter) {
+        // Replace markdown link with HTML, then escape remaining angle brackets
+        let result = typeStr.replace(/\[([^\]]+)\]\(([^)]+)\)/, linkHtml);
+
+        // Escape < and > that are NOT part of HTML tags (from generic types)
+        // Preserve our HTML tags by replacing with placeholders
+        const htmlTags = [];
+        result = result.replace(/<a[^>]*>.*?<\/a>/g, (match) => {
+          const placeholder = `__HTML_TAG_${htmlTags.length}__`;
+          htmlTags.push(match);
+          return placeholder;
+        });
+
+        // Escape remaining angle brackets
+        result = result
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+
+        // Restore HTML tags
+        htmlTags.forEach((tag, idx) => {
+          result = result.replace(`__HTML_TAG_${idx}__`, tag);
+        });
+
+        return `<span>${result}</span>`;
+      }
+
+      return linkHtml;
     }
 
     // For non-link types in span, escape < and > for HTML

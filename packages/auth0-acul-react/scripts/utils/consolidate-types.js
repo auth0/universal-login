@@ -32,6 +32,153 @@ class TypesConsolidator {
   }
 
   /**
+   * Format type for JSX ParamField
+   * Handles array notation and HTML links properly
+   * E.g., <a href="...">Type</a>[] → <span><a href="...">Type</a>[]</span>
+   */
+  formatTypeForParamField(paramType) {
+    // Convert markdown links to HTML links
+    let formattedType = this.markdownLinkToHtml(paramType);
+
+    // Escape < and > that are NOT part of HTML tags (for generic types like Record<string, string>)
+    // First, preserve our HTML tags by replacing them with placeholders
+    const htmlTags = [];
+    let withPlaceholders = formattedType.replace(/<a[^>]*>.*?<\/a>/g, (match) => {
+      const placeholder = `__HTML_TAG_${htmlTags.length}__`;
+      htmlTags.push(match);
+      return placeholder;
+    });
+
+    // Now escape remaining angle brackets (these are from generic types)
+    withPlaceholders = withPlaceholders
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+
+    // Restore the HTML tags
+    htmlTags.forEach((tag, idx) => {
+      withPlaceholders = withPlaceholders.replace(`__HTML_TAG_${idx}__`, tag);
+    });
+
+    formattedType = withPlaceholders;
+
+    // Trim and check if type contains array notation (including cases with trailing whitespace)
+    const trimmed = formattedType.trimEnd();
+    const arrayNotationMatch = trimmed.match(/(\[\])+$/);
+    const arrayNotation = arrayNotationMatch ? arrayNotationMatch[0] : '';
+    const baseType = arrayNotation ? trimmed.slice(0, -arrayNotation.length) : trimmed;
+
+    // If type contains HTML tags
+    if (baseType.includes('<a')) {
+      // Check if there are other characters mixed with HTML (parentheses, pipes, spaces, etc.)
+      // Remove the HTML tag to see what's left
+      const withoutHtml = baseType.replace(/<a[^>]*>.*?<\/a>/g, '');
+      const hasOtherChars = withoutHtml.trim().length > 0;
+
+      // If there are other characters or array notation, wrap in span
+      if (hasOtherChars || arrayNotation) {
+        return {
+          type: `type={<span>${baseType}${arrayNotation}</span>}`,
+          isJsx: true
+        };
+      }
+
+      // Pure HTML without extra characters - use JSX syntax without span
+      return {
+        type: `type={${baseType}}`,
+        isJsx: true
+      };
+    }
+
+    // Regular string type
+    return {
+      type: `type='${trimmed}'`,
+      isJsx: false
+    };
+  }
+
+  /**
+   * Determine type category from link path
+   */
+  getTypeFromPath(path) {
+    if (path.includes('/Hooks/')) return 'Hooks';
+    if (path.includes('/interfaces/')) return 'Interfaces';
+    if (path.includes('/classes/')) return 'Classes';
+    if (path.includes('/type-aliases/')) return 'Type Aliases';
+    if (path.includes('/enums/')) return 'Enums';
+    return 'Types';
+  }
+
+  /**
+   * Convert References section to ParamField components
+   */
+  convertReferences(content) {
+    // Match the References section
+    const referencesRegex = /^## References\n\n([\s\S]*)$/m;
+    const match = content.match(referencesRegex);
+
+    if (!match) {
+      return content;
+    }
+
+    let referencesContent = match[1];
+    const paramFields = [];
+
+    // Split by ### (reference names)
+    const referenceLines = referencesContent.split('\n');
+    let i = 0;
+
+    while (i < referenceLines.length) {
+      const line = referenceLines[i];
+
+      // Check if this is a reference header
+      if (line.match(/^### /)) {
+        const refName = line.replace(/^### /, '').trim();
+
+        // Look for the markdown link in the following lines
+        let linkFound = false;
+        for (let j = i + 1; j < Math.min(i + 5, referenceLines.length); j++) {
+          const contentLine = referenceLines[j];
+          const linkMatch = contentLine.match(/\[([^\]]+)\]\(([^)]+)\)/);
+
+          if (linkMatch) {
+            const linkText = linkMatch[1];
+            const linkPath = linkMatch[2];
+            const refType = this.getTypeFromPath(linkPath);
+
+            // Create HTML link
+            const htmlLink = `<a href="${linkPath}">${linkText}</a>`;
+
+            // Create ParamField with link in body
+            const paramField = `<ParamField body={${htmlLink}} type='${refType}'/>`;
+            paramFields.push(paramField);
+            linkFound = true;
+            break;
+          }
+        }
+
+        if (linkFound) {
+          // Skip to next reference (look for ***)
+          while (i < referenceLines.length && !referenceLines[i].match(/^\*{3,}$/)) {
+            i++;
+          }
+          i++; // Skip the *** line
+        } else {
+          i++;
+        }
+      } else {
+        i++;
+      }
+    }
+
+    if (paramFields.length > 0) {
+      const newReferences = `## References\n\n${paramFields.join('\n\n')}\n`;
+      return content.replace(referencesRegex, newReferences);
+    }
+
+    return content;
+  }
+
+  /**
    * Convert headers inside content (like in ParamField) to bold text
    */
   normalizeHeadersForParamField(content) {
@@ -87,13 +234,8 @@ class TypesConsolidator {
           .replace(/\\/g, '');      // Remove escape characters
       }
 
-      // Convert markdown links to HTML links in type
-      const formattedType = this.markdownLinkToHtml(paramType);
-
-      // Use JSX syntax for type attribute if it contains HTML tags
-      const typeAttr = formattedType.includes('<a')
-        ? `type={${formattedType}}`
-        : `type='${formattedType}'`;
+      // Format type with proper handling for array notation and HTML links
+      const { type: typeAttr } = this.formatTypeForParamField(paramType);
 
       const paramField = `<ParamField body='${paramName}' ${typeAttr}>
 </ParamField>`;
@@ -160,13 +302,8 @@ class TypesConsolidator {
               .replace(/\\/g, '');      // Remove escape characters
           }
 
-          // Convert markdown links to HTML links in type
-          const formattedType = this.markdownLinkToHtml(methodType);
-
-          // Use JSX syntax for type attribute if it contains HTML tags
-          const typeAttr = formattedType.includes('<a')
-            ? `type={${formattedType}}`
-            : `type='${formattedType}'`;
+          // Format type with proper handling for array notation and HTML links
+          const { type: typeAttr } = this.formatTypeForParamField(methodType);
 
           const methodField = `<ParamField body='${currentMethod}' ${typeAttr}>
 ${methodBody}
@@ -208,13 +345,8 @@ ${methodBody}
           .replace(/\\/g, '');      // Remove escape characters
       }
 
-      // Convert markdown links to HTML links in type
-      const formattedType = this.markdownLinkToHtml(methodType);
-
-      // Use JSX syntax for type attribute if it contains HTML tags
-      const typeAttr = formattedType.includes('<a')
-        ? `type={${formattedType}}`
-        : `type='${formattedType}'`;
+      // Format type with proper handling for array notation and HTML links
+      const { type: typeAttr } = this.formatTypeForParamField(methodType);
 
       const methodField = `<ParamField body='${currentMethod}' ${typeAttr}>
 ${methodBody}
@@ -244,6 +376,9 @@ ${methodBody}
 
       // Convert Methods
       content = this.convertMethods(content);
+
+      // Convert References
+      content = this.convertReferences(content);
 
       // Write back
       fs.writeFileSync(filePath, content);

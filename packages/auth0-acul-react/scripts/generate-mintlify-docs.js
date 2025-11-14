@@ -39,6 +39,10 @@ const scripts = [
     description: 'Consolidating interface documentation...'
   },
   {
+    name: 'convert-references.js',
+    description: 'Converting references sections to ParamFields...'
+  },
+  {
     name: 'flatten-structure.js',
     description: 'Flattening directory structure...'
   },

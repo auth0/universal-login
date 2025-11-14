@@ -33,11 +33,255 @@ class InterfacesConsolidator {
   }
 
   /**
+   * Format type for JSX ParamField
+   * Handles array notation and HTML links properly
+   * E.g., <a href="...">Type</a>[] → <span><a href="...">Type</a>[]</span>
+   */
+  formatTypeForParamField(propertyType) {
+    // Convert markdown links to HTML links
+    let formattedType = this.markdownLinkToHtml(propertyType);
+
+    // Escape < and > that are NOT part of HTML tags (for generic types like Record<string, string>)
+    // First, preserve our HTML tags by replacing them with placeholders
+    const htmlTags = [];
+    let withPlaceholders = formattedType.replace(/<a[^>]*>.*?<\/a>/g, (match) => {
+      const placeholder = `__HTML_TAG_${htmlTags.length}__`;
+      htmlTags.push(match);
+      return placeholder;
+    });
+
+    // Now escape remaining angle brackets (these are from generic types)
+    withPlaceholders = withPlaceholders
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+
+    // Restore the HTML tags
+    htmlTags.forEach((tag, idx) => {
+      withPlaceholders = withPlaceholders.replace(`__HTML_TAG_${idx}__`, tag);
+    });
+
+    formattedType = withPlaceholders;
+
+    // Trim and check if type contains array notation (including cases with trailing whitespace)
+    const trimmed = formattedType.trimEnd();
+    const arrayNotationMatch = trimmed.match(/(\[\])+$/);
+    const arrayNotation = arrayNotationMatch ? arrayNotationMatch[0] : '';
+    const baseType = arrayNotation ? trimmed.slice(0, -arrayNotation.length) : trimmed;
+
+    // If type contains HTML tags
+    if (baseType.includes('<a')) {
+      // Check if there are other characters mixed with HTML (parentheses, pipes, spaces, etc.)
+      // Remove the HTML tag to see what's left
+      const withoutHtml = baseType.replace(/<a[^>]*>.*?<\/a>/g, '');
+      const hasOtherChars = withoutHtml.trim().length > 0;
+
+      // If there are other characters or array notation, wrap in span
+      if (hasOtherChars || arrayNotation) {
+        return {
+          type: `type={<span>${baseType}${arrayNotation}</span>}`,
+          isJsx: true
+        };
+      }
+
+      // Pure HTML without extra characters - use JSX syntax without span
+      return {
+        type: `type={${baseType}}`,
+        isJsx: true
+      };
+    }
+
+    // Regular string type
+    return {
+      type: `type='${trimmed}'`,
+      isJsx: false
+    };
+  }
+
+  /**
+   * Check if a type is an object type (starts with '{')
+   */
+  isObjectType(typeStr) {
+    const trimmed = typeStr.trim();
+    return trimmed.startsWith('{') || trimmed.startsWith('\\{');
+  }
+
+  /**
+   * Parse object properties from a type string
+   * E.g., { errors: Error[], state: string, locale: string }
+   * Returns array of { name, type } objects
+   */
+  parseObjectProperties(signatureLine) {
+    // Extract the full type from signature
+    // Format: > **propName**: { prop1: type1; prop2: type2; } | null
+    const typeMatch = signatureLine.match(/:\s*(.+?)(?:\n|$)/);
+    if (!typeMatch) return [];
+
+    let typeStr = typeMatch[1].trim();
+
+    // Remove escaped braces and find the object content
+    typeStr = typeStr.replace(/\\\{/g, '{').replace(/\\\}/g, '}');
+
+    // Extract content between first { and last }
+    const objectMatch = typeStr.match(/\{([^}]+)\}/);
+    if (!objectMatch) return [];
+
+    const objectContent = objectMatch[1];
+    const properties = [];
+
+    // Split by semicolon to get individual properties
+    const propStrings = objectContent.split(';').map(p => p.trim()).filter(p => p);
+
+    for (const propStr of propStrings) {
+      // Match property: `propName`: type
+      const propMatch = propStr.match(/`([^`]+)`:\s*(.+?)$/);
+      if (propMatch) {
+        const propName = propMatch[1];
+        let propType = propMatch[2].trim();
+
+        // First remove escape characters
+        propType = propType.replace(/\\/g, '');
+
+        // Remove | null anywhere in the type (including markdown syntax \| `null`)
+        propType = propType.replace(/\s*\|\s*`?null`?\s*/g, '').trim();
+
+        // Remove all backticks
+        propType = propType.replace(/`/g, '');
+
+        // Convert markdown links
+        propType = this.markdownLinkToHtml(propType);
+
+        // Final cleanup of spaces
+        propType = propType.trim();
+
+        properties.push({ name: propName, type: propType });
+      }
+    }
+
+    return properties;
+  }
+
+  /**
+   * Generate expandable section for object properties
+   */
+  generateObjectExpandable(properties) {
+    if (properties.length === 0) return '';
+
+    const paramFields = properties.map(prop => {
+      // Determine if property type is a link or array
+      const isArray = prop.type.includes('[]');
+      let displayType = prop.type;
+
+      if (prop.type.includes('<a')) {
+        // For types with links, wrap appropriately
+        if (isArray) {
+          displayType = `type={<span>${prop.type}</span>}`;
+        } else {
+          displayType = `type={${prop.type}}`;
+        }
+      } else {
+        // Use single quotes to avoid conflicts with double quotes in type strings
+        displayType = `type='${prop.type}'`;
+      }
+
+      // Use single quotes for all attributes to avoid conflicts with type content
+      return `  <ParamField body='${prop.name}' ${displayType}>
+
+  </ParamField>`;
+    });
+
+    return `<Expandable title="properties">
+${paramFields.join('\n')}
+</Expandable>`;
+  }
+
+  /**
    * Convert headers inside ParamField content to bold text
    */
   normalizeHeadersForParamField(content) {
     // Convert headers (##, ###, ####, etc.) to bold text **text**
     content = content.replace(/^#+\s+(.+?)$/gm, '**$1**');
+    return content;
+  }
+
+  /**
+   * Determine type category from link path
+   */
+  getTypeFromPath(path) {
+    if (path.includes('/Hooks/')) return 'Hooks';
+    if (path.includes('/interfaces/')) return 'Interfaces';
+    if (path.includes('/classes/')) return 'Classes';
+    if (path.includes('/type-aliases/')) return 'Type Aliases';
+    if (path.includes('/enums/')) return 'Enums';
+    return 'Types';
+  }
+
+  /**
+   * Convert References section to ParamField components
+   */
+  convertReferences(content) {
+    // Match the References section
+    const referencesRegex = /^## References\n\n([\s\S]*)$/m;
+    const match = content.match(referencesRegex);
+
+    if (!match) {
+      return content;
+    }
+
+    let referencesContent = match[1];
+    const paramFields = [];
+
+    // Split by ### (reference names)
+    const referenceLines = referencesContent.split('\n');
+    let i = 0;
+
+    while (i < referenceLines.length) {
+      const line = referenceLines[i];
+
+      // Check if this is a reference header
+      if (line.match(/^### /)) {
+        const refName = line.replace(/^### /, '').trim();
+
+        // Look for the markdown link in the following lines
+        let linkFound = false;
+        for (let j = i + 1; j < Math.min(i + 5, referenceLines.length); j++) {
+          const contentLine = referenceLines[j];
+          const linkMatch = contentLine.match(/\[([^\]]+)\]\(([^)]+)\)/);
+
+          if (linkMatch) {
+            const linkText = linkMatch[1];
+            const linkPath = linkMatch[2];
+            const refType = this.getTypeFromPath(linkPath);
+
+            // Create HTML link
+            const htmlLink = `<a href="${linkPath}">${linkText}</a>`;
+
+            // Create ParamField with link in body
+            const paramField = `<ParamField body={${htmlLink}} type='${refType}'/>`;
+            paramFields.push(paramField);
+            linkFound = true;
+            break;
+          }
+        }
+
+        if (linkFound) {
+          // Skip to next reference (look for ***)
+          while (i < referenceLines.length && !referenceLines[i].match(/^\*{3,}$/)) {
+            i++;
+          }
+          i++; // Skip the *** line
+        } else {
+          i++;
+        }
+      } else {
+        i++;
+      }
+    }
+
+    if (paramFields.length > 0) {
+      const newReferences = `## References\n\n${paramFields.join('\n\n')}\n`;
+      return content.replace(referencesRegex, newReferences);
+    }
+
     return content;
   }
 
@@ -81,25 +325,35 @@ class InterfacesConsolidator {
           // Look for: > `optional` **propertyName**: type
           const signatureMatch = propertyBody.match(/^> .*?\*\*[^*]+\*\*:\s*(.+?)(?:\n|$)/);
           let propertyType = 'unknown';
+          const signatureLine = propertyBody.split('\n')[0]; // Get full signature line
 
           if (signatureMatch) {
             propertyType = signatureMatch[1].trim()
-              .replace(/`/g, '')        // Remove backticks
-              .replace(/\\/g, '')       // Remove escape characters
-              .replace(/\|.*$/, '');    // Remove union types, keep first type
+              .replace(/`/g, '')                          // Remove backticks
+              .replace(/\\/g, '')                         // Remove escape characters
+              .replace(/\s*\|\s*(null|undefined)\s*$/g, ''); // Remove only | null or | undefined at end
           }
 
-          // Convert markdown links to HTML links in type
-          const formattedType = this.markdownLinkToHtml(propertyType);
+          // Check if this is an object type
+          let propertyField;
+          if (this.isObjectType(propertyType)) {
+            // Parse object properties and generate expandable section
+            const objProps = this.parseObjectProperties(signatureLine);
+            const expandableSection = this.generateObjectExpandable(objProps);
 
-          // Use JSX syntax for type attribute if it contains HTML tags
-          const typeAttr = formattedType.includes('<a')
-            ? `type={${formattedType}}`
-            : `type='${formattedType}'`;
+            propertyField = `<ParamField body='${currentProperty}' type="object">
+${propertyBody}
 
-          const propertyField = `<ParamField body='${currentProperty}' ${typeAttr}>
+${expandableSection}
+</ParamField>`;
+          } else {
+            // Format type with proper handling for array notation and HTML links
+            const { type: typeAttr } = this.formatTypeForParamField(propertyType);
+
+            propertyField = `<ParamField body='${currentProperty}' ${typeAttr}>
 ${propertyBody}
 </ParamField>`;
+          }
 
           propertyBlocks.push(propertyField);
           this.propertiesConverted++;
@@ -128,25 +382,35 @@ ${propertyBody}
       // Extract type from signature line
       const signatureMatch = propertyBody.match(/^> .*?\*\*[^*]+\*\*:\s*(.+?)(?:\n|$)/);
       let propertyType = 'unknown';
+      const signatureLine = propertyBody.split('\n')[0]; // Get full signature line
 
       if (signatureMatch) {
         propertyType = signatureMatch[1].trim()
-          .replace(/`/g, '')        // Remove backticks
-          .replace(/\\/g, '')       // Remove escape characters
-          .replace(/\|.*$/, '');    // Remove union types, keep first type
+          .replace(/`/g, '')                          // Remove backticks
+          .replace(/\\/g, '')                         // Remove escape characters
+          .replace(/\s*\|\s*(null|undefined)\s*$/g, ''); // Remove only | null or | undefined at end
       }
 
-      // Convert markdown links to HTML links in type
-      const formattedType = this.markdownLinkToHtml(propertyType);
+      // Check if this is an object type
+      let propertyField;
+      if (this.isObjectType(propertyType)) {
+        // Parse object properties and generate expandable section
+        const objProps = this.parseObjectProperties(signatureLine);
+        const expandableSection = this.generateObjectExpandable(objProps);
 
-      // Use JSX syntax for type attribute if it contains HTML tags
-      const typeAttr = formattedType.includes('<a')
-        ? `type={${formattedType}}`
-        : `type='${formattedType}'`;
+        propertyField = `<ParamField body='${currentProperty}' type="object">
+${propertyBody}
 
-      const propertyField = `<ParamField body='${currentProperty}' ${typeAttr}>
+${expandableSection}
+</ParamField>`;
+      } else {
+        // Format type with proper handling for array notation and HTML links
+        const { type: typeAttr } = this.formatTypeForParamField(propertyType);
+
+        propertyField = `<ParamField body='${currentProperty}' ${typeAttr}>
 ${propertyBody}
 </ParamField>`;
+      }
 
       propertyBlocks.push(propertyField);
       this.propertiesConverted++;
@@ -170,6 +434,9 @@ ${propertyBody}
 
       // Convert Properties
       content = this.convertProperties(content);
+
+      // Convert References
+      content = this.convertReferences(content);
 
       // Write back
       fs.writeFileSync(filePath, content);
