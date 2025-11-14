@@ -28,23 +28,32 @@ export default class MfaPushEnrollmentQr extends BaseContext implements MfaPushE
     this.screen = new ScreenOverride(screenContext);
   }
 
+  /**
+   * Continues with the push notification challenge
+   * @param payload Optional custom options to include with the request
+   * @example
+   * ```typescript
+   * const mfaPushEnrollmentQr = new MfaPushEnrollmentQr();
+   * await mfaPushEnrollmentQr.continue();
+   * ```
+   */
   async continue(payload?: WithRememberOptions): Promise<void> {
-      const options: FormOptions = {
-        state: this.transaction.state,
-        telemetry: [MfaPushEnrollmentQr.screenIdentifier, "continue"],
-      };
-  
-      const { rememberDevice, ...restPayload } = payload || {};
-      const submitPayload: Record<string, string | number | boolean> = {
-        ...restPayload,
-        action: FormActions.CONTINUE,
-      };
-  
-      if (rememberDevice) {
-        submitPayload.rememberBrowser = true;
-      }
-      await new FormHandler(options).submitData(submitPayload);
+    const options: FormOptions = {
+      state: this.transaction.state,
+      telemetry: [MfaPushEnrollmentQr.screenIdentifier, "continue"],
+    };
+
+    const { rememberDevice, ...restPayload } = payload || {};
+    const submitPayload: Record<string, string | number | boolean> = {
+      ...restPayload,
+      action: FormActions.CONTINUE,
+    };
+
+    if (rememberDevice) {
+      submitPayload.rememberBrowser = true;
     }
+    await new FormHandler(options).submitData(submitPayload);
+  }
   /**
    * Navigates to the authenticator selection screen.
    * @param payload Optional custom options to include with the request
