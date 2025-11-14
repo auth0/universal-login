@@ -21,6 +21,7 @@ export interface ScreenMembersOnMfaPushEnrollmentQr extends ScreenMembers {
 export interface WithRememberOptions extends CustomOptions {
   rememberDevice?: boolean;
 }
+
 /**
  * Interface defining the available methods and properties for the mfa-push-enrollment-qr screen
  */
@@ -32,6 +33,10 @@ export interface MfaPushEnrollmentQrMembers extends BaseMembers {
    */
   pickAuthenticator(payload?: CustomOptions): Promise<void>;
 
+  /**
+   * Continues with the push notification challenge
+   * @param payload Optional custom options to include with the request
+   */
   continue(payload?: WithRememberOptions): Promise<void>;
 
   pollingManager(options: MfaPollingOptions): MfaPushPollingControl;

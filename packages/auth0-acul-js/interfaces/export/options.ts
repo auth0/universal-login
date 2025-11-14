@@ -81,4 +81,5 @@ export type { ContinueOptions as MfaPhoneEnrollmentContinueOptions } from '../sc
 export type { ContinueOptions as MfaRecoveryCodeChallengeContinueOptions } from '../screens/mfa-recovery-code-challenge';
 export type { ContinueOptions as MfaVoiceEnrollmentContinueOptions } from '../screens/mfa-voice-enrollment';
 export type { ContinueOptions as ResetPasswordMfaVoiceChallengeContinueOptions } from '../screens/reset-password-mfa-voice-challenge';
+export type { WithRememberOptions as MfaPushEnrollmentQrWithRememberOptions } from '../screens/mfa-push-enrollment-qr';
 export type { MfaPollingOptions, MfaPushPollingControl } from '../utils/polling-control';
