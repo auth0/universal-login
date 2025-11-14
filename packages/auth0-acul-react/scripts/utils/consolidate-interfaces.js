@@ -98,66 +98,121 @@ class InterfacesConsolidator {
   }
 
   /**
-   * Check if a type is an object type (starts with '{')
+   * Check if a type is an object type (starts with '{' or is the word 'object')
    */
   isObjectType(typeStr) {
     const trimmed = typeStr.trim();
-    return trimmed.startsWith('{') || trimmed.startsWith('\\{');
+    return trimmed === 'object' || trimmed.startsWith('{') || trimmed.startsWith('\\{');
   }
 
   /**
-   * Parse object properties from a type string
+   * Parse object properties from a type string OR from separate property sections
    * E.g., { errors: Error[], state: string, locale: string }
+   * OR separate **propertyName** sections with type signatures
    * Returns array of { name, type } objects
    */
-  parseObjectProperties(signatureLine) {
-    // Extract the full type from signature
-    // Format: > **propName**: { prop1: type1; prop2: type2; } | null
+  parseObjectProperties(signatureLine, propertyBody) {
+    // First, try to extract from object signature: { prop1: type1; prop2: type2; }
     const typeMatch = signatureLine.match(/:\s*(.+?)(?:\n|$)/);
-    if (!typeMatch) return [];
+    if (typeMatch) {
+      let typeStr = typeMatch[1].trim();
 
-    let typeStr = typeMatch[1].trim();
+      // Remove escaped braces and find the object content
+      typeStr = typeStr.replace(/\\\{/g, '{').replace(/\\\}/g, '}');
 
-    // Remove escaped braces and find the object content
-    typeStr = typeStr.replace(/\\\{/g, '{').replace(/\\\}/g, '}');
+      // Extract content between first { and last }
+      const objectMatch = typeStr.match(/\{([^}]+)\}/);
+      if (objectMatch) {
+        const objectContent = objectMatch[1];
+        const properties = [];
 
-    // Extract content between first { and last }
-    const objectMatch = typeStr.match(/\{([^}]+)\}/);
-    if (!objectMatch) return [];
+        // Split by semicolon to get individual properties
+        const propStrings = objectContent.split(';').map(p => p.trim()).filter(p => p);
 
-    const objectContent = objectMatch[1];
-    const properties = [];
+        for (const propStr of propStrings) {
+          // Match property: `propName`: type
+          const propMatch = propStr.match(/`([^`]+)`:\s*(.+?)$/);
+          if (propMatch) {
+            const propName = propMatch[1];
+            let propType = propMatch[2].trim();
 
-    // Split by semicolon to get individual properties
-    const propStrings = objectContent.split(';').map(p => p.trim()).filter(p => p);
+            // First remove escape characters
+            propType = propType.replace(/\\/g, '');
 
-    for (const propStr of propStrings) {
-      // Match property: `propName`: type
-      const propMatch = propStr.match(/`([^`]+)`:\s*(.+?)$/);
-      if (propMatch) {
-        const propName = propMatch[1];
-        let propType = propMatch[2].trim();
+            // Remove | null anywhere in the type (including markdown syntax \| `null`)
+            propType = propType.replace(/\s*\|\s*`?null`?\s*/g, '').trim();
 
-        // First remove escape characters
-        propType = propType.replace(/\\/g, '');
+            // Remove all backticks
+            propType = propType.replace(/`/g, '');
 
-        // Remove | null anywhere in the type (including markdown syntax \| `null`)
-        propType = propType.replace(/\s*\|\s*`?null`?\s*/g, '').trim();
+            // Convert markdown links
+            propType = this.markdownLinkToHtml(propType);
 
-        // Remove all backticks
-        propType = propType.replace(/`/g, '');
+            // Final cleanup of spaces
+            propType = propType.trim();
 
-        // Convert markdown links
-        propType = this.markdownLinkToHtml(propType);
+            properties.push({ name: propName, type: propType });
+          }
+        }
 
-        // Final cleanup of spaces
-        propType = propType.trim();
-
-        properties.push({ name: propName, type: propType });
+        if (properties.length > 0) {
+          return properties;
+        }
       }
     }
 
-    return properties;
+    // If no properties found in signature, look for separate property sections
+    // These are marked with **propertyName** followed by type signature
+    if (propertyBody) {
+      const properties = [];
+      const lines = propertyBody.split('\n');
+      const boldPattern = /^\*\*[^*]+\*\*$/;
+      const typePattern = /^>\s+\*\*[^*]+\*\*:\s*(.+?)(?:\n|$)/;
+
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+
+        // Look for **propertyName** pattern
+        if (boldPattern.test(line)) {
+          // Extract property name from bold text
+          const propName = line.replace(/\*\*/g, '').trim();
+
+          // Look for the type signature in the following lines
+          for (let j = i + 1; j < Math.min(i + 5, lines.length); j++) {
+            const typeLine = lines[j];
+            const typeMatch = typePattern.exec(typeLine);
+
+            if (typeMatch) {
+              let propType = typeMatch[1].trim();
+
+              // Remove escape characters
+              propType = propType.replace(/\\/g, '');
+
+              // Remove | null
+              propType = propType.replace(/\s*\|\s*`?null`?\s*/g, '').trim();
+
+              // Remove all backticks
+              propType = propType.replace(/`/g, '');
+
+              // Convert markdown links
+              propType = this.markdownLinkToHtml(propType);
+
+              // Final cleanup of spaces
+              propType = propType.trim();
+
+              properties.push({ name: propName, type: propType });
+              break;
+            }
+          }
+        }
+      }
+
+      if (properties.length > 0) {
+        return properties;
+      }
+    }
+
+    return [];
   }
 
   /**
@@ -167,24 +222,21 @@ class InterfacesConsolidator {
     if (properties.length === 0) return '';
 
     const paramFields = properties.map(prop => {
-      // Determine if property type is a link or array
-      const isArray = prop.type.includes('[]');
-      let displayType = prop.type;
+      // For object properties, use direct type attribute (don't escape angle brackets in attributes)
+      // Angle brackets don't need HTML entity escaping inside single-quoted attributes
+      let typeAttr;
 
       if (prop.type.includes('<a')) {
-        // For types with links, wrap appropriately
-        if (isArray) {
-          displayType = `type={<span>${prop.type}</span>}`;
-        } else {
-          displayType = `type={${prop.type}}`;
-        }
+        // Type contains HTML links - use formatTypeForParamField to handle properly
+        const { type: formatted } = this.formatTypeForParamField(prop.type);
+        typeAttr = formatted;
       } else {
-        // Use single quotes to avoid conflicts with double quotes in type strings
-        displayType = `type='${prop.type}'`;
+        // Plain text type - use single quotes without escaping angle brackets
+        typeAttr = `type='${prop.type}'`;
       }
 
       // Use single quotes for all attributes to avoid conflicts with type content
-      return `  <ParamField body='${prop.name}' ${displayType}>
+      return `  <ParamField body='${prop.name}' ${typeAttr}>
 
   </ParamField>`;
     });
@@ -338,11 +390,10 @@ ${paramFields.join('\n')}
           let propertyField;
           if (this.isObjectType(propertyType)) {
             // Parse object properties and generate expandable section
-            const objProps = this.parseObjectProperties(signatureLine);
+            const objProps = this.parseObjectProperties(signatureLine, propertyBody);
             const expandableSection = this.generateObjectExpandable(objProps);
 
             propertyField = `<ParamField body='${currentProperty}' type="object">
-${propertyBody}
 
 ${expandableSection}
 </ParamField>`;
@@ -395,11 +446,10 @@ ${propertyBody}
       let propertyField;
       if (this.isObjectType(propertyType)) {
         // Parse object properties and generate expandable section
-        const objProps = this.parseObjectProperties(signatureLine);
+        const objProps = this.parseObjectProperties(signatureLine, propertyBody);
         const expandableSection = this.generateObjectExpandable(objProps);
 
         propertyField = `<ParamField body='${currentProperty}' type="object">
-${propertyBody}
 
 ${expandableSection}
 </ParamField>`;
