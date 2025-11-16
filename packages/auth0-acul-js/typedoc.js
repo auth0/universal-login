@@ -11,4 +11,8 @@ export default {
   includeVersion: true,
   categorizeByGroup: true,
   json: 'docs/index.json',
+  plugin: ['typedoc-plugin-markdown'],
+  outputFileStrategy: 'members',
+  hideBreadcrumbs: false,
+  indexFormat: 'table',
 };
