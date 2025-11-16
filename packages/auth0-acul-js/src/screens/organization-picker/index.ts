@@ -24,7 +24,7 @@ export default class OrganizationPicker extends BaseContext implements Organizat
 
   /**
    * Submits the selected organization ID.
-   * @param payload The ID of the selected organization. { organization: string; }
+   * @param payload The ID of the selected organization. `{ organization: string; }`
    * @example
    * ```typescript
    * import OrganizationPicker from '@auth0/auth0-acul-js/organization-picker';

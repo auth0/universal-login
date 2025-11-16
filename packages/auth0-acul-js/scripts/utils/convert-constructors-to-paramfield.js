@@ -31,6 +31,23 @@ class ConstructorParamFieldConverter {
   }
 
   /**
+   * Escape curly braces in plain text to avoid MDX parsing errors
+   * Converts { and } to \{ and \} outside of code blocks and backticks
+   */
+  escapeCurlyBraces(text) {
+    // Split by backticks to avoid escaping inside code
+    const parts = text.split(/(`[^`]*`)/);
+    return parts.map((part, index) => {
+      // If it's inside backticks (odd indices), don't escape
+      if (index % 2 === 1) {
+        return part;
+      }
+      // Escape curly braces in regular text
+      return part.replace(/\{/g, '\\{').replace(/\}/g, '\\}');
+    }).join('');
+  }
+
+  /**
    * Extract constructor name from the signature
    * From: **new AcceptInvitation**(): `AcceptInvitation`
    * To: AcceptInvitation
@@ -63,7 +80,7 @@ class ConstructorParamFieldConverter {
         const paramName = match[2];
         const paramType = match[3];
 
-        expandableContent += `\n  <ParamField body='${paramName}' type='${paramType}'>\n  </ParamField>`;
+        expandableContent += `\n<ParamField body='${paramName}' type='${paramType}'>\n</ParamField>`;
       }
 
       if (expandableContent) {
@@ -97,6 +114,9 @@ class ConstructorParamFieldConverter {
         let cleanedBlock = blockMatch
           .replace(/^### Constructor\n/, '') // Remove the heading
           .replace(/^\n/, ''); // Remove leading blank line if it exists
+
+        // Escape curly braces in plain text to avoid MDX parsing errors
+        cleanedBlock = this.escapeCurlyBraces(cleanedBlock);
 
         // Convert Parameters section if it exists
         cleanedBlock = this.convertParametersSection(cleanedBlock);

@@ -190,11 +190,11 @@ class MethodsParamFieldConverter {
         const descStart = paramDesc.indexOf('\n') !== -1 ? paramDesc.indexOf('\n') + 1 : 0;
         const description = paramDesc.substring(descStart).trim();
 
-        paramFields += `  <ParamField body='${paramName}' type=${paramType}>\n`;
+        paramFields += `<ParamField body='${paramName}' type=${paramType}>\n`;
         if (description) {
           paramFields += `${description}\n`;
         }
-        paramFields += `  </ParamField>\n`;
+        paramFields += `</ParamField>\n`;
       }
 
       if (paramFields) {
