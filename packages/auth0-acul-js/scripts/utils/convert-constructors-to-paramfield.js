@@ -44,6 +44,37 @@ class ConstructorParamFieldConverter {
   }
 
   /**
+   * Convert Parameters section to Expandable with ParamFields
+   * Finds #### Parameters and converts it to <Expandable> with <ParamField> components
+   */
+  convertParametersSection(content) {
+    // Match the entire Parameters section: #### Parameters until next ####
+    const parametersSectionRegex = /(#### Parameters\n[\s\S]*?)(?=\n#### [A-Z]|$)/;
+
+    return content.replace(parametersSectionRegex, (fullMatch) => {
+      // Find all parameter blocks within this section
+      // Each parameter block is: "##### paramName" followed by type line
+      const parameterBlockRegex = /(##### ([^\n]+)\n\n`([^`]+)`)/g;
+
+      let expandableContent = '';
+      let match;
+
+      while ((match = parameterBlockRegex.exec(fullMatch)) !== null) {
+        const paramName = match[2];
+        const paramType = match[3];
+
+        expandableContent += `\n  <ParamField body='${paramName}' type='${paramType}'>\n    \n  </ParamField>`;
+      }
+
+      if (expandableContent) {
+        return `<Expandable title="Parameters">${expandableContent}\n</Expandable>`;
+      }
+
+      return fullMatch;
+    });
+  }
+
+  /**
    * Convert Constructors section to ParamField components
    * Uses regex-based approach for reliability
    */
@@ -66,6 +97,9 @@ class ConstructorParamFieldConverter {
         let cleanedBlock = blockMatch
           .replace(/^### Constructor\n/, '') // Remove the heading
           .replace(/^\n/, ''); // Remove leading blank line if it exists
+
+        // Convert Parameters section if it exists
+        cleanedBlock = this.convertParametersSection(cleanedBlock);
 
         // Wrap in ParamField
         return `<ParamField body="${constructorName}" type="Constructor">\n${cleanedBlock}\n</ParamField>`;
