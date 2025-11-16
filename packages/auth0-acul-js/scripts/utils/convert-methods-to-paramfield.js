@@ -37,13 +37,30 @@ class MethodsParamFieldConverter {
   }
 
   /**
-   * Extract method name from h3 heading
-   * From: ### methodName()
+   * Extract method name from heading (supports h3 and h4)
+   * From: ### methodName() or #### methodName()
    * To: methodName
    */
   extractMethodName(heading) {
-    const match = heading.match(/^### ([a-zA-Z_$][a-zA-Z0-9_$]*)\(\)/);
-    return match ? match[1] : 'method';
+    // Try h3 first, then h4
+    let match = heading.match(/^### ([a-zA-Z_$][a-zA-Z0-9_$]*)\(\)/);
+    if (match) return match[1];
+
+    match = heading.match(/^#### ([a-zA-Z_$][a-zA-Z0-9_$]*)\(\)/);
+    if (match) return match[1];
+
+    return 'method';
+  }
+
+  /**
+   * Detect heading level used for methods in this content
+   * Returns 3 for h3 (### methodName()) or 4 for h4 (#### methodName())
+   */
+  detectMethodHeadingLevel(content) {
+    if (content.match(/^#### [a-zA-Z_$][a-zA-Z0-9_$]*\(\)/m)) {
+      return 4;
+    }
+    return 3;
   }
 
   /**
@@ -120,6 +137,7 @@ class MethodsParamFieldConverter {
 
   /**
    * Convert Parameters section within method to Expandable component
+   * Supports both normal (#### Parameters, ##### paramName) and shifted (##### Parameters, ###### paramName) heading levels
    * From: #### Parameters
    *       ##### paramName
    *       Type description
@@ -128,14 +146,22 @@ class MethodsParamFieldConverter {
    *       </ParamField>
    *     </Expandable>
    */
-  convertParametersSection(content) {
-    // Find #### Parameters section
-    const parametersRegex = /(#### Parameters\n)([\s\S]*?)(?=\n#### [A-Z]|$)/;
+  convertParametersSection(content, methodHeadingLevel = 3) {
+    // Determine heading levels based on method heading level
+    const paramHeadingMarker = methodHeadingLevel === 4 ? '#####' : '####';
+    const paramNameHeadingMarker = methodHeadingLevel === 4 ? '######' : '#####';
+
+    // Find Parameters section with appropriate heading level
+    const parametersRegex = methodHeadingLevel === 4
+      ? /(##### Parameters\n)([\s\S]*?)(?=\n##### [A-Z]|\n#### |$)/
+      : /(#### Parameters\n)([\s\S]*?)(?=\n#### [A-Z]|$)/;
 
     return content.replace(parametersRegex, (fullMatch, header, paramContent) => {
-      // Find all parameter blocks (h5 items)
-      // Each parameter is: ##### paramName followed by type/description until next h5 or section
-      const paramBlockRegex = /(##### ([^\n]+)\n)([\s\S]*?)(?=\n##### |\n#### |$)/g;
+      // Find all parameter blocks with appropriate heading level
+      // Each parameter is: h5/h6 paramName followed by type/description until next h5/h6 or section
+      const paramBlockRegex = methodHeadingLevel === 4
+        ? /(###### ([^\n]+)\n)([\s\S]*?)(?=\n###### |\n##### |$)/g
+        : /(##### ([^\n]+)\n)([\s\S]*?)(?=\n##### |\n#### |$)/g;
 
       let paramFields = '';
       let match;
@@ -181,29 +207,37 @@ class MethodsParamFieldConverter {
 
   /**
    * Convert Methods section to ParamField components
+   * Supports both h3 (###) and h4 (####) heading levels for methods
    */
   convertMethods(content) {
     // Match the entire Methods section
     const methodsSectionRegex = /(## Methods\n[\s\S]*?)(?=\n## [A-Z]|$)/;
 
     return content.replace(methodsSectionRegex, (fullMatch) => {
-      // Find all method blocks within this section
-      // Each method block is: "### methodName()" ... until next "###" or "##" or "***"
-      const methodBlockRegex = /(### [a-zA-Z_$][a-zA-Z0-9_$]*\(\)\n[\s\S]*?)(?=\n### [a-zA-Z_$]|\n## [A-Z]|\n\*\*\*|$)/g;
+      // Detect heading level used for methods (h3 or h4)
+      const methodHeadingLevel = this.detectMethodHeadingLevel(fullMatch);
+      const methodHeadingMarker = methodHeadingLevel === 4 ? '####' : '###';
+      const paramHeadingMarker = methodHeadingLevel === 4 ? '#####' : '####';
+      const paramNameHeadingMarker = methodHeadingLevel === 4 ? '######' : '#####';
 
-      let modifiedSection = fullMatch.replace(methodBlockRegex, (blockMatch) => {
-        // Extract method name and return type
-        const headerMatch = blockMatch.match(/^### ([a-zA-Z_$][a-zA-Z0-9_$]*)\(\)/);
+      // Build regex patterns based on detected heading level
+      const methodBlockPattern = methodHeadingLevel === 4
+        ? /(#### [a-zA-Z_$][a-zA-Z0-9_$]*\(\)\n[\s\S]*?)(?=\n#### [a-zA-Z_$]|\n## [A-Z]|\n\*\*\*|$)/g
+        : /(### [a-zA-Z_$][a-zA-Z0-9_$]*\(\)\n[\s\S]*?)(?=\n### [a-zA-Z_$]|\n## [A-Z]|\n\*\*\*|$)/g;
+
+      let modifiedSection = fullMatch.replace(methodBlockPattern, (blockMatch) => {
+        // Extract method name and return type (supports both h3 and h4)
+        let headerMatch = blockMatch.match(new RegExp(`^${methodHeadingMarker.replace(/#+/g, '\\$&')} ([a-zA-Z_$][a-zA-Z0-9_$]*)\\(\\)`));
         const methodName = headerMatch ? headerMatch[1] : 'method';
         const returnTypeAttribute = this.extractReturnTypeAttribute(blockMatch);
 
-        // Remove the "### methodName()" heading and leading blank line from the block
+        // Remove the method heading and leading blank line from the block
         let cleanedBlock = blockMatch
-          .replace(/^### [a-zA-Z_$][a-zA-Z0-9_$]*\(\)\n/, '') // Remove the heading
+          .replace(new RegExp(`^${methodHeadingMarker.replace(/#+/g, '\\$&')} [a-zA-Z_$][a-zA-Z0-9_$]*\\(\\)\\n`), '') // Remove the heading
           .replace(/^\n/, ''); // Remove leading blank line if it exists
 
-        // Convert Parameters section to Expandable
-        cleanedBlock = this.convertParametersSection(cleanedBlock);
+        // Convert Parameters section to Expandable (pass heading levels)
+        cleanedBlock = this.convertParametersSection(cleanedBlock, methodHeadingLevel);
 
         // Remove trailing *** separator if present
         cleanedBlock = cleanedBlock.replace(/\n\*\*\*\s*$/, '');

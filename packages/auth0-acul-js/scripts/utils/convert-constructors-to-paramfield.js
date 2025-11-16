@@ -63,7 +63,7 @@ class ConstructorParamFieldConverter {
         const paramName = match[2];
         const paramType = match[3];
 
-        expandableContent += `\n  <ParamField body='${paramName}' type='${paramType}'>\n    \n  </ParamField>`;
+        expandableContent += `\n  <ParamField body='${paramName}' type='${paramType}'>\n  </ParamField>`;
       }
 
       if (expandableContent) {
