@@ -29,13 +29,17 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const MONOREPO_ROOT = path.resolve(__dirname, '../../../..');
-const TYPE_ALIASES_DIR = path.join(
+const CLASSES_DIR = path.join(
   MONOREPO_ROOT,
-  'docs/customize/login-pages/advanced-customizations/reference/js-sdk/Screens/type-aliases'
+  'docs/customize/login-pages/advanced-customizations/reference/js-sdk/Screens/classes'
 );
 const INTERFACES_DIR = path.join(
   MONOREPO_ROOT,
   'docs/customize/login-pages/advanced-customizations/reference/js-sdk/Screens/interfaces'
+);
+const TYPE_ALIASES_DIR = path.join(
+  MONOREPO_ROOT,
+  'docs/customize/login-pages/advanced-customizations/reference/js-sdk/Screens/type-aliases'
 );
 
 class SourceExampleExtractor {
@@ -294,6 +298,6 @@ class SourceExampleExtractor {
   }
 }
 
-// Run extraction for both type-aliases and interfaces
-const extractor = new SourceExampleExtractor([TYPE_ALIASES_DIR, INTERFACES_DIR]);
+// Run extraction for classes, interfaces, and type-aliases
+const extractor = new SourceExampleExtractor([CLASSES_DIR, INTERFACES_DIR, TYPE_ALIASES_DIR]);
 extractor.extract();
