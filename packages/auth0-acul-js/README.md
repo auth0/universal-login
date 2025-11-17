@@ -154,88 +154,88 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 
 | No.    | Prompt             | Screen Name       | Documentation Link                                                                                    |
 |--------|--------------------|-------------------|--------------------------------------------------------------------------------------------|
-| 1      | login              | login             | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.Login)                 |
-| 2      | loginId            | login-id          | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.LoginId)               |
-| 3      | login-password     | login-password    | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.LoginPassword)         |
-| 4      | signup-id          | signup-id         | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.SignupId)              |
-| 5      | signup-password    | signup-password   | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.SignupPassword)        |
+| 1      | login              | login             | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.Login)                 |
+| 2      | loginId            | login-id          | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.LoginId)               |
+| 3      | login-password     | login-password    | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.LoginPassword)         |
+| 4      | signup-id          | signup-id         | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.SignupId)              |
+| 5      | signup-password    | signup-password   | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.SignupPassword)        |
 
 <details>
   <summary>Explore more screens...</summary>
 
 | No.    | Prompt                         | Screen Name                                      | Documentation Link                                                                                                                        |
 |--------|--------------------------------|-------------------------------------------|-------------------------------------------------------------------------------------------------------|
-| 6      | login-passwordless             | login-passwordless-email-code             | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.LoginPasswordlessEmailCode)   |
-| 7      | login-passwordless             | login-passwordless-sms-otp                | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.LoginPasswordlessSmsOtp)      |
-| 8      | passkeys                       | passkey-enrollment                        | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.PasskeyEnrollment)                |
-| 9      | passkeys                       | passkey-enrollment-local                  | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.PasskeyEnrollmentLocal)           |
-| 10     | phone-identifier-enrollment    | phone-identifier-enrollment               | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.PhoneIdentifierEnrollment)    |
-| 11     | phone-identifier-challenge     | phone-identifier-challenge                | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.PhoneIdentifierChallenge)         |
-| 12     | email-identifier-challenge     | email-identifier-challenge                | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.EmailIdentifierChallenge)     |
-| 13     | captcha                        | interstitial-captcha                      | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.InterstitialCaptcha)      |
-| 14     | reset-password                 | reset-password-email                      | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.ResetPasswordEmail)       |
-| 15     | reset-password                 | reset-password-request                    | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.ResetPasswordRequest)        |
-| 16     | reset-password                 | reset-password                            | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.ResetPassword)                |
-| 17     | reset-password                 | reset-password-error                      | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.ResetPasswordError)            |
-| 18     | reset-password                 | reset-password-success                    | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.ResetPasswordSuccess)         |
-| 19     | signup                         | signup                                    | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.Signup)                        |
-| 20     | mfa                            | mfa-detect-browser-capabilities           | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.MfaDetectBrowserCapabilities)   |
-| 21     | mfa                            | mfa-enroll-result                         | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.MfaEnrollResult)   |
-| 22     | mfa                            | mfa-begin-enroll-options                  | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.MfaBeginEnrollOptions)       |
-| 23     | mfa                            | mfa-login-options                         | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.MfaLoginOptions)   |
-| 24     | mfa-push                       | mfa-push-enrollment-qr                    | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.MfaPushEnrollmentQr)            |
-| 25     | mfa-push                       | mfa-push-welcome                          | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.MfaPushWelcome)            |
-| 26     | mfa-push                       | mfa-push-challenge-push                   | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.MfaPushChallengePush)   |
-| 27     | mfa-push                       | mfa-push-list                             | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.MfaPushList)                   |
-| 28     | mfa-sms                        | mfa-country-codes                         | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.MfaCountryCodes)              |
-| 29     | mfa-sms                        | mfa-sms-challenge                         |   [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.MfaSmsChallenge)                 |
-| 30     | mfa-sms                        | mfa-sms-enrollment                        | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.MfaSmsEnrollment)           |
-| 31     | mfa-sms                        | mfa-sms-list                              |  [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.MfaSmsList)                  |
-| 32     | mfa-email                      | mfa-email-challenge                       | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.MfaEmailChallenge)   |
-| 33     | mfa-email                      | mfa-email-list                            | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.MfaEmailList)   |
-| 34     | invitatino                     | accept-invitation                         | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.AcceptInvitation)   |
-| 35     | organizations                  | organization-picker                       | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.OrganizationPicker)        |
-| 36     | organizations                  | organization-selection                    | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.OrganizationSelection)        |
-| 37     | reset-password                 | mfa-otp-challenge                         | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.MfaOtpChallenge)   |
-| 38     | mfa-otp                        | mfa-otp-enrollment-code                   | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.MfaOtpEnrollmentCode)   |
-| 39     | mfa-otp                        | mfa-otp-enrollment-qr                     | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.MfaOtpEnrollmentQr)   |
-| 40     | reset-password                 | reset-password-mfa-email-challenge        | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.ResetPasswordMfaEmailChallenge)  |
-| 41     | reset-password                 | reset-password-mfa-push-challenge-push    | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.ResetPasswordMfaPushChallengePush)|
-| 42     | reset-password                 | mfa-sms-challenge                         | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.ResetPasswordMfaSmsChallenge)   |
-| 43     | reset-password                 | reset-password-mfa-otp-challenge          | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.OrganizationSelection)   |
-| 44     | mfa-phone                      | mfa-phone-enrollment                      | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.MfaPhoneEnrollment)   |
-| 45     | mfa-voice                      | mfa-voice-enrollment                      | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.MfaVoiceEnrollment)   |
-| 46     | mfa-recovery-code              | mfa-recovery-code-challenge               | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.MfaRecoveryCodeChallenge)   |
-| 47     | device-flow                    | device-code-activation-allowed            | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.DeviceCodeActivationAllowed)   |
-| 48     | device-flow                    | device-code-activation-denied             | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.DeviceCodeActivationDenied)   |
-| 49     | device-flow                    | device-code-activation                    | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.DeviceCodeActivation)   |
+| 6      | login-passwordless             | login-passwordless-email-code             | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.LoginPasswordlessEmailCode)   |
+| 7      | login-passwordless             | login-passwordless-sms-otp                | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.LoginPasswordlessSmsOtp)      |
+| 8      | passkeys                       | passkey-enrollment                        | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.PasskeyEnrollment)                |
+| 9      | passkeys                       | passkey-enrollment-local                  | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.PasskeyEnrollmentLocal)           |
+| 10     | phone-identifier-enrollment    | phone-identifier-enrollment               | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.PhoneIdentifierEnrollment)    |
+| 11     | phone-identifier-challenge     | phone-identifier-challenge                | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.PhoneIdentifierChallenge)         |
+| 12     | email-identifier-challenge     | email-identifier-challenge                | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.EmailIdentifierChallenge)     |
+| 13     | captcha                        | interstitial-captcha                      | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.InterstitialCaptcha)      |
+| 14     | reset-password                 | reset-password-email                      | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.ResetPasswordEmail)       |
+| 15     | reset-password                 | reset-password-request                    | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.ResetPasswordRequest)        |
+| 16     | reset-password                 | reset-password                            | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.ResetPassword)                |
+| 17     | reset-password                 | reset-password-error                      | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.ResetPasswordError)            |
+| 18     | reset-password                 | reset-password-success                    | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.ResetPasswordSuccess)         |
+| 19     | signup                         | signup                                    | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.Signup)                        |
+| 20     | mfa                            | mfa-detect-browser-capabilities           | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.MfaDetectBrowserCapabilities)   |
+| 21     | mfa                            | mfa-enroll-result                         | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.MfaEnrollResult)   |
+| 22     | mfa                            | mfa-begin-enroll-options                  | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.MfaBeginEnrollOptions)       |
+| 23     | mfa                            | mfa-login-options                         | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.MfaLoginOptions)   |
+| 24     | mfa-push                       | mfa-push-enrollment-qr                    | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.MfaPushEnrollmentQr)            |
+| 25     | mfa-push                       | mfa-push-welcome                          | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.MfaPushWelcome)            |
+| 26     | mfa-push                       | mfa-push-challenge-push                   | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.MfaPushChallengePush)   |
+| 27     | mfa-push                       | mfa-push-list                             | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.MfaPushList)                   |
+| 28     | mfa-sms                        | mfa-country-codes                         | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.MfaCountryCodes)              |
+| 29     | mfa-sms                        | mfa-sms-challenge                         |   [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.MfaSmsChallenge)                 |
+| 30     | mfa-sms                        | mfa-sms-enrollment                        | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.MfaSmsEnrollment)           |
+| 31     | mfa-sms                        | mfa-sms-list                              |  [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.MfaSmsList)                  |
+| 32     | mfa-email                      | mfa-email-challenge                       | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.MfaEmailChallenge)   |
+| 33     | mfa-email                      | mfa-email-list                            | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.MfaEmailList)   |
+| 34     | invitatino                     | accept-invitation                         | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.AcceptInvitation)   |
+| 35     | organizations                  | organization-picker                       | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.OrganizationPicker)        |
+| 36     | organizations                  | organization-selection                    | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.OrganizationSelection)        |
+| 37     | reset-password                 | mfa-otp-challenge                         | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.MfaOtpChallenge)   |
+| 38     | mfa-otp                        | mfa-otp-enrollment-code                   | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.MfaOtpEnrollmentCode)   |
+| 39     | mfa-otp                        | mfa-otp-enrollment-qr                     | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.MfaOtpEnrollmentQr)   |
+| 40     | reset-password                 | reset-password-mfa-email-challenge        | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.ResetPasswordMfaEmailChallenge)  |
+| 41     | reset-password                 | reset-password-mfa-push-challenge-push    | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.ResetPasswordMfaPushChallengePush)|
+| 42     | reset-password                 | mfa-sms-challenge                         | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.ResetPasswordMfaSmsChallenge)   |
+| 43     | reset-password                 | reset-password-mfa-otp-challenge          | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.OrganizationSelection)   |
+| 44     | mfa-phone                      | mfa-phone-enrollment                      | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.MfaPhoneEnrollment)   |
+| 45     | mfa-voice                      | mfa-voice-enrollment                      | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.MfaVoiceEnrollment)   |
+| 46     | mfa-recovery-code              | mfa-recovery-code-challenge               | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.MfaRecoveryCodeChallenge)   |
+| 47     | device-flow                    | device-code-activation-allowed            | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.DeviceCodeActivationAllowed)   |
+| 48     | device-flow                    | device-code-activation-denied             | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.DeviceCodeActivationDenied)   |
+| 49     | device-flow                    | device-code-activation                    | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.DeviceCodeActivation)   |
 | 50     | reset-password             | reset-password-mfa-recovery-code-challenge | [Link](https://auth0.github.io/universallogin/classes/Classes.ResetPasswordMfaRecoveryCodeChallenge) |
-| 51     | reset-password                 | reset-password-mfa-voice                  | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.ResetPasswordMfaVoiceChallenge)   |
-| 52     | common                         | redeem-ticket                             | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.RedeemTicket)   |
-| 53     | device-flow                    | device-code-confirmation                  | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.DeviceCodeConfirmation)   |
-| 54     | mfa-phone                      | mfa-phone-challenge                       | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.MfaPhoneChallenge) |
-| 55     | mfa-voice                      | mfa-voice-challenge                       | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.MfaVoiceChallenge)   |
-| 56     | mfa-recovery-code              | mfa-recovery-code-enrollment              | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.MfaRecoveryCodeEnrollment)   |
-| 57     | reset-password                 | reset-password-mfa-phone-challenge        | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.ResetPasswordMfaPhoneChallenge)   |
-| 58     | mfa-recovery-code              | mfa-recovery-code-challenge-new-code      | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.MfaRecoveryCodeChallengeNewCode) |
-| 59     | logout                         | logout                                    | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.Logout) |
-| 60     | logout                         | logout-aborted                            | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.LogoutAborted) |
-| 61     | logout                         | logout-complete                           | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.LogoutComplete) |
-| 62     | email-verification             | email-verification-result                 | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.EmailVerificationResult) |
-| 63     | login-email-verification       | login-email-verification                  | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.LoginEmailVerification) |
-| 64     |mfa-webauthn                    | mfa-webauthn-platform-enrollment        | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.MfaWebAuthnPlatformEnrollment)                        |
-| 65     |mfa-webauthn                    | mfa-webauthn-error        | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.MfaWebAuthnError)                        |
-| 66     |mfa-webauthn                    | mfa-webauthn-roaming-enrollment         | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.MfaWebAuthnRoamingEnrollment)   |
-| 67     |mfa-webauthn                    | mfa-webauthn-roaming-challenge          | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.MfaWebAuthnRoamingChallenge)    |
-| 68     |mfa-webauthn                    | mfa-webauthn-platform-challenge         | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.MfaWebAuthnPlatformChallenge)   |
-| 69     |mfa-webauthn                    | mfa-webauthn-enrollment-success         | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.MfaWebAuthnEnrollmentSuccess)   |
-| 70     |mfa-webauthn                    | mfa-webauthn-change-key-nickname        | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.MfaWebAuthnChangeKeyNickname)   |
-| 71     |mfa-webauthn                    | mfa-webauthn-not-available-error        | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.MfaWebAuthnNotAvailableError)   |
-| 72     |reset-password                    | reset-password-mfa-webauthn-platform-challenge | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.ResetPasswordMfaWebAuthnPlatformChallenge)                |
-| 73     |reset-password                    | reset-password-mfa-webauthn-roaming-challenge | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.ResetPasswordMfaWebAuthnRoamingChallenge)   |
-| 74     |consent                   | consent | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.consent)   |
-| 75     |customized-consent        | customized-consent | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.CustomizedConsent)   |
-| 76     |email-otp-challenge                   | email-otp-challenge | [Link](https://acul-docs.netlify.app/auth0-acul-js/classes/screens.EmailOTPChallenge)   |
+| 51     | reset-password                 | reset-password-mfa-voice                  | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.ResetPasswordMfaVoiceChallenge)   |
+| 52     | common                         | redeem-ticket                             | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.RedeemTicket)   |
+| 53     | device-flow                    | device-code-confirmation                  | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.DeviceCodeConfirmation)   |
+| 54     | mfa-phone                      | mfa-phone-challenge                       | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.MfaPhoneChallenge) |
+| 55     | mfa-voice                      | mfa-voice-challenge                       | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.MfaVoiceChallenge)   |
+| 56     | mfa-recovery-code              | mfa-recovery-code-enrollment              | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.MfaRecoveryCodeEnrollment)   |
+| 57     | reset-password                 | reset-password-mfa-phone-challenge        | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.ResetPasswordMfaPhoneChallenge)   |
+| 58     | mfa-recovery-code              | mfa-recovery-code-challenge-new-code      | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.MfaRecoveryCodeChallengeNewCode) |
+| 59     | logout                         | logout                                    | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.Logout) |
+| 60     | logout                         | logout-aborted                            | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.LogoutAborted) |
+| 61     | logout                         | logout-complete                           | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.LogoutComplete) |
+| 62     | email-verification             | email-verification-result                 | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.EmailVerificationResult) |
+| 63     | login-email-verification       | login-email-verification                  | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.LoginEmailVerification) |
+| 64     |mfa-webauthn                    | mfa-webauthn-platform-enrollment        | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.MfaWebAuthnPlatformEnrollment)                        |
+| 65     |mfa-webauthn                    | mfa-webauthn-error        | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.MfaWebAuthnError)                        |
+| 66     |mfa-webauthn                    | mfa-webauthn-roaming-enrollment         | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.MfaWebAuthnRoamingEnrollment)   |
+| 67     |mfa-webauthn                    | mfa-webauthn-roaming-challenge          | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.MfaWebAuthnRoamingChallenge)    |
+| 68     |mfa-webauthn                    | mfa-webauthn-platform-challenge         | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.MfaWebAuthnPlatformChallenge)   |
+| 69     |mfa-webauthn                    | mfa-webauthn-enrollment-success         | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.MfaWebAuthnEnrollmentSuccess)   |
+| 70     |mfa-webauthn                    | mfa-webauthn-change-key-nickname        | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.MfaWebAuthnChangeKeyNickname)   |
+| 71     |mfa-webauthn                    | mfa-webauthn-not-available-error        | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.MfaWebAuthnNotAvailableError)   |
+| 72     |reset-password                    | reset-password-mfa-webauthn-platform-challenge | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.ResetPasswordMfaWebAuthnPlatformChallenge)                |
+| 73     |reset-password                    | reset-password-mfa-webauthn-roaming-challenge | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.ResetPasswordMfaWebAuthnRoamingChallenge)   |
+| 74     |consent                   | consent | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.consent)   |
+| 75     |customized-consent        | customized-consent | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.CustomizedConsent)   |
+| 76     |email-otp-challenge                   | email-otp-challenge | [Link](https://https://auth0.github.io/auth0-acul-js/classes/screens.EmailOTPChallenge)   |
 </details>
 
 
