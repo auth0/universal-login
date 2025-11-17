@@ -18,6 +18,7 @@ import {
   submitPasskeyCredential,
   snoozeEnrollment,
   refuseEnrollmentOnThisDevice,
+  useErrors
 } from '@auth0/auth0-acul-react/mfa-webauthn-platform-enrollment';
 import { Logo } from '../../components/Logo';
 
@@ -26,6 +27,9 @@ const MfaWebAuthnPlatformEnrollmentScreen: React.FC = () => {
   const transaction = useTransaction();
   const texts = screen?.texts ?? {};
   const publicKeyCreationOptions = screen?.publicKey;
+
+  // Error handling
+  const { hasError, errors } = useErrors();
 
   const handleEnrollPasskey = () => {
     submitPasskeyCredential();
@@ -95,6 +99,15 @@ const MfaWebAuthnPlatformEnrollmentScreen: React.FC = () => {
 
       </div>
     </div>
+
+    {/* Display errors */}
+    {hasError && (
+      <div className="mt-4 text-red-600 text-center text-sm space-y-1">
+        {errors.map((err, idx) => (
+          <p key={`err-${idx}`}>{err.message}</p>
+        ))}
+      </div>
+    )}
   );
 };
 

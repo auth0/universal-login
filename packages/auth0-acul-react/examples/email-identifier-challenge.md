@@ -19,7 +19,8 @@ import {
   useResend,
   // Submit functions
   submitEmailChallenge,
-  returnToPrevious
+  returnToPrevious,
+  useErrors
 } from '@auth0/auth0-acul-react/email-identifier-challenge';
 import { Logo } from '../../components/Logo';
 
@@ -29,6 +30,9 @@ const EmailIdentifierChallengeScreen: React.FC = () => {
   const [success, setSuccess] = useState(false);
   const [returned, setReturned] = useState(false);
   const { texts } = useScreen();
+
+  // Error handling
+  const { hasError, errors } = useErrors();
   const { disabled, startResend } = useResend();
 
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
@@ -170,6 +174,15 @@ const EmailIdentifierChallengeScreen: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Display errors */}
+      {hasError && (
+        <div className="mt-4 text-red-600 text-center text-sm space-y-1">
+          {errors.map((err, idx) => (
+            <p key={`err-${idx}`}>{err.message}</p>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

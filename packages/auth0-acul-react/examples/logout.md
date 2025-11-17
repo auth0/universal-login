@@ -13,12 +13,15 @@ Create a component file (e.g., `Logout.tsx`) and add the following code:
 ```tsx
 import React, {useEffect } from 'react';
 import type { ConfirmLogoutOptions} from '@auth0/auth0-acul-react/types';
-import { useLogout, confirmLogout } from '@auth0/auth0-acul-react/logout'
+import { useLogout, confirmLogout, useErrors } from '@auth0/auth0-acul-react/logout'
 
 const LogoutScreen: React.FC = () => {
   const logout = useLogout();
   const { screen, transaction: { errors } } = logout;
   const texts = screen.texts ?? {};
+
+  // Error handling
+  const { hasError, errors: hookErrors } = useErrors();
 
   // Update the document title if provided
   useEffect(() => {
@@ -85,6 +88,15 @@ const LogoutScreen: React.FC = () => {
             >
               {texts.badgeAltText ?? 'Auth0'}
             </a>
+          </div>
+        )}
+
+        {/* Display errors */}
+        {hasError && (
+          <div className="mt-4 text-red-600 text-center text-sm space-y-1">
+            {hookErrors.map((err, idx) => (
+              <p key={`err-${idx}`}>{err.message}</p>
+            ))}
           </div>
         )}
       </div>

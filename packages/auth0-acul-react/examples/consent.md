@@ -12,7 +12,7 @@ Create a component file (e.g., `Consent.tsx`) and add the following code:
 
 ```tsx
 import React, { useMemo } from 'react';
-import {useConsent} from '@auth0/auth0-acul-react/consent'; // Import the Consent SDK class
+import {useConsent, useErrors} from '@auth0/auth0-acul-react/consent'; // Import the Consent SDK class
 import type { Scope } from '@auth0/auth0-acul-react/types'; // Import Scope type
 
 const ConsentScreen: React.FC = () => {
@@ -21,6 +21,9 @@ const ConsentScreen: React.FC = () => {
   const consentManager = useMemo(() => useConsent(), []);
 
   const { client, organization, screen, transaction, user } = consentManager;
+  
+  // Error handling
+  const { hasError, errors } = useErrors();
   const texts = screen.texts ?? {}; // UI texts from Auth0 dashboard
 
   const handleAccept = () => {
@@ -113,6 +116,15 @@ const ConsentScreen: React.FC = () => {
             {acceptButtonText}
           </button>
         </div>
+
+        {/* Display errors */}
+        {hasError && (
+          <div className="mt-4 text-red-600 text-center text-sm space-y-1">
+            {errors.map((err, idx) => (
+              <p key={`err-${idx}`}>{err.message}</p>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

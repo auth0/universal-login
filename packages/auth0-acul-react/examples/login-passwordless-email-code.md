@@ -12,7 +12,7 @@ Create a component file (e.g., `LoginPasswordlessEmailCode.tsx`) and add the fol
 
 ```tsx
 import React, { useState } from 'react';
-import { useScreen, submitCode, useResend } from '@auth0/auth0-acul-react/login-passwordless-email-code';
+import { useScreen, submitCode, useResend, useErrors } from '@auth0/auth0-acul-react/login-passwordless-email-code';
 import { Logo } from '../../components/Logo';
 
 const LoginPasswordlessEmailCodeScreen: React.FC = () => {
@@ -27,6 +27,9 @@ const LoginPasswordlessEmailCodeScreen: React.FC = () => {
     timeoutSeconds: 30,
     onTimeout: () => { },
   });
+
+  // Error handling
+  const { hasError, errors } = useErrors();
 
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
@@ -146,6 +149,15 @@ const LoginPasswordlessEmailCodeScreen: React.FC = () => {
             </button>
           </div>
         </form>
+
+        {/* Display errors */}
+        {hasError && (
+          <div className="mt-4 text-red-600 text-center text-sm space-y-1">
+            {errors.map((err, idx) => (
+              <p key={`err-${idx}`}>{err.message}</p>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

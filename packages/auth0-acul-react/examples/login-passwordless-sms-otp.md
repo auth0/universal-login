@@ -12,7 +12,7 @@ Create a component file (e.g., `LoginPasswordlessSmsOtp.tsx`) and add the follow
 
 ```tsx
 import React, { useState } from 'react';
-import { useScreen, submitOTP, useResend } from '@auth0/auth0-acul-react/login-passwordless-sms-otp';
+import { useScreen, submitOTP, useResend, useErrors } from '@auth0/auth0-acul-react/login-passwordless-sms-otp';
 import { Logo } from '../../components/Logo';
 
 const LoginPasswordlessSmsOtpScreen: React.FC = () => {
@@ -27,6 +27,9 @@ const LoginPasswordlessSmsOtpScreen: React.FC = () => {
     timeoutSeconds: 30,
     onTimeout: () => { },
   });
+
+  // Error handling
+  const { hasError, errors } = useErrors();
 
   const handleSubmit = async () => {
     setError('');
@@ -145,6 +148,15 @@ const LoginPasswordlessSmsOtpScreen: React.FC = () => {
             </button>
           </div>
         </div>
+
+        {/* Display errors */}
+        {hasError && (
+          <div className="mt-4 text-red-600 text-center text-sm space-y-1">
+            {errors.map((err, idx) => (
+              <p key={`err-${idx}`}>{err.message}</p>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

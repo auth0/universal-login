@@ -13,10 +13,13 @@ Create a component file (e.g., `ResetPasswordSuccess.tsx`) and add the following
 ```tsx
 import React from "react";
 import { Logo } from "../../components/Logo";
-import { useScreen } from "@auth0/auth0-acul-react/reset-password-success";
+import { useScreen, useErrors } from "@auth0/auth0-acul-react/reset-password-success";
 
 const ResetPasswordSuccessScreen: React.FC = () => {
   const screenTexts = useScreen();
+
+  // Error handling
+  const { hasError, errors } = useErrors();
 
   return (
     <div className="min-h-screen bg-gray-900 flex items-center justify-center px-4">
@@ -37,6 +40,15 @@ const ResetPasswordSuccessScreen: React.FC = () => {
         </p>
         
       </div>
+
+      {/* Display errors */}
+      {hasError && (
+        <div className="mt-4 text-red-600 text-center text-sm space-y-1">
+          {errors.map((err, idx) => (
+            <p key={`err-${idx}`}>{err.message}</p>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

@@ -21,6 +21,7 @@ import {
   useTransaction,
   verify,
   tryAnotherMethod,
+  useErrors,
 } from '@auth0/auth0-acul-react/mfa-webauthn-platform-challenge'; 
 import { VerifyPlatformAuthenticatorOptions } from "@auth0/auth0-acul-react/types";
 
@@ -36,6 +37,9 @@ const MfaWebAuthnPlatformChallengeScreen: React.FC = () => {
   const { publicKey: publicKeyChallengeOptions, showRememberDevice } = screen ?? {};
 
   const [rememberDevice, setRememberDevice] = useState(false);
+
+  // Error handling
+  const { hasError, errors } = useErrors();
 
   const authenticatorOptions: VerifyPlatformAuthenticatorOptions = useMemo(() => {
     const options: VerifyPlatformAuthenticatorOptions = {};
@@ -130,6 +134,15 @@ const MfaWebAuthnPlatformChallengeScreen: React.FC = () => {
         )}
       </div>
     </div>
+
+    {/* Display errors */}
+    {hasError && (
+      <div className="mt-4 text-red-600 text-center text-sm space-y-1">
+        {errors.map((err, idx) => (
+          <p key={`err-${idx}`}>{err.message}</p>
+        ))}
+      </div>
+    )}
   );
 };
 

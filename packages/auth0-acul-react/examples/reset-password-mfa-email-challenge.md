@@ -20,7 +20,8 @@ import {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useUntrustedData,
+  useErrors
 } from '@auth0/auth0-acul-react/reset-password-mfa-email-challenge';
 
 export const ResetPasswordMfaEmailChallenge: React.FC = () => {
@@ -38,6 +39,9 @@ export const ResetPasswordMfaEmailChallenge: React.FC = () => {
   const organizationData = useOrganization();
   const promptData = usePrompt();
   const untrusteddataData = useUntrustedData();
+
+  // Error handling
+  const { hasError, errors } = useErrors();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,6 +71,15 @@ export const ResetPasswordMfaEmailChallenge: React.FC = () => {
       <button type="submit" disabled={isLoading}>
         {isLoading ? 'Processing...' : 'Continue'}
       </button>
+
+      {/* Display errors */}
+      {hasError && (
+        <div className="mt-4 text-red-600 text-center text-sm space-y-1">
+          {errors.map((err, idx) => (
+            <p key={`err-${idx}`}>{err.message}</p>
+          ))}
+        </div>
+      )}
     </form>
   );
 };

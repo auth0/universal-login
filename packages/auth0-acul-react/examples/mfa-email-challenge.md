@@ -12,7 +12,7 @@ Create a component file (e.g., `MfaEmailChallenge.tsx`) and add the following co
 
 ```tsx
 import { useState, useEffect } from 'react';
-import { useResend, continueMethod, tryAnotherMethod, useScreen, useUntrustedData } from '@auth0/auth0-acul-react/mfa-email-challenge';
+import { useResend, continueMethod, tryAnotherMethod, useScreen, useUntrustedData, useErrors } from '@auth0/auth0-acul-react/mfa-email-challenge';
 import { Logo } from '../../components/Logo';
 
 const MfaEmailChallengeScreen = () => {
@@ -21,6 +21,9 @@ const MfaEmailChallengeScreen = () => {
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { email, showRememberDevice } = useScreen().data || {};
+
+  // Error handling
+  const { hasError, errors } = useErrors();
   const { remaining, disabled, startResend } = useResend({
     timeoutSeconds: 12,
     onTimeout: () => console.log('MFA Email resend available')
@@ -168,6 +171,15 @@ const MfaEmailChallengeScreen = () => {
             Try Another Method
           </button>
         </div>
+
+        {/* Display errors */}
+        {hasError && (
+          <div className="mt-4 text-red-600 text-center text-sm space-y-1">
+            {errors.map((err, idx) => (
+              <p key={`err-${idx}`}>{err.message}</p>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

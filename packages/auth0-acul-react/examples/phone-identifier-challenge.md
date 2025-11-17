@@ -15,7 +15,8 @@ import React, { useState } from 'react';
 import {
   submitPhoneChallenge,
   returnToPrevious,
-  useResend
+  useResend,
+  useErrors
 } from '@auth0/auth0-acul-react/phone-identifier-challenge';
 
 const PhoneIdentifierChallengeScreen: React.FC = () => {
@@ -25,6 +26,9 @@ const PhoneIdentifierChallengeScreen: React.FC = () => {
   const [returned, setReturned] = useState(false);
 
   const { disabled, startResend } = useResend({ timeoutSeconds: 10 });
+
+  // Error handling
+  const { hasError, errors } = useErrors();
 
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
@@ -125,6 +129,15 @@ const PhoneIdentifierChallengeScreen: React.FC = () => {
           {error && <div className="text-red-600 text-sm mt-2">{error}</div>}
           {success && <div className="text-green-600 text-sm mt-2">Challenge submitted successfully!</div>}
           {returned && <div className="text-blue-600 text-sm mt-2">Returned to previous step.</div>}
+
+          {/* Display errors */}
+          {hasError && (
+            <div className="mt-4 text-red-600 text-center text-sm space-y-1">
+              {errors.map((err, idx) => (
+                <p key={`err-${idx}`}>{err.message}</p>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

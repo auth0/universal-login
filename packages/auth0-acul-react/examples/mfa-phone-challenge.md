@@ -12,12 +12,15 @@ Create a component file (e.g., `MfaPhoneChallenge.tsx`) and add the following co
 
 ```tsx
 import React, { useState } from 'react';
-import { useMfaPhoneChallenge, continueMethod, tryAnotherMethod, pickPhone } from '@auth0/auth0-acul-react/mfa-phone-challenge';
+import { useMfaPhoneChallenge, continueMethod, tryAnotherMethod, pickPhone, useErrors } from '@auth0/auth0-acul-react/mfa-phone-challenge';
 import { Logo } from '../../components/Logo';
 
 const MfaPhoneChallengeScreen: React.FC = () => {
   const mfaPhoneChallenge = useMfaPhoneChallenge();
   const { screen, transaction } = mfaPhoneChallenge;
+
+  // Error handling
+  const { hasError, errors } = useErrors();
 
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -121,6 +124,15 @@ const MfaPhoneChallengeScreen: React.FC = () => {
             {isLoading ? 'Processing…' : pickPhoneText}
           </button>
         </div>
+
+        {/* Display errors */}
+        {hasError && (
+          <div className="mt-4 text-red-600 text-center text-sm space-y-1">
+            {errors.map((err, idx) => (
+              <p key={`err-${idx}`}>{err.message}</p>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

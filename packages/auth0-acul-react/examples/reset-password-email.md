@@ -13,11 +13,14 @@ Create a component file (e.g., `ResetPasswordEmail.tsx`) and add the following c
 ```tsx
 import React, { useState } from "react";
 import { Logo } from '../../components/Logo';
-import { useScreen, useTransaction, resendEmail } from '@auth0/auth0-acul-react/reset-password-email';
+import { useScreen, useTransaction, resendEmail, useErrors } from '@auth0/auth0-acul-react/reset-password-email';
 
 const ResetPasswordEmailScreen: React.FC = () => {
   const screenTexts = useScreen();
   const transaction = useTransaction();
+
+  // Error handling
+  const { hasError, errors } = useErrors();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,6 +64,15 @@ const ResetPasswordEmailScreen: React.FC = () => {
         {transaction.hasErrors && transaction.errors && (
           <div className="mt-4 text-sm text-red-600 text-center">
             {transaction.errors.join(", ")}
+          </div>
+        )}
+
+        {/* Display errors */}
+        {hasError && (
+          <div className="mt-4 text-red-600 text-center text-sm space-y-1">
+            {errors.map((err, idx) => (
+              <p key={`err-${idx}`}>{err.message}</p>
+            ))}
           </div>
         )}
         
