@@ -26,10 +26,15 @@ const CLASSES_DIR = path.join(
   MONOREPO_ROOT,
   'docs/customize/login-pages/advanced-customizations/reference/js-sdk/Screens/classes'
 );
+const INTERFACES_DIR = path.join(
+  MONOREPO_ROOT,
+  'docs/customize/login-pages/advanced-customizations/reference/js-sdk/Screens/interfaces'
+);
 
 class PropertiesParamFieldConverter {
-  constructor(classesDir) {
-    this.classesDir = classesDir;
+  constructor(dirs) {
+    // Accept either a single directory string or an array of directories
+    this.dirs = Array.isArray(dirs) ? dirs : [dirs];
     this.filesProcessed = 0;
     this.propertiesWrapped = 0;
   }
@@ -142,20 +147,22 @@ class PropertiesParamFieldConverter {
   }
 
   /**
-   * Process all class files
+   * Process all class and interface files
    */
   processAllFiles() {
-    if (!fs.existsSync(this.classesDir)) {
-      console.error(`✗ Classes directory not found: ${this.classesDir}`);
-      process.exit(1);
-    }
+    for (const dir of this.dirs) {
+      if (!fs.existsSync(dir)) {
+        console.log(`ℹ️  Directory not found, skipping: ${dir}`);
+        continue;
+      }
 
-    const files = fs.readdirSync(this.classesDir);
+      const files = fs.readdirSync(dir);
 
-    for (const file of files) {
-      if (file.endsWith('.mdx')) {
-        const filePath = path.join(this.classesDir, file);
-        this.processFile(filePath);
+      for (const file of files) {
+        if (file.endsWith('.mdx')) {
+          const filePath = path.join(dir, file);
+          this.processFile(filePath);
+        }
       }
     }
   }
@@ -166,7 +173,11 @@ class PropertiesParamFieldConverter {
   convert() {
     console.log('🚀 Starting Properties to ParamField conversion...\n');
 
-    console.log(`📂 Processing directory: ${this.classesDir}\n`);
+    console.log(`📂 Processing directories:`);
+    for (const dir of this.dirs) {
+      console.log(`   • ${dir}`);
+    }
+    console.log('');
 
     this.processAllFiles();
 
@@ -177,5 +188,5 @@ class PropertiesParamFieldConverter {
 }
 
 // Run conversion
-const converter = new PropertiesParamFieldConverter(CLASSES_DIR);
+const converter = new PropertiesParamFieldConverter([CLASSES_DIR, INTERFACES_DIR]);
 converter.convert();
