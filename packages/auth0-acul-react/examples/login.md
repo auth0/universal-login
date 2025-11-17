@@ -20,7 +20,8 @@ import {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useUntrustedData,
+  useErrors
 } from '@auth0/auth0-acul-react/login';
 
 export const Login: React.FC = () => {
@@ -38,6 +39,9 @@ export const Login: React.FC = () => {
   const organizationData = useOrganization();
   const promptData = usePrompt();
   const untrusteddataData = useUntrustedData();
+  
+  // Error handling
+  const { hasError, errors } = useErrors();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

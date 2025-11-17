@@ -12,7 +12,7 @@ Create a component file (e.g., `MfaSmsChallenge.tsx`) and add the following code
 
 ```tsx
 import { useState, useEffect } from 'react';
-import { useMfaSmsChallenge, useResend } from '@auth0/auth0-acul-react/mfa-sms-challenge';
+import { useMfaSmsChallenge, useResend, pickSms, getACall, tryAnotherMethod, continueMfaSmsChallenge, useErrors } from '@auth0/auth0-acul-react/mfa-sms-challenge';
 import { Logo } from '../../components/Logo';
 
 const MfaSmsChallengeScreen = () => {
@@ -20,6 +20,10 @@ const MfaSmsChallengeScreen = () => {
   const [code, setCode] = useState('');
   const [rememberDevice, setRememberDevice] = useState(false);
   const { phoneNumber, showRememberDevice, showLinkVoice } = mfaSmsChallenge.screen.data || {};
+
+  // Error handling
+  const { hasError, errors } = useErrors();
+
   const { remaining, disabled, startResend } = useResend({
     timeoutSeconds: 12,
     onTimeout: () => console.log('MFA SMS resend available')
@@ -36,7 +40,7 @@ const MfaSmsChallengeScreen = () => {
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     try {
-      await mfaSmsChallenge.continueMfaSmsChallenge({
+      await continueMfaSmsChallenge({
         code,
         rememberDevice,
       });
@@ -47,7 +51,7 @@ const MfaSmsChallengeScreen = () => {
 
   const handlePickSms = async () => {
     try {
-      await mfaSmsChallenge.pickSms();
+      await pickSms();
     } catch (error) {
       console.error('Pick SMS failed:', error);
     }
@@ -63,7 +67,7 @@ const MfaSmsChallengeScreen = () => {
 
   const handleTryAnotherMethod = async () => {
     try {
-      await mfaSmsChallenge.tryAnotherMethod();
+      await tryAnotherMethod();
     } catch (error) {
       console.error('Try another method failed:', error);
     }
@@ -71,7 +75,7 @@ const MfaSmsChallengeScreen = () => {
 
   const handleGetACall = async () => {
     try {
-      await mfaSmsChallenge.getACall();
+      await getACall();
     } catch (error) {
       console.error('Get a call failed:', error);
     }
@@ -192,6 +196,15 @@ const MfaSmsChallengeScreen = () => {
             </button>
           )}
         </div>
+
+        {/* Display errors */}
+        {hasError && (
+          <div className="mt-4 text-red-600 text-center text-sm space-y-1">
+            {errors.map((err, idx) => (
+              <p key={`err-${idx}`}>{err.message}</p>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

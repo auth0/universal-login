@@ -12,7 +12,7 @@ Create a component file (e.g., `MfaLoginOptions.tsx`) and add the following code
 
 ```tsx
 import React, { useCallback } from 'react';
-import { useMfaLoginOptions, enroll, useScreen } from '@auth0/auth0-acul-react/mfa-login-options';
+import { useMfaLoginOptions, enroll, useScreen, useErrors } from '@auth0/auth0-acul-react/mfa-login-options';
 import { Logo } from '../../components/Logo';
 
 type MfaLoginFactorType = 'push-notification' | 'otp' | 'sms' | 'phone' | 'voice' | 'email' | 'recovery-code' | 'webauthn-roaming' | 'webauthn-platform' | 'duo';
@@ -34,6 +34,9 @@ const MfaLoginOptionsScreen: React.FC = () => {
   const { tenant, screen: { texts } } = useMfaLoginOptions();
   const screen = useScreen();
   const factorDisplayNames = buildFactorDisplayNames(texts);
+
+  // Error handling
+  const { hasError, errors } = useErrors();
 
   const handleFactorSelection = useCallback(async (factor: MfaLoginFactorType) => {
     try {
@@ -81,6 +84,15 @@ const MfaLoginOptionsScreen: React.FC = () => {
           })}
         </div>
       </div>
+
+      {/* Display errors */}
+      {hasError && (
+        <div className="mt-4 text-red-600 text-center text-sm space-y-1">
+          {errors.map((err, idx) => (
+            <p key={`err-${idx}`}>{err.message}</p>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

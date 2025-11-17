@@ -12,12 +12,15 @@ Create a component file (e.g., `MfaSmsEnrollment.tsx`) and add the following cod
 
 ```tsx
 import { useState } from 'react';
-import { useScreen, useTransaction, tryAnotherMethod, continueEnrollment, pickCountryCode } from '@auth0/auth0-acul-react/mfa-sms-enrollment';
+import { useScreen, useTransaction, tryAnotherMethod, continueEnrollment, pickCountryCode, useErrors } from '@auth0/auth0-acul-react/mfa-sms-enrollment';
 import { Logo } from '../../components/Logo';
 
 const MFASmsEnrollmentScreen = () => {
   const [phone, setPhone] = useState('');
   const [error, setError] = useState('');
+  
+  // Error handling
+  const { hasError, errors } = useErrors();
   
   const transaction = useTransaction();
   const screen = useScreen();
@@ -147,6 +150,15 @@ const MFASmsEnrollmentScreen = () => {
             </button>
           )}
         </div>
+
+        {/* Display errors */}
+        {hasError && (
+          <div className="mt-4 text-red-600 text-center text-sm space-y-1">
+            {errors.map((err, idx) => (
+              <p key={`err-${idx}`}>{err.message}</p>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

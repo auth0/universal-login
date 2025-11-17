@@ -11,56 +11,27 @@ This example demonstrates how to build a React component for the `mfa-recovery-c
 Create a component file (e.g., `MfaRecoveryCodeChallenge.tsx`) and add the following code:
 
 ```tsx
-import React, { useState, useCallback } from 'react';
-import { useMfaRecoveryCodeChallengeNewCode, continueMethod } from '@auth0/auth0-acul-react/mfa-recovery-code-challenge-new-code';
+import React, { useState } from 'react';
+import { useMfaRecoveryCodeChallenge, continueMethod, tryAnotherMethod, useErrors } from '@auth0/auth0-acul-react/mfa-recovery-code-challenge';
 import { Logo } from '../../components/Logo';
 
-const MfaRecoveryCodeChallengeNewCodeScreen: React.FC = () => {
-  // Instantiate the SDK class for the screen
-  const screenManager = useMfaRecoveryCodeChallengeNewCode();
-  const { screen, transaction } = screenManager;
+const MfaRecoveryCodeChallengeScreen: React.FC = () => {
+  const [code, setCode] = useState('');
+  const mfaRecoveryCodeChallenge = useMfaRecoveryCodeChallenge();
 
-  // State to track if the user has confirmed saving the code
-  const [hasSavedCode, setHasSavedCode] = useState<boolean>(false);
-  // State for loading indicator during submission
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  // State for potential submission errors
-  const [error, setError] = useState<string | null>(null);
+  // Error handling
+  const { hasError, errors: hookErrors } = useErrors();
+  const { screen, transaction: { errors } } = mfaRecoveryCodeChallenge;
+  const texts = screen.texts ?? {};
 
-  // Get the recovery code from the screen data, provide fallback
-  const recoveryCode = screen?.data?.textCode ?? 'CODE-NOT-AVAILABLE';
-  const texts = screen?.texts ?? {};
-
-  // Handler for the checkbox change
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setHasSavedCode(event.target.checked);
-    setError(null); // Clear error when checkbox state changes
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    continueMethod({ code });
   };
 
-  // Handler for the continue button click
-  const handleContinue = useCallback(async () => {
-    if (!hasSavedCode) {
-      setError('Please confirm you have saved the recovery code.');
-      return;
-    }
-    setIsLoading(true);
-    setError(null);
-    try {
-      // Call the continue method - no payload needed unless passing custom options
-      await continueMethod();
-      // On success, Auth0 handles the redirect automatically.
-      // No need to set isLoading to false here.
-    } catch (err: any) {
-      // Check for specific server-side errors if needed
-      const serverError = transaction.errors?.find(e => e.code === 'no-confirmation');
-      if (serverError) {
-        setError(serverError.message);
-      } else {
-        setError(err.message || 'An unexpected error occurred. Please try again.');
-      }
-      setIsLoading(false); // Stop loading only on error
-    }
-  }, [hasSavedCode, transaction.errors]);
+  const handleTryAnotherMethod = () => {
+    tryAnotherMethod();
+  };
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center px-4">
@@ -72,71 +43,71 @@ const MfaRecoveryCodeChallengeNewCodeScreen: React.FC = () => {
           </div>
         </div>
         {/* Title */}
-        <h1 className="mt-6 text-center text-xl font-semibold text-gray-900">
-          {texts.title ?? 'Save Your Recovery Code'}
-        </h1>
+        <h2 className="mt-6 text-center text-xl font-semibold text-gray-900">
+          {texts.title ?? 'Verify Your Identity'}
+        </h2>
         <p className="mt-2 text-center text-sm text-gray-500">
-          {texts.description ?? 'Save this recovery code in a safe place. You will need it if you lose access to your other MFA methods.'}
+          {texts.description ?? 'Enter the recovery code you were provided during your initial enrollment.'}
         </p>
 
-        {/* Code Display */}
-        <div className="mt-6">
-          <div className="bg-gray-50 border border-gray-200 rounded-md p-4 text-center">
-            <p className="text-base font-mono font-semibold text-gray-800 tracking-widest break-all select-all">
-              {recoveryCode}
-            </p>
+        <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+          <div>
+            <label htmlFor="code" className="block text-sm font-medium text-gray-700 mb-1">
+              {texts.placeholder ?? 'Enter your recovery code'}
+            </label>
+            <input
+              id="code"
+              name="code"
+              type="text"
+              placeholder={texts.placeholder ?? 'Enter your recovery code'}
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              required
+            />
+            {errors?.length ? (
+              <div className="mt-2 space-y-1" aria-live="polite">
+                {errors.map((error, idx) => (
+                  <p key={idx} className="text-red-600 text-xs">
+                    {error.message}
+                  </p>
+                ))}
+              </div>
+            ) : null}
           </div>
-          <p className="mt-2 text-[11px] text-center text-gray-500">
-            {texts.copyHintText || 'Store this code somewhere safe. It can be used only once.'}
-          </p>
-        </div>
 
-        {/* Confirmation Checkbox */}
-        <div className="mt-6 flex items-start gap-2">
-          <input
-            id="confirm-saved"
-            type="checkbox"
-            checked={hasSavedCode}
-            onChange={handleCheckboxChange}
-            className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 mt-0.5"
-          />
-          <label htmlFor="confirm-saved" className="text-sm text-gray-700 leading-snug">
-            {texts.confirmationText ?? 'I have securely saved this recovery code'}
-          </label>
-        </div>
+          <button
+            type="submit"
+            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            {texts.buttonText ?? 'Continue'}
+          </button>
+        </form>
 
-        {/* Errors */}
-        {(transaction.errors?.length || error) && (
-          <div className="mt-4" aria-live="polite">
-            <div className="rounded-md bg-red-50 p-3 border border-red-200">
-              {error && <p className="text-xs text-red-600">{error}</p>}
-              {transaction.errors?.map((err, i) => (
-                <p key={i} className="text-xs text-red-600">{err.message}</p>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Continue Button */}
         <div className="mt-6">
           <button
-            onClick={handleContinue}
-            disabled={!hasSavedCode || isLoading}
-            className={`w-full flex justify-center py-2 px-4 text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
-              !hasSavedCode || isLoading
-                ? 'bg-indigo-300 cursor-not-allowed'
-                : 'bg-indigo-600 hover:bg-indigo-700'
-            }`}
+            type="button"
+            onClick={handleTryAnotherMethod}
+            className="w-full flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
           >
-            {isLoading ? (texts.loadingButtonText || 'Continuing...') : (texts.buttonText ?? 'Continue')}
+            {texts.pickAuthenticatorText ?? 'Try Another Method'}
           </button>
         </div>
+
+        {/* Display errors */}
+        {hasError && (
+          <div className="mt-4 text-red-600 text-center text-sm space-y-1">
+            {hookErrors.map((err, idx) => (
+              <p key={`err-${idx}`}>{err.message}</p>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default MfaRecoveryCodeChallengeNewCodeScreen;
+export default MfaRecoveryCodeChallengeScreen;
 ```
 
 ### 2. How It Works

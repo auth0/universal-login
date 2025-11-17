@@ -12,7 +12,7 @@ Create a component file (e.g., `MfaPhoneEnrollment.tsx`) and add the following c
 
 ```tsx
 import React, { useState } from 'react';
-import { useMfaPhoneEnrollment, pickCountryCode, continueEnrollment, tryAnotherMethod } from '@auth0/auth0-acul-react/mfa-phone-enrollment';
+import { useMfaPhoneEnrollment, pickCountryCode, continueEnrollment, tryAnotherMethod, useErrors } from '@auth0/auth0-acul-react/mfa-phone-enrollment';
 import { Logo } from '../../components/Logo';
 
 const MfaPhoneEnrollmentScreen: React.FC = () => {
@@ -21,6 +21,9 @@ const MfaPhoneEnrollmentScreen: React.FC = () => {
   const mfaPhoneEnrollment = useMfaPhoneEnrollment();
   const { screen, transaction: { errors } } = mfaPhoneEnrollment;
   const texts = screen.texts ?? {};
+
+  // Error handling
+  const { hasError, errors: hookErrors } = useErrors();
 
   const handlePickCountryCode = async () => {
     await pickCountryCode();
@@ -128,6 +131,15 @@ const MfaPhoneEnrollmentScreen: React.FC = () => {
             {texts.pickAuthenticatorText ?? 'Try Another Method'}
           </button>
         </div>
+
+        {/* Display errors */}
+        {hasError && (
+          <div className="mt-4 text-red-600 text-center text-sm space-y-1">
+            {hookErrors.map((err, idx) => (
+              <p key={`err-${idx}`}>{err.message}</p>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

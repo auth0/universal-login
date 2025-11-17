@@ -12,12 +12,15 @@ Create a component file (e.g., `PasskeyEnrollment.tsx`) and add the following co
 
 ```tsx
 import React from 'react';
-import { usePasskeyEnrollment} from '@auth0/auth0-acul-react/passkey-enrollment';
+import { usePasskeyEnrollment, useErrors } from '@auth0/auth0-acul-react/passkey-enrollment';
 
 const PasskeyEnrollmentScreen: React.FC = () => {
   const passkeyEnrollment = usePasskeyEnrollment();
   const { screen, transaction } = passkeyEnrollment;
   const texts = screen?.texts ?? {};
+
+  // Error handling
+  const { hasError, errors } = useErrors();
 
   const handleCreatePasskey = async () => {
     try {
@@ -72,6 +75,15 @@ const PasskeyEnrollmentScreen: React.FC = () => {
           {texts.continueButtonText ?? 'Continue without passkeys'}
         </button>
       </div>
+
+      {/* Display errors */}
+      {hasError && (
+        <div className="mt-4 text-red-600 text-center text-sm space-y-1">
+          {errors.map((err, idx) => (
+            <p key={`err-${idx}`}>{err.message}</p>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

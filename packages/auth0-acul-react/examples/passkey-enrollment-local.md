@@ -20,7 +20,8 @@ import {
   useClient,
   useOrganization,
   usePrompt,
-  useUntrustedData
+  useUntrustedData,
+  useErrors
 } from '@auth0/auth0-acul-react/passkey-enrollment-local';
 
 export const PasskeyEnrollmentLocal: React.FC = () => {

@@ -12,7 +12,7 @@ Create a component file (e.g., `MfaBeginEnrollOptions.tsx`) and add the followin
 
 ```tsx
 import React, { useCallback } from 'react';
-import { useMfaBeginEnrollOptions, enroll } from '@auth0/auth0-acul-react/mfa-begin-enroll-options';
+import { useMfaBeginEnrollOptions, enroll, useErrors } from '@auth0/auth0-acul-react/mfa-begin-enroll-options';
 import { Logo } from '../../components/Logo';
 
 type MfaEnrollFactorType = 'push-notification' | 'otp' | 'sms' | 'phone' | 'voice' | 'webauthn-roaming';
@@ -38,6 +38,9 @@ const getFactorLabel = (factor: MfaEnrollFactorType, texts: any): string => {
 
 const MfaBeginEnrollOptionsScreen: React.FC = () => {
   const { tenant, screen: { texts } } = useMfaBeginEnrollOptions();
+
+  // Error handling
+  const { hasError, errors } = useErrors();
 
   const title = texts?.title ?? 'Set Up Multi‑Factor Authentication';
   const description = texts?.description ?? 'Select a method to add an extra layer of security to your account.';
@@ -101,6 +104,15 @@ const MfaBeginEnrollOptionsScreen: React.FC = () => {
           {footerHelpText}
         </p>
       </div>
+
+      {/* Display errors */}
+      {hasError && (
+        <div className="mt-4 text-red-600 text-center text-sm space-y-1">
+          {errors.map((err, idx) => (
+            <p key={`err-${idx}`}>{err.message}</p>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

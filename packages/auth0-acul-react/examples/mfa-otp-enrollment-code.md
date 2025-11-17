@@ -12,12 +12,15 @@ Create a component file (e.g., `MfaOtpEnrollmentCode.tsx`) and add the following
 
 ```tsx
 import React, { useState } from 'react';
-import { useMfaOtpEnrollmentCode, continueMethod, tryAnotherMethod } from '@auth0/auth0-acul-react/mfa-otp-enrollment-code';
+import { useMfaOtpEnrollmentCode, continueMethod, tryAnotherMethod, useErrors } from '@auth0/auth0-acul-react/mfa-otp-enrollment-code';
 import { Logo } from '../../components/Logo';
 
 const MfaOtpEnrollmentCodeScreen: React.FC = () => {
   const [code, setCode] = useState('');
   const mfaOtpEnrollmentCode = useMfaOtpEnrollmentCode();
+
+  // Error handling
+  const { hasError, errors } = useErrors();
   const { screen, transaction } = mfaOtpEnrollmentCode;
   const texts = screen?.texts || {};
 
@@ -97,6 +100,15 @@ const MfaOtpEnrollmentCodeScreen: React.FC = () => {
             {tryAnother}
           </button>
         </div>
+
+        {/* Display errors */}
+        {hasError && (
+          <div className="mt-4 text-red-600 text-center text-sm space-y-1">
+            {errors.map((err, idx) => (
+              <p key={`err-${idx}`}>{err.message}</p>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

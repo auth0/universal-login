@@ -12,7 +12,7 @@ Create a component file (e.g., `MfaOtpChallenge.tsx`) and add the following code
 
 ```tsx
 import React, { useState, useEffect } from 'react';
-import { useMfaOtpChallenge, useUntrustedData, continueMethod, tryAnotherMethod } from '@auth0/auth0-acul-react/mfa-otp-challenge';
+import { useMfaOtpChallenge, useUntrustedData, continueMethod, tryAnotherMethod, useErrors } from '@auth0/auth0-acul-react/mfa-otp-challenge';
 import { Logo } from '../../components/Logo';
 
 const MfaOtpChallengeScreen: React.FC = () => {
@@ -21,6 +21,9 @@ const MfaOtpChallengeScreen: React.FC = () => {
   const [rememberDevice, setRememberDevice] = useState(false);
   const [error, setError] = useState('');
   const { screen: { texts, data }, transaction } = mfaOtpChallenge;
+
+  // Error handling
+  const { hasError, errors } = useErrors();
 
   useEffect(() => {
     const savedFormData = useUntrustedData().submittedFormData;
@@ -112,6 +115,15 @@ const MfaOtpChallengeScreen: React.FC = () => {
               {texts?.buttonText ?? 'Verify Code'}
             </button>
         </form>
+
+        {/* Display errors */}
+        {hasError && (
+          <div className="mt-4 text-red-600 text-center text-sm space-y-1">
+            {errors.map((err, idx) => (
+              <p key={`err-${idx}`}>{err.message}</p>
+            ))}
+          </div>
+        )}
 
         <div className="mt-6 space-y-3">
           <button
