@@ -13,7 +13,15 @@ jest.mock('@auth0/auth0-acul-js', () => ({
 
 // Mock the core SDK class
 jest.mock('@auth0/auth0-acul-js/reset-password-mfa-recovery-code-challenge', () => {
-  return jest.fn().mockImplementation(() => {});
+  // Return a constructor that sets up the instance methods/hooks expected by the screen wrapper
+  return jest.fn().mockImplementation(function MockResetPasswordScreen(this: any) {
+    // Hook-style accessors (return values/hooks used by the react wrappers)
+    this.useSecurityKey = () => undefined;
+    // add other instance members expected by the screen (submit/continue/etc.)
+    this.continue = () => undefined;
+    this.submit = () => undefined;
+    // utilities used by other tests can be added here as needed
+  });
 }, { virtual: true });
 
 // Mock the instance store

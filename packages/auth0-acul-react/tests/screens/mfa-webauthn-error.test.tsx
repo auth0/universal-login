@@ -11,14 +11,33 @@ jest.mock('@auth0/auth0-acul-js', () => ({
   __esModule: true,
 }), { virtual: true });
 
-// Mock the core SDK class
+// Mock the core SDK class with all required methods
 jest.mock('@auth0/auth0-acul-js/mfa-webauthn-error', () => {
-  return jest.fn().mockImplementation(() => {});
+  return jest.fn().mockImplementation(() => ({
+    tryAgain: jest.fn().mockResolvedValue({}),
+    usePassword: jest.fn().mockResolvedValue({}),
+    tryAnotherMethod: jest.fn().mockResolvedValue({}),
+    noThanks: jest.fn().mockResolvedValue({}),
+  }));
 }, { virtual: true });
 
-// Mock the instance store
+// Mock the instance store with getScreen support
 jest.mock('../../src/state/instance-store', () => ({
-  registerScreen: jest.fn((Screen) => new Screen()),
+  registerScreen: jest.fn((Screen) => {
+    const instance = new Screen();
+    // Add methods that are missing from the mock
+    instance.tryAgain = jest.fn().mockResolvedValue({});
+    instance.usePassword = jest.fn().mockResolvedValue({});
+    instance.tryAnotherMethod = jest.fn().mockResolvedValue({});
+    instance.noThanks = jest.fn().mockResolvedValue({});
+    return instance;
+  }),
+  getScreen: jest.fn(() => ({
+    tryAgain: jest.fn().mockResolvedValue({}),
+    usePassword: jest.fn().mockResolvedValue({}),
+    tryAnotherMethod: jest.fn().mockResolvedValue({}),
+    noThanks: jest.fn().mockResolvedValue({}),
+  })),
 }));
 
 // Mock error manager and hooks
@@ -27,19 +46,19 @@ jest.mock('../../src/hooks', () => ({
     withError: jest.fn((promise) => promise),
   },
   ContextHooks: jest.fn().mockImplementation(() => ({
-    useUser: jest.fn(),
-    useTenant: jest.fn(),
-    useBranding: jest.fn(),
-    useClient: jest.fn(),
-    useOrganization: jest.fn(),
-    usePrompt: jest.fn(),
-    useScreen: jest.fn(),
-    useTransaction: jest.fn(),
-    useUntrustedData: jest.fn(),
+    useUser: jest.fn(() => ({ user: null })),
+    useTenant: jest.fn(() => ({ tenant: null })),
+    useBranding: jest.fn(() => ({ branding: null })),
+    useClient: jest.fn(() => ({ client: null })),
+    useOrganization: jest.fn(() => ({ organization: null })),
+    usePrompt: jest.fn(() => ({ prompt: null })),
+    useScreen: jest.fn(() => ({ screen: null })),
+    useTransaction: jest.fn(() => ({ transaction: null })),
+    useUntrustedData: jest.fn(() => ({ untrustedData: null })),
   })),
-  useCurrentScreen: jest.fn(),
-  useErrors: jest.fn(),
-  useAuth0Themes: jest.fn(),
+  useCurrentScreen: jest.fn(() => ({ currentScreen: 'mfa-webauthn-error' })),
+  useErrors: jest.fn(() => ({ errors: [] })),
+  useAuth0Themes: jest.fn(() => ({ themes: {} })),
 }));
 
 describe('MfaWebauthnError Screen', () => {
