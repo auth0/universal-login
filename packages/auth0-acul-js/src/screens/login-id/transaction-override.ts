@@ -9,8 +9,8 @@ import {
   getActiveIdentifiers,
 } from '../../shared/transaction';
 
-import type { TransactionContext, DBConnection } from '../../../interfaces/models/transaction';
-import type { TransactionMembersOnLoginId as OverrideMembers } from '../../../interfaces/screens/login-id';
+import type { TransactionContext } from '../../../interfaces/models/transaction';
+import type { TransactionMembersOnLoginId as OverrideMembers, DBConnectionWithPasskeyAutofill } from '../../../interfaces/screens/login-id';
 
 export class TransactionOverride extends Transaction implements OverrideMembers {
   isSignupEnabled: OverrideMembers['isSignupEnabled'];
@@ -33,7 +33,7 @@ export class TransactionOverride extends Transaction implements OverrideMembers 
   }
 
   static getShowPasskeyAutofill(transactionContext: TransactionContext): boolean {
-    const connection = transactionContext?.connection as DBConnection;
+    const connection = transactionContext?.connection as DBConnectionWithPasskeyAutofill;
     return connection?.options?.authentication_methods?.passkey?.showPasskeyAutofill ?? false;
   }
 
