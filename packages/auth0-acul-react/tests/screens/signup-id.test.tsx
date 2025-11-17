@@ -11,14 +11,33 @@ jest.mock('@auth0/auth0-acul-js', () => ({
   __esModule: true,
 }), { virtual: true });
 
+// Mock polling control for screens that use it
+const mockPollingControl = {
+  startPolling: jest.fn(),
+  stopPolling: jest.fn(),
+  isRunning: jest.fn().mockReturnValue(false),
+};
+
+// Mock screen instance with common methods
+const mockScreenInstance = {
+  pollingManager: jest.fn().mockReturnValue(mockPollingControl),
+  continue: jest.fn(() => Promise.resolve()),
+  submit: jest.fn(() => Promise.resolve()),
+};
+
 // Mock the core SDK class
 jest.mock('@auth0/auth0-acul-js/signup-id', () => {
-  return jest.fn().mockImplementation(() => {});
+  return jest.fn().mockImplementation(function MockSignupId(this: any) {
+    // Add any instance methods/hooks that the screen might use
+    this.continue = jest.fn(() => Promise.resolve());
+    this.submit = jest.fn(() => Promise.resolve());
+  });
 }, { virtual: true });
 
-// Mock the instance store
+// Mock the instance store with getScreen
 jest.mock('../../src/state/instance-store', () => ({
   registerScreen: jest.fn((Screen) => new Screen()),
+  getScreen: jest.fn(() => mockScreenInstance),
 }));
 
 // Mock error manager and hooks
@@ -41,6 +60,7 @@ jest.mock('../../src/hooks', () => ({
   useErrors: jest.fn(),
   useAuth0Themes: jest.fn(),
 }));
+
 // Mock utility hook: useSignupIdentifiers
 jest.mock('../../src/hooks/utility/signup-identifiers', () => ({
   useSignupIdentifiers: jest.fn(),

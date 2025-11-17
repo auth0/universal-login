@@ -4,11 +4,22 @@ import { getScreen } from '../../../src/state/instance-store';
 import { errorManager } from '../../../src/hooks/common/errors';
 
 // Mock the auth0-acul-js module
-jest.mock('@auth0/auth0-acul-js', () => ({}), { virtual: true });
+jest.mock('@auth0/auth0-acul-js', () => ({
+  ConfigurationError: class ConfigurationError extends Error {},
+  ValidationError: class ValidationError extends Error {},
+  Auth0Error: class Auth0Error extends Error {},
+  NetworkError: class NetworkError extends Error {},
+  __esModule: true,
+}), { virtual: true });
 
 // Mock dependencies
 jest.mock('../../../src/state/instance-store');
-jest.mock('../../../src/hooks/common/errors');
+jest.mock('../../../src/hooks/common/errors', () => ({
+  errorManager: {
+    pushServerErrors: jest.fn(),
+    withError: jest.fn((fn) => fn()),
+  },
+}));
 
 const mockGetScreen = getScreen as jest.MockedFunction<typeof getScreen>;
 const mockErrorManager = errorManager as jest.Mocked<typeof errorManager>;
@@ -35,6 +46,9 @@ describe('useMfaPolling', () => {
     mockPollingControl.startPolling.mockClear();
     mockPollingControl.stopPolling.mockClear();
     mockScreen.pollingManager.mockClear();
+    
+    // Reset error manager mocks
+    (mockErrorManager.pushServerErrors as jest.Mock).mockClear();
   });
 
   describe('initialization', () => {

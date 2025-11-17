@@ -13,7 +13,13 @@ jest.mock('@auth0/auth0-acul-js', () => ({
 
 // Mock the core SDK class
 jest.mock('@auth0/auth0-acul-js/reset-password-mfa-webauthn-roaming-challenge', () => {
-  return jest.fn().mockImplementation(() => {});
+  return jest.fn().mockImplementation(function MockResetPasswordMfaWebauthnRoamingChallenge(this: any) {
+    // Add instance methods/hooks expected by the screen wrapper
+    this.useSecurityKey = jest.fn(() => undefined);
+    this.continue = jest.fn(() => Promise.resolve());
+    this.submit = jest.fn(() => Promise.resolve());
+    // Add other instance members as needed
+  });
 }, { virtual: true });
 
 // Mock the instance store
