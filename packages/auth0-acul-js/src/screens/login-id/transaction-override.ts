@@ -10,12 +10,13 @@ import {
 } from '../../shared/transaction';
 
 import type { TransactionContext } from '../../../interfaces/models/transaction';
-import type { TransactionMembersOnLoginId as OverrideMembers } from '../../../interfaces/screens/login-id';
+import type { TransactionMembersOnLoginId as OverrideMembers, DBConnectionWithPasskeyAutofill } from '../../../interfaces/screens/login-id';
 
 export class TransactionOverride extends Transaction implements OverrideMembers {
   isSignupEnabled: OverrideMembers['isSignupEnabled'];
   isForgotPasswordEnabled: OverrideMembers['isForgotPasswordEnabled'];
   isPasskeyEnabled: OverrideMembers['isPasskeyEnabled'];
+  showPasskeyAutofill: OverrideMembers['showPasskeyAutofill'];
   isUsernameRequired: OverrideMembers['isUsernameRequired'];
   usernamePolicy: OverrideMembers['usernamePolicy'];
   allowedIdentifiers: OverrideMembers['allowedIdentifiers'];
@@ -25,9 +26,15 @@ export class TransactionOverride extends Transaction implements OverrideMembers 
     this.isSignupEnabled = isSignupEnabled(transactionContext);
     this.isForgotPasswordEnabled = isForgotPasswordEnabled(transactionContext);
     this.isPasskeyEnabled = isPasskeyEnabled(transactionContext);
+    this.showPasskeyAutofill = TransactionOverride.getShowPasskeyAutofill(transactionContext);
     this.isUsernameRequired = isUsernameRequired(transactionContext);
     this.usernamePolicy = getUsernamePolicy(transactionContext);
     this.allowedIdentifiers = TransactionOverride.getAllowedIdentifiers(transactionContext, this.connectionStrategy);
+  }
+
+  static getShowPasskeyAutofill(transactionContext: TransactionContext): boolean {
+    const connection = transactionContext?.connection as DBConnectionWithPasskeyAutofill;
+    return connection?.options?.authentication_methods?.passkey?.showPasskeyAutofill ?? false;
   }
 
   static getAllowedIdentifiers(transactionContext: TransactionContext, connectionStrategy: string | null): OverrideMembers['allowedIdentifiers'] {

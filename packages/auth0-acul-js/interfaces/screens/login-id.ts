@@ -2,8 +2,22 @@ import type { IdentifierType } from '../../src/constants';
 import type { CustomOptions } from '../common';
 import type { BaseContext, BaseMembers } from '../models/base-context';
 import type { ScreenContext, ScreenMembers, PasskeyRead } from '../models/screen';
-import type { TransactionMembers, UsernamePolicy } from '../models/transaction';
+import type { TransactionMembers, UsernamePolicy, DBConnection } from '../models/transaction';
 import type { UntrustedDataContext } from '../models/untrusted-data';
+
+/**
+ * Extended DBConnection interface for login-id screen with passkey autofill support
+ */
+export interface DBConnectionWithPasskeyAutofill extends DBConnection {
+  options: DBConnection['options'] & {
+    authentication_methods: {
+      passkey: {
+        enabled: boolean;
+        showPasskeyAutofill?: boolean;
+      };
+    };
+  };
+}
 
 export interface ExtendedScreenContext extends ScreenContext {
   links: {
@@ -37,6 +51,7 @@ export interface ScreenMembersOnLoginId extends ScreenMembers {
 export interface TransactionMembersOnLoginId extends TransactionMembers {
   isSignupEnabled: boolean;
   isPasskeyEnabled: boolean;
+  showPasskeyAutofill: boolean;
   isForgotPasswordEnabled: boolean;
   isUsernameRequired: boolean;
   usernamePolicy: UsernamePolicy | null;

@@ -78,7 +78,7 @@ export function getUsernamePolicy(
     };
   }
 
-  const { validation: legacyValidation, username_required: usernameRequired} = connection?.options ?? {};
+  const { validation: legacyValidation, username_required: usernameRequired } = connection?.options ?? {};
   const rules = legacyValidation?.username;
 
   if (rules) {
@@ -90,7 +90,7 @@ export function getUsernamePolicy(
   }
 
   return null;
-  
+
 }
 
 /**

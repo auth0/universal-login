@@ -131,7 +131,7 @@ export interface EnterpriseConnection extends Connection {
   };
 }
 
-export interface SocialConnection extends Connection {}
+export interface SocialConnection extends Connection { }
 
 export interface PasswordComplexityRule {
   code: string;

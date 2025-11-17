@@ -14,7 +14,7 @@ interface ExtendedScreenContext extends ScreenContext {
 
 interface ExtendedUntrustedDataContext extends UntrustedDataContext {
   submitted_form_data?: {
-    /* this object is opt-in */ 
+    /* this object is opt-in */
     email?: string;
     phone?: string;
     username?: string;
