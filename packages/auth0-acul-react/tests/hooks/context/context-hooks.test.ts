@@ -87,6 +87,8 @@ const createMockInstance = (): BaseMembers => ({
     currentConnection: null,
     alternateConnections: null,
   },
+  getErrors: jest.fn(),
+  changeLanguage: jest.fn(),
 });
 
 describe('ContextHooks', () => {
