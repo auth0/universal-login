@@ -1,7 +1,7 @@
 export type { LoginOptions, FederatedLoginOptions } from '../screens/login-id';
 export type { LoginPasswordOptions, FederatedLoginOptions as FederatedLoginPasswordOptions, SwitchConnectionOptions as SwitchConnectionOptionsLoginPassword } from '../screens/login-password';
-export type { SubmitCodeOptions } from '../screens/login-passwordless-email-code';
-export type { SubmitOTPOptions } from '../screens/login-passwordless-sms-otp';
+export type { SubmitCodeOptions, SwitchConnectionOptions as SwitchConnectionOptionsEmailCode } from '../screens/login-passwordless-email-code';
+export type { SubmitOTPOptions, SwitchConnectionOptions as SwitchConnectionOptionsSmsOtp } from '../screens/login-passwordless-sms-otp';
 export type { SubmitCaptchaOptions } from '../screens/interstitial-captcha';
 export type { AbortEnrollmentOptions } from '../screens/passkey-enrollment-local';
 export type { EmailChallengeOptions } from '../screens/email-identifier-challenge';

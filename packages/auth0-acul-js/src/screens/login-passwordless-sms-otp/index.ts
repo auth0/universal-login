@@ -14,9 +14,10 @@ import type {
   TransactionMembersOnLoginPasswordlessSmsOtp as TransactionOptions,
   LoginPasswordlessSmsOtpMembers,
   SubmitOTPOptions,
+  SwitchConnectionOptions,
 } from '../../../interfaces/screens/login-passwordless-sms-otp';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import type { StartResendOptions, ResendControl } from  '../../../interfaces/utils/resend-control';
+import type { StartResendOptions, ResendControl } from '../../../interfaces/utils/resend-control';
 
 export default class LoginPasswordlessSmsOtp extends BaseContext implements LoginPasswordlessSmsOtpMembers {
   static screenIdentifier: string = ScreenIds.LOGIN_PASSWORDLESS_SMS_OTP;
@@ -102,11 +103,42 @@ export default class LoginPasswordlessSmsOtp extends BaseContext implements Logi
       options
     );
   }
+
+  /**
+   * @remarks
+   * This method handles switching from SMS OTP to a DB connection.
+   * The connection parameter should be a DB connection name (e.g. 'Username-Password-Authentication').
+   *
+   * @example
+   * import LoginPasswordlessSmsOtp from "@auth0/auth0-acul-js/login-passwordless-sms-otp";
+   *
+   * const loginPasswordlessSmsOtp = new LoginPasswordlessSmsOtp();
+   *
+   * // Function to handle connection switching
+   * const handleSwitchConnection = (connectionName: string) => {
+   *   loginPasswordlessSmsOtp.switchConnection({ connection: connectionName });
+   * };
+   *
+   * // Switch to different connection strategies
+   * handleSwitchConnection('Username-Password-Authentication'); // Switch to login-password based authentication
+   */
+  async switchConnection(payload: SwitchConnectionOptions): Promise<void> {
+    const options: FormOptions = {
+      state: this.transaction.state,
+      telemetry: [LoginPasswordlessSmsOtp.screenIdentifier, 'switchConnection'],
+    };
+
+    await new FormHandler(options).submitData<SwitchConnectionOptions>({
+      ...payload,
+      action: FormActions.DEFAULT,
+    });
+  }
 }
 
 export {
   LoginPasswordlessSmsOtpMembers,
   SubmitOTPOptions,
+  SwitchConnectionOptions,
   ScreenOptions as ScreenMembersOnLoginPasswordlessSmsOtp,
   TransactionOptions as TransactionMembersOnLoginPasswordlessSmsOtp,
 };
