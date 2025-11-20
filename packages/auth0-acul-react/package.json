@@ -1,6 +1,6 @@
 {
   "name": "@auth0/auth0-acul-react",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.3",
   "main": "dist/index.js",
   "type": "module",
   "types": "dist/index.d.ts",
@@ -50,7 +50,7 @@
     "ts-node": "^10.9.2"
   },
   "dependencies": {
-    "@auth0/auth0-acul-js": "../auth0-acul-js"
+    "@auth0/auth0-acul-js": "1.0.0-alpha.3"
   },
   "files": [
     "dist",
