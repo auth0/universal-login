@@ -528,7 +528,7 @@ async function generateMainIndex(updatedPackages) {
 </head>
 <body>
     <div class="header">
-        <h1>🚀 Universal Login SDK Documentation</h1>
+        <h1>Universal Login SDK Documentation</h1>
         <p>Comprehensive documentation for all packages</p>
     </div>
     
@@ -579,7 +579,7 @@ async function generateMainIndex(updatedPackages) {
  * Main function to unify all documentation (async)
  */
 async function unifyDocumentation() {
-  console.log('🚀 Starting documentation unification...\n');
+  console.log('Starting documentation unification...\n');
 
   // Ensure unified docs directory exists
   try {

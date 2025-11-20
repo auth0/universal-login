@@ -79,6 +79,25 @@ jobs:
           name: ${{ steps.meta.outputs.tag_name }}
           version: ${{ steps.meta.outputs.version }}
 
+      - name: Checkout current gh-pages branch to preserve existing docs  
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: existing-docs
+          fetch-depth: 1
+
+      - name: Restore existing docs before generation
+        run: |
+          if [ -d "existing-docs" ]; then
+            mkdir -p ./docs
+            cp -r existing-docs/* ./docs/ 2>/dev/null || true
+            echo "✅ Restored existing documentation"
+            ls -la ./docs/ || true
+          else
+            echo "ℹ️ No existing docs found, creating fresh"
+            mkdir -p ./docs
+          fi
+
       - name: Generate documentation for released package only
         run: npm run docs:unified ${{ steps.meta.outputs.dir }}
 
@@ -87,4 +106,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs
-          keep_files: true
+          keep_files: false
