@@ -1,5 +1,11 @@
 # Change Log
 
+## [auth0-acul-react-v1.0.0](https://github.com/auth0/universal-login/tree/auth0-acul-react-v1.0.0) (2025-11-20)
+[Full Changelog](https://github.com/auth0/universal-login/compare/auth0-acul-react-v1.0.0...auth0-acul-react-v1.0.0)
+
+**Added**
+- update:Update dependencies to use stable version of @auth0/auth0-acul-js [\#293](https://github.com/auth0/universal-login/pull/293) ([aks96](https://github.com/aks96))
+
 ## [auth0-acul-react-1.0.0-alpha.3](https://github.com/auth0/universal-login/tree/auth0-acul-react-1.0.0-alpha.3) (2025-11-20)
 
 **Added**
