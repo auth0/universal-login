@@ -1,5 +1,21 @@
 # Change Log
 
+## [auth0-acul-js-v1.0.0](https://github.com/auth0/universal-login/tree/auth0-acul-js-1.0.0) (2025-11-20)
+
+**Added**
+- feat: add passkey autofill options to transaction interfaces and shar… [\#274](https://github.com/auth0/universal-login/pull/274) ([amitsingh05667](https://github.com/amitsingh05667))
+- feat: added continue method for MFA push enrollment QR [\#270](https://github.com/auth0/universal-login/pull/270) ([aks96](https://github.com/aks96))
+- Add clientSubdomain to CaptchaContext interface [\#269](https://github.com/auth0/universal-login/pull/269) ([amitsingh05667](https://github.com/amitsingh05667))
+- Fix: Removed complete support for interface partial import [\#267](https://github.com/auth0/universal-login/pull/267) ([ankita10119](https://github.com/ankita10119))
+- Update: Rename byKind helper method to byType in error store (kind -> type) [\#266](https://github.com/auth0/universal-login/pull/266) ([ankita10119](https://github.com/ankita10119))
+- Update: Renamed custom errors in TS and React SDK [\#255](https://github.com/auth0/universal-login/pull/255) ([ankita10119](https://github.com/ankita10119))
+- feat: flexible connection switching [\#250](https://github.com/auth0/universal-login/pull/250) ([amitsingh05667](https://github.com/amitsingh05667))
+- Added support for passkey autofill on react SDK [\#249](https://github.com/auth0/universal-login/pull/249) ([nandan-bhat](https://github.com/nandan-bhat))
+- Refactor: Rename Login Password Policy Methods [\#253](https://github.com/auth0/universal-login/pull/253) ([amitsingh05667](https://github.com/amitsingh05667))
+- feat(mfa-login-options): add returnToPrevious for back navigation  [\#238](https://github.com/auth0/universal-login/pull/238) ([amitsingh05667](https://github.com/amitsingh05667))
+- added: Polling for the mfa-push-enrollment-qr screen [\#240](https://github.com/auth0/universal-login/pull/240) ([aks96](https://github.com/aks96))  
+- feat: add Claude Code PR Review workflow [\#206](https://github.com/auth0/universal-login/pull/206) ([amitsingh05667](https://github.com/amitsingh05667))
+
 ## [auth0-acul-js-1.0.0-alpha.3](https://github.com/auth0/universal-login/tree/auth0-acul-js-1.0.0-alpha.3) (2025-11-20)
 
 **Added**
