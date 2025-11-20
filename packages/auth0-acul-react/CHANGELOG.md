@@ -1,5 +1,19 @@
 # Change Log
 
+## [auth0-acul-react-v1.0.0-alpha.0](https://github.com/auth0/universal-login/tree/auth0-acul-react-v1.0.0-alpha.0) (2025-11-20)
+
+**Added**
+- Release auth0-acul-js-1.0.0-alpha.3 [\#282](https://github.com/auth0/universal-login/pull/282) ([aks96](https://github.com/aks96))
+- Fix: Update API reference to point to github pages links [\#276](https://github.com/auth0/universal-login/pull/276) ([ankita10119](https://github.com/ankita10119))
+- feat: add passkey autofill options to transaction interfaces and shar… [\#274](https://github.com/auth0/universal-login/pull/274) ([amitsingh05667](https://github.com/amitsingh05667))
+- feat: implement changeLanguage method and add LanguageChangeOptions interface [\#264](https://github.com/auth0/universal-login/pull/264) ([amitsingh05667](https://github.com/amitsingh05667))
+- feat: added continue method for MFA push enrollment QR [\#270](https://github.com/auth0/universal-login/pull/270) ([aks96](https://github.com/aks96))
+- fix: fix typos in interstitial-captcha and mfa-push-welcome examples [\#272](https://github.com/auth0/universal-login/pull/272) ([amitsingh05667](https://github.com/amitsingh05667))
+- Add clientSubdomain to CaptchaContext interface [\#269](https://github.com/auth0/universal-login/pull/269) ([amitsingh05667](https://github.com/amitsingh05667))
+- Fix: MFA WebAuthn Roaming Challenge - Remember Device & Code Improvements [\#256](https://github.com/auth0/universal-login/pull/256) ([amitsingh05667](https://github.com/amitsingh05667))
+- Fix: Removed complete support for interface partial import [\#267](https://github.com/auth0/universal-login/pull/267) ([ankita10119](https://github.com/ankita10119))
+- Update: Rename byKind helper method to byType in error store (kind -> type) [\#266](https://github.com/auth0/universal-login/pull/266) ([ankita10119](https://github.com/ankita10119))
+
 ## [auth0-acul-react@1.0.0-alpha.2](https://github.com/auth0/universal-login/tree/auth0-acul-react%401.0.0-alpha.2) (2025-11-03)
 
 **Added**
