@@ -55,7 +55,7 @@ jobs:
           echo "name_unscoped=$PACKAGE_NAME_UNSCOPED" >> $GITHUB_OUTPUT
           echo "dir=$DIR_NAME" >> $GITHUB_OUTPUT
           echo "version=$PACKAGE_VERSION" >> $GITHUB_OUTPUT
-          echo "tag_name=$PACKAGE_NAME_UNSCOPED@$PACKAGE_VERSION" >> $GITHUB_OUTPUT
+          echo "tag_name=$PACKAGE_NAME_UNSCOPED-$PACKAGE_VERSION" >> $GITHUB_OUTPUT
 
       - name: Install rimraf globally
         run: npm install -g rimraf

@@ -1,12 +1,6 @@
 {
     "files": {
         "CHANGELOG.md": [],
-        ".version": [
-            "v{MAJOR}.{MINOR}.{PATCH}",
-            "v{MAJOR}.{MINOR}.{PATCH}-{PRERELEASE_LABEL}.{PRERELEASE_COUNTER}"
-        ]
-    },
-    "prefixVersion": true,
-    "packageLabel": "auth0-acul-js",
-    "packagePath": "auth0-acul-js"
+        ".version": []
+    }
 }
