@@ -154,88 +154,88 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 
 | No.    | Prompt             | Screen Name       | Documentation Link                                                                                    |
 |--------|--------------------|-------------------|--------------------------------------------------------------------------------------------|
-| 1      | login              | login             | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.Login)                 |
-| 2      | login-id            | login-id          | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.LoginId)               |
-| 3      | login-password     | login-password    | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.LoginPassword)         |
-| 4      | signup-id          | signup-id         | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.SignupId)              |
-| 5      | signup-password    | signup-password   | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.SignupPassword)        |
+| 1      | login              | login             | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.Login.html)                 |
+| 2      | login-id            | login-id          | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.LoginId.html)               |
+| 3      | login-password     | login-password    | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.LoginPassword.html)         |
+| 4      | signup-id          | signup-id         | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.SignupId.html)              |
+| 5      | signup-password    | signup-password   | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.SignupPassword.html)        |
 
 <details>
-  <summary>Explore more screens...</summary>
+  <summary>Explore more Screens...</summary>
 
 | No.    | Prompt                         | Screen Name                                      | Documentation Link                                                                                                                        |
 |--------|--------------------------------|-------------------------------------------|-------------------------------------------------------------------------------------------------------|
-| 6      | login-passwordless             | login-passwordless-email-code             | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.LoginPasswordlessEmailCode)   |
-| 7      | login-passwordless             | login-passwordless-sms-otp                | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.LoginPasswordlessSmsOtp)      |
-| 8      | passkeys                       | passkey-enrollment                        | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.PasskeyEnrollment)                |
-| 9      | passkeys                       | passkey-enrollment-local                  | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.PasskeyEnrollmentLocal)           |
-| 10     | phone-identifier-enrollment    | phone-identifier-enrollment               | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.PhoneIdentifierEnrollment)    |
-| 11     | phone-identifier-challenge     | phone-identifier-challenge                | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.PhoneIdentifierChallenge)         |
-| 12     | email-identifier-challenge     | email-identifier-challenge                | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.EmailIdentifierChallenge)     |
-| 13     | captcha                        | interstitial-captcha                      | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.InterstitialCaptcha)      |
-| 14     | reset-password                 | reset-password-email                      | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.ResetPasswordEmail)       |
-| 15     | reset-password                 | reset-password-request                    | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.ResetPasswordRequest)        |
-| 16     | reset-password                 | reset-password                            | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.ResetPassword)                |
-| 17     | reset-password                 | reset-password-error                      | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.ResetPasswordError)            |
-| 18     | reset-password                 | reset-password-success                    | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.ResetPasswordSuccess)         |
-| 19     | signup                         | signup                                    | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.Signup)                        |
-| 20     | mfa                            | mfa-detect-browser-capabilities           | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.MfaDetectBrowserCapabilities)   |
-| 21     | mfa                            | mfa-enroll-result                         | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.MfaEnrollResult)   |
-| 22     | mfa                            | mfa-begin-enroll-options                  | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.MfaBeginEnrollOptions)       |
-| 23     | mfa                            | mfa-login-options                         | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.MfaLoginOptions)   |
-| 24     | mfa-push                       | mfa-push-enrollment-qr                    | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.MfaPushEnrollmentQr)            |
-| 25     | mfa-push                       | mfa-push-welcome                          | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.MfaPushWelcome)            |
-| 26     | mfa-push                       | mfa-push-challenge-push                   | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.MfaPushChallengePush)   |
-| 27     | mfa-push                       | mfa-push-list                             | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.MfaPushList)                   |
-| 28     | mfa-sms                        | mfa-country-codes                         | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.MfaCountryCodes)              |
-| 29     | mfa-sms                        | mfa-sms-challenge                         |   [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.MfaSmsChallenge)                 |
-| 30     | mfa-sms                        | mfa-sms-enrollment                        | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.MfaSmsEnrollment)           |
-| 31     | mfa-sms                        | mfa-sms-list                              |  [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.MfaSmsList)                  |
-| 32     | mfa-email                      | mfa-email-challenge                       | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.MfaEmailChallenge)   |
-| 33     | mfa-email                      | mfa-email-list                            | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.MfaEmailList)   |
-| 34     | invitatino                     | accept-invitation                         | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.AcceptInvitation)   |
-| 35     | organizations                  | organization-picker                       | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.OrganizationPicker)        |
-| 36     | organizations                  | organization-selection                    | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.OrganizationSelection)        |
-| 37     | reset-password                 | mfa-otp-challenge                         | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.MfaOtpChallenge)   |
-| 38     | mfa-otp                        | mfa-otp-enrollment-code                   | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.MfaOtpEnrollmentCode)   |
-| 39     | mfa-otp                        | mfa-otp-enrollment-qr                     | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.MfaOtpEnrollmentQr)   |
-| 40     | reset-password                 | reset-password-mfa-email-challenge        | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.ResetPasswordMfaEmailChallenge)  |
-| 41     | reset-password                 | reset-password-mfa-push-challenge-push    | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.ResetPasswordMfaPushChallengePush)|
-| 42     | reset-password                 | mfa-sms-challenge                         | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.ResetPasswordMfaSmsChallenge)   |
-| 43     | reset-password                 | reset-password-mfa-otp-challenge          | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.OrganizationSelection)   |
-| 44     | mfa-phone                      | mfa-phone-enrollment                      | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.MfaPhoneEnrollment)   |
-| 45     | mfa-voice                      | mfa-voice-enrollment                      | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.MfaVoiceEnrollment)   |
-| 46     | mfa-recovery-code              | mfa-recovery-code-challenge               | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.MfaRecoveryCodeChallenge)   |
-| 47     | device-flow                    | device-code-activation-allowed            | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.DeviceCodeActivationAllowed)   |
-| 48     | device-flow                    | device-code-activation-denied             | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.DeviceCodeActivationDenied)   |
-| 49     | device-flow                    | device-code-activation                    | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.DeviceCodeActivation)   |
-| 50     | reset-password             | reset-password-mfa-recovery-code-challenge | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaRecoveryCodeChallenge) |
-| 51     | reset-password                 | reset-password-mfa-voice                  | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.ResetPasswordMfaVoiceChallenge)   |
-| 52     | common                         | redeem-ticket                             | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.RedeemTicket)   |
-| 53     | device-flow                    | device-code-confirmation                  | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.DeviceCodeConfirmation)   |
-| 54     | mfa-phone                      | mfa-phone-challenge                       | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.MfaPhoneChallenge) |
-| 55     | mfa-voice                      | mfa-voice-challenge                       | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.MfaVoiceChallenge)   |
-| 56     | mfa-recovery-code              | mfa-recovery-code-enrollment              | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.MfaRecoveryCodeEnrollment)   |
-| 57     | reset-password                 | reset-password-mfa-phone-challenge        | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.ResetPasswordMfaPhoneChallenge)   |
-| 58     | mfa-recovery-code              | mfa-recovery-code-challenge-new-code      | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.MfaRecoveryCodeChallengeNewCode) |
-| 59     | logout                         | logout                                    | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.Logout) |
-| 60     | logout                         | logout-aborted                            | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.LogoutAborted) |
-| 61     | logout                         | logout-complete                           | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.LogoutComplete) |
-| 62     | email-verification             | email-verification-result                 | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.EmailVerificationResult) |
-| 63     | login-email-verification       | login-email-verification                  | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.LoginEmailVerification) |
-| 64     |mfa-webauthn                    | mfa-webauthn-platform-enrollment        | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.MfaWebAuthnPlatformEnrollment)                        |
-| 65     |mfa-webauthn                    | mfa-webauthn-error        | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.MfaWebAuthnError)                        |
-| 66     |mfa-webauthn                    | mfa-webauthn-roaming-enrollment         | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.MfaWebAuthnRoamingEnrollment)   |
-| 67     |mfa-webauthn                    | mfa-webauthn-roaming-challenge          | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.MfaWebAuthnRoamingChallenge)    |
-| 68     |mfa-webauthn                    | mfa-webauthn-platform-challenge         | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.MfaWebAuthnPlatformChallenge)   |
-| 69     |mfa-webauthn                    | mfa-webauthn-enrollment-success         | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.MfaWebAuthnEnrollmentSuccess)   |
-| 70     |mfa-webauthn                    | mfa-webauthn-change-key-nickname        | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.MfaWebAuthnChangeKeyNickname)   |
-| 71     |mfa-webauthn                    | mfa-webauthn-not-available-error        | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.MfaWebAuthnNotAvailableError)   |
-| 72     |reset-password                    | reset-password-mfa-webauthn-platform-challenge | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.ResetPasswordMfaWebAuthnPlatformChallenge)                |
-| 73     |reset-password                    | reset-password-mfa-webauthn-roaming-challenge | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.ResetPasswordMfaWebAuthnRoamingChallenge)   |
-| 74     |consent                   | consent | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.consent)   |
-| 75     |customized-consent        | customized-consent | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.CustomizedConsent)   |
-| 76     |email-otp-challenge                   | email-otp-challenge | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/screens.EmailOTPChallenge)   |
+| 6      | login-passwordless             | login-passwordless-email-code             | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.LoginPasswordlessEmailCode.html)   |
+| 7      | login-passwordless             | login-passwordless-sms-otp                | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.LoginPasswordlessSmsOtp.html)      |
+| 8      | passkeys                       | passkey-enrollment                        | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.PasskeyEnrollment.html)                |
+| 9      | passkeys                       | passkey-enrollment-local                  | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.PasskeyEnrollmentLocal.html)           |
+| 10     | phone-identifier-enrollment    | phone-identifier-enrollment               | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.PhoneIdentifierEnrollment.html)    |
+| 11     | phone-identifier-challenge     | phone-identifier-challenge                | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.PhoneIdentifierChallenge.html)         |
+| 12     | email-identifier-challenge     | email-identifier-challenge                | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.EmailIdentifierChallenge.html)     |
+| 13     | captcha                        | interstitial-captcha                      | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.InterstitialCaptcha.html)      |
+| 14     | reset-password                 | reset-password-email                      | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.ResetPasswordEmail.html)       |
+| 15     | reset-password                 | reset-password-request                    | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.ResetPasswordRequest.html)        |
+| 16     | reset-password                 | reset-password                            | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.ResetPassword.html)                |
+| 17     | reset-password                 | reset-password-error                      | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.ResetPasswordError.html)            |
+| 18     | reset-password                 | reset-password-success                    | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.ResetPasswordSuccess.html)         |
+| 19     | signup                         | signup                                    | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.Signup.html)                        |
+| 20     | mfa                            | mfa-detect-browser-capabilities           | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.MfaDetectBrowserCapabilities.html)   |
+| 21     | mfa                            | mfa-enroll-result                         | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.MfaEnrollResult.html)   |
+| 22     | mfa                            | mfa-begin-enroll-options                  | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.MfaBeginEnrollOptions.html)       |
+| 23     | mfa                            | mfa-login-options                         | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.MfaLoginOptions.html)   |
+| 24     | mfa-push                       | mfa-push-enrollment-qr                    | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.MfaPushEnrollmentQr.html)            |
+| 25     | mfa-push                       | mfa-push-welcome                          | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.MfaPushWelcome.html)            |
+| 26     | mfa-push                       | mfa-push-challenge-push                   | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.MfaPushChallengePush.html)   |
+| 27     | mfa-push                       | mfa-push-list                             | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.MfaPushList.html)                   |
+| 28     | mfa-sms                        | mfa-country-codes                         | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.MfaCountryCodes.html)              |
+| 29     | mfa-sms                        | mfa-sms-challenge                         |   [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.MfaSmsChallenge.html)                 |
+| 30     | mfa-sms                        | mfa-sms-enrollment                        | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.MfaSmsEnrollment.html)           |
+| 31     | mfa-sms                        | mfa-sms-list                              |  [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.MfaSmsList.html)                  |
+| 32     | mfa-email                      | mfa-email-challenge                       | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.MfaEmailChallenge.html)   |
+| 33     | mfa-email                      | mfa-email-list                            | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.MfaEmailList.html)   |
+| 34     | invitatino                     | accept-invitation                         | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.AcceptInvitation.html)   |
+| 35     | organizations                  | organization-picker                       | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.OrganizationPicker.html)        |
+| 36     | organizations                  | organization-selection                    | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.OrganizationSelection.html)        |
+| 37     | reset-password                 | mfa-otp-challenge                         | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.MfaOtpChallenge.html)   |
+| 38     | mfa-otp                        | mfa-otp-enrollment-code                   | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.MfaOtpEnrollmentCode.html)   |
+| 39     | mfa-otp                        | mfa-otp-enrollment-qr                     | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.MfaOtpEnrollmentQr.html)   |
+| 40     | reset-password                 | reset-password-mfa-email-challenge        | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.ResetPasswordMfaEmailChallenge.html)  |
+| 41     | reset-password                 | reset-password-mfa-push-challenge-push    | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.ResetPasswordMfaPushChallengePush.html)|
+| 42     | reset-password                 | mfa-sms-challenge                         | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.ResetPasswordMfaSmsChallenge.html)   |
+| 43     | reset-password                 | reset-password-mfa-otp-challenge          | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.OrganizationSelection.html)   |
+| 44     | mfa-phone                      | mfa-phone-enrollment                      | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.MfaPhoneEnrollment.html)   |
+| 45     | mfa-voice                      | mfa-voice-enrollment                      | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.MfaVoiceEnrollment.html)   |
+| 46     | mfa-recovery-code              | mfa-recovery-code-challenge               | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.MfaRecoveryCodeChallenge.html)   |
+| 47     | device-flow                    | device-code-activation-allowed            | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.DeviceCodeActivationAllowed.html)   |
+| 48     | device-flow                    | device-code-activation-denied             | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.DeviceCodeActivationDenied.html)   |
+| 49     | device-flow                    | device-code-activation                    | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.DeviceCodeActivation.html)   |
+| 50     | reset-password             | reset-password-mfa-recovery-code-challenge | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaRecoveryCodeChallenge.html) |
+| 51     | reset-password                 | reset-password-mfa-voice                  | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.ResetPasswordMfaVoiceChallenge.html)   |
+| 52     | common                         | redeem-ticket                             | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.RedeemTicket.html)   |
+| 53     | device-flow                    | device-code-confirmation                  | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.DeviceCodeConfirmation.html)   |
+| 54     | mfa-phone                      | mfa-phone-challenge                       | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.MfaPhoneChallenge.html) |
+| 55     | mfa-voice                      | mfa-voice-challenge                       | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.MfaVoiceChallenge.html)   |
+| 56     | mfa-recovery-code              | mfa-recovery-code-enrollment              | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.MfaRecoveryCodeEnrollment.html)   |
+| 57     | reset-password                 | reset-password-mfa-phone-challenge        | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.ResetPasswordMfaPhoneChallenge.html)   |
+| 58     | mfa-recovery-code              | mfa-recovery-code-challenge-new-code      | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.MfaRecoveryCodeChallengeNewCode.html) |
+| 59     | logout                         | logout                                    | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.Logout.html) |
+| 60     | logout                         | logout-aborted                            | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.LogoutAborted.html) |
+| 61     | logout                         | logout-complete                           | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.LogoutComplete.html) |
+| 62     | email-verification             | email-verification-result                 | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.EmailVerificationResult.html) |
+| 63     | login-email-verification       | login-email-verification                  | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.LoginEmailVerification.html) |
+| 64     |mfa-webauthn                    | mfa-webauthn-platform-enrollment        | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.MfaWebAuthnPlatformEnrollment.html)                        |
+| 65     |mfa-webauthn                    | mfa-webauthn-error        | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.MfaWebAuthnError.html)                        |
+| 66     |mfa-webauthn                    | mfa-webauthn-roaming-enrollment         | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.MfaWebAuthnRoamingEnrollment.html)   |
+| 67     |mfa-webauthn                    | mfa-webauthn-roaming-challenge          | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.MfaWebAuthnRoamingChallenge.html)    |
+| 68     |mfa-webauthn                    | mfa-webauthn-platform-challenge         | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.MfaWebAuthnPlatformChallenge.html)   |
+| 69     |mfa-webauthn                    | mfa-webauthn-enrollment-success         | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.MfaWebAuthnEnrollmentSuccess.html)   |
+| 70     |mfa-webauthn                    | mfa-webauthn-change-key-nickname        | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.MfaWebAuthnChangeKeyNickname.html)   |
+| 71     |mfa-webauthn                    | mfa-webauthn-not-available-error        | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.MfaWebAuthnNotAvailableError.html)   |
+| 72     |reset-password                    | reset-password-mfa-webauthn-platform-challenge | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.ResetPasswordMfaWebAuthnPlatformChallenge.html)                |
+| 73     |reset-password                    | reset-password-mfa-webauthn-roaming-challenge | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.ResetPasswordMfaWebAuthnRoamingChallenge.html)   |
+| 74     |consent                   | consent | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.consent.html)   |
+| 75     |customized-consent        | customized-consent | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.CustomizedConsent.html)   |
+| 76     |email-otp-challenge                   | email-otp-challenge | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.EmailOTPChallenge.html)   |
 </details>
 
 
