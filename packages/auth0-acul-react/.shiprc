@@ -2,5 +2,8 @@
     "files": {
         "CHANGELOG.md": [],
         ".version": []
-    }
+    },
+    "prefixVersion": true,
+    "packageLabel": "auth0-acul-react",
+    "packagePath": "auth0-acul-react"
 }
