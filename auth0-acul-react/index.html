@@ -1,0 +1,609 @@
+<!DOCTYPE html><html class="default" lang="en" data-base="./"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>@auth0/auth0-acul-react - v1.0.0-alpha.3</title><meta name="description" content="Documentation for @auth0/auth0-acul-react"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script defer src="assets/main.js"></script><script async src="assets/icons.js" id="tsd-icons-script"></script><script async src="assets/search.js" id="tsd-search-script"></script><script async src="assets/navigation.js" id="tsd-nav-script"></script><script async src="assets/hierarchy.js" id="tsd-hierarchy-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => window.app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar"><div class="tsd-toolbar-contents container"><a href="index.html" class="title">@auth0/auth0-acul-react - v1.0.0-alpha.3</a><div id="tsd-toolbar-links"></div><button id="tsd-search-trigger" class="tsd-widget" aria-label="Search"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-search"></use></svg></button><dialog id="tsd-search" aria-label="Search"><input role="combobox" id="tsd-search-input" aria-controls="tsd-search-results" aria-autocomplete="list" aria-expanded="true" autocapitalize="off" autocomplete="off" placeholder="Search the docs" maxLength="100"/><ul role="listbox" id="tsd-search-results"></ul><div id="tsd-search-status" aria-live="polite" aria-atomic="true"><div>Preparing search index...</div></div></dialog><a href="#" class="tsd-widget menu" id="tsd-toolbar-menu-trigger" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-menu"></use></svg></a></div></header><div class="container container-main"><div class="col-content"><div class="tsd-page-title"><h1>@auth0/auth0-acul-react - v1.0.0-alpha.3</h1></div><div class="tsd-panel tsd-typography"><h1 id="auth0-acul-react-sdk" class="tsd-anchor-link">Auth0 ACUL React SDK<a href="#auth0-acul-react-sdk" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h1><p><img src="https://cdn.auth0.com/website/sdks/banners/auth0-acul-react-banner.png" alt="ACUL React SDK"></p>
+<div align="center">
+<p><a href="https://www.npmjs.com/package/@auth0/auth0-acul-react"><img src="https://img.shields.io/npm/v/@auth0/auth0-acul-react" alt="NPM Version"></a>
+<a href="https://www.npmjs.com/package/@auth0/auth0-acul-react"><img src="https://img.shields.io/npm/dw/@auth0/auth0-acul-react" alt="Downloads"></a>
+<a href="https://codecov.io/gh/auth0/auth0-acul-react"><img src="https://codecov.io/gh/auth0/auth0-acul-react/branch/main/graph/badge.svg" alt="codecov"></a>
+<a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat" alt="License"></a></p>
+</div>
+<div align='center'>
+<p>📚 <a href="#documentation">Documentation</a> | 🚀 <a href="#getting-started">Getting Started</a> | 💻 <a href="#api-reference">API Reference</a> | 🪝 <a href="#hooks">Hooks</a> | <a href="#examples">Examples</a> | 💬 <a href="#feedback">Feedback</a></p>
+</div>
+<p>Developers using Auth0’s Universal Login can use this React SDK to customize screens like login, signup, or reset password. It provides hooks, context, and utilities to build flexible, type-safe experiences that match your brand and deliver a seamless user experience.</p>
+<hr>
+<div class="tsd-alert tsd-alert-caution"><div class="tsd-alert-title"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><use href="assets/icons.svg#icon-alertCaution"></use></svg><span>Caution</span></div><p></p>
+<p>This feature is still in <strong>Early Access</strong>.</p>
+</div>
+<p><a id="documentation"></a></p>
+<h2 id="📚-documentation" class="tsd-anchor-link">📚 Documentation<a href="#📚-documentation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><ul>
+<li><a href="https://auth0.com/docs/customize/login-pages/advanced-customizations/getting-started/sdk-quickstart">Quickstart</a> - our guide for setting up the SDK on your app.</li>
+<li><a href="https://auth0.com/docs/customize/login-pages/advanced-customizations/screens">Guides</a> - more guides for common use cases</li>
+<li><a href="https://github.com/auth0/universal-login/tree/master/packages/auth0-acul-react/examples">Examples</a> - code snippets for different customization use cases.</li>
+</ul>
+<p><a id="getting-started"></a></p>
+<h2 id="🚀-getting-started" class="tsd-anchor-link">🚀 Getting started<a href="#🚀-getting-started" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><h3 id="prerequisites" class="tsd-anchor-link">Prerequisites<a href="#prerequisites" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>Before starting, ensure that you have the following setup:</p>
+<ol>
+<li><strong>Custom Domain</strong>: Ensure that a custom domain is configured for your Auth0 tenant.</li>
+<li><strong>Screen Configuration</strong>: Set up the required authentication screens within your Auth0 flow.<br>
+For detailed steps, refer to the <a href="https://auth0.com/docs/customize/login-pages/advanced-customizations/getting-started/configure-acul-screens">Configure ACUL Screens</a>.</li>
+</ol>
+<h3 id="installation" class="tsd-anchor-link">Installation<a href="#installation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><pre><code class="bash"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">install</span><span class="hl-1"> </span><span class="hl-2">@auth0/auth0-acul-react</span>
+</code><button type="button">Copy</button></pre>
+
+<p>Peer dependency:</p>
+<pre><code class="bash"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">install</span><span class="hl-1"> </span><span class="hl-2">react</span>
+</code><button type="button">Copy</button></pre>
+
+<h3 id="importing-the-sdk" class="tsd-anchor-link">Importing the SDK<a href="#importing-the-sdk" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>The SDK supports <code>partial imports</code> for each screen, allowing you to include only the code you need for your specific use case. This helps keep your bundle size small and improves performance.</p>
+<p>Also, you can use a <code>root import</code> to load all screens from a single bundle if your app requires it.</p>
+<h4 id="partial-imports" class="tsd-anchor-link">Partial Imports<a href="#partial-imports" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4><p>Each screen has its own set of hooks and methods. You can import only what you need for the screen you're building.</p>
+<p>The following example shows how to import and use SDK to build <code>login-id</code> screen.</p>
+<pre><code class="tsx"><span class="hl-3">import</span><span class="hl-1"> { </span><br/><span class="hl-1">  </span><span class="hl-4">// Context hooks</span><br/><span class="hl-1">  </span><span class="hl-5">useUser</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">useTenant</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">useBranding</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">useClient</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">useOrganization</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">usePrompt</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">useScreen</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">useTenant</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">useTransaction</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">useUser</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">useUntrustedData</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">// Common hooks</span><br/><span class="hl-1">  </span><span class="hl-5">useErrors</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">useTexts</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">// Utility hooks</span><br/><span class="hl-1">  </span><span class="hl-5">useUsernameValidation</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">usePasswordValidation</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">useLoginIdentifiers</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">// Submit methods</span><br/><span class="hl-1">  </span><span class="hl-5">login</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">passkeyLogin</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">federatedLogin</span><span class="hl-1">,</span><br/><span class="hl-1">} </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&#39;@auth0/auth0-acul-react/login-id&#39;</span><span class="hl-1">;</span>
+</code><button type="button">Copy</button></pre>
+
+<hr>
+<h4 id="root-imports" class="tsd-anchor-link">Root Imports<a href="#root-imports" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4><p>The SDK also supports a root import, which lets you load all screens from a single bundle.
+This is useful if your app dynamically renders different screens at runtime based on the current Auth0 flow, for example, when you want one unified build that can handle all possible screens.</p>
+<p>However, root imports aren’t ideal for most projects since they can increase bundle size.
+If you only need specific screens, use partial imports instead for better performance.</p>
+<pre><code class="ts"><span class="hl-3">import</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-4">// Common hooks</span><br/><span class="hl-1">  </span><span class="hl-5">useCurrentScreen</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">useAuth0Themes</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">useErrors</span><span class="hl-1">,</span><br/><br/><span class="hl-1">  </span><span class="hl-4">// Screen-specific hooks for multiple screens</span><br/><span class="hl-1">  </span><span class="hl-5">useLoginId</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">useSignupId</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">useResetPassword</span><br/><span class="hl-1">} </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&#39;@auth0/auth0-acul-react&#39;</span><span class="hl-1">;</span>
+</code><button type="button">Copy</button></pre>
+
+<hr>
+<h4 id="types-interfaces" class="tsd-anchor-link">Types / Interfaces<a href="#types-interfaces" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4><p>Typescript types and interfaces can be imported from <code>@auth0/auth0-acul-react/types</code> for type safety and better DX.</p>
+<pre><code class="tsx"><span class="hl-3">import</span><span class="hl-1"> </span><span class="hl-3">type</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-5">Connection</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">CustomOptions</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">IdentifierType</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">Organizations</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">EnrolledDevice</span><br/><span class="hl-1">  </span><span class="hl-4">// ...other types</span><br/><span class="hl-1">} </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&#39;@auth0/auth0-acul-react/types&#39;</span><span class="hl-1">;</span>
+</code><button type="button">Copy</button></pre>
+
+<p>Refer to our <a href="#api-reference">API Reference</a> for the full list of available types and interfaces.</p>
+<hr>
+<p><a id="api-reference"></a></p>
+<h2 id="💻-api-reference" class="tsd-anchor-link">💻 API Reference<a href="#💻-api-reference" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><h3 id="screens" class="tsd-anchor-link">Screens<a href="#screens" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><table>
+<thead>
+<tr>
+<th>No.</th>
+<th>Prompt</th>
+<th>Screen Name</th>
+<th>Documentation Link</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>login</td>
+<td>login</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Login">Link</a></td>
+</tr>
+<tr>
+<td>2</td>
+<td>login-id</td>
+<td>login-id</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Login-Id">Link</a></td>
+</tr>
+<tr>
+<td>3</td>
+<td>login-password</td>
+<td>login-password</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Login-Password">Link</a></td>
+</tr>
+<tr>
+<td>4</td>
+<td>signup-id</td>
+<td>signup-id</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Signup-Id">Link</a></td>
+</tr>
+<tr>
+<td>5</td>
+<td>signup-password</td>
+<td>signup-password</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Signup-Password">Link</a></td>
+</tr>
+</tbody>
+</table>
+<details>
+  <summary>Explore more screens...</summary>
+<table>
+<thead>
+<tr>
+<th>No.</th>
+<th>Prompt</th>
+<th>Screen Name</th>
+<th>Documentation Link</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6</td>
+<td>login-passwordless</td>
+<td>login-passwordless-email-code</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Login-Passwordless-Email-Code">Link</a></td>
+</tr>
+<tr>
+<td>7</td>
+<td>login-passwordless</td>
+<td>login-passwordless-sms-otp</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Login-Passwordless-Sms-Otp">Link</a></td>
+</tr>
+<tr>
+<td>8</td>
+<td>passkeys</td>
+<td>passkey-enrollment</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Passkey-Enrollment">Link</a></td>
+</tr>
+<tr>
+<td>9</td>
+<td>passkeys</td>
+<td>passkey-enrollment-local</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Passkey-Enrollment-Local">Link</a></td>
+</tr>
+<tr>
+<td>10</td>
+<td>phone-identifier-enrollment</td>
+<td>phone-identifier-enrollment</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Phone-Identifier-Enrollment">Link</a></td>
+</tr>
+<tr>
+<td>11</td>
+<td>phone-identifier-challenge</td>
+<td>phone-identifier-challenge</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Phone-Identifier-Challenge">Link</a></td>
+</tr>
+<tr>
+<td>12</td>
+<td>email-identifier-challenge</td>
+<td>email-identifier-challenge</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Email-Identifier-Challenge">Link</a></td>
+</tr>
+<tr>
+<td>13</td>
+<td>captcha</td>
+<td>interstitial-captcha</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Interstitial-Captcha">Link</a></td>
+</tr>
+<tr>
+<td>14</td>
+<td>reset-password</td>
+<td>reset-password-email</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Reset-Password-Email">Link</a></td>
+</tr>
+<tr>
+<td>15</td>
+<td>reset-password</td>
+<td>reset-password-request</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Reset-Password-Request">Link</a></td>
+</tr>
+<tr>
+<td>16</td>
+<td>reset-password</td>
+<td>reset-password</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Reset-Password">Link</a></td>
+</tr>
+<tr>
+<td>17</td>
+<td>reset-password</td>
+<td>reset-password-error</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Reset-Password-Error">Link</a></td>
+</tr>
+<tr>
+<td>18</td>
+<td>reset-password</td>
+<td>reset-password-success</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Reset-Password-Success">Link</a></td>
+</tr>
+<tr>
+<td>19</td>
+<td>signup</td>
+<td>signup</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Signup">Link</a></td>
+</tr>
+<tr>
+<td>20</td>
+<td>mfa</td>
+<td>mfa-detect-browser-capabilities</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Mfa-Detect-Browser-Capabilities">Link</a></td>
+</tr>
+<tr>
+<td>21</td>
+<td>mfa</td>
+<td>mfa-enroll-result</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Mfa-Enroll-Result">Link</a></td>
+</tr>
+<tr>
+<td>22</td>
+<td>mfa</td>
+<td>mfa-begin-enroll-options</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Mfa-Begin-Enroll-Options">Link</a></td>
+</tr>
+<tr>
+<td>23</td>
+<td>mfa</td>
+<td>mfa-login-options</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Mfa-Login-Options">Link</a></td>
+</tr>
+<tr>
+<td>24</td>
+<td>mfa-push</td>
+<td>mfa-push-enrollment-qr</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Mfa-Push-Enrollment-Qr">Link</a></td>
+</tr>
+<tr>
+<td>25</td>
+<td>mfa-push</td>
+<td>mfa-push-welcome</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Mfa-Push-Welcome">Link</a></td>
+</tr>
+<tr>
+<td>26</td>
+<td>mfa-push</td>
+<td>mfa-push-challenge-push</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Mfa-Push-Challenge-Push">Link</a></td>
+</tr>
+<tr>
+<td>27</td>
+<td>mfa-push</td>
+<td>mfa-push-list</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Mfa-Push-List">Link</a></td>
+</tr>
+<tr>
+<td>28</td>
+<td>mfa-sms</td>
+<td>mfa-country-codes</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Mfa-Country-Codes">Link</a></td>
+</tr>
+<tr>
+<td>29</td>
+<td>mfa-sms</td>
+<td>mfa-sms-challenge</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Mfa-Sms-Challenge">Link</a></td>
+</tr>
+<tr>
+<td>30</td>
+<td>mfa-sms</td>
+<td>mfa-sms-enrollment</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Mfa-Sms-Enrollment">Link</a></td>
+</tr>
+<tr>
+<td>31</td>
+<td>mfa-sms</td>
+<td>mfa-sms-list</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Mfa-Sms-List">Link</a></td>
+</tr>
+<tr>
+<td>32</td>
+<td>mfa-email</td>
+<td>mfa-email-challenge</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Mfa-Email-Challenge">Link</a></td>
+</tr>
+<tr>
+<td>33</td>
+<td>mfa-email</td>
+<td>mfa-email-list</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Mfa-Email-List">Link</a></td>
+</tr>
+<tr>
+<td>34</td>
+<td>invitatino</td>
+<td>accept-invitation</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Accept-Invitation">Link</a></td>
+</tr>
+<tr>
+<td>35</td>
+<td>organizations</td>
+<td>organization-picker</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Organization-Picker">Link</a></td>
+</tr>
+<tr>
+<td>36</td>
+<td>organizations</td>
+<td>organization-selection</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Organization-Selection">Link</a></td>
+</tr>
+<tr>
+<td>37</td>
+<td>reset-password</td>
+<td>mfa-otp-challenge</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Mfa-Otp-Challenge">Link</a></td>
+</tr>
+<tr>
+<td>38</td>
+<td>mfa-otp</td>
+<td>mfa-otp-enrollment-code</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Mfa-Otp-Enrollment-Code">Link</a></td>
+</tr>
+<tr>
+<td>39</td>
+<td>mfa-otp</td>
+<td>mfa-otp-enrollment-qr</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Mfa-Otp-Enrollment-Qr">Link</a></td>
+</tr>
+<tr>
+<td>40</td>
+<td>reset-password</td>
+<td>reset-password-mfa-email-challenge</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Reset-Password-Mfa-Email-Challenge">Link</a></td>
+</tr>
+<tr>
+<td>41</td>
+<td>reset-password</td>
+<td>reset-password-mfa-push-challenge-push</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Reset-Password-Mfa-Push-Challenge-Push">Link</a></td>
+</tr>
+<tr>
+<td>42</td>
+<td>reset-password</td>
+<td>mfa-sms-challenge</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Reset-Password-Mfa-Sms-Challenge">Link</a></td>
+</tr>
+<tr>
+<td>43</td>
+<td>reset-password</td>
+<td>reset-password-mfa-otp-challenge</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Organization-Selection">Link</a></td>
+</tr>
+<tr>
+<td>44</td>
+<td>mfa-phone</td>
+<td>mfa-phone-enrollment</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Mfa-Phone-Enrollment">Link</a></td>
+</tr>
+<tr>
+<td>45</td>
+<td>mfa-voice</td>
+<td>mfa-voice-enrollment</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Mfa-Voice-Enrollment">Link</a></td>
+</tr>
+<tr>
+<td>46</td>
+<td>mfa-recovery-code</td>
+<td>mfa-recovery-code-challenge</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Mfa-Recovery-Code-Challenge">Link</a></td>
+</tr>
+<tr>
+<td>47</td>
+<td>device-flow</td>
+<td>device-code-activation-allowed</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Device-Code-Activation-Allowed">Link</a></td>
+</tr>
+<tr>
+<td>48</td>
+<td>device-flow</td>
+<td>device-code-activation-denied</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Device-Code-Activation-Denied">Link</a></td>
+</tr>
+<tr>
+<td>49</td>
+<td>device-flow</td>
+<td>device-code-activation</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Device-Code-Activation">Link</a></td>
+</tr>
+<tr>
+<td>50</td>
+<td>reset-password</td>
+<td>reset-password-mfa-recovery-code-challenge</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Reset-Password-Mfa-Recovery-Code-Challenge">Link</a></td>
+</tr>
+<tr>
+<td>51</td>
+<td>reset-password</td>
+<td>reset-password-mfa-voice</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Reset-Password-Mfa-Voice-Challenge">Link</a></td>
+</tr>
+<tr>
+<td>52</td>
+<td>common</td>
+<td>redeem-ticket</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Redeem-Ticket">Link</a></td>
+</tr>
+<tr>
+<td>53</td>
+<td>device-flow</td>
+<td>device-code-confirmation</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Device-Code-Confirmation">Link</a></td>
+</tr>
+<tr>
+<td>54</td>
+<td>mfa-phone</td>
+<td>mfa-phone-challenge</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Mfa-Phone-Challenge">Link</a></td>
+</tr>
+<tr>
+<td>55</td>
+<td>mfa-voice</td>
+<td>mfa-voice-challenge</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Mfa-Voice-Challenge">Link</a></td>
+</tr>
+<tr>
+<td>56</td>
+<td>mfa-recovery-code</td>
+<td>mfa-recovery-code-enrollment</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Mfa-Recovery-Code-Enrollment">Link</a></td>
+</tr>
+<tr>
+<td>57</td>
+<td>reset-password</td>
+<td>reset-password-mfa-phone-challenge</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Reset-Password-Mfa-Phone-Challenge">Link</a></td>
+</tr>
+<tr>
+<td>58</td>
+<td>mfa-recovery-code</td>
+<td>mfa-recovery-code-challenge-new-code</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Mfa-Recovery-Code-Challenge-New-Code">Link</a></td>
+</tr>
+<tr>
+<td>59</td>
+<td>logout</td>
+<td>logout</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Logout">Link</a></td>
+</tr>
+<tr>
+<td>60</td>
+<td>logout</td>
+<td>logout-aborted</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Logout-Aborted">Link</a></td>
+</tr>
+<tr>
+<td>61</td>
+<td>logout</td>
+<td>logout-complete</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Logout-Complete">Link</a></td>
+</tr>
+<tr>
+<td>62</td>
+<td>email-verification</td>
+<td>email-verification-result</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Email-Verification-Result">Link</a></td>
+</tr>
+<tr>
+<td>63</td>
+<td>login-email-verification</td>
+<td>login-email-verification</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Login-Email-Verification">Link</a></td>
+</tr>
+<tr>
+<td>64</td>
+<td>mfa-webauthn</td>
+<td>mfa-webauthn-platform-enrollment</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Mfa-WebAuthn-Platform-Enrollment">Link</a></td>
+</tr>
+<tr>
+<td>65</td>
+<td>mfa-webauthn</td>
+<td>mfa-webauthn-error</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Mfa-WebAuthn-Error">Link</a></td>
+</tr>
+<tr>
+<td>66</td>
+<td>mfa-webauthn</td>
+<td>mfa-webauthn-roaming-enrollment</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Mfa-WebAuthn-Roaming-Enrollment">Link</a></td>
+</tr>
+<tr>
+<td>67</td>
+<td>mfa-webauthn</td>
+<td>mfa-webauthn-roaming-challenge</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Mfa-WebAuthn-Roaming-Challenge">Link</a></td>
+</tr>
+<tr>
+<td>68</td>
+<td>mfa-webauthn</td>
+<td>mfa-webauthn-platform-challenge</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Mfa-WebAuthn-Platform-Challenge">Link</a></td>
+</tr>
+<tr>
+<td>69</td>
+<td>mfa-webauthn</td>
+<td>mfa-webauthn-enrollment-success</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Mfa-WebAuthn-Enrollment-Success">Link</a></td>
+</tr>
+<tr>
+<td>70</td>
+<td>mfa-webauthn</td>
+<td>mfa-webauthn-change-key-nickname</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Mfa-WebAuthn-Change-Key-Nickname">Link</a></td>
+</tr>
+<tr>
+<td>71</td>
+<td>mfa-webauthn</td>
+<td>mfa-webauthn-not-available-error</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Mfa-WebAuthn-Not-Available-Error">Link</a></td>
+</tr>
+<tr>
+<td>72</td>
+<td>reset-password</td>
+<td>reset-password-mfa-webauthn-platform-challenge</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Reset-Password-Mfa-WebAuthn-Platform-Challenge">Link</a></td>
+</tr>
+<tr>
+<td>73</td>
+<td>reset-password</td>
+<td>reset-password-mfa-webauthn-roaming-challenge</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Reset-Password-Mfa-WebAuthn-Roaming-Challenge">Link</a></td>
+</tr>
+<tr>
+<td>74</td>
+<td>consent</td>
+<td>consent</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.consent">Link</a></td>
+</tr>
+<tr>
+<td>75</td>
+<td>customized-consent</td>
+<td>customized-consent</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Customized-Consent">Link</a></td>
+</tr>
+<tr>
+<td>76</td>
+<td>email-otp-challenge</td>
+<td>email-otp-challenge</td>
+<td><a href="https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Email-OTP-Challenge">Link</a></td>
+</tr>
+</tbody>
+</table>
+</details>
+<hr>
+<h2 id="hooks" class="tsd-anchor-link">Hooks<a href="#hooks" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><h3 id="context-hooks-available-in-all-screens" class="tsd-anchor-link">Context Hooks (Available in all screens)<a href="#context-hooks-available-in-all-screens" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><ul>
+<li><code>useUser()</code> - Current user information</li>
+<li><code>useTenant()</code> - Tenant configuration</li>
+<li><code>useClient()</code> - Application client information</li>
+<li><code>useScreen()</code> - Current screen data and configuration</li>
+<li><code>useTransaction()</code> - Transaction state and methods</li>
+<li><code>useBranding()</code> - Tenant branding and theme</li>
+<li><code>useOrganization()</code> - Organization context (if applicable)</li>
+<li><code>usePrompt()</code> - Current authentication prompt</li>
+<li><code>useUntrustedData()</code> - Untrusted data from the authentication flow</li>
+</ul>
+<h3 id="utility-hooks" class="tsd-anchor-link">Utility Hooks<a href="#utility-hooks" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>Specialized hooks for form validation, polling, and identifier management:</p>
+<h4 id="identifier-management" class="tsd-anchor-link">Identifier Management<a href="#identifier-management" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4><ul>
+<li><code>useLoginIdentifiers()</code> - Get available login identifier types (email, phone, username)</li>
+<li><code>useSignupIdentifiers()</code> - Get available signup identifier types, each with its <code>required</code> status</li>
+</ul>
+<h4 id="form-validation" class="tsd-anchor-link">Form Validation<a href="#form-validation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4><ul>
+<li><code>usePasswordValidation(password, rules)</code> - Real-time password strength validation</li>
+<li><code>useUsernameValidation(username)</code> - Username format and availability validation</li>
+</ul>
+<h4 id="mfa-polling" class="tsd-anchor-link">MFA &amp; Polling<a href="#mfa-polling" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4><ul>
+<li><code>useMfaPolling(options)</code> - Manage MFA push notification polling lifecycle</li>
+<li><code>useResend(options)</code> - Handle resend operations with cooldown timers</li>
+</ul>
+<h3 id="common-hooks" class="tsd-anchor-link">Common Hooks<a href="#common-hooks" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>General-purpose hooks available across all screens:</p>
+<h4 id="screen-management" class="tsd-anchor-link">Screen Management<a href="#screen-management" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4><ul>
+<li><code>useCurrentScreen()</code> - Get complete current screen context data</li>
+<li><code>useAuth0Themes()</code> - Access tenant branding and theme configuration</li>
+</ul>
+<h4 id="error-handling" class="tsd-anchor-link">Error Handling<a href="#error-handling" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4><ul>
+<li><code>useErrors(options)</code> - Comprehensive error management with categorization
+<ul>
+<li>Filter by error kind: <code>'validation'</code>, <code>'auth0'</code>, <code>'configuration'</code></li>
+<li>Filter by field name for form-specific errors</li>
+<li>Dismiss individual or all errors</li>
+</ul>
+</li>
+</ul>
+<h3 id="screen-specific-action-methods" class="tsd-anchor-link">Screen-Specific Action Methods<a href="#screen-specific-action-methods" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>Each screen module exports methods for screen actions:</p>
+<pre><code class="tsx"><span class="hl-4">// Login ID Screen</span><br/><span class="hl-3">import</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-5">loginMethod</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">continueWithFederatedLogin</span><br/><span class="hl-1">} </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&#39;@auth0/auth0-acul-react/login-id&#39;</span><span class="hl-1">;</span><br/><br/><span class="hl-4">// Password Screen</span><br/><span class="hl-3">import</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-5">loginMethod</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">forgotPasswordMethod</span><br/><span class="hl-1">} </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&#39;@auth0/auth0-acul-react/login-password&#39;</span><span class="hl-1">;</span><br/><br/><span class="hl-4">// MFA Push Challenge</span><br/><span class="hl-3">import</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-5">continueMethod</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">resendPushNotification</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">useMfaPolling</span><br/><span class="hl-1">} </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&#39;@auth0/auth0-acul-react/mfa-push-challenge-push&#39;</span><span class="hl-1">;</span>
+</code><button type="button">Copy</button></pre>
+
+<h2 id="examples" class="tsd-anchor-link">Examples<a href="#examples" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><ul>
+<li><a href="https://github.com/auth0/universal-login/tree/master/packages/auth0-acul-react/examples">React Examples</a> - Complete React component examples</li>
+<li><a href="https://github.com/auth0/auth0-acul-react-boilerplate">React Boilerplate</a> - Full React application template</li>
+</ul>
+<hr>
+<p><a id="feedback"></a></p>
+<h2 id="💬-feedback" class="tsd-anchor-link">💬 Feedback<a href="#💬-feedback" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><h3 id="contributing" class="tsd-anchor-link">Contributing<a href="#contributing" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>We appreciate feedback and contribution to this repo! Before you get started, please see the following:</p>
+<ul>
+<li><a href="https://github.com/auth0/open-source-template/blob/master/GENERAL-CONTRIBUTING.md">Auth0's general contribution guidelines</a></li>
+<li><a href="https://github.com/auth0/open-source-template/blob/master/CODE-OF-CONDUCT.md">Auth0's code of conduct guidelines</a></li>
+</ul>
+<h3 id="raise-an-issue" class="tsd-anchor-link">Raise an issue<a href="#raise-an-issue" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>To provide feedback or report a bug, please <a href="https://github.com/auth0/universal-login/issues">raise an issue on our issue tracker</a>.</p>
+<h3 id="vulnerability-reporting" class="tsd-anchor-link">Vulnerability Reporting<a href="#vulnerability-reporting" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>Please do not report security vulnerabilities on the public GitHub issue tracker. The <a href="https://auth0.com/responsible-disclosure-policy">Responsible Disclosure Program</a> details the procedure for disclosing security issues.</p>
+<h3 id="legal" class="tsd-anchor-link">Legal<a href="#legal" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p><strong>Early Access.</strong> This SDK and its associated product are made available only in Early Access (&quot;EA&quot;) format and are governed by the Free Trial terms of the <a href="https://www.okta.com/agreements/#mastersubscriptionagreement">Okta Master Subscription Agreement</a>. If Okta elects to make a version of this SDK and its associated product Generally Available (&quot;GA&quot;), such GA version may have different pricing, product and feature configurations, and use of the GA product and SDK will be subject to the standard terms of the Agreement (or other such titled written or electronic agreement addressing the same subject matter) between Okta and Customer.&quot;</p>
+<hr>
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: light)" srcset="https://cdn.auth0.com/website/sdks/logos/auth0_light_mode.png"   width="150">
+    <source media="(prefers-color-scheme: dark)" srcset="https://cdn.auth0.com/website/sdks/logos/auth0_dark_mode.png" width="150">
+    <img alt="Auth0 Logo" src="https://cdn.auth0.com/website/sdks/logos/auth0_light_mode.png" width="150">
+  </picture>
+</p>
+<p align="center">Auth0 is an easy to implement, adaptable authentication and authorization platform. To learn more checkout <a href="https://auth0.com/why-auth0">Why Auth0?</a></p>
+<p align="center">
+This project is licensed under the MIT license. See the <a href="https://github.com/auth0/auth0.js/blob/master/LICENSE"> LICENSE</a> file for more info.</p></div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-accordion"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-chevronDown"></use></svg><h3>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><span class="settings-label">Member Visibility</span><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li></ul></div><div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-chevronDown"></use></svg><h3>On This Page</h3></summary><div class="tsd-accordion-details"><a href="#auth0-acul-react-sdk"><span>Auth0 <wbr/>ACUL <wbr/>React <wbr/>SDK</span></a><ul><li><a href="#📚-documentation"><span>📚 <wbr/>Documentation</span></a></li><li><a href="#🚀-getting-started"><span>🚀 <wbr/>Getting started</span></a></li><li><ul><li><a href="#prerequisites"><span>Prerequisites</span></a></li><li><a href="#installation"><span>Installation</span></a></li><li><a href="#importing-the-sdk"><span>Importing the <wbr/>SDK</span></a></li><li><ul><li><a href="#partial-imports"><span>Partial <wbr/>Imports</span></a></li><li><a href="#root-imports"><span>Root <wbr/>Imports</span></a></li><li><a href="#types-interfaces"><span>Types / <wbr/>Interfaces</span></a></li></ul></li></ul></li><li><a href="#💻-api-reference"><span>💻 <wbr/>API <wbr/>Reference</span></a></li><li><ul><li><a href="#screens"><span>Screens</span></a></li></ul></li><li><a href="#hooks"><span>Hooks</span></a></li><li><ul><li><a href="#context-hooks-available-in-all-screens"><span>Context <wbr/>Hooks (<wbr/>Available in all screens)</span></a></li><li><a href="#utility-hooks"><span>Utility <wbr/>Hooks</span></a></li><li><ul><li><a href="#identifier-management"><span>Identifier <wbr/>Management</span></a></li><li><a href="#form-validation"><span>Form <wbr/>Validation</span></a></li><li><a href="#mfa-polling"><span>MFA &amp; <wbr/>Polling</span></a></li></ul></li><li><a href="#common-hooks"><span>Common <wbr/>Hooks</span></a></li><li><ul><li><a href="#screen-management"><span>Screen <wbr/>Management</span></a></li><li><a href="#error-handling"><span>Error <wbr/>Handling</span></a></li></ul></li><li><a href="#screen-specific-action-methods"><span>Screen-<wbr/>Specific <wbr/>Action <wbr/>Methods</span></a></li></ul></li><li><a href="#examples"><span>Examples</span></a></li><li><a href="#💬-feedback"><span>💬 <wbr/>Feedback</span></a></li><li><ul><li><a href="#contributing"><span>Contributing</span></a></li><li><a href="#raise-an-issue"><span>Raise an issue</span></a></li><li><a href="#vulnerability-reporting"><span>Vulnerability <wbr/>Reporting</span></a></li><li><a href="#legal"><span>Legal</span></a></li></ul></li></ul></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="modules.html">@auth0/auth0-acul-react - v1.0.0-alpha.3</a><ul class="tsd-small-nested-navigation" id="tsd-nav-container"><li>Loading...</li></ul></nav></div></div></div><footer></footer><div class="overlay"></div></body></html>
