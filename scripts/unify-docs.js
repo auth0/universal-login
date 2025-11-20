@@ -206,6 +206,7 @@ async function getPackagesWithDocs() {
       console.log(`🔍 Auto-detected changed packages: ${changedPackages.join(', ')}`);
     } else if (changedPackages.length === 0 && !packageFilter && !packagesFilter && !forceAll) {
       console.log('🔍 No changed packages detected. Use --all to force rebuild all packages.');
+      return packages; // Early return - don't process any packages
     }
 
     for (const packageName of validPackageNames) {
@@ -587,22 +588,6 @@ async function unifyDocumentation() {
     if (!exists) {
       await fs.mkdir(UNIFIED_DOCS_DIR, { recursive: true });
       console.log(`📁 Created unified docs directory: ${UNIFIED_DOCS_DIR}`);
-    } else {
-      // Clean existing unified docs (except README.md if it exists)
-      console.log('🧹 Cleaning existing unified docs directory...');
-      const items = await fs.readdir(UNIFIED_DOCS_DIR);
-      await Promise.all(items.map(async (item) => {
-        if (item !== 'README.md') {
-          const itemPath = path.join(UNIFIED_DOCS_DIR, item);
-          const stat = await fs.stat(itemPath);
-          if (stat.isDirectory()) {
-            await fs.rm(itemPath, { recursive: true, force: true });
-          } else {
-            await fs.unlink(itemPath);
-          }
-        }
-      }));
-      console.log('   ✅ Cleaned existing unified docs directory');
     }
   } catch (error) {
     console.error('Error managing unified docs directory:', error.message);
