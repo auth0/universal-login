@@ -1,6 +1,6 @@
 # Change Log
 
-## [v1.0.0-alpha.3](https://github.com/auth0/universal-login/tree/auth0-acul-js%401.0.0-alpha.3) (2025-11-20)
+## [auth0-acul-js-1.0.0-alpha.3](https://github.com/auth0/universal-login/tree/auth0-acul-js-1.0.0-alpha.3) (2025-11-20)
 
 **Added**
 - Fix: Update API reference to point to github pages links [\#276](https://github.com/auth0/universal-login/pull/276) ([ankita10119](https://github.com/ankita10119))
