@@ -137,10 +137,10 @@ Refer to our [API Reference](#api-reference) for the full list of available type
 
 | No.    | Prompt             | Screen Name       | Documentation Link                                                                                    |
 |--------|--------------------|-------------------|--------------------------------------------------------------------------------------------|
-| 1      | login              | login             | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Login.html)                 |
+| 1      | login              | login             | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.login.html)                 |
 | 2      | login-id            | login-id          | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.login-id.html)               |
 | 3      | login-password     | login-password    | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.login-password.html)         |
-| 4      | signup-id          | signup-id         | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Signup-Id.html)              |
+| 4      | signup-id          | signup-id         | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.signup-id.html)              |
 | 5      | signup-password    | signup-password   | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.signup-password.html)        |
 
 <details>
@@ -161,8 +161,8 @@ Refer to our [API Reference](#api-reference) for the full list of available type
 | 16     | reset-password                 | reset-password                            | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.reset-password.html)                |
 | 17     | reset-password                 | reset-password-error                      | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.reset-password-error.html)            |
 | 18     | reset-password                 | reset-password-success                    | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.reset-password-success.html)         |
-| 19     | signup                         | signup                                    | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Signup.html)                        |
-| 20     | mfa                            | mfa-detect-browser-capabilities           | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.mfa-Detect-browser-capabilities.html)   |
+| 19     | signup                         | signup                                    | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.signup.html)                        |
+| 20     | mfa                            | mfa-detect-browser-capabilities           | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.mfa-detect-browser-capabilities.html)   |
 | 21     | mfa                            | mfa-enroll-result                         | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.mfa-enroll-result.html)   |
 | 22     | mfa                            | mfa-begin-enroll-options                  | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.mfa-begin-enroll-options.html)       |
 | 23     | mfa                            | mfa-login-options                         | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.mfa-login-options.html)   |
@@ -201,21 +201,21 @@ Refer to our [API Reference](#api-reference) for the full list of available type
 | 56     | mfa-recovery-code              | mfa-recovery-code-enrollment              | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.mfa-recovery-code-enrollment.html)   |
 | 57     | reset-password                 | reset-password-mfa-phone-challenge        | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.reset-password-mfa-phone-challenge.html)   |
 | 58     | mfa-recovery-code              | mfa-recovery-code-challenge-new-code      | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.mfa-recovery-code-challenge-new-code.html) |
-| 59     | logout                         | logout                                    | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.Logout.html) |
+| 59     | logout                         | logout                                    | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.logout.html) |
 | 60     | logout                         | logout-aborted                            | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.logout-aborted.html) |
 | 61     | logout                         | logout-complete                           | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.logout-complete.html) |
 | 62     | email-verification             | email-verification-result                 | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.email-verification-result.html) |
 | 63     | login-email-verification       | login-email-verification                  | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.login-email-verification.html) |
-| 64     |mfa-webauthn                    | mfa-webauthn-platform-enrollment        | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.mfa-webAuthn-platform-enrollment.html)                        |
-| 65     |mfa-webauthn                    | mfa-webauthn-error        | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.mfa-webAuthn-error.html)                        |
-| 66     |mfa-webauthn                    | mfa-webauthn-roaming-enrollment         | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.mfa-webAuthn-roaming-enrollment.html)   |
-| 67     |mfa-webauthn                    | mfa-webauthn-roaming-challenge          | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.mfa-webAuthn-roaming-challenge.html)    |
-| 68     |mfa-webauthn                    | mfa-webauthn-platform-challenge         | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.mfa-webAuthn-platform-challenge.html)   |
-| 69     |mfa-webauthn                    | mfa-webauthn-enrollment-success         | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.mfa-webAuthn-enrollment-success.html)   |
-| 70     |mfa-webauthn                    | mfa-webauthn-change-key-nickname        | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.mfa-webAuthn-change-key-nickname.html)   |
-| 71     |mfa-webauthn                    | mfa-webauthn-not-available-error        | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/screens.mfa-webAuthn-not-available-error.html)   |
-| 72     |reset-password                    | reset-password-mfa-webauthn-platform-challenge | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.reset-password-mfa-webAuthn-platform-challenge.html)                |
-| 73     |reset-password                    | reset-password-mfa-webauthn-roaming-challenge | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.reset-password-mfa-webAuthn-roaming-challenge.html)   |
+| 64     |mfa-webauthn                    | mfa-webauthn-platform-enrollment        | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.mfa-webauthn-platform-enrollment.html)                        |
+| 65     |mfa-webauthn                    | mfa-webauthn-error        | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.mfa-webauthn-error.html)                        |
+| 66     |mfa-webauthn                    | mfa-webauthn-roaming-enrollment         | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.mfa-webauthn-roaming-enrollment.html)   |
+| 67     |mfa-webauthn                    | mfa-webauthn-roaming-challenge          | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.mfa-webauthn-roaming-challenge.html)    |
+| 68     |mfa-webauthn                    | mfa-webauthn-platform-challenge         | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.mfa-webauthn-platform-challenge.html)   |
+| 69     |mfa-webauthn                    | mfa-webauthn-enrollment-success         | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.mfa-webauthn-enrollment-success.html)   |
+| 70     |mfa-webauthn                    | mfa-webauthn-change-key-nickname        | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.mfa-webauthn-change-key-nickname.html)   |
+| 71     |mfa-webauthn                    | mfa-webauthn-not-available-error        | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/screens.mfa-webauthn-not-available-error.html)   |
+| 72     |reset-password                    | reset-password-mfa-webauthn-platform-challenge | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.reset-password-mfa-webauthn-platform-challenge.html)                |
+| 73     |reset-password                    | reset-password-mfa-webauthn-roaming-challenge | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.reset-password-mfa-webauthn-roaming-challenge.html)   |
 | 74     |consent                   | consent | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.consent.html)   |
 | 75     |customized-consent        | customized-consent | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.customized-consent.html)   |
 | 76     |email-otp-challenge                   | email-otp-challenge | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.email-otp-challenge.html)   |
