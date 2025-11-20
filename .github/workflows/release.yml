@@ -38,8 +38,8 @@ jobs:
           REF="${{ github.head_ref || github.ref_name }}"
           echo "REF=$REF"
 
-          # Extract DIR_NAME from branch name - extract package name before version
-          DIR_NAME=$(echo "$REF" | sed -E 's|^release/([a-zA-Z0-9-]+)-[0-9]+\.[0-9]+\.[0-9]+.*$|\1|')
+          # Extract DIR_NAME from branch name - handle v prefix in version
+          DIR_NAME=$(echo "$REF" | sed -E 's|^release/([a-zA-Z0-9-]+)-v?[0-9]+\.[0-9]+\.[0-9]+.*$|\1|')
           
           PACKAGE_JSON_PATH="packages/$DIR_NAME/package.json"
           PACKAGE_NAME=$(jq -r .name "$PACKAGE_JSON_PATH")
@@ -55,7 +55,7 @@ jobs:
           echo "name_unscoped=$PACKAGE_NAME_UNSCOPED" >> $GITHUB_OUTPUT
           echo "dir=$DIR_NAME" >> $GITHUB_OUTPUT
           echo "version=$PACKAGE_VERSION" >> $GITHUB_OUTPUT
-          echo "tag_name=$PACKAGE_NAME_UNSCOPED-$PACKAGE_VERSION" >> $GITHUB_OUTPUT
+          echo "tag_name=$PACKAGE_NAME_UNSCOPED-v$PACKAGE_VERSION" >> $GITHUB_OUTPUT
 
       - name: Install rimraf globally
         run: npm install -g rimraf
