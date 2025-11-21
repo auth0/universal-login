@@ -209,7 +209,7 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 | 47     | device-flow                    | device-code-activation-allowed            | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.DeviceCodeActivationAllowed.html)   |
 | 48     | device-flow                    | device-code-activation-denied             | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.DeviceCodeActivationDenied.html)   |
 | 49     | device-flow                    | device-code-activation                    | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.DeviceCodeActivation.html)   |
-| 50     | reset-password             | reset-password-mfa-recovery-code-challenge | [Link](https://auth0.github.io/universal-login/classes/Classes.ResetPasswordMfaRecoveryCodeChallenge.html) |
+| 50     | reset-password             | reset-password-mfa-recovery-code-challenge | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.ResetPasswordMfaRecoveryCodeChallenge.html) |
 | 51     | reset-password                 | reset-password-mfa-voice                  | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.ResetPasswordMfaVoiceChallenge.html)   |
 | 52     | common                         | redeem-ticket                             | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.RedeemTicket.html)   |
 | 53     | device-flow                    | device-code-confirmation                  | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.DeviceCodeConfirmation.html)   |
