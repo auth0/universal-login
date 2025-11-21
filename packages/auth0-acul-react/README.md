@@ -213,7 +213,7 @@ Refer to our [API Reference](#api-reference) for the full list of available type
 | 68     |mfa-webauthn                    | mfa-webauthn-platform-challenge         | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.mfa-webauthn-platform-challenge.html)   |
 | 69     |mfa-webauthn                    | mfa-webauthn-enrollment-success         | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.mfa-webauthn-enrollment-success.html)   |
 | 70     |mfa-webauthn                    | mfa-webauthn-change-key-nickname        | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.mfa-webauthn-change-key-nickname.html)   |
-| 71     |mfa-webauthn                    | mfa-webauthn-not-available-error        | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/screens.mfa-webauthn-not-available-error.html)   |
+| 71     |mfa-webauthn                    | mfa-webauthn-not-available-error        | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.mfa-webauthn-not-available-error.html)   |
 | 72     |reset-password                    | reset-password-mfa-webauthn-platform-challenge | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.reset-password-mfa-webauthn-platform-challenge.html)                |
 | 73     |reset-password                    | reset-password-mfa-webauthn-roaming-challenge | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.reset-password-mfa-webauthn-roaming-challenge.html)   |
 | 74     |consent                   | consent | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.consent.html)   |
