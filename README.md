@@ -15,11 +15,6 @@ The **Auth0 ACUL SDKs** enable you to work with Advanced Customization for Unive
 
 They simplify integrating authentication screens (login, signup, passwordless, passkey enrollment, etc.) into your web applications, providing the necessary tools for seamless implementation.
 
-> [!CAUTION]
->
-> This feature is still in **Early Access**.
-
-
 ### SDKs
 - [auth0-acul-js](packages/auth0-acul-js/)
 - [auth0-acul-react](packages/auth0-acul-react/) - React hooks and components wrapper
@@ -160,10 +155,6 @@ To provide feedback or report a bug, please [raise an issue on our issue tracker
 ### Vulnerability Reporting
 
 Please do not report security vulnerabilities on the public GitHub issue tracker. The [Responsible Disclosure Program](https://auth0.com/responsible-disclosure-policy) details the procedure for disclosing security issues.
-
-### Legal
-
-**Early Access.** This SDK and its associated product are made available only in Early Access (“EA”) format and are governed by the Free Trial terms of the [Okta Master Subscription Agreement](https://www.okta.com/agreements/#mastersubscriptionagreement). If Okta elects to make a version of this SDK and its associated product Generally Available (“GA”), such GA version may have different pricing, product and feature configurations, and use of the GA product and SDK will be subject to the standard terms of the Agreement (or other such titled written or electronic agreement addressing the same subject matter) between Okta and Customer."
 
 ---
 
