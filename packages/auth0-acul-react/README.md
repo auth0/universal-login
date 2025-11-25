@@ -17,13 +17,9 @@
 
 </div>
 
-Developers using Auth0’s Universal Login can use this React SDK to customize screens like login, signup, or reset password. It provides hooks, context, and utilities to build flexible, type-safe experiences that match your brand and deliver a seamless user experience.
+Developers using Auth0's Universal Login can use this React SDK to customize screens like login, signup, or reset password. It provides hooks, context, and utilities to build flexible, type-safe experiences that match your brand and deliver a seamless user experience.
 
 ---
-
-> [!CAUTION]
->
-> This feature is still in **Early Access**.
 
 <a id="documentation"></a>
 ## 📚 Documentation
@@ -310,10 +306,6 @@ To provide feedback or report a bug, please [raise an issue on our issue tracker
 ### Vulnerability Reporting
 
 Please do not report security vulnerabilities on the public GitHub issue tracker. The [Responsible Disclosure Program](https://auth0.com/responsible-disclosure-policy) details the procedure for disclosing security issues.
-
-### Legal
-
-**Early Access.** This SDK and its associated product are made available only in Early Access ("EA") format and are governed by the Free Trial terms of the [Okta Master Subscription Agreement](https://www.okta.com/agreements/#mastersubscriptionagreement). If Okta elects to make a version of this SDK and its associated product Generally Available ("GA"), such GA version may have different pricing, product and feature configurations, and use of the GA product and SDK will be subject to the standard terms of the Agreement (or other such titled written or electronic agreement addressing the same subject matter) between Okta and Customer."
 
 ---
 
