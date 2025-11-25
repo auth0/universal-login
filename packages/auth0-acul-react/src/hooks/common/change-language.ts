@@ -49,11 +49,13 @@ import { changeLanguage, type LanguageChangeOptions } from '@auth0/auth0-acul-js
  * @example
  * With tenant enabled locales
  * ```tsx
- * import { useChangeLanguage, useAuth } from '@auth0/auth0-acul-react';
+ * import { useChangeLanguage, useCurrentScreen } from '@auth0/auth0-acul-react';
  *
  * const LanguageSelector = () => {
  *   const changeLanguage = useChangeLanguage();
- *   const { tenant, transaction } = useAuth();
+ *   const screenOptions = useCurrentScreen();
+ *   const tenant = screenOptions?.tenant;
+ *   const transaction = screenOptions?.transaction;
  *
  *   const handleChangeLanguage = async (language: string) => {
  *     try {
@@ -65,7 +67,7 @@ import { changeLanguage, type LanguageChangeOptions } from '@auth0/auth0-acul-js
  *
  *   return (
  *     <>
- *       {tenant.enabledLocales && (
+ *       {tenant?.enabledLocales && (
  *         <div>
  *           <label htmlFor="language-select">
  *             Language
@@ -73,7 +75,7 @@ import { changeLanguage, type LanguageChangeOptions } from '@auth0/auth0-acul-js
  *           <select
  *             id="language-select"
  *             onChange={(e) => handleChangeLanguage(e.target.value)}
- *             defaultValue={transaction.locale}
+ *             defaultValue={transaction?.locale}
  *           >
  *             {tenant.enabledLocales.map((locale: string) => (
  *               <option key={locale} value={locale}>
