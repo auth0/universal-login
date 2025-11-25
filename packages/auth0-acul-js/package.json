@@ -1,6 +1,6 @@
 {
   "name": "@auth0/auth0-acul-js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "module": "dist/index.js",
   "exports": {
