@@ -31,7 +31,7 @@ export const {
 export const continueMethod = (payload?: CustomOptions) => withError(instance.continue(payload));
 
 // Common hooks
-export { useCurrentScreen, useErrors, useAuth0Themes } from '../hooks';
+export { useCurrentScreen, useErrors, useAuth0Themes, useChangeLanguage } from '../hooks';
 
 // Main instance hook. Returns singleton instance of RedeemTicket
 export const useRedeemTicket = (): RedeemTicketMembers => useMemo(() => instance, []);

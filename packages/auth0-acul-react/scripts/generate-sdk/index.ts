@@ -278,7 +278,7 @@ for (const symbol of screenSymbols) {
   }
   screenLines.push(`\n// Common hooks`);
   screenLines.push(
-    `export { useCurrentScreen, useErrors, useAuth0Themes } from '../hooks';`
+    `export { useCurrentScreen, useErrors, useAuth0Themes, useChangeLanguage } from '../hooks';`
   );
 
   // Main hook (memoized)
@@ -302,7 +302,7 @@ for (const symbol of screenSymbols) {
 indexTypes.push('\n// Common types from core SDK');
 // indexTypes.push(`export type * from '@auth0/auth0-acul-js';`);
 
-indexExports.push(`export { useCurrentScreen, useErrors, useAuth0Themes } from './hooks';`);
+indexExports.push(`export { useCurrentScreen, useErrors, useAuth0Themes, useChangeLanguage } from './hooks';`);
 indexExports.splice(0, 0, `import './telemetry';\n`);
 indexExports.splice(0, 0, `// Initialize telemetry FIRST, before any Core SDK imports`);
 

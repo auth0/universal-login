@@ -32,7 +32,7 @@ export const confirmLogout = (payload: ConfirmLogoutOptions) =>
   withError(instance.confirmLogout(payload));
 
 // Common hooks
-export { useCurrentScreen, useErrors, useAuth0Themes } from '../hooks';
+export { useCurrentScreen, useErrors, useAuth0Themes, useChangeLanguage } from '../hooks';
 
 // Main instance hook. Returns singleton instance of Logout
 export const useLogout = (): LogoutMembers => useMemo(() => instance, []);

@@ -38,7 +38,7 @@ export const abortPasskeyEnrollment = (payload: AbortEnrollmentOptions) =>
   withError(instance.abortPasskeyEnrollment(payload));
 
 // Common hooks
-export { useCurrentScreen, useErrors, useAuth0Themes } from '../hooks';
+export { useCurrentScreen, useErrors, useAuth0Themes, useChangeLanguage } from '../hooks';
 
 // Main instance hook. Returns singleton instance of PasskeyEnrollmentLocal
 export const usePasskeyEnrollmentLocal = (): PasskeyEnrollmentLocalMembers =>

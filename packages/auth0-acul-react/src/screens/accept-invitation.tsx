@@ -35,7 +35,7 @@ export const acceptInvitation = (payload?: CustomOptions) =>
   withError(instance.acceptInvitation(payload));
 
 // Common hooks
-export { useCurrentScreen, useErrors, useAuth0Themes } from '../hooks';
+export { useCurrentScreen, useErrors, useAuth0Themes, useChangeLanguage } from '../hooks';
 
 // Main instance hook. Returns singleton instance of AcceptInvitation
 export const useAcceptInvitation = (): AcceptInvitationMembers => useMemo(() => instance, []);

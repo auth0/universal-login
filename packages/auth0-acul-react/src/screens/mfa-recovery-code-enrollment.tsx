@@ -35,7 +35,7 @@ export const continueMethod = (payload: MfaRecoveryCodeEnrollmentContinueOptions
   withError(instance.continue(payload));
 
 // Common hooks
-export { useCurrentScreen, useErrors, useAuth0Themes } from '../hooks';
+export { useCurrentScreen, useErrors, useAuth0Themes, useChangeLanguage } from '../hooks';
 
 // Main instance hook. Returns singleton instance of MfaRecoveryCodeEnrollment
 export const useMfaRecoveryCodeEnrollment = (): MfaRecoveryCodeEnrollmentMembers =>
