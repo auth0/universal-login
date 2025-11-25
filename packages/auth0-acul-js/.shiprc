@@ -1,11 +1,11 @@
 {
     "files": {
         "CHANGELOG.md": [],
-        ".version": ["v{MAJOR}.{MINOR}.{PATCH}"],
-        "package.json": ["\"version\": \"{MAJOR}.{MINOR}.{PATCH}\""]
+        ".version": [],
+        "package.json": []
     },
     "prefixVersion": true,
     "packageLabel": "auth0-acul-js",
     "packagePath": "auth0-acul-js",
-    "postbump": "npm run build"
+    "postbump": "node scripts/update-react-local.cjs && npm run build && cd ../../ && npm install"
 }
