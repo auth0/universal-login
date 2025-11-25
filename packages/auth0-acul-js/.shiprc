@@ -7,5 +7,5 @@
     "prefixVersion": true,
     "packageLabel": "auth0-acul-js",
     "packagePath": "auth0-acul-js",
-    "postbump": "npm run build && cd ../../ && npm install"
+    "postbump": "cd ../../ && npm install && cd packages/auth0-acul-js && npm run build"
 }
