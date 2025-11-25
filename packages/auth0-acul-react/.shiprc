@@ -1,7 +1,8 @@
 {
     "files": {
         "CHANGELOG.md": [],
-        ".version": []
+        ".version": ["v{MAJOR}.{MINOR}.{PATCH}"],
+        "package.json": ["\"version\": \"{MAJOR}.{MINOR}.{PATCH}\""]
     },
     "prefixVersion": true,
     "packageLabel": "auth0-acul-react",
