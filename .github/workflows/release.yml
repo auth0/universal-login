@@ -16,6 +16,10 @@ jobs:
     if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.merged && startsWith(github.event.pull_request.head.ref, 'release/'))
     runs-on: ubuntu-latest
     
+    secrets:
+      npm-token: ${{ secrets.NPM_TOKEN }}
+      github-token: ${{ secrets.GITHUB_TOKEN }}
+    
     steps:
       - uses: actions/checkout@v4
 
@@ -51,11 +55,18 @@ jobs:
             exit 1
           fi
 
+          # Determine if this is a prerelease
+          IS_PRERELEASE=false
+          if [[ "$PACKAGE_VERSION" =~ (alpha|beta|rc) ]]; then
+            IS_PRERELEASE=true
+          fi
+
           echo "name=$PACKAGE_NAME" >> $GITHUB_OUTPUT
           echo "name_unscoped=$PACKAGE_NAME_UNSCOPED" >> $GITHUB_OUTPUT
           echo "dir=$DIR_NAME" >> $GITHUB_OUTPUT
           echo "version=$PACKAGE_VERSION" >> $GITHUB_OUTPUT
           echo "tag_name=$PACKAGE_NAME_UNSCOPED-v$PACKAGE_VERSION" >> $GITHUB_OUTPUT
+          echo "is_prerelease=$IS_PRERELEASE" >> $GITHUB_OUTPUT
 
       - name: Install rimraf globally
         run: npm install -g rimraf
@@ -64,20 +75,22 @@ jobs:
         uses: ./.github/actions/npm-publish
         with:
            node-version: 22
-           npm-token: ${{ secrets.NPM_TOKEN }}
+           npm-token: ${{ secrets.npm-token }}
            version: ${{ steps.meta.outputs.version }}
            require-build: true
            package: ${{ steps.meta.outputs.dir }}
            release-directory: ${{ steps.meta.outputs.dir }}
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.npm-token }}
 
       - name: Create GitHub Release
         uses: ./.github/actions/release-create
         with:
+          github_token: ${{ secrets.github-token }}
           tag: ${{ steps.meta.outputs.tag_name }}
           name: ${{ steps.meta.outputs.tag_name }}
           version: ${{ steps.meta.outputs.version }}
+          prerelease: ${{ steps.meta.outputs.is_prerelease }}
 
       - name: Checkout current gh-pages branch to preserve existing docs  
         uses: actions/checkout@v4
@@ -91,10 +104,10 @@ jobs:
           if [ -d "existing-docs" ]; then
             mkdir -p ./docs
             cp -r existing-docs/* ./docs/ 2>/dev/null || true
-            echo "✅ Restored existing documentation"
+            echo "Restored existing documentation"
             ls -la ./docs/ || true
           else
-            echo "ℹ️ No existing docs found, creating fresh"
+            echo "No existing docs found, creating fresh"
             mkdir -p ./docs
           fi
 
@@ -104,6 +117,6 @@ jobs:
       - name: Deploy updated documentation
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.github-token }}
           publish_dir: ./docs
           keep_files: false
