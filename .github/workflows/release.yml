@@ -63,7 +63,7 @@ jobs:
         id: release_notes
         uses: ./.github/actions/get-release-notes
         with:
-          version: ${{ steps.meta.outputs.dir }}-${{ steps.meta.outputs.version }}
+          version: ${{ steps.meta.outputs.dir }}-v${{ steps.meta.outputs.version }}
           repo_name: ${{ github.event.repository.name }}
           repo_owner: ${{ github.event.repository.owner.login }}
           token: ${{ secrets.GITHUB_TOKEN }}
