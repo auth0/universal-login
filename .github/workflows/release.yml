@@ -2,10 +2,9 @@ name: Monorepo Release
 
 on:
   pull_request:
-    types:
-      - closed
+    types: [closed, opened, synchronize]
     branches:
-      - 'master'
+      - '*'
   workflow_dispatch:
 permissions:
   contents: write
@@ -13,7 +12,7 @@ permissions:
 
 jobs:
   release:
-    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.merged && startsWith(github.event.pull_request.head.ref, 'release/'))
+    # if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.merged && startsWith(github.event.pull_request.head.ref, 'release/'))
     runs-on: ubuntu-latest
     
     steps:
@@ -38,8 +37,8 @@ jobs:
           REF="${{ github.head_ref || github.ref_name }}"
           echo "REF=$REF"
 
-          # Extract DIR_NAME from branch name - handle v prefix in version
-          DIR_NAME=$(echo "$REF" | sed -E 's|^release/([a-zA-Z0-9-]+)-v?[0-9]+\.[0-9]+\.[0-9]+.*$|\1|')
+          # Extract DIR_NAME from branch name - extract package name before version
+          DIR_NAME=$(echo "$REF" | sed -E 's|^release/([a-zA-Z0-9-]+)-[0-9]+\.[0-9]+\.[0-9]+.*$|\1|')
           
           PACKAGE_JSON_PATH="packages/$DIR_NAME/package.json"
           PACKAGE_NAME=$(jq -r .name "$PACKAGE_JSON_PATH")
@@ -51,27 +50,28 @@ jobs:
             exit 1
           fi
 
-          # Determine if this is a prerelease
-          IS_PRERELEASE=false
-          if [[ "$PACKAGE_VERSION" =~ (alpha|beta|rc) ]]; then
-            IS_PRERELEASE=true
-          fi
-
           echo "name=$PACKAGE_NAME" >> $GITHUB_OUTPUT
           echo "name_unscoped=$PACKAGE_NAME_UNSCOPED" >> $GITHUB_OUTPUT
           echo "dir=$DIR_NAME" >> $GITHUB_OUTPUT
           echo "version=$PACKAGE_VERSION" >> $GITHUB_OUTPUT
-          echo "tag_name=$PACKAGE_NAME_UNSCOPED-v$PACKAGE_VERSION" >> $GITHUB_OUTPUT
-          echo "is_prerelease=$IS_PRERELEASE" >> $GITHUB_OUTPUT
+          echo "tag_name=$PACKAGE_NAME_UNSCOPED-$PACKAGE_VERSION" >> $GITHUB_OUTPUT
 
       - name: Install rimraf globally
         run: npm install -g rimraf
+
+      - name: Get release notes from PR
+        id: release_notes
+        uses: ./.github/actions/get-release-notes
+        with:
+          version: ${{ steps.meta.outputs.dir }}-${{ steps.meta.outputs.version }}
+          repo_name: ${{ github.event.repository.name }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to NPM
         uses: ./.github/actions/npm-publish
         with:
            node-version: 22
-           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+           npm-token: ${{ secrets.NPM_TOKEN }}
            version: ${{ steps.meta.outputs.version }}
            require-build: true
            package: ${{ steps.meta.outputs.dir }}
@@ -86,26 +86,7 @@ jobs:
           tag: ${{ steps.meta.outputs.tag_name }}
           name: ${{ steps.meta.outputs.tag_name }}
           version: ${{ steps.meta.outputs.version }}
-          prerelease: ${{ steps.meta.outputs.is_prerelease }}
-
-      - name: Checkout current gh-pages branch to preserve existing docs  
-        uses: actions/checkout@v4
-        with:
-          ref: gh-pages
-          path: existing-docs
-          fetch-depth: 1
-
-      - name: Restore existing docs before generation
-        run: |
-          if [ -d "existing-docs" ]; then
-            mkdir -p ./docs
-            cp -r existing-docs/* ./docs/ 2>/dev/null || true
-            echo "Restored existing documentation"
-            ls -la ./docs/ || true
-          else
-            echo "No existing docs found, creating fresh"
-            mkdir -p ./docs
-          fi
+          body: ${{ steps.release_notes.outputs.release-notes }}
 
       - name: Generate documentation for released package only
         run: npm run docs:unified ${{ steps.meta.outputs.dir }}
@@ -115,4 +96,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs
-          keep_files: false
+          keep_files: true
