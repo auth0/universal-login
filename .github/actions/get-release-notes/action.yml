@@ -32,7 +32,7 @@ runs:
             owner: process.env.REPO_OWNER,
             repo: process.env.REPO_NAME,
             state: 'all',
-            head: `release/${process.env.VERSION}`,
+            head: `${process.env.REPO_OWNER}:release/${process.env.VERSION}`,
           });
 
           if (pulls.length === 0 || !pulls[0]) {
