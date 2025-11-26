@@ -64,6 +64,30 @@ export default class MfaOtpEnrollmentCode extends BaseContext implements MfaOtpE
   }
 
   /**
+   * Toggles between QR code view and manual code entry view.
+   *
+   * @param {CustomOptions} [payload] - Optional payload.
+   * @returns {Promise<void>}
+   * @example
+   * ```typescript
+   * import MfaOtpEnrollmentCode from '@auth0/auth0-acul-js/mfa-otp-enrollment-code';
+   *
+   * const mfaOtpEnrollmentCode = new MfaOtpEnrollmentCode();
+   * await mfaOtpEnrollmentCode.toggleView();
+   * ```
+   */
+  async toggleView(payload?: CustomOptions): Promise<void> {
+    const options: FormOptions = {
+      state: this.transaction.state,
+      telemetry: [MfaOtpEnrollmentCode.screenIdentifier, 'toggleView'],
+    };
+    await new FormHandler(options).submitData<CustomOptions>({
+      ...payload,
+      action: FormActions.TOGGLE_VIEW,
+    });
+  }
+
+  /**
    * Allows the user to try another MFA method.
    *
    * @param {TryAnotherMethodOptions} [payload] - Optional payload.

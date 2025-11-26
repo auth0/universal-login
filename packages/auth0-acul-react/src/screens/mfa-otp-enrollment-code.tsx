@@ -8,6 +8,7 @@ import { registerScreen } from '../state/instance-store';
 import type {
   MfaOtpEnrollmentCodeMembers,
   ContinueOptions,
+  CustomOptions,
   TryAnotherMethodOptions,
 } from '@auth0/auth0-acul-js/mfa-otp-enrollment-code';
 
@@ -33,6 +34,7 @@ export const {
 
 // Submit functions
 export const continueMethod = (payload: ContinueOptions) => withError(instance.continue(payload));
+export const toggleView = (payload?: CustomOptions) => withError(instance.toggleView(payload));
 export const tryAnotherMethod = (payload?: TryAnotherMethodOptions) =>
   withError(instance.tryAnotherMethod(payload));
 

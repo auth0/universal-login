@@ -1,5 +1,6 @@
 import type { BaseMembers } from '../../interfaces/models/base-context';
 import type { ScreenMembers } from '../../interfaces/models/screen';
+import type { CustomOptions } from '../common';
 
 /**
  * Options for continuing with the MFA OTP enrollment code.
@@ -52,6 +53,12 @@ export interface MfaOtpEnrollmentCodeMembers extends BaseMembers {
    * @param payload The options containing the OTP code.
    */
   continue(payload: ContinueOptions): Promise<void>;
+
+  /**
+   * Toggles between QR code view and manual code entry view.
+   * @param payload Optional custom options to include with the request.
+   */
+  toggleView(payload?: CustomOptions): Promise<void>;
 
   /**
    * Allows the user to try another MFA method.
