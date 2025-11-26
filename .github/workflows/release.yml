@@ -65,6 +65,7 @@ jobs:
         with:
           version: ${{ steps.meta.outputs.dir }}-${{ steps.meta.outputs.version }}
           repo_name: ${{ github.event.repository.name }}
+          repo_owner: ${{ github.event.repository.owner.login }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to NPM
@@ -88,12 +89,12 @@ jobs:
           version: ${{ steps.meta.outputs.version }}
           body: ${{ steps.release_notes.outputs.release-notes }}
 
-      - name: Generate documentation for released package only
-        run: npm run docs:unified ${{ steps.meta.outputs.dir }}
+      # - name: Generate documentation for released package only
+      #   run: npm run docs:unified ${{ steps.meta.outputs.dir }}
 
-      - name: Deploy updated documentation
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
-          keep_files: true
+      # - name: Deploy updated documentation
+      #   uses: peaceiris/actions-gh-pages@v3
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     publish_dir: ./docs
+      #     keep_files: true
