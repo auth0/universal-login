@@ -90,7 +90,7 @@ jobs:
       - name: Create GitHub Release
         uses: ./.github/actions/release-create
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.meta.outputs.tag_name }}
           name: ${{ steps.meta.outputs.tag_name }}
           version: ${{ steps.meta.outputs.version }}
