@@ -6,6 +6,7 @@ export {
   useErrors,
   useAuth0Themes,
   useCurrentScreen,
+  useChangeLanguage,
   useLoginIdentifiers,
   useSignupIdentifiers,
   usePasskeyAutofill,

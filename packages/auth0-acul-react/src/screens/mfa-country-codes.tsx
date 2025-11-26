@@ -37,7 +37,7 @@ export const selectCountryCode = (payload: SelectCountryCodeOptions) =>
 export const goBack = (payload?: CustomOptions) => withError(instance.goBack(payload));
 
 // Common hooks
-export { useCurrentScreen, useErrors, useAuth0Themes } from '../hooks';
+export { useCurrentScreen, useErrors, useAuth0Themes, useChangeLanguage } from '../hooks';
 
 // Main instance hook. Returns singleton instance of MfaCountryCodes
 export const useMfaCountryCodes = (): MfaCountryCodesMembers => useMemo(() => instance, []);

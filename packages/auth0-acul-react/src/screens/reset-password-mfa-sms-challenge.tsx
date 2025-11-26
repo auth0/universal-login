@@ -43,7 +43,7 @@ export const getACall = (payload?: CustomOptions) => withError(instance.getACall
 export { useResend } from '../hooks/utility/resend-manager';
 
 // Common hooks
-export { useCurrentScreen, useErrors, useAuth0Themes } from '../hooks';
+export { useCurrentScreen, useErrors, useAuth0Themes, useChangeLanguage } from '../hooks';
 
 // Main instance hook. Returns singleton instance of ResetPasswordMfaSmsChallenge
 export const useResetPasswordMfaSmsChallenge = (): ResetPasswordMfaSmsChallengeMembers =>

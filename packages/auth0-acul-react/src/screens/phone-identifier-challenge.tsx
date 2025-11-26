@@ -45,7 +45,7 @@ export const switchToText = (payload?: CustomOptions) => withError(instance.swit
 export { useResend } from '../hooks/utility/resend-manager';
 
 // Common hooks
-export { useCurrentScreen, useErrors, useAuth0Themes } from '../hooks';
+export { useCurrentScreen, useErrors, useAuth0Themes, useChangeLanguage } from '../hooks';
 
 // Main instance hook. Returns singleton instance of PhoneIdentifierChallenge
 export const usePhoneIdentifierChallenge = (): PhoneIdentifierChallengeMembers =>

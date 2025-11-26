@@ -33,7 +33,7 @@ export const pickAuthenticator = (payload?: CustomOptions) =>
   withError(instance.pickAuthenticator(payload));
 
 // Common hooks
-export { useCurrentScreen, useErrors, useAuth0Themes } from '../hooks';
+export { useCurrentScreen, useErrors, useAuth0Themes, useChangeLanguage } from '../hooks';
 
 // Main instance hook. Returns singleton instance of MfaPushWelcome
 export const useMfaPushWelcome = (): MfaPushWelcomeMembers => useMemo(() => instance, []);

@@ -44,7 +44,7 @@ export const pickEmail = (payload?: CustomOptions) => withError(instance.pickEma
 export { useResend } from '../hooks/utility/resend-manager';
 
 // Common hooks
-export { useCurrentScreen, useErrors, useAuth0Themes } from '../hooks';
+export { useCurrentScreen, useErrors, useAuth0Themes, useChangeLanguage } from '../hooks';
 
 // Main instance hook. Returns singleton instance of MfaEmailChallenge
 export const useMfaEmailChallenge = (): MfaEmailChallengeMembers => useMemo(() => instance, []);
