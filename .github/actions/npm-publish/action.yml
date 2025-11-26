@@ -55,5 +55,5 @@ runs:
         else
           TAG="latest"
         fi
-        npm view . --json
+        npm publish --provenance --access public --tag $TAG
       shell: bash

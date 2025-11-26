@@ -2,7 +2,8 @@ name: Monorepo Release
 
 on:
   pull_request:
-    types: [closed, opened, synchronize]
+    types:
+      - closed
     branches:
       - 'master'
   workflow_dispatch:
@@ -12,7 +13,7 @@ permissions:
 
 jobs:
   release:
-    # if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.merged && startsWith(github.event.pull_request.head.ref, 'release/'))
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.merged && startsWith(github.event.pull_request.head.ref, 'release/'))
     runs-on: ubuntu-latest
     
     steps:
@@ -97,31 +98,31 @@ jobs:
           body: ${{ steps.release_notes.outputs.release-notes }}
           prerelease: ${{ steps.meta.outputs.is_prerelease }}
 
-      # - name: Checkout current gh-pages branch to preserve existing docs  
-      #   uses: actions/checkout@v4
-      #   with:
-      #     ref: gh-pages
-      #     path: existing-docs
-      #     fetch-depth: 1
+      - name: Checkout current gh-pages branch to preserve existing docs  
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: existing-docs
+          fetch-depth: 1
 
-      # - name: Restore existing docs before generation
-      #   run: |
-      #     if [ -d "existing-docs" ]; then
-      #       mkdir -p ./docs
-      #       cp -r existing-docs/* ./docs/ 2>/dev/null || true
-      #       echo "Restored existing documentation"
-      #       ls -la ./docs/ || true
-      #     else
-      #       echo "No existing docs found, creating fresh"
-      #       mkdir -p ./docs
-      #     fi
+      - name: Restore existing docs before generation
+        run: |
+          if [ -d "existing-docs" ]; then
+            mkdir -p ./docs
+            cp -r existing-docs/* ./docs/ 2>/dev/null || true
+            echo "Restored existing documentation"
+            ls -la ./docs/ || true
+          else
+            echo "No existing docs found, creating fresh"
+            mkdir -p ./docs
+          fi
 
-      # - name: Generate documentation for released package only
-      #   run: npm run docs:unified ${{ steps.meta.outputs.dir }}
+      - name: Generate documentation for released package only
+        run: npm run docs:unified ${{ steps.meta.outputs.dir }}
 
-      # - name: Deploy updated documentation
-      #   uses: peaceiris/actions-gh-pages@v3
-      #   with:
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      #     publish_dir: ./docs
-      #     keep_files: false
+      - name: Deploy updated documentation
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
+          keep_files: false
