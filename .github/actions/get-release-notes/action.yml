@@ -28,13 +28,33 @@ runs:
       with:
         result-encoding: string
         script: |
+          console.log(`Searching for PR with head: ${process.env.REPO_OWNER}:release/${process.env.VERSION}`);
+          
           const { data: pulls } = await github.rest.pulls.list({
             owner: process.env.REPO_OWNER,
             repo: process.env.REPO_NAME,
             state: 'all',
             head: `${process.env.REPO_OWNER}:release/${process.env.VERSION}`,
           });
-          core.setOutput('RELEASE_NOTES', pulls[0].body);
+          
+          console.log(`Found ${pulls.length} PRs matching the criteria`);
+          
+          if (pulls.length === 0) {
+            console.log('No PR found for this release branch. Using default release notes.');
+            const defaultNotes = `## 🚀 Release ${process.env.VERSION}
+          
+          This release includes updates and improvements.
+          
+          ### 📦 Installation
+          \`\`\`bash
+          npm install @auth0/${process.env.VERSION.split('-')[0]}
+          \`\`\``;
+            core.setOutput('RELEASE_NOTES', defaultNotes);
+          } else {
+            const releaseNotes = pulls[0].body || 'No release notes provided in the PR.';
+            console.log('Using release notes from PR body');
+            core.setOutput('RELEASE_NOTES', releaseNotes);
+          }
       env:
         GITHUB_TOKEN: ${{ inputs.token }}
         REPO_OWNER: ${{ inputs.repo_owner }}
