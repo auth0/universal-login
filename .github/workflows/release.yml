@@ -67,11 +67,20 @@ jobs:
       - name: Install rimraf globally
         run: npm install -g rimraf
 
+      - name: Get release notes from PR
+        id: release_notes
+        uses: ./.github/actions/get-release-notes
+        with:
+          version: ${{ steps.meta.outputs.dir }}-v${{ steps.meta.outputs.version }}
+          repo_name: ${{ github.event.repository.name }}
+          repo_owner: ${{ github.event.repository.owner.login }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Publish to NPM
         uses: ./.github/actions/npm-publish
         with:
            node-version: 22
-           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+           npm-token: ${{ secrets.NPM_TOKEN }}
            version: ${{ steps.meta.outputs.version }}
            require-build: true
            package: ${{ steps.meta.outputs.dir }}
@@ -86,6 +95,7 @@ jobs:
           tag: ${{ steps.meta.outputs.tag_name }}
           name: ${{ steps.meta.outputs.tag_name }}
           version: ${{ steps.meta.outputs.version }}
+          body: ${{ steps.release_notes.outputs.release-notes }}
           prerelease: ${{ steps.meta.outputs.is_prerelease }}
 
       - name: Checkout current gh-pages branch to preserve existing docs  

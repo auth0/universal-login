@@ -27,14 +27,20 @@ runs:
       id: get_release_notes
       with:
         result-encoding: string
-        script: |
+        script: |          
           const { data: pulls } = await github.rest.pulls.list({
             owner: process.env.REPO_OWNER,
             repo: process.env.REPO_NAME,
             state: 'all',
-            head: `${process.env.REPO_OWNER}:release/${process.env.VERSION}`,
+            head: `release/${process.env.VERSION}`,
           });
-          core.setOutput('RELEASE_NOTES', pulls[0].body);
+
+          if (pulls.length === 0 || !pulls[0]) {
+            console.log('No PR found. Using default release notes.');
+            core.setOutput('RELEASE_NOTES', `## Release ${process.env.VERSION}\n\nThis release includes updates and improvements.`);
+          } else {
+            core.setOutput('RELEASE_NOTES', pulls[0].body || 'No release notes provided.');
+          }
       env:
         GITHUB_TOKEN: ${{ inputs.token }}
         REPO_OWNER: ${{ inputs.repo_owner }}
