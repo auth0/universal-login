@@ -1,27 +1,46 @@
 ##  React Component Example with TailwindCSS
 
 ```typescript
-import React from 'react';
-import ResetPasswordSuccess from '@auth0/auth0-acul-js/reset-password-success';
+import React, { useState } from "react";
+import ResetPasswordSuccess from "@auth0/auth0-acul-js/reset-password-success";
+import { withWindowDebug } from "../../utils";
+import { Logo } from "../../components/Logo";
 
-const ResetPasswordSuccessComponent: React.FC = () => {
-  const resetPasswordSuccessManager = new ResetPasswordSuccess();
-  const { screen } = resetPasswordSuccessManager;
-  const data = screen.texts?.description;
+const ResetPasswordSuccessScreen: React.FC = () => {
+  // Manager setup
+  const [resetPasswordSuccessManager] = useState(() => new ResetPasswordSuccess());
+  withWindowDebug(resetPasswordSuccessManager, 'resetPasswordSuccess');
 
   return (
-    <div className="w-[100vw] flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
-        <h2 className="text-2xl font-bold mb-6">Reset Password Success Screen</h2>
-        {data && (
-          <div className="mb-4">
-            <p>Message: {data}</p>
-          </div>
-        )}
+    <div className="prompt-container">
+      <Logo />
+      <div className="title-container">
+        <h1>{resetPasswordSuccessManager.screen.texts?.title}</h1>
+        <p>{resetPasswordSuccessManager.screen.texts?.description}</p>
       </div>
+
+      {resetPasswordSuccessManager.transaction.hasErrors && resetPasswordSuccessManager.transaction.errors && (
+        <div className="error-container">
+          {resetPasswordSuccessManager.transaction.errors.map((error: any, index: number) => (
+            <p key={index}>{error?.message}</p>
+          ))}
+        </div>
+      )}
+
+      {/* Back to Login Button */}
+      {resetPasswordSuccessManager.screen.links?.back_to_app && (
+        <div className="button-container">
+          <a
+            href={resetPasswordSuccessManager.screen.links.back_to_app}
+            className="button"
+          >
+            {resetPasswordSuccessManager.screen.texts?.buttonText || "Back to App"}
+          </a>
+        </div>
+      )}
     </div>
   );
 };
 
-export default ResetPasswordSuccessComponent;
+export default ResetPasswordSuccessScreen;
 ```
