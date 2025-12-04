@@ -1,6 +1,6 @@
 # Change Log
 
-## [auth0-acul-js-v1.0.0](https://github.com/auth0/universal-login/tree/auth0-acul-js-1.0.0) (2025-11-20)
+## [auth0-acul-js-v1.0.0](https://github.com/auth0/universal-login/tree/auth0-acul-js-v1.0.0) (2025-11-20)
 
 **Added**
 - feat: add passkey autofill options to transaction interfaces and shar… [\#274](https://github.com/auth0/universal-login/pull/274) ([amitsingh05667](https://github.com/amitsingh05667))
