@@ -1,6 +1,14 @@
 # Change Log
 
-## [auth0-acul-js-v1.0.0](https://github.com/auth0/universal-login/tree/auth0-acul-js-1.0.0) (2025-11-20)
+## [auth0-acul-js-v1.0.1](https://github.com/auth0/universal-login/tree/auth0-acul-js-v1.0.1) (2025-11-26)
+[Full Changelog](https://github.com/auth0/universal-login/compare/auth0-acul-js-v1.0.1...auth0-acul-js-v1.0.1)
+
+**Added**
+- chore: remove Early Access warnings from SDK README files [\#299](https://github.com/auth0/universal-login/pull/299) ([amitsingh05667](https://github.com/amitsingh05667))
+- Fix: update links for MFA WebAuthn error screen in README [\#295](https://github.com/auth0/universal-login/pull/295) ([ankita10119](https://github.com/ankita10119))
+- update:Update dependencies to use stable version of @auth0/auth0-acul-js [\#293](https://github.com/auth0/universal-login/pull/293) ([aks96](https://github.com/aks96))
+
+## [auth0-acul-js-v1.0.1](https://github.com/auth0/universal-login/tree/auth0-acul-js-1.0.1) (2025-11-20)
 
 **Added**
 - feat: add passkey autofill options to transaction interfaces and shar… [\#274](https://github.com/auth0/universal-login/pull/274) ([amitsingh05667](https://github.com/amitsingh05667))
@@ -16,7 +24,7 @@
 - added: Polling for the mfa-push-enrollment-qr screen [\#240](https://github.com/auth0/universal-login/pull/240) ([aks96](https://github.com/aks96))  
 - feat: add Claude Code PR Review workflow [\#206](https://github.com/auth0/universal-login/pull/206) ([amitsingh05667](https://github.com/amitsingh05667))
 
-## [auth0-acul-js-1.0.0-alpha.3](https://github.com/auth0/universal-login/tree/auth0-acul-js-1.0.0-alpha.3) (2025-11-20)
+## [auth0-acul-js-1.0.1-alpha.3](https://github.com/auth0/universal-login/tree/auth0-acul-js-1.0.1-alpha.3) (2025-11-20)
 
 **Added**
 - Fix: Update API reference to point to github pages links [\#276](https://github.com/auth0/universal-login/pull/276) ([ankita10119](https://github.com/ankita10119))
@@ -26,7 +34,7 @@
 - Fix: Removed complete support for interface partial import [\#267](https://github.com/auth0/universal-login/pull/267) ([ankita10119](https://github.com/ankita10119))
 - Update: Rename byKind helper method to byType in error store (kind -> type) [\#266](https://github.com/auth0/universal-login/pull/266) ([ankita10119](https://github.com/ankita10119))
 
-## [auth0-acul-js@1.0.0-alpha.2](https://github.com/auth0/universal-login/tree/auth0-acul-js%401.0.0-alpha.2) (2025-11-03)
+## [auth0-acul-js@1.0.1-alpha.2](https://github.com/auth0/universal-login/tree/auth0-acul-js%401.0.1-alpha.2) (2025-11-03)
 
 **Added**
 - Update: Renamed custom errors in TS and React SDK [\#255](https://github.com/auth0/universal-login/pull/255) ([ankita10119](https://github.com/ankita10119))
@@ -39,7 +47,7 @@
 **Fixed**
 - Refactor: Simplify reset password logic and enhance password  [\#254](https://github.com/auth0/universal-login/pull/254) ([amitsingh05667](https://github.com/amitsingh05667))
 
-## [auth0-acul-js@1.0.0-alpha.1](https://github.com/auth0/universal-login/tree/auth0-acul-js%401.0.0-alpha.1) (2025-10-16)
+## [auth0-acul-js@1.0.1-alpha.1](https://github.com/auth0/universal-login/tree/auth0-acul-js%401.0.1-alpha.1) (2025-10-16)
 
 **Added**
 - Update: Updated examples and type doc [\#230](https://github.com/auth0/universal-login/pull/230) ([ankita10119](https://github.com/ankita10119))
@@ -48,7 +56,7 @@
 - fix: update peerDependencies for React compatibility [\#231](https://github.com/auth0/universal-login/pull/231) ([amitsingh05667](https://github.com/amitsingh05667))
 - fix: Added `files` and `publishConfig` keys to the package.json [\#229](https://github.com/auth0/universal-login/pull/229) ([nandan-bhat](https://github.com/nandan-bhat))
 
-## [auth0-acul-js@1.0.0-alpha.0](https://github.com/auth0/universal-login/tree/auth0-acul-js%401.0.0-alpha.0) (2025-10-13)
+## [auth0-acul-js@1.0.1-alpha.0](https://github.com/auth0/universal-login/tree/auth0-acul-js%401.0.1-alpha.0) (2025-10-13)
 
 **Added**
 - Adding `auth0-acul-react` package [\#218](https://github.com/auth0/universal-login/pull/218) ([nandan-bhat](https://github.com/nandan-bhat))
