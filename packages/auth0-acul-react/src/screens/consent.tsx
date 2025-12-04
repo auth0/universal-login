@@ -32,7 +32,7 @@ export const accept = (payload?: CustomOptions) => withError(instance.accept(pay
 export const deny = (payload?: CustomOptions) => withError(instance.deny(payload));
 
 // Common hooks
-export { useCurrentScreen, useErrors, useAuth0Themes } from '../hooks';
+export { useCurrentScreen, useErrors, useAuth0Themes, useChangeLanguage } from '../hooks';
 
 // Main instance hook. Returns singleton instance of Consent
 export const useConsent = (): ConsentMembers => useMemo(() => instance, []);

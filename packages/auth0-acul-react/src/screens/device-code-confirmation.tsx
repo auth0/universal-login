@@ -35,7 +35,7 @@ export const confirm = (payload?: CustomOptions) => withError(instance.confirm(p
 export const cancel = (payload?: CustomOptions) => withError(instance.cancel(payload));
 
 // Common hooks
-export { useCurrentScreen, useErrors, useAuth0Themes } from '../hooks';
+export { useCurrentScreen, useErrors, useAuth0Themes, useChangeLanguage } from '../hooks';
 
 // Main instance hook. Returns singleton instance of DeviceCodeConfirmation
 export const useDeviceCodeConfirmation = (): DeviceCodeConfirmationMembers =>

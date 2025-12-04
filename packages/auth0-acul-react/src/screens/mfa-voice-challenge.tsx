@@ -44,7 +44,7 @@ export const tryAnotherMethod = (payload?: CustomOptions) =>
 export { useResend } from '../hooks/utility/resend-manager';
 
 // Common hooks
-export { useCurrentScreen, useErrors, useAuth0Themes } from '../hooks';
+export { useCurrentScreen, useErrors, useAuth0Themes, useChangeLanguage } from '../hooks';
 
 // Main instance hook. Returns singleton instance of MfaVoiceChallenge
 export const useMfaVoiceChallenge = (): MfaVoiceChallengeMembers => useMemo(() => instance, []);

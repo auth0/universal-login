@@ -40,7 +40,7 @@ export const backToLogin = (payload?: CustomOptions) => withError(instance.backT
 export { useLoginIdentifiers } from '../hooks/utility/login-identifiers';
 
 // Common hooks
-export { useCurrentScreen, useErrors, useAuth0Themes } from '../hooks';
+export { useCurrentScreen, useErrors, useAuth0Themes, useChangeLanguage } from '../hooks';
 
 // Main instance hook. Returns singleton instance of ResetPasswordRequest
 export const useResetPasswordRequest = (): ResetPasswordRequestMembers =>

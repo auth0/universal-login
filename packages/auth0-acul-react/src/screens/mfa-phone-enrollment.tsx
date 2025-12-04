@@ -40,7 +40,7 @@ export const tryAnotherMethod = (payload?: CustomOptions) =>
   withError(instance.tryAnotherMethod(payload));
 
 // Common hooks
-export { useCurrentScreen, useErrors, useAuth0Themes } from '../hooks';
+export { useCurrentScreen, useErrors, useAuth0Themes, useChangeLanguage } from '../hooks';
 
 // Main instance hook. Returns singleton instance of MfaPhoneEnrollment
 export const useMfaPhoneEnrollment = (): MfaPhoneEnrollmentMembers => useMemo(() => instance, []);

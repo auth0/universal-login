@@ -49,7 +49,7 @@ export { useSignupIdentifiers } from '../hooks/utility/signup-identifiers';
 export { useUsernameValidation } from '../hooks/utility/validate-username';
 
 // Common hooks
-export { useCurrentScreen, useErrors, useAuth0Themes } from '../hooks';
+export { useCurrentScreen, useErrors, useAuth0Themes, useChangeLanguage } from '../hooks';
 
 // Main instance hook. Returns singleton instance of Signup
 export const useSignup = (): SignupMembers => useMemo(() => instance, []);

@@ -1,4 +1,5 @@
 export { useAuth0Themes } from './common/auth0-themes';
+export { useChangeLanguage } from './common/change-language';
 export { useCurrentScreen } from './common/current-screen';
 export {
   errorManager,

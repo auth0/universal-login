@@ -37,7 +37,7 @@ export const selectPhoneNumber = (payload?: MfaSmsListOptions) =>
 export const backAction = (payload?: CustomOptions) => withError(instance.backAction(payload));
 
 // Common hooks
-export { useCurrentScreen, useErrors, useAuth0Themes } from '../hooks';
+export { useCurrentScreen, useErrors, useAuth0Themes, useChangeLanguage } from '../hooks';
 
 // Main instance hook. Returns singleton instance of MfaSmsList
 export const useMfaSmsList = (): MfaSmsListMembers => useMemo(() => instance, []);
