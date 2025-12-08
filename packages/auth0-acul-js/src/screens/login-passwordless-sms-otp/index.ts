@@ -105,21 +105,30 @@ export default class LoginPasswordlessSmsOtp extends BaseContext implements Logi
   }
 
   /**
+   * Switches from passwordless SMS OTP authentication to a database connection.
+   * 
+   * @param payload - The connection switch options
+   * @param payload.connection - The hardcoded database connection name string (e.g., 'Username-Password-Authentication')
+   * 
    * @remarks
-   * This method handles switching from SMS OTP to a DB connection.
-   * The connection parameter should be a DB connection name (e.g. 'Username-Password-Authentication').
+   * This method allows users to switch from the current passwordless SMS authentication 
+   * to a traditional database connection that supports username/password authentication.
+   * 
+   * Common database connection names:
+   * - `'Username-Password-Authentication'` - The default Auth0 database connection
+   * - Custom database connection names as configured in your Auth0 tenant (e.g., `'my-custom-db'`)
    *
    * @example
    * import LoginPasswordlessSmsOtp from "@auth0/auth0-acul-js/login-passwordless-sms-otp";
    *
    * const loginPasswordlessSmsOtp = new LoginPasswordlessSmsOtp();
    *
-   * // Function to handle connection switching
+   * // Function to handle connection switching (pass hardcoded connection name)
    * const handleSwitchConnection = (connectionName: string) => {
    *   loginPasswordlessSmsOtp.switchConnection({ connection: connectionName });
    * };
    *
-   * // Switch to different connection strategies
+   * // Switch to different connection strategies (using hardcoded DB connection name)
    * handleSwitchConnection('Username-Password-Authentication'); // Switch to login-password based authentication
    */
   async switchConnection(payload: SwitchConnectionOptions): Promise<void> {

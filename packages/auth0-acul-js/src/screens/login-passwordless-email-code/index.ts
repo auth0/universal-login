@@ -106,22 +106,35 @@ export default class LoginPasswordlessEmailCode extends BaseContext implements L
   }
 
   /**
+   * Switches from passwordless email code authentication to a database connection.
+   * 
+   * @param payload - The connection switch options
+   * @param payload.connection - The hardcoded database connection name string (e.g., 'Username-Password-Authentication')
+   * 
    * @remarks
-   * This method handles switching from Email Code to a DB connection.
-   * The connection parameter should be a DB connection name (e.g. 'Username-Password-Authentication').
-   *
+   * This method allows users to switch from the current passwordless email authentication 
+   * to a traditional database connection that supports username/password authentication.
+   * 
+   * Common database connection names:
+   * - `'Username-Password-Authentication'` - The default Auth0 database connection
+   * - Custom database connection names as configured in your Auth0 tenant (e.g., `'my-custom-db'`)
+   * 
    * @example
+   * ```typescript
    * import LoginPasswordlessEmailCode from "@auth0/auth0-acul-js/login-passwordless-email-code";
    *
    * const loginPasswordlessEmailCode = new LoginPasswordlessEmailCode();
    *
-   * // Function to handle connection switching
-   * const handleSwitchConnection = (connectionName: string) => {
-   *   loginPasswordlessEmailCode.switchConnection({ connection: connectionName });
-   * };
-   *
-   * // Switch to different connection strategies
-   * handleSwitchConnection('Username-Password-Authentication'); // Switch to login-password based authentication
+   * // Switch to the default database connection (hardcoded connection name)
+   * await loginPasswordlessEmailCode.switchConnection({ 
+   *   connection: 'Username-Password-Authentication' 
+   * });
+   * 
+   * // Or switch to a custom database connection (hardcoded connection name)
+   * await loginPasswordlessEmailCode.switchConnection({ 
+   *   connection: 'my-custom-db-connection' 
+   * });
+   * ```
    */
   async switchConnection(payload: SwitchConnectionOptions): Promise<void> {
     const options: FormOptions = {
