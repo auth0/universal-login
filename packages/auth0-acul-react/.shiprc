@@ -1,6 +1,5 @@
 {
     "files": {
-        "CHANGELOG.md": [],
         ".version": ["v{MAJOR}.{MINOR}.{PATCH}"],
         "package.json": ["\"version\": \"{MAJOR}.{MINOR}.{PATCH}\""]
     },
