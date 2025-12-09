@@ -1,5 +1,13 @@
 # Change Log
 
+## [auth0-acul-js-v1.1.0](https://github.com/auth0/universal-login/tree/auth0-acul-js-v1.1.0) (2025-12-09)
+[Full Changelog](https://github.com/auth0/universal-login/compare/auth0-acul-js-v1.0.0...auth0-acul-js-v1.1.0)
+
+**Added**
+- feat: switchConnection for passwordless email and SMS OTP screen [\#310](https://github.com/auth0/universal-login/pull/310) ([amitsingh05667](https://github.com/amitsingh05667))
+- feat: add useChangeLanguage hook for language support [\#298](https://github.com/auth0/universal-login/pull/298) ([amitsingh05667](https://github.com/amitsingh05667))
+- feat: add toggleView method for switching between QR code [\#296](https://github.com/auth0/universal-login/pull/296) ([amitsingh05667](https://github.com/amitsingh05667))
+
 ## [auth0-acul-js-v1.0.0](https://github.com/auth0/universal-login/tree/auth0-acul-js-v1.0.0) (2025-11-20)
 
 **Added**
