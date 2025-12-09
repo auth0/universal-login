@@ -32,6 +32,11 @@ export interface SubmitOTPOptions {
   [key: string]: string | number | boolean | undefined;
 }
 
+export interface SwitchConnectionOptions {
+  connection: string;
+  [key: string]: string | number | boolean;
+}
+
 export interface LoginPasswordlessSmsOtpMembers extends BaseMembers {
   screen: ScreenMembersOnLoginPasswordlessSmsOtp;
   transaction: TransactionMembersOnLoginPasswordlessSmsOtp;
@@ -42,4 +47,5 @@ export interface LoginPasswordlessSmsOtpMembers extends BaseMembers {
    * @param options Configuration options for resend functionality
    */
   resendManager(options?: StartResendOptions): ResendControl;
+  switchConnection(payload: SwitchConnectionOptions): Promise<void>;
 }

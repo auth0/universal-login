@@ -14,6 +14,7 @@ import type {
   ScreenMembersOnLoginPasswordlessEmailCode as ScreenOptions,
   TransactionMembersOnLoginPasswordlessEmailCode as TransactionOptions,
   SubmitCodeOptions,
+  SwitchConnectionOptions,
 } from '../../../interfaces/screens/login-passwordless-email-code';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 import type { StartResendOptions, ResendControl } from '../../../interfaces/utils/resend-control';
@@ -103,11 +104,55 @@ export default class LoginPasswordlessEmailCode extends BaseContext implements L
       options
     );
   }
+
+  /**
+   * Switches from passwordless email code authentication to a database connection.
+   * 
+   * @param payload - The connection switch options
+   * @param payload.connection - The hardcoded database connection name string (e.g., 'Username-Password-Authentication')
+   * 
+   * @remarks
+   * This method allows users to switch from the current passwordless email authentication 
+   * to a traditional database connection that supports username/password authentication.
+   * 
+   * Common database connection names:
+   * - `'Username-Password-Authentication'` - The default Auth0 database connection
+   * - Custom database connection names as configured in your Auth0 tenant (e.g., `'my-custom-db'`)
+   * 
+   * @example
+   * ```typescript
+   * import LoginPasswordlessEmailCode from "@auth0/auth0-acul-js/login-passwordless-email-code";
+   *
+   * const loginPasswordlessEmailCode = new LoginPasswordlessEmailCode();
+   *
+   * // Switch to the default database connection (hardcoded connection name)
+   * await loginPasswordlessEmailCode.switchConnection({ 
+   *   connection: 'Username-Password-Authentication' 
+   * });
+   * 
+   * // Or switch to a custom database connection (hardcoded connection name)
+   * await loginPasswordlessEmailCode.switchConnection({ 
+   *   connection: 'my-custom-db-connection' 
+   * });
+   * ```
+   */
+  async switchConnection(payload: SwitchConnectionOptions): Promise<void> {
+    const options: FormOptions = {
+      state: this.transaction.state,
+      telemetry: [LoginPasswordlessEmailCode.screenIdentifier, 'switchConnection'],
+    };
+
+    await new FormHandler(options).submitData<SwitchConnectionOptions>({
+      ...payload,
+      action: FormActions.DEFAULT,
+    });
+  }
 }
 
 export {
   LoginPasswordlessEmailCodeMembers,
   SubmitCodeOptions,
+  SwitchConnectionOptions,
   ScreenOptions as ScreenMembersOnLoginPasswordlessEmailCode,
   TransactionOptions as TransactionMembersOnLoginPasswordlessEmailCode,
 };

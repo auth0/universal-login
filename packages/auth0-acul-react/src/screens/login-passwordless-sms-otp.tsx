@@ -9,6 +9,7 @@ import type {
   LoginPasswordlessSmsOtpMembers,
   SubmitOTPOptions,
   CustomOptions,
+  SwitchConnectionOptions,
 } from '@auth0/auth0-acul-js/login-passwordless-sms-otp';
 
 // Register the singleton instance of LoginPasswordlessSmsOtp
@@ -34,6 +35,8 @@ export const {
 // Submit functions
 export const submitOTP = (payload: SubmitOTPOptions) => withError(instance.submitOTP(payload));
 export const resendOTP = (payload?: CustomOptions) => withError(instance.resendOTP(payload));
+export const switchConnection = (payload: SwitchConnectionOptions) =>
+  withError(instance.switchConnection(payload));
 
 // Utility Hooks
 export { useResend } from '../hooks/utility/resend-manager';

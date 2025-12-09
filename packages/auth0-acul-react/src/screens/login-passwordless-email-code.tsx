@@ -9,6 +9,7 @@ import type {
   LoginPasswordlessEmailCodeMembers,
   SubmitCodeOptions,
   CustomOptions,
+  SwitchConnectionOptions,
 } from '@auth0/auth0-acul-js/login-passwordless-email-code';
 
 // Register the singleton instance of LoginPasswordlessEmailCode
@@ -34,6 +35,8 @@ export const {
 // Submit functions
 export const submitCode = (payload: SubmitCodeOptions) => withError(instance.submitCode(payload));
 export const resendCode = (payload?: CustomOptions) => withError(instance.resendCode(payload));
+export const switchConnection = (payload: SwitchConnectionOptions) =>
+  withError(instance.switchConnection(payload));
 
 // Utility Hooks
 export { useResend } from '../hooks/utility/resend-manager';
