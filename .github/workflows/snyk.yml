@@ -46,19 +46,21 @@ jobs:
           snyk-version: latest
 
       - name: Snyk test for JS package
-        run: snyk test --file=packages/auth0-acul-js/package.json
+        working-directory: packages/auth0-acul-js
+        run: snyk test
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         continue-on-error: true
 
       - name: Snyk test for React package  
-        run: snyk test --file=packages/auth0-acul-react/package.json
+        working-directory: packages/auth0-acul-react
+        run: snyk test
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         continue-on-error: true
 
       - name: Snyk test for root package
-        run: snyk test --file=package.json
+        run: snyk test
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         continue-on-error: true
