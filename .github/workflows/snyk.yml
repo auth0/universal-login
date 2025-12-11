@@ -42,14 +42,14 @@ jobs:
         run: npm ci --workspaces --include-workspace-root
 
       - name: Build all packages (handles dependencies)
-        run: npm install && npm run build:local
+        run: npm run build:local
 
       - uses: snyk/actions/setup@806182742461562b67788a64410098c9d9b96adb
         with:
           snyk-version: latest
 
       - name: Snyk test for all packages
-        run: snyk test --all-projects
+        run: snyk test --all-projects --detection-depth=3
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         continue-on-error: true
