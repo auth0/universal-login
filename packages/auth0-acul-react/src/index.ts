@@ -77,6 +77,9 @@ export { useMfaWebAuthnChangeKeyNickname } from './screens/mfa-webauthn-change-k
 export { useConsent } from './screens/consent';
 export { useResetPasswordMfaWebAuthnPlatformChallenge } from './screens/reset-password-mfa-webauthn-platform-challenge';
 export { useResetPasswordMfaWebAuthnRoamingChallenge } from './screens/reset-password-mfa-webauthn-roaming-challenge';
+export { useBruteForceProtectionUnblock } from './screens/brute-force-protection-unblock';
+export { useBruteForceProtectionUnblockFailure } from './screens/brute-force-protection-unblock-failure';
+export { useBruteForceProtectionUnblockSuccess } from './screens/brute-force-protection-unblock-success';
 export { useCurrentScreen, useErrors, useAuth0Themes, useChangeLanguage } from './hooks';
 
 // Common types from core SDK
