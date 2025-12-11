@@ -48,16 +48,23 @@ jobs:
         with:
           snyk-version: latest
 
-      - name: Snyk test with explicit package paths
+      - name: Create symlinks for Snyk compatibility
+        run: |
+          # Create symlinks to root node_modules in each package
+          ln -sf ../../node_modules packages/auth0-acul-js/node_modules
+          ln -sf ../../node_modules packages/auth0-acul-react/node_modules
+
+      - name: Snyk test with workspace support
         run: |
           echo "Scanning root package.json..."
-          snyk test --file=./package.json || echo "Root scan failed, continuing..."
+          snyk test || echo "Root scan failed, continuing..."
           
           echo "Scanning JS package..."
-          snyk test --file=./packages/auth0-acul-js/package.json || echo "JS scan failed, continuing..."
+          cd packages/auth0-acul-js && snyk test || echo "JS scan failed, continuing..."
+          cd ../..
           
           echo "Scanning React package..."
-          snyk test --file=./packages/auth0-acul-react/package.json || echo "React scan failed, continuing..."
+          cd packages/auth0-acul-react && snyk test || echo "React scan failed, continuing..."
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         continue-on-error: true
