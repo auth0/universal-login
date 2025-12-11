@@ -27,30 +27,12 @@ jobs:
 
     steps:
       - if: github.actor == 'dependabot[bot]' || github.event_name == 'merge_group'
-        run: exit 0 # Skip unnecessary test runs for dependabot and merge queues. Artifically flag as successful, as this is a required check for branch protection.
+        run: exit 0
 
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha || github.ref }}
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci --workspaces --include-workspace-root
-
-      - name: Build all packages (handles dependencies)
-        run: npm run build:local
-
-      - name: Run npm audit for security scanning
-        run: |
-          echo "Running npm audit for workspace security scanning..."
-          npm audit --audit-level=moderate || echo "Audit found issues (this is expected), continuing..."
-          
-          echo "Running audit for JS package..."
-          npm audit --workspace=@auth0/auth0-acul-js --audit-level=moderate || echo "JS package audit completed"
-          
-          echo "Running audit for React package..."
-          npm audit --workspace=@auth0/auth0-acul-react --audit-level=moderate || echo "React package audit completed"
+      - uses: snyk/actions/node@9adf32b1121593767fc3c057af55b55db032dc04 # pin@1.0.0
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
