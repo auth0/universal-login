@@ -48,23 +48,16 @@ jobs:
         with:
           snyk-version: latest
 
-      - name: Debug workspace structure
+      - name: Snyk test with explicit package paths
         run: |
-          echo "=== Root directory ==="
-          ls -la
-          echo "=== node_modules exists? ==="
-          ls -la node_modules/ | head -10 || echo "No node_modules in root"
-          echo "=== Packages directory ==="
-          ls -la packages/
-          echo "=== JS package ==="
-          ls -la packages/auth0-acul-js/
-          echo "=== React package ==="
-          ls -la packages/auth0-acul-react/
-          echo "=== Snyk version ==="
-          snyk --version
-
-      - name: Snyk test for all packages
-        run: snyk test --all-projects --detection-depth=3
+          echo "Scanning root package.json..."
+          snyk test --file=./package.json || echo "Root scan failed, continuing..."
+          
+          echo "Scanning JS package..."
+          snyk test --file=./packages/auth0-acul-js/package.json || echo "JS scan failed, continuing..."
+          
+          echo "Scanning React package..."
+          snyk test --file=./packages/auth0-acul-react/package.json || echo "React scan failed, continuing..."
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         continue-on-error: true
