@@ -1,0 +1,64 @@
+name: Snyk
+
+on:
+  merge_group:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: '30 0 1,15 * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
+
+jobs:
+  check:
+    name: Check for Vulnerabilities
+    runs-on: ubuntu-latest
+
+    steps:
+      - if: github.actor == 'dependabot[bot]' || github.event_name == 'merge_group'
+        run: exit 0 # Skip unnecessary test runs for dependabot and merge queues. Artifically flag as successful, as this is a required check for branch protection.
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.ref }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --workspaces --include-workspace-root
+
+      - uses: snyk/actions/setup@806182742461562b67788a64410098c9d9b96adb
+        with:
+          snyk-version: latest
+
+      - name: Snyk test for JS package
+        run: snyk test --file=packages/auth0-acul-js/package.json
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        continue-on-error: true
+
+      - name: Snyk test for React package  
+        run: snyk test --file=packages/auth0-acul-react/package.json
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        continue-on-error: true
+
+      - name: Snyk test for root package
+        run: snyk test --file=package.json
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        continue-on-error: true
