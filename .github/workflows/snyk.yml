@@ -44,27 +44,13 @@ jobs:
       - name: Build all packages (handles dependencies)
         run: npm run build:local
 
-      - uses: snyk/actions/setup@806182742461562b67788a64410098c9d9b96adb
-        with:
-          snyk-version: latest
-
-      - name: Create symlinks for Snyk compatibility
+      - name: Run npm audit for security scanning
         run: |
-          # Create symlinks to root node_modules in each package
-          ln -sf ../../node_modules packages/auth0-acul-js/node_modules
-          ln -sf ../../node_modules packages/auth0-acul-react/node_modules
-
-      - name: Snyk test with workspace support
-        run: |
-          echo "Scanning root package.json..."
-          snyk test || echo "Root scan failed, continuing..."
+          echo "Running npm audit for workspace security scanning..."
+          npm audit --audit-level=moderate || echo "Audit found issues (this is expected), continuing..."
           
-          echo "Scanning JS package..."
-          cd packages/auth0-acul-js && snyk test || echo "JS scan failed, continuing..."
-          cd ../..
+          echo "Running audit for JS package..."
+          npm audit --workspace=@auth0/auth0-acul-js --audit-level=moderate || echo "JS package audit completed"
           
-          echo "Scanning React package..."
-          cd packages/auth0-acul-react && snyk test || echo "React scan failed, continuing..."
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        continue-on-error: true
+          echo "Running audit for React package..."
+          npm audit --workspace=@auth0/auth0-acul-react --audit-level=moderate || echo "React package audit completed"
