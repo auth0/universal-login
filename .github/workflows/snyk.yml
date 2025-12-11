@@ -41,8 +41,8 @@ jobs:
       - name: Install dependencies
         run: npm ci --workspaces --include-workspace-root
 
-      - name: Build JS package (required for React dependency)
-        run: npm run build:local --workspace @auth0/auth0-acul-js
+      - name: Build all packages (handles dependencies)
+        run: npm run build:local
 
       - uses: snyk/actions/setup@806182742461562b67788a64410098c9d9b96adb
         with:
