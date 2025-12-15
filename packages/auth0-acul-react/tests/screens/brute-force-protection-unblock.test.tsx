@@ -40,6 +40,7 @@ jest.mock('../../src/hooks', () => ({
   useCurrentScreen: jest.fn(),
   useErrors: jest.fn(),
   useAuth0Themes: jest.fn(),
+  useChangeLanguage: jest.fn(),
 }));
 
 describe('BruteForceProtectionUnblock Screen', () => {
