@@ -519,26 +519,11 @@ import {
 - No need to manage instances in state
 - Cleaner component code
 
-### 2. **Built-in Error Management**
-- Automatic error state tracking
-- Error dismissal functionality
-- Type-safe error objects
-
-### 3. **Utility Hooks**
+### 2. **Utility Hooks**
 - Real-time validation (`usePasswordValidation`, `useUsernameValidation`)
 - Polling management (`useMfaPolling`)
 - Resend cooldowns (`useResend`)
 - Passkey autofill (`usePasskeyAutofill`)
-
-### 4. **Smaller Bundle Sizes**
-- Tree-shakeable exports
-- Import only what you need per screen
-- Optimized for partial imports
-
-### 5. **Better Type Safety**
-- Full TypeScript support
-- Type inference for hooks
-- Strongly typed payloads
 
 ---
 
