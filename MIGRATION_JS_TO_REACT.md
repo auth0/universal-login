@@ -11,7 +11,6 @@ This guide helps you migrate from `@auth0/auth0-acul-js` to `@auth0/auth0-acul-r
 - [Migration Steps](#migration-steps)
 - [Screen-by-Screen Examples](#screen-by-screen-examples)
 - [Common Patterns](#common-patterns)
-- [Troubleshooting](#troubleshooting)
 
 ---
 
@@ -498,91 +497,17 @@ import { useScreen, signup } from '@auth0/auth0-acul-react/signup-id';
 import { useScreen, continueMethod } from '@auth0/auth0-acul-react/mfa-otp-challenge';
 ```
 
-### Root Imports (When Dynamic Rendering Needed)
+### Root Imports (Common Hooks)
 
-**JavaScript SDK:**
-```javascript
-import * as Screens from '@auth0/auth0-acul-js';
-const LoginId = Screens.LoginId;
-```
+The React SDK exports common hooks from the root that can be used across all screens:
 
-**React SDK:**
 ```tsx
-import { LoginId } from '@auth0/auth0-acul-react';
-// Use for dynamic screen rendering
-```
-
----
-
-## Troubleshooting
-
-### Issue: "Cannot find module" errors
-
-**Solution:** Ensure you're using the correct import path:
-```tsx
-// ✅ Correct
-import { useScreen } from '@auth0/auth0-acul-react/login-id';
-
-// ❌ Wrong
-import { useScreen } from '@auth0/auth0-acul-react';
-```
-
-### Issue: Hooks don't update when data changes
-
-**Solution:** Ensure you're calling hooks inside React components, not outside:
-```tsx
-// ❌ Wrong
-const transaction = useTransaction();
-
-const MyComponent = () => {
-  return <div>{transaction.state}</div>;
-};
-
-// ✅ Correct
-const MyComponent = () => {
-  const transaction = useTransaction();
-  return <div>{transaction.state}</div>;
-};
-```
-
-### Issue: Methods are not functions
-
-**Solution:** Import submit functions directly, not from hooks:
-```tsx
-// ✅ Correct
-import { login } from '@auth0/auth0-acul-react/login-id';
-await login({ username: 'test' });
-
-// ❌ Wrong
-const loginIdInstance = useLoginId();
-await loginIdInstance.login({ username: 'test' }); // May not work as expected
-```
-
-### Issue: TypeScript errors with payload types
-
-**Solution:** Import types from the JavaScript SDK:
-```tsx
-import type { LoginOptions } from '@auth0/auth0-acul-js/login-id';
-
-const handleLogin = async (payload: LoginOptions) => {
-  await login(payload);
-};
-```
-
-### Issue: Errors not being caught
-
-**Solution:** Use the `useErrors` hook instead of try-catch:
-```tsx
-// ✅ Recommended
-const { hasError, errors } = useErrors();
-await login({ username });
-
-// ⚠️ Also works but less integrated
-try {
-  await login({ username });
-} catch (error) {
-  // Handle manually
-}
+import { 
+  useCurrentScreen, 
+  useErrors, 
+  useAuth0Themes, 
+  useChangeLanguage 
+} from '@auth0/auth0-acul-react';
 ```
 
 ---
@@ -631,8 +556,7 @@ try {
 If you encounter issues during migration:
 
 1. Check the [examples folder](https://github.com/auth0/universal-login/tree/master/packages/auth0-acul-react/examples) for screen-specific patterns
-2. Review the [TypeScript definitions](https://github.com/auth0/universal-login/tree/master/packages/auth0-acul-react/dist) for available hooks and functions
-3. Open an issue on [GitHub](https://github.com/auth0/universal-login/issues)
+2. Open an issue on [GitHub](https://github.com/auth0/universal-login/issues)
 
 ---
 
