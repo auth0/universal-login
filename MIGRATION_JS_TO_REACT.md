@@ -193,25 +193,7 @@ await loginIdManager.login({ username: 'user@example.com' });
 await login({ username: 'user@example.com' });
 ```
 
-### Step 4: Update Error Handling
-
-**Before:**
-```javascript
-const errors = loginIdManager.getErrors();
-if (loginIdManager.transaction.hasErrors) {
-  // Display errors
-}
-```
-
-**After:**
-```tsx
-const { hasError, errors, dismiss } = useErrors();
-if (hasError) {
-  // Display errors
-}
-```
-
-### Step 5: Update Utility Functions
+### Step 4: Update Utility Functions
 
 **Before:**
 ```javascript
