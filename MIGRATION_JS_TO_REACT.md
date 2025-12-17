@@ -557,9 +557,3 @@ If you encounter issues during migration:
 
 1. Check the [examples folder](https://github.com/auth0/universal-login/tree/master/packages/auth0-acul-react/examples) for screen-specific patterns
 2. Open an issue on [GitHub](https://github.com/auth0/universal-login/issues)
-
----
-
-**Last Updated:** December 2025  
-**React SDK Version:** 1.0.0  
-**JavaScript SDK Version:** 1.0.0
