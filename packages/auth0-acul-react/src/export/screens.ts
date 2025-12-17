@@ -74,3 +74,6 @@ export * as 'device-code-activation-denied' from '../screens/device-code-activat
 export * as 'device-code-confirmation' from '../screens/device-code-confirmation';
 export * as 'interstitial-captcha' from '../screens/interstitial-captcha';
 export * as 'redeem-ticket' from '../screens/redeem-ticket';
+export * as 'brute-force-protection-unblock' from '../screens/brute-force-protection-unblock';
+export * as 'brute-force-protection-unblock-failure' from '../screens/brute-force-protection-unblock-failure';
+export * as 'brute-force-protection-unblock-success' from '../screens/brute-force-protection-unblock-success';
