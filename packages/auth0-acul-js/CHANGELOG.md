@@ -1,5 +1,12 @@
 # Change Log
 
+## [auth0-acul-js-v1.2.0](https://github.com/auth0/universal-login/tree/auth0-acul-js-v1.2.0) (2026-01-12)
+[Full Changelog](https://github.com/auth0/universal-login/compare/auth0-acul-js-v1.1.0...auth0-acul-js-v1.2.0)
+
+**Added**
+- docs: migration guide from JavaScript SDK to React SDK [\#319](https://github.com/auth0/universal-login/pull/319) ([amitsingh05667](https://github.com/amitsingh05667))
+- Chore: support for brute-force-protection screens [\#317](https://github.com/auth0/universal-login/pull/317) ([ankita10119](https://github.com/ankita10119))
+
 ## [auth0-acul-js-v1.1.0](https://github.com/auth0/universal-login/tree/auth0-acul-js-v1.1.0) (2025-12-09)
 [Full Changelog](https://github.com/auth0/universal-login/compare/auth0-acul-js-v1.0.0...auth0-acul-js-v1.1.0)
 
