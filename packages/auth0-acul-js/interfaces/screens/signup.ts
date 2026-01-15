@@ -4,7 +4,7 @@ import type { IdentifierType } from '../../src/constants';
 import type { CustomOptions } from '../common';
 import type { BaseMembers } from '../models/base-context';
 import type { ScreenMembers } from '../models/screen';
-import type { TransactionMembers, UsernamePolicy, PasswordPolicy } from '../models/transaction';
+import type { TransactionMembers, UsernamePolicy, PasswordPolicy, PasswordComplexityPolicy } from '../models/transaction';
 import type { Identifier } from '../utils/signup-identifiers';
 export interface SignupOptions {
   email?: string;
@@ -30,6 +30,7 @@ export interface TransactionMembersOnSignup extends TransactionMembers {
   requiredIdentifiers: IdentifierType[] | null;
   optionalIdentifiers: IdentifierType[] | null;
   passwordPolicy: PasswordPolicy | null;
+  passwordComplexityPolicy: PasswordComplexityPolicy | null;
 }
 
 export interface SignupMembers extends BaseMembers {

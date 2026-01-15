@@ -61,6 +61,16 @@ export interface PasswordPolicy {
   passwordSecurityInfo?: PasswordComplexityRule[];
 }
 
+
+export interface PasswordComplexityPolicy {
+  character_type_rule: "all" | "at_least";
+  character_types: Array<"uppercase" | "lowercase" | "number" | "special">;
+  min_length: number;
+  identical_characters: "block" | "allow";
+  sequential_characters: "block" | "allow";
+  max_length_exceeded: "error" | "allow";
+}
+
 export interface DBConnection extends Connection {
   options: {
     signup_enabled: boolean;
@@ -105,6 +115,9 @@ export interface DBConnection extends Connection {
       passkey: {
         enabled: boolean;
       };
+    };
+    password_options: {
+      complexity: PasswordComplexityPolicy;
     };
   };
 }

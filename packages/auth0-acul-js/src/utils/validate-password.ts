@@ -1,8 +1,126 @@
 import type {
   PasswordPolicy,
   PasswordComplexityRule,
+  PasswordComplexityPolicy
 } from "../../interfaces/models/transaction";
 import type { PasswordValidationResult } from "../../interfaces/utils/validate-password";
+
+const hasSequentialChars = (password: string, maxSeq: number): boolean => {
+  if (maxSeq < 2) return false;
+
+  const chars = password.split("").map((c) => c.charCodeAt(0));
+
+  let inc = 1;
+  let dec = 1;
+
+  for (let i = 1; i < chars.length; i++) {
+    if (chars[i] === chars[i - 1] + 1) {
+      inc++;
+      dec = 1;
+    } else if (chars[i] === chars[i - 1] - 1) {
+      dec++;
+      inc = 1;
+    } else {
+      inc = dec = 1;
+    }
+
+    if (inc >= maxSeq || dec >= maxSeq) return true;
+  }
+
+  return false;
+};
+
+const hasIdenticalChars = (password: string, count = 3): boolean =>
+  new RegExp(`(.)\\1{${count - 1},}`).test(password);
+
+/**
+ * Validates a password against a complexity policy and returns
+ * rule-level validation results.
+ *
+ * @param password The password to validate
+ * @param policy The complexity policy to apply
+ * @returns Validation result indicating overall and per-rule validity
+ */
+export function validateWithComplexityPolicy(
+  password: string,
+  policy: PasswordComplexityPolicy
+): PasswordValidationResult {
+  const results: PasswordComplexityRule[] = [];
+
+  const checks = {
+    uppercase: /[A-Z]/.test(password),
+    lowercase: /[a-z]/.test(password),
+    number: /\d/.test(password),
+    special: /[\W_]/.test(password),
+  };
+
+  // Min length
+  results.push({
+    code: "password-policy-min-length",
+    label: `Password must be at least ${policy.min_length} characters long.`,
+    status: password.length >= policy.min_length ? "valid" : "error",
+    isValid: password.length >= policy.min_length,
+  });
+
+
+  const MIN_SEQUENCE_LENGTH = 2;
+
+  // Identical characters
+  if (policy.identical_characters === "block") {
+    const isValid = !hasIdenticalChars(password, MIN_SEQUENCE_LENGTH);
+
+    results.push({
+      code: "password-policy-identical-chars",
+      label: "Password must not contain repeated characters.",
+      status: isValid ? "valid" : "error",
+      isValid,
+    });
+  }
+
+  if (policy.sequential_characters === "block") {
+    const isValid = !hasSequentialChars(password, MIN_SEQUENCE_LENGTH);
+
+    results.push({
+      code: "password-policy-sequential-chars",
+      label: "Password must not contain sequential characters.",
+      status: isValid ? "valid" : "error",
+      isValid,
+    });
+  }
+
+
+  // Character type rules
+ const typeResults: PasswordComplexityRule[] =
+  policy.character_types.map((type) => {
+    const isValid = checks[type];
+    return {
+      code: `password-policy-${type}`,
+      label: `Password must contain at least one ${type} character.`,
+      status: isValid ? "valid" : "error",
+      isValid,
+    };
+  });
+
+  results.push(...typeResults);
+
+  // character_type_rule = "all"
+  if (policy.character_type_rule === "all") {
+    const allValid = typeResults.every((r) => r.isValid);
+    results.push({
+      code: "password-policy-character-types",
+      label: "Password must contain all required character types.",
+      status: allValid ? "valid" : "error",
+      isValid: allValid,
+      items: typeResults,
+    });
+  }
+
+  return {
+    isValid: results.every((r) => r.status === "valid"),
+    results,
+  };
+}
+
 
 /**
  * Validate a password string against an Auth0 password policy.

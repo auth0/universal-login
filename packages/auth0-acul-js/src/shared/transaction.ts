@@ -2,6 +2,7 @@ import type {
   DBConnection,
   UsernamePolicy,
   PasswordPolicy,
+  PasswordComplexityPolicy,
   TransactionContext,
 } from "../../interfaces/models/transaction";
 import type { TransactionMembersOnLoginId } from "../../interfaces/screens/login-id";
@@ -117,6 +118,31 @@ export function getPasswordPolicy(
           ? { ...record, isValid: true }
           : { ...record, isValid: false }
     ),
+  };
+}
+
+/**
+ * Retrieves the password complexity policy configuration from the transaction context.
+ * This includes properties like minimum length and complexity requirements.
+ *
+ * @param transaction - The transaction context from Universal Login
+ * @returns The password complexity policy object or null if not defined
+ */
+export function getPasswordComplexityPolicy(
+  transaction: TransactionContext
+): PasswordComplexityPolicy | null {
+  const connection = transaction?.connection as DBConnection;
+  const passwordComplexityPolicy = connection?.options?.password_options?.complexity;
+
+  if (!passwordComplexityPolicy) return null;
+
+  return {
+    character_type_rule: passwordComplexityPolicy.character_type_rule,
+    character_types: passwordComplexityPolicy.character_types,
+    identical_characters: passwordComplexityPolicy.identical_characters,
+    max_length_exceeded: passwordComplexityPolicy.max_length_exceeded,
+    min_length: passwordComplexityPolicy.min_length,
+    sequential_characters: passwordComplexityPolicy.sequential_characters
   };
 }
 

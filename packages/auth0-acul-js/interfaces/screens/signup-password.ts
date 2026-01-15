@@ -2,7 +2,7 @@ import type { PasswordValidationResult } from '../../interfaces/utils/validate-p
 import type { IdentifierType } from '../../src/constants';
 import type { BaseContext, BaseMembers } from '../models/base-context';
 import type { ScreenContext, ScreenMembers } from '../models/screen';
-import type { PasswordPolicy, TransactionMembers } from '../models/transaction';
+import type { PasswordPolicy, PasswordComplexityPolicy ,TransactionMembers } from '../models/transaction';
 
 export interface ScreenContextOnSignupPassword extends ScreenContext {
   links: {
@@ -39,6 +39,7 @@ export interface ScreenMembersOnSignupPassword extends ScreenMembers {
 export interface TransactionMembersOnSignupPassword extends TransactionMembers {
   isPasskeyEnabled: boolean;
   passwordPolicy: PasswordPolicy | null;
+  passwordComplexityPolicy: PasswordComplexityPolicy | null;
   requiredIdentifiers: IdentifierType[] | null;
   optionalIdentifiers: IdentifierType[] | null;
 }
