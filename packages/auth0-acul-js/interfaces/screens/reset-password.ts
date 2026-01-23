@@ -1,6 +1,6 @@
 import type { BaseMembers } from '../models/base-context';
 import type { ScreenMembers, ScreenData } from '../models/screen';
-import type { TransactionMembers, PasswordPolicy } from '../models/transaction';
+import type { TransactionMembers, PasswordPolicy, PasswordComplexityPolicy } from '../models/transaction';
 import type { PasswordValidationResult } from '../utils/validate-password';
 
 export interface ResetPasswordOptions {
@@ -18,6 +18,7 @@ export interface ScreenMembersOnResetPassword extends ScreenMembers {
 }
 export interface TransactionMembersOnResetPassword extends TransactionMembers {
   passwordPolicy: PasswordPolicy | null;
+  passwordComplexityPolicy: PasswordComplexityPolicy | null;
 }
 export interface ResetPasswordMembers extends BaseMembers {
   screen: ScreenMembersOnResetPassword;
