@@ -1,7 +1,7 @@
 import { ScreenIds } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
-import { validatePassword as _validatePassword } from '../../utils/validate-password';
+import { validatePassword as _validatePassword, validateWithComplexityPolicy as _validateFlexiblePassword } from '../../utils/validate-password';
 
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
@@ -54,7 +54,8 @@ export default class ResetPassword extends BaseContext implements ResetPasswordM
    */
   validatePassword(password: string): PasswordValidationResult {
     const passwordPolicy = this.transaction?.passwordPolicy;
-    return _validatePassword(password, passwordPolicy);
+    const passwordComplexityPolicy = this.transaction?.passwordComplexityPolicy;
+    return passwordComplexityPolicy ? _validateFlexiblePassword(password, passwordComplexityPolicy) : _validatePassword(password, passwordPolicy);
   }
 }
 export { ResetPasswordMembers, ResetPasswordOptions, ScreenOptions as ScreenMembersOnResetPassword, TransactionOverride as TransactionMembersOnResetPassword };

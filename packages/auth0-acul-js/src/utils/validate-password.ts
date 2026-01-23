@@ -47,23 +47,32 @@ export function validateWithComplexityPolicy(
 ): PasswordValidationResult {
   const results: PasswordComplexityRule[] = [];
 
-  const checks = {
+  // Temporary label map (temporary until backend provides labels)
+  const CHARACTER_LABELS: Record<string, string> = {
+    uppercase: "Upper case letters (A-Z)",
+    lowercase: "Lower case letters (a-z)",
+    number: "Numbers (0-9)",
+    special: "Special characters (e.g. !@#$%^&*)",
+  };
+
+  const checks: Record<string, boolean> = {
     uppercase: /[A-Z]/.test(password),
     lowercase: /[a-z]/.test(password),
     number: /\d/.test(password),
     special: /[\W_]/.test(password),
   };
 
-  // Min length
-  results.push({
-    code: "password-policy-min-length",
-    label: `Password must be at least ${policy.min_length} characters long.`,
-    status: password.length >= policy.min_length ? "valid" : "error",
-    isValid: password.length >= policy.min_length,
-  });
-
-
   const MIN_SEQUENCE_LENGTH = 2;
+
+  // Min length
+  const minLengthValid = password.length >= policy.min_length;
+
+  results.push({
+    code: "password-policy-length-at-least",
+    label: `At least ${policy.min_length} characters`,
+    status: minLengthValid ? "valid" : "error",
+    isValid: minLengthValid,
+  });
 
   // Identical characters
   if (policy.identical_characters === "block") {
@@ -71,48 +80,39 @@ export function validateWithComplexityPolicy(
 
     results.push({
       code: "password-policy-identical-chars",
-      label: "Password must not contain repeated characters.",
+      label: "No more than 2 identical characters in a row",
       status: isValid ? "valid" : "error",
       isValid,
     });
   }
 
+  // Sequential characters
   if (policy.sequential_characters === "block") {
     const isValid = !hasSequentialChars(password, MIN_SEQUENCE_LENGTH);
 
     results.push({
       code: "password-policy-sequential-chars",
-      label: "Password must not contain sequential characters.",
+      label: "No sequential characters",
       status: isValid ? "valid" : "error",
       isValid,
     });
   }
 
+  // Character types
+  if (
+    policy.character_type_rule === "all" &&
+    Array.isArray(policy.character_types)
+  ) {
+    for (const type of policy.character_types) {
+      const isValid = !!checks[type];
 
-  // Character type rules
- const typeResults: PasswordComplexityRule[] =
-  policy.character_types.map((type) => {
-    const isValid = checks[type];
-    return {
-      code: `password-policy-${type}`,
-      label: `Password must contain at least one ${type} character.`,
-      status: isValid ? "valid" : "error",
-      isValid,
-    };
-  });
-
-  results.push(...typeResults);
-
-  // character_type_rule = "all"
-  if (policy.character_type_rule === "all") {
-    const allValid = typeResults.every((r) => r.isValid);
-    results.push({
-      code: "password-policy-character-types",
-      label: "Password must contain all required character types.",
-      status: allValid ? "valid" : "error",
-      isValid: allValid,
-      items: typeResults,
-    });
+      results.push({
+        code: `password-policy-${type}`,
+        label: CHARACTER_LABELS[type],
+        status: isValid ? "valid" : "error",
+        isValid,
+      });
+    }
   }
 
   return {
@@ -120,6 +120,7 @@ export function validateWithComplexityPolicy(
     results,
   };
 }
+
 
 
 /**
@@ -136,6 +137,7 @@ export function validatePassword(
   password: string,
   policy?: PasswordPolicy | null
 ): PasswordValidationResult {
+  console.log("password-policy", policy)
   // If password policy is none or missing, only require a non-empty password.
   if (!policy || policy.policy === "none") {
     const results: PasswordComplexityRule[] = password.length
