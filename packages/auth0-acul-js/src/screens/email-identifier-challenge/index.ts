@@ -109,6 +109,31 @@ export default class EmailIdentifierChallenge extends BaseContext implements Ema
       !!this.screen.data?.resendLimitReached
     );
   }
+
+  /**
+   * @remarks
+   * This method switches from OTP/code authentication to password authentication.
+   * When called, the screen will re-render to the password authentication screen.
+   *
+   * @example
+   * import EmailIdentifierChallenge from '@auth0/auth0-acul-js/email-identifier-challenge';
+   *
+   * const emailIdentifierChallenge = new EmailIdentifierChallenge();
+   *
+   * // Switch to password authentication
+   * emailIdentifierChallenge.switchToPasswordAuth();
+   */
+  async switchToPasswordAuth(): Promise<void> {
+    const options: FormOptions = {
+      state: this.transaction.state,
+      telemetry: [EmailIdentifierChallenge.screenIdentifier, 'switchToPasswordAuth'],
+    };
+
+    await new FormHandler(options).submitData({
+      code: '',
+      action: FormActions.SWITCH_TO_PASSWORD_AUTH,
+    });
+  }
 }
 
 export { EmailIdentifierChallengeMembers, ScreenOptions as ScreenMembersOnEmailIdentifierChallenge, EmailChallengeOptions };

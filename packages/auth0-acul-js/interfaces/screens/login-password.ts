@@ -61,4 +61,9 @@ export interface LoginPasswordMembers extends BaseMembers {
   login(payload: LoginPasswordOptions): Promise<void>;
   federatedLogin(payload: FederatedLoginOptions): Promise<void>;
   switchConnection(payload: SwitchConnectionOptions): Promise<void>;
+  /**
+   * Switches from password authentication to OTP authentication.
+   * When called, the screen will re-render to the OTP authentication screen.
+   */
+  switchToOtpAuth(): Promise<void>;
 }
