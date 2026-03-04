@@ -15,6 +15,7 @@ export class ScreenOverride extends Screen implements OverrideOptions {
     return {
       ...data,
       username: data.username,
+      email: data.email,
     } as OverrideOptions['data'];
   };
 }

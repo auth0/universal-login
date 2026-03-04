@@ -8,11 +8,13 @@ export interface ResetPasswordEmailOptions {
 
 export interface ScreenDataOptions extends ScreenData {
   username?: string;
+  email?: string;
 }
 
 export interface ScreenMembersOnResetPasswordEmail extends ScreenMembers {
   data: {
     username?: string;
+    email?: string;
   } | null;
 }
 
