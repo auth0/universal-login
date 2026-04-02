@@ -8,6 +8,7 @@ import { registerScreen } from '../state/instance-store';
 import type {
   PasskeyEnrollmentMembers,
   CustomOptions,
+  AbortEnrollmentOptions,
 } from '@auth0/auth0-acul-js/passkey-enrollment';
 
 // Register the singleton instance of PasskeyEnrollment
@@ -33,7 +34,7 @@ export const {
 // Submit functions
 export const continuePasskeyEnrollment = (payload?: CustomOptions) =>
   withError(instance.continuePasskeyEnrollment(payload));
-export const abortPasskeyEnrollment = (payload?: CustomOptions) =>
+export const abortPasskeyEnrollment = (payload?: AbortEnrollmentOptions) =>
   withError(instance.abortPasskeyEnrollment(payload));
 
 // Common hooks

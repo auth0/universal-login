@@ -5,12 +5,11 @@ import { createPasskeyCredentials } from '../../utils/passkeys';
 
 import { ScreenOverride } from './screen-override';
 
-import type { CustomOptions } from '../../../interfaces/common';
+import type { CustomOptions, AbortEnrollmentOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type {
   PasskeyEnrollmentLocalMembers,
   ScreenMembersOnPasskeyEnrollmentLocal as ScreenOptions,
-  AbortEnrollmentOptions,
 } from '../../../interfaces/screens/passkey-enrollment-local';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 
@@ -61,7 +60,7 @@ export default class PasskeyEnrollmentLocal extends BaseContext implements Passk
     };
 
     const userActions: { [key: string]: string } = {};
-    if (payload['doNotShowAgain'] === true) {
+    if (payload && payload.doNotShowAgain === true) {
       userActions['dontShowAgain'] = 'on';
     }
     await new FormHandler(options).submitData<AbortEnrollmentOptions>({ ...payload, action: FormActions.ABORT_PASSKEY_ENROLLMENT, ...userActions });

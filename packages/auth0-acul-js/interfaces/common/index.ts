@@ -4,6 +4,14 @@ export interface CustomOptions {
 }
 
 /**
+ * Options for aborting passkey enrollment.
+ */
+export interface AbortEnrollmentOptions {
+  doNotShowAgain?: boolean;
+  [key: string]: string | number | boolean | undefined;
+}
+
+/**
  * Details of a WebAuthn browser error.
  */
 export interface WebAuthnErrorDetails {

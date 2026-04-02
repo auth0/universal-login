@@ -5,7 +5,7 @@ import { createPasskeyCredentials } from '../../utils/passkeys';
 
 import { ScreenOverride } from './screen-override';
 
-import type { CustomOptions } from '../../../interfaces/common';
+import type { CustomOptions, AbortEnrollmentOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { PasskeyEnrollmentMembers, ScreenMembersOnPasskeyEnrollment as ScreenOptions } from '../../../interfaces/screens/passkey-enrollment';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
@@ -46,18 +46,24 @@ export default class PasskeyEnrollment extends BaseContext implements PasskeyEnr
    * import PasskeyEnrollment from '@auth0/auth0-acul-js/passkey-enrollment';
    *
    * const passkeyEnrollment = new PasskeyEnrollment();
-   * passkeyEnrollment.abortPasskeyEnrollment();
+   * passkeyEnrollment.abortPasskeyEnrollment({
+   *     doNotShowAgain: <boolean>
+   * });
    */
-  async abortPasskeyEnrollment(payload?: CustomOptions): Promise<void> {
+  async abortPasskeyEnrollment(payload?: AbortEnrollmentOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
       telemetry: [PasskeyEnrollment.screenIdentifier, 'abortPasskeyEnrollment'],
     };
 
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.ABORT_PASSKEY_ENROLLMENT });
+    const userActions: { [key: string]: string } = {};
+    if (payload && payload.doNotShowAgain === true) {
+      userActions['dontShowAgain'] = 'on';
+    }
+    await new FormHandler(options).submitData<AbortEnrollmentOptions>({ ...payload, action: FormActions.ABORT_PASSKEY_ENROLLMENT, ...userActions });
   }
 }
 
-export { PasskeyEnrollmentMembers, ScreenOptions as ScreenMembersOnPasskeyEnrollment };
+export { PasskeyEnrollmentMembers, AbortEnrollmentOptions, ScreenOptions as ScreenMembersOnPasskeyEnrollment };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';

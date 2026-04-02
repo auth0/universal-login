@@ -1,4 +1,4 @@
-import type { CustomOptions } from '../common';
+import type { CustomOptions, AbortEnrollmentOptions } from '../common';
 import type { BaseContext, BaseMembers } from '../models/base-context';
 import type { ScreenContext, PasskeyCreate, ScreenMembers } from '../models/screen';
 
@@ -25,5 +25,5 @@ export interface ScreenMembersOnPasskeyEnrollment extends ScreenMembers {
 export interface PasskeyEnrollmentMembers extends BaseMembers {
   screen: ScreenMembersOnPasskeyEnrollment;
   continuePasskeyEnrollment(payload?: CustomOptions): Promise<void>;
-  abortPasskeyEnrollment(payload?: CustomOptions): Promise<void>;
+  abortPasskeyEnrollment(payload?: AbortEnrollmentOptions): Promise<void>;
 }
