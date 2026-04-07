@@ -6,7 +6,7 @@ import { FormHandler } from '../../../../src/utils/form-handler';
 import { createPasskeyCredentials } from '../../../../src/utils/passkeys';
 import { baseContextData } from '../../../data/test-data';
 
-import type { CustomOptions } from 'interfaces/common';
+import type { CustomOptions, AbortEnrollmentOptions } from 'interfaces/common';
 
 jest.mock('../../../../src/utils/form-handler');
 jest.mock('../../../../src/utils/passkeys');
@@ -122,6 +122,22 @@ describe('PasskeyEnrollment', () => {
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
         expect.objectContaining({
           action: FormActions.ABORT_PASSKEY_ENROLLMENT,
+        })
+      );
+    });
+
+    it('should handle abortPasskeyEnrollment with doNotShowAgain set to true', async () => {
+      const payload: AbortEnrollmentOptions = {
+        doNotShowAgain: true,
+      };
+      await passkeyEnrollment.abortPasskeyEnrollment(payload);
+
+      expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith(
+        expect.objectContaining({
+          ...payload,
+          action: FormActions.ABORT_PASSKEY_ENROLLMENT,
+          dontShowAgain: 'on',
         })
       );
     });
