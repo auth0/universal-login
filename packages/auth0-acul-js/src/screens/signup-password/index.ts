@@ -1,7 +1,7 @@
 import { ScreenIds } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
-import { validatePassword as _validatePassword, validateWithComplexityPolicy as _validateFlexiblePassword } from '../../utils/validate-password';
+import { validatePassword as _validatePassword } from '../../utils/validate-password';
 
 
 import { ScreenOverride } from './screen-override';
@@ -157,8 +157,7 @@ export default class SignupPassword extends BaseContext implements SignupPasswor
   */
   validatePassword(password: string): PasswordValidationResult {
     const passwordPolicy = this.transaction?.passwordPolicy;
-    const passwordComplexityPolicy = this.transaction?.passwordComplexityPolicy;
-    return passwordComplexityPolicy ? _validateFlexiblePassword(password, passwordComplexityPolicy) : _validatePassword(password, passwordPolicy);
+    return _validatePassword(password, passwordPolicy);
   }
 }
 
