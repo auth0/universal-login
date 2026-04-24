@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
-  id-token: write
+  id-token: write # For trusted publishing to npm
 
 jobs:
   release:
@@ -80,13 +80,10 @@ jobs:
         uses: ./.github/actions/npm-publish
         with:
            node-version: 22
-           npm-token: ${{ secrets.NPM_TOKEN }}
            version: ${{ steps.meta.outputs.version }}
            require-build: true
            package: ${{ steps.meta.outputs.dir }}
            release-directory: ${{ steps.meta.outputs.dir }}
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Create GitHub Release
         uses: ./.github/actions/release-create
