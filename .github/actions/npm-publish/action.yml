@@ -3,8 +3,7 @@ name: Publish release to npm
 inputs:
   node-version:
     required: true
-  npm-token:
-    required: true
+  
   version:
     required: true
   require-build:
@@ -27,7 +26,10 @@ runs:
         node-version: 22
         cache: 'npm'
         registry-url: 'https://registry.npmjs.org'
-        token: ${{ inputs.npm-token }}
+
+    - name: Update npm
+      shell: bash
+      run: npm install -g npm@11.10.0
 
     - name: Install dependencies
       shell: bash
@@ -45,7 +47,6 @@ runs:
     - name: Publish release to NPM
       working-directory: packages/${{ inputs.release-directory }}
       env:
-        NODE_AUTH_TOKEN: ${{ inputs.npm-token }}
         VERSION: ${{ inputs.version }}
       run: |
         if [[ "${VERSION}" == *"beta"* ]]; then
@@ -55,5 +56,5 @@ runs:
         else
           TAG="latest"
         fi
-        npm publish --provenance --access public --tag $TAG
+        npm publish --access public --tag $TAG
       shell: bash
