@@ -1,5 +1,14 @@
 # Change Log
 
+## [auth0-acul-react-v1.3.0](https://github.com/auth0/universal-login/tree/auth0-acul-react-v1.3.0) (2026-04-28)
+[Full Changelog](https://github.com/auth0/universal-login/compare/auth0-acul-react-v1.2.0...auth0-acul-react-v1.3.0)
+
+**Added**
+- feat: add doNotShowAgain support to passkey-enrollment screen  [\#330](https://github.com/auth0/universal-login/pull/330) ([amitsingh05667](https://github.com/amitsingh05667))
+- Expose email on reset-password-email screen data [\#329](https://github.com/auth0/universal-login/pull/329) ([v-nemeth](https://github.com/v-nemeth))
+- fix: add PasswordComplexityPolicy export to common interface [\#326](https://github.com/auth0/universal-login/pull/326) ([ankita10119](https://github.com/ankita10119))
+- feat: add support for flexible password policy [\#323](https://github.com/auth0/universal-login/pull/323) ([ankita10119](https://github.com/ankita10119))
+
 ## [auth0-acul-react-v1.2.0](https://github.com/auth0/universal-login/tree/auth0-acul-react-v1.2.0) (2026-01-12)
 [Full Changelog](https://github.com/auth0/universal-login/compare/auth0-acul-react-v1.1.0...auth0-acul-react-v1.2.0)
 
