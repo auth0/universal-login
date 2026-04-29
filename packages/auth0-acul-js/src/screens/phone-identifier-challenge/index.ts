@@ -141,6 +141,31 @@ export default class PhoneIdentifierChallenge extends BaseContext implements Pho
       !!this.screen.data?.resendLimitReached
     );
   }
+
+  /**
+   * @remarks
+   * This method switches from OTP/code authentication to password authentication.
+   * When called, the screen will re-render to the password authentication screen.
+   *
+   * @example
+   * import PhoneIdentifierChallenge from '@auth0/auth0-acul-js/phone-identifier-challenge';
+   *
+   * const phoneIdentifierChallenge = new PhoneIdentifierChallenge();
+   *
+   * // Switch to password authentication
+   * phoneIdentifierChallenge.switchToPasswordAuth();
+   */
+  async switchToPasswordAuth(): Promise<void> {
+    const options: FormOptions = {
+      state: this.transaction.state,
+      telemetry: [PhoneIdentifierChallenge.screenIdentifier, 'switchToPasswordAuth'],
+    };
+
+    await new FormHandler(options).submitData({
+      code: '',
+      action: FormActions.SWITCH_TO_PASSWORD_AUTH,
+    });
+  }
 }
 
 export { PhoneIdentifierChallengeMembers, PhoneChallengeOptions, ScreenOptions as ScreenMembersOnPhoneIdentifierChallenge };
