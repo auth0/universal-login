@@ -4,13 +4,15 @@ import type { ScreenData, ScreenMembers } from '../models/screen';
 
 export interface ScreenDataOptions extends ScreenData {
   messageType?: 'text' | 'voice';
-  phone?: 'string';
+  phone?: string;
+  username?: string;
 }
 
 export interface ScreenMembersOnPhoneIdentifierEnrollment extends ScreenMembers {
   data: {
-    phone?: 'string';
+    phone?: string;
     messageType?: 'text' | 'voice';
+    username?: string;
   } | null;
   editIdentifierLink: string | null;
 }
