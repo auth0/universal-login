@@ -1,7 +1,7 @@
 import type { IdentifierType } from '../../src/constants';
 import type { CustomOptions } from '../common';
 import type { BaseContext, BaseMembers } from '../models/base-context';
-import type { ScreenContext, ScreenMembers, PasskeyRead } from '../models/screen';
+import type { ScreenContext, ScreenMembers } from '../models/screen';
 import type { TransactionContext, TransactionMembers, DBConnection, PasswordPolicy } from '../models/transaction';
 /**
  * Extended screen context interface for the login screen
@@ -10,9 +10,6 @@ export interface ScreenContextOnLogin extends ScreenContext {
   links: {
     signup: string;
     reset_password: string;
-  };
-  data?: {
-    passkey?: PasskeyRead;
   };
 }
 

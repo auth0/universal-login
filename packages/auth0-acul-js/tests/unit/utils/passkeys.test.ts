@@ -387,6 +387,25 @@ describe('registerPasskeyAutofill', () => {
     );
   });
 
+  it('should fall back to window.location.hostname when rpId is not provided', async () => {
+    const mockCredential = { id: 'mock-credential' };
+    mockGet.mockResolvedValue(mockCredential);
+
+    await registerPasskeyAutofill({
+      publicKey: { challenge: 'mock-challenge' },
+      onResolve,
+      onReject,
+    });
+
+    await Promise.resolve();
+
+    expect(mockGet).toHaveBeenCalledWith(
+      expect.objectContaining({
+        publicKey: expect.objectContaining({ rpId: window.location.hostname }),
+      })
+    );
+  });
+
   it('should ignore AbortError exceptions', async () => {
     const abortError = new DOMException('Aborted', 'AbortError');
     mockGet.mockRejectedValue(abortError);
