@@ -176,7 +176,7 @@ export async function registerPasskeyAutofill({
   const request: CredentialRequestOptions = {
     publicKey: {
       challenge,
-      rpId: window.location.hostname,
+      rpId: publicKey.rpId ?? window.location.hostname,
       allowCredentials: [],
       userVerification: 'preferred',
       timeout: DEFAULT_TIMEOUT

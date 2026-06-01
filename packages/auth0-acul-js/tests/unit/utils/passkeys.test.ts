@@ -368,6 +368,25 @@ describe('registerPasskeyAutofill', () => {
     expect(onReject).toHaveBeenCalledWith(error);
   });
 
+  it('should use rpId from publicKey when provided', async () => {
+    const mockCredential = { id: 'mock-credential' };
+    mockGet.mockResolvedValue(mockCredential);
+
+    await registerPasskeyAutofill({
+      publicKey: { challenge: 'mock-challenge', rpId: 'custom.example.com' },
+      onResolve,
+      onReject,
+    });
+
+    await Promise.resolve();
+
+    expect(mockGet).toHaveBeenCalledWith(
+      expect.objectContaining({
+        publicKey: expect.objectContaining({ rpId: 'custom.example.com' }),
+      })
+    );
+  });
+
   it('should ignore AbortError exceptions', async () => {
     const abortError = new DOMException('Aborted', 'AbortError');
     mockGet.mockRejectedValue(abortError);
