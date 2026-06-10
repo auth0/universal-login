@@ -1,4 +1,4 @@
-import { ScreenIds } from '../../constants';
+import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { getBrowserCapabilities } from '../../utils/browser-capabilities';
 import { FormHandler } from '../../utils/form-handler';
@@ -14,6 +14,7 @@ import type {
   LoginPasswordMembers,
   FederatedLoginOptions,
   SwitchConnectionOptions,
+  SwitchToOtpOptions,
   TransactionMembersOnLoginPassword as TransactionOptions,
 } from '../../../interfaces/screens/login-password';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
@@ -110,6 +111,27 @@ export default class LoginPassword extends BaseContext implements LoginPasswordM
 
     await new FormHandler(options).submitData<SwitchConnectionOptions>(payload);
   }
+
+  /**
+   * @remarks
+   * Switches the authentication flow from password-based to OTP (one-time password) authentication.
+   *
+   * @example
+   * import LoginPassword from "@auth0/auth0-acul-js/login-password";
+   *
+   * const loginPasswordManager = new LoginPassword();
+   * loginPasswordManager.switchToOtp();
+   */
+  async switchToOtp(): Promise<void> {
+    const options: FormOptions = {
+      state: this.transaction.state,
+      telemetry: [LoginPassword.screenIdentifier, 'switchToOtp'],
+    };
+
+    await new FormHandler(options).submitData<SwitchToOtpOptions>({
+      action: FormActions.SWITCH_TO_OTP_AUTH,
+    });
+  }
 }
 
 export {
@@ -117,6 +139,7 @@ export {
   LoginPasswordOptions,
   FederatedLoginOptions,
   SwitchConnectionOptions,
+  SwitchToOtpOptions,
   ScreenOptions as ScreenMembersOnLoginPassword,
   TransactionOptions as TransactionMembersOnLoginPassword,
 };

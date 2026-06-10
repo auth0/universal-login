@@ -138,6 +138,36 @@ describe('EmailIdentifierChallenge', () => {
     });
   });
 
+  describe('switchToPassword method', () => {
+    it('should submit switch-to-password-auth action', async () => {
+      await emailIdentifierChallenge.switchToPassword();
+
+      expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith(
+        expect.objectContaining({ action: 'switch-to-password-auth' })
+      );
+      expect(FormHandler).toHaveBeenCalledWith({
+        state: emailIdentifierChallenge.transaction.state,
+        telemetry: [ScreenIds.EMAIL_IDENTIFIER_CHALLENGE, 'switchToPassword'],
+      });
+    });
+
+    it('should merge custom payload with switch-to-password-auth action', async () => {
+      const payload: CustomOptions = { custom: 'value' };
+      await emailIdentifierChallenge.switchToPassword(payload);
+
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith(
+        expect.objectContaining({ ...payload, action: 'switch-to-password-auth' })
+      );
+    });
+
+    it('should throw error when promise is rejected', async () => {
+      mockFormHandler.submitData.mockRejectedValue(new Error('Switch failed'));
+
+      await expect(emailIdentifierChallenge.switchToPassword()).rejects.toThrow('Switch failed');
+    });
+  });
+
   describe('class properties and constructor', () => {
     it('should have correct screen identifier', () => {
       expect(EmailIdentifierChallenge.screenIdentifier).toBe('email-identifier-challenge');

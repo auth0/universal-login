@@ -23,4 +23,5 @@ export interface EmailIdentifierChallengeMembers extends BaseMembers {
   resendCode(payload?: CustomOptions): Promise<void>;
   resendManager(payload?: StartResendOptions): ResendControl;
   returnToPrevious(payload?: CustomOptions): Promise<void>;
+  switchToPassword(payload?: CustomOptions): Promise<void>;
 }

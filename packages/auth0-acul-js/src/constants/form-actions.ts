@@ -30,4 +30,6 @@ export const FormActions = {
   TRY_AGAIN: 'tryagain' as const,
   USE_PASSWORD: 'use-password' as const,
   CHANGE_LANGUAGE: 'change-language' as const,
+  SWITCH_TO_OTP_AUTH: 'switch-to-otp-auth' as const,
+  SWITCH_TO_PASSWORD_AUTH: 'switch-to-password-auth' as const,
 } as const;

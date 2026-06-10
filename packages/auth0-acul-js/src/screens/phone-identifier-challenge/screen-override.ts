@@ -22,6 +22,7 @@ export class ScreenOverride extends Screen implements OverrideOptions {
       messageType: data?.message_type,
       showLinkSms: data?.show_link_sms,
       showLinkVoice: data?.show_link_voice,
+      showSwitchToPasswordButton: data?.show_switch_to_password_button,
     } as OverrideOptions['data'];
   }
 }

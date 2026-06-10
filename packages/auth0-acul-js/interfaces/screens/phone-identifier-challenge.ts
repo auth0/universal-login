@@ -30,6 +30,7 @@ export interface ScreenMembersOnPhoneIdentifierChallenge extends ScreenMembers {
     resendLimitReached?: boolean;
     showLinkSms?: boolean;
     showLinkVoice?: boolean;
+    showSwitchToPasswordButton?: boolean;
   } | null;
 }
 
@@ -41,4 +42,5 @@ export interface PhoneIdentifierChallengeMembers extends BaseMembers {
   returnToPrevious(payload?: CustomOptions): Promise<void>;
   switchToVoice(payload?: CustomOptions): Promise<void>;
   switchToText(payload?: CustomOptions): Promise<void>;
+  switchToPassword(payload?: CustomOptions): Promise<void>;
 }
