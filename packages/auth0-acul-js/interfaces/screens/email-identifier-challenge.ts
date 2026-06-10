@@ -23,4 +23,9 @@ export interface EmailIdentifierChallengeMembers extends BaseMembers {
   resendCode(payload?: CustomOptions): Promise<void>;
   resendManager(payload?: StartResendOptions): ResendControl;
   returnToPrevious(payload?: CustomOptions): Promise<void>;
+  /**
+   * Switches from OTP/code authentication to password authentication.
+   * When called, the screen will re-render to the password authentication screen.
+   */
+  switchToPasswordAuth(): Promise<void>;
 }

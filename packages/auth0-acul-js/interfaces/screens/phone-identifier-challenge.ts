@@ -41,4 +41,9 @@ export interface PhoneIdentifierChallengeMembers extends BaseMembers {
   returnToPrevious(payload?: CustomOptions): Promise<void>;
   switchToVoice(payload?: CustomOptions): Promise<void>;
   switchToText(payload?: CustomOptions): Promise<void>;
+  /**
+   * Switches from OTP/code authentication to password authentication.
+   * When called, the screen will re-render to the password authentication screen.
+   */
+  switchToPasswordAuth(): Promise<void>;
 }

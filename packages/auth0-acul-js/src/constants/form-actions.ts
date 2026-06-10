@@ -30,4 +30,8 @@ export const FormActions = {
   TRY_AGAIN: 'tryagain' as const,
   USE_PASSWORD: 'use-password' as const,
   CHANGE_LANGUAGE: 'change-language' as const,
+  // actions for login-password screen
+  SWITCH_TO_OTP_AUTH: 'switch-to-otp-auth' as const,
+  // actions for email-identifier-challenge screen
+  SWITCH_TO_PASSWORD_AUTH: 'switch-to-password-auth' as const,
 } as const;
