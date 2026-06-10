@@ -45,6 +45,11 @@ export interface PasskeyCreate {
       userVerification: string;
       authenticatorAttachment?: string;
     };
+    excludeCredentials?: {
+      id: string;
+      type: string;
+      transports?: AuthenticatorTransport[] | undefined;
+    }[];
   };
 }
 
