@@ -38,6 +38,7 @@ export const federatedLogin = (payload: FederatedLoginOptions) =>
   withError(instance.federatedLogin(payload));
 export const switchConnection = (payload: SwitchConnectionOptions) =>
   withError(instance.switchConnection(payload));
+export const switchToOtp = () => withError(instance.switchToOtp());
 
 // Common hooks
 export { useCurrentScreen, useErrors, useAuth0Themes, useChangeLanguage } from '../hooks';

@@ -37,6 +37,8 @@ export const submitEmailChallenge = (payload: EmailChallengeOptions) =>
 export const resendCode = (payload?: CustomOptions) => withError(instance.resendCode(payload));
 export const returnToPrevious = (payload?: CustomOptions) =>
   withError(instance.returnToPrevious(payload));
+export const switchToPassword = (payload?: CustomOptions) =>
+  withError(instance.switchToPassword(payload));
 
 // Utility Hooks
 export { useResend } from '../hooks/utility/resend-manager';

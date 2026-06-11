@@ -40,6 +40,8 @@ export const returnToPrevious = (payload?: CustomOptions) =>
 export const switchToVoice = (payload?: CustomOptions) =>
   withError(instance.switchToVoice(payload));
 export const switchToText = (payload?: CustomOptions) => withError(instance.switchToText(payload));
+export const switchToPassword = (payload?: CustomOptions) =>
+  withError(instance.switchToPassword(payload));
 
 // Utility Hooks
 export { useResend } from '../hooks/utility/resend-manager';
