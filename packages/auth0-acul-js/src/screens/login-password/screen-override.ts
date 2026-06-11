@@ -24,7 +24,7 @@ export class ScreenOverride extends Screen implements OverrideOptions {
 
     return {
       ...data,
-      showSwitchToOtpButton: data.show_switch_to_otp_button,
+      showSwitchToOtpButton: data?.show_switch_to_otp_button,
     } as OverrideOptions['data'];
   }
 }

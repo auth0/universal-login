@@ -154,7 +154,10 @@ describe('ScreenOverride', () => {
         phone_number: '+9876543210',
         customField: 'customValue',
         phone: '+9876543210',
-        messageType: undefined
+        messageType: undefined,
+        showLinkSms: undefined,
+        showLinkVoice: undefined,
+        showSwitchToPasswordButton: undefined,
       });
     });
 
@@ -168,7 +171,7 @@ describe('ScreenOverride', () => {
 
       expect(result).toEqual({
         phone: undefined,
-        messageType: undefined
+        messageType: undefined,
       });
     });
 
@@ -191,7 +194,10 @@ describe('ScreenOverride', () => {
         custom_field: 'custom_value',
         extra_field: 'extra_value',
         phone: '+5555555555',
-        messageType: 'voice'
+        messageType: 'voice',
+        showLinkSms: undefined,
+        showLinkVoice: undefined,
+        showSwitchToPasswordButton: undefined,
       });
     });
 
@@ -210,7 +216,10 @@ describe('ScreenOverride', () => {
         phone_number: '',
         message_type: 'sms',
         phone: '',
-        messageType: 'sms'
+        messageType: 'sms',
+        showLinkSms: undefined,
+        showLinkVoice: undefined,
+        showSwitchToPasswordButton: undefined,
       });
     });
 
@@ -229,7 +238,10 @@ describe('ScreenOverride', () => {
         phone_number: '+1234567890',
         message_type: '',
         phone: '+1234567890',
-        messageType: ''
+        messageType: '',
+        showLinkSms: undefined,
+        showLinkVoice: undefined,
+        showSwitchToPasswordButton: undefined,
       });
     });
   });
