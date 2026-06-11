@@ -14,3 +14,14 @@ loginPasswordManager.login({
 });
 
 ```
+
+
+## switchToOtp
+
+```typescript
+import LoginPassword from "@auth0/auth0-acul-js/login-password";
+
+const loginPasswordManager = new LoginPassword();
+loginPasswordManager.switchToOtp();
+
+```

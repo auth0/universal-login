@@ -36,6 +36,17 @@ emailIdentifierChallenge.returnToPrevious();
 ```
 
 
+## switchToPassword
+
+```typescript
+import EmailIdentifierChallenge from '@auth0/auth0-acul-js/email-identifier-challenge';
+
+const emailIdentifierChallenge = new EmailIdentifierChallenge();
+emailIdentifierChallenge.switchToPassword();
+
+```
+
+
 ## resendManager
 
 ```typescript
@@ -78,6 +89,7 @@ const EmailIdentifierChallengeScreen: React.FC = () => {
   const [resent, setResent] = useState(false);
   const [returned, setReturned] = useState(false);
   const [disabled, setDisabled] = useState(false);
+  const [switchedToPassword, setSwitchedToPassword] = useState(false);
 
   const emailIdentifierChallenge = useMemo(() => new EmailIdentifierChallenge(), []);
 
@@ -145,6 +157,17 @@ const EmailIdentifierChallengeScreen: React.FC = () => {
     }
   };
 
+  const handleSwitchToPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    try {
+      await emailIdentifierChallenge.switchToPassword();
+      setSwitchedToPassword(true);
+    } catch {
+      setError('Failed to switch to password. Please try again later.');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -198,10 +221,19 @@ const EmailIdentifierChallengeScreen: React.FC = () => {
               Return to Previous
             </button>
           </form>
+          <form className="space-y-6 mt-4" onSubmit={handleSwitchToPassword}>
+            <button
+              type="submit"
+              className="w-full py-2 px-4 border border-gray-400 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+            >
+              Switch to Password
+            </button>
+          </form>
           {error && <div className="text-red-600 text-sm mt-2">{error}</div>}
           {success && <div className="text-green-600 text-sm mt-2">Challenge submitted successfully!</div>}
           {resent && <div className="text-blue-600 text-sm mt-2">Code resent to your email.</div>}
           {returned && <div className="text-blue-600 text-sm mt-2">Returned to previous step.</div>}
+          {switchedToPassword && <div className="text-blue-600 text-sm mt-2">Switched to password authentication.</div>}
         </div>
       </div>
     </div>
