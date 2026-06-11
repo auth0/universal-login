@@ -18,6 +18,7 @@ export interface ScreenMembersOnLoginPassword extends ScreenMembers {
   editIdentifierLink: string | null;
   data: {
     username: string;
+    showSwitchToOtpButton?: boolean;
   } | null;
 }
 
