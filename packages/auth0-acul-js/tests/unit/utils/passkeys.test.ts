@@ -101,6 +101,53 @@ describe('getPasskeyCredentials', () => {
       Errors.PASSKEY_EXPECTED_ASSERTION_RESPONSE
     );
   });
+
+  it('should forward rpId to navigator.credentials.get when provided', async () => {
+    (isWebAuthPlatformAvailable as jest.Mock).mockResolvedValue(true);
+    const mockCredential = {
+      id: 'mock-id',
+      rawId: new Uint8Array([1, 2, 3]).buffer,
+      type: 'public-key',
+      authenticatorAttachment: 'platform',
+      response: {
+        clientDataJSON: new Uint8Array([4, 5, 6]).buffer,
+        authenticatorData: new Uint8Array([7, 8, 9]).buffer,
+        signature: new Uint8Array([10, 11, 12]).buffer,
+        userHandle: null,
+      },
+    };
+    navigatorGetSpy.mockResolvedValue(mockCredential);
+
+    await getPasskeyCredentials({ challenge: 'mock-challenge', rpId: 'custom.example.com' } as PasskeyRead['public_key']);
+
+    expect(navigatorGetSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        publicKey: expect.objectContaining({ rpId: 'custom.example.com' }),
+      })
+    );
+  });
+
+  it('should omit rpId from navigator.credentials.get when not provided', async () => {
+    (isWebAuthPlatformAvailable as jest.Mock).mockResolvedValue(true);
+    const mockCredential = {
+      id: 'mock-id',
+      rawId: new Uint8Array([1, 2, 3]).buffer,
+      type: 'public-key',
+      authenticatorAttachment: 'platform',
+      response: {
+        clientDataJSON: new Uint8Array([4, 5, 6]).buffer,
+        authenticatorData: new Uint8Array([7, 8, 9]).buffer,
+        signature: new Uint8Array([10, 11, 12]).buffer,
+        userHandle: null,
+      },
+    };
+    navigatorGetSpy.mockResolvedValue(mockCredential);
+
+    await getPasskeyCredentials({ challenge: 'mock-challenge' } as PasskeyRead['public_key']);
+
+    const callArg = navigatorGetSpy.mock.calls[0][0];
+    expect(callArg.publicKey).not.toHaveProperty('rpId');
+  });
 });
 
 describe('createPasskeyCredentials', () => {
@@ -366,6 +413,41 @@ describe('registerPasskeyAutofill', () => {
     await Promise.resolve(); // allow promise to resolve
 
     expect(onReject).toHaveBeenCalledWith(error);
+  });
+
+  it('should use rpId from publicKey when provided', async () => {
+    const mockCredential = { id: 'mock-credential' };
+    mockGet.mockResolvedValue(mockCredential);
+
+    await registerPasskeyAutofill({
+      publicKey: { challenge: 'mock-challenge', rpId: 'custom.example.com' },
+      onResolve,
+      onReject,
+    });
+
+    await Promise.resolve();
+
+    expect(mockGet).toHaveBeenCalledWith(
+      expect.objectContaining({
+        publicKey: expect.objectContaining({ rpId: 'custom.example.com' }),
+      })
+    );
+  });
+
+  it('should omit rpId from the request when rpId is not provided', async () => {
+    const mockCredential = { id: 'mock-credential' };
+    mockGet.mockResolvedValue(mockCredential);
+
+    await registerPasskeyAutofill({
+      publicKey: { challenge: 'mock-challenge' },
+      onResolve,
+      onReject,
+    });
+
+    await Promise.resolve();
+
+    const callArg = mockGet.mock.calls[0][0];
+    expect(callArg.publicKey).not.toHaveProperty('rpId');
   });
 
   it('should ignore AbortError exceptions', async () => {

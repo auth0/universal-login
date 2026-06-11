@@ -68,6 +68,7 @@ export async function getPasskeyCredentials(
   const credential = (await navigator.credentials.get({
     publicKey: {
       challenge,
+      ...(publicKey.rpId ? { rpId: publicKey.rpId } : {}),
       allowCredentials: publicKey.allowCredentials?.length
       ? publicKey.allowCredentials.map((c) => ({
           id: base64UrlToUint8Array(c.id),
@@ -176,7 +177,7 @@ export async function registerPasskeyAutofill({
   const request: CredentialRequestOptions = {
     publicKey: {
       challenge,
-      rpId: window.location.hostname,
+      ...(publicKey.rpId ? { rpId: publicKey.rpId } : {}),
       allowCredentials: [],
       userVerification: 'preferred',
       timeout: DEFAULT_TIMEOUT

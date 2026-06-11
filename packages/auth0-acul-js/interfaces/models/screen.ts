@@ -18,6 +18,7 @@ export interface PasskeyRead {
   public_key: {
     challenge: Base64URLString;
     allowCredentials?: AllowCredential[];
+    rpId?: string;
   };
 }
 
