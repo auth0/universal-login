@@ -111,6 +111,9 @@ export default class EmailIdentifierChallenge extends BaseContext implements Ema
   }
 
   /**
+   * @remarks
+   * Switches the authentication flow from OTP-based to password-based authentication.
+   *
    * @example
    * import EmailIdentifierChallenge from '@auth0/auth0-acul-js/email-identifier-challenge';
    *

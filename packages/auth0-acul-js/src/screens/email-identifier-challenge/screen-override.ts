@@ -15,10 +15,13 @@ export class ScreenOverride extends Screen implements OverrideOptions {
 
     const { message_type, email, ...rest } = data;
 
+    const { show_switch_to_password_button, ...remaining } = rest;
+
     return {
-      ...rest,
+      ...remaining,
       email: email,
       messageType: message_type,
+      showSwitchToPasswordButton: show_switch_to_password_button,
     } as OverrideOptions['data'];
   };
 }

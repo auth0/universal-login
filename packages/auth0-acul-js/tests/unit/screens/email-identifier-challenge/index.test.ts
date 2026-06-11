@@ -144,7 +144,7 @@ describe('EmailIdentifierChallenge', () => {
 
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
-        expect.objectContaining({ action: 'switch-to-password-auth' })
+        expect.objectContaining({ action: FormActions.SWITCH_TO_PASSWORD_AUTH })
       );
       expect(FormHandler).toHaveBeenCalledWith({
         state: emailIdentifierChallenge.transaction.state,
@@ -157,7 +157,7 @@ describe('EmailIdentifierChallenge', () => {
       await emailIdentifierChallenge.switchToPassword(payload);
 
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
-        expect.objectContaining({ ...payload, action: 'switch-to-password-auth' })
+        expect.objectContaining({ ...payload, action: FormActions.SWITCH_TO_PASSWORD_AUTH })
       );
     });
 

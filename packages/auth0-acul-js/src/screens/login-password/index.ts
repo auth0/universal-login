@@ -6,6 +6,7 @@ import { FormHandler } from '../../utils/form-handler';
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
 
+import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type {
@@ -14,7 +15,6 @@ import type {
   LoginPasswordMembers,
   FederatedLoginOptions,
   SwitchConnectionOptions,
-  SwitchToOtpOptions,
   TransactionMembersOnLoginPassword as TransactionOptions,
 } from '../../../interfaces/screens/login-password';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
@@ -122,13 +122,14 @@ export default class LoginPassword extends BaseContext implements LoginPasswordM
    * const loginPasswordManager = new LoginPassword();
    * loginPasswordManager.switchToOtp();
    */
-  async switchToOtp(): Promise<void> {
+  async switchToOtp(payload?: CustomOptions): Promise<void> {
     const options: FormOptions = {
       state: this.transaction.state,
       telemetry: [LoginPassword.screenIdentifier, 'switchToOtp'],
     };
 
-    await new FormHandler(options).submitData<SwitchToOtpOptions>({
+    await new FormHandler(options).submitData<CustomOptions>({
+      ...payload,
       action: FormActions.SWITCH_TO_OTP_AUTH,
     });
   }
@@ -139,7 +140,6 @@ export {
   LoginPasswordOptions,
   FederatedLoginOptions,
   SwitchConnectionOptions,
-  SwitchToOtpOptions,
   ScreenOptions as ScreenMembersOnLoginPassword,
   TransactionOptions as TransactionMembersOnLoginPassword,
 };

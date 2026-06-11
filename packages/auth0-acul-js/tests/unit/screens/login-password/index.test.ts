@@ -1,4 +1,4 @@
-import { ScreenIds } from '../../../../src/constants';
+import { FormActions, ScreenIds } from '../../../../src/constants';
 import LoginPassword from '../../../../src/screens/login-password';
 import { getBrowserCapabilities } from '../../../../src/utils/browser-capabilities';
 import { FormHandler } from '../../../../src/utils/form-handler';
@@ -274,12 +274,20 @@ describe('LoginPassword', () => {
 
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
-        expect.objectContaining({ action: 'switch-to-otp-auth' })
+        expect.objectContaining({ action: FormActions.SWITCH_TO_OTP_AUTH })
       );
       expect(FormHandler).toHaveBeenCalledWith({
         state: loginPassword.transaction.state,
         telemetry: [ScreenIds.LOGIN_PASSWORD, 'switchToOtp'],
       });
+    });
+
+    it('should merge custom payload with switch-to-otp-auth action', async () => {
+      await loginPassword.switchToOtp({ custom: 'value' });
+
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith(
+        expect.objectContaining({ custom: 'value', action: FormActions.SWITCH_TO_OTP_AUTH })
+      );
     });
 
     it('should throw error when promise is rejected', async () => {

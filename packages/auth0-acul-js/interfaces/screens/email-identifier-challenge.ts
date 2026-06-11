@@ -14,6 +14,7 @@ export interface ScreenMembersOnEmailIdentifierChallenge extends ScreenMembers {
     messageType?: string;
     email?: string;
     resendLimitReached?: boolean;
+    showSwitchToPasswordButton?: boolean;
   } | null;
 }
 

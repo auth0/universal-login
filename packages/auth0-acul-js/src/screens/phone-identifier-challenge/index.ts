@@ -143,6 +143,9 @@ export default class PhoneIdentifierChallenge extends BaseContext implements Pho
   }
 
   /**
+   * @remarks
+   * Switches the authentication flow from OTP-based to password-based authentication.
+   *
    * @example
    * import PhoneIdentifierChallenge from '@auth0/auth0-acul-js/phone-identifier-challenge';
    *

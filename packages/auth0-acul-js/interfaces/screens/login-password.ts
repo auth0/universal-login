@@ -1,4 +1,5 @@
 import type { IdentifierType } from '../../src/constants';
+import type { CustomOptions } from '../common';
 import type { BaseContext, BaseMembers } from '../models/base-context';
 import type { ScreenContext, ScreenMembers } from '../models/screen';
 import type { TransactionContext, TransactionMembers, DBConnection, PasswordPolicy, UsernamePolicy } from '../models/transaction';
@@ -55,15 +56,11 @@ export interface SwitchConnectionOptions {
   [key: string]: string | number | boolean;
 }
 
-export interface SwitchToOtpOptions {
-  [key: string]: string | number | boolean;
-}
-
 export interface LoginPasswordMembers extends BaseMembers {
   screen: ScreenMembersOnLoginPassword;
   transaction: TransactionMembersOnLoginPassword;
   login(payload: LoginPasswordOptions): Promise<void>;
   federatedLogin(payload: FederatedLoginOptions): Promise<void>;
   switchConnection(payload: SwitchConnectionOptions): Promise<void>;
-  switchToOtp(): Promise<void>;
+  switchToOtp(payload?: CustomOptions): Promise<void>;
 }
