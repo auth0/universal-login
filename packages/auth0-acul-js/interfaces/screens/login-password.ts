@@ -1,4 +1,5 @@
 import type { IdentifierType } from '../../src/constants';
+import type { CustomOptions } from '../common';
 import type { BaseContext, BaseMembers } from '../models/base-context';
 import type { ScreenContext, ScreenMembers } from '../models/screen';
 import type { TransactionContext, TransactionMembers, DBConnection, PasswordPolicy, UsernamePolicy } from '../models/transaction';
@@ -17,6 +18,7 @@ export interface ScreenMembersOnLoginPassword extends ScreenMembers {
   editIdentifierLink: string | null;
   data: {
     username: string;
+    showSwitchToOtpButton?: boolean;
   } | null;
 }
 
@@ -61,4 +63,5 @@ export interface LoginPasswordMembers extends BaseMembers {
   login(payload: LoginPasswordOptions): Promise<void>;
   federatedLogin(payload: FederatedLoginOptions): Promise<void>;
   switchConnection(payload: SwitchConnectionOptions): Promise<void>;
+  switchToOtp(payload?: CustomOptions): Promise<void>;
 }

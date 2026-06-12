@@ -15,6 +15,9 @@ describe('ScreenOverride', () => {
       data: {
         phone_number: '+1234567890',
         message_type: 'sms',
+        show_link_sms: true,
+        show_link_voice: false,
+        show_switch_to_password_button: true,
       },
     } as ScreenContext;
 
@@ -23,12 +26,15 @@ describe('ScreenOverride', () => {
 
   describe('constructor', () => {
     it('should initialize data correctly with valid screen context', () => {
-      expect(screenOverride.data).toEqual({
-        phone_number: '+1234567890',
-        message_type: 'sms',
-        phone: '+1234567890',
-        messageType: 'sms',
-      });
+      expect(screenOverride.data).toEqual(
+        expect.objectContaining({
+          phone: '+1234567890',
+          messageType: 'sms',
+          showLinkSms: true,
+          showLinkVoice: false,
+          showSwitchToPasswordButton: true,
+        })
+      );
     });
 
     it('should call getScreenData with correct screenContext', () => {
@@ -67,15 +73,52 @@ describe('ScreenOverride', () => {
   });
 
   describe('getScreenData static method', () => {
-    it('should map phone_number to phone and message_type to messageType', () => {
+    it('should map all fields correctly', () => {
       const result = ScreenOverride.getScreenData(screenContext);
 
-      expect(result).toEqual({
-        phone_number: '+1234567890',
-        message_type: 'sms',
-        phone: '+1234567890',
-        messageType: 'sms',
-      });
+      expect(result).toEqual(
+        expect.objectContaining({
+          phone: '+1234567890',
+          messageType: 'sms',
+          showLinkSms: true,
+          showLinkVoice: false,
+          showSwitchToPasswordButton: true,
+        })
+      );
+    });
+
+    it('should return undefined phone when phone_number is absent', () => {
+      const context = {
+        name: 'phone-identifier-challenge',
+        data: { message_type: 'text' },
+      } as ScreenContext;
+
+      const result = ScreenOverride.getScreenData(context);
+
+      expect(result?.phone).toBeUndefined();
+    });
+
+    it('should map show_switch_to_password_button to showSwitchToPasswordButton', () => {
+      const context = {
+        name: 'phone-identifier-challenge',
+        data: { show_switch_to_password_button: true },
+      } as ScreenContext;
+
+      const result = ScreenOverride.getScreenData(context);
+
+      expect(result?.showSwitchToPasswordButton).toBe(true);
+    });
+
+    it('should map show_link_sms and show_link_voice correctly', () => {
+      const context = {
+        name: 'phone-identifier-challenge',
+        data: { show_link_sms: false, show_link_voice: true },
+      } as ScreenContext;
+
+      const result = ScreenOverride.getScreenData(context);
+
+      expect(result?.showLinkSms).toBe(false);
+      expect(result?.showLinkVoice).toBe(true);
     });
 
     it('should return null when screenContext.data is undefined', () => {
@@ -111,7 +154,10 @@ describe('ScreenOverride', () => {
         phone_number: '+9876543210',
         customField: 'customValue',
         phone: '+9876543210',
-        messageType: undefined
+        messageType: undefined,
+        showLinkSms: undefined,
+        showLinkVoice: undefined,
+        showSwitchToPasswordButton: undefined,
       });
     });
 
@@ -125,7 +171,7 @@ describe('ScreenOverride', () => {
 
       expect(result).toEqual({
         phone: undefined,
-        messageType: undefined
+        messageType: undefined,
       });
     });
 
@@ -148,7 +194,10 @@ describe('ScreenOverride', () => {
         custom_field: 'custom_value',
         extra_field: 'extra_value',
         phone: '+5555555555',
-        messageType: 'voice'
+        messageType: 'voice',
+        showLinkSms: undefined,
+        showLinkVoice: undefined,
+        showSwitchToPasswordButton: undefined,
       });
     });
 
@@ -167,7 +216,10 @@ describe('ScreenOverride', () => {
         phone_number: '',
         message_type: 'sms',
         phone: '',
-        messageType: 'sms'
+        messageType: 'sms',
+        showLinkSms: undefined,
+        showLinkVoice: undefined,
+        showSwitchToPasswordButton: undefined,
       });
     });
 
@@ -186,7 +238,10 @@ describe('ScreenOverride', () => {
         phone_number: '+1234567890',
         message_type: '',
         phone: '+1234567890',
-        messageType: ''
+        messageType: '',
+        showLinkSms: undefined,
+        showLinkVoice: undefined,
+        showSwitchToPasswordButton: undefined,
       });
     });
   });

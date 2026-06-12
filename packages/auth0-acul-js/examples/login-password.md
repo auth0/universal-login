@@ -14,3 +14,20 @@ loginPasswordManager.login({
 });
 
 ```
+
+
+## switchToOtp
+
+The `showSwitchToOtpButton` screen data flag controls whether this option is available. Only render the button when the server enables it.
+
+```typescript
+import LoginPassword from "@auth0/auth0-acul-js/login-password";
+
+const loginPasswordManager = new LoginPassword();
+
+// Only call when screen.data.showSwitchToOtpButton is true
+if (loginPasswordManager.screen.data?.showSwitchToOtpButton) {
+  loginPasswordManager.switchToOtp();
+}
+
+```

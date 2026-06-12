@@ -139,6 +139,36 @@ describe('PhoneIdentifierChallenge', () => {
     });
   });
 
+  describe('switchToPassword method', () => {
+    it('should submit switch-to-password-auth action', async () => {
+      await phoneIdentifierChallenge.switchToPassword();
+
+      expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith(
+        expect.objectContaining({ action: FormActions.SWITCH_TO_PASSWORD_AUTH })
+      );
+      expect(FormHandler).toHaveBeenCalledWith({
+        state: phoneIdentifierChallenge.transaction.state,
+        telemetry: [ScreenIds.PHONE_IDENTIFIER_CHALLENGE, 'switchToPassword'],
+      });
+    });
+
+    it('should merge custom payload with switch-to-password-auth action', async () => {
+      const payload: CustomOptions = { custom: 'value' };
+      await phoneIdentifierChallenge.switchToPassword(payload);
+
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith(
+        expect.objectContaining({ ...payload, action: FormActions.SWITCH_TO_PASSWORD_AUTH })
+      );
+    });
+
+    it('should throw error when promise is rejected', async () => {
+      mockFormHandler.submitData.mockRejectedValue(new Error('Switch failed'));
+
+      await expect(phoneIdentifierChallenge.switchToPassword()).rejects.toThrow('Switch failed');
+    });
+  });
+
   describe('resendManager method', () => {
     let mockCreateResendControl: jest.Mock;
     let mockResendControl: { startResend: jest.Mock };

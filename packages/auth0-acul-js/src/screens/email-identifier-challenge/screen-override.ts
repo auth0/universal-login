@@ -9,16 +9,17 @@ export class ScreenOverride extends Screen implements OverrideOptions {
     this.data = ScreenOverride.getScreenData(screenContext);
   }
 
-  static getScreenData = (screenContext: ScreenContext): OverrideOptions['data'] => {
+  static getScreenData(screenContext: ScreenContext): OverrideOptions['data'] {
     const data = screenContext.data;
     if (!data) return null;
 
-    const { message_type, email, ...rest } = data;
+    const { message_type, email, show_switch_to_password_button, ...remaining } = data;
 
     return {
-      ...rest,
+      ...remaining,
       email: email,
       messageType: message_type,
+      showSwitchToPasswordButton: show_switch_to_password_button,
     } as OverrideOptions['data'];
-  };
+  }
 }
