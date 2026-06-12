@@ -1,5 +1,12 @@
 # Change Log
 
+## [auth0-acul-react-v1.4.0](https://github.com/auth0/universal-login/tree/auth0-acul-react-v1.4.0) (2026-06-12)
+[Full Changelog](https://github.com/auth0/universal-login/compare/auth0-acul-react-v1.3.0...auth0-acul-react-v1.4.0)
+
+**Added**
+- feat: Add switchToPassword and switchToOtp methods to identifier challenge screens [\#348](https://github.com/auth0/universal-login/pull/348) ([amitsingh05667](https://github.com/amitsingh05667))
+- feat: add optional rpId to PasskeyRead and update passkey autofill [\#346](https://github.com/auth0/universal-login/pull/346) ([amitsingh05667](https://github.com/amitsingh05667))
+
 ## [auth0-acul-react-v1.3.0](https://github.com/auth0/universal-login/tree/auth0-acul-react-v1.3.0) (2026-04-28)
 [Full Changelog](https://github.com/auth0/universal-login/compare/auth0-acul-react-v1.2.0...auth0-acul-react-v1.3.0)
 
