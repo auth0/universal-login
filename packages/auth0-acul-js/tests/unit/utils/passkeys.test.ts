@@ -466,3 +466,79 @@ describe('registerPasskeyAutofill', () => {
     expect(onReject).not.toHaveBeenCalled();
   });
 });
+
+describe('createPasskeyCredentials / decodePublicKey', () => {
+  let createMock: jest.Mock;
+  const originalNavigator = Object.getOwnPropertyDescriptor(global, 'navigator');
+
+  const basePublicKey: PasskeyCreate['public_key'] = {
+    user: { id: 'dXNlcklk', name: 'user@example.com', displayName: 'User' },
+    rp: { id: 'example.com', name: 'Example' },
+    challenge: 'Y2hhbGxlbmdl',
+    pubKeyCredParams: [{ type: 'public-key', alg: -7 }],
+    authenticatorSelection: { residentKey: 'required', userVerification: 'preferred' },
+  };
+
+  const credentialResult = {
+    id: 'credId',
+    rawId: new Uint8Array([1, 2, 3]).buffer,
+    type: 'public-key',
+    authenticatorAttachment: 'platform',
+    response: {
+      clientDataJSON: new Uint8Array([4, 5]).buffer,
+      attestationObject: new Uint8Array([6, 7]).buffer,
+      getTransports: () => ['internal'],
+    },
+  };
+
+  beforeEach(() => {
+    createMock = jest.fn().mockResolvedValue(credentialResult);
+    Object.defineProperty(global, 'navigator', {
+      value: { credentials: { create: createMock } },
+      writable: true,
+      configurable: true,
+    });
+  });
+
+  afterEach(() => {
+    if (originalNavigator) {
+      Object.defineProperty(global, 'navigator', originalNavigator);
+    } else {
+      delete (global as { navigator?: unknown }).navigator;
+    }
+  });
+
+  it('decodes excludeCredentials ids and preserves type/transports', async () => {
+    const publicKey: PasskeyCreate['public_key'] = {
+      ...basePublicKey,
+      excludeCredentials: [
+        { id: 'ZXhjbHVkZWRJZA', type: 'public-key', transports: ['internal', 'hybrid'] },
+        { id: 'c2Vjb25kSWQ', type: 'public-key' },
+      ],
+    };
+
+    await createPasskeyCredentials(publicKey);
+
+    const passedOptions = createMock.mock.calls[0][0].publicKey as PublicKeyCredentialCreationOptions;
+    expect(passedOptions.excludeCredentials).toHaveLength(2);
+    expect(passedOptions.excludeCredentials![0].id).toEqual(base64UrlToUint8Array('ZXhjbHVkZWRJZA'));
+    expect(passedOptions.excludeCredentials![0].type).toBe('public-key');
+    expect(passedOptions.excludeCredentials![0].transports).toEqual(['internal', 'hybrid']);
+    expect(passedOptions.excludeCredentials![1].id).toEqual(base64UrlToUint8Array('c2Vjb25kSWQ'));
+    expect(passedOptions.excludeCredentials![1].transports).toBeUndefined();
+  });
+
+  it('omits excludeCredentials when absent', async () => {
+    await createPasskeyCredentials(basePublicKey);
+
+    const passedOptions = createMock.mock.calls[0][0].publicKey as PublicKeyCredentialCreationOptions;
+    expect(passedOptions.excludeCredentials).toBeUndefined();
+  });
+
+  it('omits excludeCredentials when empty', async () => {
+    await createPasskeyCredentials({ ...basePublicKey, excludeCredentials: [] });
+
+    const passedOptions = createMock.mock.calls[0][0].publicKey as PublicKeyCredentialCreationOptions;
+    expect(passedOptions.excludeCredentials).toBeUndefined();
+  });
+});
