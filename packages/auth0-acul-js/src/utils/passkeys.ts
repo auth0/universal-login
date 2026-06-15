@@ -13,7 +13,7 @@ function safeBase64Url(buffer: ArrayBuffer | null): string | null {
 function decodePublicKey(
   publicKey: PasskeyCreate["public_key"]
 ): PublicKeyCredentialCreationOptions {
-  const { challenge, user, authenticatorSelection, pubKeyCredParams, rp } =
+  const { challenge, user, authenticatorSelection, pubKeyCredParams, rp, excludeCredentials } =
     publicKey;
   const decodedUser: PublicKeyCredentialUserEntity = {
     id: base64UrlToUint8Array(user.id),
@@ -44,7 +44,16 @@ function decodePublicKey(
         | "platform"
         | "cross-platform"
         | undefined,
-    } : undefined
+    } : undefined,
+    ...(excludeCredentials && excludeCredentials.length > 0
+      ? {
+          excludeCredentials: excludeCredentials.map((cred) => ({
+            id: base64UrlToUint8Array(cred.id),
+            type: 'public-key',
+            ...cred.transports && { transports: cred.transports },
+          })),
+        }
+      : {}),
   };
 }
 
