@@ -11,6 +11,7 @@ import { getPasskeyCredentials, registerPasskeyAutofill } from '../../../../src/
 import type { ScreenContext } from '../../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../../interfaces/models/transaction';
 import type { LoginOptions, FederatedLoginOptions } from '../../../../interfaces/screens/login-id';
+import type { GoogleOneTapOptions } from '../../../../interfaces/common';
 
 jest.mock('../../../../src/screens/login-id/screen-override');
 jest.mock('../../../../src/screens/login-id/transaction-override');
@@ -115,6 +116,27 @@ describe('LoginId', () => {
       expect(FormHandler.prototype.submitData).toHaveBeenCalledWith({
         passkey: JSON.stringify({ id: 'mockPasskey' }),
       });
+    });
+  });
+
+  describe('googleOneTap', () => {
+    it('submits google-one-tap action with credential and correct telemetry', async () => {
+      const payload: GoogleOneTapOptions = { one_tap_credential: 'mock-google-id-token' };
+      await loginId.googleOneTap(payload);
+
+      expect(FormHandler).toHaveBeenCalledWith({
+        state: 'mockState',
+        telemetry: [ScreenIds.LOGIN_ID, 'googleOneTap'],
+      });
+      expect(FormHandler.prototype.submitData).toHaveBeenCalledWith({
+        one_tap_credential: 'mock-google-id-token',
+        action: FormActions.GOOGLE_ONE_TAP,
+      });
+    });
+
+    it('should throw error when promise is rejected', async () => {
+      (FormHandler.prototype.submitData as jest.Mock).mockRejectedValueOnce(new Error('Mocked reject'));
+      await expect(loginId.googleOneTap({ one_tap_credential: 'token' })).rejects.toThrow('Mocked reject');
     });
   });
 

@@ -9,6 +9,7 @@ import { validateUsername as _validateUsername} from '../../utils/validate-usern
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
 
+import type { CustomOptions, GoogleOneTapOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type {
@@ -92,6 +93,24 @@ export default class Signup extends BaseContext implements SignupMembers {
    * import Signup from "@auth0/auth0-acul-js/signup";
    * const signupManager = new Signup();
    *
+   * signupManager.googleOneTap({ one_tap_credential: googleIdToken });
+   */
+  async googleOneTap(payload: GoogleOneTapOptions): Promise<void> {
+    const options: FormOptions = {
+      state: this.transaction.state,
+      telemetry: [Signup.screenIdentifier, 'googleOneTap'],
+    };
+    await new FormHandler(options).submitData<CustomOptions>({
+      ...payload,
+      action: FormActions.GOOGLE_ONE_TAP,
+    });
+  }
+
+  /**
+   * @example
+   * import Signup from "@auth0/auth0-acul-js/signup";
+   * const signupManager = new Signup();
+   *
    * signupManager.pickCountryCode();
    */
   async pickCountryCode(): Promise<void> {
@@ -154,6 +173,6 @@ export default class Signup extends BaseContext implements SignupMembers {
   }
 }
 
-export { PasswordValidationResult, UsernameValidationResult, Identifier, SignupMembers, SignupOptions, ScreenOptions as ScreenMembersOnSignup, TransactionOptions as TransactionMembersOnSignup, FederatedSignupOptions };
+export { PasswordValidationResult, UsernameValidationResult, Identifier, SignupMembers, SignupOptions, FederatedSignupOptions, GoogleOneTapOptions, ScreenOptions as ScreenMembersOnSignup, TransactionOptions as TransactionMembersOnSignup };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';

@@ -1,5 +1,5 @@
 import type { IdentifierType } from '../../src/constants';
-import type { CustomOptions } from '../common';
+import type { CustomOptions, GoogleOneTapConfig, GoogleOneTapOptions } from '../common';
 import type { BaseContext, BaseMembers } from '../models/base-context';
 import type { ScreenContext, ScreenMembers, PasskeyRead } from '../models/screen';
 import type { TransactionMembers, UsernamePolicy, DBConnection } from '../models/transaction';
@@ -46,6 +46,7 @@ export interface ScreenMembersOnLoginId extends ScreenMembers {
   signupLink: string | null;
   resetPasswordLink: string | null;
   publicKey: PasskeyRead['public_key'] | null;
+  googleOneTapConfig: GoogleOneTapConfig | null;
 }
 
 export interface TransactionMembersOnLoginId extends TransactionMembers {
@@ -76,6 +77,7 @@ export interface LoginIdMembers extends BaseMembers {
   federatedLogin(payload: FederatedLoginOptions): Promise<void>;
   passkeyLogin(payload?: CustomOptions): Promise<void>;
   pickCountryCode(payload?: CustomOptions): Promise<void>;
+  googleOneTap(payload: GoogleOneTapOptions): Promise<void>;
   getLoginIdentifiers(): IdentifierType[] | null;
   registerPasskeyAutofill(inputId?: string): Promise<void>;
 }

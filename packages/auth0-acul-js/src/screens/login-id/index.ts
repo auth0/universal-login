@@ -10,7 +10,7 @@ import { registerPasskeyAutofill } from '../../utils/passkeys';
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
 
-import type { CustomOptions } from '../../../interfaces/common';
+import type { CustomOptions, GoogleOneTapOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type {
@@ -145,6 +145,25 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
    * import LoginId from "@auth0/auth0-acul-js/login-id";
    * const loginIdManager = new LoginId();
    *
+   * loginIdManager.googleOneTap({ one_tap_credential: googleIdToken });
+   */
+  async googleOneTap(payload: GoogleOneTapOptions): Promise<void> {
+    const options: FormOptions = {
+      state: this.transaction.state,
+      telemetry: [LoginId.screenIdentifier, 'googleOneTap'],
+    };
+
+    await new FormHandler(options).submitData<CustomOptions>({
+      ...payload,
+      action: FormActions.GOOGLE_ONE_TAP,
+    });
+  }
+
+  /**
+   * @example
+   * import LoginId from "@auth0/auth0-acul-js/login-id";
+   * const loginIdManager = new LoginId();
+   *
    * loginIdManager.pickCountryCode();
    */
   async pickCountryCode(payload?: CustomOptions): Promise<void> {
@@ -269,6 +288,7 @@ export {
   LoginIdMembers,
   LoginOptions,
   FederatedLoginOptions,
+  GoogleOneTapOptions,
   ScreenOptions as ScreenMembersOnLoginId,
   TransactionOptions as TransactionMembersOnLoginId,
 };

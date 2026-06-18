@@ -6,7 +6,7 @@ import { getLoginIdentifiers as _getLoginIdentifiers } from '../../utils/login-i
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
 
-import type { CustomOptions } from '../../../interfaces/common';
+import type { CustomOptions, GoogleOneTapOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type {
@@ -99,6 +99,24 @@ export default class Login extends BaseContext implements LoginMembers {
   }
 
   /**
+   * Submits a Google One Tap credential to complete authentication
+   * @param payload The Google ID token returned by the GSI SDK
+   * @example
+   * ```typescript
+   * import Login from "@auth0/auth0-acul-js/login";
+   * const loginManager = new Login();
+   * loginManager.googleOneTap({ one_tap_credential: googleIdToken });
+   * ```
+   */
+  async googleOneTap(payload: GoogleOneTapOptions): Promise<void> {
+    const options: FormOptions = { state: this.transaction.state, telemetry: [Login.screenIdentifier, 'googleOneTap'] };
+    await new FormHandler(options).submitData<CustomOptions>({
+      ...payload,
+      action: FormActions.GOOGLE_ONE_TAP,
+    });
+  }
+
+  /**
    * Gets the active identifier types for the login screen
    * @returns An array of active identifier types or null if none are active
    * @example
@@ -114,6 +132,13 @@ export default class Login extends BaseContext implements LoginMembers {
   }
 }
 
-export { LoginMembers, LoginOptions, FederatedLoginOptions, ScreenOptions as ScreenMembersOnLogin, TransactionOptions as TransactionMembersOnLogin };
+export {
+  LoginMembers,
+  LoginOptions,
+  FederatedLoginOptions,
+  GoogleOneTapOptions,
+  ScreenOptions as ScreenMembersOnLogin,
+  TransactionOptions as TransactionMembersOnLogin,
+};
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';

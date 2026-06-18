@@ -8,6 +8,7 @@ import { validateUsername as _validateUsername} from '../../utils/validate-usern
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
 
+import type { CustomOptions, GoogleOneTapOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type {
@@ -111,6 +112,24 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
   }
 
   /**
+   * @example
+   * import SignupId from "@auth0/auth0-acul-js/signup-id";
+   * const signupIdManager = new SignupId();
+   *
+   * signupIdManager.googleOneTap({ one_tap_credential: googleIdToken });
+   */
+  async googleOneTap(payload: GoogleOneTapOptions): Promise<void> {
+    const options: FormOptions = {
+      state: this.transaction.state,
+      telemetry: [SignupId.screenIdentifier, 'googleOneTap'],
+    };
+    await new FormHandler(options).submitData<CustomOptions>({
+      ...payload,
+      action: FormActions.GOOGLE_ONE_TAP,
+    });
+  }
+
+  /**
    * Returns the list of enabled identifiers for the signup-id form,
    * marking each as required or optional based on transaction config.
    *
@@ -172,6 +191,7 @@ export {
   UsernameValidationResult,
   SignupOptions,
   FederatedSignupOptions,
+  GoogleOneTapOptions,
   ScreenOptions as ScreenMembersOnSignupId,
   TransactionOptions as TransactionMembersOnSignupId,
 };

@@ -10,6 +10,7 @@ import type {
   LoginOptions,
   FederatedLoginOptions,
   CustomOptions,
+  GoogleOneTapOptions,
 } from '@auth0/auth0-acul-js/login-id';
 
 // Register the singleton instance of LoginId
@@ -39,6 +40,8 @@ export const federatedLogin = (payload: FederatedLoginOptions) =>
 export const passkeyLogin = (payload?: CustomOptions) => withError(instance.passkeyLogin(payload));
 export const pickCountryCode = (payload?: CustomOptions) =>
   withError(instance.pickCountryCode(payload));
+export const googleOneTap = (payload: GoogleOneTapOptions) =>
+  withError(instance.googleOneTap(payload));
 
 // Utility Hooks
 export { useLoginIdentifiers } from '../hooks/utility/login-identifiers';

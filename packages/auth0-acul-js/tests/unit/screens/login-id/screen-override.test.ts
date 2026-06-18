@@ -1,5 +1,5 @@
 import { ScreenOverride } from '../../../../src/screens/login-id/screen-override';
-import { getSignupLink, getResetPasswordLink, getPublicKey } from '../../../../src/shared/screen';
+import { getSignupLink, getResetPasswordLink, getPublicKey, getGoogleOneTapConfig } from '../../../../src/shared/screen';
 import { Screen } from '../../../../src/models/screen';
 import type { ScreenContext } from '../../../../interfaces/models/screen';
 
@@ -18,6 +18,7 @@ describe('ScreenOverride', () => {
     (getSignupLink as jest.Mock).mockReturnValue('mockSignupLink');
     (getResetPasswordLink as jest.Mock).mockReturnValue('mockResetPasswordLink');
     (getPublicKey as jest.Mock).mockReturnValue('mockPublicKey');
+    (getGoogleOneTapConfig as jest.Mock).mockReturnValue(null);
 
     screenOverride = new ScreenOverride(screenContext);
   });
@@ -50,5 +51,20 @@ describe('ScreenOverride', () => {
     expect(emptyScreenOverride.signupLink).toBeUndefined();
     expect(emptyScreenOverride.resetPasswordLink).toBeUndefined();
     expect(emptyScreenOverride.publicKey).toBeUndefined();
+  });
+
+  it('should return googleOneTapConfig when getGoogleOneTapConfig returns config', () => {
+    const config = { client_id: 'id', nonce: 'n', context: 'signin',
+      itp_support: true, auto_select: false, cancel_on_tap_outside: false };
+    (getGoogleOneTapConfig as jest.Mock).mockReturnValue(config);
+    const override = new ScreenOverride(screenContext);
+    expect(override.googleOneTapConfig).toEqual(config);
+    expect(getGoogleOneTapConfig).toHaveBeenCalledWith(screenContext);
+  });
+
+  it('should return null for googleOneTapConfig when getGoogleOneTapConfig returns null', () => {
+    (getGoogleOneTapConfig as jest.Mock).mockReturnValue(null);
+    const override = new ScreenOverride(screenContext);
+    expect(override.googleOneTapConfig).toBeNull();
   });
 });

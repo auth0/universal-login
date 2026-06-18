@@ -4,6 +4,7 @@ import { FormHandler } from '../../../../src/utils/form-handler';
 import { baseContextData } from '../../../data/test-data';
 
 import type { LoginOptions, FederatedLoginOptions } from '../../../../interfaces/screens/login';
+import type { GoogleOneTapOptions } from '../../../../interfaces/common';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -110,6 +111,23 @@ describe('Login', () => {
       expect(login.getLoginIdentifiers()).toBeNull();
       login.transaction.allowedIdentifiers = [];
       expect(login.getLoginIdentifiers()).toEqual([]);
+    });
+  });
+
+  describe('googleOneTap', () => {
+    it('should submit google-one-tap action with credential and correct telemetry', async () => {
+      const payload: GoogleOneTapOptions = { one_tap_credential: 'mock-google-id-token' };
+      await login.googleOneTap(payload);
+      expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith({
+        one_tap_credential: 'mock-google-id-token',
+        action: FormActions.GOOGLE_ONE_TAP,
+      });
+    });
+
+    it('should throw error when promise is rejected', async () => {
+      mockFormHandler.submitData.mockRejectedValue(new Error('Mocked reject'));
+      await expect(login.googleOneTap({ one_tap_credential: 'token' })).rejects.toThrow('Mocked reject');
     });
   });
 

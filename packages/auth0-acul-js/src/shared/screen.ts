@@ -1,3 +1,4 @@
+import type { GoogleOneTapConfig } from '../../interfaces/common';
 import type { PasskeyCreate, PasskeyRead, Scope, ScreenContext } from '../../interfaces/models/screen';
 
 /**
@@ -96,6 +97,16 @@ export function getShowRememberDevice(screen: ScreenContext): boolean {
  */
 export function getWebAuthnType(screen: ScreenContext): string | null {
   return screen.data?.webauthnType as string ?? null;
+}
+
+/**
+ * Retrieves the Google One Tap configuration from the screen context.
+ *
+ * @param {ScreenContext} screen - The screen context object from Universal Login.
+ * @returns {GoogleOneTapConfig | null} - The Google One Tap config or null if not available.
+ */
+export function getGoogleOneTapConfig(screen: ScreenContext): GoogleOneTapConfig | null {
+  return (screen.data?.google_one_tap as GoogleOneTapConfig | undefined) ?? null;
 }
 
 /**

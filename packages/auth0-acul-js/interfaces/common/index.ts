@@ -69,6 +69,25 @@ export interface FlattenedTheme {
 }
 
 /**
+ * Configuration for Google One Tap / FedCM, provided by the server in screen.data.google_one_tap
+ */
+export interface GoogleOneTapConfig {
+  client_id: string;
+  nonce: string;
+  context: string;
+  itp_support: boolean;
+  auto_select: boolean;
+  cancel_on_tap_outside: boolean;
+}
+
+/**
+ * Payload for submitting a Google One Tap credential
+ */
+export interface GoogleOneTapOptions {
+  one_tap_credential: string;
+}
+
+/**
  * Options for changing the language/locale during the authentication flow
  */
 export interface LanguageChangeOptions {

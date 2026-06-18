@@ -32,4 +32,5 @@ export const FormActions = {
   CHANGE_LANGUAGE: 'change-language' as const,
   SWITCH_TO_OTP_AUTH: 'switch-to-otp-auth' as const,
   SWITCH_TO_PASSWORD_AUTH: 'switch-to-password-auth' as const,
+  GOOGLE_ONE_TAP: 'google-one-tap' as const,
 } as const;

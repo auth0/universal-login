@@ -1,7 +1,7 @@
 import type { PasswordValidationResult } from '../../interfaces/utils/validate-password';
 import type { UsernameValidationResult } from '../../interfaces/utils/validate-username';
 import type { IdentifierType } from '../../src/constants';
-import type { CustomOptions } from '../common';
+import type { CustomOptions, GoogleOneTapConfig, GoogleOneTapOptions } from '../common';
 import type { BaseMembers } from '../models/base-context';
 import type { ScreenMembers } from '../models/screen';
 import type { TransactionMembers, UsernamePolicy, PasswordPolicy, PasswordComplexityPolicy } from '../models/transaction';
@@ -22,6 +22,7 @@ export interface FederatedSignupOptions {
 
 export interface ScreenMembersOnSignup extends ScreenMembers {
   loginLink: string | null;
+  googleOneTapConfig: GoogleOneTapConfig | null;
 }
 
 export interface TransactionMembersOnSignup extends TransactionMembers {
@@ -38,6 +39,7 @@ export interface SignupMembers extends BaseMembers {
   transaction: TransactionMembersOnSignup;
   signup(payload: SignupOptions): Promise<void>;
   federatedSignup(payload: FederatedSignupOptions): Promise<void>;
+  googleOneTap(payload: GoogleOneTapOptions): Promise<void>;
   pickCountryCode(payload?: CustomOptions): Promise<void>;
   validatePassword(password: string): PasswordValidationResult;
   /**

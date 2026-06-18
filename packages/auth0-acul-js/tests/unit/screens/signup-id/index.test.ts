@@ -4,6 +4,7 @@ import { getBrowserCapabilities } from '../../../../src/utils/browser-capabiliti
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { baseContextData } from '../../../data/test-data';
 
+import type { GoogleOneTapOptions } from '../../../../interfaces/common';
 import type {
   SignupOptions,
   FederatedSignupOptions,
@@ -137,6 +138,23 @@ describe('SignupId', () => {
     });
   });
 
+  describe('googleOneTap', () => {
+    it('should submit google-one-tap action with credential and correct telemetry', async () => {
+      const payload: GoogleOneTapOptions = { one_tap_credential: 'mock-google-id-token' };
+      await signupId.googleOneTap(payload);
+      expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith({
+        one_tap_credential: 'mock-google-id-token',
+        action: FormActions.GOOGLE_ONE_TAP,
+      });
+    });
+
+    it('should throw error when promise is rejected', async () => {
+      mockFormHandler.submitData.mockRejectedValueOnce(new Error('Mocked reject'));
+      await expect(signupId.googleOneTap({ one_tap_credential: 'token' })).rejects.toThrow('Mocked reject');
+    });
+  });
+
   describe('pickCountryCode', () => {
     it('should submit pick-country-code action', async () => {
       await signupId.pickCountryCode();
@@ -153,4 +171,5 @@ describe('SignupId', () => {
       await expect(signupId.pickCountryCode()).rejects.toThrow(expectedError);
     });
   });
+
 });
