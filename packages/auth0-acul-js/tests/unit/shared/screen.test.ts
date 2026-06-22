@@ -5,7 +5,8 @@ import {
   getResetPasswordLink,
   getForgotPasswordLink,
   getEditIdentifierLink,
-  getPublicKey
+  getPublicKey,
+  getGoogleOneTapConfig
 } from '../../../src/shared/screen';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../interfaces/models/transaction';
@@ -109,5 +110,30 @@ describe(':: overrides | when missing links or passkey', () => {
 
   it('should return null if passkey public key is missing', () => {
     expect(getPublicKey(screenWithNoPasskey)).toBeNull();
+  });
+});
+
+describe('getGoogleOneTapConfig', () => {
+  it('returns the google_one_tap config when present', () => {
+    const config = {
+      client_id: 'test-client',
+      nonce: 'test-nonce',
+      context: 'signin',
+      itp_support: true,
+      auto_select: false,
+      cancel_on_tap_outside: true,
+    };
+    const screen = { name: 'login', data: { google_one_tap: config } } as unknown as ScreenContext;
+    expect(getGoogleOneTapConfig(screen)).toEqual(config);
+  });
+
+  it('returns null when google_one_tap is absent', () => {
+    const screen = { name: 'login', data: {} } as ScreenContext;
+    expect(getGoogleOneTapConfig(screen)).toBeNull();
+  });
+
+  it('returns null when data is undefined', () => {
+    const screen = { name: 'login' } as ScreenContext;
+    expect(getGoogleOneTapConfig(screen)).toBeNull();
   });
 });

@@ -131,7 +131,10 @@ export default class Login extends BaseContext implements LoginMembers {
    * ```
    */
   async googleOneTap(payload: GoogleOneTapOptions): Promise<void> {
-    const options: FormOptions = { state: this.transaction.state, telemetry: [Login.screenIdentifier, 'googleOneTap'] };
+    const options: FormOptions = {
+      state: this.transaction.state,
+      telemetry: [Login.screenIdentifier, 'googleOneTap'],
+    };
     await new FormHandler(options).submitData<CustomOptions>({
       ...payload,
       action: FormActions.GOOGLE_ONE_TAP,
