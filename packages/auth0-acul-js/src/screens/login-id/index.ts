@@ -141,11 +141,36 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
   }
 
   /**
-   * @example
-   * import LoginId from "@auth0/auth0-acul-js/login-id";
-   * const loginIdManager = new LoginId();
+   * Submits the Google ID token obtained from the Google Identity Services (GSI) SDK
+   * to complete authentication via Google One Tap.
    *
-   * loginIdManager.googleOneTap({ one_tap_credential: googleIdToken });
+   * Check `screen.googleOneTapConfig` first — it is `null` when the feature is not
+   * enabled server-side, in which case this method should not be called.
+   *
+   * @param payload - `one_tap_credential`: the ID token returned by the GSI `callback`.
+   *
+   * @example
+   * ```typescript
+   * import LoginId from "@auth0/auth0-acul-js/login-id";
+   *
+   * const loginIdManager = new LoginId();
+   * const config = loginIdManager.screen.googleOneTapConfig;
+   *
+   * if (config) {
+   *   google.accounts.id.initialize({
+   *     client_id: config.client_id,
+   *     nonce: config.nonce,
+   *     context: config.context,
+   *     itp_support: config.itp_support,
+   *     auto_select: config.auto_select,
+   *     cancel_on_tap_outside: config.cancel_on_tap_outside,
+   *     callback: ({ credential }) => {
+   *       loginIdManager.googleOneTap({ one_tap_credential: credential });
+   *     },
+   *   });
+   *   google.accounts.id.prompt();
+   * }
+   * ```
    */
   async googleOneTap(payload: GoogleOneTapOptions): Promise<void> {
     const options: FormOptions = {

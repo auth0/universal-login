@@ -89,11 +89,36 @@ export default class Signup extends BaseContext implements SignupMembers {
   }
 
   /**
-   * @example
-   * import Signup from "@auth0/auth0-acul-js/signup";
-   * const signupManager = new Signup();
+   * Submits the Google ID token obtained from the Google Identity Services (GSI) SDK
+   * to complete sign-up via Google One Tap.
    *
-   * signupManager.googleOneTap({ one_tap_credential: googleIdToken });
+   * Check `screen.googleOneTapConfig` first — it is `null` when the feature is not
+   * enabled server-side, in which case this method should not be called.
+   *
+   * @param payload - `one_tap_credential`: the ID token returned by the GSI `callback`.
+   *
+   * @example
+   * ```typescript
+   * import Signup from "@auth0/auth0-acul-js/signup";
+   *
+   * const signupManager = new Signup();
+   * const config = signupManager.screen.googleOneTapConfig;
+   *
+   * if (config) {
+   *   google.accounts.id.initialize({
+   *     client_id: config.client_id,
+   *     nonce: config.nonce,
+   *     context: config.context,
+   *     itp_support: config.itp_support,
+   *     auto_select: config.auto_select,
+   *     cancel_on_tap_outside: config.cancel_on_tap_outside,
+   *     callback: ({ credential }) => {
+   *       signupManager.googleOneTap({ one_tap_credential: credential });
+   *     },
+   *   });
+   *   google.accounts.id.prompt();
+   * }
+   * ```
    */
   async googleOneTap(payload: GoogleOneTapOptions): Promise<void> {
     const options: FormOptions = {
