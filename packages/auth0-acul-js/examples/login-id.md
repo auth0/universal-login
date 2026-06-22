@@ -84,3 +84,30 @@ const loginIdManager = new LoginId();
 loginIdManager.pickCountryCode();
 ```
 
+## googleOneTap
+
+Use `screen.googleOneTapConfig` to check if the feature is enabled server-side, then initialize the GSI library and call `googleOneTap` with the returned credential.
+
+```typescript
+import LoginId from '@auth0/auth0-acul-js/login-id';
+
+const loginIdManager = new LoginId();
+const config = loginIdManager.screen.googleOneTapConfig;
+
+if (config) {
+  google.accounts.id.initialize({
+    client_id: config.client_id,
+    nonce: config.nonce,
+    context: config.context,
+    itp_support: config.itp_support,
+    auto_select: config.auto_select,
+    cancel_on_tap_outside: config.cancel_on_tap_outside,
+    callback: ({ credential }) => {
+      loginIdManager.googleOneTap({ one_tap_credential: credential });
+    },
+  });
+
+  google.accounts.id.prompt();
+}
+```
+

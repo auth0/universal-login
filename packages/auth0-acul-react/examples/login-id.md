@@ -426,3 +426,48 @@ const LoginIdScreen: React.FC = () => {
 export default LoginIdScreen;
 
 ```
+
+### Example using Google One Tap
+
+```tsx
+import React, { useEffect } from 'react';
+import { useScreen, googleOneTap } from '@auth0/auth0-acul-react/login-id';
+
+declare global {
+  interface Window {
+    google?: any;
+  }
+}
+
+const LoginIdScreenWithGoogleOneTap: React.FC = () => {
+  const screen = useScreen();
+  const config = screen.googleOneTapConfig;
+
+  useEffect(() => {
+    if (!config || !window.google) return;
+
+    window.google.accounts.id.initialize({
+      client_id: config.client_id,
+      nonce: config.nonce,
+      context: config.context,
+      itp_support: config.itp_support,
+      auto_select: config.auto_select,
+      cancel_on_tap_outside: config.cancel_on_tap_outside,
+      callback: ({ credential }: { credential: string }) => {
+        googleOneTap({ one_tap_credential: credential });
+      },
+    });
+
+    window.google.accounts.id.prompt();
+  }, [config]);
+
+  return (
+    <div>
+      {/* Google One Tap renders its own overlay — no extra markup needed */}
+      <p>{screen.texts?.title || 'Welcome'}</p>
+    </div>
+  );
+};
+
+export default LoginIdScreenWithGoogleOneTap;
+```

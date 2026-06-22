@@ -242,5 +242,31 @@ const SignupIdScreen: React.FC = () => {
 };
 
 export default SignupIdScreen;
+```
 
+## googleOneTap
+
+Use `screen.googleOneTapConfig` to check if the feature is enabled server-side, then initialize the GSI library and call `googleOneTap` with the returned credential.
+
+```typescript
+import SignupId from '@auth0/auth0-acul-js/signup-id';
+
+const signupIdManager = new SignupId();
+const config = signupIdManager.screen.googleOneTapConfig;
+
+if (config) {
+  google.accounts.id.initialize({
+    client_id: config.client_id,
+    nonce: config.nonce,
+    context: config.context,
+    itp_support: config.itp_support,
+    auto_select: config.auto_select,
+    cancel_on_tap_outside: config.cancel_on_tap_outside,
+    callback: ({ credential }) => {
+      signupIdManager.googleOneTap({ one_tap_credential: credential });
+    },
+  });
+
+  google.accounts.id.prompt();
+}
 ```
