@@ -84,7 +84,7 @@ const loginIdManager = new LoginId();
 loginIdManager.pickCountryCode();
 ```
 
-## googleOneTap
+## Google One Tap
 
 Use `screen.googleOneTapConfig` to check if the feature is enabled server-side, then initialize the GSI library and call `googleOneTap` with the returned credential.
 

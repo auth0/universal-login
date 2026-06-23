@@ -244,7 +244,7 @@ const SignupIdScreen: React.FC = () => {
 export default SignupIdScreen;
 ```
 
-## googleOneTap
+## Google One Tap
 
 Use `screen.googleOneTapConfig` to check if the feature is enabled server-side, then initialize the GSI library and call `googleOneTap` with the returned credential.
 

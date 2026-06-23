@@ -377,6 +377,10 @@ const SignupScreenWithGoogleOneTap: React.FC = () => {
     });
 
     window.google.accounts.id.prompt();
+
+    return () => {
+      window.google?.accounts.id.cancel();
+    };
   }, [config]);
 
   return (

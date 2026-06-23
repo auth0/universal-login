@@ -142,7 +142,10 @@ describe('SignupId', () => {
     it('should submit google-one-tap action with credential and correct telemetry', async () => {
       const payload: GoogleOneTapOptions = { one_tap_credential: 'mock-google-id-token' };
       await signupId.googleOneTap(payload);
-      expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
+      expect(FormHandler).toHaveBeenCalledWith({
+        state: 'randomStateString1234567890',
+        telemetry: [ScreenIds.SIGNUP_ID, 'googleOneTap'],
+      });
       expect(mockFormHandler.submitData).toHaveBeenCalledWith({
         one_tap_credential: 'mock-google-id-token',
         action: FormActions.GOOGLE_ONE_TAP,
