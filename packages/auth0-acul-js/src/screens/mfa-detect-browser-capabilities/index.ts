@@ -3,9 +3,9 @@ import { ScreenIds } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
+import type { CustomOptions } from '../../../interfaces/common';
 import type { MfaDetectBrowserCapabilitiesMembers } from '../../../interfaces/screens/mfa-detect-browser-capabilities';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import type { CustomOptions } from 'interfaces/common';
 
 /**
  * Class implementing the mfa-detect-browser-capabilities screen functionality

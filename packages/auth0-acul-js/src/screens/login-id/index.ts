@@ -20,8 +20,8 @@ import type {
   LoginOptions,
   FederatedLoginOptions,
 } from '../../../interfaces/screens/login-id';
+import type { IdentifierType } from '../../../interfaces/utils';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import type { IdentifierType } from 'interfaces/utils';
 
 export default class LoginId extends BaseContext implements LoginIdMembers {
   static screenIdentifier: string = ScreenIds.LOGIN_ID;

@@ -16,8 +16,8 @@ import type {
   TransactionMembersOnLogin as TransactionOptions,
   FederatedLoginOptions,
 } from '../../../interfaces/screens/login';
+import type { IdentifierType } from '../../../interfaces/utils';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
-import type { IdentifierType } from 'interfaces/utils';
 
 /**
  * Login screen implementation class
