@@ -30,6 +30,7 @@ jest.mock('@auth0/auth0-acul-js/login-id', () => {
   return jest.fn().mockImplementation(function MockLoginId(this: any) {
     this.continue = jest.fn(() => Promise.resolve());
     this.submit = jest.fn(() => Promise.resolve());
+    this.googleOneTap = jest.fn(() => Promise.resolve());
   });
 }, { virtual: true });
 
@@ -170,6 +171,18 @@ describe('LoginId Screen', () => {
           // Function may require specific parameters
         }
       });
+    });
+  });
+
+  describe('googleOneTap', () => {
+    it('should export googleOneTap as a function', () => {
+      expect(typeof LoginIdScreen.googleOneTap).toBe('function');
+    });
+
+    it('should call instance.googleOneTap with the provided payload', () => {
+      const payload = { one_tap_credential: 'test-credential' };
+      const result = LoginIdScreen.googleOneTap(payload);
+      expect(result).toBeDefined();
     });
   });
 });
