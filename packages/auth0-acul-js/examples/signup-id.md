@@ -246,8 +246,14 @@ export default SignupIdScreen;
 
 ## Google One Tap
 
-Use `screen.googleOneTapConfig` to check if the feature is enabled server-side, then initialize the GSI library and call `googleOneTap` with the returned credential.
+Use `screen.googleOneTapConfig` to check if the feature is enabled server-side, then initialize the [Google Identity Services (GSI)](https://developers.google.com/identity/gsi/web/guides/overview) library and call `googleOneTap` with the returned credential.
 
+First, add the GSI script to your `index.html`:
+```html
+<script src="https://accounts.google.com/gsi/client" async></script>
+```
+
+Then in your screen code:
 ```typescript
 import SignupId from '@auth0/auth0-acul-js/signup-id';
 
@@ -255,7 +261,7 @@ const signupIdManager = new SignupId();
 const config = signupIdManager.screen.googleOneTapConfig;
 
 if (config) {
-  google.accounts.id.initialize({
+  window.google?.accounts.id.initialize({
     client_id: config.client_id,
     nonce: config.nonce,
     context: config.context,
@@ -266,7 +272,6 @@ if (config) {
       signupIdManager.googleOneTap({ one_tap_credential: credential });
     },
   });
-
-  google.accounts.id.prompt();
+  window.google?.accounts.id.prompt();
 }
 ```

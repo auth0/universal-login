@@ -347,6 +347,8 @@ export default SignupScreen;
 
 ### Example using Google One Tap
 
+The [Google Identity Services (GSI)](https://developers.google.com/identity/gsi/web/guides/client-library) script is loaded dynamically inside `useEffect` so it only runs when `googleOneTapConfig` is available server-side.
+
 ```tsx
 import React, { useEffect } from 'react';
 import { useScreen, googleOneTap } from '@auth0/auth0-acul-react/signup';
@@ -362,26 +364,32 @@ const SignupScreenWithGoogleOneTap: React.FC = () => {
   const config = screen.googleOneTapConfig;
 
   useEffect(() => {
-    if (!config || !window.google) return;
+    if (!config) return;
 
-    window.google.accounts.id.initialize({
-      client_id: config.client_id,
-      nonce: config.nonce,
-      context: config.context,
-      itp_support: config.itp_support,
-      auto_select: config.auto_select,
-      cancel_on_tap_outside: config.cancel_on_tap_outside,
-      callback: ({ credential }: { credential: string }) => {
-        googleOneTap({ one_tap_credential: credential });
-      },
-    });
-
-    window.google.accounts.id.prompt();
+    const script = document.createElement('script');
+    script.src = 'https://accounts.google.com/gsi/client';
+    script.async = true;
+    script.defer = true;
+    script.onload = () => {
+      window.google?.accounts.id.initialize({
+        client_id: config.client_id,
+        nonce: config.nonce,
+        context: config.context,
+        itp_support: config.itp_support,
+        auto_select: config.auto_select,
+        cancel_on_tap_outside: config.cancel_on_tap_outside,
+        callback: ({ credential }: { credential: string }) => {
+          googleOneTap({ one_tap_credential: credential });
+        },
+      });
+      window.google?.accounts.id.prompt();
+    };
+    document.head.appendChild(script);
 
     return () => {
-      window.google?.accounts.id.cancel();
+      document.head.removeChild(script);
     };
-  }, [config]);
+  }, []);
 
   return (
     <div>

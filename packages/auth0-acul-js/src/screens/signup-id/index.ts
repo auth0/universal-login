@@ -120,6 +120,14 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
    *
    * @param payload - `one_tap_credential`: the ID token returned by the GSI `callback`.
    *
+   * @remarks
+   * Requires the Google Identity Services (GSI) script to be loaded before calling this method.
+   * Add it to your HTML: `<script src="https://accounts.google.com/gsi/client" async></script>`
+   * Or inject it dynamically at runtime.
+   *
+   * @see {@link https://developers.google.com/identity/gsi/web/guides/client-library | Google Identity Services: Load the client library}
+   * @see {@link https://auth0.com/docs/authenticate/identity-providers/social-identity-providers/google | Auth0 Google Social Connection}
+   *
    * @example
    * ```typescript
    * import SignupId from "@auth0/auth0-acul-js/signup-id";
@@ -128,18 +136,25 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
    * const config = signupIdManager.screen.googleOneTapConfig;
    *
    * if (config) {
-   *   google.accounts.id.initialize({
-   *     client_id: config.client_id,
-   *     nonce: config.nonce,
-   *     context: config.context,
-   *     itp_support: config.itp_support,
-   *     auto_select: config.auto_select,
-   *     cancel_on_tap_outside: config.cancel_on_tap_outside,
-   *     callback: ({ credential }) => {
-   *       signupIdManager.googleOneTap({ one_tap_credential: credential });
-   *     },
-   *   });
-   *   google.accounts.id.prompt();
+   *   const script = document.createElement('script');
+   *   script.src = 'https://accounts.google.com/gsi/client';
+   *   script.async = true;
+   *   script.defer = true;
+   *   script.onload = () => {
+   *     window.google?.accounts.id.initialize({
+   *       client_id: config.client_id,
+   *       nonce: config.nonce,
+   *       context: config.context,
+   *       itp_support: config.itp_support,
+   *       auto_select: config.auto_select,
+   *       cancel_on_tap_outside: config.cancel_on_tap_outside,
+   *       callback: ({ credential }) => {
+   *         signupIdManager.googleOneTap({ one_tap_credential: credential });
+   *       },
+   *     });
+   *     window.google?.accounts.id.prompt();
+   *   };
+   *   document.head.appendChild(script);
    * }
    * ```
    */
