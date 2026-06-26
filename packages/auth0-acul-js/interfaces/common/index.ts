@@ -72,11 +72,17 @@ export interface FlattenedTheme {
  * Configuration for Google One Tap / FedCM, provided by the server in screen.data.google_one_tap
  */
 export interface GoogleOneTapConfig {
+  /** The Google OAuth 2.0 client ID for this application. */
   client_id: string;
+  /** A random value used to associate the credential with this session and prevent replay attacks. */
   nonce: string;
+  /** Changes the title and messages shown in the One Tap prompt. Accepted values: "signin" (default), "signup", "use". */
   context: string;
+  /** When true, enables Intelligent Tracking Prevention (ITP) support for Safari/WebKit browsers that restrict third-party cookies. */
   itp_support: boolean;
+  /** When true, the credential is returned automatically without user interaction if a single Google session is available and has previously consented. */
   auto_select: boolean;
+  /** When true, the One Tap prompt closes if the user clicks outside it. Set to false to require an explicit dismissal. */
   cancel_on_tap_outside: boolean;
 }
 
