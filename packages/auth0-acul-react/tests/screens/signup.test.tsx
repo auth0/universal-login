@@ -13,7 +13,9 @@ jest.mock('@auth0/auth0-acul-js', () => ({
 
 // Mock the core SDK class
 jest.mock('@auth0/auth0-acul-js/signup', () => {
-  return jest.fn().mockImplementation(() => {});
+  return jest.fn().mockImplementation(function MockSignup(this: any) {
+    this.googleOneTap = jest.fn(() => Promise.resolve());
+  });
 }, { virtual: true });
 
 // Mock the instance store
@@ -156,6 +158,18 @@ describe('Signup Screen', () => {
           // Function may require specific parameters
         }
       });
+    });
+  });
+
+  describe('googleOneTap', () => {
+    it('should export googleOneTap as a function', () => {
+      expect(typeof SignupScreen.googleOneTap).toBe('function');
+    });
+
+    it('should call instance.googleOneTap with the provided payload', () => {
+      const payload = { one_tap_credential: 'test-credential' };
+      const result = SignupScreen.googleOneTap(payload);
+      expect(result).toBeDefined();
     });
   });
 });

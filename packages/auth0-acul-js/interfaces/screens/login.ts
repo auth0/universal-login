@@ -1,5 +1,5 @@
 import type { IdentifierType } from '../../src/constants';
-import type { CustomOptions } from '../common';
+import type { CustomOptions, GoogleOneTapConfig, GoogleOneTapOptions } from '../common';
 import type { BaseContext, BaseMembers } from '../models/base-context';
 import type { ScreenContext, ScreenMembers } from '../models/screen';
 import type { TransactionContext, TransactionMembers, DBConnection, PasswordPolicy } from '../models/transaction';
@@ -19,6 +19,7 @@ export interface ScreenContextOnLogin extends ScreenContext {
 export interface ScreenMembersOnLogin extends ScreenMembers {
   signupLink: string | null;
   resetPasswordLink: string | null;
+  googleOneTapConfig: GoogleOneTapConfig | null;
   data: {
     username?: string;
   } | null;
@@ -95,6 +96,11 @@ export interface LoginMembers extends BaseMembers {
    * @param payload Optional custom options
    */
   pickCountryCode(payload?: CustomOptions): Promise<void>;
+  /**
+   * Submits a Google One Tap credential to complete authentication
+   * @param payload The Google ID token returned by the GSI SDK
+   */
+  googleOneTap(payload: GoogleOneTapOptions): Promise<void>;
   /**
    * Gets the active identifier types for the login screen
    * @returns An array of active identifier types or null if none are active

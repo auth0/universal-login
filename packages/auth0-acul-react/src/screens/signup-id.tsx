@@ -9,6 +9,7 @@ import type {
   SignupIdMembers,
   SignupOptions,
   FederatedSignupOptions,
+  GoogleOneTapOptions,
   CustomOptions,
 } from '@auth0/auth0-acul-js/signup-id';
 
@@ -36,6 +37,8 @@ export const {
 export const signup = (payload: SignupOptions) => withError(instance.signup(payload));
 export const federatedSignup = (payload: FederatedSignupOptions) =>
   withError(instance.federatedSignup(payload));
+export const googleOneTap = (payload: GoogleOneTapOptions) =>
+  withError(instance.googleOneTap(payload));
 export const pickCountryCode = (payload?: CustomOptions) =>
   withError(instance.pickCountryCode(payload));
 

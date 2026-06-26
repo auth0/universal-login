@@ -1,5 +1,5 @@
 import type { IdentifierType } from '../../src/constants';
-import type { CustomOptions } from '../common';
+import type { CustomOptions, GoogleOneTapConfig, GoogleOneTapOptions } from '../common';
 import type { BaseContext, BaseMembers } from '../models/base-context';
 import type { ScreenContext, ScreenMembers } from '../models/screen';
 import type { TransactionMembers, UsernamePolicy } from '../models/transaction';
@@ -24,6 +24,7 @@ interface ExtendedUntrustedDataContext extends UntrustedDataContext {
 
 export interface ScreenMembersOnSignupId extends ScreenMembers {
   loginLink: string | null;
+  googleOneTapConfig: GoogleOneTapConfig | null;
 }
 
 export interface TransactionMembersOnSignupId extends TransactionMembers {
@@ -56,6 +57,7 @@ export interface SignupIdMembers extends BaseMembers {
   transaction: TransactionMembersOnSignupId;
   signup(payload: SignupOptions): Promise<void>;
   federatedSignup(payload: FederatedSignupOptions): Promise<void>;
+  googleOneTap(payload: GoogleOneTapOptions): Promise<void>;
   getSignupIdentifiers(): Identifier[] | null;
   pickCountryCode(payload?: CustomOptions): Promise<void>;
   validateUsername(username: string): UsernameValidationResult;

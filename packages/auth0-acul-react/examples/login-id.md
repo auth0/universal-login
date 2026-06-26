@@ -426,3 +426,60 @@ const LoginIdScreen: React.FC = () => {
 export default LoginIdScreen;
 
 ```
+
+### Example using Google One Tap
+
+The [Google Identity Services (GSI)](https://developers.google.com/identity/gsi/web/guides/client-library) script is loaded dynamically inside `useEffect` so it only runs when `googleOneTapConfig` is available server-side.
+
+```tsx
+import React, { useEffect } from 'react';
+import { useScreen, googleOneTap } from '@auth0/auth0-acul-react/login-id';
+
+declare global {
+  interface Window {
+    google?: any;
+  }
+}
+
+const LoginIdScreenWithGoogleOneTap: React.FC = () => {
+  const screen = useScreen();
+  const config = screen.googleOneTapConfig;
+
+  useEffect(() => {
+    if (!config) return;
+
+    const script = document.createElement('script');
+    script.src = 'https://accounts.google.com/gsi/client';
+    script.async = true;
+    script.defer = true;
+    script.onload = () => {
+      window.google?.accounts.id.initialize({
+        client_id: config.client_id,
+        nonce: config.nonce,
+        context: config.context,
+        itp_support: config.itp_support,
+        auto_select: config.auto_select,
+        cancel_on_tap_outside: config.cancel_on_tap_outside,
+        callback: ({ credential }: { credential: string }) => {
+          googleOneTap({ one_tap_credential: credential });
+        },
+      });
+      window.google?.accounts.id.prompt();
+    };
+    document.head.appendChild(script);
+
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
+
+  return (
+    <div>
+      {/* Google One Tap renders its own overlay — no extra markup needed */}
+      <p>{screen.texts?.title || 'Welcome'}</p>
+    </div>
+  );
+};
+
+export default LoginIdScreenWithGoogleOneTap;
+```

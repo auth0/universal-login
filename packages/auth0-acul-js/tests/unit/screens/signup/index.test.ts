@@ -10,6 +10,7 @@ import { validatePassword as _validatePassword } from '../../../../src/utils/val
 
 import type { ScreenContext } from '../../../../interfaces/models/screen';
 import type { PasswordPolicy, TransactionContext } from '../../../../interfaces/models/transaction';
+import type { GoogleOneTapOptions } from '../../../../interfaces/common';
 import type { SignupOptions, FederatedSignupOptions } from '../../../../interfaces/screens/signup';
 
 
@@ -77,6 +78,26 @@ describe('Signup', () => {
       await signup.federatedSignup(payload);
       expect(FormHandler).toHaveBeenCalledWith(expect.objectContaining({ state: 'mockState' }));
       expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(payload);
+    });
+  });
+
+  describe('googleOneTap', () => {
+    it('should submit google-one-tap action with credential and correct telemetry', async () => {
+      const payload: GoogleOneTapOptions = { one_tap_credential: 'mock-google-id-token' };
+      await signup.googleOneTap(payload);
+      expect(FormHandler).toHaveBeenCalledWith({
+        state: 'mockState',
+        telemetry: [ScreenIds.SIGNUP, 'googleOneTap'],
+      });
+      expect(FormHandler.prototype.submitData).toHaveBeenCalledWith({
+        one_tap_credential: 'mock-google-id-token',
+        action: FormActions.GOOGLE_ONE_TAP,
+      });
+    });
+
+    it('should throw error when promise is rejected', async () => {
+      (FormHandler.prototype.submitData as jest.Mock).mockRejectedValueOnce(new Error('Mocked reject'));
+      await expect(signup.googleOneTap({ one_tap_credential: 'token' })).rejects.toThrow('Mocked reject');
     });
   });
 

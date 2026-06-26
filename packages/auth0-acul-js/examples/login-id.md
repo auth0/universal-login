@@ -84,3 +84,35 @@ const loginIdManager = new LoginId();
 loginIdManager.pickCountryCode();
 ```
 
+## Google One Tap
+
+Use `screen.googleOneTapConfig` to check if the feature is enabled server-side, then initialize the [Google Identity Services (GSI)](https://developers.google.com/identity/gsi/web/guides/overview) library and call `googleOneTap` with the returned credential.
+
+First, add the GSI script to your `index.html`:
+```html
+<script src="https://accounts.google.com/gsi/client" async></script>
+```
+
+Then in your screen code:
+```typescript
+import LoginId from '@auth0/auth0-acul-js/login-id';
+
+const loginIdManager = new LoginId();
+const config = loginIdManager.screen.googleOneTapConfig;
+
+if (config) {
+  window.google?.accounts.id.initialize({
+    client_id: config.client_id,
+    nonce: config.nonce,
+    context: config.context,
+    itp_support: config.itp_support,
+    auto_select: config.auto_select,
+    cancel_on_tap_outside: config.cancel_on_tap_outside,
+    callback: ({ credential }) => {
+      loginIdManager.googleOneTap({ one_tap_credential: credential });
+    },
+  });
+  window.google?.accounts.id.prompt();
+}
+```
+

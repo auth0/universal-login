@@ -10,7 +10,7 @@ import { registerPasskeyAutofill } from '../../utils/passkeys';
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
 
-import type { CustomOptions } from '../../../interfaces/common';
+import type { CustomOptions, GoogleOneTapOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 import type {
@@ -138,6 +138,65 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
       }
       throw err; // rethrow only unexpected errors
     }
+  }
+
+  /**
+   * Submits the Google ID token obtained from the Google Identity Services (GSI) SDK
+   * to complete authentication via Google One Tap.
+   *
+   * Check `screen.googleOneTapConfig` first — it is `null` when the feature is not
+   * enabled server-side, in which case this method should not be called.
+   *
+   * @param payload - `one_tap_credential`: the ID token returned by the GSI `callback`.
+   *
+   * @remarks
+   * Requires the Google Identity Services (GSI) script to be loaded before calling this method.
+   * Add it to your HTML: `<script src="https://accounts.google.com/gsi/client" async></script>`
+   * Or inject it dynamically at runtime.
+   *
+   * @see {@link https://developers.google.com/identity/gsi/web/guides/client-library | Google Identity Services: Load the client library}
+   * @see {@link https://auth0.com/docs/authenticate/identity-providers/social-identity-providers/google | Auth0 Google Social Connection}
+   *
+   * @example
+   * ```typescript
+   * import LoginId from "@auth0/auth0-acul-js/login-id";
+   *
+   * const loginIdManager = new LoginId();
+   * const config = loginIdManager.screen.googleOneTapConfig;
+   *
+   * if (config) {
+   *   const script = document.createElement('script');
+   *   script.src = 'https://accounts.google.com/gsi/client';
+   *   script.async = true;
+   *   script.defer = true;
+   *   script.onload = () => {
+   *     window.google?.accounts.id.initialize({
+   *       client_id: config.client_id,
+   *       nonce: config.nonce,
+   *       context: config.context,
+   *       itp_support: config.itp_support,
+   *       auto_select: config.auto_select,
+   *       cancel_on_tap_outside: config.cancel_on_tap_outside,
+   *       callback: ({ credential }) => {
+   *         loginIdManager.googleOneTap({ one_tap_credential: credential });
+   *       },
+   *     });
+   *     window.google?.accounts.id.prompt();
+   *   };
+   *   document.head.appendChild(script);
+   * }
+   * ```
+   */
+  async googleOneTap(payload: GoogleOneTapOptions): Promise<void> {
+    const options: FormOptions = {
+      state: this.transaction.state,
+      telemetry: [LoginId.screenIdentifier, 'googleOneTap'],
+    };
+
+    await new FormHandler(options).submitData<CustomOptions>({
+      ...payload,
+      action: FormActions.GOOGLE_ONE_TAP,
+    });
   }
 
   /**
@@ -269,6 +328,7 @@ export {
   LoginIdMembers,
   LoginOptions,
   FederatedLoginOptions,
+  GoogleOneTapOptions,
   ScreenOptions as ScreenMembersOnLoginId,
   TransactionOptions as TransactionMembersOnLoginId,
 };
