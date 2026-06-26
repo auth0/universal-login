@@ -15,8 +15,8 @@ import type {
   ScreenMembersOnResetPasswordRequest as ScreenOptions,
   TransactionMembersOnResetPasswordRequest as TransactionOptions,
 } from '../../../interfaces/screens/reset-password-request';
-import type { IdentifierType } from '../../../interfaces/utils';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import type { IdentifierType } from 'interfaces/utils';
 
 export default class ResetPasswordRequest extends BaseContext implements ResetPasswordRequestMembers {
   static screenIdentifier: string = ScreenIds.RESET_PASSWORD_REQUEST;
