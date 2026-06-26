@@ -1,5 +1,12 @@
 # Change Log
 
+## [auth0-acul-react-v1.5.0](https://github.com/auth0/universal-login/tree/auth0-acul-react-v1.5.0) (2026-06-26)
+[Full Changelog](https://github.com/auth0/universal-login/compare/auth0-acul-react-v1.4.0...auth0-acul-react-v1.5.0)
+
+**Added**
+- feat: add Google One Tap support to login, login-id, signup, and signup-id screens [\#360](https://github.com/auth0/universal-login/pull/360) ([amitsingh05667](https://github.com/amitsingh05667))
+- feat: Add username to phone-identifier-enrollment [\#334](https://github.com/auth0/universal-login/pull/334) ([bengimbel](https://github.com/bengimbel))
+
 ## [auth0-acul-react-v1.4.0](https://github.com/auth0/universal-login/tree/auth0-acul-react-v1.4.0) (2026-06-12)
 [Full Changelog](https://github.com/auth0/universal-login/compare/auth0-acul-react-v1.3.0...auth0-acul-react-v1.4.0)
 
