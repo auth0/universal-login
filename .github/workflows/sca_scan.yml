@@ -10,10 +10,6 @@ jobs:
   snyk-cli:
     uses: auth0/devsecops-tooling/.github/workflows/sca-scan.yml@main
     with:
-      additional-arguments: "--exclude=README.md"
+      additional-arguments: "--exclude=README.md,packages"
       node-version: 22
-      pre-scan-commands: |
-        for d in packages/*/; do
-          (cd "$d" && npm install --install-strategy=nested --ignore-scripts)
-        done
     secrets: inherit
