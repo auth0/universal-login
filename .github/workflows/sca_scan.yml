@@ -12,4 +12,8 @@ jobs:
     with:
       additional-arguments: "--exclude=README.md"
       node-version: 22
+      pre-scan-commands: |
+        for d in packages/*/; do
+          (cd "$d" && npm install --install-strategy=nested --ignore-scripts)
+        done
     secrets: inherit
