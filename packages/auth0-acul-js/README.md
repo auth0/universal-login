@@ -232,6 +232,7 @@ Get up and running quickly with our boilerplate starter template: [Link](https:/
 | 74     |consent                   | consent | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.consent.html)   |
 | 75     |customized-consent        | customized-consent | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.CustomizedConsent.html)   |
 | 76     |email-otp-challenge                   | email-otp-challenge | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.EmailOTPChallenge.html)   |
+| 77     |confirmation                   | confirmation | [Link](https://auth0.github.io/universal-login/auth0-acul-js/classes/Screens.Confirmation.html)   |
 </details>
 
 

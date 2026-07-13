@@ -215,6 +215,7 @@ Refer to our [API Reference](#api-reference) for the full list of available type
 | 74     |consent                   | consent | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.consent.html)   |
 | 75     |customized-consent        | customized-consent | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.customized-consent.html)   |
 | 76     |email-otp-challenge                   | email-otp-challenge | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.email-otp-challenge.html)   |
+| 77     |confirmation                   | confirmation | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.confirmation.html)   |
 </details>
 
 ---
