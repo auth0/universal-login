@@ -39,6 +39,22 @@ describe('Confirmation', () => {
       });
     });
 
+    it('should construct FormHandler with state and telemetry', async () => {
+      await confirmation.proceedToSignup();
+      expect(FormHandler).toHaveBeenCalledWith({
+        state: baseContextData.transaction.state,
+        telemetry: [ScreenIds.CONFIRMATION, 'proceedToSignup'],
+      });
+    });
+
+    it('should merge custom payload with the action', async () => {
+      await confirmation.proceedToSignup({ foo: 'bar' });
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith({
+        foo: 'bar',
+        action: 'proceed-to-signup',
+      });
+    });
+
     it('should throw if FormHandler.submitData rejects', async () => {
       mockFormHandler.submitData.mockRejectedValue(new Error('Submit failed'));
       await expect(confirmation.proceedToSignup()).rejects.toThrow('Submit failed');
@@ -49,6 +65,22 @@ describe('Confirmation', () => {
     it('should call FormHandler.submitData with action "back-action"', async () => {
       await confirmation.goBack();
       expect(mockFormHandler.submitData).toHaveBeenCalledWith({
+        action: 'back-action',
+      });
+    });
+
+    it('should construct FormHandler with state and telemetry', async () => {
+      await confirmation.goBack();
+      expect(FormHandler).toHaveBeenCalledWith({
+        state: baseContextData.transaction.state,
+        telemetry: [ScreenIds.CONFIRMATION, 'goBack'],
+      });
+    });
+
+    it('should merge custom payload with the action', async () => {
+      await confirmation.goBack({ foo: 'bar' });
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith({
+        foo: 'bar',
         action: 'back-action',
       });
     });
