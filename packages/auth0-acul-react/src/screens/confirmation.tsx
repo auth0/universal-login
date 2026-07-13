@@ -28,7 +28,8 @@ export const {
 } = factory;
 
 // Submit functions
-export const proceedToSignup = (payload?: CustomOptions) => withError(instance.proceedToSignup(payload));
+export const proceedToSignup = (payload?: CustomOptions) =>
+  withError(instance.proceedToSignup(payload));
 export const goBack = (payload?: CustomOptions) => withError(instance.goBack(payload));
 
 // Common hooks
