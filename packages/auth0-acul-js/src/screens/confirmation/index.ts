@@ -15,6 +15,8 @@ export default class Confirmation extends BaseContext implements ConfirmationMem
 
   /**
    * Creates an instance of the Confirmation screen.
+   * @throws {Error} If the Universal Login Context is not available or if the
+   * current screen name in the context does not match `Confirmation.screenIdentifier`.
    */
   constructor() {
     super();
@@ -23,6 +25,10 @@ export default class Confirmation extends BaseContext implements ConfirmationMem
   /**
    * Proceeds with account creation after OTP verification.
    * @param payload Optional custom options to include with the request.
+   * @throws {Error} Throws an error if `FormHandler` encounters an unrecoverable issue
+   *                 during submission (e.g., network error). Server-side validation errors
+   *                 from Auth0 are not thrown as JavaScript errors but are made available
+   *                 in `this.transaction.errors` after the operation.
    * @example
    * ```typescript
    * import Confirmation from '@auth0/auth0-acul-js/confirmation';
@@ -42,6 +48,10 @@ export default class Confirmation extends BaseContext implements ConfirmationMem
   /**
    * Navigates back to the previous screen.
    * @param payload Optional custom options to include with the request.
+   * @throws {Error} Throws an error if `FormHandler` encounters an unrecoverable issue
+   *                 during submission (e.g., network error). Server-side validation errors
+   *                 from Auth0 are not thrown as JavaScript errors but are made available
+   *                 in `this.transaction.errors` after the operation.
    * @example
    * ```typescript
    * import Confirmation from '@auth0/auth0-acul-js/confirmation';
