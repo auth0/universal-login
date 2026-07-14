@@ -39,7 +39,7 @@ export const Confirmation: React.FC = () => {
   const clientData = useClient();
   const organizationData = useOrganization();
   const promptData = usePrompt();
-  const untrusteddataData = useUntrustedData();
+  const untrustedData = useUntrustedData();
 
   const handleProceedToSignup = async () => {
     setIsLoading(true);

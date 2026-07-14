@@ -16,9 +16,13 @@ jest.mock('@auth0/auth0-acul-js/confirmation', () => {
   return jest.fn().mockImplementation(() => {});
 }, { virtual: true });
 
-// Mock the instance store
+// Mock the instance store with stub action methods so submit functions can be
+// invoked without throwing (the mocked Confirmation class has no real methods)
 jest.mock('../../src/state/instance-store', () => ({
-  registerScreen: jest.fn((Screen) => new Screen()),
+  registerScreen: jest.fn(() => ({
+    proceedToSignup: jest.fn(() => Promise.resolve()),
+    goBack: jest.fn(() => Promise.resolve()),
+  })),
 }));
 
 // Mock error manager and hooks
@@ -72,30 +76,19 @@ describe('Confirmation Screen', () => {
 
   describe('instance hook', () => {
     it('should provide instance hook that returns screen instance', () => {
+      // useConfirmation() takes no parameters, so it should never throw here.
       exports.instanceHooks.forEach(hookName => {
-        try {
-          const { result } = renderHook(() => (ConfirmationScreen as any)[hookName]());
-          if (result.current && typeof result.current === 'object') {
-            expect(result.current).toBeDefined();
-          }
-        } catch (e) {
-          // Skip if it requires parameters
-        }
+        const { result } = renderHook(() => (ConfirmationScreen as any)[hookName]());
+        expect(result.current).toBeDefined();
       });
     });
 
     it('should return stable reference across renders for instance hooks', () => {
       exports.instanceHooks.forEach(hookName => {
-        try {
-          const { result, rerender } = renderHook(() => (ConfirmationScreen as any)[hookName]());
-          if (result.current && typeof result.current === 'object') {
-            const firstResult = result.current;
-            rerender();
-            expect(result.current).toBe(firstResult);
-          }
-        } catch (e) {
-          // Skip if it requires parameters
-        }
+        const { result, rerender } = renderHook(() => (ConfirmationScreen as any)[hookName]());
+        const firstResult = result.current;
+        rerender();
+        expect(result.current).toBe(firstResult);
       });
     });
   });
@@ -133,17 +126,13 @@ describe('Confirmation Screen', () => {
   });
 
   describe('submit functions coverage', () => {
-    it('should call submit functions', () => {
+    it('should call submit functions and return a promise', async () => {
+      // proceedToSignup/goBack both accept an optional payload, so calling
+      // them with {} should never throw.
       exports.submitFunctions.forEach(funcName => {
-        try {
-          const func = (ConfirmationScreen as any)[funcName];
-          const result = func({});
-          if (result && typeof result.then === 'function') {
-            expect(result).toBeDefined();
-          }
-        } catch (e) {
-          // Function may require specific parameters
-        }
+        const func = (ConfirmationScreen as any)[funcName];
+        const result = func({});
+        expect(result).toBeInstanceOf(Promise);
       });
     });
   });

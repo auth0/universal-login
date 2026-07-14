@@ -42,7 +42,10 @@ export default class Confirmation extends BaseContext implements ConfirmationMem
       state: this.transaction.state,
       telemetry: [Confirmation.screenIdentifier, 'proceedToSignup'],
     };
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.PROCEED_TO_SIGNUP });
+
+    const submitPayload = { ...payload, action: FormActions.PROCEED_TO_SIGNUP };
+
+    await new FormHandler(options).submitData<typeof submitPayload>(submitPayload);
   }
 
   /**
@@ -65,7 +68,10 @@ export default class Confirmation extends BaseContext implements ConfirmationMem
       state: this.transaction.state,
       telemetry: [Confirmation.screenIdentifier, 'goBack'],
     };
-    await new FormHandler(options).submitData<CustomOptions>({ ...payload, action: FormActions.BACK });
+
+    const submitPayload = { ...payload, action: FormActions.BACK };
+
+    await new FormHandler(options).submitData<typeof submitPayload>(submitPayload);
   }
 }
 

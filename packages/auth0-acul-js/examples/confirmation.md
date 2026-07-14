@@ -1,5 +1,3 @@
-import Confirmation from '@auth0/auth0-acul-js/confirmation';
-
 # Confirmation Screen
 
 This screen is displayed to let users confirm or decline account creation (auto-signup) after OTP verification.
