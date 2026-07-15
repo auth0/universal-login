@@ -95,6 +95,6 @@ export const Confirmation: React.FC = () => {
 3.  **State Management**: `useState` is used to manage loading indicators and error messages.
 4.  **Actions**:
     *   `handleProceedToSignup` calls `proceedToSignup()` to confirm account creation.
-    *   `handleGoBack` calls `goBack()` to return to the previous screen.
+    *   `handleGoBack` calls `goBack()` to decline auto-signup and return to the login screen without creating an account.
     *   The core SDK will handle the API request and subsequent redirection on success.
     *   Errors are caught and can be displayed to the user.

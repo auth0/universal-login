@@ -86,6 +86,6 @@ import Confirmation from '@auth0/auth0-acul-js/confirmation';
 
 const confirmation = new Confirmation();
 
-// Navigate back to the previous screen
+// Decline auto-signup and return to the login screen without creating an account
 await confirmation.goBack();
 ```

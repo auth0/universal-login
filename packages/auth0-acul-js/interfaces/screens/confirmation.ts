@@ -12,7 +12,7 @@ export interface ConfirmationMembers extends BaseMembers {
   proceedToSignup(payload?: CustomOptions): Promise<void>;
 
   /**
-   * Navigates back to the previous screen.
+   * Declines auto-signup and returns the user to the login screen without creating an account.
    * @param payload Optional custom options to include with the request.
    */
   goBack(payload?: CustomOptions): Promise<void>;

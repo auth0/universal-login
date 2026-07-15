@@ -49,7 +49,7 @@ export default class Confirmation extends BaseContext implements ConfirmationMem
   }
 
   /**
-   * Navigates back to the previous screen.
+   * Declines auto-signup and returns the user to the login screen without creating an account.
    * @param payload Optional custom options to include with the request.
    * @throws {Error} Throws an error if `FormHandler` encounters an unrecoverable issue
    *                 during submission (e.g., network error). Server-side validation errors
