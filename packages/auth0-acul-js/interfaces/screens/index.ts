@@ -63,3 +63,4 @@ export * as ResetPasswordMfaWebAuthnRoamingChallenge from './reset-password-mfa-
 export * as BruteForceProtectionUnblock from './brute-force-protection-unblock';
 export * as BruteForceProtectionUnblockFailure from './brute-force-protection-unblock-failure';
 export * as BruteForceProtectionUnblockSuccess from './brute-force-protection-unblock-success';
+export * as Confirmation from './confirmation';

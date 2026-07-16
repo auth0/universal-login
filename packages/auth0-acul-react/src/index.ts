@@ -80,6 +80,7 @@ export { useResetPasswordMfaWebAuthnRoamingChallenge } from './screens/reset-pas
 export { useBruteForceProtectionUnblock } from './screens/brute-force-protection-unblock';
 export { useBruteForceProtectionUnblockFailure } from './screens/brute-force-protection-unblock-failure';
 export { useBruteForceProtectionUnblockSuccess } from './screens/brute-force-protection-unblock-success';
+export { useConfirmation } from './screens/confirmation';
 export { useCurrentScreen, useErrors, useAuth0Themes, useChangeLanguage } from './hooks';
 
 // Common types from core SDK
