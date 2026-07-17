@@ -1,5 +1,11 @@
 # Change Log
 
+## [auth0-acul-react-v1.6.0](https://github.com/auth0/universal-login/tree/auth0-acul-react-v1.6.0) (2026-07-17)
+[Full Changelog](https://github.com/auth0/universal-login/compare/auth0-acul-react-v1.5.0...auth0-acul-react-v1.6.0)
+
+**Added**
+- feat: add support for confirmation screen [\#369](https://github.com/auth0/universal-login/pull/369) ([amitsingh05667](https://github.com/amitsingh05667))
+
 ## [auth0-acul-react-v1.5.0](https://github.com/auth0/universal-login/tree/auth0-acul-react-v1.5.0) (2026-06-26)
 [Full Changelog](https://github.com/auth0/universal-login/compare/auth0-acul-react-v1.4.0...auth0-acul-react-v1.5.0)
 
