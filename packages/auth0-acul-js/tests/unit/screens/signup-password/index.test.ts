@@ -65,7 +65,7 @@ describe('SignupPassword', () => {
         expect.objectContaining({
           username: 'testUser',
           password: 'testPassword',
-          phoneNumber: '+1234567890',
+          phone_number: '+1234567890',
         })
       );
     });

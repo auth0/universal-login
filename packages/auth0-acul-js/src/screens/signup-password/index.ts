@@ -67,6 +67,14 @@ export default class SignupPassword extends BaseContext implements SignupPasswor
       telemetry: [this.constructor.name, 'signup'],
     };
 
+    // The signup-password endpoint expects the phone identifier as `phone_number`,
+    // while the SDK exposes it (and accepts it) as the camelCase `phoneNumber`.
+    // Remap it before submitting so a phone signup is not rejected with "no-phone_number".
+    if (payload.phoneNumber?.trim() ?? '') {
+      const { phoneNumber, ...rest } = payload;
+      payload = { ...rest, phone_number: phoneNumber };
+    }
+
     await new FormHandler(options).submitData<SignupPasswordOptions>(payload);
   }
 
