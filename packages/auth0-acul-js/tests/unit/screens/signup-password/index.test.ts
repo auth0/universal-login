@@ -65,9 +65,13 @@ describe('SignupPassword', () => {
         expect.objectContaining({
           username: 'testUser',
           password: 'testPassword',
-          phoneNumber: '+1234567890',
+          phone_number: '+1234567890',
         })
       );
+
+      // The remap should rename `phoneNumber` to `phone_number`, not duplicate it.
+      const submittedPayload = mockFormHandler.submitData.mock.calls[0][0];
+      expect(submittedPayload).not.toHaveProperty('phoneNumber');
     });
 
     it('should throw error when FormHandler rejects', async () => {

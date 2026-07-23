@@ -77,3 +77,4 @@ export * as 'redeem-ticket' from '../screens/redeem-ticket';
 export * as 'brute-force-protection-unblock' from '../screens/brute-force-protection-unblock';
 export * as 'brute-force-protection-unblock-failure' from '../screens/brute-force-protection-unblock-failure';
 export * as 'brute-force-protection-unblock-success' from '../screens/brute-force-protection-unblock-success';
+export * as 'confirmation' from '../screens/confirmation';
