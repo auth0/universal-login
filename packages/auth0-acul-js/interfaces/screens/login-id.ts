@@ -48,14 +48,19 @@ export interface ScreenMembersOnLoginId extends ScreenMembers {
   resetPasswordLink: string | null;
   publicKey: PasskeyRead['public_key'] | null;
   googleOneTapConfig: GoogleOneTapConfig | null;
-  data: {
-    /**
-     * The identifier type to pre-select in the separate-identifier experience.
-     * Surfaced by the server on the login-id screen; absent when not provided.
-     * Normalized from the server's `active_identifier_type`.
-     */
-    activeIdentifierType?: IdentifierType;
-  } | null;
+  // Intersect with the base ScreenMembers['data'] to keep its index signature so
+  // existing keys (e.g. `passkey`, read by getPublicKey) stay accessible; adding a
+  // closed object here would drop those keys and break existing consumers.
+  data:
+    | (ScreenMembers['data'] & {
+        /**
+         * The identifier type to pre-select in the separate-identifier experience.
+         * Surfaced by the server on the login-id screen; absent when not provided.
+         * Normalized from the server's `active_identifier_type`.
+         */
+        activeIdentifierType?: IdentifierType;
+      })
+    | null;
 }
 
 export interface TransactionMembersOnLoginId extends TransactionMembers {

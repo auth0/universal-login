@@ -68,4 +68,11 @@ describe('ScreenOverride', () => {
     const override = new ScreenOverride(screenContext);
     expect(override.googleOneTapConfig).toBeNull();
   });
+
+  it('should expose data from Screen.getScreenData', () => {
+    (Screen.getScreenData as jest.Mock).mockReturnValue({ activeIdentifierType: 'phone' });
+    const override = new ScreenOverride(screenContext);
+    expect(Screen.getScreenData).toHaveBeenCalledWith(screenContext);
+    expect(override.data).toEqual({ activeIdentifierType: 'phone' });
+  });
 });
