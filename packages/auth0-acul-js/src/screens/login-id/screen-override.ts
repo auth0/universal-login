@@ -9,6 +9,7 @@ export class ScreenOverride extends Screen implements OverrideOptions {
   resetPasswordLink: OverrideOptions['resetPasswordLink'];
   publicKey: OverrideOptions['publicKey'];
   googleOneTapConfig: OverrideOptions['googleOneTapConfig'];
+  data: OverrideOptions['data'];
 
   constructor(screenContext: ScreenContext) {
     super(screenContext);
@@ -16,5 +17,6 @@ export class ScreenOverride extends Screen implements OverrideOptions {
     this.resetPasswordLink = getResetPasswordLink(screenContext);
     this.publicKey = getPublicKey(screenContext) as OverrideOptions['publicKey'];
     this.googleOneTapConfig = getGoogleOneTapConfig(screenContext);
+    this.data = Screen.getScreenData(screenContext) as OverrideOptions['data'];
   }
 }

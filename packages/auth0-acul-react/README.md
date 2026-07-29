@@ -72,6 +72,7 @@ import {
   useTransaction,
   useUser,
   useUntrustedData,
+  useCountryCodes,
   // Common hooks
   useErrors,
   useTexts,
@@ -231,7 +232,10 @@ Refer to our [API Reference](#api-reference) for the full list of available type
 - `useOrganization()` - Organization context (if applicable)
 - `usePrompt()` - Current authentication prompt
 - `useUntrustedData()` - Untrusted data from the authentication flow
- 
+
+The following context hook is available only on the `login`, `login-id`, `signup`, and `signup-id` screens:
+- `useCountryCodes()` - Available country codes and the recommended default for phone number entry
+
 ### Utility Hooks
 Specialized hooks for form validation, polling, and identifier management:
 

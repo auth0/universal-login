@@ -15,7 +15,6 @@ export interface AvailableCountryCode {
   dialCode: string;
 }
 
-/* @namespace CountryCodes */
 export interface CountryCodesMembers {
   available: AvailableCountryCode[] | null;
   recommended: string | null;
