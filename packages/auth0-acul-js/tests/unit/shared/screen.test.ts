@@ -8,6 +8,7 @@ import {
   getPublicKey,
   getGoogleOneTapConfig
 } from '../../../src/shared/screen';
+
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { TransactionContext } from '../../../interfaces/models/transaction';
 

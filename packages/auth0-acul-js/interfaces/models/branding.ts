@@ -25,7 +25,17 @@ export interface BrandingContext {
       fonts: Record<string, string | boolean | object>;
       page_background: Record<string, string>;
       widget: Record<string, string | number>;
+      identifiers?: ThemeIdentifiersContext;
     };
+  };
+}
+
+export interface ThemeIdentifiersContext {
+  login_display?: 'unified' | 'separate';
+  otp_autocomplete?: boolean;
+  phone_display?: {
+    masking?: 'show_all' | 'hide_country_code' | 'mask_digits';
+    formatting?: 'regional' | 'international';
   };
 }
 
@@ -46,6 +56,15 @@ export interface BrandingSettings {
   fontUrl?: string;
 }
 
+export interface ThemeIdentifiers {
+  loginDisplay?: 'unified' | 'separate';
+  otpAutocomplete?: boolean;
+  phoneDisplay?: {
+    masking?: 'show_all' | 'hide_country_code' | 'mask_digits';
+    formatting?: 'regional' | 'international';
+  };
+}
+
 export interface BrandingThemes {
   default: {
     borders: Record<string, string | boolean | number>;
@@ -54,6 +73,7 @@ export interface BrandingThemes {
     fonts: Record<string, string | boolean | object>;
     pageBackground: Record<string, string>;
     widget: Record<string, string | number>;
+    identifiers?: ThemeIdentifiers;
   };
 }
 

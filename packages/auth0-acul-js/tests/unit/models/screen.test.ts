@@ -107,3 +107,48 @@ describe(':: models/screen | when optional fields are not available', () => {
     expect(screen.captcha).toBeNull();
   });
 });
+
+describe(':: models/screen | getScreenData active_identifier_type normalization', () => {
+  it('remaps active_identifier_type to camelCase activeIdentifierType', () => {
+    const screenContext = {
+      name: 'login-id',
+      data: { active_identifier_type: 'email' },
+    } as unknown as ScreenContext;
+
+    const screen = new Screen(screenContext);
+
+    expect(screen.data).toEqual({ activeIdentifierType: 'email' });
+    expect(screen.data).not.toHaveProperty('active_identifier_type');
+  });
+
+  it('preserves other data keys unchanged while remapping', () => {
+    const screenContext = {
+      name: 'login-id',
+      data: { active_identifier_type: 'phone', passkey: { public_key: { challenge: 'c' } } },
+    } as unknown as ScreenContext;
+
+    const screen = new Screen(screenContext);
+
+    expect(screen.data).toEqual({
+      activeIdentifierType: 'phone',
+      passkey: { public_key: { challenge: 'c' } },
+    });
+  });
+
+  it('does not add activeIdentifierType when absent', () => {
+    const screenContext = {
+      name: 'login-id',
+      data: { username: 'jane' },
+    } as unknown as ScreenContext;
+
+    const screen = new Screen(screenContext);
+
+    expect(screen.data).toEqual({ username: 'jane' });
+    expect(screen.data).not.toHaveProperty('activeIdentifierType');
+  });
+
+  it('returns null when data is undefined', () => {
+    const screen = new Screen({ name: 'login-id' } as ScreenContext);
+    expect(screen.data).toBeNull();
+  });
+});

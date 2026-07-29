@@ -11,6 +11,11 @@ export interface ScreenContextOnLogin extends ScreenContext {
     signup: string;
     reset_password: string;
   };
+
+  data?: {
+    username?: string;
+    active_identifier_type?: IdentifierType;
+  };
 }
 
 /**
@@ -22,6 +27,13 @@ export interface ScreenMembersOnLogin extends ScreenMembers {
   googleOneTapConfig: GoogleOneTapConfig | null;
   data: {
     username?: string;
+    /**
+     * The identifier type to pre-select in the separate-identifier experience.
+     * Surfaced by the server (login/login-id screens, gated by the
+     * universal_login_theme_identifiers feature flag); absent when not provided.
+     * Normalized from the server's `active_identifier_type`.
+     */
+    activeIdentifierType?: IdentifierType;
   } | null;
 }
 

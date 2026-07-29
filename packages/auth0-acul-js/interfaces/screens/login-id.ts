@@ -27,6 +27,7 @@ export interface ExtendedScreenContext extends ScreenContext {
 
   data?: {
     passkey?: PasskeyRead;
+    active_identifier_type?: IdentifierType;
   };
 }
 
@@ -47,6 +48,15 @@ export interface ScreenMembersOnLoginId extends ScreenMembers {
   resetPasswordLink: string | null;
   publicKey: PasskeyRead['public_key'] | null;
   googleOneTapConfig: GoogleOneTapConfig | null;
+  data: {
+    /**
+     * The identifier type to pre-select in the separate-identifier experience.
+     * Surfaced by the server (login/login-id screens, gated by the
+     * universal_login_theme_identifiers feature flag); absent when not provided.
+     * Normalized from the server's `active_identifier_type`.
+     */
+    activeIdentifierType?: IdentifierType;
+  } | null;
 }
 
 export interface TransactionMembersOnLoginId extends TransactionMembers {

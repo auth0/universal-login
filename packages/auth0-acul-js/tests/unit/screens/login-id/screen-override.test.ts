@@ -1,6 +1,7 @@
+import { Screen } from '../../../../src/models/screen';
 import { ScreenOverride } from '../../../../src/screens/login-id/screen-override';
 import { getSignupLink, getResetPasswordLink, getPublicKey, getGoogleOneTapConfig } from '../../../../src/shared/screen';
-import { Screen } from '../../../../src/models/screen';
+
 import type { ScreenContext } from '../../../../interfaces/models/screen';
 
 jest.mock('../../../../src/shared/screen');
