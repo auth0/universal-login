@@ -258,6 +258,8 @@ This section documents the helper methods and properties exposed by the screen i
 
 - `transaction`- Transaction / flow state, session identifiers and related data.
 
+- `countryCodes`- Available country codes for phone number entry (`available`) and the recommended default (`recommended`). Both are `null` when the server provides none.
+
 ### Identifier management
 - `getLoginIdentifiers()`: 
   Get available login identifier types (email, phone, username)

@@ -191,5 +191,25 @@ describe('Branding', () => {
         phoneDisplay: { masking: 'show_all' },
       });
     });
+
+    it('should not include identifiers when the theme provides an empty object', () => {
+      const contextWithEmptyIdentifiers = {
+        themes: { default: { identifiers: {} } },
+      } as unknown as BrandingContext;
+
+      expect(Branding.getThemes(contextWithEmptyIdentifiers)?.default).not.toHaveProperty('identifiers');
+    });
+
+    it('should copy phone_display so mutating the result leaves the context untouched', () => {
+      const phoneDisplay = { masking: 'show_all' };
+      const contextWithPhoneDisplay = {
+        themes: { default: { identifiers: { phone_display: phoneDisplay } } },
+      } as unknown as BrandingContext;
+
+      const mapped = Branding.getThemes(contextWithPhoneDisplay)?.default.identifiers?.phoneDisplay;
+
+      expect(mapped).not.toBe(phoneDisplay);
+      expect(mapped).toEqual(phoneDisplay);
+    });
   });
 });

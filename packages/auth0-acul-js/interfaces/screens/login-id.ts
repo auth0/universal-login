@@ -48,15 +48,16 @@ export interface ScreenMembersOnLoginId extends ScreenMembers {
   resetPasswordLink: string | null;
   publicKey: PasskeyRead['public_key'] | null;
   googleOneTapConfig: GoogleOneTapConfig | null;
-  // Intersect with the base ScreenMembers['data'] to keep its index signature so
-  // existing keys (e.g. `passkey`, read by getPublicKey) stay accessible; adding a
-  // closed object here would drop those keys and break existing consumers.
+  // Intersect with the base ScreenMembers['data'] rather than declaring a closed object.
+  // Unlike the other screens, login-id inherited ScreenMembers['data'] (and its index
+  // signature) before this field was added, so consumers may already be reading keys not
+  // listed here — a closed type would break them. Keep the intersection when adding fields.
   data:
     | (ScreenMembers['data'] & {
         /**
          * The identifier type to pre-select in the separate-identifier experience.
          * Surfaced by the server on the login-id screen; absent when not provided.
-         * Normalized from the server's `active_identifier_type`.
+         * Mapped from the server's `active_identifier_type`, which is also kept.
          */
         activeIdentifierType?: IdentifierType;
       })

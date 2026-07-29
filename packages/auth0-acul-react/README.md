@@ -233,7 +233,7 @@ Refer to our [API Reference](#api-reference) for the full list of available type
 - `usePrompt()` - Current authentication prompt
 - `useUntrustedData()` - Untrusted data from the authentication flow
 
-The following context hook is available only on the `login`, `login-id`, `signup`, and `signup-id` screens:
+The following context hook is available on the screens that support phone number entry — `login`, `login-id`, `signup`, `signup-id`, `mfa-phone-enrollment`, and `mfa-sms-enrollment`:
 - `useCountryCodes()` - Available country codes and the recommended default for phone number entry
 
 ### Utility Hooks

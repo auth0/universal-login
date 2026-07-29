@@ -68,6 +68,12 @@ export class Branding implements BrandingMembers {
       default: { borders = {}, colors = {}, displayName = '', fonts = {}, page_background: pageBackground = {}, widget = {}, identifiers } = {},
     } = branding.themes;
 
+    const mappedIdentifiers = identifiers && {
+      ...(identifiers.login_display !== undefined && { loginDisplay: identifiers.login_display }),
+      ...(identifiers.otp_autocomplete !== undefined && { otpAutocomplete: identifiers.otp_autocomplete }),
+      ...(identifiers.phone_display !== undefined && { phoneDisplay: { ...identifiers.phone_display } }),
+    };
+
     return {
       default: {
         borders,
@@ -76,13 +82,9 @@ export class Branding implements BrandingMembers {
         fonts,
         pageBackground,
         widget,
-        ...(identifiers && {
-          identifiers: {
-            ...(identifiers.login_display !== undefined && { loginDisplay: identifiers.login_display }),
-            ...(identifiers.otp_autocomplete !== undefined && { otpAutocomplete: identifiers.otp_autocomplete }),
-            ...(identifiers.phone_display !== undefined && { phoneDisplay: identifiers.phone_display }),
-          },
-        }),
+        // Omit `identifiers` entirely when the server sends it empty, so consumers can
+        // rely on its presence meaning at least one identifier setting was provided.
+        ...(mappedIdentifiers && Object.keys(mappedIdentifiers).length > 0 && { identifiers: mappedIdentifiers }),
       },
     };
   }
