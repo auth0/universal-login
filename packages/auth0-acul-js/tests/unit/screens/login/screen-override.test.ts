@@ -1,4 +1,3 @@
-import { Screen } from '../../../../src/models/screen';
 import { ScreenOverride } from '../../../../src/screens/login/screen-override';
 import { getSignupLink, getResetPasswordLink, getGoogleOneTapConfig } from '../../../../src/shared/screen';
 
@@ -19,7 +18,6 @@ describe('ScreenOverride', () => {
     (getSignupLink as jest.Mock).mockReturnValue('mockSignupLink');
     (getResetPasswordLink as jest.Mock).mockReturnValue('mockResetPasswordLink');
     (getGoogleOneTapConfig as jest.Mock).mockReturnValue(null);
-    (Screen.getScreenData as jest.Mock).mockReturnValue({ mockData: 'mockData' });
 
     screenOverride = new ScreenOverride(screenContext);
   });
@@ -32,8 +30,8 @@ describe('ScreenOverride', () => {
     expect(screenOverride.resetPasswordLink).toBe('mockResetPasswordLink');
   });
 
-  it('should initialize data correctly', () => {
-    expect(screenOverride.data).toEqual({ mockData: 'mockData' });
+  it('should initialize data as null when the context has no data', () => {
+    expect(screenOverride.data).toBeNull();
   });
 
   it('should return googleOneTapConfig when getGoogleOneTapConfig returns config', () => {
@@ -49,5 +47,48 @@ describe('ScreenOverride', () => {
     (getGoogleOneTapConfig as jest.Mock).mockReturnValue(null);
     const override = new ScreenOverride(screenContext);
     expect(override.googleOneTapConfig).toBeNull();
+  });
+
+  describe('getScreenData', () => {
+    it('should surface active_identifier_type as activeIdentifierType and keep the raw key', () => {
+      const context = { data: { active_identifier_type: 'phone' } } as unknown as ScreenContext;
+
+      expect(ScreenOverride.getScreenData(context)).toEqual({
+        active_identifier_type: 'phone',
+        activeIdentifierType: 'phone',
+      });
+    });
+
+    it('should preserve other data keys unchanged', () => {
+      const context = { data: { active_identifier_type: 'email', username: 'jane' } } as unknown as ScreenContext;
+
+      expect(ScreenOverride.getScreenData(context)).toEqual({
+        active_identifier_type: 'email',
+        activeIdentifierType: 'email',
+        username: 'jane',
+      });
+    });
+
+    it('should not add activeIdentifierType when absent', () => {
+      const context = { data: { username: 'jane' } } as unknown as ScreenContext;
+
+      const data = ScreenOverride.getScreenData(context);
+
+      expect(data).toEqual({ username: 'jane' });
+      expect(data).not.toHaveProperty('activeIdentifierType');
+    });
+
+    it('should return null when data is not available', () => {
+      expect(ScreenOverride.getScreenData({} as ScreenContext)).toBeNull();
+    });
+
+    it('should expose the transformed data on the instance', () => {
+      const override = new ScreenOverride({ data: { active_identifier_type: 'username' } } as unknown as ScreenContext);
+
+      expect(override.data).toEqual({
+        active_identifier_type: 'username',
+        activeIdentifierType: 'username',
+      });
+    });
   });
 });

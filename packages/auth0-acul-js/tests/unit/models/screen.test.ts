@@ -108,43 +108,17 @@ describe(':: models/screen | when optional fields are not available', () => {
   });
 });
 
-describe(':: models/screen | getScreenData active_identifier_type normalization', () => {
-  it('remaps active_identifier_type to camelCase activeIdentifierType', () => {
-    const screenContext = {
-      name: 'login-id',
-      data: { active_identifier_type: 'email' },
-    } as unknown as ScreenContext;
+describe(':: models/screen | getScreenData passes data through untouched', () => {
+  it('returns the context data object itself, without remapping any keys', () => {
+    const data = { active_identifier_type: 'email', passkey: { public_key: { challenge: 'c' } } };
+    const screenContext = { name: 'login-id', data } as unknown as ScreenContext;
 
     const screen = new Screen(screenContext);
 
-    expect(screen.data).toEqual({ activeIdentifierType: 'email' });
-    expect(screen.data).not.toHaveProperty('active_identifier_type');
-  });
-
-  it('preserves other data keys unchanged while remapping', () => {
-    const screenContext = {
-      name: 'login-id',
-      data: { active_identifier_type: 'phone', passkey: { public_key: { challenge: 'c' } } },
-    } as unknown as ScreenContext;
-
-    const screen = new Screen(screenContext);
-
-    expect(screen.data).toEqual({
-      activeIdentifierType: 'phone',
-      passkey: { public_key: { challenge: 'c' } },
-    });
-  });
-
-  it('does not add activeIdentifierType when absent', () => {
-    const screenContext = {
-      name: 'login-id',
-      data: { username: 'jane' },
-    } as unknown as ScreenContext;
-
-    const screen = new Screen(screenContext);
-
-    expect(screen.data).toEqual({ username: 'jane' });
-    expect(screen.data).not.toHaveProperty('activeIdentifierType');
+    // Screen-specific normalization belongs in the per-screen overrides, so the
+    // base model must not rewrite keys or copy the object.
+    expect(screen.data).toBe(data);
+    expect(screen.data).toHaveProperty('active_identifier_type');
   });
 
   it('returns null when data is undefined', () => {

@@ -57,16 +57,7 @@ export class Screen implements ScreenMembers {
    * @returns {Record<string, any> | null} Screen data or null if unavailable
    */
   static getScreenData(screen: ScreenContext): ScreenMembers['data'] {
-    if (!screen.data) {
-      return null;
-    }
-
-    const { active_identifier_type: activeIdentifierType, ...rest } = screen.data;
-
-    return {
-      ...rest,
-      ...(activeIdentifierType !== undefined ? { activeIdentifierType } : {}),
-    } as ScreenMembers['data'];
+    return (screen.data ?? null) as ScreenMembers['data'];
   }
 
   /**

@@ -36,6 +36,11 @@ export default class Login extends BaseContext implements LoginMembers {
     const transactionContext = this.getContext('transaction') as TransactionContext;
     this.screen = new ScreenOverride(screenContext);
     this.transaction = new TransactionOverride(transactionContext);
+
+    // TEMP DEBUG: verify the newly wired context fields (remove before merge)
+    console.log('[login] activeIdentifierType:', this.screen.data?.activeIdentifierType);
+    console.log('[login] countryCodes:', this.countryCodes);
+    console.log('[login] theme identifiers:', this.branding.themes?.default?.identifiers);
   }
 
   /**
