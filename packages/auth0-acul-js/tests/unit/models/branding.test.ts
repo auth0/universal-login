@@ -181,5 +181,15 @@ describe('Branding', () => {
         loginDisplay: 'unified',
       });
     });
+
+    it('should preserve a partial phone_display (only masking, no formatting)', () => {
+      const contextWithPartialPhoneDisplay = {
+        themes: { default: { identifiers: { phone_display: { masking: 'show_all' } } } },
+      } as unknown as BrandingContext;
+
+      expect(Branding.getThemes(contextWithPartialPhoneDisplay)?.default.identifiers).toEqual({
+        phoneDisplay: { masking: 'show_all' },
+      });
+    });
   });
 });

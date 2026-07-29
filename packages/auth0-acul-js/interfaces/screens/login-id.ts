@@ -51,8 +51,7 @@ export interface ScreenMembersOnLoginId extends ScreenMembers {
   data: {
     /**
      * The identifier type to pre-select in the separate-identifier experience.
-     * Surfaced by the server (login/login-id screens, gated by the
-     * universal_login_theme_identifiers feature flag); absent when not provided.
+     * Surfaced by the server on the login-id screen; absent when not provided.
      * Normalized from the server's `active_identifier_type`.
      */
     activeIdentifierType?: IdentifierType;
