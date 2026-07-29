@@ -87,6 +87,10 @@ const createMockInstance = (): BaseMembers => ({
     currentConnection: null,
     alternateConnections: null,
   },
+  countryCodes: {
+    available: null,
+    recommended: null,
+  },
   getErrors: jest.fn(),
   changeLanguage: jest.fn(),
 });
@@ -238,6 +242,21 @@ describe('ContextHooks', () => {
     });
   });
 
+  describe('useCountryCodes', () => {
+    it('should return country codes data from instance', () => {
+      const countryCodes = contextHooks.useCountryCodes();
+
+      expect(countryCodes).toEqual(mockInstance.countryCodes);
+      expect(countryCodes.available).toBeNull();
+      expect(countryCodes.recommended).toBeNull();
+    });
+
+    it('should return the same reference as instance.countryCodes', () => {
+      const countryCodes = contextHooks.useCountryCodes();
+      expect(countryCodes).toBe(mockInstance.countryCodes);
+    });
+  });
+
   describe('all hooks integration', () => {
     it('should provide consistent access to all context data', () => {
       const allData = {
@@ -250,6 +269,7 @@ describe('ContextHooks', () => {
         untrustedData: contextHooks.useUntrustedData(),
         screen: contextHooks.useScreen(),
         transaction: contextHooks.useTransaction(),
+        countryCodes: contextHooks.useCountryCodes(),
       };
 
       // All hooks should return references to the original instance data
@@ -262,6 +282,7 @@ describe('ContextHooks', () => {
       expect(allData.untrustedData).toBe(mockInstance.untrustedData);
       expect(allData.screen).toBe(mockInstance.screen);
       expect(allData.transaction).toBe(mockInstance.transaction);
+      expect(allData.countryCodes).toBe(mockInstance.countryCodes);
     });
 
     it('should reflect changes in the original instance', () => {
@@ -291,6 +312,7 @@ describe('ContextHooks', () => {
       const untrustedData = contextHooks.useUntrustedData();
       const screen = contextHooks.useScreen();
       const transaction = contextHooks.useTransaction();
+      const countryCodes = contextHooks.useCountryCodes();
 
       // Test that properties are accessible (would fail at compile time if types are wrong)
       expect(user.id).toBeDefined();
@@ -302,6 +324,7 @@ describe('ContextHooks', () => {
       expect(untrustedData.authorizationParams).toBeDefined();
       expect(screen.name).toBeDefined();
       expect(transaction.state).toBeDefined();
+      expect(countryCodes).toHaveProperty('available');
     });
   });
 });

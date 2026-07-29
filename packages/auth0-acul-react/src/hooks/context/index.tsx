@@ -126,4 +126,17 @@ export class ContextHooks<T extends BaseMembers> {
    * ```
    */
   useTransaction = () => this.instance.transaction as T['transaction'];
+
+  /**
+   * Hook to access the country codes available for phone number entry.
+   * @returns Country codes object containing the available countries and the recommended default
+   * @example
+   * ```jsx
+   * import { useCountryCodes } from '@auth0/auth0-acul-react/login-id';
+   * function CountrySelector() {
+   *   const countryCodes = useCountryCodes();
+   * }
+   * ```
+   */
+  useCountryCodes = () => this.instance.countryCodes as T['countryCodes'];
 }
