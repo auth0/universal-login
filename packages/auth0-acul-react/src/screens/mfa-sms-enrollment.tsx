@@ -27,7 +27,6 @@ export const {
   usePrompt,
   useScreen,
   useTransaction,
-  useCountryCodes,
   useUntrustedData,
 } = factory;
 
