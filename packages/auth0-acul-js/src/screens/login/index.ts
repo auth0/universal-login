@@ -36,6 +36,8 @@ export default class Login extends BaseContext implements LoginMembers {
     const transactionContext = this.getContext('transaction') as TransactionContext;
     this.screen = new ScreenOverride(screenContext);
     this.transaction = new TransactionOverride(transactionContext);
+    console.log("------>22");
+    
   }
 
   /**

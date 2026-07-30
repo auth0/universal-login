@@ -69,13 +69,13 @@ describe('ScreenOverride', () => {
   });
 
   describe('getScreenData', () => {
-    it('should surface active_identifier_type as activeIdentifierType and keep the raw key', () => {
+    it('should rename active_identifier_type to activeIdentifierType and drop the raw key', () => {
       const context = { data: { active_identifier_type: 'phone' } } as unknown as ScreenContext;
 
-      expect(ScreenOverride.getScreenData(context)).toEqual({
-        active_identifier_type: 'phone',
-        activeIdentifierType: 'phone',
-      });
+      const data = ScreenOverride.getScreenData(context);
+
+      expect(data).toEqual({ activeIdentifierType: 'phone' });
+      expect(data).not.toHaveProperty('active_identifier_type');
     });
 
     it('should preserve other data keys unchanged', () => {
@@ -84,7 +84,6 @@ describe('ScreenOverride', () => {
       } as unknown as ScreenContext;
 
       expect(ScreenOverride.getScreenData(context)).toEqual({
-        active_identifier_type: 'email',
         activeIdentifierType: 'email',
         passkey: { public_key: { challenge: 'c' } },
       });
@@ -106,10 +105,7 @@ describe('ScreenOverride', () => {
     it('should expose the transformed data on the instance', () => {
       const override = new ScreenOverride({ data: { active_identifier_type: 'username' } } as unknown as ScreenContext);
 
-      expect(override.data).toEqual({
-        active_identifier_type: 'username',
-        activeIdentifierType: 'username',
-      });
+      expect(override.data).toEqual({ activeIdentifierType: 'username' });
     });
   });
 });
