@@ -226,9 +226,9 @@ Refer to our [API Reference](#api-reference) for the full list of available type
 - `useUser()` - Current user information
 - `useTenant()` - Tenant configuration
 - `useClient()` - Application client information
-- `useScreen()` - Current screen data and configuration
+- `useScreen()` - Current screen data and configuration. On `login` and `login-id`, `data.activeIdentifierType` gives the identifier type to pre-select in the separate-identifier experience
 - `useTransaction()` - Transaction state and methods
-- `useBranding()` - Tenant branding and theme
+- `useBranding()` - Tenant branding and theme. `themes.default.identifiers` carries the identifier-input settings (`loginDisplay`, `otpAutocomplete`, `phoneDisplay`) and is omitted when the tenant configures none
 - `useOrganization()` - Organization context (if applicable)
 - `usePrompt()` - Current authentication prompt
 - `useUntrustedData()` - Untrusted data from the authentication flow

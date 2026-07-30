@@ -245,6 +245,7 @@ This section documents the helper methods and properties exposed by the screen i
 - `tenant`- Tenant configuration and metadata (domain, region, settings).
 
 - `branding`- Branding/theme config (colors, logos, fonts, visual tokens).
+  - `themes.default.identifiers`- Identifier-input theme settings: `loginDisplay` (`'unified' | 'separate'`), `otpAutocomplete`, and `phoneDisplay` (`masking`, `formatting`). Omitted entirely when the tenant configures none.
 
 - `client`- Application client metadata and settings.
 
@@ -255,6 +256,7 @@ This section documents the helper methods and properties exposed by the screen i
 - `untrustedData`- Untrusted inputs (URL params, prefilled form values).
 
 - `screen`- Current screen metadata and configuration.
+  - `data.activeIdentifierType`- On `login` and `login-id`, the identifier type to pre-select in the separate-identifier experience. Absent when the server does not provide one.
 
 - `transaction`- Transaction / flow state, session identifiers and related data.
 
