@@ -60,6 +60,19 @@ export class ContextHooks<T extends BaseMembers> {
   useClient = () => this.instance.client as T['client'];
 
   /**
+   * Hook to access the available phone country codes and recommended default.
+   * @returns CountryCodes object containing the `available` list (each with `code`, `label`, `dialCode`) and the `recommended` default; both `null` when not provided
+   * @example
+   * ```jsx
+   * import { useCountryCodes } from '@auth0/auth0-acul-react/login-id';
+   * function CountryPicker() {
+   *   const { available, recommended } = useCountryCodes();
+   * }
+   * ```
+   */
+  useCountryCodes = () => this.instance.countryCodes as T['countryCodes'];
+
+  /**
    * Hook to access organization context and settings.
    * @returns Organization object containing org-specific data, metadata, and configuration
    * @example

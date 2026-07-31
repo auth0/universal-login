@@ -248,6 +248,8 @@ This section documents the helper methods and properties exposed by the screen i
 
 - `client`- Application client metadata and settings.
 
+- `countryCodes`- Available phone country codes (`available`, each with `code`, `label`, `dialCode`) and the recommended default (`recommended`); `null` when not provided.
+
 - `organization`- Organization context when applicable.
 
 - `prompt`- Current prompt / flow configuration.

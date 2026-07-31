@@ -1,5 +1,6 @@
 import { Branding } from './branding';
 import { Client } from './client';
+import { CountryCodes } from './country-codes';
 import { Organization } from './organization';
 import { Prompt } from './prompt';
 import { Screen } from './screen';
@@ -8,4 +9,4 @@ import { Transaction } from './transaction';
 import { UntrustedData } from './untrusted-data';
 import { User } from './user';
 
-export { Branding, Client, Prompt, Screen, Organization, User, Transaction, Tenant, UntrustedData };
+export { Branding, Client, CountryCodes, Prompt, Screen, Organization, User, Transaction, Tenant, UntrustedData };

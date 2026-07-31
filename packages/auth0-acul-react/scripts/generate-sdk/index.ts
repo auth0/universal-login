@@ -20,12 +20,26 @@ const CONTEXT_MODELS = [
   'tenant',
   'branding',
   'client',
+  'countryCodes',
   'organization',
   'prompt',
   'screen',
   'transaction',
   'untrustedData',
 ];
+
+// Context models exposed only on specific screens (model name -> kebab screen names).
+// Any model listed here is omitted from every other screen.
+const SCREEN_SCOPED_CONTEXT_MODELS: Record<string, string[]> = {
+  countryCodes: ['login', 'login-id', 'signup', 'signup-id'],
+};
+
+function getContextModels(kebab: string): string[] {
+  return CONTEXT_MODELS.filter((model) => {
+    const screens = SCREEN_SCOPED_CONTEXT_MODELS[model];
+    return !screens || screens.includes(kebab);
+  });
+}
 
 let errorCount = 0;
 
@@ -220,7 +234,7 @@ for (const symbol of screenSymbols) {
   screenLines.push(`\n// Context hooks`);
   screenLines.push(`const factory = new ContextHooks<${baseInterface}>(instance);`);
   screenLines.push(`export const {`);
-  screenLines.push(`  ${CONTEXT_MODELS.map((m) => `use${toPascal(m)}`).join(',\n  ')}`);
+  screenLines.push(`  ${getContextModels(kebab).map((m) => `use${toPascal(m)}`).join(',\n  ')}`);
   screenLines.push(`} = factory;`);
 
   if (exportedMethods.length) {

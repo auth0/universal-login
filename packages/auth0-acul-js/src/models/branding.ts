@@ -64,8 +64,9 @@ export class Branding implements BrandingMembers {
   static getThemes(branding: BrandingContext | undefined): BrandingMembers['themes'] {
     if (!branding?.themes) return null;
 
-    const { default: { borders = {}, colors = {}, displayName = '', fonts = {}, page_background: pageBackground = {}, widget = {} } = {} } =
-      branding.themes;
+    const {
+      default: { borders = {}, colors = {}, displayName = '', fonts = {}, page_background: pageBackground = {}, widget = {}, identifiers } = {},
+    } = branding.themes;
 
     return {
       default: {
@@ -75,6 +76,13 @@ export class Branding implements BrandingMembers {
         fonts,
         pageBackground,
         widget,
+        ...(identifiers && {
+          identifiers: {
+            ...(identifiers.login_display !== undefined && { loginDisplay: identifiers.login_display }),
+            ...(identifiers.otp_autocomplete !== undefined && { otpAutocomplete: identifiers.otp_autocomplete }),
+            ...(identifiers.phone_display !== undefined && { phoneDisplay: identifiers.phone_display }),
+          },
+        }),
       },
     };
   }

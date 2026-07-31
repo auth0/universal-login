@@ -46,6 +46,10 @@ const createMockInstance = (): BaseMembers => ({
     description: 'Test application',
     metadata: { description: 'Test application' },
   },
+  countryCodes: {
+    available: [{ code: 'US', label: 'United States', dialCode: '+1' }],
+    recommended: 'US',
+  },
   organization: {
     id: 'org123',
     name: 'Test Organization',
@@ -162,6 +166,21 @@ describe('ContextHooks', () => {
     it('should return the same reference as instance.client', () => {
       const client = contextHooks.useClient();
       expect(client).toBe(mockInstance.client);
+    });
+  });
+
+  describe('useCountryCodes', () => {
+    it('should return country codes data from instance', () => {
+      const countryCodes = contextHooks.useCountryCodes();
+
+      expect(countryCodes).toEqual(mockInstance.countryCodes);
+      expect(countryCodes.available).toEqual([{ code: 'US', label: 'United States', dialCode: '+1' }]);
+      expect(countryCodes.recommended).toBe('US');
+    });
+
+    it('should return the same reference as instance.countryCodes', () => {
+      const countryCodes = contextHooks.useCountryCodes();
+      expect(countryCodes).toBe(mockInstance.countryCodes);
     });
   });
 
