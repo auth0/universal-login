@@ -26,7 +26,11 @@ export interface BaseContext {
 export interface BaseMembers {
   branding: BrandingMembers;
   client: ClientMembers;
-  countryCodes: CountryCodesMembers;
+  /**
+   * Optional on the interface so existing implementors of `BaseMembers` (e.g. test mocks)
+   * keep compiling. Always populated at runtime by the `BaseContext` constructor.
+   */
+  countryCodes?: CountryCodesMembers;
   organization: OrganizationMembers;
   prompt: PromptMembers;
   screen: ScreenMembers;

@@ -174,8 +174,8 @@ describe('ContextHooks', () => {
       const countryCodes = contextHooks.useCountryCodes();
 
       expect(countryCodes).toEqual(mockInstance.countryCodes);
-      expect(countryCodes.available).toEqual([{ code: 'US', label: 'United States', dialCode: '+1' }]);
-      expect(countryCodes.recommended).toBe('US');
+      expect(countryCodes?.available).toEqual([{ code: 'US', label: 'United States', dialCode: '+1' }]);
+      expect(countryCodes?.recommended).toBe('US');
     });
 
     it('should return the same reference as instance.countryCodes', () => {

@@ -66,7 +66,8 @@ export class ContextHooks<T extends BaseMembers> {
    * ```jsx
    * import { useCountryCodes } from '@auth0/auth0-acul-react/login-id';
    * function CountryPicker() {
-   *   const { available, recommended } = useCountryCodes();
+   *   const countryCodes = useCountryCodes();
+   *   const available = countryCodes?.available;
    * }
    * ```
    */
