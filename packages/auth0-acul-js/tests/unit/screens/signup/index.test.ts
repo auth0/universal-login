@@ -70,6 +70,40 @@ describe('Signup', () => {
       expect(FormHandler).toHaveBeenCalledWith(expect.objectContaining({ state: 'mockState' }));
       expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(payload);
     });
+
+    it('should remap phoneNumber to phone_number', async () => {
+      const payload: SignupOptions = { phoneNumber: '+1234567890', password: 'P@ssw0rd!' };
+      await signup.signup(payload);
+
+      expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(
+        expect.objectContaining({
+          phone_number: '+1234567890',
+          password: 'P@ssw0rd!',
+        })
+      );
+
+      // The remap should rename `phoneNumber` to `phone_number`, not duplicate it.
+      const submittedPayload = (FormHandler.prototype.submitData as jest.Mock).mock.calls[0][0];
+      expect(submittedPayload).not.toHaveProperty('phoneNumber');
+    });
+
+    it('should not remap an empty phoneNumber', async () => {
+      const payload: SignupOptions = { email: 'test@example.com', phoneNumber: '', password: 'P@ssw0rd!' };
+      await signup.signup(payload);
+
+      const submittedPayload = (FormHandler.prototype.submitData as jest.Mock).mock.calls[0][0];
+      expect(submittedPayload).not.toHaveProperty('phone_number');
+      expect(submittedPayload).toHaveProperty('phoneNumber', '');
+    });
+
+    it('should leave a payload without phoneNumber untouched', async () => {
+      const payload: SignupOptions = { email: 'test@example.com', username: 'testUser', password: 'P@ssw0rd!' };
+      await signup.signup(payload);
+
+      expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(payload);
+      const submittedPayload = (FormHandler.prototype.submitData as jest.Mock).mock.calls[0][0];
+      expect(submittedPayload).not.toHaveProperty('phone_number');
+    });
   });
 
   describe('federatedSignup', () => {
