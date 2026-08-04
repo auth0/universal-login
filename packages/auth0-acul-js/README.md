@@ -244,7 +244,7 @@ This section documents the helper methods and properties exposed by the screen i
 
 - `tenant`- Tenant configuration and metadata (domain, region, settings).
 
-- `branding`- Branding/theme config (colors, logos, fonts, visual tokens).
+- `branding`- Branding/theme config (colors, logos, fonts, visual tokens). `branding.themes.default.identifiers` additionally carries identifier display preferences (`loginDisplay`, `otpAutocomplete`, `phoneDisplay` with `masking` and `formatting`); the `identifiers` key is omitted when the tenant configures none of them.
 
 - `client`- Application client metadata and settings.
 
@@ -282,7 +282,7 @@ This section documents the helper methods and properties exposed by the screen i
   Return the current screen context data.
 
 - `getCurrentThemeOptions()` 
-  Gets the current theme options with flattened configuration from branding context.
+  Gets the current theme options with flattened configuration from branding context. Returns styling tokens only (`colors`, `fonts`, `borders`, `pageBackground`, `widget`) — read `branding.themes.default.identifiers` for identifier display preferences.
 
 - `getErrors()`
    Gets the current errors from the transaction context

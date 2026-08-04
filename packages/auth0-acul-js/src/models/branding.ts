@@ -1,4 +1,4 @@
-import type { BrandingContext, BrandingMembers } from '../../interfaces/models/branding';
+import type { BrandingContext, BrandingMembers, ThemeIdentifiers } from '../../interfaces/models/branding';
 
 /**
  * @class Branding
@@ -68,6 +68,12 @@ export class Branding implements BrandingMembers {
       default: { borders = {}, colors = {}, displayName = '', fonts = {}, page_background: pageBackground = {}, widget = {}, identifiers } = {},
     } = branding.themes;
 
+    const themeIdentifiers: ThemeIdentifiers = {
+      ...(identifiers?.login_display !== undefined && { loginDisplay: identifiers.login_display }),
+      ...(identifiers?.otp_autocomplete !== undefined && { otpAutocomplete: identifiers.otp_autocomplete }),
+      ...(identifiers?.phone_display !== undefined && { phoneDisplay: identifiers.phone_display }),
+    };
+
     return {
       default: {
         borders,
@@ -76,13 +82,7 @@ export class Branding implements BrandingMembers {
         fonts,
         pageBackground,
         widget,
-        ...(identifiers && {
-          identifiers: {
-            ...(identifiers.login_display !== undefined && { loginDisplay: identifiers.login_display }),
-            ...(identifiers.otp_autocomplete !== undefined && { otpAutocomplete: identifiers.otp_autocomplete }),
-            ...(identifiers.phone_display !== undefined && { phoneDisplay: identifiers.phone_display }),
-          },
-        }),
+        ...(Object.keys(themeIdentifiers).length > 0 && { identifiers: themeIdentifiers }),
       },
     };
   }

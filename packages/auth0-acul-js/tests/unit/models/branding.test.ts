@@ -181,5 +181,13 @@ describe('Branding', () => {
         loginDisplay: 'unified',
       });
     });
+
+    it('should not include identifiers when the theme provides an empty object', () => {
+      const contextWithEmptyIdentifiers = {
+        themes: { default: { identifiers: {} } },
+      } as unknown as BrandingContext;
+
+      expect(Branding.getThemes(contextWithEmptyIdentifiers)?.default).not.toHaveProperty('identifiers');
+    });
   });
 });
