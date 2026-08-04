@@ -48,6 +48,17 @@ export interface SignupOptions {
   email?: string;
   username?: string;
   phone?: string;
+  /**
+   * The ISO 3166-1 alpha-2 country code for `phone` (e.g. `'US'`, `'IN'`).
+   *
+   * Supply this alongside `phone` — holding national digits only, with no dial code — to submit
+   * the phone as a composite identifier. The country you pass is then authoritative: the server
+   * prefixes its dial code rather than inferring the country from the caller's geolocation. Read
+   * the selectable countries from `transaction.countryCodes`.
+   *
+   * When omitted, `phone` is submitted on its own and the server resolves the country.
+   */
+  phoneCountryCode?: string;
   captcha?: string;
   [key: string]: string | number | boolean | undefined;
 }

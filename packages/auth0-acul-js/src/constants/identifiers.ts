@@ -15,6 +15,16 @@ export const Fields = {
 }
 
 /**
+ * Form field names for the server's typed (composite) identifier contract. The `identifier_`
+ * prefix keeps these distinct from the legacy discrete fields in {@link Fields}, which the
+ * server continues to accept.
+ */
+export const TypedFields = {
+  PHONE: 'identifier_phone' as const,
+  PHONE_COUNTRY_CODE: 'identifier_phone_country_code' as const,
+} as const;
+
+/**
  * Type representing valid identifier values
  */
 export type IdentifierType = 'phone' | 'email' | 'username';

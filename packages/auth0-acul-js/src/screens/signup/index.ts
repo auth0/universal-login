@@ -3,6 +3,7 @@ import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 import { getSignupIdentifiers as _getSignupIdentifiers} from '../../utils/signup-identifiers';
+import { applyTypedPhone } from '../../utils/typed-identifier';
 import { validatePassword as _validatePassword, validateWithComplexityPolicy as _validateFlexiblePassword} from '../../utils/validate-password';
 import { validateUsername as _validateUsername} from '../../utils/validate-username';
 
@@ -58,15 +59,13 @@ export default class Signup extends BaseContext implements SignupMembers {
       telemetry: [Signup.screenIdentifier, 'signup'],
     };
 
-    // The signup endpoint expects the phone identifier as `phone_number`,
-    // while the SDK exposes it (and accepts it) as the camelCase `phoneNumber`.
-    // Remap it before submitting so a phone signup is not rejected with "no-phone_number".
-    if (payload.phoneNumber?.trim()) {
-      const { phoneNumber, ...rest } = payload;
-      payload = { ...rest, phone_number: phoneNumber };
-    }
+    // The signup endpoint expects the phone identifier as `phone_number`, while the SDK exposes
+    // it (and accepts it) as the camelCase `phoneNumber`. Remap it before submitting so a phone
+    // signup is not rejected with "no-phone_number". When `phoneCountryCode` is supplied too,
+    // the phone is submitted as a composite identifier instead.
+    const wirePayload = applyTypedPhone(payload, { phoneKeys: ['phoneNumber'] });
 
-    await new FormHandler(options).submitData<SignupOptions>(payload);
+    await new FormHandler(options).submitData<SignupOptions>(wirePayload);
   }
 
   /**

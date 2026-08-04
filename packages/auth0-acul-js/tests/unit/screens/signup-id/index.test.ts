@@ -112,6 +112,54 @@ describe('SignupId', () => {
         expect.objectContaining({ phone: '+1234567890' })
       );
     });
+
+    it('should submit the typed phone fields when phoneCountryCode is supplied', async () => {
+      const payload: SignupOptions = {
+        email: 'testUser@testmail.com',
+        username: 'testUser',
+        phone: '4155551234',
+        phoneCountryCode: 'US',
+      };
+
+      await signupId.signup(payload);
+
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith({
+        email: 'testUser@testmail.com',
+        username: 'testUser',
+        identifier_phone: '4155551234',
+        identifier_phone_country_code: 'US',
+        ...mockBrowserCapabilities,
+      });
+    });
+
+    it('should fall back to phone_number when phoneCountryCode is blank', async () => {
+      const payload: SignupOptions = {
+        email: 'testUser@testmail.com',
+        username: 'testUser',
+        phone: '+1234567890',
+        phoneCountryCode: '  ',
+      };
+
+      await signupId.signup(payload);
+
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith(
+        expect.objectContaining({ phone_number: '+1234567890' })
+      );
+      expect(mockFormHandler.submitData).not.toHaveBeenCalledWith(
+        expect.objectContaining({ identifier_phone: '+1234567890' })
+      );
+    });
+
+    it('should still require a missing identifier when phoneCountryCode is supplied', async () => {
+      const payload: SignupOptions = {
+        email: 'testUser@testmail.com',
+        phoneCountryCode: 'US',
+      };
+
+      await expect(signupId.signup(payload)).rejects.toThrow(
+        'Missing parameter(s): phone, username'
+      );
+    });
   });
 
   describe('Social Signup method', () => {

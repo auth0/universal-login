@@ -104,6 +104,38 @@ describe('Signup', () => {
       const submittedPayload = (FormHandler.prototype.submitData as jest.Mock).mock.calls[0][0];
       expect(submittedPayload).not.toHaveProperty('phone_number');
     });
+
+    it('should submit the typed phone fields when phoneCountryCode is supplied', async () => {
+      const payload: SignupOptions = {
+        phoneNumber: '4155551234',
+        phoneCountryCode: 'US',
+        password: 'P@ssw0rd!',
+      };
+      await signup.signup(payload);
+
+      expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(
+        expect.objectContaining({
+          identifier_phone: '4155551234',
+          identifier_phone_country_code: 'US',
+          password: 'P@ssw0rd!',
+        })
+      );
+
+      // The typed fields replace the discrete phone field; neither may be submitted alongside.
+      const submittedPayload = (FormHandler.prototype.submitData as jest.Mock).mock.calls[0][0];
+      expect(submittedPayload).not.toHaveProperty('phone_number');
+      expect(submittedPayload).not.toHaveProperty('phoneNumber');
+      expect(submittedPayload).not.toHaveProperty('phoneCountryCode');
+    });
+
+    it('should fall back to phone_number when phoneCountryCode is blank', async () => {
+      const payload: SignupOptions = { phoneNumber: '+1234567890', phoneCountryCode: '  ' };
+      await signup.signup(payload);
+
+      const submittedPayload = (FormHandler.prototype.submitData as jest.Mock).mock.calls[0][0];
+      expect(submittedPayload).toHaveProperty('phone_number', '+1234567890');
+      expect(submittedPayload).not.toHaveProperty('identifier_phone');
+    });
   });
 
   describe('federatedSignup', () => {

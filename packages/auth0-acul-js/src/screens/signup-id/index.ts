@@ -1,8 +1,9 @@
-import { ScreenIds, FormActions } from '../../constants';
+import { ScreenIds, FormActions, Fields } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { getBrowserCapabilities } from '../../utils/browser-capabilities';
 import { FormHandler } from '../../utils/form-handler';
 import { getSignupIdentifiers as _getSignupIdentifiers} from '../../utils/signup-identifiers';
+import { applyTypedPhone } from '../../utils/typed-identifier';
 import { validateUsername as _validateUsername} from '../../utils/validate-username';
 
 import { ScreenOverride } from './screen-override';
@@ -71,14 +72,14 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
       throw new Error(`Missing parameter(s): ${missingParameters.join(', ')}`);
     }
 
-    if (payload.phone?.trim() ?? '') {
-      const { phone, ...rest } = payload;
-      payload = { ...rest, phone_number: phone };
-    }
+    // The signup endpoint expects the phone identifier as `phone_number`, while the SDK exposes
+    // it (and accepts it) as `phone`. When `phoneCountryCode` is supplied too, the phone is
+    // submitted as a composite identifier instead.
+    const wirePayload = applyTypedPhone(payload, { phoneKeys: [Fields.PHONE] });
 
     const browserCapabilities = await getBrowserCapabilities()
     await new FormHandler(options).submitData<SignupOptions>({
-      ...payload,
+      ...wirePayload,
       ...browserCapabilities
     });
   }

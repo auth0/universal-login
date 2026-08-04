@@ -266,6 +266,25 @@ This section documents the helper methods and properties exposed by the screen i
 
 - `getSignupIdentifiers()`: Get available signup identifier types, each with its `required` status
 
+#### Submitting a phone number with its country
+
+On the `signup` and `signup-id` screens, pass `phoneCountryCode` alongside the phone number to submit the two as a composite identifier. The phone value must then carry **national digits only, with no dial code** — the country you pass is authoritative, and the server prefixes its dial code rather than inferring the country from the user's geolocation. Read the selectable countries from `countryCodes`.
+
+```js
+import Signup from '@auth0/auth0-acul-js/signup';
+
+const signupManager = new Signup();
+
+signupManager.signup({
+  email: 'test@example.com',
+  phoneNumber: '4155551234', // national digits only — no '+1'
+  phoneCountryCode: signupManager.countryCodes.recommended ?? 'US',
+  password: 'P@$$wOrd123!',
+});
+```
+
+Omit `phoneCountryCode` to keep the previous behavior: the phone number is submitted on its own and the server resolves the country. On `signup-id` the phone field is named `phone` rather than `phoneNumber`.
+
 ### Form validation
 - `validatePassword(password: string)`: 
   Real-time password strength validation
