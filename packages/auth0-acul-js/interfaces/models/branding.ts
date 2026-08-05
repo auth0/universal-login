@@ -30,12 +30,37 @@ export interface BrandingContext {
   };
 }
 
+/**
+ * How the identifier fields are laid out on the login and signup screens.
+ *
+ * - `'unified'`: a single input accepting any enabled identifier.
+ * - `'separate'`: one input per enabled identifier.
+ */
+export type LoginDisplay = 'unified' | 'separate';
+
+/**
+ * How much of an already-entered phone number is revealed when it is displayed back to the user.
+ *
+ * - `'show_all'`: the full number, country code included.
+ * - `'hide_country_code'`: the national digits only.
+ * - `'mask_digits'`: the digits obscured.
+ */
+export type PhoneMasking = 'show_all' | 'hide_country_code' | 'mask_digits';
+
+/**
+ * How a phone number is formatted for display.
+ *
+ * - `'regional'`: the national convention for the number's country.
+ * - `'international'`: the international form, dial code included.
+ */
+export type PhoneFormatting = 'regional' | 'international';
+
 export interface ThemeIdentifiersContext {
-  login_display?: string;
+  login_display?: LoginDisplay;
   otp_autocomplete?: boolean;
   phone_display?: {
-    masking?: string;
-    formatting?: string;
+    masking?: PhoneMasking;
+    formatting?: PhoneFormatting;
   };
 }
 
@@ -57,11 +82,11 @@ export interface BrandingSettings {
 }
 
 export interface ThemeIdentifiers {
-  loginDisplay?: string;
+  loginDisplay?: LoginDisplay;
   otpAutocomplete?: boolean;
   phoneDisplay?: {
-    masking?: string;
-    formatting?: string;
+    masking?: PhoneMasking;
+    formatting?: PhoneFormatting;
   };
 }
 
