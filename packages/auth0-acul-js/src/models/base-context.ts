@@ -1,5 +1,5 @@
 import { FormActions } from '../constants';
-import { Branding, Client, Prompt, Screen, Organization, User, Transaction, Tenant, UntrustedData } from '../models';
+import { Branding, Client, CountryCodes, Prompt, Screen, Organization, User, Transaction, Tenant, UntrustedData } from '../models';
 import { FormHandler } from '../utils/form-handler';
 
 import type { LanguageChangeOptions } from '../../interfaces/common';
@@ -12,7 +12,8 @@ import type {
   TransactionMembers,
   TenantMembers,
   UntrustedDataMembers,
-  BrandingMembers
+  BrandingMembers,
+  CountryCodesMembers
 } from '../../interfaces/models';
 import type { BaseContext as UniversalLoginContext, BaseMembers } from '../../interfaces/models/base-context';
 import type { Error as TransactionError } from '../../interfaces/models/transaction';
@@ -25,6 +26,7 @@ import type { FormOptions } from '../../interfaces/utils/form-handler';
  */
 export class BaseContext implements BaseMembers {
   branding: BrandingMembers;
+  countryCodes: CountryCodesMembers;
   screen: ScreenMembers;
   tenant: TenantMembers;
   prompt: PromptMembers;
@@ -66,6 +68,7 @@ export class BaseContext implements BaseMembers {
     }
 
     this.branding = new Branding(context.branding);
+    this.countryCodes = new CountryCodes(context.country_codes);
     this.screen = new Screen(context.screen);
     this.tenant = new Tenant(context.tenant);
     this.prompt = new Prompt(context.prompt);

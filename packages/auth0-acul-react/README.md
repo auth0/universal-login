@@ -231,6 +231,9 @@ Refer to our [API Reference](#api-reference) for the full list of available type
 - `useOrganization()` - Organization context (if applicable)
 - `usePrompt()` - Current authentication prompt
 - `useUntrustedData()` - Untrusted data from the authentication flow
+
+#### Available on specific screens
+- `useCountryCodes()` - Available phone country codes and the recommended default. Exported only from `login`, `login-id`, `signup`, and `signup-id`.
  
 ### Utility Hooks
 Specialized hooks for form validation, polling, and identifier management:

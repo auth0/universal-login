@@ -1,5 +1,6 @@
 import { Branding } from '../../../src/models/branding';
-import type { BrandingContext, BrandingMembers } from '../../../interfaces/models/branding';
+
+import type { BrandingContext } from '../../../interfaces/models/branding';
 
 describe('Branding', () => {
   let brandingContext: BrandingContext;
@@ -145,6 +146,48 @@ describe('Branding', () => {
           widget: {},
         },
       });
+    });
+
+    it('should transform theme identifiers to camelCase when present', () => {
+      const contextWithIdentifiers = {
+        themes: {
+          default: {
+            identifiers: {
+              login_display: 'separate',
+              otp_autocomplete: true,
+              phone_display: { masking: 'mask_digits', formatting: 'international' },
+            },
+          },
+        },
+      } as unknown as BrandingContext;
+
+      expect(Branding.getThemes(contextWithIdentifiers)?.default.identifiers).toEqual({
+        loginDisplay: 'separate',
+        otpAutocomplete: true,
+        phoneDisplay: { masking: 'mask_digits', formatting: 'international' },
+      });
+    });
+
+    it('should not include identifiers when absent from the theme', () => {
+      expect(Branding.getThemes(brandingContext)?.default).not.toHaveProperty('identifiers');
+    });
+
+    it('should include only the provided identifier fields', () => {
+      const contextWithPartialIdentifiers = {
+        themes: { default: { identifiers: { login_display: 'unified' } } },
+      } as unknown as BrandingContext;
+
+      expect(Branding.getThemes(contextWithPartialIdentifiers)?.default.identifiers).toEqual({
+        loginDisplay: 'unified',
+      });
+    });
+
+    it('should not include identifiers when the theme provides an empty object', () => {
+      const contextWithEmptyIdentifiers = {
+        themes: { default: { identifiers: {} } },
+      } as unknown as BrandingContext;
+
+      expect(Branding.getThemes(contextWithEmptyIdentifiers)?.default).not.toHaveProperty('identifiers');
     });
   });
 });
