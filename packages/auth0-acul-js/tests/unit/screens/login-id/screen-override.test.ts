@@ -67,4 +67,25 @@ describe('ScreenOverride', () => {
     const override = new ScreenOverride(screenContext);
     expect(override.googleOneTapConfig).toBeNull();
   });
+
+  describe('activeIdentifierType', () => {
+    const buildData = (data: Record<string, unknown>): ScreenOverride['data'] =>
+      new ScreenOverride({ data } as unknown as ScreenContext).data;
+
+    it.each(['email', 'phone', 'username'])('should expose %s as camelCase activeIdentifierType', (value) => {
+      expect(buildData({ active_identifier_type: value })?.activeIdentifierType).toBe(value);
+    });
+
+    it('should drop the raw snake_case key', () => {
+      expect(buildData({ active_identifier_type: 'phone' })).not.toHaveProperty('active_identifier_type');
+    });
+
+    it('should omit activeIdentifierType when the server does not resolve one', () => {
+      expect(buildData({ passkey: { public_key: {} } })).not.toHaveProperty('activeIdentifierType');
+    });
+
+    it('should return null when the screen has no data', () => {
+      expect(new ScreenOverride({} as ScreenContext).data).toBeNull();
+    });
+  });
 });

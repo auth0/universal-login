@@ -22,6 +22,14 @@ export interface ScreenMembersOnLogin extends ScreenMembers {
   googleOneTapConfig: GoogleOneTapConfig | null;
   data: {
     username?: string;
+    /**
+     * The identifier input the screen should pre-select, as resolved by the server.
+     *
+     * Absent when the server has not resolved one — do not treat absence as `'email'`;
+     * fall back to your own default instead. Mapped from the server's
+     * `active_identifier_type`, which is not surfaced.
+     */
+    activeIdentifierType?: IdentifierType;
   } | null;
 }
 

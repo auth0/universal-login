@@ -1,6 +1,5 @@
 import { ScreenOverride } from '../../../../src/screens/login/screen-override';
 import { getSignupLink, getResetPasswordLink, getGoogleOneTapConfig } from '../../../../src/shared/screen';
-import { Screen } from '../../../../src/models/screen';
 import type { ScreenContext } from '../../../../interfaces/models/screen';
 
 jest.mock('../../../../src/shared/screen');
@@ -12,13 +11,12 @@ describe('ScreenOverride', () => {
 
   beforeEach(() => {
     screenContext = {
-      // mock the screenContext properties as needed
-    } as ScreenContext;
+      data: { mockData: 'mockData' },
+    } as unknown as ScreenContext;
 
     (getSignupLink as jest.Mock).mockReturnValue('mockSignupLink');
     (getResetPasswordLink as jest.Mock).mockReturnValue('mockResetPasswordLink');
     (getGoogleOneTapConfig as jest.Mock).mockReturnValue(null);
-    (Screen.getScreenData as jest.Mock).mockReturnValue({ mockData: 'mockData' });
 
     screenOverride = new ScreenOverride(screenContext);
   });
@@ -48,5 +46,30 @@ describe('ScreenOverride', () => {
     (getGoogleOneTapConfig as jest.Mock).mockReturnValue(null);
     const override = new ScreenOverride(screenContext);
     expect(override.googleOneTapConfig).toBeNull();
+  });
+
+  describe('activeIdentifierType', () => {
+    const buildData = (data: Record<string, unknown>): ScreenOverride['data'] =>
+      new ScreenOverride({ data } as unknown as ScreenContext).data;
+
+    it.each(['email', 'phone', 'username'])('should expose %s as camelCase activeIdentifierType', (value) => {
+      expect(buildData({ active_identifier_type: value })?.activeIdentifierType).toBe(value);
+    });
+
+    it('should drop the raw snake_case key', () => {
+      expect(buildData({ active_identifier_type: 'phone' })).not.toHaveProperty('active_identifier_type');
+    });
+
+    it('should omit activeIdentifierType when the server does not resolve one', () => {
+      expect(buildData({ username: 'someone' })).not.toHaveProperty('activeIdentifierType');
+    });
+
+    it('should preserve sibling screen data keys', () => {
+      expect(buildData({ username: 'someone', active_identifier_type: 'email' })?.username).toBe('someone');
+    });
+
+    it('should return null when the screen has no data', () => {
+      expect(new ScreenOverride({} as ScreenContext).data).toBeNull();
+    });
   });
 });
