@@ -20,17 +20,23 @@ export interface ScreenMembersOnLogin extends ScreenMembers {
   signupLink: string | null;
   resetPasswordLink: string | null;
   googleOneTapConfig: GoogleOneTapConfig | null;
-  data: {
-    username?: string;
-    /**
-     * The identifier input the screen should pre-select, as resolved by the server.
-     *
-     * Absent when the server has not resolved one — do not treat absence as `'email'`;
-     * fall back to your own default instead. Mapped from the server's
-     * `active_identifier_type`, which is not surfaced.
-     */
-    activeIdentifierType?: IdentifierType;
-  } | null;
+  /**
+   * Intersected with the inherited `data` record rather than replacing it, so reads of any
+   * other `screen.data` key keep compiling for existing consumers.
+   */
+  data:
+    | (NonNullable<ScreenMembers['data']> & {
+        username?: string;
+        /**
+         * The identifier input the screen should pre-select, as resolved by the server.
+         *
+         * Absent when the server has not resolved one — do not treat absence as `'email'`;
+         * fall back to your own default instead. Mapped from the server's
+         * `active_identifier_type`, which is not surfaced.
+         */
+        activeIdentifierType?: IdentifierType;
+      })
+    | null;
 }
 
 /**
