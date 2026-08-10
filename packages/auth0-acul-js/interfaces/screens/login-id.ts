@@ -27,6 +27,7 @@ export interface ExtendedScreenContext extends ScreenContext {
 
   data?: {
     passkey?: PasskeyRead;
+    active_identifier_type?: IdentifierType;
   };
 }
 
@@ -47,6 +48,22 @@ export interface ScreenMembersOnLoginId extends ScreenMembers {
   resetPasswordLink: string | null;
   publicKey: PasskeyRead['public_key'] | null;
   googleOneTapConfig: GoogleOneTapConfig | null;
+  /**
+   * Intersected with the inherited `data` record rather than replacing it, so reads of any
+   * other `screen.data` key keep compiling for existing consumers.
+   */
+  data:
+    | (NonNullable<ScreenMembers['data']> & {
+        /**
+         * The identifier input the screen should pre-select, as resolved by the server.
+         *
+         * Absent when the server has not resolved one — do not treat absence as `'email'`;
+         * fall back to your own default instead. Mapped from the server's
+         * `active_identifier_type`, which is not surfaced.
+         */
+        activeIdentifierType?: IdentifierType;
+      })
+    | null;
 }
 
 export interface TransactionMembersOnLoginId extends TransactionMembers {

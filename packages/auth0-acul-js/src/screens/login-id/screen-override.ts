@@ -9,6 +9,7 @@ export class ScreenOverride extends Screen implements OverrideOptions {
   resetPasswordLink: OverrideOptions['resetPasswordLink'];
   publicKey: OverrideOptions['publicKey'];
   googleOneTapConfig: OverrideOptions['googleOneTapConfig'];
+  data: OverrideOptions['data'];
 
   constructor(screenContext: ScreenContext) {
     super(screenContext);
@@ -16,5 +17,23 @@ export class ScreenOverride extends Screen implements OverrideOptions {
     this.resetPasswordLink = getResetPasswordLink(screenContext);
     this.publicKey = getPublicKey(screenContext) as OverrideOptions['publicKey'];
     this.googleOneTapConfig = getGoogleOneTapConfig(screenContext);
+    this.data = ScreenOverride.getScreenData(screenContext);
+  }
+
+  /**
+   * Extracts the screen data, renaming the server's `active_identifier_type` to the camelCase
+   * `activeIdentifierType`. The raw snake_case key is dropped so consumers see a single
+   * camelCase field, matching the declared type.
+   */
+  static getScreenData(screenContext: ScreenContext): OverrideOptions['data'] {
+    const data = screenContext.data;
+    if (!data) return null;
+
+    const { active_identifier_type: activeIdentifierType, ...rest } = data;
+
+    return {
+      ...rest,
+      ...(activeIdentifierType !== undefined && { activeIdentifierType }),
+    } as OverrideOptions['data'];
   }
 }

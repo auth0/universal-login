@@ -348,3 +348,46 @@ const LoginScreenWithGoogleOneTap: React.FC = () => {
 
 export default LoginScreenWithGoogleOneTap;
 ```
+### Example using activeIdentifierType
+
+When a tenant allows multiple identifiers, `screen.data.activeIdentifierType` tells you which input the server resolved so you can render it on first paint. It is `undefined` when the server has not resolved one, so fall back to your own default rather than assuming `email`.
+
+```tsx
+import React, { useRef } from 'react';
+import { useScreen, login } from '@auth0/auth0-acul-react/login';
+
+const LoginScreenWithActiveIdentifier: React.FC = () => {
+  const screen = useScreen();
+  const identifierRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+
+  const activeIdentifier = screen.data?.activeIdentifierType ?? 'email';
+
+  return (
+    <div>
+      <label htmlFor="identifier">
+        {activeIdentifier === 'phone' ? 'Phone number' : 'Email address'}
+      </label>
+      <input
+        id="identifier"
+        ref={identifierRef}
+        type={activeIdentifier === 'phone' ? 'tel' : 'email'}
+        autoComplete={activeIdentifier === 'phone' ? 'tel' : 'email'}
+      />
+      <input id="password" ref={passwordRef} type="password" autoComplete="current-password" />
+      <button
+        onClick={() =>
+          login({
+            username: identifierRef.current?.value ?? '',
+            password: passwordRef.current?.value ?? '',
+          })
+        }
+      >
+        Continue
+      </button>
+    </div>
+  );
+};
+
+export default LoginScreenWithActiveIdentifier;
+```

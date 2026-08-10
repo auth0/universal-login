@@ -222,3 +222,21 @@ if (config) {
   window.google?.accounts.id.prompt();
 }
 ```
+
+## activeIdentifierType
+
+When a tenant allows multiple identifiers, `screen.data.activeIdentifierType` tells you which input the server resolved so you can render it on first paint. It is `undefined` when the server has not resolved one, so fall back to your own default rather than assuming `email`.
+
+```typescript
+import Login from '@auth0/auth0-acul-js/login';
+
+const loginManager = new Login();
+
+const activeIdentifier = loginManager.screen.data?.activeIdentifierType ?? 'email';
+
+if (activeIdentifier === 'phone') {
+  // render the phone number input with the country code picker
+} else {
+  // render the email / username input
+}
+```
