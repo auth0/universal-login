@@ -2,6 +2,7 @@ import { PasswordValidationResult } from '../../../interfaces/utils/validate-pas
 import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
+import { normalizePhoneIdentifier } from '../../utils/phone-identifier';
 import { getSignupIdentifiers as _getSignupIdentifiers} from '../../utils/signup-identifiers';
 import { validatePassword as _validatePassword, validateWithComplexityPolicy as _validateFlexiblePassword} from '../../utils/validate-password';
 import { validateUsername as _validateUsername} from '../../utils/validate-username';
@@ -40,6 +41,11 @@ export default class Signup extends BaseContext implements SignupMembers {
    * @remarks
    * This method handles the submission of the signup form.
    *
+   * Pass `phoneCountryCode` alongside `phoneNumber` when your screen renders a country dropdown
+   * next to the phone number field. The selection is then submitted with the number and is
+   * authoritative, so `phoneNumber` should be the national number without a dial code. Omit it to
+   * let the server derive the country, as with the `pickCountryCode()` flow.
+   *
    * @example
    * ```typescript
    * import Signup from '@auth0/auth0-acul-js/signup';
@@ -51,6 +57,16 @@ export default class Signup extends BaseContext implements SignupMembers {
    *  password: 'P@$$wOrd123!',
    * });
    * ```
+   *
+   * @example
+   * ```typescript
+   * // Phone signup with a country dropdown, using a code from `countryCodes.available`.
+   * signupManager.signup({
+   *  phoneNumber: '2015550123',
+   *  phoneCountryCode: 'US',
+   *  password: 'P@$$wOrd123!',
+   * });
+   * ```
    */
   async signup(payload: SignupOptions): Promise<void> {
     const options: FormOptions = {
@@ -58,15 +74,13 @@ export default class Signup extends BaseContext implements SignupMembers {
       telemetry: [Signup.screenIdentifier, 'signup'],
     };
 
-    // The signup endpoint expects the phone identifier as `phone_number`,
-    // while the SDK exposes it (and accepts it) as the camelCase `phoneNumber`.
-    // Remap it before submitting so a phone signup is not rejected with "no-phone_number".
-    if (payload.phoneNumber?.trim()) {
-      const { phoneNumber, ...rest } = payload;
-      payload = { ...rest, phone_number: phoneNumber };
-    }
-
-    await new FormHandler(options).submitData<SignupOptions>(payload);
+    // The signup endpoint names the phone fields differently from the SDK options: `phone_number`
+    // for a discrete submission, or `identifier_phone` + `identifier_phone_country_code` when a
+    // country was selected alongside the number. Remap before submitting so a phone signup is not
+    // rejected with "no-phone_number".
+    await new FormHandler(options).submitData<SignupOptions>(
+      normalizePhoneIdentifier(payload, 'phoneNumber')
+    );
   }
 
   /**

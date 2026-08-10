@@ -112,6 +112,35 @@ describe('SignupId', () => {
         expect.objectContaining({ phone: '+1234567890' })
       );
     });
+
+    it('should submit the composite phone fields when a country code is selected', async () => {
+      const payload: SignupOptions = {
+        email: 'testUser@testmail.com',
+        username: 'testUser',
+        password: 'testPassword',
+        phone: '2015550123',
+        phoneCountryCode: 'US',
+      };
+
+      await signupId.signup(payload);
+
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith({
+        email: 'testUser@testmail.com',
+        username: 'testUser',
+        password: 'testPassword',
+        identifier_phone: '2015550123',
+        identifier_phone_country_code: 'US',
+        ...mockBrowserCapabilities,
+      });
+    });
+
+    it('should count phone towards the required identifiers even with a country code', async () => {
+      // `phoneCountryCode` is an extra field on the phone identifier, not an identifier of its own,
+      // so it must not satisfy the required-identifier check on its own.
+      await expect(
+        signupId.signup({ email: 'test@example.com', username: 'testUser', phoneCountryCode: 'US' })
+      ).rejects.toThrow('Missing parameter(s): phone');
+    });
   });
 
   describe('Social Signup method', () => {

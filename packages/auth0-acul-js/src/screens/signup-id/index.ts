@@ -2,6 +2,7 @@ import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { getBrowserCapabilities } from '../../utils/browser-capabilities';
 import { FormHandler } from '../../utils/form-handler';
+import { normalizePhoneIdentifier } from '../../utils/phone-identifier';
 import { getSignupIdentifiers as _getSignupIdentifiers} from '../../utils/signup-identifiers';
 import { validateUsername as _validateUsername} from '../../utils/validate-username';
 
@@ -58,6 +59,16 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
    * };
    *
    * signupIdManager.signup(signupParams);
+   *
+   * @example
+   * // Phone signup with a country dropdown, using a code from `countryCodes.available`. The
+   * // selection is submitted with the number and is authoritative, so `phone` should be the
+   * // national number without a dial code. Omit `phoneCountryCode` to let the server derive the
+   * // country, as with the `pickCountryCode()` flow.
+   * signupIdManager.signup({
+   *  phone: "2015550123",
+   *  phoneCountryCode: "US"
+   * });
    */
   async signup(payload: SignupOptions): Promise<void> {
     const options: FormOptions = {
@@ -71,14 +82,14 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
       throw new Error(`Missing parameter(s): ${missingParameters.join(', ')}`);
     }
 
-    if (payload.phone?.trim() ?? '') {
-      const { phone, ...rest } = payload;
-      payload = { ...rest, phone_number: phone };
-    }
+    // The signup endpoint names the phone fields differently from the SDK options: `phone_number`
+    // for a discrete submission, or `identifier_phone` + `identifier_phone_country_code` when a
+    // country was selected alongside the number.
+    const normalizedPayload = normalizePhoneIdentifier(payload, 'phone');
 
     const browserCapabilities = await getBrowserCapabilities()
     await new FormHandler(options).submitData<SignupOptions>({
-      ...payload,
+      ...normalizedPayload,
       ...browserCapabilities
     });
   }
