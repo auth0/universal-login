@@ -20,13 +20,6 @@ export interface SignupOptions {
    *
    * Omit it to keep the existing behaviour, where the server derives the country itself and
    * `pickCountryCode()` changes the selection on a separate screen.
-   *
-   * Requires typed form processing to be enabled server-side. Note that `countryCodes` being
-   * populated does not imply it: the country list is a per-screen context opt-in, resolved
-   * independently of the flag that gates the composite submission. Until that flag is on the
-   * server ignores the composite fields, and because they replace `phone_number` the submission
-   * carries no phone number at all and the signup fails. Leave `phoneCountryCode` unset on
-   * tenants where composite submission is not yet enabled.
    */
   phoneCountryCode?: string;
   password?: string;

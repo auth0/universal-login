@@ -248,7 +248,7 @@ This section documents the helper methods and properties exposed by the screen i
 
 - `client`- Application client metadata and settings.
 
-- `countryCodes`- Available phone country codes (`available`, each with `code`, `label`, `dialCode`) and the recommended default (`recommended`); `null` when not provided. On the signup screens, pass the selected `code` back as `phoneCountryCode` alongside the phone number to submit both from one screen instead of routing through `pickCountryCode()`. That composite submission requires typed form processing to be enabled server-side for your tenant, which the presence of `countryCodes` does not indicate; until then, submit the phone number on its own.
+- `countryCodes`- Available phone country codes (`available`, each with `code`, `label`, `dialCode`) and the recommended default (`recommended`); `null` when not provided. On the signup screens, pass the selected `code` back as `phoneCountryCode` alongside the phone number to submit both from one screen instead of routing through `pickCountryCode()`.
 
 - `organization`- Organization context when applicable.
 

@@ -282,8 +282,6 @@ if (config) {
 
 The submitted country is authoritative: the server prefixes its dial code rather than inferring a country from the digits or from geo-IP. So `phone` should be the national number *without* a dial code. Omitting `phoneCountryCode` keeps the previous behaviour, where the server derives the country itself.
 
-> **Requires typed form processing enabled server-side.** `countryCodes` being populated is not a signal that it is: the country list is a per-screen context opt-in and is resolved independently of the flag that gates composite submission. Until that flag is on, the server ignores `identifier_phone` and `identifier_phone_country_code`, and since they are sent instead of `phone_number` the submission carries no phone number at all and signup fails. Check with your Auth0 contact before passing `phoneCountryCode`, and keep submitting `phone` on its own until composite submission is enabled for your tenant.
-
 ```tsx
 import React, { useState } from 'react';
 import SignupId from '@auth0/auth0-acul-js/signup-id';
