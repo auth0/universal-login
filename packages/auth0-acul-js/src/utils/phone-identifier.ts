@@ -1,6 +1,7 @@
 import { TypedFields } from '../constants/identifiers';
 
 import type {
+  NormalizedPhoneIdentifierPayload,
   PhoneIdentifierField,
   PhoneIdentifierPayload,
 } from '../../interfaces/utils/phone-identifier';
@@ -13,7 +14,7 @@ import type {
  *
  * - With `phoneCountryCode`: the composite contract. The number and the country are submitted
  *   together as `identifier_phone` + `identifier_phone_country_code`, and the submitted country is
- *   authoritative — the server prefixes the dial code from it rather than re-deriving one from the
+ *   authoritative: the server prefixes the dial code from it rather than re-deriving one from the
  *   digits or from geo-IP. Use this when rendering a country dropdown next to the number field.
  * - Without `phoneCountryCode`: the discrete contract. The number is submitted as `phone_number`
  *   and the server derives the country itself, matching the historical `pickCountryCode()` flow.
@@ -24,12 +25,13 @@ import type {
  * @param phoneField - The payload key holding the phone number for this screen (`phoneNumber` on
  * signup, `phone` on signup-id).
  * @returns A new payload with the phone options mapped onto the server's field names. Returned
- * unchanged when it carries no phone number.
+ * unchanged when it carries no phone number. The return type is wider than `SignupOptions` by
+ * design, since the mapped payload no longer carries the camelCase options that type describes.
  */
-export function normalizePhoneIdentifier<T extends PhoneIdentifierPayload>(
-  payload: T,
+export function normalizePhoneIdentifier(
+  payload: PhoneIdentifierPayload,
   phoneField: PhoneIdentifierField
-): PhoneIdentifierPayload {
+): NormalizedPhoneIdentifierPayload {
   const phoneNumber = payload[phoneField];
   const { phoneCountryCode, ...rest } = payload;
 

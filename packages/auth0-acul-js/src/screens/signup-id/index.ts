@@ -20,6 +20,7 @@ import type {
   FederatedSignupOptions,
 } from '../../../interfaces/screens/signup-id';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import type { NormalizedPhoneIdentifierPayload } from '../../../interfaces/utils/phone-identifier';
 import type { Identifier } from '../../../interfaces/utils/signup-identifiers';
 import type { UsernameValidationResult } from '../../../interfaces/utils/validate-username';
 
@@ -84,11 +85,12 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
 
     // The signup endpoint names the phone fields differently from the SDK options: `phone_number`
     // for a discrete submission, or `identifier_phone` + `identifier_phone_country_code` when a
-    // country was selected alongside the number.
+    // country was selected alongside the number. The remapped payload is no longer a
+    // `SignupOptions`, so the type argument widens to match what is actually submitted.
     const normalizedPayload = normalizePhoneIdentifier(payload, 'phone');
 
     const browserCapabilities = await getBrowserCapabilities()
-    await new FormHandler(options).submitData<SignupOptions>({
+    await new FormHandler(options).submitData<NormalizedPhoneIdentifierPayload>({
       ...normalizedPayload,
       ...browserCapabilities
     });
