@@ -87,6 +87,42 @@ describe('Signup', () => {
       expect(submittedPayload).not.toHaveProperty('phoneNumber');
     });
 
+    it('should submit the composite phone fields when a country code is selected', async () => {
+      const payload: SignupOptions = {
+        phoneNumber: '2015550123',
+        phoneCountryCode: 'US',
+        password: 'P@ssw0rd!',
+      };
+      await signup.signup(payload);
+
+      expect(FormHandler.prototype.submitData).toHaveBeenCalledWith({
+        identifier_phone: '2015550123',
+        identifier_phone_country_code: 'US',
+        password: 'P@ssw0rd!',
+      });
+
+      // The server treats the submitted country as authoritative, so `phone_number` must not be
+      // sent alongside it, and the camelCase options must not leak through.
+      const submittedPayload = (FormHandler.prototype.submitData as jest.Mock).mock.calls[0][0];
+      expect(submittedPayload).not.toHaveProperty('phone_number');
+      expect(submittedPayload).not.toHaveProperty('phoneNumber');
+      expect(submittedPayload).not.toHaveProperty('phoneCountryCode');
+    });
+
+    it('should drop a phoneCountryCode submitted without a phoneNumber', async () => {
+      const payload: SignupOptions = {
+        email: 'test@example.com',
+        phoneCountryCode: 'US',
+        password: 'P@ssw0rd!',
+      };
+      await signup.signup(payload);
+
+      expect(FormHandler.prototype.submitData).toHaveBeenCalledWith({
+        email: 'test@example.com',
+        password: 'P@ssw0rd!',
+      });
+    });
+
     it('should not remap an empty phoneNumber', async () => {
       const payload: SignupOptions = { email: 'test@example.com', phoneNumber: '', password: 'P@ssw0rd!' };
       await signup.signup(payload);

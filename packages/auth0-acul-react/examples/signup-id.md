@@ -581,3 +581,61 @@ const SignupIdScreenWithGoogleOneTap: React.FC = () => {
 
 export default SignupIdScreenWithGoogleOneTap;
 ```
+
+### Example using an inline country dropdown for phone signup
+
+`useCountryCodes` gives you the country list, so you can render the selector next to the phone number field instead of routing the user through `pickCountryCode()` and a separate screen. Pass the selected `code` as `phoneCountryCode` alongside `phone`.
+
+The submitted country is authoritative: the server prefixes its dial code rather than inferring a country from the digits or from geo-IP. So `phone` should be the national number *without* a dial code. Omitting `phoneCountryCode` keeps the previous behaviour, where the server derives the country itself.
+
+```tsx
+import React, { useState } from 'react';
+import {
+  useCountryCodes,
+  signup as signupMethod,
+} from '@auth0/auth0-acul-react/signup-id';
+
+const PhoneSignupId: React.FC = () => {
+  const countryCodes = useCountryCodes();
+
+  const [phone, setPhone] = useState('');
+  // `recommended` is the server's suggested default; fall back to the first available country.
+  const [phoneCountryCode, setPhoneCountryCode] = useState(
+    countryCodes?.recommended ?? countryCodes?.available?.[0]?.code ?? ''
+  );
+
+  const handleSignup = () => {
+    signupMethod({
+      phone, // national number, e.g. "2015550123"
+      phoneCountryCode, // ISO 3166-1 alpha-2, e.g. "US"
+    });
+  };
+
+  return (
+    <div>
+      <select value={phoneCountryCode} onChange={(e) => setPhoneCountryCode(e.target.value)}>
+        {countryCodes?.available?.map(({ code, label, dialCode }) => (
+          <option key={code} value={code}>
+            {label} ({dialCode})
+          </option>
+        ))}
+      </select>
+
+      <input
+        type="tel"
+        value={phone}
+        onChange={(e) => setPhone(e.target.value)}
+        placeholder="Enter your phone number"
+      />
+
+      <button onClick={handleSignup}>Continue</button>
+    </div>
+  );
+};
+
+export default PhoneSignupId;
+```
+
+`phoneCountryCode` is an extra field on the phone identifier, not an identifier of its own. `phone` still has to be present to satisfy the screen's required identifiers.
+
+`countryCodes` is `null` when the server does not provide the list. In that case render your own phone input and submit `phone` on its own, or keep using `pickCountryCode()`.

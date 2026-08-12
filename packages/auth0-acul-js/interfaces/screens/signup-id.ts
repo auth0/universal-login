@@ -48,6 +48,18 @@ export interface SignupOptions {
   email?: string;
   username?: string;
   phone?: string;
+  /**
+   * The ISO 3166-1 alpha-2 country the user selected for `phone` (for example `'US'`).
+   *
+   * Supply it when your screen renders a country dropdown next to the phone number field, using a
+   * `code` from `countryCodes.available`. The submitted country is then authoritative: the server
+   * prefixes its dial code rather than inferring a country from the digits or from geo-IP, so
+   * `phone` should be the national number without a dial code.
+   *
+   * Omit it to keep the existing behaviour, where the server derives the country itself and
+   * `pickCountryCode()` changes the selection on a separate screen.
+   */
+  phoneCountryCode?: string;
   captcha?: string;
   [key: string]: string | number | boolean | undefined;
 }
