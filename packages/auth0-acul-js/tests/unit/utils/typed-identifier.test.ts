@@ -51,10 +51,9 @@ describe('normalizeTypedIdentifier', () => {
         'identifier_type',
         'username'
       );
-      expect(normalizeTypedIdentifier({ username: '123', identifierType: 'phone' })).toHaveProperty(
-        'identifier_type',
-        'phone'
-      );
+      expect(
+        normalizeTypedIdentifier({ username: '123', identifierType: 'phone', phoneCountryCode: 'US' })
+      ).toHaveProperty('identifier_type', 'phone');
     });
 
     it('keeps username so an unflagged tenant falls back to the legacy contract', () => {
@@ -71,24 +70,33 @@ describe('normalizeTypedIdentifier', () => {
       expect(result).not.toHaveProperty('identifier_phone_country_code');
     });
 
-    it('omits the country code for a phone submitted without one', () => {
+    // A typed phone submission suppresses the server's own country-code prefixing, and the typed
+    // path prefixes nothing when the country is missing, so submitting one would send a national
+    // number with no dial code. The legacy contract is the only one that still resolves a country.
+    it('degrades a phone submitted without a country code to the legacy contract', () => {
       const result = normalizeTypedIdentifier({ username: '+12015550123', identifierType: 'phone' });
 
-      expect(result).toEqual({
-        username: '+12015550123',
-        identifier_type: 'phone',
-        identifier_phone: '+12015550123',
-      });
+      expect(result).toEqual({ username: '+12015550123' });
     });
 
-    it('omits a blank country code, so the server derives the country itself', () => {
+    it('degrades a phone submitted with a blank country code to the legacy contract', () => {
       const result = normalizeTypedIdentifier({
         username: '2015550123',
         identifierType: 'phone',
         phoneCountryCode: '   ',
       });
 
-      expect(result).not.toHaveProperty('identifier_phone_country_code');
+      expect(result).toEqual({ username: '2015550123' });
+    });
+
+    it('keeps the other payload fields when a phone degrades to the legacy contract', () => {
+      const result = normalizeTypedIdentifier({
+        username: '+12015550123',
+        identifierType: 'phone',
+        password: 'P@ssw0rd!',
+      });
+
+      expect(result).toEqual({ username: '+12015550123', password: 'P@ssw0rd!' });
     });
 
     it('drops a country code supplied with a non-phone type, as the server does not read it', () => {

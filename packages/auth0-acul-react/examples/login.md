@@ -400,7 +400,7 @@ Pass it when your screen lets the user pick the identifier — tabs, a dropdown,
 
 The value always goes in `username`, whatever type it represents — `identifierType` only says how to read it. Omit `identifierType` to keep the existing behaviour, where `username` is submitted on its own and the server infers what it is.
 
-For a phone identifier, also pass the selected country as `phoneCountryCode`. `useCountryCodes` gives you the list. The submitted country is authoritative: the server prefixes its dial code rather than inferring a country from the digits or from geo-IP, so `username` should be the national number *without* a dial code. Omitting `phoneCountryCode` lets the server derive the country itself.
+For a phone identifier, also pass the selected country as `phoneCountryCode` — required with `identifierType: 'phone'`. `useCountryCodes` gives you the list. The server prefixes that country's dial code, so `username` should be the national number *without* one. Leave it off and the submission falls back to the untyped contract, where `username` must carry its own dial code: a typed phone submission suppresses the server's own country lookup, including any `pickCountryCode()` selection.
 
 ```tsx
 import React, { useState } from 'react';
@@ -432,8 +432,8 @@ const TypedLogin: React.FC = () => {
       username, // national number when identifierType is 'phone', e.g. "2015550123"
       password,
       identifierType,
-      // Only read for a phone identifier; harmless to leave off otherwise.
-      ...(identifierType === 'phone' && phoneCountryCode ? { phoneCountryCode } : {}),
+      // Required for a phone identifier; ignored for the other types.
+      ...(identifierType === 'phone' ? { phoneCountryCode } : {}),
     });
   };
 

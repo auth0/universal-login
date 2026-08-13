@@ -15,7 +15,7 @@ export interface TypedIdentifierPayload {
   /** The type `username` holds. Its presence selects the typed contract. */
   identifierType?: IdentifierType;
 
-  /** The ISO 3166-1 alpha-2 country for a phone identifier. Read only when the type is `phone`. */
+  /** The ISO 3166-1 alpha-2 country for a phone identifier. Required when the type is `phone`. */
   phoneCountryCode?: string;
 
   [key: string]: string | number | boolean | undefined;

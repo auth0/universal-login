@@ -84,24 +84,21 @@ export interface LoginOptions {
    *
    * Supply it when your screen lets the user choose the identifier rather than typing an arbitrary
    * value — typically driven by `screen.data.activeIdentifierType` and `transaction.allowedIdentifiers`.
-   * The submitted type is then authoritative: the server reads the value as that type instead of
-   * inferring one from its shape, so an all-digits username is not mistaken for a phone number.
+   * The server then reads the value as that type instead of inferring one from its shape, though on
+   * this screen the shape still decides which authentication method the user is routed to.
    *
    * Omit it to keep the existing behaviour, where `username` is submitted on its own and the server
    * infers what it is.
    */
   identifierType?: IdentifierType;
   /**
-   * The ISO 3166-1 alpha-2 country the user selected for a phone identifier (for example `'US'`).
+   * The ISO 3166-1 alpha-2 country for a phone identifier (for example `'US'`), from a `code` in
+   * `countryCodes.available`. Required with `identifierType: 'phone'`; ignored for other types.
    *
-   * Read only when `identifierType` is `'phone'`. Supply it when your screen renders a country
-   * dropdown next to the phone number field, using a `code` from `countryCodes.available`. The
-   * submitted country is then authoritative: the server prefixes its dial code rather than
-   * inferring a country from the digits or from geo-IP, so `username` should be the national number
-   * without a dial code.
-   *
-   * Omit it to have the server derive the country itself, with `pickCountryCode()` changing the
-   * selection on a separate screen.
+   * The server prefixes this country's dial code, so `username` should be the national number
+   * without one. Omit it and the submission falls back to the untyped contract, where `username`
+   * must carry its own dial code: a typed phone submission suppresses the server's own country
+   * lookup, including any `pickCountryCode()` selection.
    */
   phoneCountryCode?: string;
   [key: string]: string | number | boolean | undefined;

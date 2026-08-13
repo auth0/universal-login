@@ -262,7 +262,7 @@ await loginManager.login({
 });
 ```
 
-For a phone identifier, also pass the selected country as `phoneCountryCode`. The submitted country is authoritative: the server prefixes its dial code rather than inferring a country from the digits or from geo-IP, so `username` should be the national number *without* a dial code. Omitting `phoneCountryCode` lets the server derive the country itself.
+For a phone identifier, also pass the selected country as `phoneCountryCode` — required with `identifierType: 'phone'`. The server prefixes that country's dial code, so `username` should be the national number *without* one. Leave it off and the submission falls back to the untyped contract, where `username` must carry its own dial code: a typed phone submission suppresses the server's own country lookup, including any `pickCountryCode()` selection.
 
 ```tsx
 import React, { useMemo, useState } from 'react';
@@ -293,8 +293,8 @@ const TypedLoginScreen: React.FC = () => {
       username, // national number when identifierType is 'phone', e.g. "2015550123"
       password,
       identifierType,
-      // Only read for a phone identifier; harmless to leave off otherwise.
-      ...(identifierType === 'phone' && phoneCountryCode ? { phoneCountryCode } : {})
+      // Required for a phone identifier; ignored for the other types.
+      ...(identifierType === 'phone' ? { phoneCountryCode } : {})
     });
   };
 

@@ -558,7 +558,7 @@ const TypedLoginId: React.FC = () => {
 export default TypedLoginId;
 ```
 
-For a phone identifier, also pass the selected country as `phoneCountryCode`. `useCountryCodes` gives you the list, so you can render the selector inline instead of routing the user through `pickCountryCode()` and a separate screen. The submitted country is authoritative: the server prefixes its dial code rather than inferring a country from the digits or from geo-IP, so `username` should be the national number *without* a dial code.
+For a phone identifier, also pass the selected country as `phoneCountryCode` — required with `identifierType: 'phone'`. `useCountryCodes` gives you the list, so you can render the selector inline instead of routing the user through `pickCountryCode()`, whose selection a typed submission ignores. The server prefixes that country's dial code, so `username` should be the national number *without* one.
 
 ```tsx
 import React, { useState } from 'react';

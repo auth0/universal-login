@@ -7,8 +7,10 @@ import type {
 import type { IdentifierType } from '../constants/identifiers';
 
 /**
- * The submitted field that carries the identifier, per type. Phone is absent because it also needs
- * the country code, so it is handled separately.
+ * The submitted field that carries the identifier, per type. Mirrors the server's own
+ * `ACTIVE_FIELD_BY_TYPE`, which covers all three types — that is the field the server validates as
+ * the identifier and reads the value from. Phone is submitted in its own branch below because it
+ * carries an additional country code, which the server reads separately from this field.
  */
 const FIELD_BY_IDENTIFIER_TYPE = {
   [Identifiers.EMAIL]: TypedFields.EMAIL,
@@ -26,30 +28,20 @@ function isIdentifierType(value: unknown): value is IdentifierType {
 /**
  * Reshapes a login payload's identifier options into the fields the login endpoint expects.
  *
- * Which contract applies is decided by whether the caller supplies `identifierType`:
+ * With `identifierType`, the value in `username` is also submitted as `identifier_email`,
+ * `identifier_username` or `identifier_phone` alongside `identifier_type`, and the server reads it as
+ * that type rather than guessing from its shape. `phone` additionally needs a `phoneCountryCode`,
+ * whose dial code the server prefixes, so `username` should be the national number without one.
  *
- * - With `identifierType`: the typed contract. The value in `username` is submitted under the field
- *   for that type (`identifier_email`, `identifier_username` or `identifier_phone`) alongside
- *   `identifier_type`, and the server stops inferring a type from the value's shape. For `phone`,
- *   a `phoneCountryCode` is submitted as `identifier_phone_country_code` and the server prefixes
- *   that country's dial code, so `username` should be the national number without one.
- * - Without `identifierType`: the legacy contract. `username` is submitted on its own and the
- *   server infers what it is.
- *
- * `username` is deliberately left on a typed payload rather than moved. The server overwrites it
- * from the typed field when typed processing is enabled, so it is redundant there — but when a
- * tenant has not enabled typed processing the server ignores the typed fields entirely, and a
- * payload without `username` would then be rejected for a missing identifier. Keeping it makes an
- * unflagged tenant degrade to the legacy contract instead of failing.
- *
- * An unrecognized `identifierType` degrades to the legacy contract, matching how
- * `normalizePhoneIdentifier` treats a blank country code. The camelCase options are always removed
- * so a payload never carries both spellings.
+ * Everything else degrades to the legacy contract, where `username` is submitted alone and the server
+ * infers the type: no `identifierType`, an unrecognized one, or a `phone` with no country code, which
+ * the typed path would otherwise leave unprefixed. `username` is kept on typed payloads for the same
+ * reason — a tenant without typed processing enabled ignores the typed fields. Fields already passed
+ * under the server's own names are forwarded untouched; the camelCase options are always removed.
  *
  * @param payload - The login payload as supplied by the caller.
- * @returns A new payload with the identifier options mapped onto the server's field names. The
- * return type is wider than `LoginOptions` by design, since the mapped payload no longer carries
- * the camelCase options that type describes.
+ * @returns A new payload with the identifier options mapped onto the server's field names. Wider
+ * than `LoginOptions`, which no longer describes the mapped result.
  */
 export function normalizeTypedIdentifier(
   payload: TypedIdentifierPayload
@@ -65,13 +57,16 @@ export function normalizeTypedIdentifier(
   if (identifierType === Identifiers.PHONE) {
     const country = typeof phoneCountryCode === 'string' ? phoneCountryCode.trim() : '';
 
+    // `identifier_type` suppresses the server's own country-code prefixing, and the typed path
+    // prefixes nothing when the country is blank or unrecognized — the number would be submitted
+    // with no dial code and match no user. Fall back to the contract that still derives a country.
+    if (!country) return rest;
+
     return {
       ...rest,
       [TypedFields.TYPE]: identifierType,
-      [TypedFields.PHONE]: identifier,
-      // Omitted when blank: on the typed contract an empty country code would have the server
-      // prefix nothing, whereas omitting it lets the server derive the country itself.
-      ...(country ? { [TypedFields.PHONE_COUNTRY_CODE]: country } : {}),
+      [FIELD_BY_IDENTIFIER_TYPE[identifierType]]: identifier,
+      [TypedFields.PHONE_COUNTRY_CODE]: country,
     };
   }
 

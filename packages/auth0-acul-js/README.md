@@ -248,7 +248,7 @@ This section documents the helper methods and properties exposed by the screen i
 
 - `client`- Application client metadata and settings.
 
-- `countryCodes`- Available phone country codes (`available`, each with `code`, `label`, `dialCode`) and the recommended default (`recommended`); `null` when not provided. On the signup and login screens, pass the selected `code` back as `phoneCountryCode` alongside the phone number to submit both from one screen instead of routing through `pickCountryCode()`. On `login` and `login-id` it is read when `identifierType` is `'phone'`.
+- `countryCodes`- Available phone country codes (`available`, each with `code`, `label`, `dialCode`) and the recommended default (`recommended`); `null` when not provided. On the signup and login screens, pass the selected `code` back as `phoneCountryCode` alongside the phone number to submit both from one screen instead of routing through `pickCountryCode()`. On `login` and `login-id` it is required with `identifierType: 'phone'`.
 
 - `organization`- Organization context when applicable.
 
