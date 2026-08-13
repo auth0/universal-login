@@ -534,7 +534,7 @@ const TypedLoginId: React.FC = () => {
 
   return (
     <div>
-      {allowed.map((type) => (
+      {allowed?.map((type) => (
         <button
           key={type}
           onClick={() =>

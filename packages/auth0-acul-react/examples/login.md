@@ -416,7 +416,7 @@ const TypedLogin: React.FC = () => {
 
   // Start on the identifier the server resolved, falling back to the first the tenant allows.
   const [identifierType, setIdentifierType] = useState(
-    screen.data?.activeIdentifierType ?? allowed[0] ?? 'email'
+    screen.data?.activeIdentifierType ?? allowed?.[0] ?? 'email'
   );
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
