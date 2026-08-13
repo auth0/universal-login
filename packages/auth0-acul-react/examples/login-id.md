@@ -517,3 +517,95 @@ const LoginIdScreenWithActiveIdentifier: React.FC = () => {
 
 export default LoginIdScreenWithActiveIdentifier;
 ```
+
+### Example telling the server which identifier the user chose
+
+`activeIdentifierType` above tells you which input to *render*. `identifierType` is the other half: it tells the server which input the user actually *submitted*.
+
+Pass it when your screen lets the user pick the identifier — tabs, a dropdown, or a single input resolved from `useLoginIdentifiers()`. The submitted type is then authoritative: the server reads the value as that type instead of inferring one from its shape, so an all-digits username is not mistaken for a phone number.
+
+The value always goes in `username`, whatever type it represents — `identifierType` only says how to read it. Omit `identifierType` to keep the existing behaviour, where `username` is submitted on its own and the server infers what it is.
+
+```tsx
+import React, { useRef } from 'react';
+import { useLoginIdentifiers, login } from '@auth0/auth0-acul-react/login-id';
+
+const TypedLoginId: React.FC = () => {
+  const allowed = useLoginIdentifiers();
+  const identifierRef = useRef<HTMLInputElement>(null);
+
+  return (
+    <div>
+      {allowed.map((type) => (
+        <button
+          key={type}
+          onClick={() =>
+            login({
+              username: identifierRef.current?.value ?? '',
+              identifierType: type,
+            })
+          }
+        >
+          Continue with {type}
+        </button>
+      ))}
+
+      <input id="identifier" ref={identifierRef} type="text" />
+    </div>
+  );
+};
+
+export default TypedLoginId;
+```
+
+For a phone identifier, also pass the selected country as `phoneCountryCode`. `useCountryCodes` gives you the list, so you can render the selector inline instead of routing the user through `pickCountryCode()` and a separate screen. The submitted country is authoritative: the server prefixes its dial code rather than inferring a country from the digits or from geo-IP, so `username` should be the national number *without* a dial code.
+
+```tsx
+import React, { useState } from 'react';
+import { useCountryCodes, login } from '@auth0/auth0-acul-react/login-id';
+
+const PhoneLoginId: React.FC = () => {
+  const countryCodes = useCountryCodes();
+
+  const [username, setUsername] = useState('');
+  // `recommended` is the server's suggested default; fall back to the first available country.
+  const [phoneCountryCode, setPhoneCountryCode] = useState(
+    countryCodes?.recommended ?? countryCodes?.available?.[0]?.code ?? ''
+  );
+
+  const handleContinue = () => {
+    login({
+      username, // national number, e.g. "2015550123"
+      identifierType: 'phone',
+      phoneCountryCode, // ISO 3166-1 alpha-2, e.g. "US"
+    });
+  };
+
+  return (
+    <div>
+      <select value={phoneCountryCode} onChange={(e) => setPhoneCountryCode(e.target.value)}>
+        {countryCodes?.available?.map(({ code, label, dialCode }) => (
+          <option key={code} value={code}>
+            {label} ({dialCode})
+          </option>
+        ))}
+      </select>
+
+      <input
+        type="tel"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        placeholder="Enter your phone number"
+      />
+
+      <button onClick={handleContinue}>Continue</button>
+    </div>
+  );
+};
+
+export default PhoneLoginId;
+```
+
+Submit only a type the tenant actually allows — one of `useLoginIdentifiers()`. The server rejects a type that is not enabled for the connection, and the values line up exactly, so an entry from that array can be passed straight through as `identifierType`.
+
+`countryCodes` is `null` when the server does not provide the list. In that case render your own phone input and submit `username` on its own, or keep using `pickCountryCode()`.

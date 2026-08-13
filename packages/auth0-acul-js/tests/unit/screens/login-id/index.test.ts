@@ -79,6 +79,61 @@ describe('LoginId', () => {
         'allow-passkeys': expect.any(Boolean) as unknown,
       });
     });
+
+    it('maps identifierType onto the typed fields the login endpoint reads', async () => {
+      const payload: LoginOptions = { username: 'test@example.com', identifierType: 'email' };
+
+      await loginId.login(payload);
+
+      expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(
+        expect.objectContaining({
+          username: 'test@example.com',
+          identifier_type: 'email',
+          identifier_email: 'test@example.com',
+        })
+      );
+    });
+
+    it('maps a phone identifier and country onto the typed fields', async () => {
+      const payload: LoginOptions = {
+        username: '2015550123',
+        identifierType: 'phone',
+        phoneCountryCode: 'US',
+      };
+
+      await loginId.login(payload);
+
+      expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(
+        expect.objectContaining({
+          username: '2015550123',
+          identifier_type: 'phone',
+          identifier_phone: '2015550123',
+          identifier_phone_country_code: 'US',
+        })
+      );
+    });
+
+    it('does not submit the camelCase options', async () => {
+      await loginId.login({ username: '2015550123', identifierType: 'phone', phoneCountryCode: 'US' });
+
+      expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(
+        expect.not.objectContaining({
+          identifierType: expect.anything() as unknown,
+          phoneCountryCode: expect.anything() as unknown,
+        })
+      );
+    });
+
+    it('submits no typed field when identifierType is omitted', async () => {
+      await loginId.login({ username: 'testuser' });
+
+      expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(
+        expect.not.objectContaining({
+          identifier_type: expect.anything() as unknown,
+          identifier_username: expect.anything() as unknown,
+        })
+      );
+    });
   });
 
   describe('federatedLogin', () => {

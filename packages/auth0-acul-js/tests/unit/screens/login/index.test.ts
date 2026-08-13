@@ -76,6 +76,64 @@ describe('Login', () => {
       };
       await expect(login.login(payload)).rejects.toThrow('Invalid password');
     });
+
+    it('should map identifierType onto the typed fields the login endpoint reads', async () => {
+      const payload: LoginOptions = {
+        username: 'test@example.com',
+        password: 'testPassword',
+        identifierType: 'email',
+      };
+      await login.login(payload);
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith({
+        username: 'test@example.com',
+        password: 'testPassword',
+        identifier_type: 'email',
+        identifier_email: 'test@example.com',
+        action: FormActions.DEFAULT,
+      });
+    });
+
+    it('should map a phone identifier and country onto the typed fields', async () => {
+      const payload: LoginOptions = {
+        username: '2015550123',
+        password: 'testPassword',
+        identifierType: 'phone',
+        phoneCountryCode: 'US',
+      };
+      await login.login(payload);
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith({
+        username: '2015550123',
+        password: 'testPassword',
+        identifier_type: 'phone',
+        identifier_phone: '2015550123',
+        identifier_phone_country_code: 'US',
+        action: FormActions.DEFAULT,
+      });
+    });
+
+    it('should not submit the camelCase options', async () => {
+      await login.login({
+        username: '2015550123',
+        password: 'testPassword',
+        identifierType: 'phone',
+        phoneCountryCode: 'US',
+      });
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith(
+        expect.not.objectContaining({
+          identifierType: expect.anything() as unknown,
+          phoneCountryCode: expect.anything() as unknown,
+        })
+      );
+    });
+
+    it('should submit no typed field when identifierType is omitted', async () => {
+      await login.login({ username: 'testUser', password: 'testPassword' });
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith({
+        username: 'testUser',
+        password: 'testPassword',
+        action: FormActions.DEFAULT,
+      });
+    });
   });
 
   describe('Social Login method', () => {

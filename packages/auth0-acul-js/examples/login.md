@@ -55,7 +55,7 @@ const handleSocialLogin = async (connection: string) => {
 ## React Component Example with TailwindCSS
 
 ```tsx
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import Login from '@auth0/auth0-acul-js/login';
 
 const LoginScreen: React.FC = () => {
@@ -65,7 +65,7 @@ const LoginScreen: React.FC = () => {
   
   const loginManager = new Login();
   const { transaction } = loginManager;
-  const activeIdentifiers = useMemo(() => loginManager.getActiveIdentifiers(), []);
+  const activeIdentifiers = useMemo(() => loginManager.getLoginIdentifiers(), []);
 
   const getIdentifierLabel = () => {
     if (activeIdentifiers?.length === 1) return `Enter your ${activeIdentifiers[0]}`;
@@ -240,3 +240,106 @@ if (activeIdentifier === 'phone') {
   // render the email / username input
 }
 ```
+
+## Telling the server which identifier the user chose
+
+`activeIdentifierType` above tells you which input to *render*. `identifierType` is the other half: it tells the server which input the user actually *submitted*.
+
+Pass it when your screen lets the user pick the identifier — tabs, a dropdown, or a single input resolved from `getLoginIdentifiers()`. The submitted type is then authoritative: the server reads the value as that type instead of inferring one from its shape, so an all-digits username is not mistaken for a phone number and an address-shaped username is not mistaken for an email.
+
+The value always goes in `username`, whatever type it represents — `identifierType` only says how to read it. Omit `identifierType` to keep the existing behaviour, where `username` is submitted on its own and the server infers what it is.
+
+```typescript
+import Login from '@auth0/auth0-acul-js/login';
+import type { IdentifierType } from '@auth0/auth0-acul-js/login';
+
+const loginManager = new Login();
+
+await loginManager.login({
+  username: 'someone',      // the value the user typed
+  password: 'myPassword123',
+  identifierType: 'username' // how the server should read it
+});
+```
+
+For a phone identifier, also pass the selected country as `phoneCountryCode`. The submitted country is authoritative: the server prefixes its dial code rather than inferring a country from the digits or from geo-IP, so `username` should be the national number *without* a dial code. Omitting `phoneCountryCode` lets the server derive the country itself.
+
+```tsx
+import React, { useMemo, useState } from 'react';
+import Login from '@auth0/auth0-acul-js/login';
+import type { IdentifierType } from '@auth0/auth0-acul-js/login';
+
+const TypedLoginScreen: React.FC = () => {
+  const [loginManager] = useState(() => new Login());
+  const { countryCodes } = loginManager;
+
+  const allowed = useMemo(() => loginManager.getLoginIdentifiers() ?? ['email'], [loginManager]);
+
+  // Start on the identifier the server resolved, falling back to the first the tenant allows.
+  const [identifierType, setIdentifierType] = useState<IdentifierType>(
+    loginManager.screen.data?.activeIdentifierType ?? allowed[0]
+  );
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  // `recommended` is the server's suggested default; fall back to the first available country.
+  const [phoneCountryCode, setPhoneCountryCode] = useState(
+    countryCodes?.recommended ?? countryCodes?.available?.[0]?.code ?? ''
+  );
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    await loginManager.login({
+      username, // national number when identifierType is 'phone', e.g. "2015550123"
+      password,
+      identifierType,
+      // Only read for a phone identifier; harmless to leave off otherwise.
+      ...(identifierType === 'phone' && phoneCountryCode ? { phoneCountryCode } : {})
+    });
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      {/* One tab per identifier the tenant allows */}
+      {allowed.map((type) => (
+        <button key={type} type="button" onClick={() => setIdentifierType(type)}>
+          {type}
+        </button>
+      ))}
+
+      {identifierType === 'phone' && countryCodes?.available && (
+        <select value={phoneCountryCode} onChange={(e) => setPhoneCountryCode(e.target.value)}>
+          {countryCodes.available.map(({ code, label, dialCode }) => (
+            <option key={code} value={code}>
+              {label} ({dialCode})
+            </option>
+          ))}
+        </select>
+      )}
+
+      <input
+        id="username"
+        type={identifierType === 'phone' ? 'tel' : 'text'}
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        placeholder={`Enter your ${identifierType}`}
+      />
+
+      <input
+        id="password"
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+
+      <button type="submit">Sign in</button>
+    </form>
+  );
+};
+
+export default TypedLoginScreen;
+```
+
+Submit only a type the tenant actually allows — one of `getLoginIdentifiers()`. The server rejects a type that is not enabled for the connection, and the values line up exactly, so an entry from that array can be passed straight through as `identifierType`.
+
+`countryCodes` is `null` when the server does not provide the list. In that case render your own phone input and submit `username` on its own, or keep using `pickCountryCode()`.

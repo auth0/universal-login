@@ -2,6 +2,7 @@ import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 import { getLoginIdentifiers as _getLoginIdentifiers } from '../../utils/login-identifiers';
+import { normalizeTypedIdentifier } from '../../utils/typed-identifier';
 
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
@@ -17,6 +18,7 @@ import type {
   FederatedLoginOptions,
 } from '../../../interfaces/screens/login';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import type { NormalizedTypedIdentifierPayload } from '../../../interfaces/utils/typed-identifier';
 import type { IdentifierType } from 'interfaces/utils';
 
 /**
@@ -50,11 +52,37 @@ export default class Login extends BaseContext implements LoginMembers {
    *   password: "testPassword"
    * });
    * ```
+   *
+   * @example
+   * ```typescript
+   * // Typed login, where the screen knows which identifier the user chose. `identifierType` stops
+   * // the server inferring the type from the value's shape.
+   * loginManager.login({
+   *   username: "testUser",
+   *   identifierType: "username",
+   *   password: "testPassword"
+   * });
+   * ```
+   *
+   * @example
+   * ```typescript
+   * // Phone login with a country dropdown, using a code from `countryCodes.available`.
+   * loginManager.login({
+   *   username: "2015550123",
+   *   identifierType: "phone",
+   *   phoneCountryCode: "US",
+   *   password: "testPassword"
+   * });
+   * ```
    */
   async login(payload: LoginOptions): Promise<void> {
     const options: FormOptions = { state: this.transaction.state, telemetry: [Login.screenIdentifier, 'login'] };
-    await new FormHandler(options).submitData<LoginOptions>({
-      ...payload,
+    // The login endpoint names the typed identifier fields differently from the SDK options, and
+    // reads them only when `identifier_type` is present. Remap before submitting so a typed
+    // submission is not silently treated as a legacy one. The remapped payload is no longer a
+    // `LoginOptions`, so the type argument widens to match what is actually submitted.
+    await new FormHandler(options).submitData<NormalizedTypedIdentifierPayload>({
+      ...normalizeTypedIdentifier(payload),
       action: FormActions.DEFAULT
     });
   }
