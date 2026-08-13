@@ -1,12 +1,9 @@
 import type { IdentifierType } from '../../src/constants';
 
 /**
- * A login payload as supplied by the caller, before its identifier options are reshaped for
- * submission.
- *
- * Matches the index signature `LoginOptions` carries on both the login and login-id screens, so
- * either screen's options are assignable here without a cast. `username` is optional here but
- * required on both `LoginOptions`, which is the stricter side of the assignment.
+ * A login payload as supplied by the caller, before its identifier options are mapped for submission.
+ * Matches the index signature both screens' `LoginOptions` carry, so either is assignable without a
+ * cast.
  */
 export interface TypedIdentifierPayload {
   /** The identifier value, whatever type it represents. */
@@ -23,16 +20,10 @@ export interface TypedIdentifierPayload {
 
 /**
  * A login payload with its identifier options mapped onto the field names the login endpoint reads.
- *
- * Deliberately widened from `LoginOptions`: the mapped payload is no longer one, since the
- * camelCase options are gone and the wire fields have taken their place. The known login fields
- * that were not touched still ride along under the index signature.
+ * Deliberately wider than `LoginOptions`, which no longer describes the mapped result.
  */
 export interface NormalizedTypedIdentifierPayload extends TypedIdentifierPayload {
-  /**
-   * The type the submitted identifier represents. The server treats its presence as the signal to
-   * read the typed fields at all, so it is never omitted from a typed submission.
-   */
+  /** The submitted type. Its presence is the server's signal to read the typed fields at all. */
   identifier_type?: IdentifierType;
 
   /** The email address, submitted when the type is `email`. */
@@ -44,9 +35,6 @@ export interface NormalizedTypedIdentifierPayload extends TypedIdentifierPayload
   /** The phone number, submitted when the type is `phone`. */
   identifier_phone?: string;
 
-  /**
-   * The ISO 3166-1 alpha-2 country the server prefixes the dial code from. Paired with
-   * `identifier_phone`.
-   */
+  /** The ISO 3166-1 alpha-2 country whose dial code the server prefixes. Pairs with `identifier_phone`. */
   identifier_phone_country_code?: string;
 }

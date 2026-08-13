@@ -48,18 +48,13 @@ export interface ScreenMembersOnLoginId extends ScreenMembers {
   resetPasswordLink: string | null;
   publicKey: PasskeyRead['public_key'] | null;
   googleOneTapConfig: GoogleOneTapConfig | null;
-  /**
-   * Intersected with the inherited `data` record rather than replacing it, so reads of any
-   * other `screen.data` key keep compiling for existing consumers.
-   */
+  /** Intersected with the inherited `data`, so reads of other `screen.data` keys keep compiling. */
   data:
     | (NonNullable<ScreenMembers['data']> & {
         /**
-         * The identifier input the screen should pre-select, as resolved by the server.
-         *
-         * Absent when the server has not resolved one — do not treat absence as `'email'`;
-         * fall back to your own default instead. Mapped from the server's
-         * `active_identifier_type`, which is not surfaced.
+         * The identifier input to pre-select, resolved by the server and mapped from its
+         * `active_identifier_type`. Absent when none was resolved — supply your own default rather
+         * than assuming `'email'`.
          */
         activeIdentifierType?: IdentifierType;
       })
@@ -80,25 +75,19 @@ export interface LoginOptions {
   username: string;
   captcha?: string;
   /**
-   * Which identifier `username` holds (for example `'phone'`).
-   *
-   * Supply it when your screen lets the user choose the identifier rather than typing an arbitrary
-   * value — typically driven by `screen.data.activeIdentifierType` and `transaction.allowedIdentifiers`.
-   * The server then reads the value as that type instead of inferring one from its shape, though on
-   * this screen the shape still decides which authentication method the user is routed to.
-   *
-   * Omit it to keep the existing behaviour, where `username` is submitted on its own and the server
-   * infers what it is.
+   * Which identifier `username` holds (for example `'phone'`) — typically from
+   * `screen.data.activeIdentifierType` or `transaction.allowedIdentifiers`. The server reads the
+   * value as that type instead of inferring one from its shape, though on this screen the shape still
+   * decides which authentication method the user is routed to. Omit it and `username` is submitted on
+   * its own, as before, with the server inferring the type.
    */
   identifierType?: IdentifierType;
   /**
-   * The ISO 3166-1 alpha-2 country for a phone identifier (for example `'US'`), from a `code` in
-   * `countryCodes.available`. Required with `identifierType: 'phone'`; ignored for other types.
-   *
-   * The server prefixes this country's dial code, so `username` should be the national number
-   * without one. Omit it and the submission falls back to the untyped contract, where `username`
-   * must carry its own dial code: a typed phone submission suppresses the server's own country
-   * lookup, including any `pickCountryCode()` selection.
+   * ISO 3166-1 alpha-2 country for a phone identifier (for example `'US'`), from a `code` in
+   * `countryCodes.available`. Required with `identifierType: 'phone'`, ignored otherwise. Its dial
+   * code is prefixed server-side, so `username` should be the national number without one. Omitted,
+   * the submission degrades to the untyped contract, which prefixes a `pickCountryCode()` selection
+   * only on a phone-only connection.
    */
   phoneCountryCode?: string;
   [key: string]: string | number | boolean | undefined;

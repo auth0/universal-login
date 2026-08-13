@@ -15,19 +15,12 @@ export const Fields = {
 }
 
 /**
- * Form field names for the typed identifier submission contract, where the identifier is submitted
- * together with the type it represents instead of the server inferring the type from the value.
+ * Server field names for the typed identifier contract, where the identifier is submitted with the
+ * type it represents instead of the server inferring it from the value. `TYPE` is the signal: the
+ * server reads the other fields only when it is present.
  *
- * The `identifier_` prefix is the server-side contract and avoids colliding with the discrete
- * `email` / `username` / `phone_number` fields.
- *
- * `TYPE` is the version signal: the server only reads the other fields when it is present, so a
- * typed submission must always carry it. `PHONE_COUNTRY_CODE` additionally selects the composite
- * phone contract, where the country is submitted alongside the national number instead of being
- * picked on a separate screen.
- *
- * The signup and signup-id screens read only `PHONE` and `PHONE_COUNTRY_CODE`; they ignore `TYPE`,
- * `EMAIL` and `USERNAME`. All five apply on login and login-id.
+ * All five apply on login and login-id; signup and signup-id read only `PHONE` and
+ * `PHONE_COUNTRY_CODE`.
  */
 export const TypedFields = {
   TYPE: 'identifier_type' as const,

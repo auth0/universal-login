@@ -82,10 +82,9 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
     };
 
     const browserCapabilities = await getBrowserCapabilities();
-    // The login endpoint names the typed identifier fields differently from the SDK options, and
-    // reads them only when `identifier_type` is present. Remap before submitting so a typed
-    // submission is not silently treated as a legacy one. The remapped payload is no longer a
-    // `LoginOptions`, so the type argument widens to match what is actually submitted.
+    // The endpoint names the typed identifier fields differently and reads them only when
+    // `identifier_type` is present, so remap before submitting. The result is no longer a
+    // `LoginOptions`, hence the wider type argument.
     await new FormHandler(options).submitData<NormalizedTypedIdentifierPayload>({
       ...normalizeTypedIdentifier(payload),
       ...browserCapabilities

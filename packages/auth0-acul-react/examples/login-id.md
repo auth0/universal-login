@@ -520,11 +520,9 @@ export default LoginIdScreenWithActiveIdentifier;
 
 ### Example telling the server which identifier the user chose
 
-`activeIdentifierType` above tells you which input to *render*. `identifierType` is the other half: it tells the server which input the user actually *submitted*.
+`activeIdentifierType` tells you which input to *render*; `identifierType` tells the server which one the user *submitted*. Pass it when your screen lets the user pick the identifier — tabs, a dropdown, or an input resolved from `useLoginIdentifiers()` — and the server reads the value as that type instead of inferring one from its shape, though on this screen the shape still decides which authentication method the user is routed to.
 
-Pass it when your screen lets the user pick the identifier — tabs, a dropdown, or a single input resolved from `useLoginIdentifiers()`. The submitted type is then authoritative: the server reads the value as that type instead of inferring one from its shape, so an all-digits username is not mistaken for a phone number.
-
-The value always goes in `username`, whatever type it represents — `identifierType` only says how to read it. Omit `identifierType` to keep the existing behaviour, where `username` is submitted on its own and the server infers what it is.
+The value always goes in `username`, whatever the type. Omit `identifierType` and `username` is submitted on its own, as before, with the server inferring the type.
 
 ```tsx
 import React, { useRef } from 'react';
@@ -558,7 +556,7 @@ const TypedLoginId: React.FC = () => {
 export default TypedLoginId;
 ```
 
-For a phone identifier, also pass the selected country as `phoneCountryCode` — required with `identifierType: 'phone'`. `useCountryCodes` gives you the list, so you can render the selector inline instead of routing the user through `pickCountryCode()`, whose selection a typed submission ignores. The server prefixes that country's dial code, so `username` should be the national number *without* one.
+For a phone identifier, also pass the selected country as `phoneCountryCode` — required with `identifierType: 'phone'`; `useCountryCodes` gives you the list, so you can render the selector inline instead of using `pickCountryCode()`, whose selection a typed submission ignores. Its dial code is prefixed server-side, so `username` should be the national number *without* one.
 
 ```tsx
 import React, { useState } from 'react';
