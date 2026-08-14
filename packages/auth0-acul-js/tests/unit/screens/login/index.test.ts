@@ -77,6 +77,48 @@ describe('Login', () => {
       await expect(login.login(payload)).rejects.toThrow('Invalid password');
     });
 
+    it('should map a discrete email onto the typed fields the login endpoint reads', async () => {
+      await login.login({ email: 'test@example.com', password: 'testPassword' });
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith({
+        username: 'test@example.com',
+        password: 'testPassword',
+        identifier_type: 'email',
+        identifier_email: 'test@example.com',
+        action: FormActions.DEFAULT,
+      });
+    });
+
+    it('should map a discrete phone and country onto the typed fields', async () => {
+      await login.login({ phone: '2015550123', phoneCountryCode: 'US', password: 'testPassword' });
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith({
+        username: '2015550123',
+        password: 'testPassword',
+        identifier_type: 'phone',
+        identifier_phone: '2015550123',
+        identifier_phone_country_code: 'US',
+        action: FormActions.DEFAULT,
+      });
+    });
+
+    // Login submits a single identifier, so the extra one is dropped by precedence rather than
+    // rejected: a screen handler does not catch a rejection, and the previous contract submitted this
+    // payload.
+    it('should submit the first identifier by precedence when more than one is supplied', async () => {
+      const warn = jest.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+      await login.login({ email: 'test@example.com', username: 'someone', password: 'testPassword' });
+
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith({
+        username: 'test@example.com',
+        password: 'testPassword',
+        identifier_type: 'email',
+        identifier_email: 'test@example.com',
+        action: FormActions.DEFAULT,
+      });
+      expect(warn).toHaveBeenCalled();
+      warn.mockRestore();
+    });
+
     it('should map identifierType onto the typed fields the login endpoint reads', async () => {
       const payload: LoginOptions = {
         username: 'test@example.com',

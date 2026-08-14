@@ -80,6 +80,61 @@ describe('LoginId', () => {
       });
     });
 
+    it('maps a discrete email onto the typed fields the login endpoint reads', async () => {
+      await loginId.login({ email: 'test@example.com' });
+
+      expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(
+        expect.objectContaining({
+          username: 'test@example.com',
+          identifier_type: 'email',
+          identifier_email: 'test@example.com',
+        })
+      );
+    });
+
+    it('maps a discrete phone and country onto the typed fields', async () => {
+      await loginId.login({ phone: '2015550123', phoneCountryCode: 'US' });
+
+      expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(
+        expect.objectContaining({
+          username: '2015550123',
+          identifier_type: 'phone',
+          identifier_phone: '2015550123',
+          identifier_phone_country_code: 'US',
+        })
+      );
+    });
+
+    it('does not submit the discrete option names', async () => {
+      await loginId.login({ email: 'test@example.com' });
+
+      expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(
+        expect.not.objectContaining({
+          email: expect.anything() as unknown,
+          phone: expect.anything() as unknown,
+        })
+      );
+    });
+
+    // Login submits a single identifier, so the extra one is dropped by precedence rather than
+    // rejected: a screen handler does not catch a rejection, and the previous contract submitted this
+    // payload.
+    it('submits the first identifier by precedence when more than one is supplied', async () => {
+      const warn = jest.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+      await loginId.login({ email: 'test@example.com', username: 'someone' });
+
+      expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(
+        expect.objectContaining({
+          username: 'test@example.com',
+          identifier_type: 'email',
+          identifier_email: 'test@example.com',
+        })
+      );
+      expect(warn).toHaveBeenCalled();
+      warn.mockRestore();
+    });
+
     it('maps identifierType onto the typed fields the login endpoint reads', async () => {
       const payload: LoginOptions = { username: 'test@example.com', identifierType: 'email' };
 

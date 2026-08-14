@@ -58,22 +58,33 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
    * });
    *
    * @example
-   * // Typed login, where the screen knows which identifier the user chose. `identifierType` stops
-   * // the server inferring the type from the value's shape.
+   * // Email login. The discrete option stops the server inferring the type from the value's shape.
+   *
+   * loginIdManager.login({
+   *   email: <emailFieldValue>
+   * });
+   *
+   * @example
+   * // Phone login with a country dropdown, using a code from `countryCodes.available`. Submit the
+   * // national number; the dial code is prefixed server-side.
+   *
+   * loginIdManager.login({
+   *   phone: '2015550123',
+   *   phoneCountryCode: 'US'
+   * });
+   *
+   * @example
+   * // A username read as one, rather than inferred from its shape. `username` has no discrete
+   * // option of its own — it predates them as the untyped field — so pair it with `identifierType`.
    *
    * loginIdManager.login({
    *   username: <usernameFieldValue>,
    *   identifierType: 'username'
    * });
    *
-   * @example
-   * // Phone login with a country dropdown, using a code from `countryCodes.available`.
-   *
-   * loginIdManager.login({
-   *   username: '2015550123',
-   *   identifierType: 'phone',
-   *   phoneCountryCode: 'US'
-   * });
+   * @remarks
+   * Login submits a single identifier. Supplying more than one of `email`, `phone` or `username`
+   * resolves to the first by that precedence and warns; the rest are ignored.
    */
   async login(payload: LoginOptions): Promise<void> {
     const options: FormOptions = {

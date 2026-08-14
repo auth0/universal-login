@@ -55,8 +55,28 @@ export default class Login extends BaseContext implements LoginMembers {
    *
    * @example
    * ```typescript
-   * // Typed login, where the screen knows which identifier the user chose. `identifierType` stops
-   * // the server inferring the type from the value's shape.
+   * // Email login. The discrete option stops the server inferring the type from the value's shape.
+   * loginManager.login({
+   *   email: "test@example.com",
+   *   password: "testPassword"
+   * });
+   * ```
+   *
+   * @example
+   * ```typescript
+   * // Phone login with a country dropdown, using a code from `countryCodes.available`. Submit the
+   * // national number; the dial code is prefixed server-side.
+   * loginManager.login({
+   *   phone: "2015550123",
+   *   phoneCountryCode: "US",
+   *   password: "testPassword"
+   * });
+   * ```
+   *
+   * @example
+   * ```typescript
+   * // A username read as one, rather than inferred from its shape. `username` has no discrete
+   * // option of its own — it predates them as the untyped field — so pair it with `identifierType`.
    * loginManager.login({
    *   username: "testUser",
    *   identifierType: "username",
@@ -64,16 +84,9 @@ export default class Login extends BaseContext implements LoginMembers {
    * });
    * ```
    *
-   * @example
-   * ```typescript
-   * // Phone login with a country dropdown, using a code from `countryCodes.available`.
-   * loginManager.login({
-   *   username: "2015550123",
-   *   identifierType: "phone",
-   *   phoneCountryCode: "US",
-   *   password: "testPassword"
-   * });
-   * ```
+   * @remarks
+   * Login submits a single identifier. Supplying more than one of `email`, `phone` or `username`
+   * resolves to the first by that precedence and warns; the rest are ignored.
    */
   async login(payload: LoginOptions): Promise<void> {
     const options: FormOptions = { state: this.transaction.state, telemetry: [Login.screenIdentifier, 'login'] };

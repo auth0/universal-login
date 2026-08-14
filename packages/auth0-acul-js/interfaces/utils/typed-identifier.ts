@@ -6,10 +6,24 @@ import type { IdentifierType } from '../../src/constants';
  * cast.
  */
 export interface TypedIdentifierPayload {
-  /** The identifier value, whatever type it represents. */
+  /** The email address. Supplying it selects the typed contract with the `email` type. */
+  email?: string;
+
+  /**
+   * The phone number. Supplying it selects the typed contract with the `phone` type, and it pairs
+   * with `phoneCountryCode`.
+   */
+  phone?: string;
+
+  /**
+   * The username. It doubles as the legacy carrier — on its own it is submitted untyped, with the
+   * server inferring the type — so pair it with `identifierType` to submit it as a typed username.
+   */
   username?: string;
 
-  /** The type `username` holds. Its presence selects the typed contract. */
+  /**
+   * The type `username` holds. Superseded by `email` and `phone`, which name their own type.
+   */
   identifierType?: IdentifierType;
 
   /** The ISO 3166-1 alpha-2 country for a phone identifier. Required when the type is `phone`. */

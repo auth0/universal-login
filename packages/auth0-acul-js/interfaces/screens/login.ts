@@ -25,9 +25,8 @@ export interface ScreenMembersOnLogin extends ScreenMembers {
     | (NonNullable<ScreenMembers['data']> & {
         username?: string;
         /**
-         * The identifier input to pre-select, resolved by the server and mapped from its
-         * `active_identifier_type`. Absent when none was resolved — supply your own default rather
-         * than assuming `'email'`.
+         * The identifier input to pre-select, from the server's `active_identifier_type`. Absent when
+         * none was resolved — supply your own default rather than assuming `'email'`.
          */
         activeIdentifierType?: IdentifierType;
       })
@@ -64,25 +63,33 @@ export interface Login extends BaseContext {
  * Options for performing login operations
  */
 export interface LoginOptions {
-  /** The username/email to login with */
-  username: string;
+  /** The email address to login with, read as an email rather than inferred from the value's shape. */
+  email?: string;
+  /**
+   * The phone number to login with, as the national number without a dial code. Pair it with
+   * `phoneCountryCode`, whose dial code the server prefixes; without one the submission degrades to
+   * the untyped contract.
+   */
+  phone?: string;
+  /**
+   * The username to login with. On its own it is submitted untyped and the server infers the type —
+   * the behaviour that predates `email`/`phone`. Pair it with `identifierType: 'username'` to type it.
+   */
+  username?: string;
   /** The password for authentication */
   password: string;
   /** Optional captcha value if required */
   captcha?: string;
   /**
    * Which identifier `username` holds (for example `'phone'`) — typically from
-   * `screen.data.activeIdentifierType` or `transaction.allowedIdentifiers`. The server reads the
-   * value as that type instead of inferring one from its shape. Omit it and `username` is submitted
-   * on its own, as before, with the server inferring the type.
+   * `screen.data.activeIdentifierType`. Superseded by `email`/`phone`, which name their own type;
+   * this remains the way to submit a typed `username`.
    */
   identifierType?: IdentifierType;
   /**
    * ISO 3166-1 alpha-2 country for a phone identifier (for example `'US'`), from a `code` in
-   * `countryCodes.available`. Required with `identifierType: 'phone'`, ignored otherwise. Its dial
-   * code is prefixed server-side, so `username` should be the national number without one. Omitted,
-   * the submission degrades to the untyped contract, which prefixes a `pickCountryCode()` selection
-   * only on a phone-only connection.
+   * `countryCodes.available`. Required with `phone`, ignored otherwise. Its dial code is prefixed
+   * server-side, so the number should carry none; omitted, the submission degrades to untyped.
    */
   phoneCountryCode?: string;
   /** Any additional custom options */

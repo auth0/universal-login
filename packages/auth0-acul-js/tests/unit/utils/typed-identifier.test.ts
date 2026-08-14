@@ -1,6 +1,214 @@
 import { normalizeTypedIdentifier } from '../../../src/utils/typed-identifier';
 
 describe('normalizeTypedIdentifier', () => {
+  describe('with a discrete identifier option (typed contract)', () => {
+    it('maps an email onto the typed fields', () => {
+      const result = normalizeTypedIdentifier({ email: 'test@example.com', password: 'P@ssw0rd!' });
+
+      expect(result).toEqual({
+        username: 'test@example.com',
+        identifier_type: 'email',
+        identifier_email: 'test@example.com',
+        password: 'P@ssw0rd!',
+      });
+    });
+
+    it('maps a phone and country onto the typed fields', () => {
+      const result = normalizeTypedIdentifier({ phone: '2015550123', phoneCountryCode: 'US' });
+
+      expect(result).toEqual({
+        username: '2015550123',
+        identifier_type: 'phone',
+        identifier_phone: '2015550123',
+        identifier_phone_country_code: 'US',
+      });
+    });
+
+    // The endpoint reads neither name, so leaving them in would submit unread fields that the
+    // custom-prompt-field handling would then have to ignore.
+    it('does not submit the discrete option names', () => {
+      const result = normalizeTypedIdentifier({ email: 'test@example.com' });
+
+      expect(result).not.toHaveProperty('email');
+      expect(result).not.toHaveProperty('phone');
+    });
+
+    it('copies the value into username so an unflagged tenant falls back to the legacy contract', () => {
+      expect(normalizeTypedIdentifier({ email: 'test@example.com' }).username).toBe('test@example.com');
+      expect(normalizeTypedIdentifier({ phone: '2015550123', phoneCountryCode: 'US' }).username).toBe(
+        '2015550123'
+      );
+    });
+
+    it('degrades a phone submitted without a country code to the legacy contract', () => {
+      const result = normalizeTypedIdentifier({ phone: '+12015550123', password: 'P@ssw0rd!' });
+
+      expect(result).toEqual({ username: '+12015550123', password: 'P@ssw0rd!' });
+    });
+
+    it('names its own type, superseding a conflicting identifierType', () => {
+      const result = normalizeTypedIdentifier({ email: 'test@example.com', identifierType: 'username' });
+
+      expect(result).toMatchObject({
+        identifier_type: 'email',
+        identifier_email: 'test@example.com',
+      });
+      expect(result).not.toHaveProperty('identifier_username');
+    });
+
+    // A screen driven by React state may pass every option it renders, leaving the inactive ones as
+    // empty strings. The filled one is the identifier the user actually entered.
+    it('resolves the option holding a value when a blank sibling is also passed', () => {
+      const result = normalizeTypedIdentifier({ email: '', phone: '2015550123', phoneCountryCode: 'US' });
+
+      expect(result).toMatchObject({
+        identifier_type: 'phone',
+        identifier_phone: '2015550123',
+      });
+    });
+
+    // Submitting the blank field typed is what earns the server's `identifier-required` error, which
+    // names the field the user left empty. Dropping it would earn a vaguer one.
+    it('submits a blank option as its type rather than dropping it', () => {
+      const result = normalizeTypedIdentifier({ email: '' });
+
+      expect(result).toEqual({ username: '', identifier_type: 'email', identifier_email: '' });
+    });
+
+    // A blank phone still selects its type, but the typed path prefixes no dial code without a
+    // country, so it degrades like a filled one rather than submitting `identifier_phone: ''`.
+    it('degrades a blank phone with no country code to the legacy contract', () => {
+      const result = normalizeTypedIdentifier({ phone: '' });
+
+      expect(result).toEqual({ username: '' });
+    });
+
+    it('submits a blank phone as its type once a country code selects it', () => {
+      const result = normalizeTypedIdentifier({ phone: '', phoneCountryCode: 'US' });
+
+      expect(result).toEqual({
+        username: '',
+        identifier_type: 'phone',
+        identifier_phone: '',
+        identifier_phone_country_code: 'US',
+      });
+    });
+
+    it('does not let a blank option discard the value another option carries', () => {
+      const result = normalizeTypedIdentifier({ phone: '', username: 'someone', identifierType: 'username' });
+
+      expect(result).toEqual({
+        username: 'someone',
+        identifier_type: 'username',
+        identifier_username: 'someone',
+      });
+    });
+
+    it('preserves the other payload fields', () => {
+      const result = normalizeTypedIdentifier({
+        email: 'test@example.com',
+        password: 'P@ssw0rd!',
+        captcha: 'abc',
+        customField: 'customValue',
+      });
+
+      expect(result).toMatchObject({
+        password: 'P@ssw0rd!',
+        captcha: 'abc',
+        customField: 'customValue',
+      });
+    });
+
+    it('does not mutate the payload it was given', () => {
+      const payload = { phone: '2015550123', phoneCountryCode: 'US' };
+      normalizeTypedIdentifier(payload);
+
+      expect(payload).toEqual({ phone: '2015550123', phoneCountryCode: 'US' });
+    });
+  });
+
+  // Login submits one identifier, so supplying several is a caller mistake. It resolves by
+  // precedence rather than throwing: rejecting would turn a payload the previous contract submitted
+  // into a rejected promise, and screen handlers do not catch one.
+  describe('with more than one identifier option', () => {
+    let warn: jest.SpyInstance;
+
+    beforeEach(() => {
+      warn = jest.spyOn(console, 'warn').mockImplementation(() => undefined);
+    });
+
+    afterEach(() => {
+      warn.mockRestore();
+    });
+
+    it('does not throw', () => {
+      expect(() =>
+        normalizeTypedIdentifier({ email: 'test@example.com', phone: '2015550123', username: 'someone' })
+      ).not.toThrow();
+    });
+
+    it('resolves email ahead of phone', () => {
+      const result = normalizeTypedIdentifier({ email: 'test@example.com', phone: '2015550123' });
+
+      expect(result).toEqual({
+        username: 'test@example.com',
+        identifier_type: 'email',
+        identifier_email: 'test@example.com',
+      });
+    });
+
+    it('resolves email ahead of username', () => {
+      const result = normalizeTypedIdentifier({ email: 'test@example.com', username: 'someone' });
+
+      expect(result).toEqual({
+        username: 'test@example.com',
+        identifier_type: 'email',
+        identifier_email: 'test@example.com',
+      });
+    });
+
+    // Phone wins, and with no country code it degrades to the legacy contract — which carries the
+    // number, not the discarded username.
+    it('resolves phone ahead of username', () => {
+      const result = normalizeTypedIdentifier({ phone: '+12015550123', username: 'someone' });
+
+      expect(result).toEqual({ username: '+12015550123' });
+    });
+
+    it('resolves email when all three hold a value', () => {
+      const result = normalizeTypedIdentifier({
+        email: 'test@example.com',
+        phone: '2015550123',
+        username: 'someone',
+      });
+
+      expect(result).toMatchObject({
+        identifier_type: 'email',
+        identifier_email: 'test@example.com',
+      });
+    });
+
+    it('warns, naming the options that hold a value', () => {
+      normalizeTypedIdentifier({ email: 'test@example.com', username: 'someone' });
+
+      expect(warn).toHaveBeenCalledTimes(1);
+      expect(warn.mock.calls[0][0]).toContain('email, username');
+    });
+
+    it('does not warn when only one of them holds a value', () => {
+      normalizeTypedIdentifier({ email: 'test@example.com', phone: '', username: '  ' });
+
+      expect(warn).not.toHaveBeenCalled();
+    });
+
+    // identifierType names a type for `username`, so the two are one identifier, not two.
+    it('does not warn for a username paired with its identifierType', () => {
+      normalizeTypedIdentifier({ username: 'someone', identifierType: 'username' });
+
+      expect(warn).not.toHaveBeenCalled();
+    });
+  });
+
   describe('with an identifier type (typed contract)', () => {
     it('maps an email onto the typed fields', () => {
       const result = normalizeTypedIdentifier({
@@ -150,6 +358,15 @@ describe('normalizeTypedIdentifier', () => {
       expect(result).not.toHaveProperty('identifier_email');
       expect(result).not.toHaveProperty('identifier_username');
       expect(result).not.toHaveProperty('identifier_phone');
+    });
+
+    // Unlike `email`/`phone`, a bare `username` names no type. It predates them as the untyped
+    // identifier field, and every caller passing an email address through it would otherwise start
+    // submitting identifier_type: 'username' and be rejected where username is not enabled.
+    it('leaves a bare username untyped even though it is a known identifier name', () => {
+      const result = normalizeTypedIdentifier({ username: 'test@example.com' });
+
+      expect(result).toEqual({ username: 'test@example.com' });
     });
 
     it('drops a country code submitted on its own, as no type selects it', () => {
