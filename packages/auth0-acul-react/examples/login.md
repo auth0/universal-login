@@ -394,11 +394,11 @@ export default LoginScreenWithActiveIdentifier;
 
 ### Example telling the server which identifier the user chose
 
-`activeIdentifierType` tells you which input to *render*; `identifierType` tells the server which one the user *submitted*. Pass it when your screen lets the user pick the identifier — tabs, a dropdown, or an input resolved from `useLoginIdentifiers()` — and the server reads the value as that type instead of inferring one from its shape.
+`activeIdentifierType` tells you which input to *render*; the identifier option you submit tells the server which one the user *entered*. Pass one when your screen lets the user pick the identifier — tabs, a dropdown, or an input resolved from `useLoginIdentifiers()` — and the server reads the value as that type instead of inferring one from its shape.
 
-The value always goes in `username`, whatever the type. Omit `identifierType` and `username` is submitted on its own, as before, with the server inferring the type.
+`email` and `phone` name their own type. `username` is the generic field, so it needs `identifierType`; on its own it is submitted untyped, as before, with the server inferring the type. Pass only one of the three — login submits a single identifier.
 
-For a phone identifier, also pass the selected country as `phoneCountryCode` — required with `identifierType: 'phone'`; `useCountryCodes` gives you the list. Its dial code is prefixed server-side, so `username` should be the national number *without* one. Leave it off and the submission degrades to the untyped contract, which prefixes a `pickCountryCode()` selection only on a phone-only connection.
+For a phone identifier, pass the national number as `phone` and the selected country as `phoneCountryCode` — required with `phone`; `useCountryCodes` gives you the list. Its dial code is prefixed server-side, so the number should carry none. Leave the country off and the submission degrades to the untyped contract, which prefixes a `pickCountryCode()` selection only on a phone-only connection.
 
 ```tsx
 import React, { useState } from 'react';
@@ -418,7 +418,7 @@ const TypedLogin: React.FC = () => {
   const [identifierType, setIdentifierType] = useState(
     screen.data?.activeIdentifierType ?? allowed?.[0] ?? 'email'
   );
-  const [username, setUsername] = useState('');
+  const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   // `recommended` is the server's suggested default; fall back to the first available country.
   const [phoneCountryCode, setPhoneCountryCode] = useState(
@@ -426,13 +426,15 @@ const TypedLogin: React.FC = () => {
   );
 
   const handleLogin = () => {
-    login({
-      username, // national number when identifierType is 'phone', e.g. "2015550123"
-      password,
-      identifierType,
-      // Required for a phone identifier; ignored for the other types.
-      ...(identifierType === 'phone' ? { phoneCountryCode } : {}),
-    });
+    // `email` and `phone` name their own type; `username` needs `identifierType` to be read as one.
+    const typedIdentifier =
+      identifierType === 'email'
+        ? { email: identifier }
+        : identifierType === 'phone'
+          ? { phone: identifier, phoneCountryCode } // national number, e.g. "2015550123"
+          : { username: identifier, identifierType: 'username' as const };
+
+    login({ ...typedIdentifier, password });
   };
 
   return (
@@ -456,8 +458,8 @@ const TypedLogin: React.FC = () => {
 
       <input
         type={identifierType === 'phone' ? 'tel' : 'text'}
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        value={identifier}
+        onChange={(e) => setIdentifier(e.target.value)}
         placeholder={`Enter your ${identifierType}`}
       />
 

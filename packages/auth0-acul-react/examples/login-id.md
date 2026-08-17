@@ -520,29 +520,35 @@ export default LoginIdScreenWithActiveIdentifier;
 
 ### Example telling the server which identifier the user chose
 
-`activeIdentifierType` tells you which input to *render*; `identifierType` tells the server which one the user *submitted*. Pass it when your screen lets the user pick the identifier — tabs, a dropdown, or an input resolved from `useLoginIdentifiers()` — and the server reads the value as that type instead of inferring one from its shape, though on this screen the shape still decides which authentication method the user is routed to.
+`activeIdentifierType` tells you which input to *render*; the identifier option you submit tells the server which one the user *entered*. Pass one when your screen lets the user pick the identifier — tabs, a dropdown, or an input resolved from `useLoginIdentifiers()` — and the server reads the value as that type instead of inferring one from its shape, though on this screen the shape still decides which authentication method the user is routed to.
 
-The value always goes in `username`, whatever the type. Omit `identifierType` and `username` is submitted on its own, as before, with the server inferring the type.
+`email` and `phone` name their own type. `username` is the generic field, so it needs `identifierType`; on its own it is submitted untyped, as before, with the server inferring the type. Pass only one of the three — login submits a single identifier.
 
 ```tsx
 import React, { useRef } from 'react';
-import { useLoginIdentifiers, login } from '@auth0/auth0-acul-react/login-id';
+import { useCountryCodes, useLoginIdentifiers, login } from '@auth0/auth0-acul-react/login-id';
 
 const TypedLoginId: React.FC = () => {
   const allowed = useLoginIdentifiers();
+  const countryCodes = useCountryCodes();
   const identifierRef = useRef<HTMLInputElement>(null);
+
+  // Only used for a phone identifier — see the country selector example below.
+  const phoneCountryCode = countryCodes?.recommended ?? countryCodes?.available?.[0]?.code ?? '';
 
   return (
     <div>
       {allowed?.map((type) => (
         <button
           key={type}
-          onClick={() =>
-            login({
-              username: identifierRef.current?.value ?? '',
-              identifierType: type,
-            })
-          }
+          onClick={() => {
+            const value = identifierRef.current?.value ?? '';
+
+            // `email` and `phone` name their own type; `username` needs `identifierType`.
+            if (type === 'email') login({ email: value });
+            else if (type === 'phone') login({ phone: value, phoneCountryCode });
+            else login({ username: value, identifierType: 'username' });
+          }}
         >
           Continue with {type}
         </button>
@@ -556,7 +562,7 @@ const TypedLoginId: React.FC = () => {
 export default TypedLoginId;
 ```
 
-For a phone identifier, also pass the selected country as `phoneCountryCode` — required with `identifierType: 'phone'`; `useCountryCodes` gives you the list, so you can render the selector inline instead of using `pickCountryCode()`, whose selection a typed submission ignores. Its dial code is prefixed server-side, so `username` should be the national number *without* one.
+For a phone identifier, pass the national number as `phone` and the selected country as `phoneCountryCode` — required with `phone`; `useCountryCodes` gives you the list, so you can render the selector inline instead of using `pickCountryCode()`, whose selection a typed submission ignores. Its dial code is prefixed server-side, so the number should carry none.
 
 ```tsx
 import React, { useState } from 'react';
@@ -565,7 +571,7 @@ import { useCountryCodes, login } from '@auth0/auth0-acul-react/login-id';
 const PhoneLoginId: React.FC = () => {
   const countryCodes = useCountryCodes();
 
-  const [username, setUsername] = useState('');
+  const [phone, setPhone] = useState('');
   // `recommended` is the server's suggested default; fall back to the first available country.
   const [phoneCountryCode, setPhoneCountryCode] = useState(
     countryCodes?.recommended ?? countryCodes?.available?.[0]?.code ?? ''
@@ -573,8 +579,7 @@ const PhoneLoginId: React.FC = () => {
 
   const handleContinue = () => {
     login({
-      username, // national number, e.g. "2015550123"
-      identifierType: 'phone',
+      phone, // national number, e.g. "2015550123"
       phoneCountryCode, // ISO 3166-1 alpha-2, e.g. "US"
     });
   };
@@ -591,8 +596,8 @@ const PhoneLoginId: React.FC = () => {
 
       <input
         type="tel"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        value={phone}
+        onChange={(e) => setPhone(e.target.value)}
         placeholder="Enter your phone number"
       />
 

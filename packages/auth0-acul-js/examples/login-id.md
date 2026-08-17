@@ -136,22 +136,26 @@ if (activeIdentifier === 'phone') {
 
 ## Telling the server which identifier the user chose
 
-`activeIdentifierType` tells you which input to *render*; `identifierType` tells the server which one the user *submitted*. Pass it when your screen lets the user pick the identifier — tabs, a dropdown, or an input resolved from `getLoginIdentifiers()` — and the server reads the value as that type instead of inferring one from its shape, though on this screen the shape still decides which authentication method the user is routed to.
+`activeIdentifierType` tells you which input to *render*; the identifier option you submit tells the server which one the user *entered*. Pass one when your screen lets the user pick the identifier — tabs, a dropdown, or an input resolved from `getLoginIdentifiers()` — and the server reads the value as that type instead of inferring one from its shape, though on this screen the shape still decides which authentication method the user is routed to.
 
-The value always goes in `username`, whatever the type. Omit `identifierType` and `username` is submitted on its own, as before, with the server inferring the type.
+`email` and `phone` name their own type. `username` is the generic field, so it needs `identifierType`; on its own it is submitted untyped, as before, with the server inferring the type. Pass only one of the three — login submits a single identifier.
 
 ```typescript
 import LoginId from '@auth0/auth0-acul-js/login-id';
 
 const loginIdManager = new LoginId();
 
-loginIdManager.login({
-  username: 'someone',       // the value the user typed
-  identifierType: 'username' // how the server should read it
-});
+// Read as an email, whatever the value looks like.
+loginIdManager.login({ email: 'someone@example.com' });
+
+// Read as a username — `identifierType` is what types it.
+loginIdManager.login({ username: 'someone', identifierType: 'username' });
+
+// No type at all: the previous contract, with the server inferring one from the value's shape.
+loginIdManager.login({ username: 'someone' });
 ```
 
-For a phone identifier, also pass the selected country as `phoneCountryCode` — required with `identifierType: 'phone'`, and the inline alternative to `pickCountryCode()`, whose selection a typed submission ignores. Its dial code is prefixed server-side, so `username` should be the national number *without* one.
+For a phone identifier, pass the national number as `phone` and the selected country as `phoneCountryCode` — required with `phone`, and the inline alternative to `pickCountryCode()`, whose selection a typed submission ignores. Its dial code is prefixed server-side, so the number should carry none.
 
 ```tsx
 import React, { useState } from 'react';
@@ -161,7 +165,7 @@ const PhoneLoginId: React.FC = () => {
   const [loginIdManager] = useState(() => new LoginId());
   const { countryCodes } = loginIdManager;
 
-  const [username, setUsername] = useState('');
+  const [phone, setPhone] = useState('');
   // `recommended` is the server's suggested default; fall back to the first available country.
   const [phoneCountryCode, setPhoneCountryCode] = useState(
     countryCodes?.recommended ?? countryCodes?.available?.[0]?.code ?? ''
@@ -169,8 +173,7 @@ const PhoneLoginId: React.FC = () => {
 
   const onContinueClick = () => {
     loginIdManager.login({
-      username, // national number, e.g. "2015550123"
-      identifierType: 'phone',
+      phone, // national number, e.g. "2015550123"
       phoneCountryCode // ISO 3166-1 alpha-2, e.g. "US"
     });
   };
@@ -187,9 +190,9 @@ const PhoneLoginId: React.FC = () => {
 
       <input
         type="tel"
-        id="username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        id="phone"
+        value={phone}
+        onChange={(e) => setPhone(e.target.value)}
         placeholder="Enter your phone number"
       />
 
