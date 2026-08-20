@@ -49,14 +49,10 @@ export interface ScreenMembersOnLoginId extends ScreenMembers {
   resetPasswordLink: string | null;
   publicKey: PasskeyRead['public_key'] | null;
   googleOneTapConfig: GoogleOneTapConfig | null;
-  /** Intersected with the inherited `data`, so reads of other `screen.data` keys keep compiling. */
+  /** Intersected with the inherited `data`, so other `screen.data` reads keep compiling. */
   data:
     | (NonNullable<ScreenMembers['data']> & {
-        /**
-         * The identifier input to pre-select, resolved by the server and mapped from its
-         * `active_identifier_type`. Absent when none was resolved — supply your own default rather
-         * than assuming `'email'`.
-         */
+        /** The identifier input to pre-select. Absent when the server resolved none — use your own default. */
         activeIdentifierType?: IdentifierType;
       })
     | null;
@@ -74,26 +70,17 @@ export interface TransactionMembersOnLoginId extends TransactionMembers {
 
 /**
  * @remarks
- * The identifier itself is described by {@link LoginIdentifierOptions}: whichever type it is — email
- * address, phone number or username — it goes in the one field, and `identifierType` names what that
- * field holds. On this screen the value's shape still decides which authentication method the user is
- * routed to. For `identifierType: 'phone'` it should be the national number, with the country named
- * in `phoneCountryCode`.
+ * The identifier is described by {@link LoginIdentifierOptions}. On this screen its shape still
+ * decides which authentication method the user is routed to.
  */
 export type LoginOptions = LoginIdentifierOptions & {
   captcha?: string;
-  /**
-   * Which identifier the `identifier` field holds (for example `'phone'`) — typically from
-   * `screen.data.activeIdentifierType`. The server then reads the value as that type instead of
-   * inferring one from its shape. Omit it and the identifier is submitted on its own, as before.
-   */
+  /** What `identifier` holds — typically from `screen.data.activeIdentifierType`. Omit to submit untyped. */
   identifierType?: IdentifierType;
   /**
-   * ISO 3166-1 alpha-2 country for a phone identifier (for example `'US'`), from a `code` in
-   * `countryCodes.available`. Required with `identifierType: 'phone'`, ignored otherwise. Its dial
-   * code is prefixed server-side, so the identifier should be the national number without one.
-   * Omitted, the submission degrades to the untyped contract, which prefixes a `pickCountryCode()`
-   * selection only on a phone-only connection.
+   * ISO 3166-1 alpha-2 country for a phone identifier, from a `code` in `countryCodes.available`.
+   * Required with `identifierType: 'phone'`. The dial code is prefixed server-side, so pass the
+   * national number.
    */
   phoneCountryCode?: string;
   [key: string]: string | number | boolean | undefined;

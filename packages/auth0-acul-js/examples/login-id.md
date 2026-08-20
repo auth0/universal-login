@@ -118,7 +118,7 @@ if (config) {
 
 ## activeIdentifierType
 
-When a tenant allows multiple identifiers, `screen.data.activeIdentifierType` tells you which input the server resolved so you can render it on first paint. It is `undefined` when the server has not resolved one, so fall back to your own default rather than assuming `email`.
+`screen.data.activeIdentifierType` is the input the server resolved, for first paint. It is `undefined` when none was resolved, so supply your own default.
 
 ```typescript
 import LoginId from '@auth0/auth0-acul-js/login-id';
@@ -136,9 +136,9 @@ if (activeIdentifier === 'phone') {
 
 ## Telling the server which identifier the user chose
 
-`activeIdentifierType` tells you which input to *render*; `identifierType` tells the server which identifier the user *entered*. Pass it when your screen lets the user pick the identifier — tabs, a dropdown, or an input resolved from `getLoginIdentifiers()` — and the server reads the value as that type instead of inferring one from its shape, though on this screen the shape still decides which authentication method the user is routed to.
+`activeIdentifierType` says which input to *render*; `identifierType` says which one the user *entered*. Pass it when your screen lets the user pick — tabs, a dropdown, or `getLoginIdentifiers()`.
 
-Login submits a single identifier, so it stays denormalized: the value goes in `identifier` and `identifierType` names what it holds. Omit `identifierType` and the identifier is submitted on its own, exactly as before, with the server inferring the type. `username` is `identifier`'s original spelling and is still accepted in its place, so payloads written against the previous contract keep working unchanged.
+The value goes in `identifier`, and `identifierType` names what it holds. Omit the type and the identifier is submitted on its own, as before. `username` still works in `identifier`'s place.
 
 ```typescript
 import LoginId from '@auth0/auth0-acul-js/login-id';
@@ -155,7 +155,7 @@ loginIdManager.login({ identifier: 'someone', identifierType: 'username' });
 loginIdManager.login({ identifier: 'someone' });
 ```
 
-For a phone identifier, pass the national number as `identifier` and the selected country as `phoneCountryCode` — required with `identifierType: 'phone'`, and the inline alternative to `pickCountryCode()`, whose selection a typed submission ignores. Its dial code is prefixed server-side, so the number should carry none.
+For a phone, pass the national number as `identifier` and the country as `phoneCountryCode` (from `countryCodes.available`, rendered inline). The dial code is added server-side. A typed submission ignores any `pickCountryCode()` selection.
 
 ```tsx
 import React, { useState } from 'react';
