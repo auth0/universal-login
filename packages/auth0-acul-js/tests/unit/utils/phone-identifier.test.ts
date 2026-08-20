@@ -9,6 +9,7 @@ describe('normalizePhoneIdentifier', () => {
       );
 
       expect(result).toEqual({
+        phone_number: '2015550123',
         identifier_phone: '2015550123',
         identifier_phone_country_code: 'US',
       });
@@ -18,18 +19,22 @@ describe('normalizePhoneIdentifier', () => {
       const result = normalizePhoneIdentifier({ phone: '7400123456', phoneCountryCode: 'GB' }, 'phone');
 
       expect(result).toEqual({
+        phone_number: '7400123456',
         identifier_phone: '7400123456',
         identifier_phone_country_code: 'GB',
       });
     });
 
-    it('does not submit phone_number, so the server does not re-derive the country', () => {
+    // A tenant that does not process the composite fields reads only phone_number. Submitting it
+    // alongside them is what keeps the number from being dropped there; where they are processed,
+    // the server overwrites phone_number with the prefixed value before anything reads it.
+    it('also submits phone_number, as the carrier the discrete contract falls back to', () => {
       const result = normalizePhoneIdentifier(
         { phoneNumber: '6045550123', phoneCountryCode: 'CA' },
         'phoneNumber'
       );
 
-      expect(result).not.toHaveProperty('phone_number');
+      expect(result).toHaveProperty('phone_number', '6045550123');
     });
 
     it('preserves the other payload fields', () => {
@@ -50,6 +55,7 @@ describe('normalizePhoneIdentifier', () => {
         username: 'someone',
         password: 'P@ssw0rd!',
         captcha: 'abc',
+        phone_number: '2015550123',
         identifier_phone: '2015550123',
         identifier_phone_country_code: 'US',
       });

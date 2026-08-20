@@ -96,15 +96,16 @@ describe('Signup', () => {
       await signup.signup(payload);
 
       expect(FormHandler.prototype.submitData).toHaveBeenCalledWith({
+        phone_number: '2015550123',
         identifier_phone: '2015550123',
         identifier_phone_country_code: 'US',
         password: 'P@ssw0rd!',
       });
 
-      // The server treats the submitted country as authoritative, so `phone_number` must not be
-      // sent alongside it, and the camelCase options must not leak through.
+      // `phone_number` rides along as the carrier a tenant that does not process the composite
+      // fields falls back to; where they are processed the server overwrites it with the prefixed
+      // value. The camelCase options must not leak through either way.
       const submittedPayload = (FormHandler.prototype.submitData as jest.Mock).mock.calls[0][0];
-      expect(submittedPayload).not.toHaveProperty('phone_number');
       expect(submittedPayload).not.toHaveProperty('phoneNumber');
       expect(submittedPayload).not.toHaveProperty('phoneCountryCode');
     });

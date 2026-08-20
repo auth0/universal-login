@@ -128,6 +128,7 @@ describe('SignupId', () => {
         email: 'testUser@testmail.com',
         username: 'testUser',
         password: 'testPassword',
+        phone_number: '2015550123',
         identifier_phone: '2015550123',
         identifier_phone_country_code: 'US',
         ...mockBrowserCapabilities,

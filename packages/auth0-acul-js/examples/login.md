@@ -243,9 +243,9 @@ if (activeIdentifier === 'phone') {
 
 ## Telling the server which identifier the user chose
 
-`activeIdentifierType` tells you which input to *render*; the identifier option you submit tells the server which one the user *entered*. Pass one when your screen lets the user pick the identifier — tabs, a dropdown, or an input resolved from `getLoginIdentifiers()` — and the server reads the value as that type instead of inferring one from its shape.
+`activeIdentifierType` tells you which input to *render*; `identifierType` tells the server which identifier the user *entered*. Pass it when your screen lets the user pick the identifier — tabs, a dropdown, or an input resolved from `getLoginIdentifiers()` — and the server reads the value as that type instead of inferring one from its shape.
 
-`email` and `phone` name their own type. `username` is the generic field, so it needs `identifierType`; on its own it is submitted untyped, as before, with the server inferring the type. Pass only one of the three — login submits a single identifier.
+Login submits a single identifier, so it stays denormalized: the value goes in `identifier` and `identifierType` names what it holds. Omit `identifierType` and the identifier is submitted on its own, exactly as before, with the server inferring the type. `username` is `identifier`'s original spelling and is still accepted in its place, so payloads written against the previous contract keep working unchanged.
 
 ```typescript
 import Login from '@auth0/auth0-acul-js/login';
@@ -253,17 +253,24 @@ import Login from '@auth0/auth0-acul-js/login';
 const loginManager = new Login();
 
 // Read as an email, whatever the value looks like.
-await loginManager.login({ email: 'someone@example.com', password: 'myPassword123' });
-
-// Read as a username — `identifierType` is what types it.
 await loginManager.login({
-  username: 'someone',
-  password: 'myPassword123',
-  identifierType: 'username'
+  identifier: 'someone@example.com',
+  identifierType: 'email',
+  password: 'myPassword123'
 });
+
+// Read as a username rather than resolved from the value's shape.
+await loginManager.login({
+  identifier: 'someone',
+  identifierType: 'username',
+  password: 'myPassword123'
+});
+
+// No type named — submitted untyped, as before.
+await loginManager.login({ identifier: 'someone@example.com', password: 'myPassword123' });
 ```
 
-For a phone identifier, pass the national number as `phone` and the selected country as `phoneCountryCode` — required with `phone`. Its dial code is prefixed server-side, so the number should carry none. Leave the country off and the submission degrades to the untyped contract, which prefixes a `pickCountryCode()` selection only on a phone-only connection.
+For a phone identifier, pass the national number as `identifier` and the selected country as `phoneCountryCode` — required with `identifierType: 'phone'`. Its dial code is prefixed server-side, so the number should carry none. Leave the country off and the submission degrades to the untyped contract, which prefixes a `pickCountryCode()` selection only on a phone-only connection.
 
 ```tsx
 import React, { useMemo, useState } from 'react';
@@ -290,15 +297,14 @@ const TypedLoginScreen: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // `email` and `phone` name their own type; `username` needs `identifierType` to be read as one.
-    const typedIdentifier =
-      identifierType === 'email'
-        ? { email: identifier }
-        : identifierType === 'phone'
-          ? { phone: identifier, phoneCountryCode } // national number, e.g. "2015550123"
-          : { username: identifier, identifierType: 'username' as const };
-
-    await loginManager.login({ ...typedIdentifier, password });
+    // One identifier, typed by `identifierType` — the same shape whichever tab is active.
+    await loginManager.login({
+      identifier, // for a phone, the national number, e.g. "2015550123"
+      identifierType,
+      // Only a phone identifier reads a country.
+      ...(identifierType === 'phone' ? { phoneCountryCode } : {}),
+      password
+    });
   };
 
   return (
@@ -345,4 +351,4 @@ export default TypedLoginScreen;
 
 Submit only a type the tenant actually allows — one of `getLoginIdentifiers()`. The server rejects a type that is not enabled for the connection, and the values line up exactly, so an entry from that array can be passed straight through as `identifierType`.
 
-`countryCodes` is `null` when the server does not provide the list. In that case render your own phone input and submit `username` on its own, or keep using `pickCountryCode()`.
+`countryCodes` is `null` when the server does not provide the list. In that case render your own phone input and submit `identifier` on its own, or keep using `pickCountryCode()`.

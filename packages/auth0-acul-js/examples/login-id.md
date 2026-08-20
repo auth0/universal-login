@@ -136,9 +136,9 @@ if (activeIdentifier === 'phone') {
 
 ## Telling the server which identifier the user chose
 
-`activeIdentifierType` tells you which input to *render*; the identifier option you submit tells the server which one the user *entered*. Pass one when your screen lets the user pick the identifier — tabs, a dropdown, or an input resolved from `getLoginIdentifiers()` — and the server reads the value as that type instead of inferring one from its shape, though on this screen the shape still decides which authentication method the user is routed to.
+`activeIdentifierType` tells you which input to *render*; `identifierType` tells the server which identifier the user *entered*. Pass it when your screen lets the user pick the identifier — tabs, a dropdown, or an input resolved from `getLoginIdentifiers()` — and the server reads the value as that type instead of inferring one from its shape, though on this screen the shape still decides which authentication method the user is routed to.
 
-`email` and `phone` name their own type. `username` is the generic field, so it needs `identifierType`; on its own it is submitted untyped, as before, with the server inferring the type. Pass only one of the three — login submits a single identifier.
+Login submits a single identifier, so it stays denormalized: the value goes in `identifier` and `identifierType` names what it holds. Omit `identifierType` and the identifier is submitted on its own, exactly as before, with the server inferring the type. `username` is `identifier`'s original spelling and is still accepted in its place, so payloads written against the previous contract keep working unchanged.
 
 ```typescript
 import LoginId from '@auth0/auth0-acul-js/login-id';
@@ -146,16 +146,16 @@ import LoginId from '@auth0/auth0-acul-js/login-id';
 const loginIdManager = new LoginId();
 
 // Read as an email, whatever the value looks like.
-loginIdManager.login({ email: 'someone@example.com' });
+loginIdManager.login({ identifier: 'someone@example.com', identifierType: 'email' });
 
-// Read as a username — `identifierType` is what types it.
-loginIdManager.login({ username: 'someone', identifierType: 'username' });
+// Read as a username rather than resolved from the value's shape.
+loginIdManager.login({ identifier: 'someone', identifierType: 'username' });
 
 // No type at all: the previous contract, with the server inferring one from the value's shape.
-loginIdManager.login({ username: 'someone' });
+loginIdManager.login({ identifier: 'someone' });
 ```
 
-For a phone identifier, pass the national number as `phone` and the selected country as `phoneCountryCode` — required with `phone`, and the inline alternative to `pickCountryCode()`, whose selection a typed submission ignores. Its dial code is prefixed server-side, so the number should carry none.
+For a phone identifier, pass the national number as `identifier` and the selected country as `phoneCountryCode` — required with `identifierType: 'phone'`, and the inline alternative to `pickCountryCode()`, whose selection a typed submission ignores. Its dial code is prefixed server-side, so the number should carry none.
 
 ```tsx
 import React, { useState } from 'react';
@@ -173,7 +173,8 @@ const PhoneLoginId: React.FC = () => {
 
   const onContinueClick = () => {
     loginIdManager.login({
-      phone, // national number, e.g. "2015550123"
+      identifier: phone, // national number, e.g. "2015550123"
+      identifierType: 'phone',
       phoneCountryCode // ISO 3166-1 alpha-2, e.g. "US"
     });
   };
@@ -206,5 +207,5 @@ export default PhoneLoginId;
 
 Submit only a type the tenant actually allows — one of `getLoginIdentifiers()`. The server rejects a type that is not enabled for the connection, and the values line up exactly, so an entry from that array can be passed straight through as `identifierType`.
 
-`countryCodes` is `null` when the server does not provide the list. In that case render your own phone input and submit `username` on its own, or keep using `pickCountryCode()`.
+`countryCodes` is `null` when the server does not provide the list. In that case render your own phone input and submit `identifier` on its own, or keep using `pickCountryCode()`.
 

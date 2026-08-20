@@ -3,6 +3,7 @@ import type { CustomOptions, GoogleOneTapConfig, GoogleOneTapOptions } from '../
 import type { BaseContext, BaseMembers } from '../models/base-context';
 import type { ScreenContext, ScreenMembers } from '../models/screen';
 import type { TransactionContext, TransactionMembers, DBConnection, PasswordPolicy } from '../models/transaction';
+import type { LoginIdentifierOptions } from '../utils/typed-identifier';
 /**
  * Extended screen context interface for the login screen
  */
@@ -61,40 +62,35 @@ export interface Login extends BaseContext {
 
 /**
  * Options for performing login operations
+ *
+ * @remarks
+ * The identifier itself is described by {@link LoginIdentifierOptions}: whichever type it is — email
+ * address, phone number or username — it goes in the one field, and `identifierType` names what that
+ * field holds. For `identifierType: 'phone'` it should be the national number, with the country named
+ * in `phoneCountryCode`.
  */
-export interface LoginOptions {
-  /** The email address to login with, read as an email rather than inferred from the value's shape. */
-  email?: string;
-  /**
-   * The phone number to login with, as the national number without a dial code. Pair it with
-   * `phoneCountryCode`, whose dial code the server prefixes; without one the submission degrades to
-   * the untyped contract.
-   */
-  phone?: string;
-  /**
-   * The username to login with. On its own it is submitted untyped and the server infers the type —
-   * the behaviour that predates `email`/`phone`. Pair it with `identifierType: 'username'` to type it.
-   */
-  username?: string;
+export type LoginOptions = LoginIdentifierOptions & {
   /** The password for authentication */
   password: string;
   /** Optional captcha value if required */
   captcha?: string;
   /**
-   * Which identifier `username` holds (for example `'phone'`) — typically from
-   * `screen.data.activeIdentifierType`. Superseded by `email`/`phone`, which name their own type;
-   * this remains the way to submit a typed `username`.
+   * Which identifier the `identifier` field holds (for example `'phone'`) — typically from
+   * `screen.data.activeIdentifierType`. The server then reads the value as that type instead of
+   * inferring one from its shape. Omit it and the identifier is submitted on its own, as before.
    */
   identifierType?: IdentifierType;
   /**
    * ISO 3166-1 alpha-2 country for a phone identifier (for example `'US'`), from a `code` in
-   * `countryCodes.available`. Required with `phone`, ignored otherwise. Its dial code is prefixed
-   * server-side, so the number should carry none; omitted, the submission degrades to untyped.
+   * `countryCodes.available`. Required with `identifierType: 'phone'`, ignored otherwise. Its dial
+   * code is prefixed server-side, so the identifier should be the national number without one.
+   * Omitted, the submission degrades to the untyped contract, which prefixes a `pickCountryCode()`
+   * selection only on a phone-only connection.
    */
   phoneCountryCode?: string;
   /** Any additional custom options */
   [key: string]: string | number | boolean | undefined;
-}
+};
 
 /**
  * Options for performing social login operations

@@ -54,37 +54,33 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
    * const loginIdManager = new LoginId();
    *
    * loginIdManager.login({
-   *   username: <usernameFieldValue>
+   *   identifier: <identifierFieldValue>
    * });
    *
    * @example
-   * // Email login. The discrete option stops the server inferring the type from the value's shape.
+   * // An email read as one, rather than inferred from the value's shape. `identifierType` is
+   * // typically `screen.data.activeIdentifierType`.
    *
    * loginIdManager.login({
-   *   email: <emailFieldValue>
+   *   identifier: <emailFieldValue>,
+   *   identifierType: 'email'
    * });
    *
    * @example
    * // Phone login with a country dropdown, using a code from `countryCodes.available`. Submit the
-   * // national number; the dial code is prefixed server-side.
+   * // national number as the identifier; the dial code is prefixed server-side.
    *
    * loginIdManager.login({
-   *   phone: '2015550123',
+   *   identifier: '2015550123',
+   *   identifierType: 'phone',
    *   phoneCountryCode: 'US'
    * });
    *
-   * @example
-   * // A username read as one, rather than inferred from its shape. `username` has no discrete
-   * // option of its own — it predates them as the untyped field — so pair it with `identifierType`.
-   *
-   * loginIdManager.login({
-   *   username: <usernameFieldValue>,
-   *   identifierType: 'username'
-   * });
-   *
    * @remarks
-   * Login submits a single identifier. Supplying more than one of `email`, `phone` or `username`
-   * resolves to the first by that precedence and warns; the rest are ignored.
+   * Login submits a single identifier, so it stays denormalized: the value goes in `identifier` and
+   * `identifierType` names what it holds. Omitting `identifierType` submits the identifier on its
+   * own, exactly as before, with the server inferring the type. `username` is `identifier`'s original
+   * spelling and still accepted in its place.
    */
   async login(payload: LoginOptions): Promise<void> {
     const options: FormOptions = {

@@ -12,3 +12,4 @@ export type { Organizations } from '../models/user';
 export type { PasswordValidationResult } from '../utils/validate-password';
 export type { Identifier, IdentifierType as ScreenIdentifierType } from '../utils/signup-identifiers';
 export type { UsernameValidationResult, UsernameValidationError } from '../utils/validate-username';
+export type { LoginIdentifierOptions } from '../utils/typed-identifier';

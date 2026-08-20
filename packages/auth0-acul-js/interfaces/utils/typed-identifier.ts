@@ -1,28 +1,36 @@
 import type { IdentifierType } from '../../src/constants';
 
 /**
+ * The identifier to login with, under either of its names. Exactly one is required: `identifier`,
+ * which pairs with `identifierType`, or `username`, its original spelling, which remains accepted so
+ * existing callers keep working. Supplying both is not an error — `identifier` wins.
+ *
+ * @remarks
+ * Shared by the `login` and `login-id` screens, whose `LoginOptions` each intersect it with their own
+ * remaining fields.
+ */
+export type LoginIdentifierOptions =
+  | { identifier: string; username?: string }
+  | { username: string; identifier?: string };
+
+/**
  * A login payload as supplied by the caller, before its identifier options are mapped for submission.
  * Matches the index signature both screens' `LoginOptions` carry, so either is assignable without a
  * cast.
  */
 export interface TypedIdentifierPayload {
-  /** The email address. Supplying it selects the typed contract with the `email` type. */
-  email?: string;
-
   /**
-   * The phone number. Supplying it selects the typed contract with the `phone` type, and it pairs
-   * with `phoneCountryCode`.
+   * The identifier, whatever its type; `identifierType` names what it holds. Submitted as
+   * `username`, the only identifier field the endpoint reads.
    */
-  phone?: string;
+  identifier?: string;
 
-  /**
-   * The username. It doubles as the legacy carrier — on its own it is submitted untyped, with the
-   * server inferring the type — so pair it with `identifierType` to submit it as a typed username.
-   */
+  /** The identifier's original spelling, still accepted. Superseded by `identifier`. */
   username?: string;
 
   /**
-   * The type `username` holds. Superseded by `email` and `phone`, which name their own type.
+   * The type `username` holds. Its absence submits the payload untyped, with the server inferring
+   * the type from the value's shape.
    */
   identifierType?: IdentifierType;
 
