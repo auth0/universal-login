@@ -105,13 +105,13 @@ describe('normalizePhoneIdentifier', () => {
       expect(result).toEqual({ email: 'test@example.com' });
     });
 
-    it('treats a blank phone number as absent', () => {
+    it('treats a blank phone number as absent, submitting neither spelling of the field', () => {
       const result = normalizePhoneIdentifier(
         { phoneNumber: '   ', phoneCountryCode: 'US' },
         'phoneNumber'
       );
 
-      expect(result).toEqual({ phoneNumber: '   ' });
+      expect(result).toEqual({});
     });
   });
 

@@ -124,13 +124,13 @@ describe('Signup', () => {
       });
     });
 
-    it('should not remap an empty phoneNumber', async () => {
+    it('should drop an empty phoneNumber rather than submit either spelling of it', async () => {
       const payload: SignupOptions = { email: 'test@example.com', phoneNumber: '', password: 'P@ssw0rd!' };
       await signup.signup(payload);
 
       const submittedPayload = (FormHandler.prototype.submitData as jest.Mock).mock.calls[0][0];
       expect(submittedPayload).not.toHaveProperty('phone_number');
-      expect(submittedPayload).toHaveProperty('phoneNumber', '');
+      expect(submittedPayload).not.toHaveProperty('phoneNumber');
     });
 
     it('should leave a payload without phoneNumber untouched', async () => {

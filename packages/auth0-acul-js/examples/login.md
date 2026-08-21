@@ -229,10 +229,17 @@ if (config) {
 
 ```typescript
 import Login from '@auth0/auth0-acul-js/login';
+import type { IdentifierType } from '@auth0/auth0-acul-js/login';
 
 const loginManager = new Login();
+const allowed = loginManager.getLoginIdentifiers() ?? [];
 
-const activeIdentifier = loginManager.screen.data?.activeIdentifierType ?? 'email';
+// Fall back to the first of email, username, phone the connection allows. A fixed 'email' paints a
+// field a username-only or phone-only connection rejects.
+const activeIdentifier =
+  loginManager.screen.data?.activeIdentifierType ??
+  (['email', 'username', 'phone'] as IdentifierType[]).find((type) => allowed.includes(type)) ??
+  'email';
 
 if (activeIdentifier === 'phone') {
   // render the phone number input with the country code picker
@@ -283,9 +290,12 @@ const TypedLoginScreen: React.FC = () => {
 
   const allowed = useMemo(() => loginManager.getLoginIdentifiers() ?? ['email'], [loginManager]);
 
-  // Start on the identifier the server resolved, falling back to the first the tenant allows.
+  // Start on the identifier the server resolved, else the first of email, username, phone the
+  // connection allows, rather than whichever it happens to list first.
   const [identifierType, setIdentifierType] = useState<IdentifierType>(
-    loginManager.screen.data?.activeIdentifierType ?? allowed[0]
+    loginManager.screen.data?.activeIdentifierType ??
+      (['email', 'username', 'phone'] as IdentifierType[]).find((type) => allowed.includes(type)) ??
+      'email'
   );
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
@@ -318,8 +328,9 @@ const TypedLoginScreen: React.FC = () => {
 
       {identifierType === 'phone' && countryCodes?.available && (
         <select value={phoneCountryCode} onChange={(e) => setPhoneCountryCode(e.target.value)}>
+          {/* A country can appear more than once, one entry per dial code, so key on both. */}
           {countryCodes.available.map(({ code, label, dialCode }) => (
-            <option key={code} value={code}>
+            <option key={`${code}-${dialCode}`} value={code}>
               {label} ({dialCode})
             </option>
           ))}
@@ -351,4 +362,8 @@ export default TypedLoginScreen;
 
 Submit only a type the tenant actually allows — one of `getLoginIdentifiers()`. The server rejects a type that is not enabled for the connection, and the values line up exactly, so an entry from that array can be passed straight through as `identifierType`.
 
-`countryCodes` is `null` when the server does not provide the list. In that case render your own phone input and submit `identifier` on its own, or keep using `pickCountryCode()`.
+Only `code` is submitted, so entries sharing one — a country with several dial codes — are not independently selectable.
+
+`countryCodes.available` is `null`, and the dropdown renders empty, unless the screen's rendering configuration asks for the list: `{ "context_configuration": ["country_codes"] }`. Otherwise submit `identifier` on its own, or keep using `pickCountryCode()`.
+
+Omitting `phoneCountryCode` submits untyped, leaving the server to resolve the country itself.

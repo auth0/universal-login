@@ -52,7 +52,10 @@ export interface ScreenMembersOnLoginId extends ScreenMembers {
   /** Intersected with the inherited `data`, so other `screen.data` reads keep compiling. */
   data:
     | (NonNullable<ScreenMembers['data']> & {
-        /** The identifier input to pre-select. Absent when the server resolved none — use your own default. */
+        /**
+         * The identifier input to pre-select. Absent when the server resolved none — fall back to
+         * the first of `email`, `username`, `phone` in `getLoginIdentifiers()`.
+         */
         activeIdentifierType?: IdentifierType;
       })
     | null;
@@ -80,7 +83,8 @@ export type LoginOptions = LoginIdentifierOptions & {
   /**
    * ISO 3166-1 alpha-2 country for a phone identifier, from a `code` in `countryCodes.available`.
    * Required with `identifierType: 'phone'`. The dial code is prefixed server-side, so pass the
-   * national number.
+   * national number — unparenthesized, as `(201) 555-0123` is submitted unprefixed. Omitting the
+   * country submits untyped, leaving the server to resolve one.
    */
   phoneCountryCode?: string;
   [key: string]: string | number | boolean | undefined;

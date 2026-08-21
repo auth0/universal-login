@@ -275,8 +275,9 @@ const PhoneSignup: React.FC = () => {
   return (
     <div className="input-container">
       <select value={phoneCountryCode} onChange={(e) => setPhoneCountryCode(e.target.value)}>
+        {/* A country can appear more than once, one entry per dial code, so key on both. */}
         {countryCodes?.available?.map(({ code, label, dialCode }) => (
-          <option key={code} value={code}>
+          <option key={`${code}-${dialCode}`} value={code}>
             {label} ({dialCode})
           </option>
         ))}
@@ -306,4 +307,6 @@ const PhoneSignup: React.FC = () => {
 export default PhoneSignup;
 ```
 
-`countryCodes` is `null` when the server does not provide the list. In that case render your own phone input and submit `phoneNumber` on its own, or keep using `pickCountryCode()`.
+Only `code` is submitted, so entries sharing one — a country with several dial codes — are not independently selectable.
+
+`countryCodes.available` is `null`, and the dropdown renders empty, unless the screen's rendering configuration asks for the list: `{ "context_configuration": ["country_codes"] }`. Otherwise submit `phoneNumber` on its own, or keep using `pickCountryCode()`.

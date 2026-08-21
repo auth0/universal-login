@@ -23,11 +23,13 @@ export function normalizePhoneIdentifier(
 ): NormalizedPhoneIdentifierPayload {
   const phoneNumber = payload[phoneField];
   const { phoneCountryCode, ...rest } = payload;
-
-  // No number to map. phoneCountryCode still goes, since alone it identifies nothing.
-  if (typeof phoneNumber !== 'string' || !phoneNumber.trim()) return rest;
-
+  // Dropped whether or not it holds a number: it is the SDK's name for the field, never one the
+  // endpoint reads.
   delete rest[phoneField];
+
+  // No number to map, so nothing to type. phoneCountryCode is dropped with it, since the server reads
+  // it only beside a phone.
+  if (typeof phoneNumber !== 'string' || !phoneNumber.trim()) return rest;
 
   if (typeof phoneCountryCode === 'string' && phoneCountryCode.trim()) {
     return {

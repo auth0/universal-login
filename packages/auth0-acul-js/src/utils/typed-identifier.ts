@@ -28,20 +28,15 @@ function isIdentifierType(value: unknown): value is IdentifierType {
 }
 
 /**
- * Maps the identifier and `identifierType` onto the login endpoint's field names: `identifier_type`,
- * the `identifier_*` field for that type, and `identifier_phone_country_code` for phone. The server
- * then reads the value as that type instead of inferring one from its shape, and collapses it back
- * onto `username` internally.
+ * Maps the identifier and `identifierType` onto the endpoint's field names — `identifier_type`, the
+ * `identifier_*` field for that type, and `identifier_phone_country_code` for phone — so the server
+ * reads the value as that type rather than inferring one from its shape. The value itself always goes
+ * out as `username`, the only identifier field the endpoint reads; `identifier` is the name that pairs
+ * with `identifierType`, `username` its original spelling, and `identifier` wins when both are given.
  *
- * The identifier stays denormalized on the way in — one value, its type named separately — which
- * mirrors how the endpoint models it. Callers name that value `identifier`, which pairs with
- * `identifierType`; `username` is its original spelling and still accepted, so `identifier` wins when
- * both are supplied. Either way the value goes out as `username`, the only identifier field the
- * endpoint reads and the only one a tenant without typed processing sees.
- *
- * Degrades to that untyped contract, leaving the payload as supplied, when `identifierType` names no
- * supported type, and for `'phone'` with no country code — a typed phone suppresses the server's own
- * prefixing, so it would go out with no dial code and match no user.
+ * Degrades to the untyped contract when `identifierType` names no supported type, and for `'phone'`
+ * with no country — a typed phone suppresses the server's prefixing, so it would go out with no dial
+ * code and match no user, whereas untyped still resolves a country on a phone-only connection.
  *
  * @param payload - The login payload as supplied by the caller.
  * @returns A new payload using the server's field names. Wider than `LoginOptions`.
