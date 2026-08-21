@@ -21,9 +21,8 @@ export class ScreenOverride extends Screen implements OverrideOptions {
   }
 
   /**
-   * Extracts the screen data, renaming the server's `active_identifier_type` to the camelCase
-   * `activeIdentifierType`. The raw snake_case key is dropped so consumers see a single
-   * camelCase field, matching the declared type.
+   * Extracts the screen data, renaming `active_identifier_type` to `activeIdentifierType`. The
+   * snake_case key is dropped so consumers see a single field, matching the declared type.
    */
   static getScreenData(screenContext: ScreenContext): OverrideOptions['data'] {
     const data = screenContext.data;

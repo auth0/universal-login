@@ -485,7 +485,7 @@ export default LoginIdScreenWithGoogleOneTap;
 ```
 ### Example using activeIdentifierType
 
-When a tenant allows multiple identifiers, `screen.data.activeIdentifierType` tells you which input the server resolved so you can render it on first paint. It is `undefined` when the server has not resolved one, so fall back to your own default rather than assuming `email`.
+`screen.data.activeIdentifierType` is the input the server resolved, for first paint. It is `undefined` when none was resolved, so supply your own default.
 
 ```tsx
 import React, { useRef } from 'react';
@@ -517,3 +517,99 @@ const LoginIdScreenWithActiveIdentifier: React.FC = () => {
 
 export default LoginIdScreenWithActiveIdentifier;
 ```
+
+### Example telling the server which identifier the user chose
+
+`activeIdentifierType` says which input to *render*; `identifierType` says which one the user *entered*. Pass it when your screen lets the user pick — tabs, a dropdown, or `useLoginIdentifiers()`.
+
+The value goes in `identifier`, and `identifierType` names what it holds. Omit the type and the identifier is submitted on its own, as before. `username` still works in `identifier`'s place.
+
+```tsx
+import React, { useRef } from 'react';
+import { useCountryCodes, useLoginIdentifiers, login } from '@auth0/auth0-acul-react/login-id';
+
+const TypedLoginId: React.FC = () => {
+  const allowed = useLoginIdentifiers();
+  const countryCodes = useCountryCodes();
+  const identifierRef = useRef<HTMLInputElement>(null);
+
+  // Only used for a phone identifier — see the country selector example below.
+  const phoneCountryCode = countryCodes?.recommended ?? countryCodes?.available?.[0]?.code ?? '';
+
+  return (
+    <div>
+      {allowed?.map((type) => (
+        <button
+          key={type}
+          onClick={() => {
+            // One identifier, typed by `identifierType`; only a phone reads a country.
+            login({
+              identifier: identifierRef.current?.value ?? '',
+              identifierType: type,
+              ...(type === 'phone' ? { phoneCountryCode } : {}),
+            });
+          }}
+        >
+          Continue with {type}
+        </button>
+      ))}
+
+      <input id="identifier" ref={identifierRef} type="text" />
+    </div>
+  );
+};
+
+export default TypedLoginId;
+```
+
+For a phone, pass the national number as `identifier` and the country as `phoneCountryCode` (from `useCountryCodes`, rendered inline). The dial code is added server-side. A typed submission ignores any `pickCountryCode()` selection.
+
+```tsx
+import React, { useState } from 'react';
+import { useCountryCodes, login } from '@auth0/auth0-acul-react/login-id';
+
+const PhoneLoginId: React.FC = () => {
+  const countryCodes = useCountryCodes();
+
+  const [phone, setPhone] = useState('');
+  // `recommended` is the server's suggested default; fall back to the first available country.
+  const [phoneCountryCode, setPhoneCountryCode] = useState(
+    countryCodes?.recommended ?? countryCodes?.available?.[0]?.code ?? ''
+  );
+
+  const handleContinue = () => {
+    login({
+      identifier: phone, // national number, e.g. "2015550123"
+      identifierType: 'phone',
+      phoneCountryCode, // ISO 3166-1 alpha-2, e.g. "US"
+    });
+  };
+
+  return (
+    <div>
+      <select value={phoneCountryCode} onChange={(e) => setPhoneCountryCode(e.target.value)}>
+        {countryCodes?.available?.map(({ code, label, dialCode }) => (
+          <option key={code} value={code}>
+            {label} ({dialCode})
+          </option>
+        ))}
+      </select>
+
+      <input
+        type="tel"
+        value={phone}
+        onChange={(e) => setPhone(e.target.value)}
+        placeholder="Enter your phone number"
+      />
+
+      <button onClick={handleContinue}>Continue</button>
+    </div>
+  );
+};
+
+export default PhoneLoginId;
+```
+
+Submit only a type the tenant actually allows — one of `useLoginIdentifiers()`. The server rejects a type that is not enabled for the connection, and the values line up exactly, so an entry from that array can be passed straight through as `identifierType`.
+
+`countryCodes` is `null` when the server does not provide the list. In that case render your own phone input and submit `identifier` on its own, or keep using `pickCountryCode()`.

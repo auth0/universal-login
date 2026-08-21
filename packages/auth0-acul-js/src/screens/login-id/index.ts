@@ -6,6 +6,7 @@ import { FormHandler } from '../../utils/form-handler';
 import { getLoginIdentifiers as _getLoginIdentifiers } from '../../utils/login-identifiers';
 import { getPasskeyCredentials } from '../../utils/passkeys';
 import { registerPasskeyAutofill } from '../../utils/passkeys';
+import { normalizeTypedIdentifier } from '../../utils/typed-identifier';
 
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
@@ -21,6 +22,7 @@ import type {
   FederatedLoginOptions,
 } from '../../../interfaces/screens/login-id';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import type { NormalizedTypedIdentifierPayload } from '../../../interfaces/utils/typed-identifier';
 import type { IdentifierType } from 'interfaces/utils';
 
 export default class LoginId extends BaseContext implements LoginIdMembers {
@@ -52,8 +54,33 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
    * const loginIdManager = new LoginId();
    *
    * loginIdManager.login({
-   *   username: <usernameFieldValue>
+   *   identifier: <identifierFieldValue>
    * });
+   *
+   * @example
+   * // An email read as one, rather than inferred from the value's shape. `identifierType` is
+   * // typically `screen.data.activeIdentifierType`.
+   *
+   * loginIdManager.login({
+   *   identifier: <emailFieldValue>,
+   *   identifierType: 'email'
+   * });
+   *
+   * @example
+   * // Phone login with a country dropdown, using a code from `countryCodes.available`. Submit the
+   * // national number as the identifier; the dial code is prefixed server-side.
+   *
+   * loginIdManager.login({
+   *   identifier: '2015550123',
+   *   identifierType: 'phone',
+   *   phoneCountryCode: 'US'
+   * });
+   *
+   * @remarks
+   * Login submits a single identifier, so it stays denormalized: the value goes in `identifier` and
+   * `identifierType` names what it holds. Omitting `identifierType` submits the identifier on its
+   * own, exactly as before, with the server inferring the type. `username` is `identifier`'s original
+   * spelling and still accepted in its place.
    */
   async login(payload: LoginOptions): Promise<void> {
     const options: FormOptions = {
@@ -62,8 +89,11 @@ export default class LoginId extends BaseContext implements LoginIdMembers {
     };
 
     const browserCapabilities = await getBrowserCapabilities();
-    await new FormHandler(options).submitData<LoginOptions>({
-      ...payload,
+    // The endpoint names the typed identifier fields differently and reads them only when
+    // `identifier_type` is present, so remap before submitting. The result is no longer a
+    // `LoginOptions`, hence the wider type argument.
+    await new FormHandler(options).submitData<NormalizedTypedIdentifierPayload>({
+      ...normalizeTypedIdentifier(payload),
       ...browserCapabilities
     });
   }

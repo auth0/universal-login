@@ -83,9 +83,10 @@ export default class SignupId extends BaseContext implements SignupIdMembers {
       throw new Error(`Missing parameter(s): ${missingParameters.join(', ')}`);
     }
 
-    // The signup endpoint names the phone fields differently from the SDK options: `phone_number`
-    // for a discrete submission, or `identifier_phone` + `identifier_phone_country_code` when a
-    // country was selected alongside the number. The remapped payload is no longer a
+    // The signup endpoint names the phone fields differently from the SDK options: `phone_number`,
+    // plus `identifier_phone` + `identifier_phone_country_code` when a country was selected
+    // alongside the number. `phone_number` rides along with the composite fields as the carrier a
+    // tenant that does not process them falls back to. The remapped payload is no longer a
     // `SignupOptions`, so the type argument widens to match what is actually submitted.
     const normalizedPayload = normalizePhoneIdentifier(payload, 'phone');
 

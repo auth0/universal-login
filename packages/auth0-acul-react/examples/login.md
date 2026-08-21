@@ -350,7 +350,7 @@ export default LoginScreenWithGoogleOneTap;
 ```
 ### Example using activeIdentifierType
 
-When a tenant allows multiple identifiers, `screen.data.activeIdentifierType` tells you which input the server resolved so you can render it on first paint. It is `undefined` when the server has not resolved one, so fall back to your own default rather than assuming `email`.
+`screen.data.activeIdentifierType` is the input the server resolved, for first paint. It is `undefined` when none was resolved, so supply your own default.
 
 ```tsx
 import React, { useRef } from 'react';
@@ -391,3 +391,92 @@ const LoginScreenWithActiveIdentifier: React.FC = () => {
 
 export default LoginScreenWithActiveIdentifier;
 ```
+
+### Example telling the server which identifier the user chose
+
+`activeIdentifierType` says which input to *render*; `identifierType` says which one the user *entered*. Pass it when your screen lets the user pick — tabs, a dropdown, or `useLoginIdentifiers()`.
+
+The value goes in `identifier`, and `identifierType` names what it holds. Omit the type and the identifier is submitted on its own, as before. `username` still works in `identifier`'s place.
+
+For a phone, pass the national number as `identifier` and the country as `phoneCountryCode` (from `useCountryCodes`). The dial code is added server-side. Without a country the submission falls back to untyped.
+
+```tsx
+import React, { useState } from 'react';
+import {
+  useScreen,
+  useCountryCodes,
+  useLoginIdentifiers,
+  login,
+} from '@auth0/auth0-acul-react/login';
+
+const TypedLogin: React.FC = () => {
+  const screen = useScreen();
+  const countryCodes = useCountryCodes();
+  const allowed = useLoginIdentifiers();
+
+  // Start on the identifier the server resolved, falling back to the first the tenant allows.
+  const [identifierType, setIdentifierType] = useState(
+    screen.data?.activeIdentifierType ?? allowed?.[0] ?? 'email'
+  );
+  const [identifier, setIdentifier] = useState('');
+  const [password, setPassword] = useState('');
+  // `recommended` is the server's suggested default; fall back to the first available country.
+  const [phoneCountryCode, setPhoneCountryCode] = useState(
+    countryCodes?.recommended ?? countryCodes?.available?.[0]?.code ?? ''
+  );
+
+  const handleLogin = () => {
+    // One identifier, typed by `identifierType` — the same shape whichever tab is active.
+    login({
+      identifier, // for a phone, the national number, e.g. "2015550123"
+      identifierType,
+      // Only a phone identifier reads a country.
+      ...(identifierType === 'phone' ? { phoneCountryCode } : {}),
+      password,
+    });
+  };
+
+  return (
+    <div>
+      {/* One tab per identifier the tenant allows */}
+      {allowed.map((type) => (
+        <button key={type} type="button" onClick={() => setIdentifierType(type)}>
+          {type}
+        </button>
+      ))}
+
+      {identifierType === 'phone' && countryCodes?.available && (
+        <select value={phoneCountryCode} onChange={(e) => setPhoneCountryCode(e.target.value)}>
+          {countryCodes.available.map(({ code, label, dialCode }) => (
+            <option key={code} value={code}>
+              {label} ({dialCode})
+            </option>
+          ))}
+        </select>
+      )}
+
+      <input
+        type={identifierType === 'phone' ? 'tel' : 'text'}
+        value={identifier}
+        onChange={(e) => setIdentifier(e.target.value)}
+        placeholder={`Enter your ${identifierType}`}
+      />
+
+      <input
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        autoComplete="current-password"
+      />
+
+      <button onClick={handleLogin}>Continue</button>
+    </div>
+  );
+};
+
+export default TypedLogin;
+```
+
+Submit only a type the tenant actually allows — one of `useLoginIdentifiers()`. The server rejects a type that is not enabled for the connection, and the values line up exactly, so an entry from that array can be passed straight through as `identifierType`.
+
+`countryCodes` is `null` when the server does not provide the list. In that case render your own phone input and submit `identifier` on its own, or keep using `pickCountryCode()`.

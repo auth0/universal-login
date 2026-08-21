@@ -4,6 +4,7 @@ import type { BaseContext, BaseMembers } from '../models/base-context';
 import type { ScreenContext, ScreenMembers, PasskeyRead } from '../models/screen';
 import type { TransactionMembers, UsernamePolicy, DBConnection } from '../models/transaction';
 import type { UntrustedDataContext } from '../models/untrusted-data';
+import type { LoginIdentifierOptions } from '../utils/typed-identifier';
 
 /**
  * Extended DBConnection interface for login-id screen with passkey autofill support
@@ -48,18 +49,12 @@ export interface ScreenMembersOnLoginId extends ScreenMembers {
   resetPasswordLink: string | null;
   publicKey: PasskeyRead['public_key'] | null;
   googleOneTapConfig: GoogleOneTapConfig | null;
-  /**
-   * Intersected with the inherited `data` record rather than replacing it, so reads of any
-   * other `screen.data` key keep compiling for existing consumers.
-   */
+  /** Intersected with the inherited `data`, so other `screen.data` reads keep compiling. */
   data:
     | (NonNullable<ScreenMembers['data']> & {
         /**
-         * The identifier input the screen should pre-select, as resolved by the server.
-         *
-         * Absent when the server has not resolved one — do not treat absence as `'email'`;
-         * fall back to your own default instead. Mapped from the server's
-         * `active_identifier_type`, which is not surfaced.
+         * The identifier input to pre-select. Absent when the server resolved none — fall back to
+         * the first of `email`, `username`, `phone` in `getLoginIdentifiers()`.
          */
         activeIdentifierType?: IdentifierType;
       })
@@ -76,11 +71,24 @@ export interface TransactionMembersOnLoginId extends TransactionMembers {
   allowedIdentifiers: IdentifierType[] | null;
 }
 
-export interface LoginOptions {
-  username: string;
+/**
+ * @remarks
+ * The identifier is described by {@link LoginIdentifierOptions}. On this screen its shape still
+ * decides which authentication method the user is routed to.
+ */
+export type LoginOptions = LoginIdentifierOptions & {
   captcha?: string;
+  /** What `identifier` holds — typically from `screen.data.activeIdentifierType`. Omit to submit untyped. */
+  identifierType?: IdentifierType;
+  /**
+   * ISO 3166-1 alpha-2 country for a phone identifier, from a `code` in `countryCodes.available`.
+   * Required with `identifierType: 'phone'`. The dial code is prefixed server-side, so pass the
+   * national number — unparenthesized, as `(201) 555-0123` is submitted unprefixed. Omitting the
+   * country submits untyped, leaving the server to resolve one.
+   */
+  phoneCountryCode?: string;
   [key: string]: string | number | boolean | undefined;
-}
+};
 
 export interface FederatedLoginOptions {
   connection: string;

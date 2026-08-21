@@ -2,6 +2,7 @@ import { ScreenIds, FormActions } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 import { getLoginIdentifiers as _getLoginIdentifiers } from '../../utils/login-identifiers';
+import { normalizeTypedIdentifier } from '../../utils/typed-identifier';
 
 import { ScreenOverride } from './screen-override';
 import { TransactionOverride } from './transaction-override';
@@ -17,6 +18,7 @@ import type {
   FederatedLoginOptions,
 } from '../../../interfaces/screens/login';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
+import type { NormalizedTypedIdentifierPayload } from '../../../interfaces/utils/typed-identifier';
 import type { IdentifierType } from 'interfaces/utils';
 
 /**
@@ -50,11 +52,43 @@ export default class Login extends BaseContext implements LoginMembers {
    *   password: "testPassword"
    * });
    * ```
+   *
+   * @example
+   * ```typescript
+   * // An email read as one, rather than inferred from the value's shape. `identifierType` is
+   * // typically `screen.data.activeIdentifierType`.
+   * loginManager.login({
+   *   identifier: "test@example.com",
+   *   identifierType: "email",
+   *   password: "testPassword"
+   * });
+   * ```
+   *
+   * @example
+   * ```typescript
+   * // Phone login with a country dropdown, using a code from `countryCodes.available`. Submit the
+   * // national number as the identifier; the dial code is prefixed server-side.
+   * loginManager.login({
+   *   identifier: "2015550123",
+   *   identifierType: "phone",
+   *   phoneCountryCode: "US",
+   *   password: "testPassword"
+   * });
+   * ```
+   *
+   * @remarks
+   * Login submits a single identifier, so it stays denormalized: the value goes in `identifier` and
+   * `identifierType` names what it holds. Omitting `identifierType` submits the identifier on its
+   * own, exactly as before, with the server inferring the type. `username` is `identifier`'s original
+   * spelling and still accepted in its place.
    */
   async login(payload: LoginOptions): Promise<void> {
     const options: FormOptions = { state: this.transaction.state, telemetry: [Login.screenIdentifier, 'login'] };
-    await new FormHandler(options).submitData<LoginOptions>({
-      ...payload,
+    // The endpoint names the typed identifier fields differently and reads them only when
+    // `identifier_type` is present, so remap before submitting. The result is no longer a
+    // `LoginOptions`, hence the wider type argument.
+    await new FormHandler(options).submitData<NormalizedTypedIdentifierPayload>({
+      ...normalizeTypedIdentifier(payload),
       action: FormActions.DEFAULT
     });
   }
