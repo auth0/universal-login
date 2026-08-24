@@ -118,14 +118,21 @@ if (config) {
 
 ## activeIdentifierType
 
-When a tenant allows multiple identifiers, `screen.data.activeIdentifierType` tells you which input the server resolved so you can render it on first paint. It is `undefined` when the server has not resolved one, so fall back to your own default rather than assuming `email`.
+`screen.data.activeIdentifierType` is the input the server resolved, for first paint. It is `undefined` when none was resolved, so supply your own default.
 
 ```typescript
 import LoginId from '@auth0/auth0-acul-js/login-id';
+import type { IdentifierType } from '@auth0/auth0-acul-js/login-id';
 
 const loginIdManager = new LoginId();
+const allowed = loginIdManager.getLoginIdentifiers() ?? [];
 
-const activeIdentifier = loginIdManager.screen.data?.activeIdentifierType ?? 'email';
+// Fall back to the first of email, username, phone the connection allows. A fixed 'email' paints a
+// field a username-only or phone-only connection rejects.
+const activeIdentifier =
+  loginIdManager.screen.data?.activeIdentifierType ??
+  (['email', 'username', 'phone'] as IdentifierType[]).find((type) => allowed.includes(type)) ??
+  'email';
 
 if (activeIdentifier === 'phone') {
   // render the phone number input with the country code picker
@@ -133,4 +140,84 @@ if (activeIdentifier === 'phone') {
   // render the email / username input
 }
 ```
+
+## Telling the server which identifier the user chose
+
+`activeIdentifierType` says which input to *render*; `identifierType` says which one the user *entered*. Pass it when your screen lets the user pick — tabs, a dropdown, or `getLoginIdentifiers()`.
+
+The value goes in `identifier`, and `identifierType` names what it holds. Omit the type and the identifier is submitted on its own, as before. `username` still works in `identifier`'s place.
+
+```typescript
+import LoginId from '@auth0/auth0-acul-js/login-id';
+
+const loginIdManager = new LoginId();
+
+// Read as an email, whatever the value looks like.
+loginIdManager.login({ identifier: 'someone@example.com', identifierType: 'email' });
+
+// Read as a username rather than resolved from the value's shape.
+loginIdManager.login({ identifier: 'someone', identifierType: 'username' });
+
+// No type at all: the previous contract, with the server inferring one from the value's shape.
+loginIdManager.login({ identifier: 'someone' });
+```
+
+For a phone, pass the national number as `identifier` and the country as `phoneCountryCode` (from `countryCodes.available`, rendered inline). The dial code is added server-side. A typed submission ignores any `pickCountryCode()` selection.
+
+```tsx
+import React, { useState } from 'react';
+import LoginId from '@auth0/auth0-acul-js/login-id';
+
+const PhoneLoginId: React.FC = () => {
+  const [loginIdManager] = useState(() => new LoginId());
+  const { countryCodes } = loginIdManager;
+
+  const [phone, setPhone] = useState('');
+  // `recommended` is the server's suggested default; fall back to the first available country.
+  const [phoneCountryCode, setPhoneCountryCode] = useState(
+    countryCodes?.recommended ?? countryCodes?.available?.[0]?.code ?? ''
+  );
+
+  const onContinueClick = () => {
+    loginIdManager.login({
+      identifier: phone, // national number, e.g. "2015550123"
+      identifierType: 'phone',
+      phoneCountryCode // ISO 3166-1 alpha-2, e.g. "US"
+    });
+  };
+
+  return (
+    <div className="input-container">
+      <select value={phoneCountryCode} onChange={(e) => setPhoneCountryCode(e.target.value)}>
+        {/* A country can appear more than once, one entry per dial code, so key on both. */}
+        {countryCodes?.available?.map(({ code, label, dialCode }) => (
+          <option key={`${code}-${dialCode}`} value={code}>
+            {label} ({dialCode})
+          </option>
+        ))}
+      </select>
+
+      <input
+        type="tel"
+        id="phone"
+        value={phone}
+        onChange={(e) => setPhone(e.target.value)}
+        placeholder="Enter your phone number"
+      />
+
+      <button onClick={onContinueClick}>Continue</button>
+    </div>
+  );
+};
+
+export default PhoneLoginId;
+```
+
+Submit only a type the tenant actually allows — one of `getLoginIdentifiers()`. The server rejects a type that is not enabled for the connection, and the values line up exactly, so an entry from that array can be passed straight through as `identifierType`.
+
+Only `code` is submitted, so entries sharing one — a country with several dial codes — are not independently selectable.
+
+`countryCodes.available` is `null`, and the dropdown renders empty, unless the screen's rendering configuration asks for the list: `{ "context_configuration": ["country_codes"] }`. Otherwise submit `identifier` on its own, or keep using `pickCountryCode()`.
+
+Omitting `phoneCountryCode` submits untyped, leaving the server to resolve the country itself.
 

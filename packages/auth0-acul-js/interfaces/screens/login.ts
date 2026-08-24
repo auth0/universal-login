@@ -3,6 +3,7 @@ import type { CustomOptions, GoogleOneTapConfig, GoogleOneTapOptions } from '../
 import type { BaseContext, BaseMembers } from '../models/base-context';
 import type { ScreenContext, ScreenMembers } from '../models/screen';
 import type { TransactionContext, TransactionMembers, DBConnection, PasswordPolicy } from '../models/transaction';
+import type { LoginIdentifierOptions } from '../utils/typed-identifier';
 /**
  * Extended screen context interface for the login screen
  */
@@ -20,19 +21,13 @@ export interface ScreenMembersOnLogin extends ScreenMembers {
   signupLink: string | null;
   resetPasswordLink: string | null;
   googleOneTapConfig: GoogleOneTapConfig | null;
-  /**
-   * Intersected with the inherited `data` record rather than replacing it, so reads of any
-   * other `screen.data` key keep compiling for existing consumers.
-   */
+  /** Intersected with the inherited `data`, so other `screen.data` reads keep compiling. */
   data:
     | (NonNullable<ScreenMembers['data']> & {
         username?: string;
         /**
-         * The identifier input the screen should pre-select, as resolved by the server.
-         *
-         * Absent when the server has not resolved one — do not treat absence as `'email'`;
-         * fall back to your own default instead. Mapped from the server's
-         * `active_identifier_type`, which is not surfaced.
+         * The identifier input to pre-select. Absent when the server resolved none — fall back to
+         * the first of `email`, `username`, `phone` in `getLoginIdentifiers()`.
          */
         activeIdentifierType?: IdentifierType;
       })
@@ -67,17 +62,27 @@ export interface Login extends BaseContext {
 
 /**
  * Options for performing login operations
+ *
+ * @remarks
+ * The identifier is described by {@link LoginIdentifierOptions}.
  */
-export interface LoginOptions {
-  /** The username/email to login with */
-  username: string;
+export type LoginOptions = LoginIdentifierOptions & {
   /** The password for authentication */
   password: string;
   /** Optional captcha value if required */
   captcha?: string;
+  /** What `identifier` holds — typically from `screen.data.activeIdentifierType`. Omit to submit untyped. */
+  identifierType?: IdentifierType;
+  /**
+   * ISO 3166-1 alpha-2 country for a phone identifier, from a `code` in `countryCodes.available`.
+   * Required with `identifierType: 'phone'`. The dial code is prefixed server-side, so pass the
+   * national number — unparenthesized, as `(201) 555-0123` is submitted unprefixed. Omitting the
+   * country submits untyped, leaving the server to resolve one.
+   */
+  phoneCountryCode?: string;
   /** Any additional custom options */
   [key: string]: string | number | boolean | undefined;
-}
+};
 
 /**
  * Options for performing social login operations

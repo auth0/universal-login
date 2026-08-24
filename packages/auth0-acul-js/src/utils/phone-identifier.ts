@@ -7,26 +7,15 @@ import type {
 } from '../../interfaces/utils/phone-identifier';
 
 /**
- * Reshapes a signup payload's phone options into the fields the signup endpoint expects.
+ * Maps a signup payload's phone options onto the fields the signup endpoint reads.
  *
- * Two submission contracts exist, and which one applies is decided by whether the caller supplies
- * `phoneCountryCode`:
- *
- * - With `phoneCountryCode`: the composite contract. The number and the country are submitted
- *   together as `identifier_phone` + `identifier_phone_country_code`, and the submitted country is
- *   authoritative: the server prefixes the dial code from it rather than re-deriving one from the
- *   digits or from geo-IP. Use this when rendering a country dropdown next to the number field.
- * - Without `phoneCountryCode`: the discrete contract. The number is submitted as `phone_number`
- *   and the server derives the country itself, matching the historical `pickCountryCode()` flow.
- *
- * The camelCase SDK option is always removed so a payload never carries both spellings.
+ * `phone_number` is always submitted. A `phoneCountryCode` additionally sends
+ * `identifier_phone` + `identifier_phone_country_code`, letting the server prefix the dial code
+ * from the given country instead of deriving one itself.
  *
  * @param payload - The signup payload as supplied by the caller.
- * @param phoneField - The payload key holding the phone number for this screen (`phoneNumber` on
- * signup, `phone` on signup-id).
- * @returns A new payload with the phone options mapped onto the server's field names. Returned
- * unchanged when it carries no phone number. The return type is wider than `SignupOptions` by
- * design, since the mapped payload no longer carries the camelCase options that type describes.
+ * @param phoneField - The key holding the phone number (`phoneNumber` on signup, `phone` on signup-id).
+ * @returns A new payload, unchanged when it carries no phone number.
  */
 export function normalizePhoneIdentifier(
   payload: PhoneIdentifierPayload,
@@ -34,16 +23,18 @@ export function normalizePhoneIdentifier(
 ): NormalizedPhoneIdentifierPayload {
   const phoneNumber = payload[phoneField];
   const { phoneCountryCode, ...rest } = payload;
-
-  // Nothing to map. Drop phoneCountryCode all the same: on its own it identifies no number, and
-  // leaving it in would submit an unread field.
-  if (typeof phoneNumber !== 'string' || !phoneNumber.trim()) return rest;
-
+  // Dropped whether or not it holds a number: it is the SDK's name for the field, never one the
+  // endpoint reads.
   delete rest[phoneField];
+
+  // No number to map, so nothing to type. phoneCountryCode is dropped with it, since the server reads
+  // it only beside a phone.
+  if (typeof phoneNumber !== 'string' || !phoneNumber.trim()) return rest;
 
   if (typeof phoneCountryCode === 'string' && phoneCountryCode.trim()) {
     return {
       ...rest,
+      phone_number: phoneNumber,
       [TypedFields.PHONE]: phoneNumber,
       [TypedFields.PHONE_COUNTRY_CODE]: phoneCountryCode,
     };

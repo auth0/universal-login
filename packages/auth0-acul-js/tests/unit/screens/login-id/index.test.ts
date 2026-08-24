@@ -79,6 +79,78 @@ describe('LoginId', () => {
         'allow-passkeys': expect.any(Boolean) as unknown,
       });
     });
+
+    it('maps identifierType onto the typed fields the login endpoint reads', async () => {
+      const payload: LoginOptions = { identifier: 'test@example.com', identifierType: 'email' };
+
+      await loginId.login(payload);
+
+      expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(
+        expect.objectContaining({
+          username: 'test@example.com',
+          identifier_type: 'email',
+          identifier_email: 'test@example.com',
+        })
+      );
+    });
+
+    it('maps a phone identifier and country onto the typed fields', async () => {
+      const payload: LoginOptions = {
+        identifier: '2015550123',
+        identifierType: 'phone',
+        phoneCountryCode: 'US',
+      };
+
+      await loginId.login(payload);
+
+      expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(
+        expect.objectContaining({
+          username: '2015550123',
+          identifier_type: 'phone',
+          identifier_phone: '2015550123',
+          identifier_phone_country_code: 'US',
+        })
+      );
+    });
+
+    // `username` is the identifier's original spelling, so a caller written against the previous
+    // contract must keep submitting the same payload it always did.
+    it('accepts the username spelling of the identifier', async () => {
+      const payload: LoginOptions = { username: 'test@example.com', identifierType: 'email' };
+
+      await loginId.login(payload);
+
+      expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(
+        expect.objectContaining({
+          username: 'test@example.com',
+          identifier_type: 'email',
+          identifier_email: 'test@example.com',
+        })
+      );
+    });
+
+    it('does not submit the camelCase options', async () => {
+      await loginId.login({ identifier: '2015550123', identifierType: 'phone', phoneCountryCode: 'US' });
+
+      expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(
+        expect.not.objectContaining({
+          identifier: expect.anything() as unknown,
+          identifierType: expect.anything() as unknown,
+          phoneCountryCode: expect.anything() as unknown,
+        })
+      );
+    });
+
+    it('submits no typed field when identifierType is omitted', async () => {
+      await loginId.login({ identifier: 'testuser' });
+
+      expect(FormHandler.prototype.submitData).toHaveBeenCalledWith(
+        expect.not.objectContaining({
+          identifier_type: expect.anything() as unknown,
+          identifier_username: expect.anything() as unknown,
+        })
+      );
+    });
   });
 
   describe('federatedLogin', () => {

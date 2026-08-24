@@ -75,11 +75,12 @@ export default class Signup extends BaseContext implements SignupMembers {
       telemetry: [Signup.screenIdentifier, 'signup'],
     };
 
-    // The signup endpoint names the phone fields differently from the SDK options: `phone_number`
-    // for a discrete submission, or `identifier_phone` + `identifier_phone_country_code` when a
-    // country was selected alongside the number. Remap before submitting so a phone signup is not
-    // rejected with "no-phone_number". The remapped payload is no longer a `SignupOptions`, so the
-    // type argument widens to match what is actually submitted.
+    // The signup endpoint names the phone fields differently from the SDK options: `phone_number`,
+    // plus `identifier_phone` + `identifier_phone_country_code` when a country was selected
+    // alongside the number. Remap before submitting so a phone signup is not rejected with
+    // "no-phone_number". `phone_number` rides along with the composite fields as the carrier a
+    // tenant that does not process them falls back to. The remapped payload is no longer a
+    // `SignupOptions`, so the type argument widens to match what is actually submitted.
     await new FormHandler(options).submitData<NormalizedPhoneIdentifierPayload>(
       normalizePhoneIdentifier(payload, 'phoneNumber')
     );
