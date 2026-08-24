@@ -8,20 +8,24 @@ export class ScreenOverride extends Screen implements OverrideOptions {
 
   constructor(screenContext: ScreenContext) {
     super(screenContext);
-    this.data = Screen.getScreenData(screenContext) as OverrideOptions['data'];
+    this.data = ScreenOverride.getScreenData(screenContext);
   }
 
   /**
    * Extracts and transforms the screen data from the context
    * @param screenContext The screen context containing the data
-   * @returns The transformed screen data
+   * @returns The transformed screen data, exposing the code as `textCode` and, for
+   *          backward compatibility, under the raw `text_code` key as well
    */
   static getScreenData = (screenContext: ScreenContext): OverrideOptions['data'] => {
     const data = screenContext.data;
     if (!data) return null;
 
+    const textCode = typeof data.text_code === 'string' ? data.text_code : '';
+
     return {
-      textCode: typeof data.text_code === 'string' ? data.text_code : '',
+      textCode,
+      text_code: textCode,
     };
   };
 }

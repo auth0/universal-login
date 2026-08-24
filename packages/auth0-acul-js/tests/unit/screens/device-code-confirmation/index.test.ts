@@ -12,6 +12,7 @@ describe('DeviceCodeConfirmation', () => {
   beforeEach(() => {
     global.window = Object.create(window);
     baseContextData.screen.name = ScreenIds.DEVICE_CODE_CONFIRMATION;
+    baseContextData.screen.data = { text_code: 'ABC123' } as unknown as typeof baseContextData.screen.data;
     window.universal_login_context = baseContextData;
 
     mockFormHandler = {
@@ -29,6 +30,14 @@ describe('DeviceCodeConfirmation', () => {
 
   it('should create an instance of DeviceCodeConfirmation', () => {
     expect(deviceCodeConfirmation).toBeInstanceOf(DeviceCodeConfirmation);
+  });
+
+  it('should expose the screen data through the ScreenOverride', () => {
+    expect(deviceCodeConfirmation.screen.data?.textCode).toBe('ABC123');
+  });
+
+  it('should keep exposing the code under the deprecated text_code key', () => {
+    expect(deviceCodeConfirmation.screen.data?.text_code).toBe('ABC123');
   });
 
   describe('confirm', () => {
