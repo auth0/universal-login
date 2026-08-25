@@ -1,5 +1,15 @@
 # Change Log
 
+## [auth0-acul-js-v1.7.0](https://github.com/auth0/universal-login/tree/auth0-acul-js-v1.7.0) (2026-08-25)
+[Full Changelog](https://github.com/auth0/universal-login/compare/auth0-acul-js-v1.6.0...auth0-acul-js-v1.7.0)
+
+**Added**
+- feat: expose identifierType and phoneCountryCode on login and login-id screen [\#384](https://github.com/auth0/universal-login/pull/384) ([amitsingh05667](https://github.com/amitsingh05667))
+- feat: expose phoneCountryCode on signup and signup-id screens [\#382](https://github.com/auth0/universal-login/pull/382) ([amitsingh05667](https://github.com/amitsingh05667))
+-  feat: expose activeIdentifierType on login and login-id screens [\#381](https://github.com/auth0/universal-login/pull/381) ([amitsingh05667](https://github.com/amitsingh05667))
+- feat: add theme identifiers and country code support [\#377](https://github.com/auth0/universal-login/pull/377) ([amitsingh05667](https://github.com/amitsingh05667))
+- Fix: phone-based signup on the signup-password screen [\#374](https://github.com/auth0/universal-login/pull/374) ([amitsingh05667](https://github.com/amitsingh05667))
+
 ## [auth0-acul-js-v1.6.0](https://github.com/auth0/universal-login/tree/auth0-acul-js-v1.6.0) (2026-07-16)
 [Full Changelog](https://github.com/auth0/universal-login/compare/auth0-acul-js-v1.5.0...auth0-acul-js-v1.6.0)
 
