@@ -2,6 +2,7 @@ import { FormActions, ScreenIds } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
+import type { CustomOptions } from '../../../interfaces/common';
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type {
   OrganizationSelectionMembers,
@@ -50,6 +51,29 @@ export default class OrganizationSelection extends BaseContext implements Organi
     };
     await new FormHandler(options).submitData<ContinueWithOrganizationNameOptions>({
       ...payload,
+      action: FormActions.DEFAULT,
+    });
+  }
+
+  /**
+   * Skips the organization selection, proceeding with the user's personal account.
+   * @param payload Optional custom options to include with the request.
+   * @example
+   * ```typescript
+   * import OrganizationSelection from '@auth0/auth0-acul-js/organization-selection';
+   *
+   * const organizationSelection = new OrganizationSelection();
+   * await organizationSelection.skipOrganizationSelection();
+   * ```
+   */
+  async skipOrganizationSelection(payload?: CustomOptions): Promise<void> {
+    const options: FormOptions = {
+      state: this.transaction.state,
+      telemetry: [OrganizationSelection.screenIdentifier, 'skipOrganizationSelection'],
+    };
+    await new FormHandler(options).submitData({
+      ...payload,
+      organizationSkipped: true,
       action: FormActions.DEFAULT,
     });
   }
