@@ -13,7 +13,9 @@ jest.mock('@auth0/auth0-acul-js', () => ({
 
 // Mock the core SDK class
 jest.mock('@auth0/auth0-acul-js/signup-password', () => {
-  return jest.fn().mockImplementation(() => {});
+  return jest.fn().mockImplementation(() => ({
+    skipPassword: jest.fn(() => Promise.resolve()),
+  }));
 }, { virtual: true });
 
 // Mock the instance store
@@ -146,6 +148,23 @@ describe('SignupPassword Screen', () => {
           // Function may require specific parameters
         }
       });
+    });
+  });
+
+  describe('skipPassword', () => {
+    it('should export skipPassword as a function', () => {
+      expect(typeof SignupPasswordScreen.skipPassword).toBe('function');
+    });
+
+    it('should call instance.skipPassword with no payload', () => {
+      const result = SignupPasswordScreen.skipPassword();
+      expect(result).toBeDefined();
+    });
+
+    it('should call instance.skipPassword with the provided payload', () => {
+      const payload = { captcha: 'token' };
+      const result = SignupPasswordScreen.skipPassword(payload);
+      expect(result).toBeDefined();
     });
   });
 });

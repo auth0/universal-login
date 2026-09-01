@@ -26,6 +26,21 @@
     signupPasswordManager.signup(signupParams);
 ```
 
+## skipPassword
+   Skips password creation during signup when the connection allows it.
+   `screen.data.showSkipPassword` is `true` only when the connection has **Password on signup → Allow**,
+   **Support users without a password → ON**, and the user has already verified their email or phone via OTP.
+
+```typescript
+    import SignupPassword from "@auth0/auth0-acul-js/signup-password";
+
+    const signupPasswordManager = new SignupPassword();
+
+    if (signupPasswordManager.screen.data?.showSkipPassword) {
+      await signupPasswordManager.skipPassword();
+    }
+```
+
 ## signupPassword Example using validatePassword 
 
 ```typescript

@@ -19,6 +19,7 @@ import {
     useTransaction,
     // Submit functions
     signup as signupMethod,
+    skipPassword as skipPasswordMethod,
     usePasswordValidation,
     // Common hooks
     useErrors
@@ -221,6 +222,17 @@ const SignupPasswordScreen: React.FC = () => {
                     >
                         Sign Up
                     </button>
+
+                    {/* Skip password — only rendered when the connection allows it and OTP is verified */}
+                    {screen.data?.showSkipPassword && (
+                        <button
+                            type="button"
+                            onClick={() => skipPasswordMethod()}
+                            className="w-full flex justify-center py-2 px-4 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                        >
+                            Skip for now
+                        </button>
+                    )}
                 </form>
 
                 {/* Server-side / global errors */}
@@ -275,6 +287,7 @@ import {
     useTransaction,
     // Submit functions
     signup as signupMethod,
+    skipPassword as skipPasswordMethod,
     usePasswordValidation,
     // Common hooks
     useErrors
@@ -477,6 +490,17 @@ const SignupPasswordScreen: React.FC = () => {
                     >
                         Sign Up
                     </button>
+
+                    {/* Skip password — only rendered when the connection allows it and OTP is verified */}
+                    {screen.data?.showSkipPassword && (
+                        <button
+                            type="button"
+                            onClick={() => skipPasswordMethod()}
+                            className="w-full flex justify-center py-2 px-4 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                        >
+                            Skip for now
+                        </button>
+                    )}
                 </form>
 
                 {/* Server-side / global errors */}
