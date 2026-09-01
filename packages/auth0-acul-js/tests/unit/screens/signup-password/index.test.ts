@@ -3,7 +3,7 @@ import SignupPassword from '../../../../src/screens/signup-password';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { baseContextData } from '../../../data/test-data';
 
-import type { SignupPasswordOptions, FederatedSignupOptions } from 'interfaces/screens/signup-password';
+import type { SignupPasswordOptions, FederatedSignupOptions, SkipPasswordOptions } from 'interfaces/screens/signup-password';
 
 jest.mock('../../../../src/utils/form-handler');
 
@@ -118,6 +118,42 @@ describe('SignupPassword', () => {
       await expect(signupPassword.signup(payload)).rejects.toThrow(
         'Invalid phone number format'
       );
+    });
+  });
+
+  describe('skipPassword method', () => {
+    it('should submit action=skip-password', async () => {
+      await signupPassword.skipPassword();
+
+      expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith(
+        expect.objectContaining({ action: 'skip-password' })
+      );
+    });
+
+    it('should merge extra payload with action=skip-password', async () => {
+      const payload: SkipPasswordOptions = { captcha: 'token' };
+      await signupPassword.skipPassword(payload);
+
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith(
+        expect.objectContaining({ action: 'skip-password', captcha: 'token' })
+      );
+    });
+
+    it('should use correct telemetry', async () => {
+      await signupPassword.skipPassword();
+
+      expect(FormHandler).toHaveBeenCalledWith(
+        expect.objectContaining({
+          telemetry: [ScreenIds.SIGNUP_PASSWORD, 'skipPassword'],
+        })
+      );
+    });
+
+    it('should throw when FormHandler rejects', async () => {
+      mockFormHandler.submitData.mockRejectedValue(new Error('skip failed'));
+
+      await expect(signupPassword.skipPassword()).rejects.toThrow('skip failed');
     });
   });
 
