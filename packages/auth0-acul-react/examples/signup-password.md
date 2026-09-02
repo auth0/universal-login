@@ -274,6 +274,14 @@ export default SignupPasswordScreen;
     *   You must replace the empty `payload` object with the actual data from your form inputs.
     *   The core SDK will handle the API request and subsequent redirection on success.
     *   Errors are caught and can be displayed to the user.
+5.  **Skip password** (`skipPassword` + `screen.data?.showSkipPassword`):
+    *   `showSkipPassword` is `true` only when the connection has Flexible Identifiers enabled,
+        Password on signup → **Allow** (`signup_behavior = allow`), an OTP method enabled
+        (Email or Phone/SMS OTP), Support users without a password → **ON**
+        (`api_behavior = optional`), and the user completed OTP verification earlier in this
+        signup. Only render the Skip control when it is `true`.
+    *   Calling `skipPassword()` creates the account with OTP as the primary method and no
+        password credential; the user can add one later from My Account.
 
 
 ### Examaple using utility hooks - usePasswordValidation, useErrors
