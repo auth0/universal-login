@@ -34,4 +34,5 @@ export const FormActions = {
   SWITCH_TO_PASSWORD_AUTH: 'switch-to-password-auth' as const,
   GOOGLE_ONE_TAP: 'google-one-tap' as const,
   PROCEED_TO_SIGNUP: 'proceed-to-signup' as const,
+  SKIP_PASSWORD: 'skip-password' as const,
 } as const;

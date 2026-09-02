@@ -286,7 +286,7 @@ export default SignupPasswordScreen;
         password credential; the user can add one later from My Account.
 
 
-### Examaple using utility hooks - usePasswordValidation, useErrors
+### Example using utility hooks - usePasswordValidation, useErrors
 
 ``` tsx
 import React, { useState } from 'react';

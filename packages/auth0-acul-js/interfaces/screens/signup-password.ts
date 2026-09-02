@@ -61,6 +61,7 @@ export interface SwitchConnectionOptions {
 }
 
 export interface SkipPasswordOptions {
+  captcha?: string;
   [key: string]: string | number | boolean | undefined;
 }
 

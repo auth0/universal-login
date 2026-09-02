@@ -1,4 +1,4 @@
-import { ScreenIds } from '../../constants';
+import { FormActions, ScreenIds } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 import { validatePassword as _validatePassword, validateWithComplexityPolicy as _validateFlexiblePassword } from '../../utils/validate-password';
@@ -158,7 +158,7 @@ export default class SignupPassword extends BaseContext implements SignupPasswor
 
     await new FormHandler(options).submitData<SkipPasswordOptions>({
       ...payload,
-      action: 'skip-password',
+      action: FormActions.SKIP_PASSWORD,
     });
   }
 

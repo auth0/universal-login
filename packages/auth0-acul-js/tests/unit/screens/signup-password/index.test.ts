@@ -1,4 +1,4 @@
-import { ScreenIds } from '../../../../src/constants';
+import { FormActions, ScreenIds } from '../../../../src/constants';
 import SignupPassword from '../../../../src/screens/signup-password';
 import { FormHandler } from '../../../../src/utils/form-handler';
 import { baseContextData } from '../../../data/test-data';
@@ -127,7 +127,7 @@ describe('SignupPassword', () => {
 
       expect(mockFormHandler.submitData).toHaveBeenCalledTimes(1);
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
-        expect.objectContaining({ action: 'skip-password' })
+        expect.objectContaining({ action: FormActions.SKIP_PASSWORD })
       );
     });
 
@@ -136,7 +136,7 @@ describe('SignupPassword', () => {
       await signupPassword.skipPassword(payload);
 
       expect(mockFormHandler.submitData).toHaveBeenCalledWith(
-        expect.objectContaining({ action: 'skip-password', captcha: 'token' })
+        expect.objectContaining({ action: FormActions.SKIP_PASSWORD, captcha: 'token' })
       );
     });
 
