@@ -28,7 +28,8 @@
 
 ## skipPassword
    Skips password creation during signup and completes the account with OTP as the primary
-   authentication method.
+   authentication method. This is for database connections that support passwordless signup
+   (where a password is optional) — not the standalone email/SMS Passwordless connection type.
 
    ### When the skip is available
 

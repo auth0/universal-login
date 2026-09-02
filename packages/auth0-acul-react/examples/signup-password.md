@@ -275,6 +275,8 @@ export default SignupPasswordScreen;
     *   The core SDK will handle the API request and subsequent redirection on success.
     *   Errors are caught and can be displayed to the user.
 5.  **Skip password** (`skipPassword` + `screen.data?.showSkipPassword`):
+    *   For database connections that support passwordless signup (where a password is
+        optional) — not the standalone email/SMS Passwordless connection type.
     *   `showSkipPassword` is `true` only when the connection has Flexible Identifiers enabled,
         Password on signup → **Allow** (`signup_behavior = allow`), an OTP method enabled
         (Email or Phone/SMS OTP), Support users without a password → **ON**
