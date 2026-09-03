@@ -1,3 +1,4 @@
+import type { CustomOptions } from '../common';
 import type { BaseMembers } from '../models/base-context';
 import type { ClientMembers } from '../models/client';
 import type { OrganizationMembers } from '../models/organization';
@@ -45,4 +46,9 @@ export interface OrganizationSelectionMembers extends BaseMembers {
    * @param payload The options containing the organization name.
    */
   continueWithOrganizationName(payload: ContinueWithOrganizationNameOptions): Promise<void>;
+  /**
+   * Skips the organization selection, proceeding with the user's personal account.
+   * @param payload Optional custom options to include with the request.
+   */
+  skipOrganizationSelection(payload?: CustomOptions): Promise<void>;
 }

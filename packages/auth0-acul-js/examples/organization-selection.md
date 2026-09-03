@@ -16,6 +16,14 @@ organizationSelection.continueWithOrganizationName({
   organizationName: 'testOrganizationName',
 });
 
+// Only rendered when organization is optional (organization_usage: allow).
+// The server rejects this call if the organization is required for the transaction.
+try {
+  await organizationSelection.skipOrganizationSelection();
+} catch (error) {
+  console.error('Failed to skip organization selection:', error);
+}
+
 ## React Component Example with TailwindCSS
 
 ```jsx
@@ -36,6 +44,14 @@ const OrganizationSelectionScreen = () => {
       });
     } catch (error) {
       console.error('Organization Selection failed:', error);
+    }
+  };
+
+  const handleSkipOrganizationSelection = async () => {
+    try {
+      await organizationSelectionManager.skipOrganizationSelection();
+    } catch (error) {
+      console.error('Failed to skip organization selection:', error);
     }
   };
 
@@ -78,6 +94,17 @@ const OrganizationSelectionScreen = () => {
               </button>
             </div>
           </form>
+
+          {/* Rendered only when the organization is optional for this transaction */}
+          <div className="mt-4">
+            <button
+              type="button"
+              onClick={handleSkipOrganizationSelection}
+              className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              { `${ screen?.texts?.skipOrganizationSelectionButtonText ?? 'Continue with my personal account' }` }
+            </button>
+          </div>
         </div>
       </div>
     </div>

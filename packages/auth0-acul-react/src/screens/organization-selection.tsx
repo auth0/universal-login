@@ -8,6 +8,7 @@ import { registerScreen } from '../state/instance-store';
 import type {
   OrganizationSelectionMembers,
   ContinueWithOrganizationNameOptions,
+  CustomOptions,
 } from '@auth0/auth0-acul-js/organization-selection';
 
 // Register the singleton instance of OrganizationSelection
@@ -33,6 +34,8 @@ export const {
 // Submit functions
 export const continueWithOrganizationName = (payload: ContinueWithOrganizationNameOptions) =>
   withError(instance.continueWithOrganizationName(payload));
+export const skipOrganizationSelection = (payload?: CustomOptions) =>
+  withError(instance.skipOrganizationSelection(payload));
 
 // Common hooks
 export { useCurrentScreen, useErrors, useAuth0Themes, useChangeLanguage } from '../hooks';
