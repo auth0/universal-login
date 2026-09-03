@@ -16,8 +16,13 @@ organizationSelection.continueWithOrganizationName({
   organizationName: 'testOrganizationName',
 });
 
-// Example of skipping the organization selection and continuing with the personal account
-organizationSelection.skipOrganizationSelection();
+// Only rendered when organization is optional (organization_usage: allow).
+// The server rejects this call if the organization is required for the transaction.
+try {
+  await organizationSelection.skipOrganizationSelection();
+} catch (error) {
+  console.error('Failed to skip organization selection:', error);
+}
 
 ## React Component Example with TailwindCSS
 
