@@ -14,6 +14,7 @@ export interface ScreenContextOnSignupPassword extends ScreenContext {
     email?: string;
     phone_number?: string;
     username?: string;
+    show_skip_password?: boolean;
   };
 }
 
@@ -33,6 +34,7 @@ export interface ScreenMembersOnSignupPassword extends ScreenMembers {
     email?: string;
     phoneNumber?: string;
     username?: string;
+    showSkipPassword?: boolean;
   } | null;
 }
 
@@ -58,11 +60,17 @@ export interface SwitchConnectionOptions {
   [key: string]: string | number | boolean;
 }
 
+export interface SkipPasswordOptions {
+  captcha?: string;
+  [key: string]: string | number | boolean | undefined;
+}
+
 export interface SignupPasswordMembers extends BaseMembers {
   screen: ScreenMembersOnSignupPassword;
   transaction: TransactionMembersOnSignupPassword;
   signup(payload: SignupPasswordOptions): Promise<void>;
   federatedSignup(payload: FederatedSignupOptions): Promise<void>;
   switchConnection(payload: SwitchConnectionOptions): Promise<void>;
+  skipPassword(payload?: SkipPasswordOptions): Promise<void>;
   validatePassword(password: string): PasswordValidationResult;
 }

@@ -40,7 +40,8 @@ describe('ScreenOverride', () => {
     expect(screenOverride.data).toEqual({
       email: 'test@example.com',
       phoneNumber: '+1234567890',
-      username: 'testuser'
+      username: 'testuser',
+      showSkipPassword: undefined,
     });
   });
 
@@ -58,7 +59,8 @@ describe('ScreenOverride', () => {
       expect(result).toEqual({
         email: 'test@example.com',
         phoneNumber: '+1234567890',
-        username: 'testuser'
+        username: 'testuser',
+        showSkipPassword: undefined,
       });
     });
 
@@ -80,13 +82,44 @@ describe('ScreenOverride', () => {
           username: 'testuser'
         }
       } as ScreenContextOnSignupPassword;
-      
+
       const result = ScreenOverride.getScreenData(contextWithoutPhone);
       expect(result).toEqual({
         email: 'test@example.com',
         phoneNumber: undefined,
-        username: 'testuser'
+        username: 'testuser',
+        showSkipPassword: undefined,
       });
+    });
+
+    it('should set showSkipPassword to true when show_skip_password is true', () => {
+      const context = {
+        ...screenContext,
+        data: { email: 'test@example.com', show_skip_password: true },
+      } as ScreenContextOnSignupPassword;
+
+      const result = ScreenOverride.getScreenData(context);
+      expect(result?.showSkipPassword).toBe(true);
+    });
+
+    it('should set showSkipPassword to false when show_skip_password is false', () => {
+      const context = {
+        ...screenContext,
+        data: { email: 'test@example.com', show_skip_password: false },
+      } as ScreenContextOnSignupPassword;
+
+      const result = ScreenOverride.getScreenData(context);
+      expect(result?.showSkipPassword).toBe(false);
+    });
+
+    it('should set showSkipPassword to undefined when show_skip_password is absent', () => {
+      const context = {
+        ...screenContext,
+        data: { email: 'test@example.com' },
+      } as ScreenContextOnSignupPassword;
+
+      const result = ScreenOverride.getScreenData(context);
+      expect(result?.showSkipPassword).toBeUndefined();
     });
   });
 

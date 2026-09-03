@@ -1,4 +1,4 @@
-import { ScreenIds } from '../../constants';
+import { FormActions, ScreenIds } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 import { validatePassword as _validatePassword, validateWithComplexityPolicy as _validateFlexiblePassword } from '../../utils/validate-password';
@@ -16,6 +16,7 @@ import type {
   SignupPasswordOptions,
   FederatedSignupOptions,
   SwitchConnectionOptions,
+  SkipPasswordOptions,
 } from '../../../interfaces/screens/signup-password';
 import type { FormOptions } from '../../../interfaces/utils/form-handler';
 import type { PasswordValidationResult } from '../../../interfaces/utils/validate-password';
@@ -136,6 +137,32 @@ export default class SignupPassword extends BaseContext implements SignupPasswor
   }
 
   /**
+   * @remarks
+   * Skips password creation during signup when the connection allows it.
+   * Only available when `screen.data.showSkipPassword` is `true`.
+   *
+   * @example
+   * import SignupPassword from "@auth0/auth0-acul-js/signup-password";
+   *
+   * const signupPasswordManager = new SignupPassword();
+   *
+   * if (signupPasswordManager.screen.data?.showSkipPassword) {
+   *   await signupPasswordManager.skipPassword();
+   * }
+   */
+  async skipPassword(payload?: SkipPasswordOptions): Promise<void> {
+    const options: FormOptions = {
+      state: this.transaction.state,
+      telemetry: [SignupPassword.screenIdentifier, 'skipPassword'],
+    };
+
+    await new FormHandler(options).submitData<SkipPasswordOptions>({
+      ...payload,
+      action: FormActions.SKIP_PASSWORD,
+    });
+  }
+
+  /**
   * Validates a password string against the current transaction's password policy.
   *
   * This method retrieves the password policy from the current transaction context
@@ -175,6 +202,7 @@ export {
   SignupPasswordOptions,
   FederatedSignupOptions,
   SwitchConnectionOptions,
+  SkipPasswordOptions,
   ScreenOptions as ScreenMembersOnSignupPassword,
   TransactionOptions as TransactionMembersOnSignupPassword,
 };

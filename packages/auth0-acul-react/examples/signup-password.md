@@ -19,6 +19,7 @@ import {
     useTransaction,
     // Submit functions
     signup as signupMethod,
+    skipPassword as skipPasswordMethod,
     usePasswordValidation,
     // Common hooks
     useErrors
@@ -221,6 +222,17 @@ const SignupPasswordScreen: React.FC = () => {
                     >
                         Sign Up
                     </button>
+
+                    {/* Skip password — only rendered when the connection allows it and OTP is verified */}
+                    {screen.data?.showSkipPassword && (
+                        <button
+                            type="button"
+                            onClick={() => skipPasswordMethod()}
+                            className="w-full flex justify-center py-2 px-4 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                        >
+                            Skip for now
+                        </button>
+                    )}
                 </form>
 
                 {/* Server-side / global errors */}
@@ -262,9 +274,19 @@ export default SignupPasswordScreen;
     *   You must replace the empty `payload` object with the actual data from your form inputs.
     *   The core SDK will handle the API request and subsequent redirection on success.
     *   Errors are caught and can be displayed to the user.
+5.  **Skip password** (`skipPassword` + `screen.data?.showSkipPassword`):
+    *   For database connections that support passwordless signup (where a password is
+        optional) — not the standalone email/SMS Passwordless connection type.
+    *   `showSkipPassword` is `true` only when the connection has Flexible Identifiers enabled,
+        Password on signup → **Allow** (`signup_behavior = allow`), an OTP method enabled
+        (Email or Phone/SMS OTP), Support users without a password → **ON**
+        (`api_behavior = optional`), and the user completed OTP verification earlier in this
+        signup. Only render the Skip control when it is `true`.
+    *   Calling `skipPassword()` creates the account with OTP as the primary method and no
+        password credential; the user can add one later from My Account.
 
 
-### Examaple using utility hooks - usePasswordValidation, useErrors
+### Example using utility hooks - usePasswordValidation, useErrors
 
 ``` tsx
 import React, { useState } from 'react';
@@ -275,6 +297,7 @@ import {
     useTransaction,
     // Submit functions
     signup as signupMethod,
+    skipPassword as skipPasswordMethod,
     usePasswordValidation,
     // Common hooks
     useErrors
@@ -477,6 +500,17 @@ const SignupPasswordScreen: React.FC = () => {
                     >
                         Sign Up
                     </button>
+
+                    {/* Skip password — only rendered when the connection allows it and OTP is verified */}
+                    {screen.data?.showSkipPassword && (
+                        <button
+                            type="button"
+                            onClick={() => skipPasswordMethod()}
+                            className="w-full flex justify-center py-2 px-4 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                        >
+                            Skip for now
+                        </button>
+                    )}
                 </form>
 
                 {/* Server-side / global errors */}

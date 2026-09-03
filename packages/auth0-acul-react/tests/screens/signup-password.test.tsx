@@ -1,4 +1,5 @@
 import { renderHook } from '@testing-library/react';
+import SignupPassword from '@auth0/auth0-acul-js/signup-password';
 import * as SignupPasswordScreen from '../../src/screens/signup-password';
 import { categorizeScreenExports } from './test-helpers';
 
@@ -13,7 +14,12 @@ jest.mock('@auth0/auth0-acul-js', () => ({
 
 // Mock the core SDK class
 jest.mock('@auth0/auth0-acul-js/signup-password', () => {
-  return jest.fn().mockImplementation(() => {});
+  return jest.fn().mockImplementation(() => ({
+    signup: jest.fn(() => Promise.resolve()),
+    federatedSignup: jest.fn(() => Promise.resolve()),
+    switchConnection: jest.fn(() => Promise.resolve()),
+    skipPassword: jest.fn(() => Promise.resolve()),
+  }));
 }, { virtual: true });
 
 // Mock the instance store
@@ -47,6 +53,8 @@ jest.mock('../../src/hooks/utility/validate-password', () => ({
 }));
 
 describe('SignupPassword Screen', () => {
+  const instance = (SignupPassword as any).mock.results[0].value;
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -146,6 +154,27 @@ describe('SignupPassword Screen', () => {
           // Function may require specific parameters
         }
       });
+    });
+  });
+
+  describe('skipPassword', () => {
+    it('should export skipPassword as a function', () => {
+      expect(typeof SignupPasswordScreen.skipPassword).toBe('function');
+    });
+
+    it('should call instance.skipPassword with no payload', () => {
+      SignupPasswordScreen.skipPassword();
+
+      expect(instance.skipPassword).toHaveBeenCalledTimes(1);
+      expect(instance.skipPassword).toHaveBeenCalledWith(undefined);
+    });
+
+    it('should call instance.skipPassword with the provided payload', () => {
+      const payload = { captcha: 'token' };
+      SignupPasswordScreen.skipPassword(payload);
+
+      expect(instance.skipPassword).toHaveBeenCalledTimes(1);
+      expect(instance.skipPassword).toHaveBeenCalledWith(payload);
     });
   });
 });

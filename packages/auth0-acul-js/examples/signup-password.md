@@ -26,6 +26,39 @@
     signupPasswordManager.signup(signupParams);
 ```
 
+## skipPassword
+   Skips password creation during signup and completes the account with OTP as the primary
+   authentication method. This is for database connections that support passwordless signup
+   (where a password is optional) — not the standalone email/SMS Passwordless connection type.
+
+   ### When the skip is available
+
+   `screen.data.showSkipPassword` is `true` only when **all** of the following are true.
+   Otherwise it is `false`/`undefined` and the skip control must not be rendered:
+
+   | Requirement | Where it is configured |
+   | --- | --- |
+   | Flexible Identifiers enabled on the connection | Connection settings |
+   | Signups allowed on the connection | Password on signup → **Allow** (`signup_behavior = allow`) |
+   | An OTP method enabled on the connection | Email OTP or Phone (SMS) OTP |
+   | Password is optional for the connection | Support users without a password → **ON** (`api_behavior = optional`) |
+   | User completed OTP verification earlier in this signup | Decided at runtime, per session |
+
+   On skip, the account is created with no password credential; the verified identifier stays
+   `email_verified` / `phone_verified`, standard signup Actions still fire, and the user can add
+   a password later from My Account.
+
+```typescript
+    import SignupPassword from "@auth0/auth0-acul-js/signup-password";
+
+    const signupPasswordManager = new SignupPassword();
+
+    // Only render your "Skip" control when the SDK reports it is available.
+    if (signupPasswordManager.screen.data?.showSkipPassword) {
+      await signupPasswordManager.skipPassword();
+    }
+```
+
 ## signupPassword Example using validatePassword 
 
 ```typescript

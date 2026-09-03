@@ -7,7 +7,7 @@ export type { EmailChallengeOptions } from '../screens/email-identifier-challeng
 export type { PhoneChallengeOptions } from '../screens/phone-identifier-challenge';
 export type { PhoneEnrollmentOptions } from '../screens/phone-identifier-enrollment';
 export type { SignupOptions, FederatedSignupOptions } from '../screens/signup-id';
-export type { SignupPasswordOptions, FederatedSignupOptions as FederatedSignupPasswordPayloadOptions, SwitchConnectionOptions as SwitchConnectionOptionsSignupPassword } from '../screens/signup-password';
+export type { SignupPasswordOptions, FederatedSignupOptions as FederatedSignupPasswordPayloadOptions, SwitchConnectionOptions as SwitchConnectionOptionsSignupPassword, SkipPasswordOptions } from '../screens/signup-password';
 export type { LoginOptions as LoginPayloadOptions, FederatedLoginOptions as FederatedLoginPayloadOptions } from '../screens/login';
 export type { SignupOptions as SignupPayloadOptions, FederatedSignupOptions as FederatedSignupPayloadOptions } from '../screens/signup';
 export type { ResetPasswordEmailOptions } from '../screens/reset-password-email';
