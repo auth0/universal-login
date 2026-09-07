@@ -10,6 +10,7 @@ import type {
   SubmitPasskeyCredentialOptions,
   ReportBrowserErrorOptions,
   CustomOptions,
+  TryAnotherMethodOptions,
 } from '@auth0/auth0-acul-js/mfa-webauthn-platform-enrollment';
 
 // Register the singleton instance of MfaWebAuthnPlatformEnrollment
@@ -43,6 +44,8 @@ export const snoozeEnrollment = (payload?: CustomOptions) =>
   withError(instance.snoozeEnrollment(payload));
 export const refuseEnrollmentOnThisDevice = (payload?: CustomOptions) =>
   withError(instance.refuseEnrollmentOnThisDevice(payload));
+export const tryAnotherMethod = (payload?: TryAnotherMethodOptions) =>
+  withError(instance.tryAnotherMethod(payload));
 
 // Common hooks
 export { useCurrentScreen, useErrors, useAuth0Themes, useChangeLanguage } from '../hooks';

@@ -47,6 +47,15 @@ export interface ReportBrowserErrorOptions {
 }
 
 /**
+ * @interface TryAnotherMethodOptions
+ * @extends CustomOptions
+ * description Defines the options for the `tryAnotherMethod` method.
+ * Currently, it only supports `CustomOptions` for extensibility if any custom parameters
+ * need to be sent with the 'pick-authenticator' action.
+ */
+export interface TryAnotherMethodOptions extends CustomOptions { }
+
+/**
  * @interface MfaWebAuthnPlatformEnrollmentMembers
  * @extends BaseMembers
  * description Defines the members (properties and methods) for interacting with the MFA WebAuthn Platform Enrollment screen.
@@ -138,4 +147,20 @@ export interface MfaWebAuthnPlatformEnrollmentMembers extends BaseMembers {
    * ```
    */
   refuseEnrollmentOnThisDevice(payload?: CustomOptions): Promise<void>;
+
+  /**
+   * Allows the user to opt-out of the WebAuthn platform enrollment and select a different MFA method.
+   * This action submits `action: "pick-authenticator"` to Auth0, which should navigate
+   * the user to an MFA factor selection screen.
+   *
+   * @param {TryAnotherMethodOptions} [payload] - Optional custom parameters to be sent with the request.
+   * @returns {Promise<void>} A promise that resolves when the 'pick-authenticator' action is submitted.
+   * @throws {Error} Throws an error if the submission fails.
+   * @example
+   * ```typescript
+   * // Assuming 'sdk' is an instance of MfaWebAuthnPlatformEnrollment
+   * await sdk.tryAnotherMethod();
+   * ```
+   */
+  tryAnotherMethod(payload?: TryAnotherMethodOptions): Promise<void>;
 }
