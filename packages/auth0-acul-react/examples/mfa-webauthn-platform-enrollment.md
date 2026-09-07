@@ -18,6 +18,7 @@ import {
   submitPasskeyCredential,
   snoozeEnrollment,
   refuseEnrollmentOnThisDevice,
+  tryAnotherMethod,
   useErrors
 } from '@auth0/auth0-acul-react/mfa-webauthn-platform-enrollment';
 import { Logo } from '../../components/Logo';
@@ -41,6 +42,10 @@ const MfaWebAuthnPlatformEnrollmentScreen: React.FC = () => {
 
   const handleRefuse = () => {
     refuseEnrollmentOnThisDevice();
+  };
+
+  const handleTryAnotherMethod = () => {
+    tryAnotherMethod();
   };
 
   return (
@@ -85,6 +90,13 @@ const MfaWebAuthnPlatformEnrollmentScreen: React.FC = () => {
             className="w-full py-2 px-4 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
             {texts.refuseEnrollmentButtonText ?? 'Not on This Device'}
+          </button>
+
+          <button
+            onClick={handleTryAnotherMethod}
+            className="w-full py-2 px-4 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            {texts.pickAuthenticatorText ?? 'Try Another Method'}
           </button>
         </div>
 
