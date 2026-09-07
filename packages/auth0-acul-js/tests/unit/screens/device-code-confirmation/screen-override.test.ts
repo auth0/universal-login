@@ -1,5 +1,6 @@
-import { ScreenOverride } from '../../../../src/screens/device-code-confirmation/screen-override';
 import { Screen } from '../../../../src/models/screen';
+import { ScreenOverride } from '../../../../src/screens/device-code-confirmation/screen-override';
+
 import type { ScreenContext } from '../../../../interfaces/models/screen';
 
 describe('ScreenOverride', () => {
@@ -13,6 +14,7 @@ describe('ScreenOverride', () => {
     const screenOverride = new ScreenOverride(screenContext);
     expect(screenOverride.data).toEqual({
       textCode: "123456",
+      text_code: "123456",
     });
   });
 
@@ -33,7 +35,8 @@ describe('ScreenOverride', () => {
     } as ScreenContext;
     const screenOverride = new ScreenOverride(screenContext);
     expect(screenOverride.data).toEqual({
-      textCode: null,
+      textCode: '',
+      text_code: '',
     });
   });
 
