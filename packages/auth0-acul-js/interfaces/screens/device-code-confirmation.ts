@@ -12,7 +12,7 @@ export interface ScreenMembersOnDeviceCodeConfirmation extends ScreenMembers {
      */
     textCode: string;
     /**
-     * The same value as {@link textCode}, under the raw key used by the Universal Login context.
+     * The same value as `textCode`, under the raw key used by the Universal Login context.
      *
      * @deprecated Use `textCode`. This key is retained only because `textCode` was
      * unpopulated in versions up to and including 1.7.0, so existing integrations read
