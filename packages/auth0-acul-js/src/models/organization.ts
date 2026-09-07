@@ -1,3 +1,5 @@
+import { toCamelCased } from '../utils/to-camel-cased';
+
 import type { OrganizationContext, OrganizationMembers } from '../../interfaces/models/organization';
 
 /**
@@ -33,7 +35,7 @@ export class Organization implements OrganizationMembers {
     this.name = organization?.name ?? null;
     this.usage = organization?.usage ?? null;
     this.displayName = organization?.display_name ?? null;
-    this.branding = organization?.branding ?? null;
+    this.branding = organization?.branding ? toCamelCased(organization.branding) : null;
     this.metadata = organization?.metadata ?? null;
   }
 }
