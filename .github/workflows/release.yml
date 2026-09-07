@@ -29,7 +29,7 @@ jobs:
         run: node --version
 
       - name: Install deps
-        run: npm ci --workspaces --include-workspace-root
+        run: npm ci --ignore-scripts --workspaces --include-workspace-root
 
       # Parse package name and version from branch
       - name: Parse version and package
