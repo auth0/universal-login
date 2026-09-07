@@ -7,7 +7,7 @@ import { baseContextData } from '../../../data/test-data';
 
 import type { CustomOptions } from '../../../../interfaces/common';
 import type { PasskeyCreate } from '../../../../interfaces/models/screen';
-import type { ReportBrowserErrorOptions } from '../../../../interfaces/screens/mfa-webauthn-platform-enrollment';
+import type { ReportBrowserErrorOptions, TryAnotherMethodOptions } from '../../../../interfaces/screens/mfa-webauthn-platform-enrollment';
 import type { PasskeyCreateResponse } from '../../../../interfaces/utils/passkeys';
 
 
@@ -171,6 +171,43 @@ describe('MfaWebAuthnPlatformEnrollment', () => {
       expect(mockFormHandlerInstance.submitData).toHaveBeenCalledWith({
         action: FormActions.REFUSE_ADD_DEVICE,
       });
+    });
+  });
+
+  describe('tryAnotherMethod', () => {
+    it('should call FormHandler with pick-authenticator action', async () => {
+      const options: TryAnotherMethodOptions = {};
+      await sdk.tryAnotherMethod(options);
+      expect(FormHandler).toHaveBeenCalledWith({
+        state: mockTransactionState,
+        telemetry: [ScreenIds.MFA_WEBAUTHN_PLATFORM_ENROLLMENT, 'tryAnotherMethod'],
+      });
+      expect(mockFormHandlerInstance.submitData).toHaveBeenCalledWith({
+        action: FormActions.PICK_AUTHENTICATOR,
+      });
+    });
+
+    it('should include custom options in the payload', async () => {
+      const options: TryAnotherMethodOptions = { customField: 'anotherValue' };
+      await sdk.tryAnotherMethod(options);
+      expect(mockFormHandlerInstance.submitData).toHaveBeenCalledWith(
+        expect.objectContaining({
+          customField: 'anotherValue',
+          action: FormActions.PICK_AUTHENTICATOR,
+        }),
+      );
+    });
+
+    it('should call FormHandler with pick-authenticator action without payload', async () => {
+      await sdk.tryAnotherMethod();
+      expect(mockFormHandlerInstance.submitData).toHaveBeenCalledWith({
+        action: FormActions.PICK_AUTHENTICATOR,
+      });
+    });
+
+    it('should propagate errors from FormHandler', async () => {
+      mockFormHandlerInstance.submitData.mockRejectedValue(new Error('Mocked reject'));
+      await expect(sdk.tryAnotherMethod()).rejects.toThrow('Mocked reject');
     });
   });
 });

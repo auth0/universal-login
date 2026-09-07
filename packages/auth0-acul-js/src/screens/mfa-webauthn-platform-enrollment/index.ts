@@ -12,6 +12,7 @@ import type {
   ScreenMembersOnMfaWebAuthnPlatformEnrollment as ScreenOptions,
   SubmitPasskeyCredentialOptions, // Though this interface will now be just CustomOptions effectively
   ReportBrowserErrorOptions,
+  TryAnotherMethodOptions,
 } from '../../../interfaces/screens/mfa-webauthn-platform-enrollment';
 import type { FormOptions as SDKFormOptions } from '../../../interfaces/utils/form-handler';
 
@@ -147,6 +148,26 @@ export default class MfaWebAuthnPlatformEnrollment extends BaseContext implement
       action: FormActions.REFUSE_ADD_DEVICE,
     });
   }
+
+  /**
+   * Allows the user to opt-out of the WebAuthn platform enrollment and select a different MFA method.
+   * This action submits `action: "pick-authenticator"` to Auth0, which should navigate
+   * the user to an MFA factor selection screen.
+   *
+   * @param {TryAnotherMethodOptions} [payload] - Optional custom parameters to be sent with the request.
+   * @returns {Promise<void>} A promise that resolves when the 'pick-authenticator' action is submitted.
+   * @throws {Error} Throws an error if the form submission fails (e.g., network error, invalid state).
+   */
+  async tryAnotherMethod(payload?: TryAnotherMethodOptions): Promise<void> {
+    const formOptions: SDKFormOptions = {
+      state: this.transaction.state,
+      telemetry: [MfaWebAuthnPlatformEnrollment.screenIdentifier, 'tryAnotherMethod'],
+    };
+    await new FormHandler(formOptions).submitData({
+      ...(payload || {}),
+      action: FormActions.PICK_AUTHENTICATOR,
+    });
+  }
 }
 
 export {
@@ -154,6 +175,7 @@ export {
   ScreenOptions as ScreenMembersOnMfaWebAuthnPlatformEnrollment,
   SubmitPasskeyCredentialOptions,
   ReportBrowserErrorOptions,
+  TryAnotherMethodOptions,
 };
 export * from '../../../interfaces/export/common';
 export * from '../../../interfaces/export/base-properties';
