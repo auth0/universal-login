@@ -1,5 +1,5 @@
 import { FormActions } from '../constants';
-import { Branding, Client, CountryCodes, Prompt, Screen, Organization, User, Transaction, Tenant, UntrustedData } from '../models';
+import { Branding, Client, CountryCodes, Experiment, Prompt, Screen, Organization, User, Transaction, Tenant, UntrustedData } from '../models';
 import { FormHandler } from '../utils/form-handler';
 
 import type { LanguageChangeOptions } from '../../interfaces/common';
@@ -13,7 +13,8 @@ import type {
   TenantMembers,
   UntrustedDataMembers,
   BrandingMembers,
-  CountryCodesMembers
+  CountryCodesMembers,
+  ExperimentMembers
 } from '../../interfaces/models';
 import type { BaseContext as UniversalLoginContext, BaseMembers } from '../../interfaces/models/base-context';
 import type { Error as TransactionError } from '../../interfaces/models/transaction';
@@ -35,6 +36,12 @@ export class BaseContext implements BaseMembers {
   transaction: TransactionMembers;
   user: UserMembers;
   untrustedData: UntrustedDataMembers;
+
+  /**
+   * @property {ExperimentMembers | null} experiment - The active Experiment Center
+   * experiment for the current screen, or `null` when none is active.
+   */
+  experiment: ExperimentMembers | null;
 
   private static context: UniversalLoginContext | null = null;
 
@@ -77,6 +84,7 @@ export class BaseContext implements BaseMembers {
     this.transaction = new Transaction(context.transaction);
     this.user = new User(context.user);
     this.untrustedData = new UntrustedData(context.untrusted_data);
+    this.experiment = context.experiment ? new Experiment(context.experiment) : null;
   }
 
   /**

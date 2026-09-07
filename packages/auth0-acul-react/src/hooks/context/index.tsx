@@ -140,4 +140,19 @@ export class ContextHooks<T extends BaseMembers> {
    * ```
    */
   useTransaction = () => this.instance.transaction as T['transaction'];
+
+  /**
+   * Hook to access the active Experiment Center experiment for the current screen.
+   * @returns Experiment object (`experimentId`, `variationId`, `variationName`, `variationDescription`, `config`, `isControl`), or `null` when no experiment is active or the screen has not opted in via `context_configuration`
+   * @example
+   * ```jsx
+   * import { useExperiment } from '@auth0/auth0-acul-react/login-id';
+   * function ExperimentBranch() {
+   *   const experiment = useExperiment();
+   *   if (!experiment) return null;
+   *   return experiment.isControl ? <ControlUI /> : <TreatmentUI />;
+   * }
+   * ```
+   */
+  useExperiment = () => this.instance.experiment as T['experiment'];
 }
