@@ -15,7 +15,14 @@ export interface ExperimentContext {
   variation_name?: string;
   /** Human-readable description of the assigned variation. Absent for some variations. */
   variation_description?: string;
-  /** Merged variation configuration (baseline defaults + variation overrides). */
+  /**
+   * Resolved variation configuration (baseline defaults merged with the variation's
+   * overrides), keyed by config name. Each entry is an experiment-defined value that
+   * arrives wrapped in a `{ value: <resolved value> }` envelope — read the resolved
+   * value from `.value`, e.g. `config['show_passkey']?.value`. Typed as `unknown`
+   * because the value types are experiment-defined and not known at compile time;
+   * narrow before use.
+   */
   config: { [key: string]: unknown };
   /** Whether the assigned variation is the control variation. */
   is_control: boolean;
@@ -29,6 +36,12 @@ export interface ExperimentMembers {
   variationId: string;
   variationName: string | null;
   variationDescription: string | null;
+  /**
+   * Resolved variation configuration keyed by config name. Each entry arrives wrapped
+   * as `{ value: <resolved value> }`; read it via `config['<key>']?.value`. Values are
+   * experiment-defined (`unknown`) — narrow before use, and read `.value` rather than
+   * testing the entry directly (the wrapper object is always truthy, even for `value: false`).
+   */
   config: { [key: string]: unknown };
   isControl: boolean;
 }

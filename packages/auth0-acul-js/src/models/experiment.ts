@@ -19,7 +19,12 @@ export class Experiment implements ExperimentMembers {
   /** @property {string | null} variationDescription - The description of the assigned variation */
   variationDescription: ExperimentMembers['variationDescription'];
 
-  /** @property {{ [key: string]: unknown }} config - Merged variation configuration (baseline + overrides) */
+  /**
+   * @property {{ [key: string]: unknown }} config - Resolved variation configuration (baseline + overrides),
+   * keyed by config name. Each entry arrives wrapped as `{ value: <resolved value> }`; read it via
+   * `config['<key>']?.value`. Read `.value` rather than testing the entry directly — the wrapper object is
+   * always truthy, even when the resolved value is `false`.
+   */
   config: ExperimentMembers['config'];
 
   /** @property {boolean} isControl - Whether the assigned variation is the control variation */

@@ -21,6 +21,7 @@ import {
   useOrganization,
   usePrompt,
   useUntrustedData,
+  useExperiment,
   useErrors
 } from '@auth0/auth0-acul-react/login';
 
@@ -39,7 +40,8 @@ export const Login: React.FC = () => {
   const organizationData = useOrganization();
   const promptData = usePrompt();
   const untrusteddataData = useUntrustedData();
-  
+  const experimentData = useExperiment(); // ExperimentMembers | null
+
   // Error handling
   const { hasError, errors } = useErrors();
 
@@ -88,6 +90,94 @@ export const Login: React.FC = () => {
     *   You must replace the empty `payload` object with the actual data from your form inputs.
     *   The core SDK will handle the API request and subsequent redirection on success.
     *   Errors are caught and can be displayed to the user.
+
+### Example using useExperiment (Experiment Center)
+
+`useExperiment()` returns the active [Experiment Center](https://auth0.com/docs) variation as `ExperimentMembers | null`. Use it to branch the UI on the assigned variation and its config.
+
+It is `null` unless the screen opts in via `{ "context_configuration": ["experiment"] }` **and** an experiment is active — so always guard, and fall back to your baseline experience.
+
+An experiment assigns exactly one variation — a **control** (the baseline) or a **treatment** — identified by `variationId`, with `isControl` telling the two apart. Branch on the variation to change the experience:
+
+```tsx
+import React from 'react';
+import { useExperiment, useLogin } from '@auth0/auth0-acul-react/login';
+
+const LoginWithExperiment: React.FC = () => {
+  const screen = useLogin();
+  const experiment = useExperiment();
+
+  // Only a treatment variation changes behaviour. Guard on `experiment` first —
+  // `!experiment?.isControl` alone is truthy when `experiment` is null, which would
+  // wrongly light up the treatment branch with no experiment running.
+  const isTreatment = !!experiment && !experiment.isControl;
+
+  // `variationId` is present for BOTH arms — control and treatment each have their own id.
+  // Only the absence of an experiment falls back to 'baseline' (control keeps its id, so you
+  // can still tell the control arm apart from "no experiment" in analytics/CSS).
+  const variation = experiment?.variationId ?? 'baseline';
+
+  return (
+    <div data-variation={variation}>
+      <button type="button" onClick={() => screen.login({ /* payload */ })}>
+        Continue
+      </button>
+
+      {/* Only the treatment variation surfaces the passkey affordance. */}
+      {isTreatment && <button type="button">Use a passkey instead</button>}
+    </div>
+  );
+};
+
+export default LoginWithExperiment;
+```
+
+To follow the full decision flow end to end — **no experiment or control → default UI; treatment → read `config.show_passkey.value` → render the treatment** — combine both gates. Note the one difference from the JS `if (isControl) { … } else { … }`: that branch already sits inside an `if (experiment)` guard, whereas `useExperiment()` can be `null`, so fold "no experiment" into the default branch:
+
+```tsx
+import React from 'react';
+import { useExperiment } from '@auth0/auth0-acul-react/login';
+
+const Login: React.FC = () => {
+  const experiment = useExperiment();
+
+  // 1) No experiment (not opted in / none active) OR 2) the control arm → default UI.
+  if (!experiment || experiment.isControl) return <DefaultLoginUI />;
+
+  // 3) Treatment arm — read the variation's config. `experiment` is non-null here, and the
+  //    `{ value }` wrapper is always truthy, so read `.value` and default to the baseline.
+  const entry = experiment.config['show_passkey'] as { value?: boolean } | undefined;
+  const showPasskey = entry?.value ?? false;
+
+  // 4) Render the treatment UI only when the flag resolves true; otherwise fall back.
+  return showPasskey ? <TreatmentLoginUI /> : <DefaultLoginUI />;
+};
+
+export default Login;
+```
+
+This maps 1:1 to the decision flow. `DefaultLoginUI` and `TreatmentLoginUI` are your own components (each can call `useLogin()` for the screen's `login()` action). Because `variationId` is present for every arm, you can also `switch (experiment.variationId)` when an experiment has more than two variations.
+
+Often you don't need to check `isControl` at all: put the decision in `config` and let the control variation ship the baseline value. This keeps your code decoupled from which variation is which.
+
+Config values arrive wrapped as `{ value: <resolved value> }`. Read `.value`, not the entry itself — the wrapper object is always truthy, even when the resolved value is `false`:
+
+```tsx
+import React from 'react';
+import { useExperiment } from '@auth0/auth0-acul-react/login';
+
+const PasskeyAffordance: React.FC = () => {
+  const experiment = useExperiment();
+
+  // Config values are experiment-defined (`unknown`), so narrow the entry, then read `.value`.
+  // Default to the baseline when there is no experiment or the key is absent.
+  const entry = experiment?.config?.['show_passkey'] as { value?: boolean } | undefined;
+  const showPasskey = entry?.value ?? false;
+
+  if (!showPasskey) return null;
+  return <button type="button">Use a passkey instead</button>;
+};
+```
 
 ### Examaple using utility hooks - useLoginIdentifiers and error handling
 

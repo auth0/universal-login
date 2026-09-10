@@ -6,7 +6,7 @@ export { OrganizationMembers } from './organization';
 export { ScreenMembers } from './screen';
 export { BrandingMembers } from './branding';
 export { CountryCodesMembers } from './country-codes';
-export { ExperimentMembers, ExperimentContext } from './experiment';
+export { ExperimentMembers } from './experiment';
 export { TenantMembers } from './tenant';
 export { TransactionMembers } from './transaction';
 export { UntrustedDataMembers } from './untrusted-data';
