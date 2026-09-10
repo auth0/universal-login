@@ -26,6 +26,7 @@ const CONTEXT_MODELS = [
   'screen',
   'transaction',
   'untrustedData',
+  'experiment',
 ];
 
 // Context models exposed only on specific screens (model name -> kebab screen names).

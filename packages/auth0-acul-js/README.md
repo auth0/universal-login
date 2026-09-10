@@ -260,6 +260,8 @@ This section documents the helper methods and properties exposed by the screen i
 
 - `transaction`- Transaction / flow state, session identifiers and related data.
 
+- `experiment`- Active Experiment Center experiment for the current screen, or `null` when no experiment is active or the screen has not opted in via `context_configuration`. Exposes the assigned variation (`experimentId`, `variationId`, `variationName`, `variationDescription`, `isControl`) and the resolved `config` (an experiment-defined map — read a key's resolved value via its `value` property, e.g. `experiment.config['show_passkey']?.value`, and always null-check `experiment` first). Branch on `isControl` to render baseline vs. treatment UI.
+
 ### Identifier management
 - `getLoginIdentifiers()`: 
   Get available login identifier types (email, phone, username)

@@ -21,6 +21,7 @@ export const {
   useScreen,
   useTransaction,
   useUntrustedData,
+  useExperiment,
 } = factory;
 
 // Common hooks
