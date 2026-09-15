@@ -36,6 +36,7 @@ jest.mock('../../src/hooks', () => ({
     useScreen: jest.fn(),
     useTransaction: jest.fn(),
     useUntrustedData: jest.fn(),
+    useExperiment: jest.fn(),
   })),
   useCurrentScreen: jest.fn(),
   useErrors: jest.fn(),
@@ -65,6 +66,7 @@ describe('MfaVoiceChallenge Screen', () => {
       expect(MfaVoiceChallengeScreen.useScreen).toBeDefined();
       expect(MfaVoiceChallengeScreen.useTransaction).toBeDefined();
       expect(MfaVoiceChallengeScreen.useUntrustedData).toBeDefined();
+      expect(MfaVoiceChallengeScreen.useExperiment).toBeDefined();
     });
 
     it('should export common hooks', () => {

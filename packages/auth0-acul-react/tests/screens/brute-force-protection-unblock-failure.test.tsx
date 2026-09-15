@@ -36,6 +36,7 @@ jest.mock('../../src/hooks', () => ({
     useScreen: jest.fn(),
     useTransaction: jest.fn(),
     useUntrustedData: jest.fn(),
+    useExperiment: jest.fn(),
   })),
   useCurrentScreen: jest.fn(),
   useErrors: jest.fn(),
@@ -62,6 +63,7 @@ describe('BruteForceProtectionUnblockFailure Screen', () => {
       expect(BruteForceProtectionUnblockFailureScreen.useScreen).toBeDefined();
       expect(BruteForceProtectionUnblockFailureScreen.useTransaction).toBeDefined();
       expect(BruteForceProtectionUnblockFailureScreen.useUntrustedData).toBeDefined();
+      expect(BruteForceProtectionUnblockFailureScreen.useExperiment).toBeDefined();
     });
 
     it('should export common hooks', () => {

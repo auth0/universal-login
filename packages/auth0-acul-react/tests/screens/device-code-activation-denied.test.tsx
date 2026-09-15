@@ -36,6 +36,7 @@ jest.mock('../../src/hooks', () => ({
     useScreen: jest.fn(),
     useTransaction: jest.fn(),
     useUntrustedData: jest.fn(),
+    useExperiment: jest.fn(),
   })),
   useCurrentScreen: jest.fn(),
   useErrors: jest.fn(),
@@ -61,6 +62,7 @@ describe('DeviceCodeActivationDenied Screen', () => {
       expect(DeviceCodeActivationDeniedScreen.useScreen).toBeDefined();
       expect(DeviceCodeActivationDeniedScreen.useTransaction).toBeDefined();
       expect(DeviceCodeActivationDeniedScreen.useUntrustedData).toBeDefined();
+      expect(DeviceCodeActivationDeniedScreen.useExperiment).toBeDefined();
     });
 
     it('should export common hooks', () => {

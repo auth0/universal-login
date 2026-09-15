@@ -36,6 +36,7 @@ jest.mock('../../src/hooks', () => ({
     useScreen: jest.fn(),
     useTransaction: jest.fn(),
     useUntrustedData: jest.fn(),
+    useExperiment: jest.fn(),
   })),
   useCurrentScreen: jest.fn(),
   useErrors: jest.fn(),
@@ -61,6 +62,7 @@ describe('InterstitialCaptcha Screen', () => {
       expect(InterstitialCaptchaScreen.useScreen).toBeDefined();
       expect(InterstitialCaptchaScreen.useTransaction).toBeDefined();
       expect(InterstitialCaptchaScreen.useUntrustedData).toBeDefined();
+      expect(InterstitialCaptchaScreen.useExperiment).toBeDefined();
     });
 
     it('should export common hooks', () => {

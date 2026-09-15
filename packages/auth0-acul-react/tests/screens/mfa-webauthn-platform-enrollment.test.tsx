@@ -55,6 +55,7 @@ jest.mock('../../src/hooks', () => ({
     useScreen: jest.fn(() => ({ screen: null })),
     useTransaction: jest.fn(() => ({ transaction: null })),
     useUntrustedData: jest.fn(() => ({ untrustedData: null })),
+    useExperiment: jest.fn(),
   })),
   useCurrentScreen: jest.fn(() => ({ currentScreen: 'mfa-webauthn-platform-enrollment' })),
   useErrors: jest.fn(() => ({ errors: [] })),
@@ -80,6 +81,7 @@ describe('MfaWebauthnPlatformEnrollment Screen', () => {
       expect(MfaWebauthnPlatformEnrollmentScreen.useScreen).toBeDefined();
       expect(MfaWebauthnPlatformEnrollmentScreen.useTransaction).toBeDefined();
       expect(MfaWebauthnPlatformEnrollmentScreen.useUntrustedData).toBeDefined();
+      expect(MfaWebauthnPlatformEnrollmentScreen.useExperiment).toBeDefined();
     });
 
     it('should export common hooks', () => {
@@ -337,6 +339,7 @@ describe('MfaWebauthnPlatformEnrollment Screen', () => {
       expect(MfaWebauthnPlatformEnrollmentScreen.useScreen).toBeDefined();
       expect(MfaWebauthnPlatformEnrollmentScreen.useTransaction).toBeDefined();
       expect(MfaWebauthnPlatformEnrollmentScreen.useUntrustedData).toBeDefined();
+      expect(MfaWebauthnPlatformEnrollmentScreen.useExperiment).toBeDefined();
     });
 
     it('should export common hooks', () => {
