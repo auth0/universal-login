@@ -13,6 +13,7 @@ const CONTEXT_HOOKS = new Set([
   'useScreen',
   'useTransaction',
   'useUntrustedData',
+  'useExperiment',
 ]);
 
 // Common hooks exported by all screens
