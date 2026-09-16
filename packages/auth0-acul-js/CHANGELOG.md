@@ -1,5 +1,14 @@
 # Change Log
 
+## [auth0-acul-js-v1.8.0](https://github.com/auth0/universal-login/tree/auth0-acul-js-v1.8.0) (2026-09-16)
+[Full Changelog](https://github.com/auth0/universal-login/compare/auth0-acul-js-v1.7.0...auth0-acul-js-v1.8.0)
+
+**Added**
+- fix: populate `textCode` on the `device-code-confirmation` screen [\#386](https://github.com/auth0/universal-login/pull/386) ([amitsingh05667](https://github.com/amitsingh05667))
+- feat: add tryAnotherMethod to MfaWebAuthnPlatformEnrollment [\#399](https://github.com/auth0/universal-login/pull/399) ([amitsingh05667](https://github.com/amitsingh05667))
+- feat: add skipOrganizationSelection to organization-selection screen [\#390](https://github.com/auth0/universal-login/pull/390) ([amitsingh05667](https://github.com/amitsingh05667))
+- feat: add skip-password on signup-password screen [\#393](https://github.com/auth0/universal-login/pull/393) ([amitsingh05667](https://github.com/amitsingh05667))
+
 ## [auth0-acul-js-v1.7.0](https://github.com/auth0/universal-login/tree/auth0-acul-js-v1.7.0) (2026-08-25)
 [Full Changelog](https://github.com/auth0/universal-login/compare/auth0-acul-js-v1.6.0...auth0-acul-js-v1.7.0)
 
