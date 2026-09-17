@@ -85,10 +85,10 @@ if (showPasskey) {
 >
 > ```typescript
 > // WRONG — `{ value: false }` is still a truthy object, so this branch always runs.
-> if (experiment?.config['show_passkey']) { /* ... */ }
+> if (experiment?.config?.['show_passkey']) { /* ... */ }
 >
 > // CORRECT — read the resolved value.
-> const entry = experiment?.config['show_passkey'] as { value?: boolean } | undefined;
+> const entry = experiment?.config?.['show_passkey'] as { value?: boolean } | undefined;
 > if (entry?.value) { /* ... */ }
 > ```
 
@@ -106,9 +106,9 @@ const experiment = login.experiment;
 if (!experiment || experiment.isControl) {
   renderDefaultLoginUI();
 } else {
-  // 3) Treatment arm — `experiment` is non-null here. The `{ value }` wrapper is always
-  //    truthy, so read `.value` and default to the baseline.
-  const entry = experiment.config['show_passkey'] as { value?: boolean } | undefined;
+  // 3) Treatment arm — `experiment` is non-null here. `config` may still be absent, and the
+  //    `{ value }` wrapper is always truthy, so guard `config`, read `.value`, and default to the baseline.
+  const entry = experiment.config?.['show_passkey'] as { value?: boolean } | undefined;
   const showPasskey = entry?.value ?? false;
 
   // 4) Render the treatment UI only when the flag resolves true; otherwise fall back.
@@ -131,7 +131,7 @@ const login = new Login();
 const experiment = login.experiment;
 
 // Fall back to a sensible default whenever the experiment (or this config key) is absent.
-const entry = experiment?.config['cta_label'] as { value?: string } | undefined;
+const entry = experiment?.config?.['cta_label'] as { value?: string } | undefined;
 const ctaLabel = entry?.value ?? 'Continue';
 
 const button = document.querySelector<HTMLButtonElement>('#login-cta');

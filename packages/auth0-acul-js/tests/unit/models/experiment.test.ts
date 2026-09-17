@@ -73,3 +73,40 @@ describe(':: models/experiment | control variation with optional fields absent',
     expect(experiment.config).toEqual(experimentContext.config);
   });
 });
+
+describe(':: models/experiment | config normalization', () => {
+  // The server does not guarantee `config`: the resolved value may be `null`,
+  // or the key may be omitted entirely from the serialized context. The model
+  // normalizes both to `{}` so consumers can safely read `config['<key>']?.value`.
+  it('should normalize a null config to an empty object', () => {
+    const experiment = new Experiment({
+      experiment_id: 'exp_test1',
+      variation_id: 'var_control',
+      config: null,
+      is_control: true,
+    });
+
+    expect(experiment.config).toEqual({});
+  });
+
+  it('should normalize an absent config to an empty object', () => {
+    const experiment = new Experiment({
+      experiment_id: 'exp_test1',
+      variation_id: 'var_control',
+      is_control: true,
+    });
+
+    expect(experiment.config).toEqual({});
+  });
+
+  it('should not throw when reading a key off a normalized (absent) config', () => {
+    const experiment = new Experiment({
+      experiment_id: 'exp_test1',
+      variation_id: 'var_control',
+      is_control: true,
+    });
+
+    const entry = experiment.config['show_passkey'] as { value?: boolean } | undefined;
+    expect(entry?.value).toBeUndefined();
+  });
+});

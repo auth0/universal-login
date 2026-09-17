@@ -24,6 +24,9 @@ export class Experiment implements ExperimentMembers {
    * keyed by config name. Each entry arrives wrapped as `{ value: <resolved value> }`; read it via
    * `config['<key>']?.value`. Read `.value` rather than testing the entry directly — the wrapper object is
    * always truthy, even when the resolved value is `false`.
+   *
+   * Always a non-null object: an absent or `null` server config is normalized to `{}`
+   * (the server does not guarantee this field), so reading `config['<key>']` never throws.
    */
   config: ExperimentMembers['config'];
 
@@ -39,7 +42,9 @@ export class Experiment implements ExperimentMembers {
     this.variationId = experiment.variation_id;
     this.variationName = experiment.variation_name ?? null;
     this.variationDescription = experiment.variation_description ?? null;
-    this.config = experiment.config;
+    // The server does not guarantee `config` (it may be null or omitted); normalize
+    // to an empty object so consumers can safely read `config['<key>']?.value`.
+    this.config = experiment.config ?? {};
     this.isControl = experiment.is_control;
   }
 }

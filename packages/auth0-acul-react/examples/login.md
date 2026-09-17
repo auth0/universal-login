@@ -144,9 +144,10 @@ const Login: React.FC = () => {
   // 1) No experiment (not opted in / none active) OR 2) the control arm → default UI.
   if (!experiment || experiment.isControl) return <DefaultLoginUI />;
 
-  // 3) Treatment arm — read the variation's config. `experiment` is non-null here, and the
-  //    `{ value }` wrapper is always truthy, so read `.value` and default to the baseline.
-  const entry = experiment.config['show_passkey'] as { value?: boolean } | undefined;
+  // 3) Treatment arm — read the variation's config. `experiment` is non-null here, but `config`
+  //    may still be absent, and the `{ value }` wrapper is always truthy — so guard `config`,
+  //    read `.value`, and default to the baseline.
+  const entry = experiment.config?.['show_passkey'] as { value?: boolean } | undefined;
   const showPasskey = entry?.value ?? false;
 
   // 4) Render the treatment UI only when the flag resolves true; otherwise fall back.

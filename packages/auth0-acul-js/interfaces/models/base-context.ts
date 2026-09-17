@@ -16,8 +16,11 @@ export interface BaseContext {
   client: ClientContext;
   country_codes?: CountryCodesContext;
   /**
-   * Present only when the screen opts in via `context_configuration`. `null` when
-   * no Experiment Center experiment is active for the current screen.
+   * Present only when the screen opts in via `context_configuration` and an
+   * Experiment Center experiment is active. Otherwise the key is **absent** from
+   * the context (the server omits it rather than emitting an explicit `null`).
+   * Typed `?`/`| null` so consumers can treat "absent" and "null" uniformly —
+   * `BaseContext` maps both to `null`.
    */
   experiment?: ExperimentContext | null;
   organization: OrganizationContext;
