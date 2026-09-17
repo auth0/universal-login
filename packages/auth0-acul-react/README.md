@@ -231,6 +231,7 @@ Refer to our [API Reference](#api-reference) for the full list of available type
 - `useOrganization()` - Organization context (if applicable)
 - `usePrompt()` - Current authentication prompt
 - `useUntrustedData()` - Untrusted data from the authentication flow
+- `useExperiment()` - Active Experiment Center experiment for the current screen (`experimentId`, `variationId`, `variationName`, `variationDescription`, `config`, `isControl`), or `null` when no experiment is active or the screen has not opted in via `context_configuration`
 
 #### Available on specific screens
 - `useCountryCodes()` - Available phone country codes and the recommended default. Exported only from `login`, `login-id`, `signup`, and `signup-id`.

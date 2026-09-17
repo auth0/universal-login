@@ -36,6 +36,7 @@ jest.mock('../../src/hooks', () => ({
     useScreen: jest.fn(),
     useTransaction: jest.fn(),
     useUntrustedData: jest.fn(),
+    useExperiment: jest.fn(),
   })),
   useCurrentScreen: jest.fn(),
   useErrors: jest.fn(),
@@ -61,6 +62,7 @@ describe('MfaWebauthnNotAvailableError Screen', () => {
       expect(MfaWebauthnNotAvailableErrorScreen.useScreen).toBeDefined();
       expect(MfaWebauthnNotAvailableErrorScreen.useTransaction).toBeDefined();
       expect(MfaWebauthnNotAvailableErrorScreen.useUntrustedData).toBeDefined();
+      expect(MfaWebauthnNotAvailableErrorScreen.useExperiment).toBeDefined();
     });
 
     it('should export common hooks', () => {

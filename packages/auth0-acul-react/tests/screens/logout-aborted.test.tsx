@@ -55,6 +55,7 @@ jest.mock('../../src/hooks', () => ({
     useScreen: jest.fn(),
     useTransaction: jest.fn(),
     useUntrustedData: jest.fn(),
+    useExperiment: jest.fn(),
   })),
   useCurrentScreen: jest.fn(),
   useErrors: jest.fn(),
@@ -80,6 +81,7 @@ describe('LogoutAborted Screen', () => {
       expect(LogoutAbortedScreen.useScreen).toBeDefined();
       expect(LogoutAbortedScreen.useTransaction).toBeDefined();
       expect(LogoutAbortedScreen.useUntrustedData).toBeDefined();
+      expect(LogoutAbortedScreen.useExperiment).toBeDefined();
     });
 
     it('should export common hooks', () => {

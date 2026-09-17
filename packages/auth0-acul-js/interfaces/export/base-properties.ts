@@ -2,6 +2,7 @@ export type { BaseMembers } from '../models/base-context';
 export type { ClientMembers } from '../models/client';
 export type { BrandingMembers } from '../models/branding';
 export type { CountryCodesMembers } from '../models/country-codes';
+export type { ExperimentMembers } from '../models/experiment';
 export type { PromptMembers } from '../models/prompt';
 export type { UserMembers } from '../models/user';
 export type { OrganizationMembers } from '../models/organization';
