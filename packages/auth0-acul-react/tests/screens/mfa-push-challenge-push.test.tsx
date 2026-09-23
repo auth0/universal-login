@@ -59,6 +59,7 @@ jest.mock('../../src/hooks', () => ({
     useScreen: jest.fn(() => ({ screen: null })),
     useTransaction: jest.fn(() => ({ transaction: null })),
     useUntrustedData: jest.fn(() => ({ untrustedData: null })),
+    useExperiment: jest.fn(),
   })),
   useCurrentScreen: jest.fn(() => ({ currentScreen: 'mfa-push-challenge-push' })),
   useErrors: jest.fn(() => ({ errors: [] })),
@@ -93,6 +94,7 @@ describe('MfaPushChallengePush Screen', () => {
       expect(MfaPushChallengePushScreen.useScreen).toBeDefined();
       expect(MfaPushChallengePushScreen.useTransaction).toBeDefined();
       expect(MfaPushChallengePushScreen.useUntrustedData).toBeDefined();
+      expect(MfaPushChallengePushScreen.useExperiment).toBeDefined();
     });
 
     it('should export common hooks', () => {

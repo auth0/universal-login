@@ -36,6 +36,7 @@ jest.mock('../../src/hooks', () => ({
     useScreen: jest.fn(),
     useTransaction: jest.fn(),
     useUntrustedData: jest.fn(),
+    useExperiment: jest.fn(),
   })),
   useCurrentScreen: jest.fn(),
   useErrors: jest.fn(),
@@ -61,6 +62,7 @@ describe('MfaWebauthnRoamingChallenge Screen', () => {
       expect(MfaWebauthnRoamingChallengeScreen.useScreen).toBeDefined();
       expect(MfaWebauthnRoamingChallengeScreen.useTransaction).toBeDefined();
       expect(MfaWebauthnRoamingChallengeScreen.useUntrustedData).toBeDefined();
+      expect(MfaWebauthnRoamingChallengeScreen.useExperiment).toBeDefined();
     });
 
     it('should export common hooks', () => {

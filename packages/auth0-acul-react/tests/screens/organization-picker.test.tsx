@@ -36,6 +36,7 @@ jest.mock('../../src/hooks', () => ({
     useScreen: jest.fn(),
     useTransaction: jest.fn(),
     useUntrustedData: jest.fn(),
+    useExperiment: jest.fn(),
   })),
   useCurrentScreen: jest.fn(),
   useErrors: jest.fn(),
@@ -61,6 +62,7 @@ describe('OrganizationPicker Screen', () => {
       expect(OrganizationPickerScreen.useScreen).toBeDefined();
       expect(OrganizationPickerScreen.useTransaction).toBeDefined();
       expect(OrganizationPickerScreen.useUntrustedData).toBeDefined();
+      expect(OrganizationPickerScreen.useExperiment).toBeDefined();
     });
 
     it('should export common hooks', () => {

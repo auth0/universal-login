@@ -36,6 +36,7 @@ jest.mock('../../src/hooks', () => ({
     useScreen: jest.fn(),
     useTransaction: jest.fn(),
     useUntrustedData: jest.fn(),
+    useExperiment: jest.fn(),
   })),
   useCurrentScreen: jest.fn(),
   useErrors: jest.fn(),
@@ -61,6 +62,7 @@ describe('AcceptInvitation Screen', () => {
       expect(AcceptInvitationScreen.useScreen).toBeDefined();
       expect(AcceptInvitationScreen.useTransaction).toBeDefined();
       expect(AcceptInvitationScreen.useUntrustedData).toBeDefined();
+      expect(AcceptInvitationScreen.useExperiment).toBeDefined();
     });
 
     it('should export common hooks', () => {

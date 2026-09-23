@@ -30,6 +30,7 @@ export const {
   useScreen,
   useTransaction,
   useUntrustedData,
+  useExperiment,
 } = factory;
 
 // Submit functions

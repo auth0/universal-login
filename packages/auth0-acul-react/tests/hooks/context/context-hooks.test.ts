@@ -91,6 +91,14 @@ const createMockInstance = (): BaseMembers => ({
     currentConnection: null,
     alternateConnections: null,
   },
+  experiment: {
+    experimentId: 'exp_test1',
+    variationId: 'var_treatment',
+    variationName: 'Treatment',
+    variationDescription: 'Treatment variation for testing',
+    config: { show_passkey: { value: true } },
+    isControl: false,
+  },
   getErrors: jest.fn(),
   changeLanguage: jest.fn(),
 });
@@ -257,6 +265,22 @@ describe('ContextHooks', () => {
     });
   });
 
+  describe('useExperiment', () => {
+    it('should return experiment data from instance', () => {
+      const experiment = contextHooks.useExperiment();
+
+      expect(experiment).toEqual(mockInstance.experiment);
+      expect(experiment?.experimentId).toBe('exp_test1');
+      expect(experiment?.variationId).toBe('var_treatment');
+      expect(experiment?.isControl).toBe(false);
+    });
+
+    it('should return the same reference as instance.experiment', () => {
+      const experiment = contextHooks.useExperiment();
+      expect(experiment).toBe(mockInstance.experiment);
+    });
+  });
+
   describe('all hooks integration', () => {
     it('should provide consistent access to all context data', () => {
       const allData = {
@@ -269,6 +293,7 @@ describe('ContextHooks', () => {
         untrustedData: contextHooks.useUntrustedData(),
         screen: contextHooks.useScreen(),
         transaction: contextHooks.useTransaction(),
+        experiment: contextHooks.useExperiment(),
       };
 
       // All hooks should return references to the original instance data
@@ -281,6 +306,7 @@ describe('ContextHooks', () => {
       expect(allData.untrustedData).toBe(mockInstance.untrustedData);
       expect(allData.screen).toBe(mockInstance.screen);
       expect(allData.transaction).toBe(mockInstance.transaction);
+      expect(allData.experiment).toBe(mockInstance.experiment);
     });
 
     it('should reflect changes in the original instance', () => {
@@ -310,6 +336,7 @@ describe('ContextHooks', () => {
       const untrustedData = contextHooks.useUntrustedData();
       const screen = contextHooks.useScreen();
       const transaction = contextHooks.useTransaction();
+      const experiment = contextHooks.useExperiment();
 
       // Test that properties are accessible (would fail at compile time if types are wrong)
       expect(user.id).toBeDefined();
@@ -321,6 +348,7 @@ describe('ContextHooks', () => {
       expect(untrustedData.authorizationParams).toBeDefined();
       expect(screen.name).toBeDefined();
       expect(transaction.state).toBeDefined();
+      expect(experiment?.experimentId).toBeDefined();
     });
   });
 });
