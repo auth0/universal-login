@@ -1,5 +1,11 @@
 # Change Log
 
+## [auth0-acul-js-v1.9.0](https://github.com/auth0/universal-login/tree/auth0-acul-js-v1.9.0) (2026-09-24)
+[Full Changelog](https://github.com/auth0/universal-login/compare/auth0-acul-js-v1.8.0...auth0-acul-js-v1.9.0)
+
+**Added**
+- feat: add Experiment Center on Universal Login screens [\#400](https://github.com/auth0/universal-login/pull/400) ([amitsingh05667](https://github.com/amitsingh05667))
+
 ## [auth0-acul-js-v1.8.0](https://github.com/auth0/universal-login/tree/auth0-acul-js-v1.8.0) (2026-09-16)
 [Full Changelog](https://github.com/auth0/universal-login/compare/auth0-acul-js-v1.7.0...auth0-acul-js-v1.8.0)
 
