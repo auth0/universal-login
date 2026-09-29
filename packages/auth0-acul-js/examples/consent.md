@@ -70,7 +70,6 @@ const ConsentScreen: React.FC = () => {
                   </svg>
                   <div>
                     <p className="text-sm font-medium text-gray-700">{scope.value}</p>
-                    <p className="text-sm font-small text-gray-700">{scope.description}</p>
                   </div>
                 </li>
               ))}
@@ -142,7 +141,7 @@ if (shouldHideScopes) {
 } else if (requestedScopes) {
   console.log("Requested permissions:");
   requestedScopes.forEach(scope => {
-    console.log(`- ${scope.description} (${scope.value})`);
+    console.log(`- ${scope.value}`);
   });
 }
 
