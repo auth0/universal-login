@@ -170,9 +170,9 @@ const MfaVoiceChallengeScreen: React.FC = () => {
         rememberDevice,
       });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to verify code');
-    } finally {
+      // Only clear loading on error — on success the browser navigates away
       setIsLoading(false);
+      setError(err instanceof Error ? err.message : 'Failed to verify code');
     }
   };
 

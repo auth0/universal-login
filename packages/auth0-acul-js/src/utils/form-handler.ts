@@ -6,6 +6,27 @@ export class FormHandler {
     this.options = options;
   }
 
+  /**
+   * Submits the form payload via a native HTML form POST and returns immediately.
+   *
+   * **Important:** This is a fire-and-navigate call. The returned Promise resolves
+   * as soon as `form.submit()` is called — not after the browser completes the
+   * navigation. On success, the browser replaces the page before any code after
+   * `await submitData(...)` can run.
+   *
+   * Loading-state pattern:
+   * ```ts
+   * setLoading(true);
+   * try {
+   *   await screen.someAction(payload);
+   *   // Never reached on success — page navigates away
+   * } catch (err) {
+   *   setLoading(false); // Only clear on error
+   *   setError(err.message);
+   * }
+   * // Do NOT use finally to clear loading — it fires before navigation completes
+   * ```
+   */
   // eslint-disable-next-line @typescript-eslint/require-await
   async submitData<T>(payload: T): Promise<void> {
     const extendedPayload: PostPayloadOptions = {
