@@ -72,7 +72,6 @@ const CustomizedConsentScreen: React.FC = () => {
                   </svg>
                   <div>
                     <p className="text-sm font-medium text-gray-700">{scope.value}</p>
-                    <p className="text-sm font-small text-gray-700">{scope.description}</p>
                   </div>
                 </li>
               ))}
@@ -176,7 +175,7 @@ if (organizationName) {
 
 console.log("Requested Scopes:");
 requestedScopes.forEach(scope => {
-  console.log(`- ${scope.description || scope.name} (${scope.name})`);
+  console.log(`- ${scope.value}`);
   if (scope.values && scope.values.length > 0) {
     console.log(`  Values: ${scope.values.join(', ')}`);
   }

@@ -75,7 +75,6 @@ const ConsentScreen: React.FC = () => {
                   </svg>
                   <div>
                     <p className="text-sm font-medium text-gray-700">{scope.value}</p>
-                    <p className="text-sm font-small text-gray-700">{scope.description}</p>
                   </div>
                 </li>
               ))}
