@@ -9,22 +9,21 @@ export class FormHandler {
   /**
    * Submits the form payload via a native HTML form POST and returns immediately.
    *
-   * **Important:** This is a fire-and-navigate call. The returned Promise resolves
-   * as soon as `form.submit()` is called — not after the browser completes the
-   * navigation. On success, the browser replaces the page before any code after
-   * `await submitData(...)` can run.
+   * **Important:** The returned Promise resolves as soon as `form.submit()` is
+   * called. Code after `await submitData(...)` still runs, but before the
+   * navigation completes, so it cannot assume the submission succeeded.
    *
    * Loading-state pattern:
    * ```ts
    * setLoading(true);
    * try {
    *   await screen.someAction(payload);
-   *   // Never reached on success — page navigates away
    * } catch (err) {
    *   setLoading(false); // Only clear on error
    *   setError(err.message);
    * }
-   * // Do NOT use finally to clear loading — it fires before navigation completes
+   * // Avoid finally to clear loading — it runs on both success and error,
+   * // clearing the spinner before the page navigates away on success.
    * ```
    */
   // eslint-disable-next-line @typescript-eslint/require-await
