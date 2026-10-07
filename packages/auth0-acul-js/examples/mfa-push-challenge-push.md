@@ -63,9 +63,9 @@ const MfaPushChallengePushScreen: React.FC = () => {
     try {
       await mfaPushChallengePush.resendPushNotification({ rememberDevice });
     } catch (err) {
-      console.log(err);
-    } finally {
+      // Only clear loading on error — on success the browser navigates away
       setIsLoading(false);
+      console.log(err);
     }
   };
 
@@ -74,9 +74,9 @@ const MfaPushChallengePushScreen: React.FC = () => {
     try {
       await mfaPushChallengePush.enterCodeManually({ rememberDevice });
     } catch (err) {
-      console.log(err);
-    } finally {
+      // Only clear loading on error — on success the browser navigates away
       setIsLoading(false);
+      console.log(err);
     }
   };
 
@@ -85,9 +85,9 @@ const MfaPushChallengePushScreen: React.FC = () => {
     try {
       await mfaPushChallengePush.tryAnotherMethod({ rememberDevice });
     } catch (err) {
-      console.log(err);
-    } finally {
+      // Only clear loading on error — on success the browser navigates away
       setIsLoading(false);
+      console.log(err);
     }
   };
 

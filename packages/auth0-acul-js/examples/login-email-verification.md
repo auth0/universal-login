@@ -74,10 +74,11 @@ const LoginEmailVerificationScreen: React.FC = () => {
       // On successful submission, Auth0 typically handles redirection.
       // If the page reloads with errors (e.g., invalid code), the useEffect hook will update uiMessages.
     } catch (error: any) {
-      // Handles unexpected errors (e.g., network issues during form submission)
-      setUiMessages([{ type: 'error', text: error.message || 'An unexpected error occurred. Please try again.' }]);
-    } finally {
+      // submitData fires a native form POST and resolves immediately — the browser
+      // navigates away on success, so the finally block would clear the spinner
+      // before the page unloads. Only clear the loading state on error.
       setIsSubmitting(false);
+      setUiMessages([{ type: 'error', text: error.message || 'An unexpected error occurred. Please try again.' }]);
     }
   };
 

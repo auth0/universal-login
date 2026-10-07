@@ -22,21 +22,20 @@ import BruteForceProtectionUnblock from '@auth0/auth0-acul-js/brute-force-protec
 const UnblockAccountScreen: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
   const unblockScreen = new BruteForceProtectionUnblock();
 
   const handleUnblockAccount = async () => {
     setLoading(true);
     setError(null);
-    setSuccess(false);
 
     try {
       await unblockScreen.unblockAccount();
-      setSuccess(true);
+      // On success, Auth0 navigates away — the loading state stays until the
+      // browser replaces the page. Do not clear it here.
     } catch (e: any) {
-      setError(e.message || 'Failed to unblock account.');
-    } finally {
+      // Only clear loading on error — on success the browser navigates away
       setLoading(false);
+      setError(e.message || 'Failed to unblock account.');
     }
   };
 
@@ -52,15 +51,6 @@ const UnblockAccountScreen: React.FC = () => {
             <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
               <strong className="font-bold">Error!</strong>
               <span className="block sm:inline">{error}</span>
-            </div>
-          )
-        }
-
-        {
-          success && (
-            <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
-              <strong className="font-bold">Success!</strong>
-              <span className="block sm:inline">Account unblocked successfully.</span>
             </div>
           )
         }
