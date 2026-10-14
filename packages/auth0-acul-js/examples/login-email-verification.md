@@ -302,8 +302,8 @@ const payload: ResendCodeOptions = {
 async function resendVerificationCode() {
   await loginEmailVerificationManager.resendCode(payload);
   // resendCode() submits a form POST and the page reloads, so any UI feedback set
-  // here (e.g., "A new code has been sent.") is lost. Show it on the reloaded page.
-  // If Auth0 encounters an issue (e.g., "too-many-emails"), it appears in
+  // here (e.g., "A new code has been sent.") is lost.
+  // If Auth0 encounters an issue (e.g., "too-many-email"), it appears in
   // `transaction.errors` after the page reloads.
 }
 

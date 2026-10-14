@@ -66,7 +66,7 @@ import type { StartResendOptions, ResendControl } from '../../../interfaces/util
  *   await loginEmailVerificationManager.resendCode();
  *   // The page reloads, so any "code sent" message set here is lost.
  *   // On the reloaded page, check `loginEmailVerificationManager.transaction.errors`
- *   // for issues like "too-many-emails".
+ *   // for issues like "too-many-email".
  * }
  * ```
  */
@@ -150,7 +150,7 @@ export default class LoginEmailVerification extends BaseContext implements Login
    *
    * Code after `await resendCode()` may still run, but anything it sets up, such as a
    * "code sent" message or a countdown, is gone after the reload. Server-side errors,
-   * such as rate limits (`too-many-emails`), appear in `transaction.errors` on the
+   * such as rate limits (`too-many-email`), appear in `transaction.errors` on the
    * reloaded page. They don't reject the returned promise.
    *
    * To add a cooldown between resends, use `resendManager()`. It stores its countdown
@@ -167,7 +167,7 @@ export default class LoginEmailVerification extends BaseContext implements Login
    * const loginEmailVerification = new LoginEmailVerification();
    * await loginEmailVerification.resendCode();
    * // The page reloads. On the new page, check `transaction.errors` for issues
-   * // such as `too-many-emails`.
+   * // such as `too-many-email`.
    * ```
    */
   async resendCode(payload?: ResendCodeOptions): Promise<void> {

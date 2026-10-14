@@ -48,9 +48,9 @@ export default class PhoneIdentifierChallenge extends BaseContext implements Pho
    *
    * @remarks
    * Submits a form POST with `action: "resend-code"`. Auth0 responds by rendering this
-   * screen again, or the captcha screen if a captcha is required. Either way the
-   * browser loads a new page, and the current JavaScript context, including component
-   * state and timers, is lost.
+   * screen again, or the `interstitial-captcha` screen if a captcha is required. Either
+   * way the browser loads a new page, and the current JavaScript context, including
+   * component state and timers, is lost.
    *
    * Code after `await resendCode()` may still run, but anything it sets up, such as a
    * "code sent" message or a countdown, is gone after the reload. Server-side errors,
@@ -62,8 +62,8 @@ export default class PhoneIdentifierChallenge extends BaseContext implements Pho
    * It also disables resending when `screen.data.resendLimitReached` is `true`.
    *
    * @param payload - Optional custom parameters to send with the request.
-   * @returns A promise that resolves once the form is submitted, before the page
-   * reloads. It doesn't confirm that a new code was sent.
+   * @returns A promise that resolves once the form is submitted, before the new page
+   * loads. It doesn't confirm that a new code was sent.
    *
    * @example
    * import PhoneIdentifierChallenge from '@auth0/auth0-acul-js/phone-identifier-challenge';
