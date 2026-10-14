@@ -97,6 +97,30 @@ function collectTypedocExports(): Set<string> {
 
 const VALID_TYPEDOC_EXPORTS = collectTypedocExports();
 
+// Generated screen files are rewritten from scratch, so JSDoc added by hand to their
+// exports would be lost. Read it from the previous output, keyed by export name, so
+// it can be re-emitted above the same export.
+const existingOutputProject = new Project({ useInMemoryFileSystem: true });
+
+function collectExistingJsDocs(filePath: string): Map<string, string> {
+  const jsDocs = new Map<string, string>();
+  if (!fs.existsSync(filePath)) return jsDocs;
+  const sourceFile = existingOutputProject.createSourceFile(
+    path.basename(filePath),
+    fs.readFileSync(filePath, 'utf8'),
+    { overwrite: true }
+  );
+  for (const statement of sourceFile.getVariableStatements()) {
+    if (!statement.isExported()) continue;
+    const docs = statement.getJsDocs();
+    if (!docs.length) continue;
+    for (const declaration of statement.getDeclarations()) {
+      jsDocs.set(declaration.getName(), docs.map((doc) => doc.getText()).join('\n'));
+    }
+  }
+  return jsDocs;
+}
+
 fs.mkdirSync(SCREENS_OUTPUT_PATH, { recursive: true });
 
 const project = new Project({ tsConfigFilePath: path.join(CORE_SDK_PATH, 'tsconfig.json') });
@@ -194,6 +218,18 @@ for (const symbol of screenSymbols) {
   const baseInterface = `${screenName}Members`;
   const screenLines: string[] = [];
 
+  const outputFilePath = path.join(SCREENS_OUTPUT_PATH, `${kebab}.tsx`);
+  const existingJsDocs = collectExistingJsDocs(outputFilePath);
+  // Pushes a generated export, preceded by its hand-written JSDoc if it had one
+  const pushExport = (exportName: string, line: string) => {
+    const jsDoc = existingJsDocs.get(exportName);
+    if (jsDoc) {
+      screenLines.push(jsDoc);
+      existingJsDocs.delete(exportName);
+    }
+    screenLines.push(line);
+  };
+
   const hasDefaultExport = !!screenFile.getDefaultExportSymbol();
   screenLines.push(`import { useMemo } from 'react';`);
   screenLines.push(`import ${screenName} from '@auth0/auth0-acul-js/${kebab}';`);
@@ -251,7 +287,8 @@ for (const symbol of screenSymbols) {
         .map((p) => `${p.name}${p.isOptional ? '?' : ''}: ${p.type}`)
         .join(', ');
       const argNames = method.params.map((p) => p.name).join(', ');
-      screenLines.push(
+      pushExport(
+        safe,
         `export const ${safe} = (${args}) => withError(instance.${method.name}(${argNames}));`
       );
     }
@@ -298,14 +335,20 @@ for (const symbol of screenSymbols) {
 
   // Main hook (memoized)
   screenLines.push(`\n// Main instance hook. Returns singleton instance of ${screenName}`);
-  screenLines.push(
+  pushExport(
+    instanceHook,
     `export const ${instanceHook} = (): ${baseInterface} => useMemo(() => instance, []);`
   );
 
   // screenLines.push(`\n// Export all types from the core SDK for this screen`);
   // screenLines.push(`export type * from '@auth0/auth0-acul-js/${kebab}';`);
 
-  fs.writeFileSync(path.join(SCREENS_OUTPUT_PATH, `${kebab}.tsx`), screenLines.join('\n'), 'utf8');
+  // JSDoc left over here belongs to an export that is no longer generated
+  for (const exportName of existingJsDocs.keys()) {
+    logger.warn(`${screenName}: dropping JSDoc for '${exportName}', which is no longer exported.`);
+  }
+
+  fs.writeFileSync(outputFilePath, screenLines.join('\n'), 'utf8');
 
   indexExports.push(`export { ${instanceHook} } from './screens/${kebab}';`);
 

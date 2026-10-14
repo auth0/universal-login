@@ -63,14 +63,10 @@ import type { StartResendOptions, ResendControl } from '../../../interfaces/util
  *
  * // Example of handling a resend code request
  * async function onResendCodeClick() {
- *   try {
- *     await loginEmailVerificationManager.resendCode();
- *     // Inform the user that a new code has been sent.
- *     // The page might re-render; check `loginEmailVerificationManager.transaction.errors`
- *     // for issues like "too-many-emails".
- *   } catch (e) {
- *     console.error('An unexpected error occurred while resending the code:', e);
- *   }
+ *   await loginEmailVerificationManager.resendCode();
+ *   // The page reloads, so any "code sent" message set here is lost.
+ *   // On the reloaded page, check `loginEmailVerificationManager.transaction.errors`
+ *   // for issues like "too-many-emails".
  * }
  * ```
  */
@@ -146,32 +142,32 @@ export default class LoginEmailVerification extends BaseContext implements Login
   /**
    * Requests Auth0 to send a new verification code to the user's email address.
    * This is typically used when the user didn't receive the original code, or it has expired.
-   * This method posts form data with `action: "resend-code"` to the
-   * `/u/login-email-verification` endpoint.
    *
-   * @param {ResendCodeOptions} [payload] - Optional. An object for any custom parameters
-   *                                        to be sent with the resend request.
-   * @returns {Promise<void>} A promise that resolves once the resend request is initiated.
-   *                          A successful request usually means a new email is dispatched.
-   *                          The page might re-render, and `this.transaction.errors` could
-   *                          be updated if, for example, rate limits (`too-many-emails`) are hit.
-   * @throws {Error} If `FormHandler` encounters an issue (e.g. network error).
-   *                 Server-side validation errors (e.g. rate limits) are not thrown
-   *                 as JS errors but are made available in `this.transaction.errors`.
+   * @remarks
+   * Submits a form POST with `action: "resend-code"`. Auth0 responds by rendering this
+   * screen again, so the browser reloads the page and the current JavaScript context,
+   * including component state and timers, is lost.
+   *
+   * Code after `await resendCode()` may still run, but anything it sets up, such as a
+   * "code sent" message or a countdown, is gone after the reload. Server-side errors,
+   * such as rate limits (`too-many-emails`), appear in `transaction.errors` on the
+   * reloaded page. They don't reject the returned promise.
+   *
+   * To add a cooldown between resends, use `resendManager()`. It stores its countdown
+   * in `localStorage`, so the countdown survives the reload.
+   *
+   * @param payload - Optional custom parameters to send with the request.
+   * @returns A promise that resolves once the form is submitted, before the page
+   * reloads. It doesn't confirm that a new code was sent.
    *
    * @example
    * ```typescript
-   * const manager = new LoginEmailVerification();
-   * manager.resendCode()
-   *   .then(() => {
-   *     // Inform the user that a new code has been sent.
-   *     showNotification("A new verification code is on its way!");
-   *   })
-   *   .catch(err => {
-   *     // Handle unexpected submission errors
-   *     displayGlobalError("Could not request a new code. Please try again later.");
-   *   });
-   * // After the operation, check manager.transaction.errors for specific issues.
+   * import LoginEmailVerification from '@auth0/auth0-acul-js/login-email-verification';
+   *
+   * const loginEmailVerification = new LoginEmailVerification();
+   * await loginEmailVerification.resendCode();
+   * // The page reloads. On the new page, check `transaction.errors` for issues
+   * // such as `too-many-emails`.
    * ```
    */
   async resendCode(payload?: ResendCodeOptions): Promise<void> {
