@@ -92,43 +92,24 @@ export interface LoginEmailVerificationMembers extends BaseMembers {
   continueWithCode(payload: ContinueWithCodeOptions): Promise<void>;
 
   /**
-   * Requests a new verification code to be sent to the user's email address.
-   * This action is typically invoked when the user clicks a "Resend Code" button, perhaps because
-   * they didn't receive the first email, the code expired, or they suspect an issue.
-   * The SDK will POST to the Auth0 `/u/login-email-verification` endpoint with an action indicating
-   * a resend request.
+   * Requests Auth0 to send a new verification code to the user's email address.
    *
-   * Upon successful submission of this request, Auth0 attempts to send a new email.
-   * The page may re-render. If there are issues (e.g., too many resend attempts for the same email,
-   * identified by error code `too-many-emails`), `transaction.errors` will be updated.
+   * @remarks
+   * Submits a form POST with `action: "resend-code"`. Auth0 responds by rendering this
+   * screen again, so the browser reloads the page and the current JavaScript context,
+   * including component state and timers, is lost.
    *
-   * @param {ResendCodeOptions} [payload] - Optional. An object for `CustomOptions` if any
-   *                                        additional parameters need to be sent with the request.
-   * @returns {Promise<void>} A promise that resolves when the resend request is initiated.
-   *                          Like `continueWithCode`, this usually results in a page re-render or state update
-   *                          rather than direct data in the promise resolution.
-   * @throws {Error} Throws if the `FormHandler` encounters an unrecoverable issue (e.g., network error).
-   *                 Server-side errors (like rate limits) are reflected in `this.transaction.errors`.
+   * Code after `await resendCode()` may still run, but anything it sets up, such as a
+   * "code sent" message or a countdown, is gone after the reload. Server-side errors,
+   * such as rate limits, appear in `transaction.errors` (or `useErrors()` in React) on
+   * the reloaded page. They don't reject the returned promise.
    *
-   * @example
-   * ```typescript
-   * // Assuming 'manager' is an instance of LoginEmailVerification
-   * try {
-   *   await manager.resendCode();
-   *   // Optionally, update UI to inform the user a new code has been sent.
-   *   alert("A new verification code has been dispatched to your email.");
-   * } catch (error) {
-   *   console.error("Failed to request a new code:", error);
-   * }
-   * // After the await, check manager.transaction.errors for server-side issues.
-   * if (manager.transaction.errors && manager.transaction.errors.length > 0) {
-   *   manager.transaction.errors.forEach(err => {
-   *     if (err.code === 'too-many-emails') {
-   *       // Display "You have requested too many emails. Please wait a few minutes."
-   *     }
-   *   });
-   * }
-   * ```
+   * To add a cooldown between resends, use `resendManager()` (or `useResend()` in React).
+   * It stores its countdown in `localStorage`, so the countdown survives the reload.
+   *
+   * @param payload - Optional custom parameters to send with the request.
+   * @returns A promise that resolves once the form is submitted, before the page
+   * reloads. It doesn't confirm that a new code was sent.
    */
   resendCode(payload?: ResendCodeOptions): Promise<void>;
 

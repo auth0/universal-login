@@ -38,7 +38,6 @@ const LoginPasswordlessEmailCodeScreen: React.FC = () => {
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
-  const [resent, setResent] = useState(false);
 
   const loginPasswordlessEmailCode = new LoginPasswordlessEmailCode();
 
@@ -46,7 +45,6 @@ const LoginPasswordlessEmailCodeScreen: React.FC = () => {
     e.preventDefault();
     setError('');
     setSuccess(false);
-    setResent(false);
 
     if (!email || !code) {
       setError('Email and code are required.');
@@ -64,10 +62,10 @@ const LoginPasswordlessEmailCodeScreen: React.FC = () => {
   const handleResend = async () => {
     setError('');
     setSuccess(false);
-    setResent(false);
     try {
+      // resendCode() submits a form POST and the page reloads, so state set after
+      // this call (e.g., a "code resent" message) is lost.
       await loginPasswordlessEmailCode.resendCode();
-      setResent(true);
     } catch (err) {
       setError('Failed to resend code. Please try again later.');
     }
@@ -117,7 +115,6 @@ const LoginPasswordlessEmailCodeScreen: React.FC = () => {
             </div>
             {error && <div className="text-red-600 text-sm">{error}</div>}
             {success && <div className="text-green-600 text-sm">Login successful!</div>}
-            {resent && <div className="text-blue-600 text-sm">Code resent to your email.</div>}
             <div className="flex items-center justify-between">
               <button
                 type="submit"

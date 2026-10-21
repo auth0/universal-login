@@ -33,6 +33,30 @@ export interface LoginPasswordlessEmailCodeMembers extends BaseMembers {
   screen: ScreenMembersOnLoginPasswordlessEmailCode;
   transaction: TransactionMembersOnLoginPasswordlessEmailCode;
   submitCode(payload: SubmitCodeOptions): Promise<void>;
+  /**
+   * Requests a new one-time code for the user's email address.
+   *
+   * @remarks
+   * Submits a form POST with `action: "resend"`. Auth0 responds by rendering this
+   * screen again. If a captcha is required, it sends the user back to the `login-id`
+   * screen instead (`signup-id` if the user started from signup) to complete the
+   * captcha. Either way the browser loads a new page, and the current JavaScript
+   * context, including component state and timers, is lost.
+   *
+   * Code after `await resendCode()` may still run, but anything it sets up, such as a
+   * "code sent" message or a countdown, is gone after the reload. If the email can't be
+   * sent, for example because of a rate limit, Auth0 renders this screen again without
+   * an error. Only extensibility errors (such as an error from an Action) and
+   * unexpected failures appear in `transaction.errors` (or `useErrors()` in React) on
+   * the reloaded page. The returned promise doesn't reject.
+   *
+   * To add a cooldown between resends, use `resendManager()` (or `useResend()` in React).
+   * It stores its countdown in `localStorage`, so the countdown survives the reload.
+   *
+   * @param payload - Optional custom parameters to send with the request.
+   * @returns A promise that resolves once the form is submitted, before the new page
+   * loads. It doesn't confirm that a new code was sent.
+   */
   resendCode(payload?: CustomOptions): Promise<void>;
   resendManager(options?: StartResendOptions): ResendControl;
   switchConnection(payload: SwitchConnectionOptions): Promise<void>;
