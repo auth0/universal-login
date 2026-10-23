@@ -1,5 +1,13 @@
 # Change Log
 
+## [auth0-acul-js-v1.10.0](https://github.com/auth0/universal-login/tree/auth0-acul-js-v1.10.0) (2026-10-23)
+[Full Changelog](https://github.com/auth0/universal-login/compare/auth0-acul-js-v1.9.0...auth0-acul-js-v1.10.0)
+
+**Added**
+- fix: JS doc update for resend actions across multiple screens [\#421](https://github.com/auth0/universal-login/pull/421) ([amitsingh05667](https://github.com/amitsingh05667))
+- fix: update loading state handling in various components to improve u… [\#413](https://github.com/auth0/universal-login/pull/413) ([amitsingh05667](https://github.com/amitsingh05667))
+- fix: remove scope description from consent screen examples [\#412](https://github.com/auth0/universal-login/pull/412) ([amitsingh05667](https://github.com/amitsingh05667))
+
 ## [auth0-acul-js-v1.9.0](https://github.com/auth0/universal-login/tree/auth0-acul-js-v1.9.0) (2026-09-24)
 [Full Changelog](https://github.com/auth0/universal-login/compare/auth0-acul-js-v1.8.0...auth0-acul-js-v1.9.0)
 
