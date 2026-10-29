@@ -78,3 +78,4 @@ export type { BruteForceProtectionUnblockMembers } from '../screens/brute-force-
 export type { BruteForceProtectionUnblockFailureMembers, ScreenMembersOnBruteForceProtectionUnblockFailure } from '../screens/brute-force-protection-unblock-failure';
 export type { BruteForceProtectionUnblockSuccessMembers, ScreenMembersOnBruteForceProtectionUnblockSuccess } from '../screens/brute-force-protection-unblock-success';
 export type { ConfirmationMembers } from '../screens/confirmation';
+export type { PendingConsentMembers } from '../screens/pending-consent';

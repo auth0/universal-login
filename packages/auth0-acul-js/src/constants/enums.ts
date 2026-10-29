@@ -76,4 +76,5 @@ export const ScreenIds = {
   RESET_PASSWORD_MFA_WEBAUTHN_PLATFORM_CHALLENGE: 'reset-password-mfa-webauthn-platform-challenge',
   RESET_PASSWORD_MFA_WEBAUTHN_ROAMING_CHALLENGE: 'reset-password-mfa-webauthn-roaming-challenge',
   CONFIRMATION: 'confirmation',
+  PENDING_CONSENT: 'pending-consent',
 };
