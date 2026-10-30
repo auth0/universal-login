@@ -16,9 +16,12 @@ jest.mock('@auth0/auth0-acul-js/pending-consent', () => {
   return jest.fn().mockImplementation(() => {});
 }, { virtual: true });
 
-// Mock the instance store
+// Mock the instance store with a stub action method so submit functions can be
+// invoked without throwing (the mocked PendingConsent class has no real methods)
 jest.mock('../../src/state/instance-store', () => ({
-  registerScreen: jest.fn((Screen) => new Screen()),
+  registerScreen: jest.fn(() => ({
+    continue: jest.fn(() => Promise.resolve()),
+  })),
 }));
 
 // Mock error manager and hooks
@@ -42,9 +45,13 @@ jest.mock('../../src/hooks', () => ({
   useErrors: jest.fn(),
   useAuth0Themes: jest.fn(),
 }));
-// Mock utility hook: useMfaPolling
+// Mock utility hook: useMfaPolling, returning a stub polling control
 jest.mock('../../src/hooks/utility/polling-manager', () => ({
-  useMfaPolling: jest.fn(),
+  useMfaPolling: jest.fn(() => ({
+    isRunning: false,
+    startPolling: jest.fn(),
+    stopPolling: jest.fn(),
+  })),
 }));
 
 describe('PendingConsent Screen', () => {
@@ -77,46 +84,53 @@ describe('PendingConsent Screen', () => {
   });
 
   describe('instance hook', () => {
+    it('should categorize usePendingConsent as the only instance hook', () => {
+      expect(exports.instanceHooks).toEqual(['usePendingConsent']);
+    });
+
     it('should provide instance hook that returns screen instance', () => {
-      // Test instance hooks using categorized exports
+      // usePendingConsent() takes no parameters, so it should never throw here.
       exports.instanceHooks.forEach(hookName => {
-        try {
-          const { result } = renderHook(() => (PendingConsentScreen as any)[hookName]());
-          if (result.current && typeof result.current === 'object') {
-            expect(result.current).toBeDefined();
-          }
-        } catch (e) {
-          // Skip if it requires parameters
-        }
+        const { result } = renderHook(() => (PendingConsentScreen as any)[hookName]());
+        expect(result.current).toBeDefined();
       });
     });
 
     it('should return stable reference across renders for instance hooks', () => {
       exports.instanceHooks.forEach(hookName => {
-        try {
-          const { result, rerender } = renderHook(() => (PendingConsentScreen as any)[hookName]());
-          if (result.current && typeof result.current === 'object') {
-            const firstResult = result.current;
-            rerender();
-            expect(result.current).toBe(firstResult);
-          }
-        } catch (e) {
-          // Skip if it requires parameters
-        }
+        const { result, rerender } = renderHook(() => (PendingConsentScreen as any)[hookName]());
+        const firstResult = result.current;
+        rerender();
+        expect(result.current).toBe(firstResult);
       });
     });
   });
 
   describe('submit functions', () => {
+    it('should categorize continueMethod as the only submit function', () => {
+      expect(exports.submitFunctions).toEqual(['continueMethod']);
+    });
+
     it('should export submit functions if available', () => {
-      // Verify all submit functions are callable
       exports.submitFunctions.forEach(funcName => {
         expect(typeof (PendingConsentScreen as any)[funcName]).toBe('function');
       });
     });
+
+    it('continueMethod forwards the payload to instance.continue', async () => {
+      const { result } = renderHook(() => PendingConsentScreen.usePendingConsent());
+      const promise = PendingConsentScreen.continueMethod({ foo: 'bar' });
+      expect(promise).toBeInstanceOf(Promise);
+      await promise;
+      expect(result.current.continue).toHaveBeenCalledWith({ foo: 'bar' });
+    });
   });
 
   describe('utility hooks', () => {
+    it('should categorize useMfaPolling as the only utility hook', () => {
+      expect(exports.utilityHooks).toEqual(['useMfaPolling']);
+    });
+
     it('should export utility hooks if available', () => {
       exports.utilityHooks.forEach(hookName => {
         expect(typeof (PendingConsentScreen as any)[hookName]).toBe('function');
@@ -124,29 +138,21 @@ describe('PendingConsent Screen', () => {
     });
 
     it('should call utility hooks successfully', () => {
+      // useMfaPolling() accepts optional options, so it should never throw here.
       exports.utilityHooks.forEach(hookName => {
-        try {
-          const { result } = renderHook(() => (PendingConsentScreen as any)[hookName]());
-          expect(result.current).toBeDefined();
-        } catch (e) {
-          // Some utility hooks may require parameters
-        }
+        const { result } = renderHook(() => (PendingConsentScreen as any)[hookName]());
+        expect(result.current).toBeDefined();
       });
     });
   });
 
   describe('submit functions coverage', () => {
-    it('should call submit functions', () => {
+    it('should call submit functions and return a promise', () => {
+      // continueMethod accepts an optional payload, so calling it with {} should never throw.
       exports.submitFunctions.forEach(funcName => {
-        try {
-          const func = (PendingConsentScreen as any)[funcName];
-          const result = func({});
-          if (result && typeof result.then === 'function') {
-            expect(result).toBeDefined();
-          }
-        } catch (e) {
-          // Function may require specific parameters
-        }
+        const func = (PendingConsentScreen as any)[funcName];
+        const result = func({});
+        expect(result).toBeInstanceOf(Promise);
       });
     });
   });
