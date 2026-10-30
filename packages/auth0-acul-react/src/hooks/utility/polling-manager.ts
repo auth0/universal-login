@@ -66,6 +66,7 @@ export interface MfaPollingResult {
  * - `mfa-push-challenge-push`
  * - `reset-password-mfa-push-challenge-push`
  * - `mfa-push-enrollment-qr`
+ * - `pending-consent`
  *
  * @returns object {@link MfaPollingResult} containing:
  * - `isRunning` — `true` while polling is active.

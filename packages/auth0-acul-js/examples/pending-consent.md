@@ -57,6 +57,16 @@ const PendingConsentScreen: React.FC = () => {
             ))}
           </div>
         ) : null}
+
+        {/* Fallback in case polling stops after an error. If the consent is still
+            pending, Auth0 renders this screen again and polling restarts. */}
+        <button
+          type="button"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg"
+          onClick={() => pendingConsentManager.continue()}
+        >
+          {texts.buttonText ?? "I've approved the request"}
+        </button>
       </div>
     </div>
   );

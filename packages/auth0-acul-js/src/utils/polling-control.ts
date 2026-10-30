@@ -89,7 +89,7 @@ export function createPollingControl(
       if (cancelled) return;
       const err: ErrorSchema = {
         code: "polling_network_error",
-        message: "Network error while polling MFA push challenge.",
+        message: "Network error while polling.",
       };
       onError?.(err);
     };

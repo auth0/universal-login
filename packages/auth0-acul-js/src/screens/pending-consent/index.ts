@@ -105,6 +105,8 @@ export default class PendingConsent extends BaseContext implements PendingConsen
    * - HTTP 429 (rate limit) responses are handled internally: polling automatically
    *   waits until the rate limit resets before retrying.
    * - Safe to call `startPolling()` multiple times; it has no effect if already running.
+   * - Polling stops after a network error or a non-200 response other than 429. Offer a manual
+   *   fallback that calls `continue()`, such as a button labelled with `screen.texts.buttonText`.
    */
   pollingManager(options: MfaPollingOptions): MfaPushPollingControl {
     return createPollingControl(options);
