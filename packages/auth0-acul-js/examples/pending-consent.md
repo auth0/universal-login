@@ -5,7 +5,7 @@ This screen is a waiting room shown during Rich Authorization Requests (RAR) flo
 ## React Component Example with TailwindCSS
 
 ```tsx
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PendingConsent from '@auth0/auth0-acul-js/pending-consent';
 
 const pendingConsentManager = new PendingConsent();
@@ -14,6 +14,7 @@ const PendingConsentScreen: React.FC = () => {
   const { screen, transaction: { errors } } = pendingConsentManager;
   const texts = screen?.texts || {};
   const pollingControl = useRef<ReturnType<typeof pendingConsentManager.pollingManager> | null>(null);
+  const [pollingError, setPollingError] = useState<string | null>(null);
 
   useEffect(() => {
     // Poll until the consent is approved or denied off-browser, then continue the flow.
@@ -21,7 +22,8 @@ const PendingConsentScreen: React.FC = () => {
     pollingControl.current = pendingConsentManager.pollingManager({
       intervalMs: 5000,
       onCompleted: () => pendingConsentManager.continue(),
-      onError: (error) => console.error('Polling error:', error),
+      // Polling stops after an error, so show it and let the user continue manually
+      onError: (error) => setPollingError(error.message),
     });
     pollingControl.current.startPolling();
 
@@ -40,13 +42,15 @@ const PendingConsentScreen: React.FC = () => {
             "We're waiting for you to review and approve this request to continue."}
         </p>
 
-        <div className="my-6 flex justify-center">
-          <div
-            role="status"
-            aria-label={texts.spinnerAltText ?? 'Waiting for approval'}
-            className="h-10 w-10 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600"
-          />
-        </div>
+        {!pollingError && (
+          <div className="my-6 flex justify-center">
+            <div
+              role="status"
+              aria-label={texts.spinnerAltText ?? 'Waiting for approval'}
+              className="h-10 w-10 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600"
+            />
+          </div>
+        )}
 
         {errors?.length ? (
           <div className="mt-2 space-y-1 text-left">
@@ -57,6 +61,10 @@ const PendingConsentScreen: React.FC = () => {
             ))}
           </div>
         ) : null}
+
+        {pollingError && (
+          <p className="text-red-600 text-sm text-center">{pollingError}</p>
+        )}
 
         {/* Fallback in case polling stops after an error. If the consent is still
             pending, Auth0 renders this screen again and polling restarts. */}
