@@ -216,6 +216,7 @@ Refer to our [API Reference](#api-reference) for the full list of available type
 | 75     |customized-consent        | customized-consent | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.customized-consent.html)   |
 | 76     |email-otp-challenge                   | email-otp-challenge | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.email-otp-challenge.html)   |
 | 77     |confirmation                   | confirmation | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.confirmation.html)   |
+| 78     |consent                   | pending-consent | [Link](https://auth0.github.io/universal-login/auth0-acul-react/modules/Screens.pending-consent.html)   |
 </details>
 
 ---
@@ -248,7 +249,7 @@ Specialized hooks for form validation, polling, and identifier management:
 - `useUsernameValidation(username)` - Username format and availability validation
 
 #### MFA & Polling
-- `useMfaPolling(options)` - Manage MFA push notification polling lifecycle
+- `useMfaPolling(options)` - Manage MFA push notification polling lifecycle (also polls the consent outcome on `pending-consent`)
 - `useResend(options)` - Handle resend operations with cooldown timers
 
 ### Common Hooks

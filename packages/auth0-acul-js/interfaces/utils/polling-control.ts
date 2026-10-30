@@ -1,10 +1,11 @@
 import type { Error as ULError} from "../models/transaction";
 
 /**
- * Configuration options for managing an MFA push-notification polling process.
+ * Configuration options for managing a polling process on a screen that waits for an
+ * out-of-band decision, such as an MFA push challenge or a pending consent.
  *
  * Supply these options when starting a polling session to control how often
- * the challenge endpoint is queried and how success or failure is handled.
+ * the screen is polled and how success or failure is handled.
  *
  * @public
  */
@@ -20,11 +21,13 @@ export type MfaPollingOptions = {
   intervalMs?: number;
 
   /**
-   * Optional callback executed once the MFA push challenge is successfully
-   * approved and polling completes.
+   * Optional callback executed once the server reports the polled request as
+   * completed, whether it was approved or denied (for example, an MFA push
+   * challenge or a pending consent).
    *
    * - Called exactly **once**, after which polling stops automatically.
-   * - Useful for advancing the login flow (e.g., calling `continue()`).
+   * - Useful for advancing the login flow (e.g., calling `continue()`), which lets
+   *   Auth0 apply the outcome.
    */
   onCompleted?: () => void;
 
@@ -32,21 +35,24 @@ export type MfaPollingOptions = {
    * Optional callback invoked if an error occurs while polling.
    *
    * Receives an {@link ULError} object containing:
-   * - `status` — the HTTP status code from the failed request
-   * - `responseText` — the raw response body, if available
+   * - `code` — `polling_error_<status>` for a non-200/429 response, or
+   *   `polling_network_error` for a network failure
+   * - `message` — the message from the response body, or a generic message
    *
-   * - Called once per error event; polling may retry depending on error type.
-   * - Use to surface error messages or trigger custom retry/abort logic.
+   * - Polling stops after an error and does not retry.
+   * - HTTP 429 (rate limit) responses are not errors: polling waits until the rate
+   *   limit resets and then retries.
+   * - Use to surface error messages or offer a manual way to continue.
    */
   onError?: (error: ULError) => void;
 };
 
 /**
- * Control interface for managing an MFA push-notification polling session.
+ * Control interface for managing a polling session.
  *
  * This interface provides imperative methods to start, stop, and inspect the status of a
- * long-running polling loop that checks whether an MFA push challenge has been
- * approved.
+ * long-running polling loop that checks whether the polled request, such as an MFA push
+ * challenge or a pending consent, has been completed.
  *
  * @public
  */
@@ -77,7 +83,7 @@ export interface MfaPushPollingControl {
    *
    * @example
    * ```ts
-   * control.startPolling(); // Begin checking the MFA push challenge
+   * control.startPolling(); // Begin polling
    * ```
    */
   startPolling: () => void;
