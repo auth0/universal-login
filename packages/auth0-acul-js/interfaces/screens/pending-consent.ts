@@ -5,16 +5,16 @@ import type { MfaPollingOptions, MfaPushPollingControl } from '../utils/polling-
 /**
  * Interface describing the members of the Pending Consent screen.
  *
- * This screen is a waiting room shown during PAR, RAR, or CIBA flows when no
- * customized-consent prompt is configured. The user approves or denies the request
+ * This screen is a waiting room shown during Rich Authorization Requests (RAR) flows
+ * when no customized-consent prompt is configured. The user approves or denies the request
  * off-browser through the My Account experience while this screen polls for the outcome.
  */
 export interface PendingConsentMembers extends BaseMembers {
   /**
    * Continues the flow once the pending consent has been resolved off-browser.
    *
-   * Posts only the transaction `state`. Auth0 reads the approve/deny outcome from the
-   * consent status, not from the request body. If the consent is still pending, Auth0
+   * Posts the transaction `state` with no `action`. Auth0 reads the approve/deny outcome
+   * from the consent status, not from the request body. If the consent is still pending, Auth0
    * renders this screen again instead of redirecting.
    *
    * @param payload Optional custom options to include with the request.

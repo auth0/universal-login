@@ -10,8 +10,8 @@ import type { MfaPollingOptions, MfaPushPollingControl } from '../../../interfac
 
 /**
  * Class implementing the Pending Consent screen functionality.
- * This screen is a waiting room shown during PAR, RAR, or CIBA flows when no
- * customized-consent prompt is configured. The user approves or denies the request
+ * This screen is a waiting room shown during Rich Authorization Requests (RAR) flows
+ * when no customized-consent prompt is configured. The user approves or denies the request
  * off-browser through the My Account experience while this screen polls for the outcome.
  */
 export default class PendingConsent extends BaseContext implements PendingConsentMembers {
@@ -30,7 +30,7 @@ export default class PendingConsent extends BaseContext implements PendingConsen
    * Continues the flow once the pending consent has been resolved off-browser.
    *
    * @remarks
-   * Submits a form POST that carries only the transaction `state`. Auth0 reads the
+   * Submits a form POST with the transaction `state` and no `action`. Auth0 reads the
    * approve/deny outcome from the consent status, not from the request body, so there is
    * no separate accept or deny action. If the consent is still pending, Auth0 renders this
    * screen again instead of redirecting, and the page reloads.

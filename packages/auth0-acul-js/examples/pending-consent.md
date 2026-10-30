@@ -1,6 +1,6 @@
 # Pending Consent Screen
 
-This screen is a waiting room shown during PAR, RAR, or CIBA flows when no customized-consent prompt is configured. The user approves or denies the request off-browser through the My Account experience, while this screen polls for the outcome and continues the flow once the consent is resolved.
+This screen is a waiting room shown during Rich Authorization Requests (RAR) flows when no customized-consent prompt is configured. The user approves or denies the request off-browser through the My Account experience, while this screen polls for the outcome and continues the flow once the consent is resolved.
 
 ## React Component Example with TailwindCSS
 
@@ -94,7 +94,7 @@ import PendingConsent from '@auth0/auth0-acul-js/pending-consent';
 
 const pendingConsent = new PendingConsent();
 
-// Posts only the transaction state. If the consent is still pending,
+// Posts the transaction state with no action. If the consent is still pending,
 // Auth0 renders this screen again instead of redirecting.
 await pendingConsent.continue();
 ```

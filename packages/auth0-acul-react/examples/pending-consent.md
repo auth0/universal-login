@@ -1,6 +1,6 @@
 # `pending-consent`
 
-The `pending-consent` screen is a waiting room shown during PAR, RAR, or CIBA flows when no customized-consent prompt is configured. The user approves or denies the request off-browser through the My Account experience, while this screen polls for the outcome and then continues the flow.
+The `pending-consent` screen is a waiting room shown during Rich Authorization Requests (RAR) flows when no customized-consent prompt is configured. The user approves or denies the request off-browser through the My Account experience, while this screen polls for the outcome and then continues the flow.
 
 ## ⚛️ React Example
 
