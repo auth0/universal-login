@@ -37,7 +37,10 @@ export type MfaPollingOptions = {
    * Receives an {@link ULError} object containing:
    * - `code` — `polling_error_<status>` for a non-200/429 response, or
    *   `polling_network_error` for a network failure
-   * - `message` — the message from the response body, or a generic message
+   * - `message` — for a network failure, a generic message. Otherwise the `message` field
+   *   of a JSON error body if it has one, else the raw response text, or
+   *   `Polling error (<status>)` if the body is empty. The raw text can be HTML or JSON
+   *   (Auth0's own error body has no `message` field), so log it rather than showing it to users.
    *
    * - Polling stops after an error and does not retry.
    * - HTTP 429 (rate limit) responses are not errors: polling waits until the rate

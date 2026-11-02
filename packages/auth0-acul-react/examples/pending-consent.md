@@ -11,7 +11,7 @@ This example demonstrates how to build a React component for the `pending-consen
 Create a component file (e.g., `PendingConsent.tsx`) and add the following code:
 
 ```tsx
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   // Context hooks
   useScreen,
@@ -28,8 +28,12 @@ export const PendingConsent: React.FC = () => {
   const screen = useScreen();
   const { texts } = screen;
 
-  // Collect all SDK/server/developer errors
-  const { hasError, errors } = useErrors();
+  // Collect all SDK/server/developer errors. useMfaPolling also adds polling errors here,
+  // and their message can be raw response text, so leave those out and show a fixed message.
+  const { errors } = useErrors();
+  const displayErrors = errors.filter((err) => !err.code.startsWith('polling_'));
+  const [pollingFailed, setPollingFailed] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Poll until the consent is approved or denied off-browser, then continue.
   // Auth0 applies the approve/deny outcome when the continue request is posted.
@@ -39,7 +43,9 @@ export const PendingConsent: React.FC = () => {
       continueMethod();
     },
     onError: (error) => {
+      // Polling stops after an error
       console.error('Polling error:', error);
+      setPollingFailed(true);
     }
   });
 
@@ -48,6 +54,18 @@ export const PendingConsent: React.FC = () => {
     startPolling();
     return () => stopPolling();
   }, [startPolling, stopPolling]);
+
+  // Asks Auth0 to check the consent status again: it continues if the consent was approved
+  // or denied, or renders this screen again (and polling restarts) if it is still pending.
+  const handleTryAgain = async () => {
+    setIsSubmitting(true);
+    try {
+      await continueMethod();
+    } catch (err) {
+      console.error('Failed to continue:', err);
+      setIsSubmitting(false); // only clear on error; on success the page navigates away
+    }
+  };
 
   return (
     <div>
@@ -63,19 +81,24 @@ export const PendingConsent: React.FC = () => {
         </div>
       )}
 
-      {hasError && (
+      {displayErrors.length > 0 && (
         <div style={{ color: 'red' }}>
-          {errors.map((err, idx) => (
+          {displayErrors.map((err, idx) => (
             <p key={`err-${idx}`}>{err.message}</p>
           ))}
         </div>
       )}
 
-      {/* Fallback in case polling stops after an error. If the consent is still
-          pending, Auth0 renders this screen again and polling restarts. */}
-      <button type="button" onClick={() => continueMethod()}>
-        {texts?.buttonText ?? "I've approved the request"}
-      </button>
+      {/* Shown only after polling fails, so it can't race the automatic continueMethod().
+          This screen has no localized text for these strings, so localize them yourself. */}
+      {pollingFailed && (
+        <>
+          <p role="alert" style={{ color: 'red' }}>We couldn't check the status of your request.</p>
+          <button type="button" disabled={isSubmitting} onClick={handleTryAgain}>
+            Try again
+          </button>
+        </>
+      )}
     </div>
   );
 };

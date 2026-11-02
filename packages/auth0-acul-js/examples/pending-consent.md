@@ -14,7 +14,8 @@ const PendingConsentScreen: React.FC = () => {
   const { screen, transaction: { errors } } = pendingConsentManager;
   const texts = screen?.texts || {};
   const pollingControl = useRef<ReturnType<typeof pendingConsentManager.pollingManager> | null>(null);
-  const [pollingError, setPollingError] = useState<string | null>(null);
+  const [pollingFailed, setPollingFailed] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     // Poll until the consent is approved or denied off-browser, then continue the flow.
@@ -22,13 +23,29 @@ const PendingConsentScreen: React.FC = () => {
     pollingControl.current = pendingConsentManager.pollingManager({
       intervalMs: 5000,
       onCompleted: () => pendingConsentManager.continue(),
-      // Polling stops after an error, so show it and let the user continue manually
-      onError: (error) => setPollingError(error.message),
+      // Polling stops after an error. The message can be raw response text, so log it
+      // and show a fixed message with a manual way to continue instead.
+      onError: (error) => {
+        console.error('Polling error:', error);
+        setPollingFailed(true);
+      },
     });
     pollingControl.current.startPolling();
 
     return () => pollingControl.current?.stopPolling();
   }, []);
+
+  // Asks Auth0 to check the consent status again: it continues if the consent was approved
+  // or denied, or renders this screen again (and polling restarts) if it is still pending.
+  const handleTryAgain = async () => {
+    setIsSubmitting(true);
+    try {
+      await pendingConsentManager.continue();
+    } catch (err) {
+      console.error('Failed to continue:', err);
+      setIsSubmitting(false); // only clear on error; on success the page navigates away
+    }
+  };
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-100 px-4">
@@ -42,7 +59,7 @@ const PendingConsentScreen: React.FC = () => {
             "We're waiting for you to review and approve this request to continue."}
         </p>
 
-        {!pollingError && (
+        {!pollingFailed && (
           <div className="my-6 flex justify-center">
             <div
               role="status"
@@ -62,19 +79,23 @@ const PendingConsentScreen: React.FC = () => {
           </div>
         ) : null}
 
-        {pollingError && (
-          <p className="text-red-600 text-sm text-center">{pollingError}</p>
+        {/* Shown only after polling fails, so it can't race the automatic continue().
+            This screen has no localized text for these strings, so localize them yourself. */}
+        {pollingFailed && (
+          <>
+            <p role="alert" className="text-red-600 text-sm text-center">
+              We couldn't check the status of your request.
+            </p>
+            <button
+              type="button"
+              disabled={isSubmitting}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg disabled:opacity-50"
+              onClick={handleTryAgain}
+            >
+              Try again
+            </button>
+          </>
         )}
-
-        {/* Fallback in case polling stops after an error. If the consent is still
-            pending, Auth0 renders this screen again and polling restarts. */}
-        <button
-          type="button"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg"
-          onClick={() => pendingConsentManager.continue()}
-        >
-          {texts.buttonText ?? "I've approved the request"}
-        </button>
       </div>
     </div>
   );
