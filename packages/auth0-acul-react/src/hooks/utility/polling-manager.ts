@@ -16,7 +16,7 @@ import type {
  */
 export interface MfaPollingResult {
   /**
-   * Indicates whether the MFA push polling process is currently active.
+   * Indicates whether the polling process is currently active.
    *
    * - `true` — Polling is running and awaiting completion.
    * - `false` — Polling has stopped, either due to completion,
@@ -42,14 +42,16 @@ export interface MfaPollingResult {
 }
 
 /**
- * React hook to manage MFA push polling (e.g., waiting for a push notification approval)
- * on an Auth0 Advanced Customization of Universal Login (ACUL) screen.
+ * React hook to manage polling on an Auth0 Advanced Customization of Universal Login (ACUL)
+ * screen that waits for an out-of-band decision, such as an MFA push notification approval
+ * or a pending consent.
  *
  * This hook sets up and controls a long-running polling loop that repeatedly checks
- * the MFA push challenge endpoint until one of the following occurs:
+ * the current screen until one of the following occurs:
  *
- * - The challenge is **approved or denied** by the user, triggering `options.onCompleted`.
+ * - The request is **approved or denied** by the user, triggering `options.onCompleted`.
  * - An **error** occurs (network error, non-200/429 response), triggering `options.onError`.
+ *   Polling then stops and does not retry.
  * - The **component unmounts** or `stopPolling()` is called, which cancels polling.
  *
  * ### Key Features
@@ -66,6 +68,7 @@ export interface MfaPollingResult {
  * - `mfa-push-challenge-push`
  * - `reset-password-mfa-push-challenge-push`
  * - `mfa-push-enrollment-qr`
+ * - `pending-consent`
  *
  * @returns object {@link MfaPollingResult} containing:
  * - `isRunning` — `true` while polling is active.
@@ -96,7 +99,7 @@ export interface MfaPollingResult {
  *
  * @remarks
  * - The `onError` callback receives an {@link ULError} object
- *   with `status` and `responseText` describing the server response.
+ *   with `code` and `message` describing the failure.
  * - Internal rate-limit responses (`429`) are automatically handled:
  *   polling waits for the reset window before retrying.
  * - Calling `startPolling()` repeatedly while running is safe and idempotent.

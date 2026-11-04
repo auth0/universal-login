@@ -81,6 +81,7 @@ export { useBruteForceProtectionUnblock } from './screens/brute-force-protection
 export { useBruteForceProtectionUnblockFailure } from './screens/brute-force-protection-unblock-failure';
 export { useBruteForceProtectionUnblockSuccess } from './screens/brute-force-protection-unblock-success';
 export { useConfirmation } from './screens/confirmation';
+export { usePendingConsent } from './screens/pending-consent';
 export { useCurrentScreen, useErrors, useAuth0Themes, useChangeLanguage } from './hooks';
 
 // Common types from core SDK

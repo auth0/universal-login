@@ -5,17 +5,17 @@ import type {
 } from "../../interfaces/utils/polling-control";
 
 /**
- * Starts polling the MFA push challenge endpoint using XHR GET requests.
+ * Polls the current page URL using XHR GET requests with `Accept: application/json`.
  *
- * - Polls the given URL (or current page URL if not provided) at the specified interval.
- * - Calls the `condition` function with the response body to determine if polling should stop.
- * - If the condition is met, calls `onCompleted` and stops polling.
+ * - Polls at the specified interval until the response body has `completed: true`, for
+ *   example once an MFA push challenge or a pending consent has been approved or denied.
+ * - When `completed` is true, calls `onCompleted` and stops polling.
+ * - Skips requests while the page is hidden and checks again after the interval.
  * - Handles rate limiting (HTTP 429) by waiting until the rate limit resets.
- * - Calls `onError` if a non-200/429 response is received.
- * - Returns a cancel function to stop polling.
+ * - Calls `onError` and stops polling on a network error or a non-200/429 response.
  *
  * @param options - {@link MfaPollingOptions}
- * @returns A cancel function to stop polling.
+ * @returns A {@link MfaPushPollingControl} to start, stop, and inspect polling.
  */
 export function createPollingControl(
   options?: MfaPollingOptions
@@ -89,7 +89,7 @@ export function createPollingControl(
       if (cancelled) return;
       const err: ErrorSchema = {
         code: "polling_network_error",
-        message: "Network error while polling MFA push challenge.",
+        message: "Network error while polling.",
       };
       onError?.(err);
     };
