@@ -1,5 +1,11 @@
 # Change Log
 
+## [auth0-acul-react-v1.11.0](https://github.com/auth0/universal-login/tree/auth0-acul-react-v1.11.0) (2026-11-05)
+[Full Changelog](https://github.com/auth0/universal-login/compare/auth0-acul-react-v1.10.0...auth0-acul-react-v1.11.0)
+
+**Added**
+- feat: add support for pending-consent screen [\#428](https://github.com/auth0/universal-login/pull/428) ([amitsingh05667](https://github.com/amitsingh05667))
+
 ## [auth0-acul-react-v1.10.0](https://github.com/auth0/universal-login/tree/auth0-acul-react-v1.10.0) (2026-10-23)
 [Full Changelog](https://github.com/auth0/universal-login/compare/auth0-acul-react-v1.9.0...auth0-acul-react-v1.10.0)
 
