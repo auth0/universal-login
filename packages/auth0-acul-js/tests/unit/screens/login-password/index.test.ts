@@ -1,13 +1,16 @@
-import { FormActions, ScreenIds } from '../../../../src/constants';
+import { Errors, FormActions, ScreenIds } from '../../../../src/constants';
 import LoginPassword from '../../../../src/screens/login-password';
 import { getBrowserCapabilities } from '../../../../src/utils/browser-capabilities';
+import { ConfigurationError } from '../../../../src/utils/errors';
 import { FormHandler } from '../../../../src/utils/form-handler';
+import { getPasskeyCredentials, registerPasskeyAutofill } from '../../../../src/utils/passkeys';
 import { baseContextData } from '../../../data/test-data';
 
 import type { LoginPasswordOptions, FederatedLoginOptions } from '../../../../interfaces/screens/login-password';
 
 jest.mock('../../../../src/utils/browser-capabilities');
 jest.mock('../../../../src/utils/form-handler');
+jest.mock('../../../../src/utils/passkeys');
 
 describe('LoginPassword', () => {
   let loginPassword: LoginPassword;
@@ -294,6 +297,118 @@ describe('LoginPassword', () => {
       mockFormHandler.submitData.mockRejectedValue(new Error('Switch failed'));
 
       await expect(loginPassword.switchToOtp()).rejects.toThrow('Switch failed');
+    });
+  });
+  describe('passkeyLogin method', () => {
+    const publicKey = baseContextData.screen.data?.passkey?.public_key;
+
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('should throw when passkey data is unavailable', async () => {
+      loginPassword.screen.publicKey = null;
+
+      await expect(loginPassword.passkeyLogin()).rejects.toThrow(Errors.PASSKEY_DATA_UNAVAILABLE);
+      expect(mockFormHandler.submitData).not.toHaveBeenCalled();
+    });
+
+    it('should submit passkey credentials with correct telemetry', async () => {
+      (getPasskeyCredentials as jest.Mock).mockResolvedValue({ id: 'mockPasskey' });
+
+      await loginPassword.passkeyLogin();
+
+      expect(getPasskeyCredentials).toHaveBeenCalledWith(publicKey);
+      expect(FormHandler).toHaveBeenCalledWith({
+        state: loginPassword.transaction.state,
+        telemetry: [ScreenIds.LOGIN_PASSWORD, 'passkeyLogin'],
+      });
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith({
+        passkey: JSON.stringify({ id: 'mockPasskey' }),
+      });
+    });
+
+    it('should resolve without submitting when the user cancels the passkey prompt', async () => {
+      (getPasskeyCredentials as jest.Mock).mockRejectedValue(
+        new DOMException('cancelled', 'NotAllowedError')
+      );
+
+      await expect(loginPassword.passkeyLogin()).resolves.toBeUndefined();
+      expect(mockFormHandler.submitData).not.toHaveBeenCalled();
+    });
+
+    it('should restart passkey autofill after a cancelled prompt when autofill is registered', async () => {
+      (registerPasskeyAutofill as jest.Mock).mockResolvedValue(new AbortController());
+      await loginPassword.registerPasskeyAutofill('password');
+      (getPasskeyCredentials as jest.Mock).mockRejectedValue(
+        new DOMException('cancelled', 'NotAllowedError')
+      );
+
+      await loginPassword.passkeyLogin();
+
+      expect(registerPasskeyAutofill).toHaveBeenCalledTimes(2);
+    });
+
+    it('should rethrow unexpected errors', async () => {
+      (getPasskeyCredentials as jest.Mock).mockRejectedValue(new Error('Unexpected'));
+
+      await expect(loginPassword.passkeyLogin()).rejects.toThrow('Unexpected');
+    });
+  });
+
+  describe('registerPasskeyAutofill method', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('should throw when passkey data is unavailable', async () => {
+      loginPassword.screen.publicKey = null;
+
+      await expect(loginPassword.registerPasskeyAutofill()).rejects.toThrow(
+        Errors.PASSKEY_DATA_UNAVAILABLE
+      );
+    });
+
+    it('should register autofill on the password input and submit the resolved credential', async () => {
+      (registerPasskeyAutofill as jest.Mock).mockResolvedValue(new AbortController());
+
+      await loginPassword.registerPasskeyAutofill('password');
+
+      expect(registerPasskeyAutofill).toHaveBeenCalledWith({
+        publicKey: baseContextData.screen.data?.passkey?.public_key,
+        inputId: 'password',
+        autocomplete: 'current-password webauthn',
+        onResolve: expect.any(Function),
+        onReject: expect.any(Function),
+      });
+
+      const { onResolve } = (registerPasskeyAutofill as jest.Mock).mock.calls[0][0] as {
+        onResolve: (credential: unknown) => Promise<void>;
+      };
+      await onResolve({ id: 'mockCredential' });
+
+      expect(FormHandler).toHaveBeenCalledWith({
+        state: loginPassword.transaction.state,
+        telemetry: [ScreenIds.LOGIN_PASSWORD, 'passkeyAutocomplete'],
+      });
+      expect(mockFormHandler.submitData).toHaveBeenCalledWith({
+        passkey: JSON.stringify({ id: 'mockCredential' }),
+      });
+    });
+
+    it('should throw ConfigurationError when registration is rejected', async () => {
+      const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+      (registerPasskeyAutofill as jest.Mock).mockImplementationOnce(
+        ({ onReject }: { onReject: (err: unknown) => void }) => {
+          onReject(new Error('fail'));
+          return Promise.resolve(new AbortController());
+        }
+      );
+
+      await expect(loginPassword.registerPasskeyAutofill('password')).rejects.toThrow(
+        ConfigurationError
+      );
+      warnSpy.mockRestore();
     });
   });
 });

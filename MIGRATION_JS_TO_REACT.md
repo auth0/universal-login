@@ -114,6 +114,7 @@ npm install react@^18.0.0 react-dom@^18.0.0
 | `await loginIdManager.login(payload)` | `await login(payload)` |
 | `await loginIdManager.federatedLogin(payload)` | `await federatedLogin(payload)` |
 | `await loginIdManager.passkeyLogin()` | `await passkeyLogin()` |
+| `await loginPasswordManager.passkeyLogin()` | `await passkeyLogin()` (from `@auth0/auth0-acul-react/login-password`) |
 | `await signupIdManager.signup(payload)` | `await signup(payload)` |
 
 ### Error Handling
@@ -434,14 +435,8 @@ const { startResend, disabled, remaining } = useResend({
 **JavaScript SDK:**
 ```javascript
 const manager = new LoginId();
-await manager.registerPasskeyAutofill({
-  onSuccess: (credential) => {
-    // Handle credential
-  },
-  onError: (error) => {
-    // Handle error
-  }
-});
+// <input id="username" autocomplete="username webauthn" />
+await manager.registerPasskeyAutofill('username');
 ```
 
 **React SDK:**
@@ -456,6 +451,33 @@ return (
     id="username"
     placeholder="Username"
     autoComplete="username webauthn"
+  />
+);
+```
+
+On `login-password`, the same hook attaches to the password field and uses `current-password webauthn`. The passkey challenge is only present when the server offers passkeys on that screen, so check `screen.publicKey` first.
+
+**JavaScript SDK:**
+```javascript
+const manager = new LoginPassword();
+if (manager.screen.publicKey && manager.transaction.showPasskeyAutofill) {
+  // <input id="password" type="password" autocomplete="current-password webauthn" />
+  await manager.registerPasskeyAutofill('password');
+}
+```
+
+**React SDK:**
+```tsx
+import { usePasskeyAutofill } from '@auth0/auth0-acul-react/login-password';
+
+const { inputRef } = usePasskeyAutofill();
+
+return (
+  <input
+    ref={inputRef}
+    id="password"
+    type="password"
+    autoComplete="current-password webauthn"
   />
 );
 ```

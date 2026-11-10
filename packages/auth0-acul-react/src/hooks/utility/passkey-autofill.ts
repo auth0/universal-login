@@ -3,13 +3,16 @@ import { useLayoutEffect, useRef } from 'react';
 import { getScreen } from '../../state/instance-store';
 
 import type { LoginIdMembers } from '@auth0/auth0-acul-js/login-id';
+import type { LoginPasswordMembers } from '@auth0/auth0-acul-js/login-password';
 
-const REQUIRED_TOKENS = 'username webauthn';
+const USERNAME_TOKENS = 'username webauthn';
+const PASSWORD_TOKENS = 'current-password webauthn';
 
 /**
  * Result object returned by {@link usePasskeyAutofill}.
  *
- * Provides a ref that can be attached to the username `<input>` element
+ * Provides a ref that can be attached to the username (`login-id`) or
+ * password (`login-password`) `<input>` element
  * to automatically enable browser Conditional UI (passkey autofill).
  *
  * @see {@link usePasskeyAutofill}
@@ -18,10 +21,11 @@ const REQUIRED_TOKENS = 'username webauthn';
  */
 export interface UsePasskeyAutofillResult {
   /**
-   * A React ref that can be bound to the username `<input>` element.
+   * A React ref that can be bound to the username or password `<input>` element.
    *
    * When attached, the SDK ensures the input’s `autocomplete`
-   * attribute is correctly set to `"username webauthn"`.
+   * attribute is correctly set to `"username webauthn"` on `login-id`,
+   * or `"current-password webauthn"` on `login-password`.
    *
    * If the developer already declared this attribute in markup,
    * the ref is optional, the hook will still register Conditional
@@ -32,7 +36,8 @@ export interface UsePasskeyAutofillResult {
 
 /**
  * React hook that enables browser **Conditional UI** (passkey autofill)
- * for the login identifier field on the `login-id` screen.
+ * for the login identifier field on the `login-id` screen, or the password
+ * field on the `login-password` screen.
  *
  * ---
  * ### Behavior
@@ -86,14 +91,34 @@ export interface UsePasskeyAutofillResult {
  * }
  * ```
  *
+ *
+ * On `login-password`, bind the ref to the password field instead:
+ * ```tsx
+ * import { usePasskeyAutofill } from '@auth0/auth0-acul-react/login-password';
+ *
+ * export function PasswordField() {
+ *   const { inputRef } = usePasskeyAutofill();
+ *
+ *   return (
+ *     <input
+ *       ref={inputRef}
+ *       id="password"
+ *       type="password"
+ *       autoComplete="current-password webauthn"
+ *     />
+ *   );
+ * }
+ * ```
+ *
  * ---
  * @supportedScreens
  * - `login-id`
+ * - `login-password`
  *
  * @category Passkeys
  */
 export function usePasskeyAutofill(): UsePasskeyAutofillResult {
-  const instance = getScreen<LoginIdMembers>();
+  const instance = getScreen<LoginIdMembers | LoginPasswordMembers>();
   const inputRef = useRef<HTMLInputElement>(null);
   const initializedRef = useRef(false);
 
@@ -115,9 +140,11 @@ export function usePasskeyAutofill(): UsePasskeyAutofillResult {
 
       // Optionally correct the autocomplete attribute if the ref was used
       if (el) {
+        const requiredTokens =
+          instance.screen?.name === 'login-password' ? PASSWORD_TOKENS : USERNAME_TOKENS;
         const current = (el.getAttribute('autocomplete') ?? '').trim().toLowerCase();
-        if (current !== REQUIRED_TOKENS) {
-          el.setAttribute('autocomplete', REQUIRED_TOKENS);
+        if (current !== requiredTokens) {
+          el.setAttribute('autocomplete', requiredTokens);
         }
       }
     } catch (err) {

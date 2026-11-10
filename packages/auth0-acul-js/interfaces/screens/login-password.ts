@@ -1,7 +1,7 @@
 import type { IdentifierType } from '../../src/constants';
 import type { CustomOptions } from '../common';
 import type { BaseContext, BaseMembers } from '../models/base-context';
-import type { ScreenContext, ScreenMembers } from '../models/screen';
+import type { ScreenContext, ScreenMembers, PasskeyRead } from '../models/screen';
 import type { TransactionContext, TransactionMembers, DBConnection, PasswordPolicy, UsernamePolicy } from '../models/transaction';
 
 export interface ScreenContextOnLoginPassword extends ScreenContext {
@@ -10,12 +10,19 @@ export interface ScreenContextOnLoginPassword extends ScreenContext {
     reset_password: string;
     edit_identifier: string;
   };
+  data?: {
+    username?: string;
+    show_switch_to_otp_button?: boolean;
+    passkey?: PasskeyRead;
+  };
 }
 
 export interface ScreenMembersOnLoginPassword extends ScreenMembers {
   signupLink: string | null;
   resetPasswordLink: string | null;
   editIdentifierLink: string | null;
+  /** Passkey challenge. Present only when the server offers passkeys on this screen. */
+  publicKey: PasskeyRead['public_key'] | null;
   data: {
     username: string;
     showSwitchToOtpButton?: boolean;
@@ -30,6 +37,7 @@ export interface TransactionMembersOnLoginPassword extends TransactionMembers {
   isSignupEnabled: boolean;
   isForgotPasswordEnabled: boolean;
   isPasskeyEnabled: boolean;
+  showPasskeyAutofill: boolean;
   passwordPolicy: PasswordPolicy | null;
   usernamePolicy: UsernamePolicy | null;
   allowedIdentifiers: IdentifierType[] | null;
@@ -64,4 +72,6 @@ export interface LoginPasswordMembers extends BaseMembers {
   federatedLogin(payload: FederatedLoginOptions): Promise<void>;
   switchConnection(payload: SwitchConnectionOptions): Promise<void>;
   switchToOtp(payload?: CustomOptions): Promise<void>;
+  passkeyLogin(payload?: CustomOptions): Promise<void>;
+  registerPasskeyAutofill(inputId?: string): Promise<void>;
 }

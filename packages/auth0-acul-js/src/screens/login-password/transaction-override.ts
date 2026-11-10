@@ -3,6 +3,7 @@ import {
   isSignupEnabled,
   isForgotPasswordEnabled,
   isPasskeyEnabled,
+  getShowPasskeyAutofill,
   getPasswordPolicy,
   getUsernamePolicy,
   getAllowedIdentifiers,
@@ -18,6 +19,7 @@ export class TransactionOverride extends Transaction implements OverrideMembers 
     this.isSignupEnabled = isSignupEnabled(transactionContext);
     this.isForgotPasswordEnabled = isForgotPasswordEnabled(transactionContext);
     this.isPasskeyEnabled = isPasskeyEnabled(transactionContext);
+    this.showPasskeyAutofill = getShowPasskeyAutofill(transactionContext);
     this.passwordPolicy = getPasswordPolicy(transactionContext);
     this.usernamePolicy = getUsernamePolicy(transactionContext);
     this.allowedIdentifiers = getAllowedIdentifiers(transactionContext);
@@ -26,6 +28,7 @@ export class TransactionOverride extends Transaction implements OverrideMembers 
   isSignupEnabled: boolean;
   isForgotPasswordEnabled: boolean;
   isPasskeyEnabled: boolean;
+  showPasskeyAutofill: boolean;
   passwordPolicy: OverrideMembers['passwordPolicy'];
   usernamePolicy: OverrideMembers['usernamePolicy'];
   allowedIdentifiers: OverrideMembers['allowedIdentifiers'];
