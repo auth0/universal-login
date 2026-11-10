@@ -362,6 +362,22 @@ describe('registerPasskeyAutofill', () => {
     expect(controller).toHaveProperty('signal');
   });
 
+  it('should set a custom autocomplete value when provided', async () => {
+    const input = document.createElement('input');
+    input.id = 'password';
+    document.body.appendChild(input);
+
+    await registerPasskeyAutofill({
+      publicKey: { challenge: 'mock-challenge' },
+      inputId: 'password',
+      autocomplete: 'current-password webauthn',
+      onResolve,
+      onReject,
+    });
+
+    expect(input.getAttribute('autocomplete')).toBe('current-password webauthn');
+  });
+
   it('should warn if element id is invalid or not input', async () => {
     const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
     const div = document.createElement('div');
