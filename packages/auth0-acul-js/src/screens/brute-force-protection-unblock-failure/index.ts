@@ -1,3 +1,4 @@
+import { ScreenIds } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 
 import { ScreenOverride } from './screen-override';
@@ -11,6 +12,8 @@ import type {
  * Represents the Brute Force Protection Unblock Failure screen.
  */
 export default class BruteForceProtectionUnblockFailure extends BaseContext implements BruteForceProtectionUnblockFailureMembers {
+  static screenIdentifier: string = ScreenIds.BRUTE_FORCE_PROTECTION_UNBLOCK_FAILURE;
+
   /**
    * The screen interface for the Brute Force Protection Unblock Failure screen.
    * @ignore

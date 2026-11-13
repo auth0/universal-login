@@ -1,3 +1,4 @@
+import { ScreenIds } from '../../../../src/constants';
 import { ScreenOverride } from '../../../../src/screens/brute-force-protection-unblock-failure/screen-override';
 import { baseContextData } from '../../../data/test-data';
 import { BaseContext } from '../../../../src/models/base-context';
@@ -34,6 +35,12 @@ describe('BruteForceProtectionUnblockFailure', () => {
     expect(bruteForceProtectionUnblockFailure.screen.data).toEqual({
       errorType: 'testError',
     });
+  });
+
+  it('should have a static screenIdentifier matching the screen name', () => {
+    expect(bruteForceProtectionUnblockFailure.constructor.screenIdentifier).toBe(
+      ScreenIds.BRUTE_FORCE_PROTECTION_UNBLOCK_FAILURE
+    );
   });
 
   it('should extend BaseContext', () => {

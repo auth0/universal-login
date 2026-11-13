@@ -1,3 +1,4 @@
+import { ScreenIds } from '../../constants';
 import { BaseContext } from '../../models/base-context';
 import { FormHandler } from '../../utils/form-handler';
 
@@ -13,6 +14,8 @@ import type { FormOptions } from '../../../interfaces/utils/form-handler';
  * This class provides methods to interact with the brute-force protection unblock screen, such as submitting the unblock request.
  */
 export default class BruteForceProtectionUnblock extends BaseContext implements BruteForceProtectionUnblockMembers {
+  static screenIdentifier: string = ScreenIds.BRUTE_FORCE_PROTECTION_UNBLOCK;
+
   /**
    * Creates an instance of BruteForceProtectionUnblock.
    */
