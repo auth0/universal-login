@@ -23,6 +23,7 @@ export class ScreenOverride extends Screen implements OverrideOptions {
       phoneNumber: data.phone_number,
       username: data.username,
       showSkipPassword: typeof data.show_skip_password === 'boolean' ? data.show_skip_password : undefined,
+      inviter: typeof data.inviter === 'string' ? data.inviter : undefined,
     } as OverrideOptions['data'];
   };
 }

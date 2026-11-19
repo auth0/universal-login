@@ -121,6 +121,31 @@ describe('ScreenOverride', () => {
       const result = ScreenOverride.getScreenData(context);
       expect(result?.showSkipPassword).toBeUndefined();
     });
+
+    it('should expose inviter when the user is accepting an organization invitation', () => {
+      const context = {
+        ...screenContext,
+        data: { email: 'jane@example.com', inviter: 'John Smith' },
+      } as ScreenContextOnSignupPassword;
+
+      const result = ScreenOverride.getScreenData(context);
+      expect(result?.inviter).toBe('John Smith');
+    });
+
+    it('should set inviter to undefined when inviter is absent', () => {
+      const result = ScreenOverride.getScreenData(screenContext);
+      expect(result?.inviter).toBeUndefined();
+    });
+
+    it('should ignore a non-string inviter', () => {
+      const context = {
+        ...screenContext,
+        data: { email: 'jane@example.com', inviter: true },
+      } as unknown as ScreenContextOnSignupPassword;
+
+      const result = ScreenOverride.getScreenData(context);
+      expect(result?.inviter).toBeUndefined();
+    });
   });
 
   it('should extend Screen class', () => {

@@ -59,6 +59,22 @@
     }
 ```
 
+## Organization invitations
+   While a user is accepting an organization invitation, `screen.data.inviter` holds the inviter's
+   display name. It is `undefined` otherwise. `inviter` is free text, so render it as text (JSX
+   interpolation or `textContent`) and never via `innerHTML`.
+
+```typescript
+    import SignupPassword from "@auth0/auth0-acul-js/signup-password";
+
+    const { screen, organization } = new SignupPassword();
+
+    // e.g. "Sign up to accept John Smith's invitation to join Acme"
+    const invitationText = screen.data?.inviter
+      ? `Sign up to accept ${screen.data.inviter}'s invitation to join ${organization.displayName ?? organization.name}`
+      : null;
+```
+
 ## signupPassword Example using validatePassword 
 
 ```typescript
