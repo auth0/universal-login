@@ -56,6 +56,25 @@ const mfaVoiceChallenge = new MfaVoiceChallenge();
 mfaVoiceChallenge.tryAnotherMethod();
 ```
 
+## Verify a Phone Number During Enrollment
+
+After a user enters a phone number while enrolling voice as an MFA factor, Universal Login shows the code entry step at `/u/mfa-voice-enrollment-verify`. That step renders this same `mfa-voice-challenge` screen, so there is no separate screen to add. `continue`, `resendCode`, `switchToSms` and `tryAnotherMethod` work the same way. `pickPhone` and `rememberDevice` do not apply to that step.
+
+Use `screen.editIdentifierLink` to let the user go back and correct the phone number. It is `null` when no link is provided, for example during a regular MFA login challenge.
+
+```typescript
+import MfaVoiceChallenge from '@auth0/auth0-acul-js/mfa-voice-challenge';
+
+const mfaVoiceChallenge = new MfaVoiceChallenge();
+
+// Link to the phone number entry screen, or null outside of enrollment
+const editPhoneNumberLink = mfaVoiceChallenge.screen.editIdentifierLink;
+
+if (editPhoneNumberLink) {
+  // Render an "Edit phone number" link that points to editPhoneNumberLink
+}
+```
+
 ## resendManager
 
 ```typescript

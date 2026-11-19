@@ -57,6 +57,25 @@ startResend();
 
 ```
 
+## Verify a Phone Number During Enrollment
+
+After a user enters a phone number while enrolling SMS as an MFA factor, Universal Login shows the code entry step at `/u/mfa-sms-enrollment-verify`. That step renders this same `mfa-sms-challenge` screen, so there is no separate screen to add. `continueMfaSmsChallenge`, `resendCode`, `tryAnotherMethod` and `getACall` work the same way. `pickSms` and `rememberDevice` do not apply to that step.
+
+Use `screen.editIdentifierLink` to let the user go back and correct the phone number. It is `null` when no link is provided, for example during a regular MFA login challenge.
+
+```typescript
+import MfaSmsChallenge from '@auth0/auth0-acul-js/mfa-sms-challenge';
+
+const mfaSmsChallenge = new MfaSmsChallenge();
+
+// Link to the phone number entry screen, or null outside of enrollment
+const editPhoneNumberLink = mfaSmsChallenge.screen.editIdentifierLink;
+
+if (editPhoneNumberLink) {
+  // Render an "Edit phone number" link that points to editPhoneNumberLink
+}
+```
+
 ## React Component Example with TailwindCSS
 
 ```jsx

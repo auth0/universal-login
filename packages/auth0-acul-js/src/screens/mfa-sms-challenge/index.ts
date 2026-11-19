@@ -20,6 +20,10 @@ import type { StartResendOptions, ResendControl } from  '../../../interfaces/uti
 
 /**
  * This class provides methods to handle the mfa-sms-challenge screen.
+ *
+ * This screen is also shown after a user enters a phone number while enrolling SMS as an MFA
+ * factor, at `/u/mfa-sms-enrollment-verify`. There is no separate screen for that step. Use
+ * `screen.editIdentifierLink` to let the user go back and correct the phone number.
  * @extends BaseContext
  */
 export default class MfaSmsChallenge extends BaseContext implements MfaSmsChallengeMembers {
