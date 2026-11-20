@@ -482,6 +482,43 @@ return (
 );
 ```
 
+To follow the connection's passkey challenge UI setting, show the passkey button when `transaction.alwaysShowPasskeyButton` is `true`, or when it is `false` and the browser doesn't support Conditional UI:
+
+**JavaScript SDK:**
+```javascript
+const manager = new LoginPassword();
+const isConditionalUIAvailable =
+  (await window.PublicKeyCredential?.isConditionalMediationAvailable?.()) ?? false;
+const showPasskeyButton =
+  Boolean(manager.screen.publicKey) &&
+  (manager.transaction.alwaysShowPasskeyButton || !isConditionalUIAvailable);
+```
+
+**React SDK:**
+```tsx
+import { useEffect, useState } from 'react';
+import { useScreen, useTransaction, passkeyLogin } from '@auth0/auth0-acul-react/login-password';
+
+const screen = useScreen();
+const transaction = useTransaction();
+const [isConditionalUIAvailable, setIsConditionalUIAvailable] = useState(true);
+
+useEffect(() => {
+  window.PublicKeyCredential?.isConditionalMediationAvailable?.()
+    .then(setIsConditionalUIAvailable)
+    .catch(() => setIsConditionalUIAvailable(false));
+}, []);
+
+const showPasskeyButton =
+  Boolean(screen.publicKey) && (transaction.alwaysShowPasskeyButton || !isConditionalUIAvailable);
+
+return showPasskeyButton ? (
+  <button type="button" onClick={() => passkeyLogin()}>
+    Continue with a passkey
+  </button>
+) : null;
+```
+
 ---
 
 ## Import Path Reference
