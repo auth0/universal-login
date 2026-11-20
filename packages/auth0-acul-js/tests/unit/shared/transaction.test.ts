@@ -3,6 +3,7 @@ import {
   isForgotPasswordEnabled,
   isPasskeyEnabled,
   getShowPasskeyAutofill,
+  getAlwaysShowPasskeyButton,
   isUsernameRequired,
   getUsernamePolicy,
   getPasswordPolicy,
@@ -64,6 +65,15 @@ describe('Transaction Context Functions', () => {
 
   it('should default showPasskeyAutofill to false', () => {
     expect(getShowPasskeyAutofill({} as TransactionContext)).toBe(false);
+  });
+
+  it('should return alwaysShowPasskeyButton from the passkey options', () => {
+    (transaction.connection as any).options.authentication_methods.passkey.alwaysShowPasskeyButton = true;
+    expect(getAlwaysShowPasskeyButton(transaction)).toBe(true);
+  });
+
+  it('should default alwaysShowPasskeyButton to false', () => {
+    expect(getAlwaysShowPasskeyButton({} as TransactionContext)).toBe(false);
   });
 
   it('should return false for username required', () => {

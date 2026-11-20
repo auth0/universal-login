@@ -6,6 +6,8 @@ import {
   isSignupEnabled,
   isForgotPasswordEnabled,
   isPasskeyEnabled,
+  getShowPasskeyAutofill,
+  getAlwaysShowPasskeyButton,
 } from '../../../../src/shared/transaction';
 import { Transaction } from '../../../../src/models/transaction';
 import type { TransactionContext } from '../../../../interfaces/models/transaction';
@@ -23,6 +25,8 @@ describe('TransactionOverride', () => {
     (isSignupEnabled as jest.Mock).mockReturnValue(true);
     (isForgotPasswordEnabled as jest.Mock).mockReturnValue(true);
     (isPasskeyEnabled as jest.Mock).mockReturnValue(true);
+    (getShowPasskeyAutofill as jest.Mock).mockReturnValue(true);
+    (getAlwaysShowPasskeyButton as jest.Mock).mockReturnValue(false);
     (isUsernameRequired as jest.Mock).mockReturnValue(true);
     (getUsernamePolicy as jest.Mock).mockReturnValue('strict');
     (getActiveIdentifiers as jest.Mock).mockReturnValue(['email', 'phone']);
@@ -40,6 +44,16 @@ describe('TransactionOverride', () => {
 
   it('should initialize isPasskeyEnabled correctly', () => {
     expect(transactionOverride.isPasskeyEnabled).toBe(true);
+  });
+
+  it('should initialize showPasskeyAutofill correctly', () => {
+    expect(transactionOverride.showPasskeyAutofill).toBe(true);
+    expect(getShowPasskeyAutofill).toHaveBeenCalledWith(transactionContext);
+  });
+
+  it('should initialize alwaysShowPasskeyButton correctly', () => {
+    expect(transactionOverride.alwaysShowPasskeyButton).toBe(false);
+    expect(getAlwaysShowPasskeyButton).toHaveBeenCalledWith(transactionContext);
   });
 
   it('should initialize isUsernameRequired correctly', () => {

@@ -55,6 +55,20 @@ export function getShowPasskeyAutofill(transaction: TransactionContext): boolean
 }
 
 /**
+ * Checks if the connection wants the passkey button shown at all times.
+ *
+ * When false, the connection prefers passkey autofill (Conditional UI): show the passkey button
+ * only as a fallback when the browser doesn't support Conditional UI.
+ *
+ * @param transaction - The transaction context from Universal Login
+ * @returns True if the passkey button should always be shown, false otherwise
+ */
+export function getAlwaysShowPasskeyButton(transaction: TransactionContext): boolean {
+  const connection = transaction?.connection as DBConnectionWithPasskeyAutofill;
+  return connection?.options?.authentication_methods?.passkey?.alwaysShowPasskeyButton ?? false;
+}
+
+/**
  * Determines if a username is required for authentication based on connection settings.
  *
  * @param transaction - The transaction context from Universal Login

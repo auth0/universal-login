@@ -38,6 +38,11 @@ export interface TransactionMembersOnLoginPassword extends TransactionMembers {
   isForgotPasswordEnabled: boolean;
   isPasskeyEnabled: boolean;
   showPasskeyAutofill: boolean;
+  /**
+   * Whether to always show the passkey button. When false, the connection prefers passkey
+   * autofill: show the button only as a fallback when the browser doesn't support Conditional UI.
+   */
+  alwaysShowPasskeyButton: boolean;
   passwordPolicy: PasswordPolicy | null;
   usernamePolicy: UsernamePolicy | null;
   allowedIdentifiers: IdentifierType[] | null;

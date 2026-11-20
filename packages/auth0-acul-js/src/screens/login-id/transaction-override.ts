@@ -7,6 +7,7 @@ import {
   isForgotPasswordEnabled,
   isPasskeyEnabled,
   getShowPasskeyAutofill,
+  getAlwaysShowPasskeyButton,
   getActiveIdentifiers,
 } from '../../shared/transaction';
 
@@ -18,6 +19,7 @@ export class TransactionOverride extends Transaction implements OverrideMembers 
   isForgotPasswordEnabled: OverrideMembers['isForgotPasswordEnabled'];
   isPasskeyEnabled: OverrideMembers['isPasskeyEnabled'];
   showPasskeyAutofill: OverrideMembers['showPasskeyAutofill'];
+  alwaysShowPasskeyButton: OverrideMembers['alwaysShowPasskeyButton'];
   isUsernameRequired: OverrideMembers['isUsernameRequired'];
   usernamePolicy: OverrideMembers['usernamePolicy'];
   allowedIdentifiers: OverrideMembers['allowedIdentifiers'];
@@ -28,6 +30,7 @@ export class TransactionOverride extends Transaction implements OverrideMembers 
     this.isForgotPasswordEnabled = isForgotPasswordEnabled(transactionContext);
     this.isPasskeyEnabled = isPasskeyEnabled(transactionContext);
     this.showPasskeyAutofill = TransactionOverride.getShowPasskeyAutofill(transactionContext);
+    this.alwaysShowPasskeyButton = getAlwaysShowPasskeyButton(transactionContext);
     this.isUsernameRequired = isUsernameRequired(transactionContext);
     this.usernamePolicy = getUsernamePolicy(transactionContext);
     this.allowedIdentifiers = TransactionOverride.getAllowedIdentifiers(transactionContext, this.connectionStrategy);

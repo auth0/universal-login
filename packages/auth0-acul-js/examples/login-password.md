@@ -36,12 +36,21 @@ if (loginPasswordManager.screen.data?.showSwitchToOtpButton) {
 
 The passkey challenge is only present when the server offers passkeys on this screen (for example, when the user arrives with `login_hint` and skips the identifier screen). Only render a passkey button when `screen.publicKey` is set.
 
+`transaction.alwaysShowPasskeyButton` follows the connection's passkey challenge UI setting. When it is `false`, the connection prefers autofill, so show the button only if the browser doesn't support Conditional UI.
+
 ```typescript
 import LoginPassword from "@auth0/auth0-acul-js/login-password";
 
 const loginPasswordManager = new LoginPassword();
+const { screen, transaction } = loginPasswordManager;
 
-if (loginPasswordManager.screen.publicKey) {
+const isConditionalUIAvailable =
+  (await window.PublicKeyCredential?.isConditionalMediationAvailable?.()) ?? false;
+const showPasskeyButton =
+  Boolean(screen.publicKey) && (transaction.alwaysShowPasskeyButton || !isConditionalUIAvailable);
+
+if (showPasskeyButton) {
+  // Call from the click handler of a "Continue with a passkey" button
   loginPasswordManager.passkeyLogin();
 }
 
