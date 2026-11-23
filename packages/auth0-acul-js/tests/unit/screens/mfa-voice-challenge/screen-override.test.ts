@@ -1,5 +1,6 @@
 import { ScreenOverride } from '../../../../src/screens/mfa-voice-challenge/screen-override';
 import { Screen } from '../../../../src/models/screen';
+import { getEditIdentifierLink } from '../../../../src/shared/screen';
 import type { ScreenContext } from '../../../../interfaces/models/screen';
 
 jest.mock('../../../../src/shared/screen');
@@ -95,5 +96,52 @@ describe('ScreenOverride', () => {
 
   it('should extend Screen class', () => {
     expect(screenOverride).toBeInstanceOf(Screen);
+  });
+
+  describe('editIdentifierLink', () => {
+    beforeEach(() => {
+      // src/shared/screen is automocked above. Route the mock through the real helper so the
+      // links.edit_identifier mapping is exercised.
+      const actual = jest.requireActual('../../../../src/shared/screen') as {
+        getEditIdentifierLink: (screen: ScreenContext) => string | null;
+      };
+      (getEditIdentifierLink as jest.Mock).mockImplementation(actual.getEditIdentifierLink);
+    });
+
+    afterEach(() => {
+      (getEditIdentifierLink as jest.Mock).mockReset();
+    });
+
+    it('should expose the edit link provided while verifying a phone number during enrollment', () => {
+      const context = {
+        name: 'mfa-voice-challenge',
+        data: { phone_number: '+15555555555' },
+        links: { edit_identifier: '/u/mfa-voice-enrollment?state=abc' },
+      } as ScreenContext;
+
+      const result = new ScreenOverride(context);
+
+      expect(getEditIdentifierLink).toHaveBeenCalledWith(context);
+      expect(result.editIdentifierLink).toBe('/u/mfa-voice-enrollment?state=abc');
+    });
+
+    it('should be null when the screen context has no links', () => {
+      const context = {
+        name: 'mfa-voice-challenge',
+        data: { phone_number: '+15555555555' },
+      } as ScreenContext;
+
+      expect(new ScreenOverride(context).editIdentifierLink).toBeNull();
+    });
+
+    it('should be null when the links do not include an edit link', () => {
+      const context = {
+        name: 'mfa-voice-challenge',
+        data: { phone_number: '+15555555555' },
+        links: {},
+      } as ScreenContext;
+
+      expect(new ScreenOverride(context).editIdentifierLink).toBeNull();
+    });
   });
 });

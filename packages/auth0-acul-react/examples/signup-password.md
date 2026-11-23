@@ -286,6 +286,32 @@ export default SignupPasswordScreen;
         password credential; the user can add one later from My Account.
 
 
+### Example using inviter during organization invitations
+
+While a user is accepting an organization invitation, `screen.data.inviter` holds the display name of the person who sent it. It is `undefined` otherwise, so only render the invitation text when it is present. `inviter` is free text supplied when the invitation was created: render it as JSX text (React escapes it) and never through `dangerouslySetInnerHTML`.
+
+```tsx
+import React from 'react';
+import { useScreen, useOrganization } from '@auth0/auth0-acul-react/signup-password';
+
+const SignupPasswordInvitationBanner: React.FC = () => {
+    const screen = useScreen();
+    const organization = useOrganization();
+
+    if (!screen.data?.inviter) {
+        return null;
+    }
+
+    const invitationText = `Sign up to accept ${screen.data.inviter}'s invitation to join ${organization.displayName ?? organization.name}`;
+
+    return <p>{invitationText}</p>;
+};
+
+export default SignupPasswordInvitationBanner;
+```
+
+Render `<SignupPasswordInvitationBanner />` above the form in the `SignupPasswordScreen` component from step 1.
+
 ### Example using utility hooks - usePasswordValidation, useErrors
 
 ``` tsx

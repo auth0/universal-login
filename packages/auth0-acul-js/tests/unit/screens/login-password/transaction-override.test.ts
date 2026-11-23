@@ -4,6 +4,7 @@ import {
   isForgotPasswordEnabled,
   isPasskeyEnabled,
   getShowPasskeyAutofill,
+  getAlwaysShowPasskeyButton,
   getPasswordPolicy,
   getUsernamePolicy,
   getAllowedIdentifiers,
@@ -25,6 +26,7 @@ describe('TransactionOverride', () => {
     (isForgotPasswordEnabled as jest.Mock).mockReturnValue(false);
     (isPasskeyEnabled as jest.Mock).mockReturnValue(true);
     (getShowPasskeyAutofill as jest.Mock).mockReturnValue(true);
+    (getAlwaysShowPasskeyButton as jest.Mock).mockReturnValue(false);
     (getPasswordPolicy as jest.Mock).mockReturnValue('mockPasswordPolicy');
     (getUsernamePolicy as jest.Mock).mockReturnValue('mockUsernamePolicy');
     (getAllowedIdentifiers as jest.Mock).mockReturnValue(['email']);
@@ -47,6 +49,11 @@ describe('TransactionOverride', () => {
   it('should initialize showPasskeyAutofill correctly', () => {
     expect(transactionOverride.showPasskeyAutofill).toBe(true);
     expect(getShowPasskeyAutofill).toHaveBeenCalledWith(transactionContext);
+  });
+
+  it('should initialize alwaysShowPasskeyButton correctly', () => {
+    expect(transactionOverride.alwaysShowPasskeyButton).toBe(false);
+    expect(getAlwaysShowPasskeyButton).toHaveBeenCalledWith(transactionContext);
   });
 
   it('should return correct password policy', () => {

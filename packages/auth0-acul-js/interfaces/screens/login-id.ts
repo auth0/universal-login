@@ -15,6 +15,7 @@ export interface DBConnectionWithPasskeyAutofill extends DBConnection {
       passkey: {
         enabled: boolean;
         showPasskeyAutofill?: boolean;
+        alwaysShowPasskeyButton?: boolean;
       };
     };
   };
@@ -65,6 +66,11 @@ export interface TransactionMembersOnLoginId extends TransactionMembers {
   isSignupEnabled: boolean;
   isPasskeyEnabled: boolean;
   showPasskeyAutofill: boolean;
+  /**
+   * Whether to always show the passkey button. When false, the connection prefers passkey
+   * autofill: show the button only as a fallback when the browser doesn't support Conditional UI.
+   */
+  alwaysShowPasskeyButton: boolean;
   isForgotPasswordEnabled: boolean;
   isUsernameRequired: boolean;
   usernamePolicy: UsernamePolicy | null;

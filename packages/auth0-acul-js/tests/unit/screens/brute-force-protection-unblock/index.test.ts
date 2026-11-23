@@ -1,3 +1,4 @@
+import { ScreenIds } from '../../../../src/constants';
 import { BaseContext } from '../../../../src/models/base-context';
 import type { ScreenContext } from '../../../../interfaces/models/screen';
 import BruteForceProtectionUnblock from '../../../../src/screens/brute-force-protection-unblock';
@@ -18,7 +19,7 @@ describe('BruteForceProtectionUnblock', () => {
     window.universal_login_context = {
       client: {},
       prompt: {},
-      screen: {},
+      screen: { name: ScreenIds.BRUTE_FORCE_PROTECTION_UNBLOCK },
       transaction: { state: 'testState' },
       user: {},
     } as any;
@@ -45,6 +46,12 @@ describe('BruteForceProtectionUnblock', () => {
 
   afterEach(() => {
     jest.restoreAllMocks();
+  });
+
+  it('should have a static screenIdentifier matching the screen name', () => {
+    expect(BruteForceProtectionUnblock.screenIdentifier).toBe(
+      ScreenIds.BRUTE_FORCE_PROTECTION_UNBLOCK
+    );
   });
 
   describe('unblockAccount method', () => {

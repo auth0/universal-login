@@ -4,6 +4,7 @@ import {
   isForgotPasswordEnabled,
   isPasskeyEnabled,
   getShowPasskeyAutofill,
+  getAlwaysShowPasskeyButton,
   getPasswordPolicy,
   getUsernamePolicy,
   getAllowedIdentifiers,
@@ -20,6 +21,7 @@ export class TransactionOverride extends Transaction implements OverrideMembers 
     this.isForgotPasswordEnabled = isForgotPasswordEnabled(transactionContext);
     this.isPasskeyEnabled = isPasskeyEnabled(transactionContext);
     this.showPasskeyAutofill = getShowPasskeyAutofill(transactionContext);
+    this.alwaysShowPasskeyButton = getAlwaysShowPasskeyButton(transactionContext);
     this.passwordPolicy = getPasswordPolicy(transactionContext);
     this.usernamePolicy = getUsernamePolicy(transactionContext);
     this.allowedIdentifiers = getAllowedIdentifiers(transactionContext);
@@ -29,6 +31,7 @@ export class TransactionOverride extends Transaction implements OverrideMembers 
   isForgotPasswordEnabled: boolean;
   isPasskeyEnabled: boolean;
   showPasskeyAutofill: boolean;
+  alwaysShowPasskeyButton: boolean;
   passwordPolicy: OverrideMembers['passwordPolicy'];
   usernamePolicy: OverrideMembers['usernamePolicy'];
   allowedIdentifiers: OverrideMembers['allowedIdentifiers'];
