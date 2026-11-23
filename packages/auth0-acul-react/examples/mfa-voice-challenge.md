@@ -326,3 +326,28 @@ export default MfaVoiceChallengeScreen;
     *   You must replace the empty `payload` object with the actual data from your form inputs.
     *   The core SDK will handle the API request and subsequent redirection on success.
     *   Errors are caught and can be displayed to the user.
+
+### Example: verifying a phone number during enrollment
+
+After a user enters a phone number while enrolling voice as an MFA factor, Universal Login shows the code entry step at `/u/mfa-voice-enrollment-verify`. That step renders this same `mfa-voice-challenge` screen, so there is no separate screen to add and the same hooks and functions work there. `pickPhone` and `rememberDevice` do not apply to that step.
+
+Use `screen.editIdentifierLink` to let the user go back and correct the phone number. It is `null` when no link is provided, for example during a regular MFA login challenge.
+
+```tsx
+import React from 'react';
+import { useScreen } from '@auth0/auth0-acul-react/mfa-voice-challenge';
+
+const EditPhoneNumberLink: React.FC = () => {
+  const screen = useScreen();
+
+  if (!screen.editIdentifierLink) {
+    return null;
+  }
+
+  return <a href={screen.editIdentifierLink}>Edit phone number</a>;
+};
+
+export default EditPhoneNumberLink;
+```
+
+Render `<EditPhoneNumberLink />` next to the phone number in the `MfaVoiceChallengeScreen` component from step 1.

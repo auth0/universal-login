@@ -1,4 +1,5 @@
 import { Screen } from '../../models/screen';
+import { getEditIdentifierLink } from '../../shared/screen';
 
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { ScreenMembersOnMfaVoiceChallenge as OverrideOptions } from '../../../interfaces/screens/mfa-voice-challenge';
@@ -7,6 +8,11 @@ import type { ScreenMembersOnMfaVoiceChallenge as OverrideOptions } from '../../
  * Extended Screen implementation for MFA Voice Challenge screen.
  */
 export class ScreenOverride extends Screen implements OverrideOptions {
+  /**
+   * Link to the screen where the user can edit the phone number, or `null` when none is provided.
+   */
+  editIdentifierLink: OverrideOptions['editIdentifierLink'];
+
   /**
    * Additional screen data specific to MFA voice challenge.
    */
@@ -19,6 +25,7 @@ export class ScreenOverride extends Screen implements OverrideOptions {
    */
   constructor(screenContext: ScreenContext) {
     super(screenContext);
+    this.editIdentifierLink = getEditIdentifierLink(screenContext);
     this.data = ScreenOverride.getScreenData(screenContext);
   }
 

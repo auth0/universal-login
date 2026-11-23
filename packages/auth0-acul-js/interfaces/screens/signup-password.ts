@@ -15,6 +15,7 @@ export interface ScreenContextOnSignupPassword extends ScreenContext {
     phone_number?: string;
     username?: string;
     show_skip_password?: boolean;
+    inviter?: string;
   };
 }
 
@@ -35,6 +36,8 @@ export interface ScreenMembersOnSignupPassword extends ScreenMembers {
     phoneNumber?: string;
     username?: string;
     showSkipPassword?: boolean;
+    /** Display name of the person who sent the organization invitation. Only present while a user is accepting one. */
+    inviter?: string;
   } | null;
 }
 

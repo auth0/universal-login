@@ -29,6 +29,17 @@ export interface MfaVoiceChallengeContinueOptions {
  */
 export interface ScreenMembersOnMfaVoiceChallenge extends ScreenMembers {
   /**
+   * Link to the screen where the user can edit the phone number.
+   *
+   * @remarks
+   * Auth0 provides this link when the screen is shown to verify a phone number during
+   * enrollment, which is the page at `/u/mfa-voice-enrollment-verify`. There is no separate
+   * screen for that step. The value is `null` when no link is provided, for example during a
+   * regular MFA login challenge.
+   */
+  editIdentifierLink: string | null;
+
+  /**
    * Additional screen data specific to MFA voice challenge.
    */
   data: {
