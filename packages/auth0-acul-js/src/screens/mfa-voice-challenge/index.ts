@@ -23,6 +23,10 @@ import type { StartResendOptions, ResendControl } from  '../../../interfaces/uti
  *
  * This screen is displayed when a user needs to verify their identity using a voice call
  * as part of a multi-factor authentication flow.
+ *
+ * It is also shown after a user enters a phone number while enrolling voice as an MFA factor,
+ * at `/u/mfa-voice-enrollment-verify`. There is no separate screen for that step. Use
+ * `screen.editIdentifierLink` to let the user go back and correct the phone number.
  */
 export default class MfaVoiceChallenge extends BaseContext implements MfaVoiceChallengeMembers {
   /**

@@ -119,5 +119,22 @@ describe('ScreenOverride', () => {
       );
       expect(result?.showSwitchToOtpButton).toBeUndefined();
     });
+
+    it('should expose inviter when the user is accepting an organization invitation', () => {
+      const context = {
+        name: 'login-password',
+        data: { username: 'user@example.com', inviter: 'John Smith' },
+      } as ScreenContext;
+
+      const result = ScreenOverride.getScreenData(context);
+
+      expect(result?.inviter).toBe('John Smith');
+    });
+
+    it('should leave inviter undefined when absent', () => {
+      const result = ScreenOverride.getScreenData(screenContext);
+
+      expect(result?.inviter).toBeUndefined();
+    });
   });
 });
