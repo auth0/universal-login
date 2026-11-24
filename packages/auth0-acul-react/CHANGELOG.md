@@ -1,5 +1,13 @@
 # Change Log
 
+## [auth0-acul-react-v1.12.0](https://github.com/auth0/universal-login/tree/auth0-acul-react-v1.12.0) (2026-11-24)
+[Full Changelog](https://github.com/auth0/universal-login/compare/auth0-acul-react-v1.11.0...auth0-acul-react-v1.12.0)
+
+**Added**
+- fix: add screenIdentifier to brute-force-protection unblock screens [\#435](https://github.com/auth0/universal-login/pull/435) ([amitsingh05667](https://github.com/amitsingh05667))
+- feat: add editIdentifierLink to voice and sms challenge screens [\#439](https://github.com/auth0/universal-login/pull/439) ([amitsingh05667](https://github.com/amitsingh05667))
+-  fix: add inviter to signup-password and login-password screen data [\#438](https://github.com/auth0/universal-login/pull/438) ([amitsingh05667](https://github.com/amitsingh05667))
+
 ## [auth0-acul-react-v1.11.0](https://github.com/auth0/universal-login/tree/auth0-acul-react-v1.11.0) (2026-11-05)
 [Full Changelog](https://github.com/auth0/universal-login/compare/auth0-acul-react-v1.10.0...auth0-acul-react-v1.11.0)
 
