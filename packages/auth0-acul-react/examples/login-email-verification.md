@@ -66,8 +66,9 @@ const LoginEmailVerificationScreen: React.FC = () => {
     try {
       const payload: ResendCodeOptions = {}; // Add custom options if needed
       await resendCode(payload);
-      // UI can show a confirmation that the code has been resent.
-      setUiMessages([{type: 'success', text: screen.texts?.codeResentMessage || 'A new verification code has been sent to your email.'}]);
+      // resendCode() submits a form POST and the page reloads, so a "code sent" message
+      // set here is lost. If Auth0 encounters an issue (e.g., "too-many-email"), it
+      // appears in `transaction.errors` after the page reloads.
     } catch (error: any) {
       setUiMessages([{ type: 'error', text: error.message || 'Failed to resend code. Please try again.' }]);
     } finally {

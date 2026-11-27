@@ -78,3 +78,4 @@ export { default as BruteForceProtectionUnblock } from './brute-force-protection
 export { default as BruteForceProtectionUnblockFailure } from './brute-force-protection-unblock-failure';
 export { default as BruteForceProtectionUnblockSuccess } from './brute-force-protection-unblock-success';
 export { default as Confirmation } from './confirmation';
+export { default as PendingConsent } from './pending-consent';

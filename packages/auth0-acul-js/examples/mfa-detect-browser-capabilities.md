@@ -21,10 +21,10 @@ const MfaDetectBrowserCapabilitiesScreen: React.FC = () => {
 
         await mfaDetectBrowserCapabilities.detectCapabilities();
       } catch (err) {
+        // Only clear loading on error — on success the browser navigates away
+        setIsLoading(false);
         setError('Failed to detect browser capabilities. Please try again.');
         console.error('Error:', err);
-      } finally {
-        setIsLoading(false);
       }
     };
 

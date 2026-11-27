@@ -74,10 +74,11 @@ const LoginEmailVerificationScreen: React.FC = () => {
       // On successful submission, Auth0 typically handles redirection.
       // If the page reloads with errors (e.g., invalid code), the useEffect hook will update uiMessages.
     } catch (error: any) {
-      // Handles unexpected errors (e.g., network issues during form submission)
-      setUiMessages([{ type: 'error', text: error.message || 'An unexpected error occurred. Please try again.' }]);
-    } finally {
+      // submitData fires a native form POST and resolves immediately — the browser
+      // navigates away on success, so the finally block would clear the spinner
+      // before the page unloads. Only clear the loading state on error.
       setIsSubmitting(false);
+      setUiMessages([{ type: 'error', text: error.message || 'An unexpected error occurred. Please try again.' }]);
     }
   };
 
@@ -299,16 +300,11 @@ const payload: ResendCodeOptions = {
 };
 
 async function resendVerificationCode() {
-  try {
-    await loginEmailVerificationManager.resendCode(payload);
-    // A new code will be sent to the user's email.
-    // The UI should ideally provide feedback to the user (e.g., "A new code has been sent.").
-    // If Auth0 encounters an issue (e.g., "too-many-emails"), it will be reflected in
-    // `loginEmailVerificationManager.transaction.errors` after the page re-renders or the promise resolves.
-  } catch (error) {
-    // Handles unexpected errors during the resend request (e.g., network issues).
-    console.error('Failed to resend verification code:', error);
-  }
+  await loginEmailVerificationManager.resendCode(payload);
+  // resendCode() submits a form POST and the page reloads, so any UI feedback set
+  // here (e.g., "A new code has been sent.") is lost.
+  // If Auth0 encounters an issue (e.g., "too-many-email"), it appears in
+  // `transaction.errors` after the page reloads.
 }
 
 resendVerificationCode();

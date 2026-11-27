@@ -78,3 +78,4 @@ export * as 'brute-force-protection-unblock' from '../screens/brute-force-protec
 export * as 'brute-force-protection-unblock-failure' from '../screens/brute-force-protection-unblock-failure';
 export * as 'brute-force-protection-unblock-success' from '../screens/brute-force-protection-unblock-success';
 export * as 'confirmation' from '../screens/confirmation';
+export * as 'pending-consent' from '../screens/pending-consent';

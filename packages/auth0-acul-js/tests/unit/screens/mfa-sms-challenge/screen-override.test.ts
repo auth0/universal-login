@@ -131,4 +131,41 @@ describe('ScreenOverride', () => {
     const screenOverride = new ScreenOverride(screenContext);
     expect(screenOverride).toBeInstanceOf(Screen);
   });
+
+  describe('editIdentifierLink', () => {
+    it('should expose the edit link provided while verifying a phone number during enrollment', () => {
+      const screenContext: ScreenContext = {
+        name: 'mfa-sms-challenge',
+        data: { phone_number: '+15551234567' },
+        links: { edit_identifier: '/u/mfa-sms-enrollment?state=abc' },
+      } as ScreenContext;
+
+      const screenOverride = new ScreenOverride(screenContext);
+
+      expect(screenOverride.editIdentifierLink).toBe('/u/mfa-sms-enrollment?state=abc');
+    });
+
+    it('should be null when the screen context has no links', () => {
+      const screenContext: ScreenContext = {
+        name: 'mfa-sms-challenge',
+        data: { phone_number: '+15551234567' },
+      } as ScreenContext;
+
+      const screenOverride = new ScreenOverride(screenContext);
+
+      expect(screenOverride.editIdentifierLink).toBeNull();
+    });
+
+    it('should be null when the links do not include an edit link', () => {
+      const screenContext: ScreenContext = {
+        name: 'mfa-sms-challenge',
+        data: { phone_number: '+15551234567' },
+        links: {},
+      } as ScreenContext;
+
+      const screenOverride = new ScreenOverride(screenContext);
+
+      expect(screenOverride.editIdentifierLink).toBeNull();
+    });
+  });
 });

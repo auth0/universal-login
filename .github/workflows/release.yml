@@ -17,10 +17,10 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Use Node.js 22.x
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: 'npm'
@@ -97,7 +97,7 @@ jobs:
           prerelease: ${{ steps.meta.outputs.is_prerelease }}
 
       - name: Checkout current gh-pages branch to preserve existing docs  
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: gh-pages
           path: existing-docs
@@ -119,7 +119,7 @@ jobs:
         run: npm run docs:unified ${{ steps.meta.outputs.dir }}
 
       - name: Deploy updated documentation
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs

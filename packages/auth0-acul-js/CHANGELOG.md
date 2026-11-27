@@ -1,5 +1,27 @@
 # Change Log
 
+## [auth0-acul-js-v1.12.0](https://github.com/auth0/universal-login/tree/auth0-acul-js-v1.12.0) (2026-11-24)
+[Full Changelog](https://github.com/auth0/universal-login/compare/auth0-acul-js-v1.11.0...auth0-acul-js-v1.12.0)
+
+**Added**
+- fix: add screenIdentifier to brute-force-protection unblock screens [\#435](https://github.com/auth0/universal-login/pull/435) ([amitsingh05667](https://github.com/amitsingh05667))
+- feat: add editIdentifierLink to voice and sms challenge screens [\#439](https://github.com/auth0/universal-login/pull/439) ([amitsingh05667](https://github.com/amitsingh05667))
+-  fix: add inviter to signup-password and login-password screen data [\#438](https://github.com/auth0/universal-login/pull/438) ([amitsingh05667](https://github.com/amitsingh05667))
+
+## [auth0-acul-js-v1.11.0](https://github.com/auth0/universal-login/tree/auth0-acul-js-v1.11.0) (2026-11-05)
+[Full Changelog](https://github.com/auth0/universal-login/compare/auth0-acul-js-v1.10.0...auth0-acul-js-v1.11.0)
+
+**Added**
+- feat: add support for pending-consent screen [\#428](https://github.com/auth0/universal-login/pull/428) ([amitsingh05667](https://github.com/amitsingh05667))
+
+## [auth0-acul-js-v1.10.0](https://github.com/auth0/universal-login/tree/auth0-acul-js-v1.10.0) (2026-10-23)
+[Full Changelog](https://github.com/auth0/universal-login/compare/auth0-acul-js-v1.9.0...auth0-acul-js-v1.10.0)
+
+**Added**
+- fix: JS doc update for resend actions across multiple screens [\#421](https://github.com/auth0/universal-login/pull/421) ([amitsingh05667](https://github.com/amitsingh05667))
+- fix: update loading state handling in various components to improve u… [\#413](https://github.com/auth0/universal-login/pull/413) ([amitsingh05667](https://github.com/amitsingh05667))
+- fix: remove scope description from consent screen examples [\#412](https://github.com/auth0/universal-login/pull/412) ([amitsingh05667](https://github.com/amitsingh05667))
+
 ## [auth0-acul-js-v1.9.0](https://github.com/auth0/universal-login/tree/auth0-acul-js-v1.9.0) (2026-09-24)
 [Full Changelog](https://github.com/auth0/universal-login/compare/auth0-acul-js-v1.8.0...auth0-acul-js-v1.9.0)
 

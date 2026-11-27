@@ -30,8 +30,21 @@ export interface ResetPasswordMfaPushChallengePushMembers extends BaseMembers {
   continue(payload?: CustomOptions): Promise<void>;
 
   /**
-   * Resends the push notification
-   * @param payload Optional custom options to include with the request
+   * Resends the push notification.
+   *
+   * @remarks
+   * Submits a form POST with `action: "resend"`. Auth0 sends a new push notification
+   * and renders this screen again. The browser reloads the page, and the current
+   * JavaScript context, including component state, timers, and active polling, is lost.
+   *
+   * Code after `await resendPushNotification()` may still run, but anything it sets up,
+   * such as a "notification sent" message, is gone after the reload. Server-side errors
+   * appear in `transaction.errors` (or `useErrors()` in React) on the reloaded page.
+   * They don't reject the returned promise.
+   *
+   * @param payload - Optional custom parameters to send with the request.
+   * @returns A promise that resolves once the form is submitted, before the page
+   * reloads. It doesn't confirm that a new notification was sent.
    */
   resendPushNotification(payload?: CustomOptions): Promise<void>;
 

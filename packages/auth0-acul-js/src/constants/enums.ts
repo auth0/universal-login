@@ -76,4 +76,8 @@ export const ScreenIds = {
   RESET_PASSWORD_MFA_WEBAUTHN_PLATFORM_CHALLENGE: 'reset-password-mfa-webauthn-platform-challenge',
   RESET_PASSWORD_MFA_WEBAUTHN_ROAMING_CHALLENGE: 'reset-password-mfa-webauthn-roaming-challenge',
   CONFIRMATION: 'confirmation',
+  PENDING_CONSENT: 'pending-consent',
+  BRUTE_FORCE_PROTECTION_UNBLOCK: 'brute-force-protection-unblock',
+  BRUTE_FORCE_PROTECTION_UNBLOCK_SUCCESS: 'brute-force-protection-unblock-success',
+  BRUTE_FORCE_PROTECTION_UNBLOCK_FAILURE: 'brute-force-protection-unblock-failure',
 };

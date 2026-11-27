@@ -86,7 +86,6 @@ const EmailIdentifierChallengeScreen: React.FC = () => {
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
-  const [resent, setResent] = useState(false);
   const [returned, setReturned] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [switchedToPassword, setSwitchedToPassword] = useState(false);
@@ -117,7 +116,6 @@ const EmailIdentifierChallengeScreen: React.FC = () => {
     e.preventDefault();
     setError('');
     setSuccess(false);
-    setResent(false);
     setReturned(false);
 
     if (!code) {
@@ -135,8 +133,9 @@ const EmailIdentifierChallengeScreen: React.FC = () => {
   const handleResend = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      // startResend() submits a form POST and the page reloads, so state set after
+      // this call (e.g., a "code resent" message) is lost.
       await startResend();
-      setResent(true);
     } catch (err: any) {
       setError(err.message || 'Failed to resend code.');
     }
@@ -146,7 +145,6 @@ const EmailIdentifierChallengeScreen: React.FC = () => {
     e.preventDefault();
     setError('');
     setSuccess(false);
-    setResent(false);
     setReturned(false);
 
     try {
@@ -233,7 +231,6 @@ const EmailIdentifierChallengeScreen: React.FC = () => {
           )}
           {error && <div className="text-red-600 text-sm mt-2">{error}</div>}
           {success && <div className="text-green-600 text-sm mt-2">Challenge submitted successfully!</div>}
-          {resent && <div className="text-blue-600 text-sm mt-2">Code resent to your email.</div>}
           {returned && <div className="text-blue-600 text-sm mt-2">Returned to previous step.</div>}
           {switchedToPassword && <div className="text-blue-600 text-sm mt-2">Switched to password authentication.</div>}
         </div>

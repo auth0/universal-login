@@ -58,7 +58,24 @@ export default class ResetPasswordMfaEmailChallenge extends BaseContext implemen
 
   /**
    * Resends the email code.
-   * @param payload Optional custom options to include with the request.
+   *
+   * @remarks
+   * Submits a form POST with `action: "resend-code"`. Auth0 responds by rendering this
+   * screen again, so the browser reloads the page and the current JavaScript context,
+   * including component state and timers, is lost.
+   *
+   * Code after `await resendCode()` may still run, but anything it sets up, such as a
+   * "code sent" message or a countdown, is gone after the reload. Server-side errors,
+   * such as rate limits, appear in `transaction.errors` on the reloaded page.
+   * They don't reject the returned promise.
+   *
+   * To add a cooldown between resends, use `resendManager()`. It stores its countdown
+   * in `localStorage`, so the countdown survives the reload.
+   *
+   * @param payload - Optional custom parameters to send with the request.
+   * @returns A promise that resolves once the form is submitted, before the page
+   * reloads. It doesn't confirm that a new code was sent.
+   *
    * @example
    * ```typescript
    * import ResetPasswordMfaEmailChallenge from '@auth0/auth0-acul-js/reset-password-mfa-email-challenge';

@@ -19,6 +19,8 @@ export interface ScreenMembersOnLoginPassword extends ScreenMembers {
   data: {
     username: string;
     showSwitchToOtpButton?: boolean;
+    /** Display name of the person who sent the organization invitation. Only present while a user is accepting one. */
+    inviter?: string;
   } | null;
 }
 

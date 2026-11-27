@@ -36,6 +36,26 @@ export const {
 
 // Submit functions
 export const continueMethod = (payload: ContinueOptions) => withError(instance.continue(payload));
+/**
+ * Resends the email code.
+ *
+ * @remarks
+ * Submits a form POST with `action: "resend-code"`. Auth0 responds by rendering this
+ * screen again, so the browser reloads the page and React state, effects, and timers
+ * are lost.
+ *
+ * Code after `await resendCode()` may still run, but anything it sets up, such as a
+ * "code sent" message, is gone after the reload. Server-side errors, such as rate
+ * limits, appear in `useErrors()` on the reloaded page. They don't reject the
+ * returned promise.
+ *
+ * For a cooldown between resends, use `useResend()`. It stores its countdown in
+ * `localStorage`, so the countdown survives the reload.
+ *
+ * @param payload - Optional custom parameters to send with the request.
+ * @returns A promise that resolves once the form is submitted, before the page
+ * reloads. It doesn't confirm that a new code was sent.
+ */
 export const resendCode = (payload?: ResendCodeOptions) => withError(instance.resendCode(payload));
 export const tryAnotherMethod = (payload?: TryAnotherMethodOptions) =>
   withError(instance.tryAnotherMethod(payload));
