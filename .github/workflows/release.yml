@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Use Node.js 22.x
         uses: actions/setup-node@v7
@@ -97,7 +97,7 @@ jobs:
           prerelease: ${{ steps.meta.outputs.is_prerelease }}
 
       - name: Checkout current gh-pages branch to preserve existing docs  
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: gh-pages
           path: existing-docs
