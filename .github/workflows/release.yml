@@ -12,7 +12,69 @@ permissions:
   id-token: write # For trusted publishing to npm
 
 jobs:
+  prepare:
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.merged && startsWith(github.event.pull_request.head.ref, 'release/'))
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      name_unscoped: ${{ steps.meta.outputs.name_unscoped }}
+      version: ${{ steps.meta.outputs.version }}
+      tarball: ${{ steps.meta.outputs.tarball }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # Same branch parsing as the release job; also yields the tarball name `npm pack`
+      # produces for the package being released, which the malware scan needs
+      - name: Parse package, version and tarball name
+        id: meta
+        env:
+          REF: ${{ github.head_ref || github.ref_name }}
+        run: |
+          DIR_NAME=$(echo "$REF" | sed -E 's|^release/([a-zA-Z0-9-]+)-v?[0-9]+\.[0-9]+\.[0-9]+.*$|\1|')
+
+          PACKAGE_JSON_PATH="packages/$DIR_NAME/package.json"
+          PACKAGE_NAME=$(jq -r .name "$PACKAGE_JSON_PATH")
+          PACKAGE_NAME_UNSCOPED=$(echo "$PACKAGE_NAME" | sed 's/^@[^/]*\///')
+          PACKAGE_VERSION=$(jq -r .version "$PACKAGE_JSON_PATH")
+
+          if [ -z "$PACKAGE_NAME" ] || [ -z "$PACKAGE_VERSION" ]; then
+            echo "ERROR: Could not parse package name or version."
+            exit 1
+          fi
+
+          # npm pack names scoped packages <scope>-<name>-<version>.tgz (no "@", "/" becomes "-")
+          TARBALL="$(echo "$PACKAGE_NAME" | sed -E 's/^@//; s|/|-|')-$PACKAGE_VERSION.tgz"
+
+          echo "name_unscoped=$PACKAGE_NAME_UNSCOPED" >> "$GITHUB_OUTPUT"
+          echo "version=$PACKAGE_VERSION" >> "$GITHUB_OUTPUT"
+          echo "tarball=$TARBALL" >> "$GITHUB_OUTPUT"
+
+  # Malware scan of the package being released; the release job needs it to pass
+  rl-scan:
+    needs: prepare
+    permissions:
+      contents: read
+      id-token: write # AWS OIDC for the scan (PRODSEC_TOOLS_ARN)
+    uses: ./.github/workflows/rl.yml
+    with:
+      artifact-name: ${{ needs.prepare.outputs.name_unscoped }}
+      artifact-path: ${{ needs.prepare.outputs.tarball }}
+      version: ${{ needs.prepare.outputs.version }}
+    secrets:
+      RLSECURE_LICENSE: ${{ secrets.RLSECURE_LICENSE }}
+      RLSECURE_SITE_KEY: ${{ secrets.RLSECURE_SITE_KEY }}
+      SIGNAL_HANDLER_TOKEN: ${{ secrets.SIGNAL_HANDLER_TOKEN }}
+      SIGNAL_HANDLER_DOMAIN: ${{ secrets.SIGNAL_HANDLER_DOMAIN }}
+      PRODSEC_TOOLS_ARN: ${{ secrets.PRODSEC_TOOLS_ARN }}
+      PRODSEC_TOOLS_USER: ${{ secrets.PRODSEC_TOOLS_USER }}
+      PRODSEC_TOOLS_TOKEN: ${{ secrets.PRODSEC_TOOLS_TOKEN }}
+      PRODSEC_PYTHON_TOOLS_REPO: ${{ secrets.PRODSEC_PYTHON_TOOLS_REPO }}
+
   release:
+    needs: [prepare, rl-scan]
     if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.merged && startsWith(github.event.pull_request.head.ref, 'release/'))
     runs-on: ubuntu-latest
     

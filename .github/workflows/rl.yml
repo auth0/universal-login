@@ -1,20 +1,22 @@
 name: RL Scan
 run-name: rl-scan
 
-# Reusable malware-scan workflow — call this from your release or CI pipeline via
-# workflow_call. The trigger lives in the calling workflow; the build steps are
-# defined here as a placeholder that you replace with your own toolchain setup,
-# compilation, and packaging steps before merging.
+# Reusable malware-scan workflow, called from release.yml (job `rl-scan`), which
+# gates the npm publish on it. The trigger lives in the calling workflow; this
+# workflow builds and packs the workspace packages, then scans the tarball named
+# by `artifact-path`.
 #
-# Caller pattern (minimal):
+# Caller pattern (see release.yml):
 #   jobs:
-#     release-and-scan:
+#     rl-scan:
 #       uses: ./.github/workflows/rl.yml
 #       with:
-#         artifact-name: my-artifact
-#         artifact-path: dist/my-artifact.tgz
-#         version: ${{ github.event.release.tag_name }}
-#       secrets: inherit
+#         artifact-name: auth0-acul-js
+#         artifact-path: auth0-auth0-acul-js-1.2.3.tgz
+#         version: 1.2.3
+#       secrets:
+#         RLSECURE_LICENSE: ${{ secrets.RLSECURE_LICENSE }}
+#         # ...and the other required secrets listed below
 #
 # Artifact contract
 # ─────────────────
@@ -64,6 +66,9 @@ on:
       PRODSEC_PYTHON_TOOLS_REPO:
         required: true
 
+permissions:
+  contents: read
+
 jobs:
   # ── Malware scan via ReversingLabs composite action ─────────────────────────
   rl-scan:
@@ -74,19 +79,38 @@ jobs:
       id-token: write   # required for AWS OIDC federation (PRODSEC_TOOLS_ARN)
     steps:
       - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       # ── Build the artifact ────────────────────────────────────────────────────
-      # Replace this placeholder with ALL steps required to produce the artifact,
-      # including: runtime/toolchain setup (e.g. actions/setup-node, setup-go,
-      # setup-dotnet), dependency installation, compilation, and packaging (e.g.
-      # tar, zip, docker save). The final step must place the artifact at the
-      # path passed as inputs.artifact-path. The rl-scan action uses [ -f ] to
-      # verify the file exists — a missing or incorrect path fails the job.
-      - name: Build artifact   # TODO: replace with your toolchain setup + build + package steps
+      # Builds both workspaces and packs them into the workspace root. `artifact-path`
+      # (from the caller) selects the tarball of the package being released; the
+      # rl-scan action uses [ -f ] to verify that file exists. Dependency lifecycle
+      # scripts are skipped (--ignore-scripts) because this job also holds the AWS
+      # OIDC token and the scan secrets.
+      - name: Setup Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+          package-manager-cache: false
+
+      - name: Install dependencies
+        run: npm ci --workspaces --include-workspace-root --ignore-scripts
+
+      - name: Build packages
+        run: npm run build:local
+
+      - name: Pack npm tarballs
+        env:
+          ARTIFACT_PATH: ${{ inputs.artifact-path }}
         run: |
-          echo "TODO: replace this step with your build commands"
-          echo "      The built file must be at: ${{ inputs.artifact-path }}"
+          npm pack --workspaces --ignore-scripts --pack-destination "$GITHUB_WORKSPACE"
+          if [ ! -f "$ARTIFACT_PATH" ]; then
+            echo "::error title=Artifact::expected tarball not found: $ARTIFACT_PATH"
+            ls -la "$GITHUB_WORKSPACE"/*.tgz || true
+            exit 1
+          fi
 
       - name: Run RL malware scan
         id: rl-scan-conclusion
