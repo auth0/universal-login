@@ -1,4 +1,5 @@
-import { renderHook } from '@testing-library/react';
+import { render, renderHook } from '@testing-library/react';
+import { createElement } from 'react';
 import { usePasskeyAutofill } from '../../../src/hooks/utility/passkey-autofill';
 import { getScreen } from '../../../src/state/instance-store';
 
@@ -108,5 +109,40 @@ describe('usePasskeyAutofill', () => {
     rerender(); // simulate a re-render
 
     expect(mockRegister).toHaveBeenCalledTimes(1);
+  });
+
+  describe('autocomplete tokens on a bound input', () => {
+    function PasskeyInput({ id }: { id: string }) {
+      const { inputRef } = usePasskeyAutofill();
+      return createElement('input', { ref: inputRef, id });
+    }
+
+    it('should set "current-password webauthn" on the login-password screen', () => {
+      const mockRegister = jest.fn();
+      mockGetScreen.mockReturnValue({
+        screen: { name: 'login-password' },
+        registerPasskeyAutofill: mockRegister,
+      } as any);
+
+      const { container } = render(createElement(PasskeyInput, { id: 'password' }));
+
+      expect(mockRegister).toHaveBeenCalledWith('password');
+      expect(container.querySelector('input')?.getAttribute('autocomplete')).toBe(
+        'current-password webauthn'
+      );
+    });
+
+    it('should set "username webauthn" on the login-id screen', () => {
+      mockGetScreen.mockReturnValue({
+        screen: { name: 'login-id' },
+        registerPasskeyAutofill: jest.fn(),
+      } as any);
+
+      const { container } = render(createElement(PasskeyInput, { id: 'username' }));
+
+      expect(container.querySelector('input')?.getAttribute('autocomplete')).toBe(
+        'username webauthn'
+      );
+    });
   });
 });

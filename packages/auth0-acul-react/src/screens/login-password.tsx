@@ -41,6 +41,10 @@ export const federatedLogin = (payload: FederatedLoginOptions) =>
 export const switchConnection = (payload: SwitchConnectionOptions) =>
   withError(instance.switchConnection(payload));
 export const switchToOtp = (payload?: CustomOptions) => withError(instance.switchToOtp(payload));
+export const passkeyLogin = (payload?: CustomOptions) => withError(instance.passkeyLogin(payload));
+
+// Utility Hooks
+export { usePasskeyAutofill } from '../hooks/utility/passkey-autofill';
 
 // Common hooks
 export { useCurrentScreen, useErrors, useAuth0Themes, useChangeLanguage } from '../hooks';

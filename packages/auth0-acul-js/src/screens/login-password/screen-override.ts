@@ -1,5 +1,5 @@
 import { Screen } from '../../models/screen';
-import { getSignupLink, getResetPasswordLink, getEditIdentifierLink } from '../../shared/screen';
+import { getSignupLink, getResetPasswordLink, getEditIdentifierLink, getPublicKey } from '../../shared/screen';
 
 import type { ScreenContext } from '../../../interfaces/models/screen';
 import type { ScreenMembersOnLoginPassword as OverrideOptions } from '../../../interfaces/screens/login-password';
@@ -8,6 +8,7 @@ export class ScreenOverride extends Screen implements OverrideOptions {
   signupLink: OverrideOptions['signupLink'];
   resetPasswordLink: OverrideOptions['resetPasswordLink'];
   editIdentifierLink: OverrideOptions['editIdentifierLink'];
+  publicKey: OverrideOptions['publicKey'];
   data: OverrideOptions['data'];
 
   constructor(screenContext: ScreenContext) {
@@ -15,6 +16,7 @@ export class ScreenOverride extends Screen implements OverrideOptions {
     this.signupLink = getSignupLink(screenContext);
     this.resetPasswordLink = getResetPasswordLink(screenContext);
     this.editIdentifierLink = getEditIdentifierLink(screenContext);
+    this.publicKey = getPublicKey(screenContext) as OverrideOptions['publicKey'];
     this.data = ScreenOverride.getScreenData(screenContext);
   }
 

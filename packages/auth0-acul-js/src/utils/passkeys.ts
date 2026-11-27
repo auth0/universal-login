@@ -143,11 +143,13 @@ export async function createPasskeyCredentials(
 export async function registerPasskeyAutofill({
   publicKey,
   inputId,
+  autocomplete = 'username webauthn',
   onResolve,
   onReject,
 }: {
   publicKey: PasskeyRead['public_key'];
   inputId?: string;
+  autocomplete?: string;
   onResolve: (credential: Credential) => void | Promise<void>;
   onReject?: (error: unknown) => void;
 }): Promise<AbortController | void> {
@@ -175,7 +177,7 @@ export async function registerPasskeyAutofill({
     const el = document.getElementById(inputId);
     if (el && el.tagName?.toUpperCase() === 'INPUT') {
       const input = el as HTMLInputElement;
-      input.setAttribute('autocomplete', 'username webauthn');
+      input.setAttribute('autocomplete', autocomplete);
     } else {
       console.warn(`[Auth0 ACUL] No valid <input> found with id="${inputId}". Passkey autocomplete may not work.`);
     }

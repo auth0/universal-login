@@ -5,7 +5,7 @@ import type {
   PasswordComplexityPolicy,
   TransactionContext,
 } from "../../interfaces/models/transaction";
-import type { TransactionMembersOnLoginId } from "../../interfaces/screens/login-id";
+import type { DBConnectionWithPasskeyAutofill, TransactionMembersOnLoginId } from "../../interfaces/screens/login-id";
 import type { TransactionMembersOnSignupId } from "../../interfaces/screens/signup-id";
 import type { IdentifierType } from "../../src/constants";
 
@@ -41,6 +41,31 @@ export function isForgotPasswordEnabled(
 export function isPasskeyEnabled(transaction: TransactionContext): boolean {
   const connection = transaction?.connection as DBConnection;
   return connection?.options?.authentication_methods?.passkey?.enabled ?? false;
+}
+
+/**
+ * Checks if passkey autofill (Conditional UI) is enabled for the current connection.
+ *
+ * @param transaction - The transaction context from Universal Login
+ * @returns True if passkey autofill should be offered, false otherwise
+ */
+export function getShowPasskeyAutofill(transaction: TransactionContext): boolean {
+  const connection = transaction?.connection as DBConnectionWithPasskeyAutofill;
+  return connection?.options?.authentication_methods?.passkey?.showPasskeyAutofill ?? false;
+}
+
+/**
+ * Checks if the connection wants the passkey button shown at all times.
+ *
+ * When false, the connection prefers passkey autofill (Conditional UI): show the passkey button
+ * only as a fallback when the browser doesn't support Conditional UI.
+ *
+ * @param transaction - The transaction context from Universal Login
+ * @returns True if the passkey button should always be shown, false otherwise
+ */
+export function getAlwaysShowPasskeyButton(transaction: TransactionContext): boolean {
+  const connection = transaction?.connection as DBConnectionWithPasskeyAutofill;
+  return connection?.options?.authentication_methods?.passkey?.alwaysShowPasskeyButton ?? false;
 }
 
 /**

@@ -1,5 +1,5 @@
 import { ScreenOverride } from '../../../../src/screens/login-password/screen-override';
-import { getSignupLink, getResetPasswordLink, getEditIdentifierLink } from '../../../../src/shared/screen';
+import { getSignupLink, getResetPasswordLink, getEditIdentifierLink, getPublicKey } from '../../../../src/shared/screen';
 import { Screen } from '../../../../src/models/screen';
 import type { ScreenContext } from '../../../../interfaces/models/screen';
 
@@ -22,6 +22,7 @@ describe('ScreenOverride', () => {
     (getSignupLink as jest.Mock).mockReturnValue('mockSignupLink');
     (getResetPasswordLink as jest.Mock).mockReturnValue('mockResetPasswordLink');
     (getEditIdentifierLink as jest.Mock).mockReturnValue('mockEditIdentifierLink');
+    (getPublicKey as jest.Mock).mockReturnValue({ challenge: 'mockChallenge' });
 
     screenOverride = new ScreenOverride(screenContext);
   });
@@ -36,6 +37,11 @@ describe('ScreenOverride', () => {
 
   it('should initialize editIdentifierLink correctly', () => {
     expect(screenOverride.editIdentifierLink).toBe('mockEditIdentifierLink');
+  });
+
+  it('should initialize publicKey correctly', () => {
+    expect(screenOverride.publicKey).toEqual({ challenge: 'mockChallenge' });
+    expect(getPublicKey).toHaveBeenCalledWith(screenContext);
   });
 
   it('should initialize data correctly', () => {
